@@ -1,0 +1,267 @@
+@import '../theme/config.scss';
+.mini {
+    .yt-admin-framework-sidebar {
+        width: 61px;  
+    }
+    .ant-menu-root {
+        
+        width: 60px;
+    }
+
+    .ant-menu-root > li > div {
+        
+        padding: 0px 16px 0 24px !important;
+        &:after {
+            right: 6px;
+            
+        }
+    }
+    .ant-menu-root > li > div {
+        overflow: hidden;
+    }
+    .ant-menu-root > li > div > span > span {
+        
+        opacity: 0;
+        width: 0;
+    }
+
+    .ant-menu-root > li.ant-menu-item {
+        
+        padding: 0px 16px 0 24px !important;
+    }
+    .ant-menu-root > li.ant-menu-item > a {
+        overflow: hidden;
+    }
+    .ant-menu-root > li.ant-menu-item > a > span {
+        transition: all .3s;
+        opacity: 0;
+        width: 0;
+    }
+
+}
+
+.ant-menu-root {
+    width: 240px;
+    margin-top: 14px;
+    background-color:#eeeeee; 
+}
+
+.ant-menu-root > li > div > span > span {
+    
+}
+
+.ant-menu-root > li.ant-menu-item > a > span {}
+    
+
+.ant-menu-inline .ant-menu-item,
+.ant-menu-vertical .ant-menu-item {
+    border-right: 1px solid transparent;
+}
+
+.ant-menu-inline,
+.ant-menu-vertical {
+    border-right: 1px solid transparent;
+}
+
+.ant-menu-item-selected > a {
+    overflow: hidden;
+}
+
+.yt-admin-framework-sidebar {
+    width: 241px;
+    border-right: 1px solid #ddd;
+    background-color:#eeeeee; 
+    float: left;
+    margin-right: -200px;
+    background-color: #eeeeee;
+}
+
+.yt-admin-framework-sidebar .ant-menu-item {
+    border-right: none;
+}
+
+.yt-admin-framework-sidebar .ant-menu-item-selected {
+    border-right: 0;
+    background-color: #eaf8fe;
+}
+
+.ant-menu-submenu-vertical {
+    z-index: 999;
+}
+
+.yt-admin-framework-sidebar {
+    .ant-menu {
+        .fa {
+            margin-right: 8px;
+            width: 12px;
+            height: 12px;
+            text-align: center;
+        }
+    }
+}
+
+.yt-admin-framework-sidebar .ant-menu-submenu-selected.ant-menu-submenu {
+    color: #108ee9;
+}
+
+@media (max-width: 767px) {
+    .mini {
+        .yt-admin-framework-sidebar {
+            overflow: hidden;
+            width: 0;
+            
+        }
+        .ant-menu-root {
+            
+            width: 0;
+        }
+        .ant-menu-root > li > div,
+        .ant-menu-root > li.ant-menu-item {
+            padding: 0 !important;
+        }
+    }
+}
+.ant-menu-dark.ant-menu-inline .ant-menu-item-selected {
+    background-color: #f8f6f2 !important;
+}
+.ant-menu-item-selected > a, .ant-menu-item-selected > a:hover {
+    color: #666;
+    text-decoration: none;
+}
+.ant-menu-item > a:hover {
+    color: #666;
+}
+.ant-menu-dark .ant-menu-item-selected > a {
+	font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #666666;
+    text-align: left;
+    text-decoration: none;
+}
+.ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a {
+    color: #666666;
+}
+.ant-menu-inline .ant-menu-submenu-title {
+   font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #666666;
+    text-align: left;
+    background-color:#e6e6e6;
+    margin-top:10px;
+    margin-left:10px;  
+    position: relative;
+    .fa-copyright:before {
+        content: "\F1F9";
+        top:8px;
+        left:10px; 
+        position:absolute;
+        font-size:26px;
+    } 
+}
+.ant-menu-dark .ant-menu-submenu-title:hover {
+	color:#666;
+	background-color:#999;
+}
+
+.ant-menu-inline .ant-menu-item, {
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #666666;
+    text-align: left;
+    text-decoration: none;
+}
+.ant-menu-dark.ant-menu-inline .ant-menu-item{
+	margin-left:10px;
+	background-color:#999; 
+	margin-top:10px; 
+}
+.ant-menu-submenu-inline .ant-menu-submenu-open .ant-menu-submenu-selected .ant-menu-submenu {
+	background-color: #fff;
+}
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+    background-color:#fff;
+    margin-top:-0px; 
+    margin-left: 20px;
+    .ant-menu-item{
+    	margin-top:-0px;
+    }
+}
+#yt_demo-empty$Menu{
+    margin-top:-10px; 
+}
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+    background-color:#fff;
+    color:red;
+    .ant-menu-item {
+       background-color: #fff;
+       margin-top:0px;
+    }
+}
+.ant-menu-submenu-inline .ant-menu-submenu-open .ant-menu-submenu-selected .ant-menu-submenu{
+	background-color: #fff;
+}
+.ant-menu{
+    background-color: #eeeeee;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color:#fff;
+}
+.ant-menu-item{
+    background-color:#e6e6e6;
+    margin-top:10px;
+    position: relative;
+    .fa-copyright:before {
+        content: "\F1F9";
+        top:8px;
+        left:10px; 
+        position:absolute;
+        font-size:26px;
+    }
+}
+.ant-menu-inline .ant-menu-item, .ant-menu-vertical .ant-menu-item {
+    margin-left:10px;
+    background-color:#e6e6e6;
+}
+.ant-menu-item-active .ant-menu-item{
+    color:#666;
+}
+.ant-menu-submenu > .ant-menu {
+    background-color: #fff;
+    margin-top:-10px;
+    .ant-menu-item{
+        background-color:#fff;
+        font-size:12px;
+        text-align: left;
+        height:30px;
+        line-height: 30px;
+        position: relative;
+        .fa-copyright:before {
+            content: "\F1F9";
+            top:9px;
+            left:20px; 
+            position:absolute;
+            font-size:2px;
+        }
+        span{
+            display:inline-block;
+            margin-left:-20px ;
+        }
+        .ant-menu-inline .ant-menu-selected:after, .ant-menu-inline .ant-menu-item-selected:after {
+           content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            border-left: 3px solid #108ee9;
+        }
+    }
+}
+:root .ant-menu-submenu-inline > .ant-menu-submenu-title:after {
+    font-size: 24px;
+}

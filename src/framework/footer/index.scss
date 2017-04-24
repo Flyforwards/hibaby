@@ -1,0 +1,21 @@
+.my-footer {
+    width:100%;
+    height: 60px;
+    background: inherit;
+    background-color: rgba(51, 51, 51, 1);
+    border: none;
+    border-radius: 0px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    p{
+        font-size: 14px;
+        padding-top:23px; 
+        color: #CCCCCC;
+        text-align: right;
+        padding-right:50px; 
+    }
+}

@@ -1,0 +1,177 @@
+.mini .yt-admin-framework-content {
+    transition: all .3s;
+    margin-left: 60px;
+}
+
+.yt-admin-framework-content {
+    transition: all .3s;
+    padding: 0 12px;
+    background-color: #eeeeee;
+}
+.Customer-nav{
+	input{
+		width:400px;
+		height:30px;
+		font-size:14px;
+		padding-left:5px;
+	}
+}
+@media (max-width: 767px) {
+    .mini .yt-admin-framework-content {
+        transition: all .3s;
+        margin-left: 0;
+    }
+}
+.search {
+	.ant-btn-primary {
+	    color: #fff;
+	    background-color: #b67233;
+	    margin:20px;
+	    border-radius:0;
+	    width:150px;
+	    height:30px;
+	}
+	.ant-btn {
+		border:none;
+	}
+}
+.screening {
+	.ant-btn-primary {
+	    color: #fff;
+	    background-color: #f89d2d;
+	    margin-top:20px;
+	    margin-right:20px;
+	    border-radius:0;
+	    width:150px;
+	    height:30px;
+	}
+	.ant-btn {
+		border:none;
+	}
+}
+.customer {
+	 width:50px;
+	.ant-btn-primary {
+	    color: #fff;
+	    background-color: #693d20;
+	    margin-top:10px;
+	    border-radius:0;
+	    width:150px;
+	    height:30px;
+	}
+	.ant-btn {
+		border:none;
+	}
+}
+.Customer-navigation {
+	height:200px;
+	width:100%;
+	background-color: #eeeeee;
+	div{
+		float:left;
+		color:#666;
+		font-size:14px;
+		input{
+			margin-left:10px; 
+			margin-right:10px; 
+		}
+	} 
+	.age{
+		margin-left:40px; 
+		input{
+			width:60px;
+			height:30px;
+			text-align: center;
+			outline:none;
+			border:0;
+		}
+	}
+	.Membership{
+		height:30px;
+		width:218px;
+		line-height:30px;
+		margin:0px 90px; 
+
+		div{
+			float:right;
+		}
+		.ant-select-selection--single{
+			width:150px;
+			float:right;
+			div{
+				float:left;
+			}
+		}
+	}
+	.hospitals{
+		height:30px;
+		width:218px;
+		line-height:30px;
+		margin-right:100px; 
+		div{
+			float:right;
+		}
+		.ant-select-selection--single{
+			width:150px;
+			float:right;
+			div{
+				float:left;
+			}
+		}
+	}
+	.period{
+		margin-top:20px;
+		margin-left:30px;
+		height:30px;
+		line-height:30px;
+		margin-right:10px; 
+		div{
+			float:right;
+			margin-right:10px; 
+		}
+		.ant-select-selection--single{
+			width:150px;
+			float:right;
+			margin-right:-6px;
+			div{
+				float:left; 
+			}
+		}
+	}
+	.current{
+		height:30px;
+		width:218px;
+		line-height:30px;
+		margin-left:238px; 
+		margin-top: 20px;
+		div{
+			float:right;
+		}
+		.ant-select-selection--single{
+			width:150px;
+			float:right;
+			div{
+				float:left;
+			}
+		}
+	}
+}
+.ant-modal-title{
+	text-align:center;
+}
+.ant-btn .ant-btn-lg{
+
+}
+.ant-btn {
+	background-color:#b67233; 
+	color:#fff;
+	border:0;
+	width:150px;
+	border-radius:0px;
+}
+.ant-btn:hover, .ant-btn:focus {
+    color: #fff;
+    background-color: #b67233;
+    border:0;
+    width:150px;
+}
