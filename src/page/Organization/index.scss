@@ -1,0 +1,313 @@
+.mini .yt-admin-framework-content {
+    transition: all .3s;
+    margin-left: 60px;
+}
+.yt-admin-framework-content {
+    transition: all .3s;
+    padding: 0 12px;
+    background-color: #eeeeee;
+}
+.yt-admin-framework-Customer{
+	.ant-table {
+	    margin-top: -187px;
+	}
+}
+.Organization-right{
+	width:867px;
+	min-width:867px;
+	float:left;
+	margin-left:10px; 
+}
+:root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after {
+    font-size: 20px;
+}
+:root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
+	font-size: 20px;
+}
+.Organization-left{
+	width:206px;
+	min-width:206px;
+	float:left;
+	background-color:#fff;
+	min-height:500px;
+	margin-top:10px;
+	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {
+		font-size: 12px;
+		display:inline-block;
+		width:100px;
+		font-weight: 400;
+	}
+	.ant-tree li a:hover {
+	    background-color: rgba(204, 204, 204, 1);
+	    font-weight: 400;
+	}
+	.ant-tree li ul {
+		margin-right: 10px;
+		margin-left:10px; 
+	}
+	.ant-tree li a.ant-tree-node-selected {
+    	background-color: rgba(204, 204, 204, 1);
+    	font-weight: 400;
+	}
+	.ant-tree > li:first-child {
+	    padding-top: 20px;
+	    a{
+	    	font-size:15px;
+	    	font-weight: 400;
+	    }
+	}
+	.ant-tree-title{
+		display:inline-block;
+		margin-left:-0px; 
+	}
+	.ant-tree li{
+		margin-left:-11px; 
+	}
+	.ant-tree {
+		margin-left:22px; 
+	}
+}
+.Organization-nav{
+	background-color:#fff;  
+	height:110px;
+	font-size:14px;
+	margin-top:10px;
+	margin-bottom:200px;
+	padding-top:20px;
+	.name{
+		float:left;
+		margin-left:40px;
+		input{
+			width:183px;
+			height:40px;
+			font-size:14px;
+			padding-left:5px;
+			margin-left:10px; 
+		}
+	}
+	.SystemRoles{
+		float:left;
+		margin-left:20px; 
+		background-color:#fff;  
+		font-size:14px;
+		.ant-select-selection--single {
+		    width:183px;
+			height:40px;
+			font-size:14px;
+			line-height:40px; 
+			vertical-align:middle;
+		}
+		.ant-select-selection__rendered {    
+		    line-height: 38px;
+		}
+		.OrganizationType{
+			margin-left:20px; 
+			width:183px;
+		}
+	}
+	.status{
+		float:left;
+		margin-left:20px; 
+		background-color:#fff;  
+		font-size:14px;
+		.ant-select-selection--single {
+		    width:183px;
+			height:40px;
+			font-size:14px;
+			line-height:40px; 
+			vertical-align:middle;
+		}
+		.ant-select-selection__rendered {    
+		    line-height: 38px;
+		}
+		.OrganizationType{
+			margin-left:20px; 
+			width:183px;
+		}
+	}
+	.Organization-Inquire{
+		float:right;
+		font-size: 14px;
+		color: #b67233;
+		cursor: pointer;
+		margin-right:20px; 
+		margin-top:10px;
+		display: inline-block;
+		border:1px solid #b67233;
+		border-radius: 3px;
+		line-height: 30px;
+		text-align:center;
+		width: 150px;
+	    height: 30px;
+	    background: inherit;
+	    background-color:#f1f1f1; 
+	}
+	.Organization-add{
+		float:right;
+		font-size: 14px;
+		color: #FFFFFF;
+		cursor: pointer;
+		margin-right:20px; 
+		margin-top:10px;
+		display: inline-block;
+		border-radius: 3px;
+		line-height: 30px;
+		text-align:center;
+		width: 150px;
+	    height: 30px;
+	    background: inherit;
+	    background-color:#b67233; 
+	}
+}
+@media (max-width: 767px) {
+    .mini .yt-admin-framework-content {
+        transition: all .3s;
+        margin-left: 0;
+    }
+}
+.ant-modal-title{
+	text-align:center;
+}
+.ant-btn .ant-btn-lg{
+
+}
+.ant-btn {
+	background-color:#b67233; 
+	color:#fff;
+	border:0;
+	width:150px;
+	border-radius:0px;
+}
+.ant-btn:hover, .ant-btn:focus {
+    color: #fff;
+    background-color: #b67233;
+    border:0;
+    width:150px;
+}
+.ant-calendar{
+	top:32px;
+	left:10px;
+	width:179px;
+	border-radius:0;
+}
+.CreateList{
+	span{
+		display:block;
+		float:left;
+		margin-left:19px; 
+		width:21%;
+		height:40px;
+		input{
+			margin-right:5px; 
+			vertical-align: middle;
+		}
+	}
+}
+.ant-table-thead > tr > th {
+    background-color: rgba(102, 102, 102, 1);
+    font-weight: 500;
+    transition: background .3s ease;
+    text-align: center;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #FFFFFF;
+}
+.ant-table-tbody > tr > td {
+    text-align:center;
+    background-color: #fff;
+	font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-size: 14px;
+	span{
+		width:100%;
+		.firstA{
+			color: #0066FF;
+			text-decoration: none;
+		}
+		.twoA{
+			color: #FF0000;
+			text-decoration: none;
+		}
+		a{
+			margin-right:9px;
+			margin-left:5px;
+			color:rgba(0, 0, 0, 0.85);
+		}
+	}
+}
+.ant-modal-body {
+    height:230px;
+    font-size: 14px;
+    line-height: 2.5;
+    margin-top:-10px;  
+} 
+.ant-modal-footer {
+    border-top:0;
+    margin-top:20px; 
+    padding: 10px 16px 10px 10px;
+    text-align: right;
+}
+.CreateModaList{
+	width:100%;
+	height:100%;
+}
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-input-wrapper,
+.editable-cell-text-wrapper {
+  padding-right: 24px;
+}
+
+.editable-cell-text-wrapper {
+  padding: 5px 24px 5px 5px;
+}
+
+.editable-cell-icon,
+.editable-cell-icon-check {
+  position: absolute;
+  right: 0;
+  width: 20px;
+  cursor: pointer;
+}
+
+.editable-cell-icon {
+  line-height: 18px;
+  display: none;
+}
+
+.editable-cell-icon-check {
+  line-height: 28px;
+}
+
+.editable-cell:hover .editable-cell-icon {
+  display: inline-block;
+}
+
+.editable-cell-icon:hover,
+.editable-cell-icon-check:hover {
+  color: #108ee9;
+}
+
+.editable-add-btn {
+  margin-bottom: 8px;
+}
+.allList{
+	width:400px;
+	font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #999999;
+    text-align: left;
+    display:inline-block;
+    margin-top:-40px; 
+    margin-left:10px; 
+    float:left;
+}
+.ant-table-paginations{
+	margin-right: 60px;
+}

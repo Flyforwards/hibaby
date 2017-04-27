@@ -9,6 +9,7 @@
     background-color: #eeeeee;
 }
 .Customer-nav{
+	min-width:1100px; 
 	input{
 		width:400px;
 		height:30px;
@@ -64,8 +65,9 @@
 	}
 }
 .Customer-navigation {
-	height:200px;
+	height:105px;
 	width:100%;
+	min-width:1100px; 
 	background-color: #eeeeee;
 	div{
 		float:left;
@@ -121,7 +123,7 @@
 	}
 	.period{
 		margin-top:20px;
-		margin-left:30px;
+		margin-left:25px;
 		height:30px;
 		line-height:30px;
 		margin-right:10px; 
@@ -142,8 +144,9 @@
 		height:30px;
 		width:218px;
 		line-height:30px;
-		margin-left:238px; 
 		margin-top: 20px;
+		float: right;
+		margin-right:241px; 
 		div{
 			float:right;
 		}
@@ -159,9 +162,6 @@
 .ant-modal-title{
 	text-align:center;
 }
-.ant-btn .ant-btn-lg{
-
-}
 .ant-btn {
 	background-color:#b67233; 
 	color:#fff;
@@ -174,4 +174,121 @@
     background-color: #b67233;
     border:0;
     width:150px;
+}
+.ant-calendar{
+	top:32px;
+	left:10px;
+	width:179px;
+	border-radius:0;
+}
+.CreateList{
+	span{
+		display:block;
+		float:left;
+		margin-left:19px; 
+		width:21%;
+		height:40px;
+		input{
+			margin-right:5px; 
+			vertical-align: middle;
+		}
+	}
+}
+.ant-table-thead > tr > th {
+    background: #716060;
+    font-weight: 500;
+    transition: background .3s ease;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.85);
+}
+.ant-table-tbody > tr > td {
+    text-align:center;
+    background-color: #f8f6f2;
+	font-family: '微软雅黑 Regular', '微软雅黑';
+	font-weight: 400;
+	font-style: normal;
+	font-size: 14px;
+	span{
+		width:100%;
+		a{
+			margin-right:9px;
+			margin-left:13px;
+			color:rgba(0, 0, 0, 0.85);
+		}
+	}
+}
+.ant-modal-body {
+    height:230px;
+    font-size: 14px;
+    line-height: 2.5;
+    margin-top:-10px;  
+} 
+.ant-modal-footer {
+    border-top:0;
+    margin-top:20px; 
+    padding: 10px 16px 10px 10px;
+    text-align: right;
+}
+.CreateModaList{
+	width:100%;
+	height:100%;
+	margin-top:-0px;
+}
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-input-wrapper,
+.editable-cell-text-wrapper {
+  padding-right: 24px;
+}
+
+.editable-cell-text-wrapper {
+  padding: 5px 24px 5px 5px;
+}
+
+.editable-cell-icon,
+.editable-cell-icon-check {
+  position: absolute;
+  right: 0;
+  width: 20px;
+  cursor: pointer;
+}
+
+.editable-cell-icon {
+  line-height: 18px;
+  display: none;
+}
+
+.editable-cell-icon-check {
+  line-height: 28px;
+}
+
+.editable-cell:hover .editable-cell-icon {
+  display: inline-block;
+}
+
+.editable-cell-icon:hover,
+.editable-cell-icon-check:hover {
+  color: #108ee9;
+}
+
+.editable-add-btn {
+  margin-bottom: 8px;
+}
+.allList{
+	width:400px;
+	font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #999999;
+    text-align: left;
+    display:inline-block;
+    margin-top:-40px; 
+    margin-left:10px; 
+    float:left;
+}
+.ant-table-paginations{
+	margin-right: 60px;
 }

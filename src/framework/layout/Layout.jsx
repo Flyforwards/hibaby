@@ -4,7 +4,6 @@ import {BackTop, Spin} from 'antd'
 import Header from '../header/Header.jsx'
 import Sidebar from '../sidebar/Sidebar.jsx'
 import Content from '../content/Content.jsx'
-import Footer from '../footer/Footer.jsx'
 import {local, session} from 'common/util/storage.js'
 import classNames from 'classnames';
 import request from '../../common/request/request.js'
@@ -25,8 +24,20 @@ class Layout extends React.Component {
         let menuData = [
             {
                 name: '组织架构管理',
-                path: '/home',
-                icon:'copyright'
+                path: '/Organization',
+                icon:'copyright',
+                children: [
+                    {
+                        name: '组织架构',
+                        path: '/Organization',
+                        icon: 'copyright'
+                    },
+                    {
+                        name: '职位管理',
+                        path: '/demo/management',
+                        icon: 'copyright'
+                    }
+                ]
             },
             {
                 name: 'CRM数据管理',
@@ -35,7 +46,7 @@ class Layout extends React.Component {
                 children: [
                     {
                         name: '集团字段',
-                        path: '/demo/table-demo',
+                        path: '/demo/management',
                         icon:'copyright'
                     },
                     {
@@ -45,24 +56,24 @@ class Layout extends React.Component {
                     },
                     {
                         name: '服务项目',
-                        path: '/demo/upload-demo',
+                        path: '/demo/position',
                         icon:'copyright'
                     },
                 ]
             },
              {
                 name: '菜单管理',
-                path: '/demo/table-demo',
+                path: '/demo/management',
                 icon:'copyright'
             },
              {
                 name: '权限管理',
-                path: '/Customer/Customer',
+                path: '/Customer',
                 icon:'copyright'
             },
              {
                 name: '日志查看',
-                path: '/demo/upload-demo',
+                path: '/demo/LogView',
                 icon:'copyright'
             },
         ]
@@ -138,19 +149,13 @@ class Layout extends React.Component {
                         onMiniChange={this.handleMiniChange.bind(this)}
                         onSetLoading={this.handleSetLoading.bind(this)}
                     />
-                    <div className="m-center">
-                        <div className="m-center-left"><Sidebar miniMode={this.state.mini} menuData={this.state.menuData} location={this.props.location}/></div>
-                        <div className="m-center-right">
-                            <Content>
-                                {
-                                    this.props.children
-                                }
-                            </Content>
-                            <BackTop style={{right: '40px', bottom: '40px'}}/>
-                        </div>
-                    </div>
-                    <Footer></Footer>
-                    
+                    <Sidebar miniMode={this.state.mini} menuData={this.state.menuData} location={this.props.location}/>
+                    <Content>
+                        {
+                            this.props.children
+                        }
+                    </Content>
+                    <BackTop style={{right: '40px', bottom: '40px'}}/>     
                 </Spin>
             </div>
         )

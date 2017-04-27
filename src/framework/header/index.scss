@@ -6,14 +6,14 @@
         transition: all .3s;
     }
 }
-
 .yt-admin-framework-header {
-    background-color:#f8f6f2;
+    background-color:#d9d9d9;
     height: 50px;
     overflow: hidden;
     position: relative;
-    min-width:1300px;
+    width:100%;
     border-top: 2px solid #b67233;
+    min-width:1340px;
 }
 
 .yt-admin-framework-header-brand {
@@ -55,7 +55,7 @@
 }
 .ant-dropdown-menu {
     margin-top: -22px;
-    margin-left:-20px;
+    margin-left:-9px;
     width:100px;
     border-radius:0;
     border-bottom-left-radius:4px;
@@ -117,7 +117,8 @@
     }
 }
 .yt-admin-framework-header-menu {
-    width:1149px;
+    width:100%;
+    min-width:1149px; 
     background-color:#d9d9d9;
     .menu-item {
         float: left;
@@ -200,10 +201,5 @@
         line-height: 20px;
         color:#fff;
         border-radius: 50%;
-    }
-}
-@media (max-width: 767px) {
-    .header-menu-text {
-        display: none !important
     }
 }

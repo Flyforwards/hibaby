@@ -6,7 +6,6 @@ const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-import _ from 'lodash'
 @createForm()
 class CreateModal extends Component {
     constructor(props) {

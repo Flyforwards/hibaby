@@ -1,26 +1,27 @@
 export default [
-    {
-        path: '/home',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('./home'))
-            })
-        }
-    },
-     {
-        path: '/Customer/Customer',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('./Customer/Customer.jsx'))
-            })
-        }
-    },
+    // {
+    //     path: '/home',
+    //     getComponent: (location, cb) => {
+    //         require.ensure([], (require) => {
+    //             cb(null, require('./home'))
+    //         })
+    //     }
+    // },
+    //  {
+    //     path: '/Customer/Customer',
+    //     getComponent: (location, cb) => {
+    //         require.ensure([], (require) => {
+    //             registerModel(app, require('./models/Users'));
+    //             cb(null, require('./Customer/Customer.jsx'))
+    //         })
+    //     }
+    // },
     // demo
     {
-        path: '/demo/table-demo',
+        path: '/demo/management',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                cb(null, require('./demo/table-demo/TableDemo.jsx'))
+                cb(null, require('./demo/management/management.jsx'))
             })
         }
     },
@@ -33,15 +34,13 @@ export default [
         }
     },
     {
-        path: '/demo/upload-demo',
+        path: '/demo/LogView',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                cb(null, require('./demo/upload-demo/UploadDemo.jsx'))
+                cb(null, require('./demo/LogView/LogView.jsx'))
             })
         }
     },
-
-
     //404
     {
         path: '/404',

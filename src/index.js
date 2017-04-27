@@ -1,6 +1,7 @@
 import dva from 'dva';
 import './index.css';
 import { browserHistory } from 'dva/router';
+import createLoding from 'dva-loading'
 
 // 1. Initialize
 const app = dva({
@@ -8,7 +9,7 @@ const app = dva({
 	});
 
 // 2. Plugins
-// app.use({});
+app.use(createLoding());
 
 // 3. Model
 // app.model(require('./models/example'));
