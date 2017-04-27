@@ -53,7 +53,7 @@ let routes = [
         path: '/Organization',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                registerModel(app, require('./models/Users'));
+                registerModel(app, require('./models/users'));
                 cb(null, require('./page/Organization/Organization.jsx'))
             })
         }
@@ -62,7 +62,7 @@ let routes = [
         path: '/Customer',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                registerModel(app, require('./models/Users'));
+                registerModel(app, require('./models/users'));
                 cb(null, require('./page/Customer/Customer.jsx'))
             })
         }
@@ -71,8 +71,26 @@ let routes = [
         path: '/demo/management',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                registerModel(app, require('./models/Users'));
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/demo/management/management.jsx'))
+            })
+        }
+    },
+    {
+        path: '/demo/add',
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/demo/management/Add.js'))
+            })
+        }
+    },
+     {
+        path: '/demo/view',
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/demo/management/View.js'))
             })
         }
     },
@@ -80,7 +98,7 @@ let routes = [
         path: '/demo/position',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                registerModel(app, require('./models/Users'));
+                registerModel(app, require('./models/users'));
                 cb(null, require('./page/demo/position/position.jsx'))
             })
         }
@@ -124,7 +142,26 @@ let routes = [
         path: '/login',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                cb(null, require('./framework/login/Login.jsx'))
+                registerModel(app, require('./models/login'));
+                cb(null, require('./page/demo/LogView/Login.js'))
+            })
+        }
+    },
+    {
+        path: '/find',
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                registerModel(app, require('./models/login'));
+                cb(null, require('./page/demo/LogView/LoginFind.js'))
+            })
+        }
+    },
+    {
+        path: '/club',
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                registerModel(app, require('./models/login'));
+                cb(null, require('./page/demo/LogView/LoginClub.js'))
             })
         }
     },
@@ -132,20 +169,12 @@ let routes = [
         path: '/users',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                registerModel(app, require('./models/Users'));
+                registerModel(app, require('./models/users'));
           		cb(null, require('./routes/Users'));
             })
         }
     },
-    // {
-    //     path: '/Customer',
-    //     getComponent: (location, cb) => {
-    //         require.ensure([], (require) => {
-    //             registerModel(app, require('./models/Users'));
-    //             cb(null, require('./page/Customer/Customer.jsx'))
-    //         })
-    //     }
-    // },
+    
     {
         path: '*',
         indexRoute: {
