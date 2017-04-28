@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './system.scss';
+import './system.scss';
 import {
   Form,
   Card,
@@ -20,20 +20,20 @@ class NormalMessageForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
-          <p className={styles.label}>字段名称</p>
+          <p className="label">字段名称</p>
           {getFieldDecorator('FieldName', {
             initialValue: this.props.operatorName
           })(
-            <Input type="textarea" disabled={this.props.disabled} className={styles.input} />
+            <Input type="textarea" disabled={this.props.disabled} className="input" />
           )}
         </FormItem>
         <FormItem>
-          <p className={styles.label}>字段描述</p>
+          <p className="label">字段描述</p>
           {getFieldDecorator('FieldDesp', {
 
             initialValue: this.props.description
           })(
-            <Input type="textarea"  disabled={this.props.disabled} className={styles.input} autosize={{ minRows: 2 }}/>
+            <Input type="textarea"  disabled={this.props.disabled} className="input" autosize={{ minRows: 2 }}/>
           )}
         </FormItem>
 
@@ -56,25 +56,39 @@ class NormalOptionForm extends React.Component {
               (this.props.AllOption.map((field, index) => {
                 All.push(
             
-            <FormItem  key={index} className={styles.div2}>
-                  <p className={styles.label}>选项{idx[index]}</p>
-                  <div className={styles.posi} style={{position:'relative',overflow:'hidden'}}>
-                  {getFieldDecorator('FieldOption', {
+            <FormItem  key={index} className="div2">
+                  <p className='label'>选项{idx[index]}</p>
+                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                  {getFieldDecorator(`option${index}`, {
                     initialValue: field.name
                   })(
-                    <Input type="textarea" disabled={this.props.disabled}  rows={6} className={styles.input2} data-index={index}/>
+                    <Input type="textarea" disabled={this.props.disabled}  rows={6} className="input2" data-index={index}/>
                   )}
-                  < span  className = "editable-add-btn" onClick={this.props.delete} data-index={this.props.index}> 删除 < /span>
+                  < Button  className = "delBtn editable-add-btn" onClick={this.props.delete} data-index={index}> 删除 < /Button>
                   </div>
                    </FormItem>
                 )
               })) : 'null' }
 
  
-
+     console.log(All)
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-      {All}
+        {this.props.AllOption ? (this.props.AllOption.map((field, index) => {
+              console.log(field)
+           return  <FormItem  key={index} className="div2">
+                  <p className='label'>选项{idx[index]}</p>
+                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                  {getFieldDecorator(`option${index}`, {
+                    initialValue: field.name
+                  })(
+                    <Input type="textarea" disabled={this.props.disabled}  rows={6} className="input2" data-index={index}/>
+                  )}
+                  < Button  className = "delBtn editable-add-btn" onClick={this.props.delete} data-index={index}> 删除 < /Button>
+                  </div>
+                   </FormItem>
+                
+              })) : null}
         
       </Form>
     );
@@ -83,7 +97,61 @@ class NormalOptionForm extends React.Component {
 
 const WrappedNormalOptionForm = Form.create()(NormalOptionForm);
 
+class FruitList extends React.Component{
+      render () {
+        return (
+          <div className="container">
+            <ul className="list-group text-center">
+              {
+                Object.keys(this.props.fruits).map(function(key) {
+                  return <li className="list-group-item list-group-item-info">{this.props.fruits[key]}</li>
+                }.bind(this))
+              }
+            </ul>
+           </div>
+         );
+       }
+     }
 
+class AddFruitForm extends React.Component{ 
+     constructor (props) {
+    super(props)
+   
+     
+    }
+      createFruit(e){
+        e.preventDefault();
+        //get the fruit object name from the form
+        console.log(this.refs.fruitName)
+        var fruit = this.refs.fruitName.value;
+        //if we have a value
+        //call the addFruit method of the App component
+        //to change the state of the fruit list by adding an new item
+        if(typeof fruit === 'string' && fruit.length > 0) {
+          this.props.addFruit(fruit);
+          //reset the form
+          // this.refs.fruitForm.reset();
+        }
+       }
+       render () {
+        return(
+      
+    
+      
+          <Form className="form-inline" ref="fruitForm" onSubmit={this.createFruit.bind(this)}>
+          <div className="form-group">
+            <label for="fruitItem">
+              Fruit Name
+              <input type="text" id="fruitItem" placeholder="e.x.lemmon" ref="fruitName" className="form-control" />
+            </label>
+          </div>
+          <button type="submit" className="btn btn-primary">Add Fruit</button>
+         </Form>
+       
+    )
+        
+       }
+      }
 class ViewIndex extends React.Component {
 	constructor(props){
 		super(props);
@@ -94,13 +162,24 @@ class ViewIndex extends React.Component {
           this.state={
           display:'none',
            disabled:true,
-           AllOption: this.props.arr?this.props.arr:[<p>aa</p>,<p>bbbbb</p>], 
+            fruits : {
+          'fruit-1' : 'orange',
+          'fruit-2' : 'apple'
+        }
            edit:'visible',
            save:'hidden',
 
           }
 
 	}
+  addFruit (fruit) {
+     //create a unike key for each new fruit item
+     var timestamp = (new Date()).getTime();
+     // update the state object
+     this.state.fruits['fruit-' + timestamp ] = fruit;
+     // set the state
+     this.setState({ fruits : this.state.fruits });
+    }
   // shouldComponentUpdate(){
   //   this.setState({
   //     AllOption: this.props.arr
@@ -114,34 +193,11 @@ class ViewIndex extends React.Component {
   handleReturn(){
       browserHistory.go(-1)
   }
-  add(){
-       
-        var AllOption=this.state.AllOption;
-        // console.log(this.state.AllOption.length)
  
-        // AllOption.push(<List  key={this.state.AllOption.length} index={this.state.AllOption.length} delete={this.delete}  trans={this.handelTrans} idnum={this.state.bigNum}/> );
-        // console.log(this.state.AllOption.length)
-        // this.setState({AllOption:AllOption})
-
-        let data_tpl = this.props.arr[0];
-        data_tpl.name = 'aaaaaaaaa';
-        AllOption.push({data_tpl})
-        console.log(AllOption)
-        this.setState({AllOption:AllOption})
         
  
     }
-    delete(e){
- 
-        var index=e.target.getAttribute("data-index");
- 
-        var AllOption=this.state.AllOption;
- 
-        AllOption.splice(index,1);
- 
-        this.setState({AllOption:AllOption})
- 
-    }
+    
 handleEdit = (e) => {
 
        
@@ -175,20 +231,24 @@ handleEdit = (e) => {
         })
       }
   render () { 
-   console.log(this.state.AllOption)
+    console.log(this.props.list)
+    
 
     return(
-      <div className={styles.container} className = "xuanxiang">
+      <div className="container2 xuanxiang">
       
         <Card title="字段信息:"  >
-           <div className={styles.div} >
+           <div className="div" >
    			      <WrappedNormalMessageForm   disabled={this.state.disabled} operatorName={this.props.list.operatorName}   description={this.props.list.description}/>
    			   </div>
    			
  		 </Card>
 		
  		  <Card title="下拉选项:"  >
-          <WrappedNormalOptionForm  AllOption={this.state.AllOption} delete={this.delete} />
+           <div className="component-wrapper">
+          <FruitList fruits={this.state.fruits} />
+          <AddFruitForm addFruit={this.addFruit.bind(this)} />
+        </div>
 
           < Button  style = {{
 
@@ -203,16 +263,9 @@ handleEdit = (e) => {
       } > 添加 < /Button> 
    		
  		 </Card>
-     <div style={{width:'300px',float:'right'}}>
-     < Button style = {
-        {
-          backgroundColor: 'rgb(22, 155, 213)',
-          color: '#fff',
-          width: '140px',
-          
-        }
-      }
-      className = "editable-add-btn"
+     <div id="editSave">
+     < Button 
+      className = "retBtn editable-add-btn"
       onClick = { this.handleReturn}>返回 < /Button>
 
        < Button style = { {
@@ -225,9 +278,7 @@ handleEdit = (e) => {
 
        < Button style = { {
       visibility:this.state.save,
-      backgroundColor: 'rgb(22, 155, 213)',
-      color: '#fff',
-      width: '140px',}} className = "editable-add-btn"
+    }} className = "save editable-add-btn"
        onClick = {this.handleSave} >保存 < /Button>
  </div> </div>
     )

@@ -1,4 +1,4 @@
-.container {
+.container2 {
     height: 100%;
     width: 100%;
     min-width: 1100px;
@@ -40,19 +40,6 @@ img {
     height: 40px;
 }
 
-.div2 span {
-    display: block;
-    background-color: #f75555;
-    color: #fff;
-    width: 80px;
-    position: absolute;
-    right: 5%;
-    bottom: 0;
-    margin-left: 30px;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 40px;
-}
 
 .div {
     overflow: hidden;
@@ -183,5 +170,40 @@ element.style {
 }
 
 
+.div2 .delBtn {
+    display: block;
+    background-color: #f75555;
+    color: #fff;
+    width: 80px;
+    position: absolute;
+    right: 5%;
+    bottom: 0;
+    margin-left: 30px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+}
+#editSave{
+  width:300px;
+  float:right;
+  position:relative;
+}
+.save{
+  background-color: rgb(22, 155, 213);
+      color: #fff;
+      width: 140px;
+      position:absolute;
+      top:0;
+      right:10px;
+
+}
+.retBtn {
+  background-color: rgb(22, 155, 213);
+          color: #fff;
+          width: 140px;
+}
+          
+          
+       
 
 }

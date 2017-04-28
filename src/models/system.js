@@ -49,6 +49,14 @@ export default {
 
 			return adddata;
 		},
+		addField(state, payload) {
+			const {arr} = state;
+			let arr2 = {...arr, ...payload};
+			return {
+				...state, arr2
+			}
+
+		},
 		viewSave(state, {
 			payload: {
 				data,
@@ -173,7 +181,7 @@ export default {
 						}
 					});
 				}
-				if (pathname === '/view') {
+				if (pathname === '/demo/view') {
 
 					dispatch({
 						type: 'view',

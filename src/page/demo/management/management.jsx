@@ -100,7 +100,7 @@ console.log(this.props.list)
 
       };
       return ( < div className = "
-          container"
+          container2"
          >
         < div className = "
           buttonwrapper"
