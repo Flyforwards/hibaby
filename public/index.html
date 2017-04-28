@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dva Demo</title>
-  <link rel="stylesheet" href="index.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dva Demo</title>
+   
+     <style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+    }
+    span,a{
+        display: block;
+    }
+     html,
+    body,
+    :global(#root) {
+        height: 100%;
+    }
+    
+    input::-webkit-input-placeholder {
+        font-size: 12px;
+    }
+    
+   
+
+    </style>
 </head>
+
 <body>
-
-<div id="root"></div>
-
-<script src="index.js"></script>
-
+    <div id="root"></div>
+    <script src="index.js"></script>
 </body>
+
 </html>
