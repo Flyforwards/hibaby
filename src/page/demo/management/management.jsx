@@ -1,6 +1,6 @@
 "use strict"
 import React, {Component} from 'react'
-import './index.scss'
+import './management.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from 'common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'

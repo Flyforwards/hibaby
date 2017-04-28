@@ -35,8 +35,6 @@ function registerModel(app, model) {
     cached[model.namespace] = 1;
   }
 }
-
-
 function RouterConfig({ history, app }) {
 
 let routes = [
@@ -159,10 +157,8 @@ let routes = [
         }
     }
 ];
-
-  return <Router history={history} routes={routes} />;
+return <Router history={history} routes={routes} />;
 }
-
 export default RouterConfig;
 
 

@@ -7,7 +7,7 @@
     padding: 0 12px;
     background-color: #eeeeee;
 }
-.yt-admin-framework-Customer{
+.yt-admin-framework-Customer-a{
 	.ant-table {
 	    margin-top: -187px;
 	}
@@ -31,15 +31,18 @@
 	background-color:#fff;
 	min-height:500px;
 	margin-top:10px;
+	overflow: hidden;
+	position:relative;
 	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {
-		font-size: 12px;
+		font-size: 14px;
 		display:inline-block;
-		width:100px;
+		width:207px;
 		font-weight: 400;
 	}
 	.ant-tree li a:hover {
 	    background-color: rgba(204, 204, 204, 1);
 	    font-weight: 400;
+	    margin-left:-20px; 
 	}
 	.ant-tree li ul {
 		margin-right: 10px;
@@ -50,7 +53,6 @@
     	font-weight: 400;
 	}
 	.ant-tree > li:first-child {
-	    padding-top: 20px;
 	    a{
 	    	font-size:15px;
 	    	font-weight: 400;
@@ -243,12 +245,6 @@
     line-height: 2.5;
     margin-top:-10px;  
 } 
-.ant-modal-footer {
-    border-top:0;
-    margin-top:20px; 
-    padding: 10px 16px 10px 10px;
-    text-align: right;
-}
 .CreateModaList{
 	width:100%;
 	height:100%;
@@ -310,4 +306,107 @@
 }
 .ant-table-paginations{
 	margin-right: 60px;
+}
+.ant-tree li a {
+    width: 207px;
+    margin-left:-20px;
+    text-indent: 20px; 
+    height:30px;
+    line-height:30px; 
+}
+.Organization-left .ant-tree {
+    margin-left: 9px;
+}
+.Organization-left .ant-tree li ul {
+    margin-left: -7px;
+    li{
+    	a{
+    		width:207px; 
+    	}
+    }
+}
+.Organization-left .ant-tree li ul li a {
+    width: 207px;
+   	margin-left:-20px; 
+    text-indent: 30px;
+
+}
+.Organization-left .ant-tree li ul li a:hover {
+    width: 207px;
+    margin-left:-20px; 
+    text-indent: 30px;
+}
+.ant-tree-child-tree .ant-tree-child-tree-open{
+	width:207px;
+	background-color: #fff;
+	margin-left:-16px; 
+	li{
+		a{
+			margin-left:-10px;
+		}
+	}
+	.ant-tree-child-tree .ant-tree-child-tree-open{
+		li{
+			a{
+				margin-left:-10px;
+				text-indent: 35px;
+			}
+		}
+	}
+}
+.ant-tree li a:after{
+	content:"+";
+	font-size: 20px;
+    font-size: 7px\9;
+    color: #f1f1f1;
+    font-weight: 700;
+    float:right;
+    margin-top:-3px;
+    text-align: center;
+}
+.ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
+    font-size: 12px;
+    font-size: 7px\9;
+    content: "\e707";
+    font-weight: 700;
+    color: #f89d2d;
+    background-color: #f89d2d;
+    margin-top:5px; 
+}
+.ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
+	font-size: 12px;
+    font-size: 7px\9;
+    content: "\e707";
+    font-weight: 700;
+    color: #f89d2d;
+    background-color: #f89d2d;
+    margin-top:5px; 
+}
+:root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
+    transform: scale(0.29);
+}
+:root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
+    transform: scale(0.29)
+}
+.ant-tree li span.ant-tree-switcher, .ant-tree li span.ant-tree-iconEle {
+   
+}
+#components-tree-demo-draggable .draggable-tree .ant-tree-node-content-wrapper {
+    width: calc(100% - 18px);
+}
+.nameList{
+	width:80px;
+	background-color: #ccc;
+	position:absolute;
+	left:126px;
+	li{
+		padding-left:10px;
+		height:30px;
+		font-size:12px;
+		line-height: 30px;
+	}
+	li:hover{
+		background-color:#f89d2d;
+		color:#fff;
+	}
 }

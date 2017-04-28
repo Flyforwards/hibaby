@@ -1,7 +1,7 @@
 import React from 'react'
-import './index.scss'
+import './Customer.scss'
 import {connect} from 'dva'
-import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination} from 'antd'
+import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Cascader} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
@@ -9,6 +9,23 @@ import {Link} from 'react-router'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
+//这是级联选择地址
+const options = [{
+  value: '北京',
+  label: '北京',
+  children: [{
+    value: '海淀区',
+    label: '海淀区',
+  }],
+}, {
+  value: '河北',
+  label: '河北',
+  children: [{
+    value: '石家庄',
+    label: '石家庄',
+  }],
+}];
+//这是表单的数据操作
 class EditableCell extends React.Component {
   state = {
     value: this.props.value,
@@ -194,6 +211,7 @@ class Customered extends React.Component {
       };
         return (
             <main className="yt-admin-framework-Customer">
+            <div className="Customer-title">
             <div className="Customer-nav">
                <input placeholder='请输入客户编号、客户姓名、联系方式、合同编号....' />
                 <span className="search"><Button type="primary">搜索</Button></span>
@@ -222,24 +240,19 @@ class Customered extends React.Component {
                    <MonthPicker placeholder="请选择" />
                 </div>
                 <div className="current">现住址
-                    <Select defaultValue="请选择" style={{ width:150}}>
-                      <Option value="jack">2015</Option>
-                      <Option value="时尚">2016</Option>
-                      <Option value="disabled">2017</Option>
-                      <Option value="Yiminghe">2018</Option>
-                    </Select>
+                    <Cascader size="large" options={options} placeholder="请输入地址"/>
                 </div>  
             </div>
-            {this.props.list?
-            <div className="CreateModaList">
-                <Table bordered dataSource={dataSource} columns={columns} pagination = {pagination}/>
+            </div>
+            <div className="CreateModaList-a">
+                <Table bordered dataSource={dataSource} columns={columns} pagination = {pagination} className="CreateModaList-b"/>
                 <p className="allList">共计{this.props.list.length}条,范围1-10</p>
-            </div>:null}  
+            </div>
             <CreateModal
                 visible={ this.state.createModalVisible }
                 onCancel={ this.handleCreateModalCancel.bind(this) }
             />
-            </main>
+          </main>
         )
     }
 }
