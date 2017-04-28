@@ -1,7 +1,6 @@
 import React from 'react'
 import './Organization.scss'
 import {connect} from 'dva'
-import $ from "jquery"
 import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
@@ -120,7 +119,6 @@ class Organizationed extends React.Component {
             ulTop:node.refs.li.offsetTop+32,
             upblock:'block'
           })
-          console.log($('').hover(function(){)
         }
         if(this.state.upblock == 'block'){
           this.setState({
@@ -181,7 +179,6 @@ class Organizationed extends React.Component {
                   className="draggable-tree"
                   defaultExpandedKeys={this.state.expandedKeys}
                   draggable
-                  onSelect={this.drago}
                   onRightClick={this.drago.bind(this)}
                   onDragEnter={this.onDragEnter}
                   onDrop={this.onDrop}
