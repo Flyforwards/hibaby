@@ -28,10 +28,10 @@ class position extends Component {
               dataList.length >= 1 ?
               (
                 <div>
-                  <a href="#" className="firstA" >编辑</a>
-                  <a href="#" className="firstA" >设置权限</a>
-                  <a href="#" className="firstA" >成员列表</a>
-                  <a href="#" className="firstB" >删除</a>
+                  <a href="#" className="firstA" onClick={this.Edit}>编辑</a>
+                  <a href="#" className="firstA" onClick={this.permissions}>设置权限</a>
+                  <a href="#" className="firstA" onClick={this.Member}>成员列表</a>
+                  <a href="#" className="firstB" onClick={this.delete}>删除</a>
                 </div>
               ) : null
             );
@@ -40,6 +40,18 @@ class position extends Component {
     }
     managementInquire() {
       console.log("查询")
+    }
+    Edit(){
+      console.log("编辑")
+    }
+    permissions(){
+      console.log("设置权限")
+    }
+    Member(){
+      console.log("成员列表")
+    }
+    delete(){
+      console.log("删除")
     }
     render() {
         const { dataSource } = this.state;

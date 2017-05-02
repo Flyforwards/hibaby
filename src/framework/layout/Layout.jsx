@@ -50,7 +50,7 @@ class Layout extends React.Component {
                         icon:'copyright'
                     },
                     {
-                        name: '服务字段',
+                        name: '地方字段',
                         path: '/demo/info-card-demo',
                         icon:'copyright'
                     },

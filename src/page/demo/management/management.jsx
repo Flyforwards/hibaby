@@ -69,13 +69,9 @@ class SystemIndex extends React.Component {
           return ( < Link to = {
               `/demo/view?dataId=${record.id}`
             } > 查看 < /Link>)
-
           },
         }];
     }
-
-
-
     render() {
 console.log(this.props.list)
     

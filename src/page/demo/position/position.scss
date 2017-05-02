@@ -46,20 +46,19 @@
 		font-family: '微软雅黑 Regular', '微软雅黑';
 	    font-weight: 400;
 	    font-size: 14px;
-		span{
+		div{
 			width:100%;
 			.firstA{
+				display: inline-block;
 				color: #0066FF;
 				text-decoration: none;
+				margin:0 22px; 
+				float:left;
 			}
-			.twoA{
+			.firstB{
 				color: #FF0000;
+				float:right;
 				text-decoration: none;
-			}
-			a{
-				margin-right:9px;
-				margin-left:5px;
-				color:rgba(0, 0, 0, 0.85);
 			}
 		}
 	}

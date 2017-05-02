@@ -1,5 +1,5 @@
 import React from 'react'
-import './index.scss'
+import './Organization.scss'
 import {connect} from 'dva'
 import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
 import moment from 'moment'
@@ -69,7 +69,9 @@ class Organizationed extends React.Component {
         this.state = {
             count: 2,
             createModalVisible: false,
-            expandedKeys: ['ss', 'aaa', 'bbbb']
+            expandedKeys: ['ss', 'aaa', 'bbbb'],
+            ulTop:0,
+            upblock:'none'
         }
     }
     onDrop = (info) => {
@@ -111,6 +113,20 @@ class Organizationed extends React.Component {
           this.setState({ dataSource });
         };
       }
+      drago({event,node}){
+        if(this.state.upblock == 'none'){
+          this.setState({
+            ulTop:node.refs.li.offsetTop+32,
+            upblock:'block'
+          })
+        }
+        if(this.state.upblock == 'block'){
+          this.setState({
+            ulTop:node.refs.li.offsetTop+32,
+            upblock:'none'
+          })
+        }
+      }
       onDelete = (index) => {
         const dataSource = [...this.state.dataSource];
         dataSource.splice(index, 1);
@@ -150,7 +166,6 @@ class Organizationed extends React.Component {
           }));
         },
       };
-      console.log('WWW',ww)
       const loop = data => data.map((item) => {
         if (item.children && item.children.length) {
           return <TreeNode key={item.key} title={item.key}>{loop(item.children)}</TreeNode>;
@@ -158,27 +173,24 @@ class Organizationed extends React.Component {
         return <TreeNode key={item.key} title={item.key} />;
       });
         return (
-            <main className="yt-admin-framework-Customer">
+            <main className="yt-admin-framework-Customer-a">
             <div className="Organization-left">
                 <Tree
-                  showIcon={false}
-                  onSelect={this.sdsd}
+                  className="draggable-tree"
+                  defaultExpandedKeys={this.state.expandedKeys}
+                  draggable
+                  onRightClick={this.drago.bind(this)}
+                  onDragEnter={this.onDragEnter}
+                  onDrop={this.onDrop}
                 >
-                  <TreeNode title={classification[0].key} key="0-0">
-                    <TreeNode title={classification[1].key} key="0-0-0">
-                      <TreeNode title={classification[1].children[0].children[0].key} key="0-0-0-0" />
-                      <TreeNode title={classification[1].children[0].children[1].key} key="0-0-0-1" />
-                      <TreeNode title={classification[1].children[0].key} key="0-0-0-2" />
-                    </TreeNode>
-                    <TreeNode title={classification[2].key} key="0-0-1">
-                      <TreeNode title="leaf" key="0-0-1-0" />
-                    </TreeNode>
-                  </TreeNode>
-                  <TreeNode title="parent 1-2" key="0-0-2">
-                    <TreeNode title="leaf" key="0-0-2-0" />
-                    <TreeNode title="leaf" key="0-0-2-1" />
-                  </TreeNode>
+                  {loop(classification)}
                 </Tree>
+                <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
+                  <li>添加子节点</li>
+                  <li>查看详情</li>
+                  <li>删除</li>
+                  <li>ID 0002</li>
+                </ul>
             </div>
             <div className="Organization-right">
             <div className="Organization-nav">
