@@ -39,7 +39,12 @@ img {
     width: 84%;
     height: 40px;
 }
-
+.input3{
+  float: left;
+    width: 77.8%;
+    height: 40px;
+    margin-bottom: 10px;
+}
 
 .div {
     overflow: hidden;
@@ -59,6 +64,7 @@ img {
     height: 100%;
     color: #fff;
     float: right;
+    clear:both;
 }
 
 .addBtn:hover {
@@ -171,7 +177,7 @@ element.style {
 
 
 .div2 .delBtn {
-    display: block;
+ 
     background-color: #f75555;
     color: #fff;
     width: 80px;
@@ -189,7 +195,7 @@ element.style {
   position:relative;
 }
 .save{
-  background-color: rgb(22, 155, 213);
+  background-color:#b67233;
       color: #fff;
       width: 140px;
       position:absolute;
@@ -198,11 +204,21 @@ element.style {
 
 }
 .retBtn {
-  background-color: rgb(22, 155, 213);
+  background-color: #b67233;
           color: #fff;
           width: 140px;
 }
-          
+.editable-add-btn {
+    background-color: #b67233;
+    color: #fff;
+    width: 140px
+}
+
+.editable-add-btn:hover {
+    background-color: #f89d2d;
+    border: none;
+    color: #fff;
+}          
           
        
 

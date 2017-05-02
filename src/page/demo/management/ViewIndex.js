@@ -49,12 +49,32 @@ const WrappedNormalMessageForm = Form.create()(NormalMessageForm);
 
 class FruitList extends React.Component{
       render () {
+       const { getFieldDecorator } = this.props.form;
+      
         return (
           <div className="container">
             <ul className="list-group text-center">
               {
-                Object.keys(this.props.fruits).map(function(key) {
-                  return <li className="list-group-item list-group-item-info" key={key}>{this.props.fruits[key]}</li>
+                Object.keys(this.props.fruits).map(function(key,index) {
+              
+                  return <li className="list-group-item list-group-item-info" key={index}>
+
+                 <FormItem  className="div2">
+                  <p className='label'>选项{idx[index]}</p>
+                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                  {getFieldDecorator(`option${index}`, {
+                    initialValue:`${this.props.fruits[key]}`
+                  })(
+                  
+                    <Input type="textarea" disabled={this.props.disabled} autosize={{minRows:2}} className="input2" />
+                 
+                  )}
+                  <Button id="delbtn" className = "delBtn editable-add-btn" onClick={this.props.delete} style={{display:this.props.display}}  data-index={index}> 删除 </Button>
+                  </div>
+
+                 
+                   </FormItem>
+                  </li>
                 }.bind(this))
               }
             </ul>
@@ -62,6 +82,7 @@ class FruitList extends React.Component{
          );
        }
      }
+const FruitListForm = Form.create()(FruitList);
 
 class AddFruitForm extends React.Component{ 
      constructor (props) {
@@ -72,30 +93,39 @@ class AddFruitForm extends React.Component{
       createFruit(e){
         e.preventDefault();
         //get the fruit object name from the form
-        console.log(this.refs.fruitName)
+        console.log('111111111'+this.refs.fruitName)
         var fruit = this.refs.fruitName.value;
         //if we have a value
         //call the addFruit method of the App component
         //to change the state of the fruit list by adding an new item
-        if(typeof fruit === 'string' && fruit.length > 0) {
+       
           this.props.addFruit(fruit);
           //reset the form
-          // this.refs.fruitForm.reset();
-        }
+           console.log(this.refs.fruitForm.refs.fruitForm)
+         
+      
        }
        render () {
         return(
       
-    
       
-          <Form className="form-inline" ref="fruitForm" onSubmit={this.createFruit.bind(this)}>
+          <Form className="login-form"  className="form-inline" ref="fruitForm" >
           <div className="form-group">
             <span htmlFor="fruitItem">
-              Fruit Name
-              <input type="text" id="fruitItem" placeholder="e.x.lemmon" ref="fruitName" className="form-control" />
+          <p className='label'>添加选项</p>
+              
+              <input type="textarea" id="fruitItem" ref="fruitName" className="input3" />
+               
             </span>
           </div>
-          <button type="submit" className="btn btn-primary">Add Fruit</button>
+          <Button style = {{
+
+          display:this.props.display,
+          backgroundColor: '#b67233',
+          color: '#fff',
+          marginLeft: '90px'
+        }} className="addBtn btn-primary editable-add-btn" onClick={this.createFruit.bind(this)}>添加</Button>
+           
          </Form>
        
     )
@@ -112,8 +142,8 @@ class ViewIndex extends React.Component {
           display:'none',
            disabled:true,
             fruits : {
-          'fruit-1' : 'orange',
-          'fruit-2' : 'apple'
+          'fruit1' : 'orange',
+          'fruit2' : 'apple'
         },
            edit:'visible',
            save:'hidden',
@@ -125,15 +155,17 @@ class ViewIndex extends React.Component {
      //create a unike key for each new fruit item
      var timestamp = (new Date()).getTime();
      // update the state object
-     this.state.fruits['fruit-' + timestamp ] = fruit;
+     this.state.fruits['fruit' + timestamp ] = fruit;
      // set the state
      this.setState({ fruits : this.state.fruits });
+   
     }
-  // shouldComponentUpdate(){
-  //   this.setState({
-  //     AllOption: this.props.arr
-  //   })
-  // }
+
+  delFruit (e) {
+console.log($('delbtn').parent())
+ $('delbtn').parent().remove()
+    }
+
 	componentDidMount(){
 
 		console.log(this.props.list? this.props.list : '')
@@ -152,6 +184,8 @@ handleEdit = (e) => {
        
          this.setState({
             display:'block',
+            disabled:false,
+            width:'90%',
             edit:'hidden',
             save:'visible'
           })
@@ -195,19 +229,10 @@ handleEdit = (e) => {
 		
  		  <Card title="下拉选项:"  >
            <div className="component-wrapper">
-          <FruitList fruits={this.state.fruits} />
-          <AddFruitForm addFruit={this.addFruit.bind(this)} />
+          <FruitListForm fruits={this.state.fruits}  delete={this.delFruit.bind(this)}  disabled={this.state.disabled} display={this.state.display} width={this.props.width}/>
+          <AddFruitForm addFruit={this.addFruit.bind(this)} display={this.state.display}  disabled={this.state.disabled}/>
         </div>
 
-          < Button  style = {{
-
-          display:this.state.display,
-          backgroundColor: 'rgba(22, 155, 213, 1)',
-          color: '#fff',
-          marginLeft: '90px'
-        }}
-      className = "editable-add-btn"
-      > 添加 < /Button> 
    		
  		 </Card>
      <div id="editSave">
@@ -217,8 +242,8 @@ handleEdit = (e) => {
 
        < Button style = { {
       visibility:this.state.edit,
-      backgroundColor: 'rgb(22, 155, 213)',
-      color: '#fff',
+      backgroundColor: '#b67233',
+      color: '#fff',    
       width: '140px',}} className = "editable-add-btn"
        onClick = {this.handleEdit} >编辑 < /Button>
       
