@@ -33,7 +33,7 @@ class NormalMessageForm extends React.Component {
 
             initialValue: this.props.description
           })(
-            <Input type="textarea"  disabled={this.props.disabled} className="input" autosize={{ minRows: 2 }}/>
+            <Input type="textarea"  disabled={this.props.disabled} className="input"  autosize={{minRows:2}}/>
           )}
         </FormItem>
 
@@ -46,56 +46,6 @@ const WrappedNormalMessageForm = Form.create()(NormalMessageForm);
 
 
 
-class NormalOptionForm extends React.Component {
-  
-  render() {
-   const { getFieldDecorator } = this.props.form;
-    let All=[]
-    console.log(this.props.AllOption)
-     { this.props.AllOption ?
-              (this.props.AllOption.map((field, index) => {
-                All.push(
-            
-            <FormItem  key={index} className="div2">
-                  <p className='label'>选项{idx[index]}</p>
-                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                  {getFieldDecorator(`option${index}`, {
-                    initialValue: field.name
-                  })(
-                    <Input type="textarea" disabled={this.props.disabled}  rows={6} className="input2" data-index={index}/>
-                  )}
-                  < Button  className = "delBtn editable-add-btn" onClick={this.props.delete} data-index={index}> 删除 < /Button>
-                  </div>
-                   </FormItem>
-                )
-              })) : 'null' }
-
- 
-     console.log(All)
-    return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        {this.props.AllOption ? (this.props.AllOption.map((field, index) => {
-              console.log(field)
-           return  <FormItem  key={index} className="div2">
-                  <p className='label'>选项{idx[index]}</p>
-                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                  {getFieldDecorator(`option${index}`, {
-                    initialValue: field.name
-                  })(
-                    <Input type="textarea" disabled={this.props.disabled}  rows={6} className="input2" data-index={index}/>
-                  )}
-                  < Button  className = "delBtn editable-add-btn" onClick={this.props.delete} data-index={index}> 删除 < /Button>
-                  </div>
-                   </FormItem>
-                
-              })) : null}
-        
-      </Form>
-    );
-  }
-}
-
-const WrappedNormalOptionForm = Form.create()(NormalOptionForm);
 
 class FruitList extends React.Component{
       render () {
@@ -104,7 +54,7 @@ class FruitList extends React.Component{
             <ul className="list-group text-center">
               {
                 Object.keys(this.props.fruits).map(function(key) {
-                  return <li className="list-group-item list-group-item-info">{this.props.fruits[key]}</li>
+                  return <li className="list-group-item list-group-item-info" key={key}>{this.props.fruits[key]}</li>
                 }.bind(this))
               }
             </ul>
@@ -140,10 +90,10 @@ class AddFruitForm extends React.Component{
       
           <Form className="form-inline" ref="fruitForm" onSubmit={this.createFruit.bind(this)}>
           <div className="form-group">
-            <label for="fruitItem">
+            <span htmlFor="fruitItem">
               Fruit Name
               <input type="text" id="fruitItem" placeholder="e.x.lemmon" ref="fruitName" className="form-control" />
-            </label>
+            </span>
           </div>
           <button type="submit" className="btn btn-primary">Add Fruit</button>
          </Form>
@@ -156,8 +106,7 @@ class ViewIndex extends React.Component {
 	constructor(props){
 		super(props);
   
-        this.add=this.add.bind(this);
-        this.delete=this.delete.bind(this);
+      
 
           this.state={
           display:'none',
@@ -165,7 +114,7 @@ class ViewIndex extends React.Component {
             fruits : {
           'fruit-1' : 'orange',
           'fruit-2' : 'apple'
-        }
+        },
            edit:'visible',
            save:'hidden',
 
@@ -196,7 +145,7 @@ class ViewIndex extends React.Component {
  
         
  
-    }
+    
     
 handleEdit = (e) => {
 
@@ -258,9 +207,7 @@ handleEdit = (e) => {
           marginLeft: '90px'
         }}
       className = "editable-add-btn"
-      onClick = {
-        this.add
-      } > 添加 < /Button> 
+      > 添加 < /Button> 
    		
  		 </Card>
      <div id="editSave">
