@@ -49,13 +49,14 @@ const WrappedNormalMessageForm = Form.create()(NormalMessageForm);
 
 class FruitList extends React.Component{
       render () {
+      console.log(this.props.arr)
        const { getFieldDecorator } = this.props.form;
       
         return (
           <div className="container">
             <ul className="list-group text-center">
               {
-                Object.keys(this.props.fruits).map(function(key,index) {
+                Object.keys(this.props.option).map(function(key,index) {
               
                   return <li className="list-group-item list-group-item-info" key={index}>
 
@@ -63,10 +64,10 @@ class FruitList extends React.Component{
                   <p className='label'>选项{idx[index]}</p>
                   <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                   {getFieldDecorator(`option${index}`, {
-                    initialValue:`${this.props.fruits[key]}`
+                    initialValue:`${this.props.option[key]}`
                   })(
                   
-                    <Input type="textarea" disabled={this.props.disabled} autosize={{minRows:2}} className="input2" />
+                    <Input type="textarea" disabled={this.props.disabled} autosize={{minRows:2}} className="input2" style={{width:this.props.width}}/>
                  
                   )}
                   <Button id="delbtn" className = "delBtn editable-add-btn" onClick={this.props.delete} style={{display:this.props.display}}  data-index={index}> 删除 </Button>
@@ -85,7 +86,9 @@ class FruitList extends React.Component{
 const FruitListForm = Form.create()(FruitList);
 
 class AddFruitForm extends React.Component{ 
+
      constructor (props) {
+
     super(props)
    
      
@@ -102,6 +105,7 @@ class AddFruitForm extends React.Component{
           this.props.addFruit(fruit);
           //reset the form
            console.log(this.refs.fruitForm.refs.fruitForm)
+
          
       
        }
@@ -145,6 +149,7 @@ class ViewIndex extends React.Component {
           'fruit1' : 'orange',
           'fruit2' : 'apple'
         },
+         width:'90%',
            edit:'visible',
            save:'hidden',
 
@@ -185,7 +190,7 @@ handleEdit = (e) => {
          this.setState({
             display:'block',
             disabled:false,
-            width:'90%',
+            width:'84%',
             edit:'hidden',
             save:'visible'
           })
@@ -214,7 +219,7 @@ handleEdit = (e) => {
         })
       }
   render () { 
-    console.log(this.props.list)
+    console.log(this.props.arr)
     
 
     return(
@@ -229,8 +234,8 @@ handleEdit = (e) => {
 		
  		  <Card title="下拉选项:"  >
            <div className="component-wrapper">
-          <FruitListForm fruits={this.state.fruits}  delete={this.delFruit.bind(this)}  disabled={this.state.disabled} display={this.state.display} width={this.props.width}/>
-          <AddFruitForm addFruit={this.addFruit.bind(this)} display={this.state.display}  disabled={this.state.disabled}/>
+          <FruitListForm fruits={this.state.fruits}  delete={this.delFruit.bind(this)}  disabled={this.state.disabled} display={this.state.display}  width={this.state.width} arr={this.props.arr}/>
+          <AddFruitForm addFruit={this.addFruit.bind(this)} display={this.state.display}  disabled={this.state.disabled} arr={this.props.arr}/>
         </div>
 
    		
