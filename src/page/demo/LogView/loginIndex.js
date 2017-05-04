@@ -7,7 +7,7 @@ import {
     Checkbox
 } from 'antd';
 import  './loginIndex.scss';
-import {local, session} from 'common/util/storage.js';
+import { session } from 'common/util/storage.js';
 import {browserHistory} from 'react-router';
 import logo from './images/logo.png'
 const FormItem = Form.Item;
@@ -24,14 +24,14 @@ class NormalLoginForm extends React.Component {
 
         handleSubmit = (e) => {
             e.preventDefault();
-            session.set('isLogin', true)
-            browserHistory.push('/demo/management')
+            // session.set('isLogin', true)
+            // browserHistory.push('/demo/management')
             this.props.form.validateFields((err, values) => {
                 if (!err) {
-                    console.log(this.props.dispatch)
-                    console.log(userName.value,password.value)
+                    // console.log(this.props.dispatch)
+                    // console.log(userName.value,password.value)
                     this.props.dispatch({
-                        type: 'users/login',
+                        type: 'login/login',
                         payload: {
                             "mobile": userName.value,
                             "password": password.value

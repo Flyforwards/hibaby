@@ -1,4 +1,6 @@
+
 import fetch from 'dva/fetch';
+import { session } from 'common/util/storage.js';
 
 function parseJSON(response) {
   return response.json();
@@ -22,6 +24,20 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
+
+  if (! new RegExp("/login").test(url)){
+    const headers = {
+      "Content-Type":"application/json",
+      "USER_TOKEN":session.get("token")
+    };
+    options = {...options, headers};
+  } else {
+    const headers={
+      "Content-Type":"application/json"
+    }
+    options = {...options, headers};
+  }
+
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)

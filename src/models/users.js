@@ -44,7 +44,7 @@ export default {
     *login({ payload: values }, { call, put }) {
       const  {data: {data, code}}  = yield call(usersService.login, values);
       if(code == 0) {
-        
+
        yield put(routerRedux.push('/club'));
       }
       // yield put({ type: 'loginSave', payload: { data, code } });
@@ -63,25 +63,31 @@ export default {
     },
     *test({ payload: values }, { call, put }) {
       const  {data: {data, code}}  = yield call(usersService.test, values);
-   
+
       yield put({ type: 'testSave', payload: { data, code } });
     },
     *findSubmit({ payload: values }, { call, put }) {
       const  {data: {data, code}}  = yield call(usersService.findSubmit, values);
-   
+
       // yield put({ type: 'submitSave', payload: { data, code } });
       if(code == 0) {
-    
+
        yield put(routerRedux.push('/login'));
       }
     },
     *findValue({ payload: values }, { call, put }) {
       const  {data: {data, code}}  = yield call(usersService.findValue, values);
-   
+
       // yield put({ type: 'submitSave', payload: { data, code } });
       if(code == 0) {
       console.log('save findValue!')
       //yield put(routerRedux.push('/login'));
+      }
+    },
+    *getUserMenu({ payload: values }, { call, put }) {
+      const  {data: {data, code}}  = yield call(usersService.getUserMenu, values);
+      if (code == 0) {
+        console.log()
       }
     },
   },

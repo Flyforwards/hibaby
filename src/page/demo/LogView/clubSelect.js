@@ -1,31 +1,39 @@
+
 import React from 'react';
-import {
-	Button
-} from 'antd';
+import { routerRedux } from 'dva/router'
+import { Button } from 'antd';
+import { connect } from 'dva';
 import './loginIndex.scss';
 
 import logo from './images/logo.png'
 
 
-class clubSelect extends React.Component {
+function ClubSelect({dispatch, club}){
 
-
-	render() {
+  const btnClick = (e, index)=> {
+    const selClub = club[index];
+    // dispatch(
+    //   routerRedux.push('/demo/management')
+    // );
+    dispatch({
+      type: 'users/getUserMenu',
+      dispatch: selClub
+    }};
+  };
 		return (
 		 < div className="container">
 		 <div className="select">
 		 < img className = "findimg" src ={logo}  / >
-			< Button type = "primary" > 凯贝姆总部 < /Button>
-			< Button type = "primary" > 青岛会所 < /Button>
-			< Button type = "primary" > 北京会所 < /Button>
-			< Button type = "primary" > 纽约总部 < /Button>
+       {
+         club.map((item, index)=>{
+           return (<Button key={ index }  onClick = { btnClick.bind(this, index) }  type = "primary" > {item.name} < /Button>)
+             })
+       }
 			</div>
-			
 		< /div>
 		)
-	}
 }
 
 
 
-export default clubSelect;
+export default connect()(ClubSelect);

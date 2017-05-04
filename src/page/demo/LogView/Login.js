@@ -6,8 +6,8 @@ function Login({ dispatch }) {
     return ( < div className = "loginForm login" >
         < LoginIndex dispatch={dispatch} / >
         < /div>
-    )	
+    )
 
 }
 
-export default connect()(Login);	
+export default connect()(Login);
