@@ -18,7 +18,7 @@ function ClubSelect({dispatch, club}){
     dispatch({
       type: 'users/getUserMenu',
       dispatch: selClub
-    }};
+    });
   };
 		return (
 		 < div className="container">
