@@ -21,3 +21,9 @@ export function findSubmit(values) {
     body: JSON.stringify(values),
   })
 }
+
+export function getUserMenu(values) {
+  return request('/crm/api/v1/module/moduleList', {
+    method: 'GET',
+  })
+}

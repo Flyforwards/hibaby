@@ -84,12 +84,7 @@ export default {
       //yield put(routerRedux.push('/login'));
       }
     },
-    *getUserMenu({ payload: values }, { call, put }) {
-      const  {data: {data, code}}  = yield call(usersService.getUserMenu, values);
-      if (code == 0) {
-        console.log()
-      }
-    },
+
   },
   subscriptions: {
   	setup({dispatch, history}) {

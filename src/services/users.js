@@ -49,10 +49,5 @@ export function getEndemic() {
   })
 }
 
-export function getUserMenu() {
-  return request('/crm/api/v1/department/getEndemic', {
-    method: 'POST',
-  })
-}
 
 
