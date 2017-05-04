@@ -51,7 +51,7 @@ class Layout extends React.Component {
                     },
                     {
                         name: '地方字段',
-                        path: '/demo/info-card-demo',
+                        path: '/demo/FromModal',
                         icon:'copyright'
                     },
                     {

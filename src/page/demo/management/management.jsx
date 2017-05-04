@@ -1,46 +1,11 @@
 "use strict"
 import React from 'react';
-import {
-  connect
-} from 'dva';
+import {connect} from 'dva';
 import './system.scss';
-import {
-  Table,
-  Input,
-  Icon,
-  Button,
-  Popconfirm,
-  Pagination
-} from 'antd';
-import {
-  routerRedux
-} from 'dva/router';
-import {
-  Link
-} from 'react-router';
-
-
-
-class Current extends React.Component {
-
-  render() {
-    let range = this.props.range;
-    return (range ?
-      < div style={{marginTop:'-42px'}}>
-      < p > 第 {
-        this.props.page
-      }
-      页, 共 {
-        this.props.range.totalpage
-      }页, 范围 : {
-        this.props.range.start
-      } - {
-        this.props.range.end
-      }
-       < /p> < /div > : null)
-  }
-}
-
+import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd';
+import {routerRedux} from 'dva/router';
+import {Link} from 'react-router';
+import Current from '../../Current'
 class SystemIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -73,11 +38,7 @@ class SystemIndex extends React.Component {
         }];
     }
     render() {
-console.log(this.props.list)
-    
-
       const columns = this.columns;
-
       const pagination = {
         total: this.props.total, //数据总条数
         showQuickJumper: true,
@@ -92,15 +53,9 @@ console.log(this.props.list)
             },
           }));
         },
-
-
       };
-      return ( < div className = "
-          container"
-         >
-        < div className = "
-          buttonwrapper"
-         >
+      return ( < div className = "container">
+        < div className = "buttonwrapper">
         < Link to = "/demo/add" > < Button 
         className = "editable-add-btn" className="addBtn"> 添加 < /Button></Link >
         < /div> 
@@ -148,7 +103,6 @@ function management({
   range,
   code
 }) {
-
   return ( < div >
     < SystemIndex dispatch = {
       dispatch
@@ -170,10 +124,8 @@ function management({
   )
 
 }
-
-
-
 function mapStateToProps(state) {
+  // console.log("modelss",state.system)
   const {
     data,
     total,

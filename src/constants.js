@@ -6,8 +6,8 @@ export const SystemRoles = ["普通员工","特殊员工"];
 export const status = ["正常","异常"];
 export const classification = [
 {
-	"key":"凯贝姆",
-	"titel":"凯贝姆"
+	"key":"凯贝姆22",
+	"titel":"凯贝姆11"
 },{
 	"key": '总部(113)',
 	"titel":"总部",
@@ -77,6 +77,19 @@ export const classification = [
 		}
 	]},
 ];
+export const aaa = [{
+        module: 'crm',
+        authority: '客户档案',
+        name: '客户档案',
+        path: '/xxxx/xxxx/xxx',
+        people:'里方法'
+      },{
+        module: 'crm',
+        authority: '客户档案',
+        name: '客户档案',
+        path: '/xxxx/xxxx/xxx',
+        people:'里方法'
+      }];
 export const dataList = [{
     Numbering: 'a1234567',
     name: '李芳芳',

@@ -329,7 +329,24 @@
     width: 207px;
    	margin-left:-20px; 
     text-indent: 30px;
-
+}
+.Organization-left .ant-tree li{
+	position: relative;
+	width:207px;
+}
+.Organization-left .ant-tree .plus{
+		margin-right:10px;
+		position:absolute;
+		right:0px;
+		color:red;
+}
+.ant-tree-child-tree{
+	.plus{
+		margin-right:10px;
+		position:absolute;
+		right:-10px;
+		color:red;
+	}
 }
 .Organization-left .ant-tree li ul li a:hover {
     width: 207px;
@@ -337,32 +354,22 @@
     text-indent: 30px;
 }
 .ant-tree-child-tree .ant-tree-child-tree-open{
+		li{
+			a{
+				margin-left:-10px;
+			}
+		}
 	width:207px;
 	background-color: #fff;
 	margin-left:-16px; 
-	li{
-		a{
-			margin-left:-10px;
-		}
-	}
+	
 	.ant-tree-child-tree .ant-tree-child-tree-open{
 		li{
 			a{
 				margin-left:-10px;
-				text-indent: 35px;
 			}
 		}
 	}
-}
-.ant-tree li a:after{
-	content:"+";
-	font-size: 20px;
-    font-size: 7px\9;
-    color: #b67233;
-    font-weight: 700;
-    float:right;
-    margin-top:-3px;
-    text-align: center;
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
     font-size: 12px;

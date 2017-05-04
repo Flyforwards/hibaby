@@ -2,7 +2,6 @@
     transition: all .3s;
     margin-left: 60px;
 }
-
 .yt-admin-framework-content {
     transition: all .3s;
     padding: 0 12px;
@@ -71,10 +70,11 @@
 	}
 }
 .Customer-navigation {
-	height:105px;
+	overflow: hidden;
 	width:100%;
 	min-width:1100px; 
-	background-color: #eeeeee;
+	height:auto;
+	background-color: #eeeeee; 
 	div{
 		float:left;
 		color:#666;
@@ -84,6 +84,13 @@
 			margin-right:10px; 
 		}
 	} 
+	.listDiv{
+		float:left;
+		margin: 20px;
+	}
+	#data{
+		margin-left:38px; 
+	}
 	.age{
 		margin-left:40px; 
 		input{
@@ -92,6 +99,10 @@
 			text-align: center;
 			outline:none;
 			border:0;
+		}
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+		    -webkit-appearance: none;
 		}
 	}
 	.Membership{

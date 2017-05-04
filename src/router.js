@@ -51,7 +51,7 @@ let routes = [
         path: '/Organization',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/Organization/Organization.jsx'))
             })
         }
@@ -60,7 +60,7 @@ let routes = [
         path: '/Customer',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/Customer/Customer.jsx'))
             })
         }
@@ -110,9 +110,19 @@ let routes = [
         }
     },
     {
+        path: '/fromModal',
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/Customer/fromModal.jsx'))
+            })
+        }
+    },
+    {
         path: '/demo/LogView',
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/demo/LogView/LogView.jsx'))
             })
         }

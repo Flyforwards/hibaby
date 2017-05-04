@@ -6,6 +6,7 @@ import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
+import Current from '../Current'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -159,7 +160,6 @@ class Customered extends React.Component {
             createModalVisible: true
         })
     }
-
     onCellChange = (index, key) => {
         return (value) => {
           const dataSource = [...this.state.dataSource];
@@ -193,14 +193,15 @@ class Customered extends React.Component {
         });
       }
     render() {
+      console.log("data",this.props.list)
         const { dataSource } = this.state;
         const columns = this.columns;
         const pagination = {
-        total: 100, //数据总条数
+        total: this.props.total, //数据总条数
         showQuickJumper: true,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
-            pathname: '/system',
+            pathname: '/Customer',
             query: {
               "page": current,
               "results": 3,
@@ -241,14 +242,77 @@ class Customered extends React.Component {
                 </div>
                 <div className="current">现住址
                     <Cascader size="large" options={options} placeholder="请输入地址"/>
+                </div>
+                <div className="listDiv" id="data">宝宝生产日期
+                    <DatePicker
+                      showTime
+                      format="YYYY-MM-DD"
+                    />
+                </div>
+                <div className="listDiv">孕期
+                   
+                </div>    
+                <div className="listDiv">第几胎
+                    
+                </div>
+                <div className="listDiv">客资来源
+                    
+                </div>
+                <div className="listDiv">关注点
+                    
+                </div> 
+                <div className="listDiv">搜索关键字
+                    
+                </div>  
+                <div className="listDiv">操作者1
+                    
+                </div>
+                <div className="listDiv">现住址
+                    
+                </div>
+                <div className="listDiv">籍贯
+                    
+                </div>
+                <div className="listDiv">民族
+                    
+                </div>
+                <div className="listDiv">购买套餐
+                    
+                </div>  
+                <div className="listDiv">会员身份
+                    
+                </div>  
+                <div className="listDiv">操作者2
+                    
+                </div>                
+                <div className="listDiv">宝宝生产日期
+                    
                 </div>  
             </div>
             </div>
             <div className="CreateModaList-a">
-                <Table bordered dataSource={dataSource} columns={columns} pagination = {pagination} className="CreateModaList-b"/>
-                <p className="allList">共计{this.props.list.length}条,范围1-10</p>
+              {this.props.list?
+                <Table bordered bordered dataSource = {this.props.list} columns={columns} pagination = {pagination} className="CreateModaList-b" rowKey = "id"/>
+              :null}
+              < Current page = {
+                this.props.page
+              }
+              totalpage = {
+                this.props.totalpage
+              }
+              total = {
+                this.props.total
+              }
+              results = {
+                this.props.results
+              }
+              range = {
+                this.props.range
+              }
+              />  
             </div>
             <CreateModal
+                handleOk={this.state.handleOk}
                 visible={ this.state.createModalVisible }
                 onCancel={ this.handleCreateModalCancel.bind(this) }
             />
@@ -256,16 +320,18 @@ class Customered extends React.Component {
         )
     }
 }
-
 function Customer({
   dispatch,
   loading,
-  list,
+  data: list,
   total,
+  page,
+  results,
+  range,
   code
 }) {
   return ( < div >
-    <Customered dispatch = {
+    < Customered dispatch = {
       dispatch
     }
     list = {
@@ -277,23 +343,32 @@ function Customer({
     total = {
       total
     }
+    page={page}
+    results={results}
+    range={range}
     / > < /div >
   )
 
 }
 function mapStateToProps(state) {
-  console.log(state.users)
-    const {
-      list,
-      total,
-      code
-    } = state.users;
-  return {
-    loading: state.loading.models.users,
-    list,
+  console.log('state.system',state.system)
+  const {
+    data,
     total,
+    page,
+    results,
+    range,
     code
-    };
-}
+  } = state.system;
 
+  return {
+    loading: state.loading.models.system,
+    data,
+    total,
+    page,
+    results,
+    range,
+    code
+  };
+}
 export default connect(mapStateToProps)(Customer)

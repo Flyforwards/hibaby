@@ -1,0 +1,40 @@
+.fromList{
+	height:500px;
+	.ant-table-body {
+	    margin-top: 20px;
+	}
+	a{
+		display: inline-block;
+		margin-left:30px; 
+	}
+	input{
+		width:80px;
+		margin:0px 20px;
+	}
+	i{
+		width:80px;
+		height:30px;
+		background-color:blue; 
+		margin-left:30px;
+		color:#fff; 
+		text-align: center;
+		line-height: 30px; 
+		cursor: pointer;
+		display: inline-block;
+		border-radius: 4px;
+	}
+}
+.ant-modal-body {
+	
+}
+.ant-select-selection--single {
+    margin:0px 20px;
+}
+.SelectList{
+	margin:0px 20px;
+	width:212px;
+	display: inline-block;
+}
+.ant-modal-close-x {
+	display: none;
+}
