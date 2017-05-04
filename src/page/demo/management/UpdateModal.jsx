@@ -64,7 +64,7 @@ class UpdateModal extends Component {
                             initialValue: initialValue.title,
                             rules: [{required: true, message: 'Please input the title of collection!'}],
                         })(
-                            <Input />
+                            <Input/>
                         )}
                     </FormItem>
                     <FormItem

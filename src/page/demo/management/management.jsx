@@ -26,8 +26,8 @@ class Current extends React.Component {
   render() {
     let range = this.props.range;
     return (range ?
-      < div style={{marginTop:'-42px'}}>
-      < p > 第 {
+      <div style={{marginTop:'-42px'}}>
+      <p> 第 {
         this.props.page
       }
       页, 共 {
@@ -37,7 +37,7 @@ class Current extends React.Component {
       } - {
         this.props.range.end
       }
-       < /p> < /div > : null)
+       </p> </div > : null)
   }
 }
 
@@ -68,13 +68,13 @@ class SystemIndex extends React.Component {
 
           return ( < Link to = {
               `/demo/view?dataId=${record.id}`
-            } > 查看 < /Link>)
+            } > 查看 </Link>)
           },
         }];
     }
     render() {
 console.log(this.props.list)
-    
+
 
       const columns = this.columns;
 
@@ -95,15 +95,16 @@ console.log(this.props.list)
 
 
       };
-      return ( < div className = "
+      return ( <div className = "
           container2"
          >
         < div className = "
           buttonwrapper"
          >
-        < Link to = "/demo/add" > < Button 
-        className = "editable-add-btn" className="addBtn"> 添加 < /Button></Link >
-        < /div> 
+        < Link to = "/demo/add" > < Button
+        /*className = "editable-add-btn" */
+        className="addBtn"> 添加 </Button></Link >
+        </div>
         {this.props.list?
         < Table rowKey = "id"
         bordered dataSource = {
@@ -132,8 +133,8 @@ console.log(this.props.list)
       range = {
         this.props.range
       }
-      />  
-        < /div >
+      />
+        </div>
     );
   }
 }
@@ -149,24 +150,17 @@ function management({
   code
 }) {
 
-  return ( < div >
-    < SystemIndex dispatch = {
-      dispatch
-    }
-    list = {
-      list
-    }
-    loading = {
-      loading
-    }
-    
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    / > < /div >
+  return (
+    <div>
+      <SystemIndex dispatch = { dispatch }
+      list = { list }
+      loading = { loading }
+      total = { total }
+      page={ page }
+      results={ results }
+      range={ range }
+      />
+    </div>
   )
 
 }

@@ -108,112 +108,89 @@ class NormalLoginForm extends React.Component {
         this.timer = false;
     }
     render() {
-        var text = this.state.liked ? ( < div > 获取验证码 < /div>): (<div className="red">{this.state.count}秒后重发</div > );
+        var text = this.state.liked ? ( <div> 获取验证码 </div>): (<div className="red">{this.state.count}秒后重发</div> );
         const {
             getFieldDecorator
         } = this.props.form;
-        return ( < div className = "container" >
-            < Form className = "creatnew"
-            onSubmit = {
-                this.handleSubmit
-            }
-            className = "login-form" >
-            < img className = "findimg"
-               
-            src = {logo} / >
-            < a className = 
-                "return"
-            
-            href = "http://localhost:9090/login" > &larr; 返回登录 < /a> < FormItem > {
-            getFieldDecorator('phone', {
-                rules: [{
-                    required: true,
-                    message: '请输入手机号!'
-                }],
-            })( < Input prefix = { < span > < /span>}  placeholder="请输入手机号" / > )
-            } < /FormItem> < FormItem > {
-            getFieldDecorator('testword', {
-                rules: [{
-                    required: true,
-                    message: '请输入验证码!'
-                }],
-            })( < Input type = "password"
-                placeholder = "请输入验证码"
+        return (
+          <div className = "container">
+            <Form onSubmit = { this.handleSubmit } className = "login-form">
+              <img className = "findimg" src = {logo} />
+              <a className = "return" href = "http://localhost:9090/login" > &larr; 返回登录 </a>
+              <FormItem> {
+                getFieldDecorator('phone', {
+                  rules: [{
+                      required: true,
+                      message: '请输入手机号!'
+                  }], })( <Input prefix = { <span> </span>}  placeholder="请输入手机号" /> )}
+              </FormItem>
+              <FormItem> {
+                getFieldDecorator('testword', {
+                    rules: [{
+                        required: true,
+                        message: '请输入验证码!'
+                    }],
+                })( < Input type = "password"
+                    placeholder = "请输入验证码"
                 prefix = { < span className = "testNum"
                     onClick = {
                         this.handleTest
-                    } > {
-                        text
-                    } < /span>}/ > )
-            } < /FormItem>   < div > < FormItem > {
-            getFieldDecorator('newpass', {
-                rules: [{
-                    required: true,
-                    message: '请输入新密码!'
-                }],
-            })( < Input prefix = { < span >
-                    < /span>}   placeholder="请输入新密码" / > )
-            } < /FormItem>  < FormItem > {
-            getFieldDecorator('queren', {
-                rules: [{
-                    required: true,
-                    message: '请确认新密码!'
-                }],
-            })( < Input prefix = { < span >
-                    < /span>}  placeholder="再次输入新密码"  / > )
-            } < /FormItem>  < /div > < FormItem >
-            < Button type = "primary"
-            htmlType = "submit"
-            className = "login-form-button" >
-            提交 < /Button> < Modal visible = {
-                this.state.modal1Visible
-            }
-            title = "弹窗"
-            onOk = {
-                () => this.setModal1Visible(false)
-            }
-
-            footer = {
-                [
-
-                    < Button key = "confirm"
-                    type = "primary"
-                    size = "large"
-                    onClick = {
-                        () => this.setModal1Visible(false)
-                    } >
-                    确认 < /Button>,
-                ]
-            } >
-            < p > 请输入正确的手机号！ < /p>
-
-            < /Modal> < Modal visible = {
-                this.state.modal2Visible
-            }
-            title = "弹窗"
-            onOk = {
-                () => this.setModal2Visible(false)
-            }
-
-            footer = {
-                [
-
-                    < Button key = "confirm"
-                    type = "primary"
-                    size = "large"
-                    onClick = {
-                        () => this.setModal2Visible(false)
-                    } >
-                    确认 < /Button>,
-                ]
-            } >
-            < p > 再次输入密码不一致， 请重新输入！ < /p>
-
-            < /Modal>
-
-
-
-            < /FormItem > < /Form>  < /div >
+                    } > { text } </span>}/> )}
+              </FormItem>
+              <div>
+                <FormItem> {
+                  getFieldDecorator('newpass', {
+                      rules: [{
+                          required: true,
+                          message: '请输入新密码!'
+                      }],
+                  })( <Input prefix = { < span > </span> }  placeholder="请输入新密码"/> )}
+                </FormItem>
+                <FormItem > {
+                  getFieldDecorator('queren', {
+                      rules: [{
+                          required: true,
+                          message: '请确认新密码!'
+                      }],
+                  })( <Input prefix = { < span >
+                          </span>}  placeholder="再次输入新密码" /> )
+                  }
+                </FormItem>
+              </div >
+              <FormItem>
+                <Button type = "primary"
+                  htmlType = "submit"
+                  className = "login-form-button" >提交
+                </Button>
+                <Modal visible = { this.state.modal1Visible }
+                  title = "弹窗"
+                  onOk = {
+                      () => this.setModal1Visible(false)
+                  }
+                  footer = {[
+                            <Button key = "confirm"
+                              type = "primary"
+                              size = "large"
+                              onClick = { () => this.setModal1Visible(false) } > 确认
+                            </Button>,
+                      ]}>
+                  <p> 请输入正确的手机号！ </p>
+                </Modal>
+                <Modal visible = { this.state.modal2Visible }
+                  title = "弹窗"
+                  onOk = { () => this.setModal2Visible(false) }
+                  footer = {[
+                          <Button key = "confirm"
+                          type = "primary"
+                          size = "large"
+                          onClick = { () => this.setModal2Visible(false) } > 确认
+                          </Button>,
+                      ]}>
+                  <p> 再次输入密码不一致， 请重新输入！ </p>
+                </Modal>
+              </FormItem >
+            </Form>
+          </div >
         );
     }
 }

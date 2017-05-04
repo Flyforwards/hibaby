@@ -1,11 +1,12 @@
+
 import React from 'react'
 import './Customer.scss'
-import {connect} from 'dva'
-import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Cascader} from 'antd'
+import { connect } from 'dva'
+import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Cascader } from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
-import {routerRedux} from 'dva/router'
-import {Link} from 'react-router'
+import { routerRedux } from 'dva/router'
+import { Link } from 'react-router'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -236,12 +237,12 @@ class Customered extends React.Component {
                       <Option value="Yiminghe">yiminghe</Option>
                     </Select>
                 </div>
-                <div className="period">预产期 
+                <div className="period">预产期
                    <MonthPicker placeholder="请选择" />
                 </div>
                 <div className="current">现住址
                     <Cascader size="large" options={options} placeholder="请输入地址"/>
-                </div>  
+                </div>
             </div>
             </div>
             <div className="CreateModaList-a">
@@ -264,21 +265,13 @@ function Customer({
   total,
   code
 }) {
-  return ( < div >
-    <Customered dispatch = {
-      dispatch
-    }
-    list = {
-      list
-    }
-    loading = {
-      loading
-    }
-    total = {
-      total
-    }
-    / > < /div >
-  )
+  return (<div>
+    <Customered
+      dispatch = { dispatch }
+      list = { list }
+      loading = { loading }
+      total = { total }/>
+    </div >)
 
 }
 function mapStateToProps(state) {

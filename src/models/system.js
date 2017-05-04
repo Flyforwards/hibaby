@@ -68,10 +68,10 @@ export default {
 				code
 			};
 
-			
+
 
 			let arr2 = data.dictionarySideDOs;
-			
+
 			// var arr2 = new Array;
 			// for(var i in arr){
 			// 	arr2.push(arr[i].name)
@@ -116,8 +116,6 @@ export default {
 					code
 				}
 			} = yield call(systemService.system, values);
-
-			console.log(111111111111)
 
 			if (code == 0) {
 

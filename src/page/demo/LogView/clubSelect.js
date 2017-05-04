@@ -12,26 +12,29 @@ function ClubSelect({dispatch, club}){
 
   const btnClick = (e, index)=> {
     const selClub = club[index];
-    // dispatch(
-    //   routerRedux.push('/demo/management')
-    // );
-    dispatch({
-      type: 'users/getUserMenu',
-      dispatch: selClub
-    });
+    dispatch(
+      routerRedux.push('/demo/management')
+    );
+    // dispatch({
+    //   type: 'users/getUserMenu',
+    //   dispatch: selClub
+    // });
   };
-		return (
-		 < div className="container">
-		 <div className="select">
-		 < img className = "findimg" src ={logo}  / >
+
+  return (
+   <div className = "container">
+     <div className = "select">
+       <img className = "findimg" src ={logo} />
        {
-         club.map((item, index)=>{
-           return (<Button key={ index }  onClick = { btnClick.bind(this, index) }  type = "primary" > {item.name} < /Button>)
-             })
+         club.map(
+           (item, index) => {
+             return (<Button key={ index }  onClick = { btnClick.bind(this, index) }  type = "primary" > {item.name} </Button>)
+           }
+         )
        }
-			</div>
-		< /div>
-		)
+     </div>
+   </div>
+      )
 }
 
 

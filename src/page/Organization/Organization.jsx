@@ -1,12 +1,12 @@
 import React from 'react'
 import './Organization.scss'
-import {connect} from 'dva'
+import { connect } from 'dva'
 import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
-import {routerRedux} from 'dva/router'
-import {Link} from 'react-router'
-import {classification,dataList,ww} from '../../constants.js'
+import { routerRedux } from 'dva/router'
+import { Link} from 'react-router'
+import { classification,dataList,ww } from '../../constants.js'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -217,7 +217,7 @@ class Organizationed extends React.Component {
             <div className="CreateModaList">
                 <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
                 <p className="allList">共计0条,范围1-10</p>
-            </div> 
+            </div>
             <CreateModal
                 visible={ this.state.createModalVisible }
             />
@@ -246,7 +246,7 @@ function Organization({
     code = {
       code
     }
-    / > < /div >
+    /> </div>
   )
 
 }
