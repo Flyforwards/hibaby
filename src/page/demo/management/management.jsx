@@ -1,3 +1,4 @@
+
 "use strict"
 import React from 'react';
 import {connect} from 'dva';
@@ -6,6 +7,7 @@ import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd';
 import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
 import Current from '../../Current'
+
 class SystemIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +35,7 @@ class SystemIndex extends React.Component {
 
           return ( < Link to = {
               `/demo/view?dataId=${record.id}`
-            } > 查看 < /Link>)
+            } > 查看 </Link>)
           },
         }];
     }
@@ -54,15 +56,16 @@ class SystemIndex extends React.Component {
           }));
         },
       };
-      return ( < div className = "
+      return ( <div className = "
           container2"
          >
         < div className = "
           buttonwrapper"
          >
-        < Link to = "/demo/add" > < Button 
-        className = "editable-add-btn" className="addBtn"> 添加 < /Button></Link >
-        < /div> 
+        < Link to = "/demo/add" > < Button
+        /*className = "editable-add-btn" */
+        className="addBtn"> 添加 </Button></Link >
+        </div>
         {this.props.list?
         < Table rowKey = "id"
         bordered dataSource = {
@@ -91,8 +94,8 @@ class SystemIndex extends React.Component {
       range = {
         this.props.range
       }
-      />  
-        < /div >
+      />
+        </div>
     );
   }
 }
@@ -151,3 +154,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(management);
+  

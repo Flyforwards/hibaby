@@ -237,7 +237,7 @@ class Customered extends React.Component {
                       <Option value="Yiminghe">yiminghe</Option>
                     </Select>
                 </div>
-                <div className="period">预产期 
+                <div className="period">预产期
                    <MonthPicker placeholder="请选择" />
                 </div>
                 <div className="current">现住址
@@ -270,7 +270,7 @@ class Customered extends React.Component {
               range = {
                 this.props.range
               }
-              />  
+              />
             </div>
             <CreateModal
                 handleOk={this.state.handleOk}

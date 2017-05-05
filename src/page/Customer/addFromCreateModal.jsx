@@ -4,14 +4,17 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
-
+import {local, session} from '../../common/util/storage.js'
+import SelectList from './from.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
+const mainName = local.get("mainName")
+const fromList = local.get("fromList")
 import _ from 'lodash'
 @createForm()
-class FromCreateModal extends Component {
+class AddFromCreateModal extends Component {
     constructor(props) {
         super(props)   
     }
@@ -19,12 +22,12 @@ class FromCreateModal extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk(visible) {
-      this.props.form.validateFieldsAndScroll((err, values) => {
+    handleOk() {
+        this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
           this.props.dispatch({
-            type: 'system/permissionUpdata',
+            type: 'system/permissionAdd',
             payload: {
                 actionPath:values.actionPath,
                 alias: values.alias,
@@ -32,8 +35,7 @@ class FromCreateModal extends Component {
                 name: values.name,
                 orderBy:values.orderBy,
                 parentId: 2,
-                projectId: 1,
-                id:2
+                projectId: 1
             }
         });
         }
@@ -66,15 +68,7 @@ class FromCreateModal extends Component {
     }
     render() {
         const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
-        let list = []
-         {
-          if(modelsList){
-            list = modelsList
-          }else{
-            
-          }
-        }
-        const {getFieldDecorator} = form
+        const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
@@ -99,7 +93,6 @@ class FromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('mainName', {
-                  initialValue: list.mainName,
                   rules: [],
                 })(
                    <Input/>
@@ -110,8 +103,7 @@ class FromCreateModal extends Component {
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('actionPath', {
-                  initialValue: list.actionPath,
+                {getFieldDecorator('alias', {
                   rules: [],
                 })(
                    <Input/>
@@ -123,7 +115,6 @@ class FromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('description', {
-                  initialValue: list.description,
                   rules: [],
                 })(
                    <Input/>
@@ -135,7 +126,6 @@ class FromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('name', {
-                  initialValue: list.name,
                   rules: [],
                 })(
                    <Input/>
@@ -147,7 +137,6 @@ class FromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('actionPath', {
-                  initialValue: list.actionPath,
                   rules: [],
                 })(
                    <Input/>
@@ -159,7 +148,6 @@ class FromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('orderBy', {
-                  initialValue: list.orderBy,
                   rules: [],
                 })(
                    <Input/>
@@ -171,13 +159,13 @@ class FromCreateModal extends Component {
         )
     }
 }
-function FromCreateModal({
+function AddFromCreateModal({
     dispatch,
     data,
     code
 }) {
   return ( < div >
-    < FromCreateModal dispatch = {
+    < AddFromCreateModal dispatch = {
       dispatch
     }
     /> < /div >
@@ -193,5 +181,4 @@ function mapStateToProps(state) {
     data
   };
 }
-
-export default connect(mapStateToProps)(FromCreateModal)
+export default connect(mapStateToProps)(AddFromCreateModal)

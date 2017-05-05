@@ -1,7 +1,7 @@
 "use strict"
 
-import React, {Component} from 'react'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
+import React, { Component } from 'react'
+import { Modal, Form, Input, Radio, Select, Checkbox, Icon } from 'antd'
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group

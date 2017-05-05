@@ -60,7 +60,7 @@ class TabalListed extends Component {
           render: (text, record, index) => {
             return (
                 <div>
-                 <a href="#" onClick={this.addList.bind(this)}>增加</a>
+                 <a href="#">删除</a>
                   <a href="#" onClick={this.modify.bind(this,index)}>修改</a>
                 </div>
             );
@@ -125,11 +125,6 @@ class TabalListed extends Component {
         return (
           <div>
           <Table bordered dataSource = {mainName} columns={this.columns} className="fromModal" rowKey = "class"/>
-          <FromCreateModal
-            handleOk={this.state.handleOk}
-            visible={ this.state.createModalVisible}
-            onCancel={ this.handleCreateModalCancel.bind(this) }
-          />
           <FromCreateModal
             handleOk={this.state.handleOk}
             modelsList={mainName[this.state.modifyModalIndex]}

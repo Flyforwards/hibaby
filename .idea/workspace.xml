@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0fb474ba-30eb-4afe-9e4c-7fca65bea96a" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/layout.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/login.js" afterPath="$PROJECT_DIR$/src/models/login.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/system.js" afterPath="$PROJECT_DIR$/src/models/system.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/users.js" afterPath="$PROJECT_DIR$/src/models/users.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/Customer/CreateModal.jsx" afterPath="$PROJECT_DIR$/src/page/Customer/CreateModal.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/Customer/Customer.jsx" afterPath="$PROJECT_DIR$/src/page/Customer/Customer.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/Customer/fromCreateModal.jsx" afterPath="$PROJECT_DIR$/src/page/Customer/fromCreateModal.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/Customer/fromModal.jsx" afterPath="$PROJECT_DIR$/src/page/Customer/fromModal.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/Customer/tabalList.jsx" afterPath="$PROJECT_DIR$/src/page/Customer/tabalList.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/Organization/Organization.jsx" afterPath="$PROJECT_DIR$/src/page/Organization/Organization.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/Organization/Organization.scss" afterPath="$PROJECT_DIR$/src/page/Organization/Organization.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/LogView/LogView.jsx" afterPath="$PROJECT_DIR$/src/page/demo/LogView/LogView.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/LogView/Login.js" afterPath="$PROJECT_DIR$/src/page/demo/LogView/Login.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/LogView/clubSelect.js" afterPath="$PROJECT_DIR$/src/page/demo/LogView/clubSelect.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/LogView/findPassword.js" afterPath="$PROJECT_DIR$/src/page/demo/LogView/findPassword.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/LogView/loginClub.js" afterPath="$PROJECT_DIR$/src/page/demo/LogView/loginClub.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/LogView/loginFind.js" afterPath="$PROJECT_DIR$/src/page/demo/LogView/loginFind.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/LogView/loginIndex.js" afterPath="$PROJECT_DIR$/src/page/demo/LogView/loginIndex.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/management/Add.js" afterPath="$PROJECT_DIR$/src/page/demo/management/Add.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/management/UpdateModal.jsx" afterPath="$PROJECT_DIR$/src/page/demo/management/UpdateModal.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/management/View.js" afterPath="$PROJECT_DIR$/src/page/demo/management/View.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/management/ViewIndex.js" afterPath="$PROJECT_DIR$/src/page/demo/management/ViewIndex.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/management/a.js" afterPath="$PROJECT_DIR$/src/page/demo/management/a.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/page/demo/management/management.jsx" afterPath="$PROJECT_DIR$/src/page/demo/management/management.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/services/login.js" afterPath="$PROJECT_DIR$/src/services/login.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/services/system.js" afterPath="$PROJECT_DIR$/src/services/system.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/services/users.js" afterPath="$PROJECT_DIR$/src/services/users.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/request.js" afterPath="$PROJECT_DIR$/src/utils/request.js" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="hibaby_crm_frontend" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="CreateModal.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/page/Customer/CreateModal.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1716">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tabalList.jsx" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/page/Customer/tabalList.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="110" column="32" lean-forward="true" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Customer.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/page/Customer/Customer.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4239">
+              <caret line="155" column="10" lean-forward="false" selection-start-line="155" selection-start-column="10" selection-end-line="155" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+                <marker date="1493965582814" expanded="true" signature="1970:8505" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="3371:3841" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="3397:3770" ph="[...]" />
+                <marker date="1493965582814" expanded="true" signature="3398:3769" ph="{&quot;name&quot;: '李芳芳'...}" />
+                <marker date="1493965582814" expanded="true" signature="3878:3958" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="3902:3951" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="3981:4060" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="4005:4053" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="4096:4284" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="4124:4275" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="4313:4453" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="4478:5013" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="4554:4892" ph="{&quot;name&quot;: `Edward King ${count}`...}" />
+                <marker date="1493965582814" expanded="true" signature="4916:5003" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="5027:8503" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="5179:5522" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="5284:5513" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="5333:5500" ph="{&quot;pathname&quot;: '/Customer'...}" />
+                <marker date="1493965582814" expanded="true" signature="5389:5487" ph="{&quot;page&quot;: current...}" />
+                <marker date="1493965582814" expanded="true" signature="5612:7573" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="5657:6071" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="6084:7554" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="6245:6642" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="6298:6619" ph="&lt;Select/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="6659:7055" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="6711:7032" ph="&lt;Select/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="7072:7175" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="7192:7326" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="7343:7535" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="7405:7512" ph="&lt;DatePicker/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="7586:8255" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="7849:8236" ph="&lt;Current/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="8268:8469" ph="&lt;CreateModal/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="8610:9205" ph="{...}" />
+                <marker date="1493965582814" expanded="true" signature="8623:9205" ph="&lt;div/&gt;" />
+                <marker date="1493965582814" expanded="true" signature="8635:8835" ph="&lt;Customered/&gt;" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/page/Customer/Customer.jsx" />
+        <option value="$PROJECT_DIR$/src/page/Customer/tabalList.jsx" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1376" />
+    <option name="height" value="744" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="page" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hibaby_crm_frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="page" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Customer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0fb474ba-30eb-4afe-9e4c-7fca65bea96a" name="Default" comment="" />
+      <created>1493954434428</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1493954434428</updated>
+      <workItem from="1493958005293" duration="1989000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="1989000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1376" height="744" extended-state="7" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21838236" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/page/Customer/Customer.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4239">
+          <caret line="155" column="10" lean-forward="false" selection-start-line="155" selection-start-column="10" selection-end-line="155" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+            <marker date="1493965582814" expanded="true" signature="1970:8505" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="3371:3841" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="3397:3770" ph="[...]" />
+            <marker date="1493965582814" expanded="true" signature="3398:3769" ph="{&quot;name&quot;: '李芳芳'...}" />
+            <marker date="1493965582814" expanded="true" signature="3878:3958" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="3902:3951" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="3981:4060" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="4005:4053" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="4096:4284" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="4124:4275" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="4313:4453" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="4478:5013" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="4554:4892" ph="{&quot;name&quot;: `Edward King ${count}`...}" />
+            <marker date="1493965582814" expanded="true" signature="4916:5003" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="5027:8503" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="5179:5522" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="5284:5513" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="5333:5500" ph="{&quot;pathname&quot;: '/Customer'...}" />
+            <marker date="1493965582814" expanded="true" signature="5389:5487" ph="{&quot;page&quot;: current...}" />
+            <marker date="1493965582814" expanded="true" signature="5612:7573" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="5657:6071" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="6084:7554" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="6245:6642" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="6298:6619" ph="&lt;Select/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="6659:7055" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="6711:7032" ph="&lt;Select/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="7072:7175" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="7192:7326" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="7343:7535" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="7405:7512" ph="&lt;DatePicker/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="7586:8255" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="7849:8236" ph="&lt;Current/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="8268:8469" ph="&lt;CreateModal/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="8610:9205" ph="{...}" />
+            <marker date="1493965582814" expanded="true" signature="8623:9205" ph="&lt;div/&gt;" />
+            <marker date="1493965582814" expanded="true" signature="8635:8835" ph="&lt;Customered/&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/page/Customer/CreateModal.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1716">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/page/Customer/tabalList.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="110" column="32" lean-forward="true" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

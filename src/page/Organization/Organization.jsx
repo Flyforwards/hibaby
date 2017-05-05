@@ -1,6 +1,7 @@
+
 import React from 'react'
 import './Organization.scss'
-import {connect} from 'dva'
+import { connect } from 'dva'
 import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
@@ -8,10 +9,15 @@ import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import {classification,dataList,ww} from '../../constants.js'
 import Current from '../Current'
+import OrganizationLeft from './OrganizationLeft.jsx'
+
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
+
+
 class Organizationed extends React.Component {
     constructor(props) {
         super(props)
@@ -75,8 +81,6 @@ class Organizationed extends React.Component {
             upblock:'none'
         }
     }
-
-
     componentDidMount(){
       $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")
       $(".plus").click(function(e){
@@ -183,7 +187,7 @@ class Organizationed extends React.Component {
         const { dataSource } = this.state;
         const columns = this.columns;
         const pagination = {
-        total: 100, //数据总条数
+        total: 100,
         showQuickJumper: true,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
@@ -196,47 +200,19 @@ class Organizationed extends React.Component {
           }));
         },
       };
-      const loop = data => data.map((item) => {
-        if (item.children && item.children.length) {
-          return <TreeNode key={item.key} title={item.key}>{loop(item.children)}</TreeNode>;
-        }
-        return <TreeNode key={item.key} title={item.key} />;
-      });
         return (
             <main className="yt-admin-framework-Customer-a">
-            <div className="Organization-left">
-                <Tree
-                  className="draggable-tree"
-                  defaultExpandedKeys={this.state.expandedKeys}
-                  draggable
-                  onExpand={this.expandHandler.bind(this)}
-                  onDragEnter={this.onDragEnter}
-                  onDrop={this.onDrop}
-                >
-                  {loop(classification)}
-                </Tree>
-                <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
-                  <li>添加子节点</li>
-                  <li>查看详情</li>
-                  <li>删除</li>
-                  <li>ID 0002</li>
-                </ul>
-            </div>
+            <OrganizationLeft/>
             <div className="Organization-right">
             <div className="Organization-nav">
-              <div className="name">姓名<Input /></div>
+              <div className="name">姓名<Input ref="O"/></div>
               <div className="SystemRoles">系统角色
                  <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType">
                     <Option value="jack">Jack</Option>
                     <Option value="时尚">请选择</Option>
                     <Option value="disabled">Disabled</Option>
                     <Option value="Yiminghe">yiminghe</Option>
-                    {
-                    this.props.data.map((item,index)=>{
-                    return (
-                        <Option value={item.name} key={index} >{item.name}</Option>
-                    )
-                  })}
+                    
                   </Select>
               </div>
               <div className="status">账户状态
@@ -307,7 +283,6 @@ function Organization({
     range={range}
     / > < /div >
   )
-
 }
 function mapStateToProps(state) {
   console.log("modelss",state.system)

@@ -15,8 +15,8 @@
 .Organization-right{
 	width:867px;
 	min-width:867px;
-	float:left;
-	margin-left:10px; 
+	margin-left:220px; 
+	margin-top:10px;
 }
 :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after {
     font-size: 20px;
@@ -30,7 +30,6 @@
 	float:left;
 	background-color:#fff;
 	min-height:500px;
-	margin-top:10px;
 	overflow: hidden;
 	position:relative;
 	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {

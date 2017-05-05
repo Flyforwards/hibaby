@@ -12,9 +12,10 @@ function View({
 	code
 }) {
 
-	return ( < div >	
-
-		< ViewIndex dispatch = {dispatch} list={list} arr={arr2}/> < /div >
+	return (
+	  <div>
+		  <ViewIndex dispatch = {dispatch} list={list} arr={arr2}/>
+    </div >
 	)
 
 }

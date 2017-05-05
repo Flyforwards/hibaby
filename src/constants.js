@@ -6,73 +6,73 @@ export const SystemRoles = ["普通员工","特殊员工"];
 export const status = ["正常","异常"];
 export const classification = [
 {
-	"key":"凯贝姆22",
+	"name":"凯贝姆22",
 	"titel":"凯贝姆11"
 },{
-	"key": '总部(113)',
+	"name": '总部(113)',
 	"titel":"总部",
 	"children": [{
-				"key":'总办 (113)',
+				"name":'总办 (113)',
 				"titel":'总办',
 				"children":[{
-					"key":'总办1(113)',
+					"name":'总办1(113)',
 					"titel":'总办1'
 				},{
-					"key":'总办2(113)',
+					"name":'总办2(113)',
 					"titel":'总办2'
 				}]
 				},
 				{
-				"key":'财务部(113)',
+				"name":'财务部(113)',
 				"titel":'财务部'
 				}
 			]
 },	{
-	"key": '北京',
+	"name": '北京',
 	"titel":'北京',
 	"children":[{
-		"key":'总办',
+		"name":'总办',
 		"titel":'总办'
 		},
 		{
-		"key":'财务部',
+		"name":'财务部',
 		"titel":'财务部'
 		}
 	]},{
-	"key": '河北',
+	"name": '河北',
 	"titel":'河北',
 	"children":[{
-		"key":'财务部(111)',
+		"name":'财务部(111)',
 		"titel":'财务部(111)'
 		},
 		{
-		"key":'运营部(222)',
+		"name":'运营部(222)',
 		"titel":'运营部(222)'
 		}
 	]},{
-	"key": '天津',
+	"name": '天津',
 	"titel":'天津',
 	"children":[{
-		"key":'财务部(111)',
+		"name":'财务部(111)',
 		"titel":'财务部(111)'
 		},
 		{
-		"key":'运营部(222)',
+		"name":'运营部(222)',
 		"titel":'运营部(222)'
 		}
 	]},{
-	"key": '河南',
+	"name": '河南',
 	"titel":'河南',
 	"children":[{
-		"key":'财务部(111)',
+		"name":'财务部(111)',
 		"titel":'财务部(111)',
 		"children":[{
-			"key":'财务部(333)',
+			"name":'财务部(333)',
 			"titel":'财务部(111)'
 		}]
 		},
 		{
-		"key":'运营部(222)',
+		"name":'运营部(222)',
 		"titel":'运营部(222)'
 		}
 	]},

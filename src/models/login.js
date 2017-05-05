@@ -1,7 +1,7 @@
+
 import * as loginService from '../services/login';
-import {
-	routerRedux
-} from 'dva/router';
+import { local, session } from '../common/util/storage.js'
+import { routerRedux } from 'dva/router';
 
 
 export default {
@@ -9,14 +9,10 @@ export default {
 	state: {
 		list: [],
 		total: null,
+
 	},
 	reducers: {
-		loginSave(state, {
-			payload: {
-				data,
-				code
-			}
-		}) {
+		loginSave(state, { payload: { data, code } }) {
 			let logindata = {...state,
 				data,
 				code
@@ -49,86 +45,99 @@ export default {
 			};
 			console.log(submitdata)
 			return submitdata;
-		},	
-		effects: { 
-			* login({
-				payload: values
-			}, {
-				call,
-				put
-			}) {
-				const {
-					data: {
-						data,
-						code
-					}
-				} = yield call(loginService.login, values);
-				if (code == 0) {
-
+		},
+		effects: {
+			*login({ payload: values }, { call, put }) {
+				const { data: { data, code, err} } = yield call(loginService.login, values);
+				if (code == 0 && err == null) {
+          session.set("token", data.token);
+          session.set('isLogin', true);
 					yield put(routerRedux.push('/club'));
-				}
-				
-			},
-			* test({
-				payload: values
-			}, {
-				call,
-				put
-			}) {
-				const {
-					data: {
-						data,
-						code
-					}
-				} = yield call(loginService.test, values);
+				} else {
+          throw err;
+        }
 
-				yield put({
-					type: 'testSave',
-					payload: {
-						data,
-						code
-					}
-				});
-			},
-			* findSubmit({
-				payload: values
-			}, {
-				call,
-				put
-			}) {
-				const {
-					data: {
-						data,
-						code
-					}
-				} = yield call(loginService.findSubmit, values);
+        // if (data.success) {
+        //   // const from = queryURL('from')
+        //   // yield put({ type: 'app/queryUser' })
+        //   // if (from) {
+        //   //   yield put(routerRedux.push(from))
+        //   // } else {
+        //   //   yield put(routerRedux.push('/dashboard'))
+        //   // }
+        // } else {
+        //   throw data
+        // }
 
-				// yield put({ type: 'submitSave', payload: { data, code } });
-				if (code == 0) {
-
-					yield put(routerRedux.push('/login'));
-				}
-			}
 			},
 
-		subscriptions: {
-			setup({
-				dispatch,
-				history
-			}) {
-				return history.listen(({
-					pathname,
-					query
-				}) => {
-					if (pathname === '/login') {
-						console.log(22222)
-						dispatch({
-							type: 'login',
-							payload: query
-						});
-					}
-					
-				})
-			}
+      *getUserMenu({ payload: values }, { call, put }) {
+        // console.log(values);
+        const { data: {data, code} }  = yield call(loginService.getUserMenu, values);
+        if (code == 0) {
+          yield put(routerRedux.push('/demo/management'));
+        }
+      },
+			// * test({
+			// 	payload: values
+			// }, {
+			// 	call,
+			// 	put
+			// }) {
+			// 	const {
+			// 		data: {
+			// 			data,
+			// 			code
+			// 		}
+			// 	} = yield call(loginService.test, values);
+            //
+			// 	yield put({
+			// 		type: 'testSave',
+			// 		payload: {
+			// 			data,
+			// 			code
+			// 		}
+			// 	});
+			// },
+			// * findSubmit({
+			// 	payload: values
+			// }, {
+			// 	call,
+			// 	put
+			// }) {
+			// 	const {
+			// 		data: {
+			// 			data,
+			// 			code
+			// 		}
+			// 	} = yield call(loginService.findSubmit, values);
+            //
+			// 	// yield put({ type: 'submitSave', payload: { data, code } });
+			// 	if (code == 0) {
+            //
+			// 		yield put(routerRedux.push('/login'));
+			// 	}
+			// }
+			// },
+
+		// subscriptions: {
+		// 	setup({
+		// 		dispatch,
+		// 		history
+		// 	}) {
+		// 		return history.listen(({
+		// 			pathname,
+		// 			query
+		// 		}) => {
+		// 			if (pathname === '/login') {
+		// 				console.log(22222)
+		// 				dispatch({
+		// 					type: 'login',
+		// 					payload: query
+		// 				});
+		// 			}
+        //
+		// 		})
+		// 	}
 		}
 	}

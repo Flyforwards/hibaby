@@ -1,4 +1,5 @@
 "use strict"
+
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
@@ -6,12 +7,17 @@ import './fromModal.scss'
 import SelectList from './from.jsx'
 import TabalList from './TabalList.jsx'
 import {local, session} from '../../common/util/storage.js'
+import FromCreateModal from './fromCreateModal.jsx'
+import AddFromCreateModal from './addFromCreateModal.jsx'
 const Option = Select.Option
 const Dictionary = local.get("Dictionary")
 
 class FromModaled extends Component {
     constructor(props) {
-        super(props)  
+        super(props) 
+        this.state = {
+          modifyModalVisible: false
+        } 
     }
      handleChange(key,option) {
         console.log(key)
@@ -26,8 +32,13 @@ class FromModaled extends Component {
     }
     addList(){
       this.setState({
-        createModalVisible: true
+        modifyModalVisible: true
       })
+    }
+    handleCreateModalCancel() {
+        this.setState({
+            modifyModalVisible: false,
+        })
     }
     cx(){
         const value0 = $(".ant-select-selection-selected-value").html()
@@ -35,15 +46,6 @@ class FromModaled extends Component {
         const value2 = this.refs.input2.refs.input.value
         const value3 = $(".SelectList").find(".ant-select-selection-selected-value").html()
         console.log("ssss", $(".ant-select-selection-selected-value").attr("index"))
-        // this.props.dispatch({
-        //     type: 'system/listByPage',
-        //     payload: {
-        //         "name": value1,
-        //         "actionpath": value2,
-        //         "id": null,
-        //         "sortOrder": "string"
-        //     }
-        // });
     }
     qk(){
         $(".ant-select-selection-selected-value").html("请选择")
@@ -52,6 +54,9 @@ class FromModaled extends Component {
         this.refs.input2.refs.input.value=""
     }
     render() {
+      {if(this.props.data){
+        local.set("mainName",this.props.data)
+      }}
         return (
             <div className="fromList">
               <span>主模块
@@ -78,6 +83,10 @@ class FromModaled extends Component {
               <i onClick={this.qk.bind(this)}>清空</i>
                <i onClick={this.addList.bind(this)}>新增</i>
                <TabalList />
+               <AddFromCreateModal
+                visible={ this.state.modifyModalVisible}
+                onCancel={ this.handleCreateModalCancel.bind(this) }
+              />
             </div>
         )
     }
@@ -92,7 +101,7 @@ function FromModal({
       dispatch
     }
     data = {
-        data
+      data
     }
     / > < /div >
   )

@@ -1,6 +1,8 @@
 import * as systemService from '../services/system';
 import { routerRedux } from 'dva/router';
-import {local, session} from '../common/util/storage.js'
+import { message } from 'antd'
+import {local, session} from '../common/util/storage.js';
+
 export default {
 	namespace: 'system',
 	state: {
@@ -11,7 +13,6 @@ export default {
 	reducers: {
 		DictionarySave(state,{payload:{data:dictionary,code}}){
 	      let Dictionarydata= {...state, dictionary, code};
-	      
 	      console.log("Dictionary",dictionary)
 	      return Dictionarydata
 	    },
@@ -103,6 +104,32 @@ export default {
 
 			return adddata;
 		},
+		permissionAddSave(state, {
+			payload: {
+				data,
+				code
+			}
+		}) {
+			let adddata = {...state,
+				data,
+				code
+			};
+
+			return adddata;
+		},
+		permissionUpdata(state, {
+			payload: {
+				data,
+				code
+			}
+		}) {
+			let permissionUpdata = {...state,
+				data,
+				code
+			};
+
+			return permissionUpdata;
+		},
 		fromModalSave(state, {
 			payload: {
 				data,
@@ -126,6 +153,7 @@ export default {
 				list,
 				projectId
 			};
+			
 			return SelectListdata;
 		},
 		addField(state, payload) {
@@ -170,12 +198,38 @@ export default {
 					// yield put(routerRedux.push('/login'));
 			}
 		},
+		*permissionAdd({payload: values}, { call, put }) {
+			const {
+				data: {
+					data,
+					code
+				}
+			} = yield call(systemService.permissionAdd, values);
+			if (code == 0) {
+				// const page = yield select(state => state.users.page);
+				message.success("添加成功");
+				yield put({ type: 'listByPage', payload: {} });
+			}
+		},
+		*permissionUpdataList({payload: values}, { call, put }) {
+			const {
+				data: {
+					data,
+					code
+				}
+			} = yield call(systemService.permissionUpdataList, values);
+			if (code == 0) {
+				// const page = yield select(state => state.users.page);
+				message.success("修改成功");
+				yield put({ type: 'listByPage', payload: {} });
+			}
+		},
 		*Dictionary({ payload: values }, { call, put }) {
 	      const  {data: {data, code}}  = yield call(systemService.Dictionary, values);
 	      if(code == 0) {
 	        yield put({ type: 'DictionarySave', payload: { data, code } });
 	      }
-	      //数据字典
+	      //Êý¾Ý×Öµä
 	    },
 		*listByPage({payload: values}, {call,put}) {
 		const {
@@ -320,7 +374,7 @@ export default {
 					code
 				}
 			} = yield call(systemService.system, values);
-			
+
 			if (code == 0) {
 				yield put({
 					type: 'systemSave',
@@ -420,7 +474,7 @@ export default {
 						  	"sortOrder": "string"
 						}
 					});
-		          //获取数据字典的dispatch
+		          //»ñÈ¡Êý¾Ý×ÖµäµÄdispatch
 		          dispatch({
 						type: 'Dictionary',
 						payload: {
