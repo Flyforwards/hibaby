@@ -1,10 +1,12 @@
 "use strict"
 import React, {Component} from 'react'
+import {connect} from 'dva'
 import {Icon, Card, Input, Select, DatePicker, Button, Table, Popconfirm, Pagination} from 'antd'
-import Page from 'framework/page'
-import request from 'common/request/request.js'
-import FileUpload from 'component/file-upload/FileUpload.jsx'
+import Page from '../../../framework/page'
+import request from '../../../common/request/request.js'
+import FileUpload from '../../../component/file-upload/FileUpload.jsx'
 import './LogView.scss'
+import Current from '../../Current'
 const Option = Select.Option;
 class EditableCell extends React.Component {
   state = {
@@ -56,7 +58,7 @@ class EditableCell extends React.Component {
     );
   }
 }
-class LogView extends Component {
+class LogViewed extends Component {
     constructor(props) {
         super(props)
          this.columns = [{
@@ -147,13 +149,83 @@ class LogView extends Component {
                     </span>
                 <button  onClick={this.Inquire.bind(this)}>查询</button>
                 </div>
+                {this.props.list?
                 <div className="LogViewList">
-                    <Table bordered dataSource={dataSource} columns={columns} pagination = {pagination}/>
-                    <p className="allList">共计0条,范围1-10</p>
-                </div>
+                    <Table bordered dataSource={this.props.list} columns={columns} pagination = {pagination} rowKey = "id"/>
+                    < Current page = {
+                      this.props.page
+                    }
+                    totalpage = {
+                      this.props.totalpage
+                    }
+                    total = {
+                      this.props.total
+                    }
+                    results = {
+                      this.props.results
+                    }
+                    range = {
+                      this.props.range
+                    }
+                    />  
+                </div>:null}
             </div>
         )
     }
 }
 
-export default LogView
+function LogView({
+  dispatch,
+  loading,
+  data: list,
+  total,
+  page,
+  results,
+  range,
+  code
+}) {
+
+  return ( < div >
+    < LogViewed dispatch = {
+      dispatch
+    }
+    list = {
+      list
+    }
+    loading = {
+      loading
+    }
+    
+    total = {
+      total
+    }
+    page={page}
+    results={results}
+    range={range}
+    / > < /div >
+  )
+
+}
+function mapStateToProps(state) {
+  console.log("modelss",state.system)
+  const {
+    data,
+    total,
+    page,
+    results,
+    range,
+    code
+  } = state.system;
+
+  return {
+    loading: state.loading.models.system,
+    data,
+    total,
+    page,
+    results,
+    range,
+    code
+  };
+}
+
+export default connect(mapStateToProps)(LogView);

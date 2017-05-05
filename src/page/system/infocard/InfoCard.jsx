@@ -2,12 +2,12 @@
 
 import React, {Component} from 'react'
 import {Icon, Card} from 'antd'
-import Page from 'framework/page'
-import request from 'common/request/request.js'
+import Page from '../../../framework/page'
+import request from '../../../common/request/request.js'
 
-import InfoCard from 'component/info-card'
+import InfoCard from '../../../component/info-card'
 
-class InfoCardDemo extends Component {
+class InfoCards extends Component {
 
     constructor(props) {
         super(props)
@@ -66,4 +66,4 @@ class InfoCardDemo extends Component {
     }
 }
 
-export default InfoCardDemo
+export default InfoCards

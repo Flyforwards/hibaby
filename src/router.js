@@ -84,11 +84,29 @@ let routes = [
               }
           },
           {
-              path: '/system/info-card',
+              path: '/system/infocard',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      cb(null, require('./page/system/info-card-demo/InfoCardDemo.jsx'))
+                      cb(null, require('./page/system/infocard/InfoCard.jsx'))
                   })
+              }
+          },
+          {
+              path: '/demo/add',
+              getComponent: (location, cb) => {
+                require.ensure([], (require) => {
+                  registerModel(app, require('./models/system'));
+                  cb(null, require('./page/system/management/Add.js'))
+                })
+              }
+          },
+          {
+              path: '/demo/view',
+              getComponent: (location, cb) => {
+                require.ensure([], (require) => {
+                  registerModel(app, require('./models/system'));
+                  cb(null, require('./page/system/management/View.js'))
+                })
               }
           },
           {
@@ -98,6 +116,15 @@ let routes = [
                       cb(null, require('./page/system/LogView/LogView.jsx'))
                   })
               }
+          },
+          {
+            path: '/fromModal',
+            getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+            registerModel(app, require('./models/system'));
+            cb(null, require('./page/Customer/fromModal.jsx'))
+          })
+          }
           },
 
           //404

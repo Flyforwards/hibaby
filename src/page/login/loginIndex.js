@@ -11,8 +11,6 @@ import { session } from 'common/util/storage.js';
 import {browserHistory} from 'react-router';
 import logo from './images/logo.png'
 const FormItem = Form.Item;
-
-
 class NormalLoginForm extends React.Component {
 
         constructor(props) {

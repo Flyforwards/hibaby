@@ -1,16 +1,25 @@
+
 import React from 'react'
 import './Organization.scss'
 import { connect } from 'dva'
 import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
+
 import { routerRedux } from 'dva/router'
 import { Link} from 'react-router'
 import { classification,dataList } from './constants.js'
+
+import Current from '../../Current'
+import OrganizationLeft from './OrganizationLeft.jsx'
+
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
+
+
 class Organizationed extends React.Component {
     constructor(props) {
         super(props)
@@ -74,6 +83,47 @@ class Organizationed extends React.Component {
             upblock:'none'
         }
     }
+    componentDidMount(){
+      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")
+      $(".plus").click(function(e){
+          if(this.state.upblock == 'none'){
+            this.setState({
+              ulTop:e.pageY-e.offsetY-33,
+              upblock:'block'
+            })
+            return
+          }
+          if(this.state.upblock == 'block'){
+            this.setState({
+              ulTop:e.pageY-e.offsetY,
+              upblock:'none'
+            })
+            return
+          }
+      }.bind(this))
+    }
+
+    expandHandler = () => {
+      setTimeout(() => {
+        $("li").find("li .ant-tree-title").after("<span class='plus'>+</span>")
+         $(".plus").click(function(e){
+          if(this.state.upblock == 'none'){
+            this.setState({
+              ulTop:e.pageY-e.offsetY-33,
+              upblock:'block'
+            })
+            return
+          }
+          if(this.state.upblock == 'block'){
+            this.setState({
+              ulTop:e.pageY-e.offsetY,
+              upblock:'none'
+            })
+            return
+          }
+      }.bind(this))
+      }, 50)
+    }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
       data.forEach((item, index, arr) => {
@@ -113,20 +163,7 @@ class Organizationed extends React.Component {
           this.setState({ dataSource });
         };
       }
-      drago({event,node}){
-        if(this.state.upblock == 'none'){
-          this.setState({
-            ulTop:node.refs.li.offsetTop+32,
-            upblock:'block'
-          })
-        }
-        if(this.state.upblock == 'block'){
-          this.setState({
-            ulTop:node.refs.li.offsetTop+32,
-            upblock:'none'
-          })
-        }
-      }
+
       onDelete = (index) => {
         const dataSource = [...this.state.dataSource];
         dataSource.splice(index, 1);
@@ -151,9 +188,8 @@ class Organizationed extends React.Component {
     render() {
         const { dataSource } = this.state;
         const columns = this.columns;
-        console.log("Organization",this.props.data)
         const pagination = {
-        total: 100, //数据总条数
+        total: 100,
         showQuickJumper: true,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
@@ -166,41 +202,19 @@ class Organizationed extends React.Component {
           }));
         },
       };
-      const loop = data => data.map((item) => {
-        if (item.children && item.children.length) {
-          return <TreeNode key={item.key} title={item.key}>{loop(item.children)}</TreeNode>;
-        }
-        return <TreeNode key={item.key} title={item.key} />;
-      });
         return (
             <main className="yt-admin-framework-Customer-a">
-            <div className="Organization-left">
-                <Tree
-                  className="draggable-tree"
-                  defaultExpandedKeys={this.state.expandedKeys}
-                  draggable
-                  onRightClick={this.drago.bind(this)}
-                  onDragEnter={this.onDragEnter}
-                  onDrop={this.onDrop}
-                >
-                  {loop(classification)}
-                </Tree>
-                <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
-                  <li>添加子节点</li>
-                  <li>查看详情</li>
-                  <li>删除</li>
-                  <li>ID 0002</li>
-                </ul>
-            </div>
+            <OrganizationLeft/>
             <div className="Organization-right">
             <div className="Organization-nav">
-              <div className="name">姓名<Input /></div>
+              <div className="name">姓名<Input ref="O"/></div>
               <div className="SystemRoles">系统角色
                  <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType">
                     <Option value="jack">Jack</Option>
                     <Option value="时尚">请选择</Option>
                     <Option value="disabled">Disabled</Option>
                     <Option value="Yiminghe">yiminghe</Option>
+
                   </Select>
               </div>
               <div className="status">账户状态
@@ -214,10 +228,26 @@ class Organizationed extends React.Component {
               <span className="Organization-Inquire" onClick={this.OrganizationAdd.bind(this)}>新增员工</span>
               <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
             </div>
+            {this.props.list?
             <div className="CreateModaList">
-                <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
-                <p className="allList">共计0条,范围1-10</p>
-            </div>
+                <Table bordered dataSource={this.props.list} columns={columns} pagination = {pagination} rowKey="Numbering"/>
+                < Current page = {
+                      this.props.page
+                    }
+                    totalpage = {
+                      this.props.totalpage
+                    }
+                    total = {
+                      this.props.total
+                    }
+                    results = {
+                      this.props.results
+                    }
+                    range = {
+                      this.props.range
+                    }
+                    />
+            </div>:null}
             <CreateModal
                 visible={ this.state.createModalVisible }
             />
@@ -230,35 +260,49 @@ class Organizationed extends React.Component {
 function Organization({
   dispatch,
   loading,
-  data,
+  data: list,
+  total,
+  page,
+  results,
+  range,
   code
 }) {
   return ( < div >
     <Organizationed dispatch = {
       dispatch
     }
+    list = {
+      list
+    }
     loading = {
       loading
     }
-    data = {
-      data
+    total = {
+      total
     }
-    code = {
-      code
-    }
-    /> </div>
+    page={page}
+    results={results}
+    range={range}
+    /> </div >
   )
-
 }
 function mapStateToProps(state) {
-  // console.log(state.users)
-    const {
-      data,
-      code
-    } = state.users;
-  return {
-    loading: state.loading.models.users,
+  console.log("modelss",state.system)
+  const {
     data,
+    total,
+    page,
+    results,
+    range,
+    code
+  } = state.system;
+  return {
+    loading: state.loading.models.system,
+    data,
+    total,
+    page,
+    results,
+    range,
     code
     };
 }

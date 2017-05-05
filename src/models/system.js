@@ -1,25 +1,82 @@
 import * as systemService from '../services/system';
-import {
-	routerRedux
-} from 'dva/router';
+import { routerRedux } from 'dva/router';
+import { message } from 'antd'
+import {local, session} from '../common/util/storage.js';
 
 export default {
 	namespace: 'system',
 	state: {
 		data: [],
 		total: null,
+		list:[],
 	},
 	reducers: {
-		systemSave(state, {
-			payload: {
+		DictionarySave(state,{payload:{data:dictionary,code}}){
+	      let Dictionarydata= {...state, dictionary, code};
+	      console.log("Dictionary",dictionary)
+	      return Dictionarydata
+	    },
+		listByPageSave(state,{payload:{data:arr,total,page,size,code}}) {
+			let listByPageldata = {...state,
+				arr,
+				page,
+				size,
+				total,
+				code
+			};
+			let range = {
+				start: page == 1 ? 1 : (page - 1) * 3 + 1,
+				end: page == 1 ? arr.length : (page - 1) * 3 + arr.length,
+				totalpage:Math.ceil(total/size),
+			}
+			return {...listByPageldata,range};
+		},
+		organizationSave(state,{payload:{data,total,page,size,code}}){
+	      let organizationdata = {...state,
 				data,
 				total,
 				page,
 				size,
 				code,
+			};
+			let range = {
+				start: page == 1 ? 1 : (page - 1) * 3 + 1,
+				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
+				totalpage:Math.ceil(total/size),
 			}
-		}) {
-
+			return {...organizationdata,range};
+	    },
+		LogViewSave(state,{payload:{data,total,page,size,code}}){
+	      let LogViewdata = {...state,
+				data,
+				total,
+				page,
+				size,
+				code,
+			};
+			let range = {
+				start: page == 1 ? 1 : (page - 1) * 3 + 1,
+				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
+				totalpage:Math.ceil(total/size),
+			}
+			return {...LogViewdata,range};
+	    },
+		customerSave(state,{payload:{data,total,page,size,code}}){
+	      let customerdata = {...state,
+				data,
+				total,
+				page,
+				size,
+				code,
+			};
+			let range = {
+				start: page == 1 ? 1 : (page - 1) * 3 + 1,
+				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
+				totalpage:Math.ceil(total/size),
+			}
+			return {...customerdata,range};s
+	    },
+		systemSave(state, { payload: {data,total,page,size,code}}) {
 			let systemdata = {...state,
 				data,
 				total,
@@ -32,9 +89,7 @@ export default {
 				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
 				totalpage:Math.ceil(total/size),
 			}
-			return {...systemdata,
-				range
-			};
+			return {...systemdata,range};
 		},
 		addSave(state, {
 			payload: {
@@ -49,13 +104,64 @@ export default {
 
 			return adddata;
 		},
+		permissionAddSave(state, {
+			payload: {
+				data,
+				code
+			}
+		}) {
+			let adddata = {...state,
+				data,
+				code
+			};
+
+			return adddata;
+		},
+		permissionUpdata(state, {
+			payload: {
+				data,
+				code
+			}
+		}) {
+			let permissionUpdata = {...state,
+				data,
+				code
+			};
+
+			return permissionUpdata;
+		},
+		fromModalSave(state, {
+			payload: {
+				data,
+				code
+			}
+		}) {
+			let fromModaldata = {...state,
+				data,
+				code
+			};
+			local.set("Dictionary",data)
+			return fromModaldata;
+		},
+		SelectListSave(state, {
+			payload: {
+				data:list,
+				projectId
+			}
+		}) {
+			let SelectListdata = {...state,
+				list,
+				projectId
+			};
+
+			return SelectListdata;
+		},
 		addField(state, payload) {
 			const {arr} = state;
 			let arr2 = {...arr, ...payload};
 			return {
 				...state, arr2
 			}
-
 		},
 		viewSave(state, {
 			payload: {
@@ -67,22 +173,13 @@ export default {
 				data,
 				code
 			};
-
-
-
 			let arr2 = data.dictionarySideDOs;
-
-			// var arr2 = new Array;
-			// for(var i in arr){
-			// 	arr2.push(arr[i].name)
-			// }
-			console.log(arr2)
 			return  {...viewdata,
 				arr2
 			};;
 		},
 	},
-	effects: { * add({
+	effects: { *add({
 			payload: values
 		}, {
 			call,
@@ -97,11 +194,172 @@ export default {
 
 			// yield put({ type: 'submitSave', payload: { data, code } });
 			if (code == 0) {
-				console.log('save success!')
+
 					// yield put(routerRedux.push('/login'));
 			}
 		},
-		* system({
+		*permissionAdd({payload: values}, { call, put }) {
+			const {
+				data: {
+					data,
+					code
+				}
+			} = yield call(systemService.permissionAdd, values);
+			if (code == 0) {
+				// const page = yield select(state => state.users.page);
+				message.success("添加成功");
+				yield put({ type: 'listByPage', payload: {} });
+			}
+		},
+		*permissionUpdataList({payload: values}, { call, put }) {
+			const {
+				data: {
+					data,
+					code
+				}
+			} = yield call(systemService.permissionUpdataList, values);
+			if (code == 0) {
+				// const page = yield select(state => state.users.page);
+				message.success("修改成功");
+				yield put({ type: 'listByPage', payload: {} });
+			}
+		},
+		*Dictionary({ payload: values }, { call, put }) {
+	      const  {data: {data, code}}  = yield call(systemService.Dictionary, values);
+	      if(code == 0) {
+	        yield put({ type: 'DictionarySave', payload: { data, code } });
+	      }
+	      //Êý¾Ý×Öµä
+	    },
+		*listByPage({payload: values}, {call,put}) {
+		const {
+				data:{
+					data,
+					code
+				}
+			} = yield call(systemService.listByPage, values);
+			if (code == 0) {
+				yield put({
+					type: 'listByPageSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		*fromModal({
+			payload: values
+		}, {
+			call,
+			put
+		}) {
+			const {
+				data:{
+					data,
+					code
+				}
+			} = yield call(systemService.fromModal, values);
+			if (code == 0) {
+				yield put({
+					type: 'fromModalSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		*SelectList({
+			payload: values
+		}, {
+			call,
+			put
+		}) {
+			const {
+				data:{
+					data,
+					projectId = 2,
+					code
+				}
+			} = yield call(systemService.SelectList, values);
+			if (code == 0) {
+				yield put({
+					type: 'SelectListSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+	    *organization({ payload: values }, {call,put }){
+	      const {
+	      	data: {
+		      		data,
+		      		total,
+		      		page = 1,
+		      		size,
+		      		code
+	      }} = yield call(systemService.organization, values);
+	      if(code == 0) {
+	        yield put({
+					type: 'organizationSave',
+					payload: {
+						data,
+						total,
+						page,
+						size,
+						code
+					}
+				});
+			}
+	      },
+	      *customer({ payload: values }, {call,put }){
+	      const {
+	      	data: {
+		      		data,
+		      		total,
+		      		page = 1,
+		      		size,
+		      		code
+	      }} = yield call(systemService.customer, values);
+	      if(code == 0) {
+	        yield put({
+					type: 'customerSave',
+					payload: {
+						data,
+						total,
+						page,
+						size,
+						code
+					}
+				});
+			}
+	      },
+	      *LogView({ payload: values }, {call,put }){
+	      const {
+	      	data: {
+		      		data,
+		      		total,
+		      		page = 1,
+		      		size,
+		      		code
+	      }} = yield call(systemService.LogView, values);
+	      if(code == 0) {
+	        yield put({
+					type: 'LogViewSave',
+					payload: {
+						data,
+						total,
+						page,
+						size,
+						code
+					}
+				});
+			}
+	      },
+		*system({
 			payload: values
 		}, {
 			call,
@@ -118,7 +376,6 @@ export default {
 			} = yield call(systemService.system, values);
 
 			if (code == 0) {
-
 				yield put({
 					type: 'systemSave',
 					payload: {
@@ -129,10 +386,9 @@ export default {
 						code
 					}
 				});
-
 			}
 		},
-		* view({
+		*view({
 			payload
 		}, {
 			call,
@@ -179,13 +435,85 @@ export default {
 						}
 					});
 				}
+				if(pathname === '/Customer') {
+		          dispatch({
+						type: 'customer',
+						payload: {
+							...query,
+							"size": 3,
+							"sortField": "string",
+							"sortOrder": "string",
+							"type": 1
+						}
+					});
+		        }
+		        if(pathname === '/fromModal') {
+		          dispatch({
+						type: 'fromModal',
+						payload: {
+							...query
+						}
+					});
+		        }
+		        if(pathname === '/fromModal') {
+		          dispatch({
+						type: 'SelectList',
+						payload: {
+							...query,
+							"projectId":2
+						}
+					});
+		        }
+		        if(pathname === '/fromModal') {
+		          dispatch({
+						type: 'listByPage',
+						payload: {
+							...query,
+							"page": 4,
+						  	"size": 3,
+						  	"sortField": "string",
+						  	"sortOrder": "string"
+						}
+					});
+		          //»ñÈ¡Êý¾Ý×ÖµäµÄdispatch
+		          dispatch({
+						type: 'Dictionary',
+						payload: {
+							...query,
+							  "id": 4,
+							  "softDelete": 0,
+							  "type": 1
+						}
+					});
+		        }
+		        if(pathname === '/system/LogView') {
+		          dispatch({
+						type: 'LogView',
+						payload: {
+							...query,
+							"size": 3,
+							"sortField": "string",
+							"sortOrder": "string",
+							"type": 1
+						}
+					});
+		        }
+		        if(pathname === '/system/organization') {
+		          dispatch({
+						type: 'organization',
+						payload: {
+							...query,
+							"size": 3,
+							"sortField": "string",
+							"sortOrder": "string",
+							"type": 1
+						}
+					});
+		        }
 				if (pathname === '/demo/view') {
-
 					dispatch({
 						type: 'view',
-						payload: query,
-
-
+						payload: query
 					});
 				}
 			})

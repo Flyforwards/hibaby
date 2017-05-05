@@ -1,5 +1,4 @@
-"use strict"
-
+"use strict" 
 import React, {Component} from 'react'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 const createForm = Form.create
@@ -10,7 +9,6 @@ const Option = Select.Option
 class CreateModal extends Component {
     constructor(props) {
         super(props)
-        
     }
     handleCancel() {
         this.props.onCancel()

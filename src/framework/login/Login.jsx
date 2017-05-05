@@ -5,8 +5,8 @@ const createForm = Form.create;
 import DocumentTitle from 'react-document-title'
 import './index.scss'
 import {browserHistory} from 'react-router'
-import request from 'common/request/request.js'
-import {local, session} from 'common/util/storage.js'
+import request from '../../common/request/request.js'
+import {local, session} from '../../common/util/storage.js'
 
 import logoImg from './logo.png'
 

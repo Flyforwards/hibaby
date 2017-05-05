@@ -2,8 +2,8 @@
 
 import React from 'react'
 import {message, Button, Icon} from 'antd'
-import Page from 'framework/page'
-import request from 'common/request/request.js'
+import Page from '../../framework/page'
+import request from '../../common/request/request.js'
 import './index.scss'
 
 class Home extends React.Component {

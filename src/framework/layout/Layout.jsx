@@ -3,6 +3,7 @@ import './index.scss'
 import React from 'react'
 import {BackTop, Spin} from 'antd'
 import Header from '../header/Header.jsx'
+
 import Sidebar from '../sidebar/Sidebar.jsx'
 import Content from '../content/Content.jsx'
 import {local, session} from 'common/util/storage.js'
@@ -83,7 +84,6 @@ class Layout extends React.Component {
 
         if (subMenu != null) {
           menuData = subMenu;
-          console.log(subMenu);
         }
 
         return (

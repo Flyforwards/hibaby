@@ -5,6 +5,19 @@
     padding: 10px;
     background-color: #f8f6f2;
     background-size: cover;
+    .ant-table-thead > tr > th {
+        background-color: dimgray;
+        font-weight: 500;
+        transition: background .3s ease;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    .ant-table-tbody > tr > td {
+        font-weight: 500;
+        transition: background .3s ease;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.85);
+    }
 }
 
 img {
@@ -64,7 +77,6 @@ img {
     height: 100%;
     color: #fff;
     float: right;
-    clear:both;
 }
 
 .addBtn:hover {
@@ -169,7 +181,8 @@ element.style {
 }
 
 .ant-input[disabled] {
-    background-color: #f7f7f7;
+   
+    background-color: rgba(102, 102, 102, 1);
     opacity: 1;
     cursor: not-allowed;
     color: rgba(0, 0, 0, 0.65)
