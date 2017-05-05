@@ -10,27 +10,28 @@ import logo from './images/logo.png'
 function ClubSelect({dispatch, club}){
 
   const btnClick = (index) => {
-    // console.log(club);
-    // console.log(index);
     const selClub = club[index];
-    // console.log(selClub);
+    // dispatch({
+    //   type: 'login/getCurrUserMenu',
+    //   payload: { selClub },
+    // });
     dispatch({
-      type: 'login/getUserMenu',
+      type: 'layout/setEndemic',
       payload: { selClub },
     });
   };
-
+  let buttonNodes = {};
+  if (club != null) {
+     buttonNodes =  club.map((item, index) => {
+      return (<Button key={ index }  onClick = { btnClick.bind(this, index) }  type = "primary" > {item.name} </Button>)
+    })
+  }
   return (
    <div className = "container">
      <div className = "select">
        <img className = "findimg" src ={logo} />
        {
-         club.map(
-           (item, index) => {
-             console.log(index);
-             return (<Button key={ index }  onClick = { btnClick.bind(this, index) }  type = "primary" > {item.name} </Button>)
-           }
-         )
+         buttonNodes
        }
      </div>
    </div>

@@ -1,8 +1,6 @@
 "use strict"
 import React from 'react';
-import {
-  connect
-} from 'dva';
+import { connect } from 'dva';
 import './system.scss';
 import {
   Table,
@@ -12,12 +10,8 @@ import {
   Popconfirm,
   Pagination
 } from 'antd';
-import {
-  routerRedux
-} from 'dva/router';
-import {
-  Link
-} from 'react-router';
+import {  routerRedux  } from 'dva/router';
+import {  Link } from 'react-router';
 
 
 
@@ -73,8 +67,6 @@ class SystemIndex extends React.Component {
         }];
     }
     render() {
-console.log(this.props.list)
-
 
       const columns = this.columns;
 
@@ -84,7 +76,7 @@ console.log(this.props.list)
         pageSize:3,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
-            pathname: '/demo/management',
+            pathname: '/system/management',
             query: {
               "page": current,
               "results": 3,

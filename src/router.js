@@ -25,7 +25,6 @@ import {local, session} from './common/util/storage.js'
 import Layout from './framework/layout/Layout.jsx'
 import Home from './page/home'
 
-import pageRoutes from './page/routeConfig.js'
 
 
 const cached = {};
@@ -47,87 +46,70 @@ let routes = [
             //     replace('/home')
             // }
         },
-        childRoutes: [{
-        path: '/Organization',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
-                cb(null, require('./page/Organization/Organization.jsx'))
-            })
-        }
-    },
-     {
-        path: '/Customer',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
-                cb(null, require('./page/Customer/Customer.jsx'))
-            })
-        }
-    },
-    {
-        path: '/demo/management',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
-                cb(null, require('./page/demo/management/management.jsx'))
-            })
-        }
-    },
-    {
-        path: '/demo/add',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
-                cb(null, require('./page/demo/management/Add.js'))
-            })
-        }
-    },
-     {
-        path: '/demo/view',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
-                cb(null, require('./page/demo/management/View.js'))
-            })
-        }
-    },
-    {
-        path: '/demo/position',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
-                cb(null, require('./page/demo/position/position.jsx'))
-            })
-        }
-    },
-    {
-        path: '/demo/info-card-demo',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('./page/demo/info-card-demo/InfoCardDemo.jsx'))
-            })
-        }
-    },
-    {
-        path: '/demo/LogView',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('./page/demo/LogView/LogView.jsx'))
-            })
-        }
-    },
+        childRoutes: [
+            {
+              path: '/system/organization',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/users'));
+                      cb(null, require('./page/system/organization/Organization.jsx'))
+                  })
+              }
+          },
+           {
+              path: '/system/customer',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/users'));
+                      cb(null, require('./page/customer/Customer.jsx'))
+                  })
+              }
+          },
+          {
+              path: '/system/management',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/system'));
+                      cb(null, require('./page/system/management/management.jsx'))
+                  })
+              }
+          },
+          {
+              path: '/system/position',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/users'));
+                      cb(null, require('./page/system/position/position.jsx'))
+                  })
+              }
+          },
+          {
+              path: '/system/info-card',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      cb(null, require('./page/system/info-card-demo/InfoCardDemo.jsx'))
+                  })
+              }
+          },
+          {
+              path: '/system/logView',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      cb(null, require('./page/system/LogView/LogView.jsx'))
+                  })
+              }
+          },
 
-
-    //404
-    {
-        path: '/404',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('./page/not-found'))
-            })
-        }
-    }],
+          //404
+          {
+              path: '/404',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      cb(null, require('./page/not-found'))
+                  })
+              }
+          }
+        ],
         onEnter(nextState, replace) {
             // 可以验证是否登录
             console.info("%c nextState >>>", "color:orange", nextState)
@@ -141,7 +123,7 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/demo/LogView/Login.js'))
+                cb(null, require('./page/login/Login.js'))
             })
         }
     },
@@ -150,7 +132,7 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/demo/LogView/LoginFind.js'))
+                cb(null, require('./page/login/LoginFind.js'))
             })
         }
     },
@@ -159,20 +141,10 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/demo/LogView/LoginClub.js'))
+                cb(null, require('./page/login/LoginClub.js'))
             })
         }
     },
-    {
-        path: '/users',
-        getComponent: (location, cb) => {
-            require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
-          		cb(null, require('./routes/Users'));
-            })
-        }
-    },
-    
     {
         path: '*',
         indexRoute: {

@@ -14,7 +14,7 @@ class Sidebar extends React.Component {
     convertSidebarMenu(menuData, key) {
 
         return menuData.map((val, index) => {
-            if (val.children) {
+            if (val.children && val.children.length != 0) {
                 return (
                     <SubMenu key={key + val.path} title={<span><FAIcon name={val.icon}/><span>{val.name}</span></span>}>
                         {

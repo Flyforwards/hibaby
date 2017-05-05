@@ -166,7 +166,7 @@ export default {
 				pathname,
 				query
 			}) => {
-				if (pathname === '/demo/management') {
+				if (pathname === '/system/management') {
 
 					dispatch({
 						type: 'system',

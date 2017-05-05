@@ -92,10 +92,10 @@ export default {
   			if(pathname === '/users') {
   				dispatch({type: 'fetch', payload: query});
   			}
-        if(pathname === '/Customer/Customer') {
+        if(pathname === '/customer/Customer') {
           dispatch({type: 'customer', payload: {}});
         }
-        if(pathname === '/Organization') {
+        if(pathname === '/organization') {
           dispatch({type: 'position', payload: {}});
         }
   		})
