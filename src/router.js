@@ -47,26 +47,19 @@ let routes = [
             // }
         },
         childRoutes: [
+          // 组织架构
             {
               path: '/system/organization',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      registerModel(app, require('./models/users'));
+                      registerModel(app, require('./models/system'));
                       cb(null, require('./page/system/organization/Organization.jsx'))
                   })
               }
           },
-           {
-              path: '/system/customer',
-              getComponent: (location, cb) => {
-                  require.ensure([], (require) => {
-                      registerModel(app, require('./models/users'));
-                      cb(null, require('./page/customer/Customer.jsx'))
-                  })
-              }
-          },
+          // 集团字段
           {
-              path: '/system/management',
+              path: '/system/groupchar',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
                       registerModel(app, require('./models/system'));
@@ -74,6 +67,7 @@ let routes = [
                   })
               }
           },
+          // 职位管理
           {
               path: '/system/position',
               getComponent: (location, cb) => {
@@ -83,39 +77,50 @@ let routes = [
                   })
               }
           },
+          // 日志查看
           {
-              path: '/system/infocard',
+              path: '/system/logsview',
               getComponent: (location, cb) => {
-                  require.ensure([], (require) => {
-                      cb(null, require('./page/system/infocard/InfoCard.jsx'))
-                  })
-              }
-          },
-          {
-              path: '/demo/add',
-              getComponent: (location, cb) => {
-                require.ensure([], (require) => {
                   registerModel(app, require('./models/system'));
-                  cb(null, require('./page/system/management/Add.js'))
-                })
-              }
-          },
-          {
-              path: '/demo/view',
-              getComponent: (location, cb) => {
-                require.ensure([], (require) => {
-                  registerModel(app, require('./models/system'));
-                  cb(null, require('./page/system/management/View.js'))
-                })
-              }
-          },
-          {
-              path: '/system/logView',
-              getComponent: (location, cb) => {
                   require.ensure([], (require) => {
                       cb(null, require('./page/system/LogView/LogView.jsx'))
                   })
               }
+          },
+          {
+            path: '/system/customer',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/users'));
+                cb(null, require('./page/customer/Customer.jsx'))
+              })
+            }
+          },
+          {
+            path: '/system/infocard',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                cb(null, require('./page/system/infocard/InfoCard.jsx'))
+              })
+            }
+          },
+          {
+            path: '/demo/add',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/system/management/Add.js'))
+              })
+            }
+          },
+          {
+            path: '/demo/view',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/system/management/View.js'))
+              })
+            }
           },
           {
             path: '/fromModal',

@@ -48,7 +48,7 @@ class SystemIndex extends React.Component {
         pageSize:3,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
-            pathname: '/system/management',
+            pathname: '/system/groupchar',
             query: {
               "page": current,
               "results": 3,

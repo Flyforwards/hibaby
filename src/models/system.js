@@ -422,7 +422,7 @@ export default {
 				pathname,
 				query
 			}) => {
-				if (pathname === '/system/management') {
+				if (pathname === '/system/groupchar') {
 
 					dispatch({
 						type: 'system',
@@ -486,7 +486,7 @@ export default {
 						}
 					});
 		        }
-		        if(pathname === '/system/LogView') {
+		        if(pathname === '/system/logsview') {
 		          dispatch({
 						type: 'LogView',
 						payload: {

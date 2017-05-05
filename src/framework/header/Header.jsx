@@ -108,7 +108,7 @@ class Header extends React.Component {
           subNodes =  projectList.map((item, index) => {
             return (
               <li key = {index} className="menu-item">
-                <Link to={ item.path || "/system/management" } >
+                <Link to={ item.path || "/system/groupchar" } >
                   <span className="header-menu-text">{ item.name }</span>
                 </Link>
               </li>

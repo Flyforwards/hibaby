@@ -28,7 +28,7 @@ export default {
             payload: data ,
           })
         if (location.pathname === '/login') {
-          yield put(routerRedux.push('/system/management'))
+          yield put(routerRedux.push('/club'))
         }
       } else {
         if (location.pathname !== '/login') {
