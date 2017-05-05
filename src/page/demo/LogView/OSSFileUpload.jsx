@@ -2,8 +2,8 @@
 // OSS单文件上传
 import React, {Component} from 'react'
 import {Button, Input, Icon, message} from 'antd'
-import request from 'common/request/request.js'
-import FileUpload from 'component/file-upload/FileUpload.jsx'
+import request from '../../../common/request/request.js'
+import FileUpload from '../../../component/file-upload/FileUpload.jsx'
 
 class OSSUpload extends Component {
 

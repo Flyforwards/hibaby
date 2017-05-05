@@ -54,8 +54,12 @@ class SystemIndex extends React.Component {
           }));
         },
       };
-      return ( < div className = "container">
-        < div className = "buttonwrapper">
+      return ( < div className = "
+          container2"
+         >
+        < div className = "
+          buttonwrapper"
+         >
         < Link to = "/demo/add" > < Button 
         className = "editable-add-btn" className="addBtn"> 添加 < /Button></Link >
         < /div> 

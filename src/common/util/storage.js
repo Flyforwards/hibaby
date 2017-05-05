@@ -2,9 +2,7 @@
  *  本地存储封装，项目中其他地方不要直接使用localStorage和sessionStorage，统一使用封装。
  *  简化接口，字符串json转换。
  * */
-
 const SALT = '__yt__admin__'
-
 export default {
     local: {
         get(key) {

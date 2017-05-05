@@ -1,9 +1,9 @@
 import React from 'react'
 import {Button, Popconfirm, message, Menu, Dropdown, Icon, Badge, Collapse} from "antd";
-import FAIcon from 'component/faicon'
+import FAIcon from '../../component/faicon'
 import {hashHistory} from 'react-router'
-import request from 'common/request/request.js'
-import {local, session} from 'common/util/storage.js'
+import request from '../../common/request/request.js'
+import {local, session} from '../../common/util/storage.js'
 import './index.scss'
 import  UpdateModal from './UpdateModal.jsx'
 import Logo from './logo.png'

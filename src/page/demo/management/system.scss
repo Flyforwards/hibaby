@@ -1,4 +1,4 @@
-.container {
+.container2 {
     height: 100%;
     width: 100%;
     min-width: 1100px;
@@ -52,19 +52,11 @@ img {
     width: 84%;
     height: 40px;
 }
-
-.div2 span {
-    display: block;
-    background-color: #f75555;
-    color: #fff;
-    width: 80px;
-    position: absolute;
-    right: 5%;
-    bottom: 0;
-    margin-left: 30px;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 40px;
+.input3{
+  float: left;
+    width: 77.8%;
+    height: 40px;
+    margin-bottom: 10px;
 }
 
 .div {
@@ -197,5 +189,50 @@ element.style {
 }
 
 
+.div2 .delBtn {
+ 
+    background-color: #f75555;
+    color: #fff;
+    width: 80px;
+    position: absolute;
+    right: 5%;
+    bottom: 0;
+    margin-left: 30px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+}
+#editSave{
+  width:300px;
+  float:right;
+  position:relative;
+}
+.save{
+  background-color:#b67233;
+      color: #fff;
+      width: 140px;
+      position:absolute;
+      top:0;
+      right:10px;
+
+}
+.retBtn {
+  background-color: #b67233;
+          color: #fff;
+          width: 140px;
+}
+.editable-add-btn {
+    background-color: #b67233;
+    color: #fff;
+    width: 140px
+}
+
+.editable-add-btn:hover {
+    background-color: #f89d2d;
+    border: none;
+    color: #fff;
+}          
+          
+       
 
 }

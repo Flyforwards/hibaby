@@ -61,7 +61,7 @@ class TabalListed extends Component {
             return (
                 <div>
                  <a href="#" onClick={this.addList.bind(this)}>增加</a>
-                  <a href="#">修改</a>
+                  <a href="#" onClick={this.modify.bind(this,index)}>修改</a>
                 </div>
             );
           },
@@ -75,7 +75,9 @@ class TabalListed extends Component {
                 actionPath:'/xxxx/xxxx/xxx',
                 people:'里方法'
               }],
-              createModalVisible: false
+              createModalVisible: false,
+              modifyModalVisible: false,
+              modifyModalIndex: null
         }
     }
     showCreateModal() {
@@ -83,14 +85,30 @@ class TabalListed extends Component {
             createModalVisible: true
         })
     }
+    showModifyModal() {
+        this.setState({
+            modifyModalVisible: true
+        })
+    }
+    handleModifyModalCancel() {
+        this.setState({
+            modifyModalVisible: false,
+        })
+    }
     handleCreateModalCancel() {
         this.setState({
-            createModalVisible: false
+            createModalVisible: false,
         })
     }
     addList(){
       this.setState({
         createModalVisible: true
+      })
+    }
+    modify(index){
+      this.setState({
+        modifyModalVisible: true,
+        modifyModalIndex: index,
       })
     }
     render() {
@@ -101,7 +119,7 @@ class TabalListed extends Component {
             mainName = DataConversion(list,"parentId",this.props.arr,"parentId")
             console.log("dsdssssssssss",mainName)
           }else{
-            console.log("eded")
+            
           }
         }
         return (
@@ -109,8 +127,14 @@ class TabalListed extends Component {
           <Table bordered dataSource = {mainName} columns={this.columns} className="fromModal" rowKey = "class"/>
           <FromCreateModal
             handleOk={this.state.handleOk}
-            visible={ this.state.createModalVisible }
+            visible={ this.state.createModalVisible}
             onCancel={ this.handleCreateModalCancel.bind(this) }
+          />
+          <FromCreateModal
+            handleOk={this.state.handleOk}
+            modelsList={mainName[this.state.modifyModalIndex]}
+            visible={ this.state.modifyModalVisible}
+            onCancel={ this.handleModifyModalCancel.bind(this) }
           />
           </div>
         )

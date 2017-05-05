@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import {hashHistory} from 'react-router'
 import { message } from 'antd'
-import {local, session} from 'common/util/storage.js'
+import {local, session} from '../util/storage.js'
 
 function request(option) {
 

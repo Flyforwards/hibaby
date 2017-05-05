@@ -249,45 +249,6 @@ class Customered extends React.Component {
                       format="YYYY-MM-DD"
                     />
                 </div>
-                <div className="listDiv">孕期
-                   
-                </div>    
-                <div className="listDiv">第几胎
-                    
-                </div>
-                <div className="listDiv">客资来源
-                    
-                </div>
-                <div className="listDiv">关注点
-                    
-                </div> 
-                <div className="listDiv">搜索关键字
-                    
-                </div>  
-                <div className="listDiv">操作者1
-                    
-                </div>
-                <div className="listDiv">现住址
-                    
-                </div>
-                <div className="listDiv">籍贯
-                    
-                </div>
-                <div className="listDiv">民族
-                    
-                </div>
-                <div className="listDiv">购买套餐
-                    
-                </div>  
-                <div className="listDiv">会员身份
-                    
-                </div>  
-                <div className="listDiv">操作者2
-                    
-                </div>                
-                <div className="listDiv">宝宝生产日期
-                    
-                </div>  
             </div>
             </div>
             <div className="CreateModaList-a">

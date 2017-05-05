@@ -4,7 +4,7 @@ import {BackTop, Spin} from 'antd'
 import Header from '../header/Header.jsx'
 import Sidebar from '../sidebar/Sidebar.jsx'
 import Content from '../content/Content.jsx'
-import {local, session} from 'common/util/storage.js'
+import {local, session} from '../../common/util/storage.js'
 import classNames from 'classnames';
 import request from '../../common/request/request.js'
 

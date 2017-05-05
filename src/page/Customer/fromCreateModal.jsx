@@ -22,7 +22,6 @@ class FromCreateModal extends Component {
     }
     checkbox(index) {
         console.log("index",index)
-        
     }
     handleCancel(){
         this.props.onCancel()
@@ -46,7 +45,16 @@ class FromCreateModal extends Component {
         }, 1000)
     }
     render() {
-        const {visible, form, confirmLoading} = this.props
+        const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
+        let list = []
+         {
+          if(modelsList){
+            console.log("ss",modelsList)
+            list = modelsList
+          }else{
+            
+          }
+        }
         const {getFieldDecorator} = form
         const formItemLayout = {
             labelCol: {span: 6},
@@ -70,28 +78,28 @@ class FromCreateModal extends Component {
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                <Input />
+                <Input defaultValue={list.mainName}/>
                 </FormItem>
                 <FormItem
                   label="上级权限"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                <Input />
+                <Input defaultValue={list.description} />
                 </FormItem>
                 <FormItem
                   label="名称"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                <Input />
+                <Input defaultValue={list.name}/>
                 </FormItem>
                 <FormItem
                   label="路径"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                <Input />
+                <Input defaultValue={list.actionPath}/>
                 </FormItem>
                 </Form>
             </div>

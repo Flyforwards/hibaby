@@ -2,9 +2,9 @@
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Icon, Card, Input, Select, DatePicker, Button, Table, Popconfirm, Pagination} from 'antd'
-import Page from 'framework/page'
-import request from 'common/request/request.js'
-import FileUpload from 'component/file-upload/FileUpload.jsx'
+import Page from '../../../framework/page'
+import request from '../../../common/request/request.js'
+import FileUpload from '../../../component/file-upload/FileUpload.jsx'
 import './LogView.scss'
 import Current from '../../Current'
 const Option = Select.Option;

@@ -147,7 +147,7 @@ class AddData extends React.Component {
     render() {
  
         return (
-        < div className="xuanxiang container">
+        < div className="xuanxiang container2">
      
       < Card title = "字段信息:" >
       < div className = "div">

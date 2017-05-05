@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './system.scss';
+import './system.scss';
 import {
   Form,
   Card,
@@ -20,20 +20,20 @@ class NormalMessageForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
-          <p className={styles.label}>字段名称</p>
+          <p className="label">字段名称</p>
           {getFieldDecorator('FieldName', {
             initialValue: this.props.operatorName
           })(
-            <Input type="textarea" disabled={this.props.disabled} className={styles.input} />
+            <Input type="textarea" disabled={this.props.disabled} className="input" />
           )}
         </FormItem>
         <FormItem>
-          <p className={styles.label}>字段描述</p>
+          <p className="label">字段描述</p>
           {getFieldDecorator('FieldDesp', {
 
             initialValue: this.props.description
           })(
-            <Input type="textarea"  disabled={this.props.disabled} className={styles.input} autosize={{ minRows: 2 }}/>
+            <Input type="textarea"  disabled={this.props.disabled} className="input"  autosize={{minRows:2}}/>
           )}
         </FormItem>
 
@@ -46,66 +46,131 @@ const WrappedNormalMessageForm = Form.create()(NormalMessageForm);
 
 
 
-class NormalOptionForm extends React.Component {
-  
-  render() {
-   const { getFieldDecorator } = this.props.form;
-    let All=[]
-    console.log(this.props.AllOption)
-     { this.props.AllOption ?
-              (this.props.AllOption.map((field, index) => {
-                All.push(
-            
-            <FormItem  key={index} className={styles.div2}>
-                  <p className={styles.label}>选项{idx[index]}</p>
-                  <div className={styles.posi} style={{position:'relative',overflow:'hidden'}}>
-                  {getFieldDecorator('FieldOption', {
-                    initialValue: field.name
+
+class FruitList extends React.Component{
+      render () {
+      console.log(this.props.arr)
+       const { getFieldDecorator } = this.props.form;
+      
+        return (
+          <div className="container">
+            <ul className="list-group text-center">
+              {
+                Object.keys(this.props.option).map(function(key,index) {
+              
+                  return <li className="list-group-item list-group-item-info" key={index}>
+
+                 <FormItem  className="div2">
+                  <p className='label'>选项{idx[index]}</p>
+                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                  {getFieldDecorator(`option${index}`, {
+                    initialValue:`${this.props.option[key]}`
                   })(
-                    <Input type="textarea" disabled={this.props.disabled}  rows={6} className={styles.input2} data-index={index}/>
+                  
+                    <Input type="textarea" disabled={this.props.disabled} autosize={{minRows:2}} className="input2" style={{width:this.props.width}}/>
+                 
                   )}
-                  < span  className = "editable-add-btn" onClick={this.props.delete} data-index={this.props.index}> 删除 < /span>
+                  <Button id="delbtn" className = "delBtn editable-add-btn" onClick={this.props.delete} style={{display:this.props.display}}  data-index={index}> 删除 </Button>
                   </div>
+
+                 
                    </FormItem>
-                )
-              })) : 'null' }
+                  </li>
+                }.bind(this))
+              }
+            </ul>
+           </div>
+         );
+       }
+     }
+const FruitListForm = Form.create()(FruitList);
 
- 
+class AddFruitForm extends React.Component{ 
 
-    return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-      {All}
+     constructor (props) {
+
+    super(props)
+   
+     
+    }
+      createFruit(e){
+        e.preventDefault();
+        //get the fruit object name from the form
+        console.log('111111111'+this.refs.fruitName)
+        var fruit = this.refs.fruitName.value;
+        //if we have a value
+        //call the addFruit method of the App component
+        //to change the state of the fruit list by adding an new item
+       
+          this.props.addFruit(fruit);
+          //reset the form
+           console.log(this.refs.fruitForm.refs.fruitForm)
+
+         
+      
+       }
+       render () {
+        return(
+      
+      
+          <Form className="login-form"  className="form-inline" ref="fruitForm" >
+          <div className="form-group">
+            <span htmlFor="fruitItem">
+          <p className='label'>添加选项</p>
+              
+              <input type="textarea" id="fruitItem" ref="fruitName" className="input3" />
+               
+            </span>
+          </div>
+          <Button style = {{
+
+          display:this.props.display,
+          backgroundColor: '#b67233',
+          color: '#fff',
+          marginLeft: '90px'
+        }} className="addBtn btn-primary editable-add-btn" onClick={this.createFruit.bind(this)}>添加</Button>
+           
+         </Form>
+       
+    )
         
-      </Form>
-    );
-  }
-}
-
-const WrappedNormalOptionForm = Form.create()(NormalOptionForm);
-
-
+       }
+      }
 class ViewIndex extends React.Component {
 	constructor(props){
 		super(props);
   
-        this.add=this.add.bind(this);
-        this.delete=this.delete.bind(this);
+      
 
           this.state={
           display:'none',
            disabled:true,
-           AllOption: this.props.arr?this.props.arr:[<p>aa</p>,<p>bbbbb</p>], 
+            fruits : {
+          'fruit1' : 'orange',
+          'fruit2' : 'apple'
+        },
+         width:'90%',
            edit:'visible',
            save:'hidden',
 
           }
 
 	}
-  // shouldComponentUpdate(){
-  //   this.setState({
-  //     AllOption: this.props.arr
-  //   })
-  // }
+  addFruit (fruit) {
+     //create a unike key for each new fruit item
+     var timestamp = (new Date()).getTime();
+     // update the state object
+     this.state.fruits['fruit' + timestamp ] = fruit;
+     // set the state
+     this.setState({ fruits : this.state.fruits });
+   
+    }
+
+  delFruit (e) {
+console.log($('delbtn').parent())
+ $('delbtn').parent().remove()
+    }
+
 	componentDidMount(){
 
 		console.log(this.props.list? this.props.list : '')
@@ -114,39 +179,18 @@ class ViewIndex extends React.Component {
   handleReturn(){
       browserHistory.go(-1)
   }
-  add(){
-       
-        var AllOption=this.state.AllOption;
-        // console.log(this.state.AllOption.length)
  
-        // AllOption.push(<List  key={this.state.AllOption.length} index={this.state.AllOption.length} delete={this.delete}  trans={this.handelTrans} idnum={this.state.bigNum}/> );
-        // console.log(this.state.AllOption.length)
-        // this.setState({AllOption:AllOption})
-
-        let data_tpl = this.props.arr[0];
-        data_tpl.name = 'aaaaaaaaa';
-        AllOption.push({data_tpl})
-        console.log(AllOption)
-        this.setState({AllOption:AllOption})
         
  
-    }
-    delete(e){
- 
-        var index=e.target.getAttribute("data-index");
- 
-        var AllOption=this.state.AllOption;
- 
-        AllOption.splice(index,1);
- 
-        this.setState({AllOption:AllOption})
- 
-    }
+    
+    
 handleEdit = (e) => {
 
        
          this.setState({
             display:'block',
+            disabled:false,
+            width:'84%',
             edit:'hidden',
             save:'visible'
           })
@@ -175,59 +219,43 @@ handleEdit = (e) => {
         })
       }
   render () { 
-   console.log(this.state.AllOption)
+    console.log(this.props.arr)
+    
 
     return(
-      <div className={styles.container} className = "xuanxiang">
+      <div className="container2 xuanxiang">
       
         <Card title="字段信息:"  >
-           <div className={styles.div} >
+           <div className="div" >
    			      <WrappedNormalMessageForm   disabled={this.state.disabled} operatorName={this.props.list.operatorName}   description={this.props.list.description}/>
    			   </div>
    			
  		 </Card>
 		
  		  <Card title="下拉选项:"  >
-          <WrappedNormalOptionForm  AllOption={this.state.AllOption} delete={this.delete} />
+           <div className="component-wrapper">
+          <FruitListForm fruits={this.state.fruits}  delete={this.delFruit.bind(this)}  disabled={this.state.disabled} display={this.state.display}  width={this.state.width} arr={this.props.arr}/>
+          <AddFruitForm addFruit={this.addFruit.bind(this)} display={this.state.display}  disabled={this.state.disabled} arr={this.props.arr}/>
+        </div>
 
-          < Button  style = {{
-
-          display:this.state.display,
-          backgroundColor: 'rgba(22, 155, 213, 1)',
-          color: '#fff',
-          marginLeft: '90px'
-        }}
-      className = "editable-add-btn"
-      onClick = {
-        this.add
-      } > 添加 < /Button> 
    		
  		 </Card>
-     <div style={{width:'300px',float:'right'}}>
-     < Button style = {
-        {
-          backgroundColor: 'rgb(22, 155, 213)',
-          color: '#fff',
-          width: '140px',
-          
-        }
-      }
-      className = "editable-add-btn"
+     <div id="editSave">
+     < Button 
+      className = "retBtn editable-add-btn"
       onClick = { this.handleReturn}>返回 < /Button>
 
        < Button style = { {
       visibility:this.state.edit,
-      backgroundColor: 'rgb(22, 155, 213)',
-      color: '#fff',
+      backgroundColor: '#b67233',
+      color: '#fff',    
       width: '140px',}} className = "editable-add-btn"
        onClick = {this.handleEdit} >编辑 < /Button>
       
 
        < Button style = { {
       visibility:this.state.save,
-      backgroundColor: 'rgb(22, 155, 213)',
-      color: '#fff',
-      width: '140px',}} className = "editable-add-btn"
+    }} className = "save editable-add-btn"
        onClick = {this.handleSave} >保存 < /Button>
  </div> </div>
     )

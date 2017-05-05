@@ -6,17 +6,12 @@ import './fromModal.scss'
 import SelectList from './from.jsx'
 import TabalList from './TabalList.jsx'
 import {local, session} from '../../common/util/storage.js'
-import FromCreateModal from './fromCreateModal'
-
 const Option = Select.Option
 const Dictionary = local.get("Dictionary")
 
 class FromModaled extends Component {
     constructor(props) {
         super(props)  
-        this.state = {
-          createModalVisible: false
-        }
     }
      handleChange(key,option) {
         console.log(key)
@@ -33,16 +28,6 @@ class FromModaled extends Component {
       this.setState({
         createModalVisible: true
       })
-    }
-    showCreateModal() {
-        this.setState({
-            createModalVisible: true
-        })
-    }
-    handleCreateModalCancel() {
-        this.setState({
-            createModalVisible: false
-        })
     }
     cx(){
         const value0 = $(".ant-select-selection-selected-value").html()
@@ -93,11 +78,6 @@ class FromModaled extends Component {
               <i onClick={this.qk.bind(this)}>清空</i>
                <i onClick={this.addList.bind(this)}>新增</i>
                <TabalList />
-              <FromCreateModal
-                handleOk={this.state.handleOk}
-                visible={ this.state.createModalVisible }
-                onCancel={ this.handleCreateModalCancel.bind(this) }
-              />
             </div>
         )
     }

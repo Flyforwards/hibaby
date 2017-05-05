@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import './position.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
-import request from 'common/request/request.js'
+import request from '../../../common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'
 class position extends Component {
     constructor(props) {

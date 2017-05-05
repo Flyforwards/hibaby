@@ -1,7 +1,7 @@
 "use strict"
 import React from 'react'
-import FAIcon from 'component/faicon'
-import Page from 'framework/page'
+import FAIcon from '../../component/faicon'
+import Page from '../../framework/page'
 import {Icon} from 'antd'
 
 import './style.less'
