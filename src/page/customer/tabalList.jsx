@@ -31,7 +31,7 @@ const list =[{
 }]
 class TabalListed extends Component {
   constructor(props) {
-        super(props)  
+        super(props)
         this.columns = [{
           title: '主模块',
           dataIndex: 'mainName',
@@ -119,7 +119,7 @@ class TabalListed extends Component {
             mainName = DataConversion(list,"parentId",this.props.arr,"parentId")
             console.log("dsdssssssssss",mainName)
           }else{
-            
+
           }
         }
         return (
@@ -135,7 +135,7 @@ class TabalListed extends Component {
         )
     }
 }
-    
+
 function TabalList({
     dispatch,
     arr,
@@ -160,7 +160,7 @@ function TabalList({
     size = {
       size
     }
-    / > < /div >
+    /> </div>
   )
 
 }

@@ -42,7 +42,7 @@ function SelectList({
     list = {
         list
     }
-    / > < /div >
+    /> </div>
   )
 
 }

@@ -253,7 +253,7 @@ class Customered extends React.Component {
             </div>
             <div className="CreateModaList-a">
               {this.props.list?
-                <Table bordered bordered dataSource = {this.props.list} columns={columns} pagination = {pagination} className="CreateModaList-b" rowKey = "id"/>
+                <Table bordered dataSource = {this.props.list} columns={columns} pagination = {pagination} className="CreateModaList-b" rowKey = "id"/>
               :null}
               < Current page = {
                 this.props.page
@@ -307,7 +307,7 @@ function Customer({
     page={page}
     results={results}
     range={range}
-    / > < /div >
+    /> </div>
   )
 
 }

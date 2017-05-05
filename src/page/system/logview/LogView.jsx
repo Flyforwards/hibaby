@@ -167,7 +167,7 @@ class LogViewed extends Component {
                     range = {
                       this.props.range
                     }
-                    />  
+                    />
                 </div>:null}
             </div>
         )
@@ -195,14 +195,14 @@ function LogView({
     loading = {
       loading
     }
-    
+
     total = {
       total
     }
     page={page}
     results={results}
     range={range}
-    / > < /div >
+    /> </div>
   )
 
 }

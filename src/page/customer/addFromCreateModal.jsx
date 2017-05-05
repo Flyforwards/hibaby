@@ -16,7 +16,7 @@ import _ from 'lodash'
 @createForm()
 class AddFromCreateModal extends Component {
     constructor(props) {
-        super(props)   
+        super(props)
     }
     state = { visible: false }
     handleCancel() {
@@ -168,7 +168,7 @@ function AddFromCreateModal({
     < AddFromCreateModal dispatch = {
       dispatch
     }
-    /> < /div >
+    /> </div>
   )
 }
 function mapStateToProps(state) {

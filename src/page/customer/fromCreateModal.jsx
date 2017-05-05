@@ -13,7 +13,7 @@ import _ from 'lodash'
 @createForm()
 class FromCreateModal extends Component {
     constructor(props) {
-        super(props)   
+        super(props)
     }
     state = { visible: false }
     handleCancel() {
@@ -71,7 +71,7 @@ class FromCreateModal extends Component {
           if(modelsList){
             list = modelsList
           }else{
-            
+
           }
         }
         const {getFieldDecorator} = form
@@ -176,11 +176,11 @@ function FromCreateModal({
     data,
     code
 }) {
-  return ( < div >
+  return ( <div >
     < FromCreateModal dispatch = {
       dispatch
     }
-    /> < /div >
+    /> </div >
   )
 }
 function mapStateToProps(state) {
