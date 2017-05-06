@@ -4,6 +4,7 @@ import './module.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from '../../../common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'
+import { connect } from 'dva'
 
 class Module extends Component {
   constructor(props) {
@@ -13,17 +14,17 @@ class Module extends Component {
       title: '编号',
       dataIndex: 'id',
       key:'id',
-      width: '100px',
+      width: '60px',
     }, {
       title: '最后操作人',
-      dataIndex: 'name',
-      key:'name',
+      dataIndex: 'create_id',
+      key:'create_id',
       width: '100px',
     },{
       title: '最后操作时间',
-      dataIndex: 'name',
-      key:'name',
-      width: '100px',
+      dataIndex: 'create_time',
+      key:'create_time',
+      width: '150px',
     },{
       title: '菜单名称',
       dataIndex: 'name',
@@ -31,28 +32,28 @@ class Module extends Component {
       width: '100px',
     },{
       title: 'icon',
-      dataIndex: 'name',
-      key:'name',
+      dataIndex: 'icon',
+      key:'icon',
       width: '100px',
     },{
       title: '描述',
-      dataIndex: 'name',
-      key:'name',
+      dataIndex: 'description',
+      key:'description',
       width: '100px',
     },{
       title: 'path',
-      dataIndex: 'name',
-      key:'name',
+      dataIndex: 'path',
+      key:'path',
       width: '100px',
     },{
       title: '所属模块',
-      dataIndex: 'name',
-      key:'name',
+      dataIndex: 'project_id',
+      key:'project_id',
       width: '100px',
     },{
       title: '父级菜单',
-      dataIndex: 'name',
-      key:'name',
+      dataIndex: 'parent_id',
+      key:'parent_id',
       width: '100px',
     },{
       title: '操作',
@@ -74,6 +75,13 @@ class Module extends Component {
       },
     }];
   }
+
+  componentWillMount() {
+    this.props.dispatch({
+      type: "system/getAllMenu"
+    });
+  }
+
   managementInquire() {
     console.log("查询")
   }
@@ -109,7 +117,6 @@ class Module extends Component {
     };
     return (
       <div className="management-cent">
-        <div className="name">部门<Input /><span onClick={this.managementInquire}>查询</span></div>
         <div className="CreateModaList">
           <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
           <p className="allList">共计0条,范围1-10</p>
@@ -120,4 +127,4 @@ class Module extends Component {
   }
 }
 
-export default Module;
+export default connect()(Module);

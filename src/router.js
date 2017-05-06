@@ -72,7 +72,7 @@ let routes = [
             path: '/system/pormission',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
+                registerModel(app, require('./models/pormission'));
                 cb(null, require('./page/system/pormission/pormission.jsx'))
               })
             }
