@@ -5,20 +5,55 @@ import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'a
 import request from '../../../common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'
 
-class module extends Component {
+class Module extends Component {
   constructor(props) {
     super(props)
     this.state = {}
     this.columns = [{
       title: '编号',
-      dataIndex: 'Numbering',
-      key:'Numbering',
+      dataIndex: 'id',
+      key:'id',
       width: '100px',
     }, {
-      title: '角色名称',
+      title: '最后操作人',
       dataIndex: 'name',
       key:'name',
-      width: '600px',
+      width: '100px',
+    },{
+      title: '最后操作时间',
+      dataIndex: 'name',
+      key:'name',
+      width: '100px',
+    },{
+      title: '菜单名称',
+      dataIndex: 'name',
+      key:'name',
+      width: '100px',
+    },{
+      title: 'icon',
+      dataIndex: 'name',
+      key:'name',
+      width: '100px',
+    },{
+      title: '描述',
+      dataIndex: 'name',
+      key:'name',
+      width: '100px',
+    },{
+      title: 'path',
+      dataIndex: 'name',
+      key:'name',
+      width: '100px',
+    },{
+      title: '所属模块',
+      dataIndex: 'name',
+      key:'name',
+      width: '100px',
+    },{
+      title: '父级菜单',
+      dataIndex: 'name',
+      key:'name',
+      width: '100px',
     },{
       title: '操作',
       dataIndex: 'operating',
@@ -34,7 +69,7 @@ class module extends Component {
                 <a href="#" className="firstA" onClick={this.Member}>成员列表</a>
                 <a href="#" className="firstB" onClick={this.delete}>删除</a>
               </div>
-            ) : null
+            ) : (<div></div>)
         );
       },
     }];
@@ -81,7 +116,8 @@ class module extends Component {
         </div>
       </div>
     )
+
   }
 }
 
-export default module;
+export default Module;

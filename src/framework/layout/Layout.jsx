@@ -93,8 +93,8 @@ class Layout extends React.Component {
               {"name":"地方字段","path":"/system/localchar","icon":"copyright","projectId":3,"permissionId":1,"children":null},
               {"name":"服务项目","path":"/system/serviceitem","icon":"copyright","projectId":3,"permissionId":1,"children":null}]
             },
-            {"name":"菜单管理","path":"/system/module","icon":"copyright","projectId":3,"permissionId":1,"children":[]},
             {"name":"权限管理","path":"/system/pormission","icon":"copyright","projectId":3,"permissionId":1,"children":[]},
+            {"name":"菜单管理","path":"/system/module","icon":"copyright","projectId":3,"permissionId":1,"children":[]},
             {"name":"日志查看","path":"/system/logsview","icon":"copyright","projectId":3,"permissionId":1,"children":[]}]
         }
 

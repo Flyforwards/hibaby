@@ -69,20 +69,20 @@ let routes = [
           },
           // 权限管理
           {
-              path: '/system/pormission',
-              getComponent: (location, cb) => {
-                  require.ensure([], (require) => {
-                      registerModel(app, require('./models/users'));
-                      cb(null, require('./page/system/pormission/pormission.jsx'))
-                  })
-              }
+            path: '/system/pormission',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/users'));
+                cb(null, require('./page/system/pormission/pormission.jsx'))
+              })
+            }
           },
           // 菜单管理
           {
             path: '/system/module',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
+                registerModel(app, require('./models/users'));
                 cb(null, require('./page/system/module/module.jsx'))
               })
             }
