@@ -67,7 +67,26 @@ let routes = [
                   })
               }
           },
-          // 权限管理
+          //地方字段
+          {
+              path: '/system/localchar',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/system'));
+                      cb(null, require('./page/system/place/place.jsx'))
+                  })
+              }
+          },
+          //服务项目
+          {
+              path: '/system/serviceitem',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/system'));
+                      cb(null, require('./page/system/service/service.jsx'))
+                  })
+              }
+          },
           {
             path: '/system/pormission',
             getComponent: (location, cb) => {
@@ -116,6 +135,7 @@ let routes = [
               })
             }
           },
+          //添加集团项目列表内容
           {
             path: '/demo/add',
             getComponent: (location, cb) => {
@@ -125,15 +145,41 @@ let routes = [
               })
             }
           },
+          //添加地方项目列表
           {
-            path: '/demo/view',
+            path: '/localchar/add',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
                 registerModel(app, require('./models/system'));
-                cb(null, require('./page/system/management/View.js'))
+                cb(null, require('./page/system/place/Add.js'))
               })
             }
           },
+          //查看集团列表信息
+
+          //查看地方列表信息
+          {
+            path: '/localchar/find',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/system/place/find.js'))
+              })
+            }
+          },
+          //地方列表查看编辑
+          {
+            path: '/localchar/editplace',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/system/place/editplace.js'))
+              })
+            }
+          },
+
+
+
           {
             path: '/frommodal',
             getComponent: (location, cb) => {
@@ -194,5 +240,3 @@ let routes = [
 return <Router history={history} routes={routes} />;
 }
 export default RouterConfig;
-
-
