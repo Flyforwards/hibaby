@@ -135,7 +135,7 @@ let routes = [
             }
           },
           {
-            path: '/fromModal',
+            path: '/frommodal',
             getComponent: (location, cb) => {
             require.ensure([], (require) => {
             registerModel(app, require('./models/system'));

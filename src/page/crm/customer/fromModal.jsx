@@ -1,44 +1,29 @@
 "use strict"
+
 import React, {Component} from 'react'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
+import {connect} from 'dva'
+import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm,Row, Col} from 'antd'
 import './fromModal.scss'
+import SelectList from './from.jsx'
+import TabalList from './TabalList.jsx'
+import {local, session} from '../../../common/util/storage.js'
+import FromCreateModal from './fromCreateModal.jsx'
+import AddFromCreateModal from './addFromCreateModal.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
+const Dictionary = local.get("Dictionary")
+@createForm()
+class FromModaled extends Component {
+    constructor(props) {
+        super(props) 
+        this.state = {
+          modifyModalVisible: false
+        }
+    }
+}
 
-const aaa = [{
-  module: 'crm',
-  authority: '客户档案',
-  name: '客户档案',
-  path: '/xxxx/xxxx/xxx',
-  people:'里方法'
-},{
-  module: 'crm',
-  authority: '客户档案',
-  name: '客户档案',
-  path: '/xxxx/xxxx/xxx',
-  people:'里方法'
-}];
 
-const treeData = [{
-      label: 'Node1',
-      value: '0-0',
-      key: '0-0',
-      children: [{
-        label: 'Child Node1',
-        value: '0-0-1',
-        key: '0-0-1',
-      }, {
-        label: 'Child Node2',
-        value: '0-0-2',
-        key: '0-0-2',
-      }],
-    }, {
-      label: 'Node2',
-      value: '0-1',
-      key: '0-1',
-    }];
 class FromModal extends Component {
     constructor(props) {
         super(props)
@@ -95,102 +80,145 @@ class FromModal extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk(visible) {
-        console.log("ok")
-        this.props.onCancel()
+    addList(){
+      this.setState({
+        modifyModalVisible: true
+      })
     }
+    handleCreateModalCancel() {
+        this.setState({
+            modifyModalVisible: false,
+        })
+      }
     checkbox(index) {
         console.log("index",index)
-
     }
-    handleAfterClose() {
-        this.props.form.resetFields()
-    }
-    componentDidMount() {
-        this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
-    }
-    // 在componentDidMount里面使用函数节流防抖等功能
-    asyncValidator(rule, value, callback) {
-        console.log(Date.now())
-        setTimeout(() => {
-            let now = Date.now()
-            if (now % 2 === 1) {
-                callback()
-            } else {
-                callback(new Error('自定义验证函数未通过'))
+    Inquire(){
+        this.props.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          concole.log("projectId",local.get("projectId"))
+          this.props.dispatch({
+            type: 'system/permissionAdd',
+            payload: {
+                actionPath:values.actionPath,
+                alias: values.alias,
+                description: values.description,
+                name: values.name,
+                orderBy:Number(values.orderBy),
+                parentId: values.mainName,
+                projectId: local.get("projectId")
             }
-        }, 1000)
+        });
+        }
+      });
+    }
+    emptied(){
+      console.log($("input").val())
+        $(".ant-select-selection-selected-value").html("请选择")
+        $(".name").val("")
+        $(".actionPath").val("")
+    }
+    onSelect = (value,key) => {
+      this.props.dispatch({
+          type: 'system/SelectList',
+          payload: {
+              "projectId":value
+          }
+      });
     }
     render() {
-        const {visible, form, confirmLoading} = this.props
-        const {getFieldDecorator} = form
+      {if(this.props.data){
+        local.set("mainName",this.props.data)
+      }}
+       const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
+        const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
-            labelCol: {span: 6},
-            wrapperCol: {span: 14},
+            labelCol: { span: 5 },
+            wrapperCol: { span: 19 },
         }
         return (
-            <Modal
-                visible={visible}
-                okText="确定"
-                confirmLoading={confirmLoading}
-                afterClose={this.handleAfterClose.bind(this)}
-                onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this,visible)}
-                style={{pointerEvents: confirmLoading ? 'none' : ''}}
-                maskClosable={!confirmLoading}
-                width={1000}
-            >
             <div className="fromList">
-              <span>主模块
-              <TreeSelect
-                style={{ width: 150 }}
-                value={this.state.value}
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={treeData}
-                placeholder="Please select"
-                treeDefaultExpandAll
-                onChange={this.onChange}
+              <Form 
+                onSubmit={this.handleSubmit}
+                className="ant-advanced-search-form"
+              >
+                <FormItem
+                  label="主模块"
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 20 }}
+                >
+               {getFieldDecorator('mainName', {
+                  rules: [],
+                })(
+                  <Select placeholder="请选择" onSelect={this.onSelect}>
+                    {
+                    local.get("mainName").map((item,index)=>{
+                    return (
+                        <Option value={item.id} key={index} >{item.name}</Option>
+                    )
+                  })}
+                  </Select>
+                )}
+              </FormItem>
+                <FormItem
+                  labelCol={{ span: 4 }}
+                  wrapperCol={{ span: 20 }}
+                >
+               {getFieldDecorator('authority', {
+                  rules: [],
+                  onChange: this.handleSelectChange,
+                })(
+                  <SelectList />
+                )}
+              </FormItem>
+                <FormItem
+                  label="名称"
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 20 }}
+                >
+               {getFieldDecorator('name', {
+                  rules: [],
+                  onChange: this.handleSelectChange,
+                })(
+                   <Input className="name"/>
+                )}
+              </FormItem>
+                <FormItem
+                  label="路径"
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 20 }}
+                >
+               {getFieldDecorator('actionPath', {
+                  rules: [],
+                  onChange: this.handleSelectChange,
+                })(
+                  <Input className="actionPath"/>
+                )}
+              </FormItem>
+              </Form>
+              <i onClick={this.Inquire.bind(this)}>查询</i>
+              <i onClick={this.emptied.bind(this)}>清空</i>
+               <i onClick={this.addList.bind(this)}>新增</i>
+               <TabalList />
+               <AddFromCreateModal
+                visible={ this.state.modifyModalVisible}
+                onCancel={ this.handleCreateModalCancel.bind(this) }
               />
-              </span>
-              <span>上级权限
-              <TreeSelect
-                style={{ width: 150 }}
-                value={this.state.value}
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={treeData}
-                placeholder="Please select"
-                treeDefaultExpandAll
-                onChange={this.onChange}
-              />
-              </span>
-              <span>名称
-              <TreeSelect
-                style={{ width: 150 }}
-                value={this.state.value}
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={treeData}
-                placeholder="Please select"
-                treeDefaultExpandAll
-                onChange={this.onChange}
-              />
-              </span>
-              <span>路径
-              <TreeSelect
-                style={{ width: 130 }}
-                value={this.state.value}
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={treeData}
-                placeholder="Please select"
-                treeDefaultExpandAll
-                onChange={this.onChange}
-              />
-              </span>
-              <i>查询</i>
-              <i>清空</i>
-               <Table bordered dataSource = {aaa} columns={this.columns}  rowKey = "id"/>
             </div>
-            </Modal>
         )
     }
 }
-export default FromModal
+
+function mapStateToProps(state) {
+  const {
+    data,
+    code
+  } = state.system;
+  return {
+    loading: state.loading.models.system,
+    data
+  };
+}
+
+export default connect(mapStateToProps)(FromModal)
+

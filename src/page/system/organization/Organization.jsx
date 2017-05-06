@@ -8,7 +8,7 @@ import  CreateModal from './CreateModal.jsx'
 
 import { routerRedux } from 'dva/router'
 import { Link} from 'react-router'
-import { classification,dataList } from './constants.js'
+import { classification,dataList } from '../../../constants.js'
 
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
