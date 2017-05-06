@@ -143,6 +143,7 @@ export default {
 				code
 			};
 			local.set("Dictionary",data)
+			console.log("4444444",local.get("Dictionary"))
 			return fromModaldata;
 		},
 		SelectListSave(state, {

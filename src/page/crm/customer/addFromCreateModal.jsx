@@ -11,7 +11,7 @@ const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-// const mainName = local.get("mainName")
+
 const fromList = local.get("fromList")
 import _ from 'lodash'
 @createForm()
@@ -84,13 +84,13 @@ class AddFromCreateModal extends Component {
             wrapperCol: {span: 14},
         }
         let nodes = [];
-        const mainName = local.get("mainName");
+        const mainName = local.get("Dictionary");
         if (mainName !=null) {
           nodes = mainName.map((item,index)=>{
-                    return (
-                        <Option value={item.id} key={index} >{item.name}</Option>
-                    )
-                  })
+            return (
+                <Option value={item.id} key={index} >{item.name}</Option>
+            )
+          })
         }
 
         return (

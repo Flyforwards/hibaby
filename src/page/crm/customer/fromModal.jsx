@@ -127,7 +127,7 @@ class FromModaled extends Component {
             labelCol: { span: 5 },
             wrapperCol: { span: 19 },
         }
-        let mainName = local.get("mainName");
+        let mainName = local.get("Dictionary");
         let nodes = [];
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{

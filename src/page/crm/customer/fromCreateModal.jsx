@@ -91,7 +91,7 @@ class FromCreateModal extends Component {
             wrapperCol: {span: 14},
         }
         let nodes = [];
-        const mainName = local.get("mainName");
+        const mainName = local.get("Dictionary");
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{
                     return (
