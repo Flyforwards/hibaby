@@ -49,4 +49,24 @@ export function getEndemic() {
 }
 
 
+export function getProjectList() {
+  return request('/crm/api/v1/project/list', {
+    method: 'POST',
+  })
+}
+
+export function setEndemic(values) {
+  return request('/crm/api/v1/permission/setEndemic', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function getCurrUserMenu(values) {
+  return request('/crm/api/v1/module/currentUserModuleList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 

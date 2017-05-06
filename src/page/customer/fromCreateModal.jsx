@@ -4,6 +4,8 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
+import {local, session} from '../../common/util/storage.js' 
+import SelectList from './from.jsx'
 
 const createForm = Form.create
 const FormItem = Form.Item
@@ -13,27 +15,27 @@ import _ from 'lodash'
 @createForm()
 class FromCreateModal extends Component {
     constructor(props) {
-        super(props)   
+        super(props)
     }
     state = { visible: false }
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk(visible) {
+    handleOk(list) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          // console.log('Received values of form: ', values);
           this.props.dispatch({
-            type: 'system/permissionUpdata',
+            type: 'system/permissionUpdataList',
             payload: {
                 actionPath:values.actionPath,
-                alias: values.alias,
-                description: values.description,
+                alias:values.alias,
+                description: values.nam,
                 name: values.name,
-                orderBy:values.orderBy,
-                parentId: 2,
-                projectId: 1,
-                id:2
+                orderBy:Number(values.orderBy),
+                parentId: Number(values.mainName),
+                projectId: local.get("projectId"),
+                id:list.id
             }
         });
         }
@@ -64,6 +66,15 @@ class FromCreateModal extends Component {
             }
         }, 1000)
     }
+    onSelect = (value,key) => {
+      console.log("shu",value);
+      this.props.dispatch({
+          type: 'system/SelectList',
+          payload: {
+              "projectId":value
+          }
+      });
+    }
     render() {
         const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
         let list = []
@@ -71,7 +82,7 @@ class FromCreateModal extends Component {
           if(modelsList){
             list = modelsList
           }else{
-            
+
           }
         }
         const {getFieldDecorator} = form
@@ -87,7 +98,7 @@ class FromCreateModal extends Component {
                 onCancel={this.handleCancel.bind(this)}
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
-                onOk={this.handleOk.bind(this,visible)}
+                onOk={this.handleOk.bind(this,list)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
             >
@@ -98,11 +109,17 @@ class FromCreateModal extends Component {
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('mainName', {
-                  initialValue: list.mainName,
-                  rules: [],
+                 {getFieldDecorator('mainName', {
+                  rules: []
                 })(
-                   <Input/>
+                  <Select placeholder="请选择" onSelect={this.onSelect}>
+                    {
+                    local.get("mainName").map((item,index)=>{
+                    return (
+                        <Option value={item.id} key={index} >{item.name}</Option>
+                    )
+                  })}
+                  </Select>
                 )}
                 </FormItem>
                 <FormItem
@@ -110,23 +127,22 @@ class FromCreateModal extends Component {
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('actionPath', {
-                  initialValue: list.actionPath,
+                {getFieldDecorator('alias', {
+                  initialValue: list.name,
                   rules: [],
                 })(
                    <Input/>
                 )}
                 </FormItem>
                 <FormItem
-                  label="上级权限"
+                 
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('description', {
-                  initialValue: list.description,
-                  rules: [],
+                {getFieldDecorator('authority', {
+                  rules: []
                 })(
-                   <Input/>
+                  <SelectList />
                 )}
                 </FormItem>
                 <FormItem
@@ -160,11 +176,7 @@ class FromCreateModal extends Component {
                 >
                 {getFieldDecorator('orderBy', {
                   initialValue: list.orderBy,
-                   rules: [{
-                    type: 'number', message: 'The input is not valid E-mail!',
-                  },{
-                    required: true, message: 'Please input your E-mail!',
-                  }],
+                   rules: []
                 })(
                    <Input/>
                 )}
@@ -180,11 +192,11 @@ function FromCreateModal({
     data,
     code
 }) {
-  return ( < div >
+  return ( <div >
     < FromCreateModal dispatch = {
       dispatch
     }
-    /> < /div >
+    /> </div >
   )
 }
 function mapStateToProps(state) {

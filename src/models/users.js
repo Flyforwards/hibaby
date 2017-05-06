@@ -81,7 +81,7 @@ export default {
   			if(pathname === '/users') {
   				dispatch({type: 'fetch', payload: query});
   			}
-        if(pathname === '/Organization') {
+        if(pathname === '/organization') {
           dispatch({type: 'position', payload: {}});
         }
         if(pathname === '/fromModal') {

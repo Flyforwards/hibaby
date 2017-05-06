@@ -6,6 +6,7 @@ import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
 import {local, session} from '../../common/util/storage.js'
 import SelectList from './from.jsx'
+
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
@@ -16,7 +17,7 @@ import _ from 'lodash'
 @createForm()
 class AddFromCreateModal extends Component {
     constructor(props) {
-        super(props)   
+        super(props)
     }
     state = { visible: false }
     handleCancel() {
@@ -25,17 +26,17 @@ class AddFromCreateModal extends Component {
     handleOk() {
         this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+         console.log("projectId",local.get("projectId"))
           this.props.dispatch({
             type: 'system/permissionAdd',
             payload: {
                 actionPath:values.actionPath,
                 alias: values.alias,
-                description: values.description,
+                description: values.authority,
                 name: values.name,
                 orderBy:Number(values.orderBy),
-                parentId: 2,
-                projectId: 1
+                parentId: Number(values.mainName),
+                projectId: local.get("projectId")
             }
         });
         }
@@ -54,7 +55,6 @@ class AddFromCreateModal extends Component {
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
-    // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
         console.log(Date.now())
         setTimeout(() => {
@@ -65,6 +65,16 @@ class AddFromCreateModal extends Component {
                 callback(new Error('自定义验证函数未通过'))
             }
         }, 1000)
+    }
+    onSelect = (value,key) => {
+      var projectId = value
+      console.log("上级选择其Id",projectId)
+      this.props.dispatch({
+          type: 'system/SelectList',
+          payload: {
+              "projectId":value
+          }
+      });
     }
     render() {
         const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
@@ -89,15 +99,22 @@ class AddFromCreateModal extends Component {
                 <Form onSubmit={this.handleSubmit}>
                 <FormItem
                   label="主模块"
-                  labelCol={{ span: 4 }}
+                  labelCol={{ span: 6 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('mainName', {
+               {getFieldDecorator('mainName', {
                   rules: [],
                 })(
-                   <Input/>
+                  <Select placeholder="请选择" onSelect={this.onSelect}>
+                    {
+                    local.get("mainName").map((item,index)=>{
+                    return (
+                        <Option value={item.id} key={index} >{item.name}</Option>
+                    )
+                  })}
+                  </Select>
                 )}
-                </FormItem>
+              </FormItem>
                 <FormItem
                   label="英文描述"
                   labelCol={{ span: 4 }}
@@ -110,16 +127,16 @@ class AddFromCreateModal extends Component {
                 )}
                 </FormItem>
                 <FormItem
-                  label="上级权限"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('description', {
+               {getFieldDecorator('authority', {
                   rules: [],
+                  onChange: this.handleSelectChange,
                 })(
-                   <Input/>
+                  <SelectList />
                 )}
-                </FormItem>
+              </FormItem>
                 <FormItem
                   label="名称"
                   labelCol={{ span: 4 }}
@@ -168,7 +185,7 @@ function AddFromCreateModal({
     < AddFromCreateModal dispatch = {
       dispatch
     }
-    /> < /div >
+    /> </div>
   )
 }
 function mapStateToProps(state) {

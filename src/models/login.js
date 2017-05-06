@@ -71,13 +71,6 @@ export default {
 
 			},
 
-      *getUserMenu({ payload: values }, { call, put }) {
-        // console.log(values);
-        const { data: {data, code} }  = yield call(loginService.getUserMenu, values);
-        if (code == 0) {
-          yield put(routerRedux.push('/demo/management'));
-        }
-      },
 			// * test({
 			// 	payload: values
 			// }, {

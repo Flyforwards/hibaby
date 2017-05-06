@@ -8,39 +8,25 @@ import SelectList from './from.jsx'
 import {local, session} from '../../common/util/storage.js'
 import DataConversion from '../dataConversion'
 import FromCreateModal from './fromCreateModal'
+import Current from '../Current'
+import {routerRedux} from 'dva/router'
+
 const Option = Select.Option
 const Dictionary = local.get("Dictionary")
-const list =[{
-    actionPath:"/serviceInfo/listByPage",
-    alias:"serviceInfoList",
-    description:"CRM数据管理-服务项目-显示",
-    id:4,
-    name:"显示",
-    orderBy:0,
-    parentId:0,
-    parentName:"显示"
-},{
-    actionPath:"/serviceInfo/listByPage",
-    alias:"serviceInfoList",
-    description:"CRM数据管理-服务项目-显示",
-    id:4,
-    name:"显示",
-    orderBy:0,
-    parentId:1,
-    parentName:"显示"
-}]
+const list = local.get("listByPage")
+
 class TabalListed extends Component {
   constructor(props) {
-        super(props)  
+        super(props)
         this.columns = [{
           title: '主模块',
-          dataIndex: 'mainName',
-          key: 'mainName',
+          dataIndex: 'id',
+          key: 'id',
           width: '90px',
         }, {
           title: '上级权限',
-          dataIndex: 'description',
-          key: 'description',
+          dataIndex: 'parentName',
+          key: 'parentName',
           width: '90px',
         }, {
           title: '名称',
@@ -69,10 +55,10 @@ class TabalListed extends Component {
         this.state = {
             dataSource: [{
                 key:'1',
-                mainName:'crm',
+                parentName:'crm',
                 description: '客户档案',
                 name: '客户档案',
-                actionPath:'/xxxx/xxxx/xxx',
+                actionPath:'s',
                 people:'里方法'
               }],
               createModalVisible: false,
@@ -112,19 +98,47 @@ class TabalListed extends Component {
       })
     }
     render() {
-      console.log("sdsds",this.props.arr)
-      let mainName = []
+      var mainName = []
+      console.log("current",this.props.arr)
         {
           if(this.props.arr){
             mainName = DataConversion(list,"parentId",this.props.arr,"parentId")
-            console.log("dsdssssssssss",mainName)
-          }else{
-            
           }
         }
+
+        const pagination = {
+          total: 40, //数据总条数
+          showQuickJumper: true,
+          defaultPageSize:5,
+          onChange: (current) => {
+            this.props.dispatch({
+                type: 'system/listByPage',
+                payload: {
+                    "page": current,
+                    "size": 5
+                }
+            });
+          },
+        };
         return (
           <div>
-          <Table bordered dataSource = {mainName} columns={this.columns} className="fromModal" rowKey = "class"/>
+          <Table bordered dataSource = {this.props.arr} columns={this.columns} pagination = {pagination} className="fromModal" rowKey = "class"/>
+          < Current page = {
+                this.props.page
+              }
+              totalpage = {
+                this.props.totalpage
+              }
+              total = {
+                this.props.total
+              }
+              results = {
+                this.props.results
+              }
+              range = {
+                this.props.range
+              }
+              />
           <FromCreateModal
             handleOk={this.state.handleOk}
             modelsList={mainName[this.state.modifyModalIndex]}
@@ -135,7 +149,7 @@ class TabalListed extends Component {
         )
     }
 }
-    
+
 function TabalList({
     dispatch,
     arr,
@@ -160,7 +174,7 @@ function TabalList({
     size = {
       size
     }
-    / > < /div >
+    /> </div>
   )
 
 }

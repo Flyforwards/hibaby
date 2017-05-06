@@ -1,6 +1,7 @@
 
 "use strict"
 import React from 'react';
+
 import {connect} from 'dva';
 import './system.scss';
 import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd';
@@ -47,7 +48,7 @@ class SystemIndex extends React.Component {
         pageSize:3,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
-            pathname: '/demo/management',
+            pathname: '/system/groupchar',
             query: {
               "page": current,
               "results": 3,
@@ -120,14 +121,14 @@ function management({
     loading = {
       loading
     }
-    
+
     total = {
       total
     }
     page={page}
     results={results}
     range={range}
-    / > < /div >
+    /> </div >
   )
 
 }
@@ -154,4 +155,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(management);
-  

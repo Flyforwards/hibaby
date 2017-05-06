@@ -2,6 +2,7 @@ import * as systemService from '../services/system';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from '../common/util/storage.js';
+import {PAGE_SIZE} from '../constants.js'
 
 export default {
 	namespace: 'system',
@@ -29,6 +30,7 @@ export default {
 				end: page == 1 ? arr.length : (page - 1) * 3 + arr.length,
 				totalpage:Math.ceil(total/size),
 			}
+			local.set("listByPage",arr)
 			return {...listByPageldata,range};
 		},
 		organizationSave(state,{payload:{data,total,page,size,code}}){
@@ -155,6 +157,7 @@ export default {
 			};
 			local.set("index",SelectListdata.data)
 			console.log("5.5",SelectListdata.data)
+
 			return SelectListdata;
 		},
 		addField(state, payload) {
@@ -195,7 +198,7 @@ export default {
 
 			// yield put({ type: 'submitSave', payload: { data, code } });
 			if (code == 0) {
-				
+
 					// yield put(routerRedux.push('/login'));
 			}
 		},
@@ -209,7 +212,11 @@ export default {
 			if (code == 0) {
 				// const page = yield select(state => state.users.page);
 				message.success("添加成功");
-				yield put({ type: 'listByPage', payload: {} });
+				yield put({ type: 'listByPage', payload: {
+				  "page": 1,
+				  "size": 10,
+				  "sortField": "string",
+				  "sortOrder": "string"} });
 			}
 		},
 		*permissionUpdataList({payload: values}, { call, put }) {
@@ -218,11 +225,15 @@ export default {
 					data,
 					code
 				}
-			} = yield call(systemService.permissionUpdataList, values);
+			} = yield call(systemService.permissionUpdata, values);
 			if (code == 0) {
-				// const page = yield select(state => state.users.page);
 				message.success("修改成功");
-				yield put({ type: 'listByPage', payload: {} });
+				yield put({ type: 'listByPage', payload: {
+					  "page": 1,
+					  "size": 10,
+					  "sortField": "string",
+					  "sortOrder": "string"
+				} });
 			}
 		},
 		*Dictionary({ payload: values }, { call, put }) {
@@ -230,12 +241,14 @@ export default {
 	      if(code == 0) {
 	        yield put({ type: 'DictionarySave', payload: { data, code } });
 	      }
-	      //Êý¾Ý×Öµä
 	    },
 		*listByPage({payload: values}, {call,put}) {
 		const {
 				data:{
 					data,
+					total,
+		      		page,
+		      		size,
 					code
 				}
 			} = yield call(systemService.listByPage, values);
@@ -244,6 +257,9 @@ export default {
 					type: 'listByPageSave',
 					payload: {
 						data,
+						total,
+			      		page,
+			      		size,
 						code
 					}
 				});
@@ -280,7 +296,7 @@ export default {
 			const {
 				data:{
 					data,
-					projectId = 2,
+					projectId,
 					code
 				}
 			} = yield call(systemService.SelectList, values);
@@ -423,7 +439,8 @@ export default {
 				pathname,
 				query
 			}) => {
-				if (pathname === '/demo/management') {
+				if (pathname === '/system/groupchar') {
+
 					dispatch({
 						type: 'system',
 						payload: {
@@ -440,7 +457,7 @@ export default {
 						type: 'customer',
 						payload: {
 							...query,
-							"size": 3,
+							"size": PAGE_SIZE,
 							"sortField": "string",
 							"sortOrder": "string",
 							"type": 1
@@ -454,28 +471,6 @@ export default {
 							...query
 						}
 					});
-		        }
-		        if(pathname === '/fromModal') {
-		          dispatch({
-						type: 'SelectList',
-						payload: {
-							...query,
-							"projectId":2
-						}
-					});
-		        }
-		        if(pathname === '/fromModal') {
-		          dispatch({
-						type: 'listByPage',
-						payload: {
-							...query,
-							"page": 4,
-						  	"size": 3,
-						  	"sortField": "string",
-						  	"sortOrder": "string"
-						}
-					});
-		          //»ñÈ¡Êý¾Ý×ÖµäµÄdispatch
 		          dispatch({
 						type: 'Dictionary',
 						payload: {
@@ -485,25 +480,35 @@ export default {
 							  "type": 1
 						}
 					});
+		          dispatch({
+						type: 'listByPage',
+						payload: {
+							...query,
+							  "page": 1,
+							  "size": 5,
+							  "sortField": "string",
+							  "sortOrder": "string"
+						}
+					});
 		        }
-		        if(pathname === '/demo/LogView') {
+		        if(pathname === '/system/logsview') {
 		          dispatch({
 						type: 'LogView',
 						payload: {
 							...query,
-							"size": 3,
+							"size": PAGE_SIZE,
 							"sortField": "string",
 							"sortOrder": "string",
 							"type": 1
 						}
 					});
 		        }
-		        if(pathname === '/Organization') {
+		        if(pathname === '/system/organization') {
 		          dispatch({
 						type: 'organization',
 						payload: {
 							...query,
-							"size": 3,
+							"size": PAGE_SIZE,
 							"sortField": "string",
 							"sortOrder": "string",
 							"type": 1

@@ -1,13 +1,15 @@
+
 import React from 'react'
 import {Button, Popconfirm, message, Menu, Dropdown, Icon, Badge, Collapse} from "antd";
-import FAIcon from '../../component/faicon'
-import {hashHistory} from 'react-router'
-import request from '../../common/request/request.js'
-import {local, session} from '../../common/util/storage.js'
+import FAIcon from 'component/faicon'
+import { hashHistory, Link} from 'react-router'
+import request from 'common/request/request.js'
+import {local, session} from 'common/util/storage.js'
 import './index.scss'
 import  UpdateModal from './UpdateModal.jsx'
 import Logo from './logo.png'
 import UserImg from './user.jpg'
+
 const Panel = Collapse.Panel
 
 function callback(key) {
@@ -25,7 +27,13 @@ class Header extends React.Component {
         }
     }
     componentDidMount() {
-        
+        const projectList = this.props.projectList;
+        if (projectList == null) {
+          this.props.dispatch({
+            type : "layout/getProjectList"
+          });
+        }
+
     }
     logout() {
         this.props.onSetLoading(true)
@@ -94,6 +102,19 @@ class Header extends React.Component {
         </Menu>
         )
         const userInfo = session.get('userInfo') || {userName: '李芳'}
+        const projectList = this.props.projectList;
+        let subNodes = [];
+        if (projectList != null) {
+          subNodes =  projectList.map((item, index) => {
+            return (
+              <li key = {index} className="menu-item">
+                <Link to={ item.path || "/system/groupchar" } >
+                  <span className="header-menu-text">{ item.name }</span>
+                </Link>
+              </li>
+                  )
+          })
+        };
         return (
             <header className="yt-admin-framework-header clearfix">
                 <h1 className="yt-admin-framework-header-brand">
@@ -112,36 +133,9 @@ class Header extends React.Component {
                     </ul>
                 </h1>
                 <ul className="yt-admin-framework-header-menu clearfix">
-                    <li className="menu-item">
-                        <a href="#">
-                            <span className="header-menu-text">CRM系统</span>
-                        </a>
-                    </li>
-                    <li className="menu-item">
-                        <a href="#">
-                            <span className="header-menu-text">客房管理</span>
-                        </a>
-                    </li>
-                    <li className="menu-item">
-                        <a href="#">
-                            <span className="header-menu-text">服务管理</span>
-                        </a>
-                    </li>
-                    <li className="menu-item">
-                        <a href="#">
-                            <span className="header-menu-text">膳食厨房</span>
-                        </a>
-                    </li>
-                    <li className="menu-item">
-                        <a href="#">
-                            <span className="header-menu-text">进销存管理</span>
-                        </a>
-                    </li>
-                    <li className="menu-item">
-                        <a href="#">
-                            <span className="header-menu-text">系统管理</span>
-                        </a>
-                    </li>
+                  {
+                    subNodes
+                  }
                 </ul>
                 <div className="header-menu-name">
                     <img src={UserImg}/>

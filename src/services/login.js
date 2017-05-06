@@ -1,3 +1,4 @@
+
 import request from '../utils/request';
 import  { PAGE_SIZE　} from '../constants';
 const headers={
@@ -22,8 +23,5 @@ export function findSubmit(values) {
   })
 }
 
-export function getUserMenu(values) {
-  return request('/crm/api/v1/module/moduleList', {
-    method: 'GET',
-  })
-}
+
+

@@ -1,10 +1,13 @@
+
 import './index.scss'
 import React from 'react'
 import {BackTop, Spin} from 'antd'
 import Header from '../header/Header.jsx'
+
 import Sidebar from '../sidebar/Sidebar.jsx'
 import Content from '../content/Content.jsx'
-import {local, session} from '../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
+import {connect} from 'dva';
 import classNames from 'classnames';
 import request from '../../common/request/request.js'
 
@@ -16,72 +19,8 @@ class Layout extends React.Component {
             menuData: [],
             loading: false,
         }
-
     }
     componentWillMount() {
-        // 菜单信息可以通过后台，在登录的时候返回，存在sessionStroage里面
-        // 然后在这里从sessionStroage取出
-        let menuData = [
-            {
-                name: '组织架构管理',
-                path: '/Organization',
-                icon:'copyright',
-                children: [
-                    {
-                        name: '组织架构',
-                        path: '/Organization',
-                        icon: 'copyright'
-                    },
-                    {
-                        name: '职位管理',
-                        path: '/demo/management',
-                        icon: 'copyright'
-                    }
-                ]
-            },
-            {
-                name: 'CRM数据管理',
-                path: 'demo-empty',
-                icon:'copyright',
-                children: [
-                    {
-                        name: '集团字段',
-                        path: '/demo/management',
-                        icon:'copyright'
-                    },
-                    {
-                        name: '地方字段',
-                        path: '/demo/FromModal',
-                        icon:'copyright'
-                    },
-                    {
-                        name: '服务项目',
-                        path: '/demo/position',
-                        icon:'copyright'
-                    },
-                ]
-            },
-             {
-                name: '菜单管理',
-                path: '/demo/management',
-                icon:'copyright'
-            },
-             {
-                name: '权限管理',
-                path: '/Customer',
-                icon:'copyright'
-            },
-             {
-                name: '日志查看',
-                path: '/demo/LogView',
-                icon:'copyright'
-            },
-        ]
-
-        this.setState({
-            menuData: menuData
-        })
-
 
     }
 
@@ -132,14 +71,20 @@ class Layout extends React.Component {
         this.setState({
             loading: type
         })
-
     }
+
 
     render() {
         const cls = classNames({
             'mini': this.state.mini,
             'yt-admin-framework': true
-        })
+        });
+        let menuData = [];
+        const { projectList, subMenu } = this.props.layout
+
+        if (subMenu != null) {
+          menuData = subMenu;
+        }
 
         return (
             <div className={cls}>
@@ -148,18 +93,20 @@ class Layout extends React.Component {
                         miniMode={this.state.mini}
                         onMiniChange={this.handleMiniChange.bind(this)}
                         onSetLoading={this.handleSetLoading.bind(this)}
+                        projectList={projectList}
+                        dispatch={this.props.dispatch}
                     />
-                    <Sidebar miniMode={this.state.mini} menuData={this.state.menuData} location={this.props.location}/>
+                    <Sidebar miniMode={this.state.mini} menuData={menuData} location={this.props.location}/>
                     <Content>
                         {
                             this.props.children
                         }
                     </Content>
-                    <BackTop style={{right: '40px', bottom: '40px'}}/>     
+                    <BackTop style={{right: '40px', bottom: '40px'}}/>
                 </Spin>
             </div>
         )
     }
 }
 
-export default Layout
+export default connect(( layout ) => ( layout ))(Layout);

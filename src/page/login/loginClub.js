@@ -30,9 +30,10 @@ function Club({ dispatch, layout }) {
       // dispatch();
     };
 
-    return ( <div className = "selectForm" >
+    return (
+      <div className = "selectForm" >
         <ClubSelect dispatch={dispatch} club={club} />
-        </div>
+      </div>
     )
 }
 

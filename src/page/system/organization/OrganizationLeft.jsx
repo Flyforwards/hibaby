@@ -6,8 +6,7 @@ import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
-import {classification,dataList,ww} from '../../constants.js'
-import Current from '../Current'
+import { classification,dataList } from '../../../constants.js'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -56,7 +55,7 @@ class OrganizationLeft extends React.Component {
             return
           }
       }.bind(this))
-      }, 50)  
+      }, 50)
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {

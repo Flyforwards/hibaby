@@ -5,10 +5,12 @@ import { connect } from 'dva'
 import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
-import {routerRedux} from 'dva/router'
-import {Link} from 'react-router'
-import {classification,dataList,ww} from '../../constants.js'
-import Current from '../Current'
+
+import { routerRedux } from 'dva/router'
+import { Link} from 'react-router'
+import { classification,dataList } from '../../../constants.js'
+
+import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
 
 
@@ -100,7 +102,7 @@ class Organizationed extends React.Component {
           }
       }.bind(this))
     }
-    
+
     expandHandler = () => {
       setTimeout(() => {
         $("li").find("li .ant-tree-title").after("<span class='plus'>+</span>")
@@ -120,7 +122,7 @@ class Organizationed extends React.Component {
             return
           }
       }.bind(this))
-      }, 50)  
+      }, 50)
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -161,7 +163,7 @@ class Organizationed extends React.Component {
           this.setState({ dataSource });
         };
       }
-      
+
       onDelete = (index) => {
         const dataSource = [...this.state.dataSource];
         dataSource.splice(index, 1);
@@ -212,7 +214,7 @@ class Organizationed extends React.Component {
                     <Option value="时尚">请选择</Option>
                     <Option value="disabled">Disabled</Option>
                     <Option value="Yiminghe">yiminghe</Option>
-                    
+
                   </Select>
               </div>
               <div className="status">账户状态
@@ -244,8 +246,8 @@ class Organizationed extends React.Component {
                     range = {
                       this.props.range
                     }
-                    />  
-            </div>:null} 
+                    />
+            </div>:null}
             <CreateModal
                 visible={ this.state.createModalVisible }
             />
@@ -281,7 +283,7 @@ function Organization({
     page={page}
     results={results}
     range={range}
-    / > < /div >
+    /> </div >
   )
 }
 function mapStateToProps(state) {

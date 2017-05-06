@@ -4,7 +4,7 @@ import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
 import './fromModal.scss'
 const Option = Select.Option;
-class SelectListed extends Component {
+class Charactered extends Component {
      state = {
       value: undefined
     }
@@ -30,19 +30,19 @@ class SelectListed extends Component {
         )
     }
 }
-function SelectList({
+function Character({
     dispatch,
     list,
     code
 }) {
   return ( < div >
-    < SelectListed dispatch = {
+    < Charactered dispatch = {
       dispatch
     }
     list = {
         list
     }
-    / > < /div >
+    /> </div >
   )
 
 }
@@ -56,5 +56,5 @@ function mapStateToProps(state) {
     list
   };
 }
-export default connect(mapStateToProps)(SelectList)
+export default connect(mapStateToProps)(Character)
 

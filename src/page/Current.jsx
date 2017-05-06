@@ -14,7 +14,7 @@ class Current extends React.Component {
       } - {
         this.props.range.end
       }
-       < /p> < /div > : null)
+       </p> </div > : null)
   }
 }
 export default Current

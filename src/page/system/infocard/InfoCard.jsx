@@ -7,7 +7,7 @@ import request from '../../../common/request/request.js'
 
 import InfoCard from '../../../component/info-card'
 
-class InfoCardDemo extends Component {
+class InfoCards extends Component {
 
     constructor(props) {
         super(props)
@@ -66,4 +66,4 @@ class InfoCardDemo extends Component {
     }
 }
 
-export default InfoCardDemo
+export default InfoCards
