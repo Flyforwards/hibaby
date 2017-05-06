@@ -67,15 +67,25 @@ let routes = [
                   })
               }
           },
-          // 职位管理
+          // 权限管理
           {
-              path: '/system/position',
+              path: '/system/pormission',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
                       registerModel(app, require('./models/users'));
-                      cb(null, require('./page/system/position/position.jsx'))
+                      cb(null, require('./page/system/pormission/pormission.jsx'))
                   })
               }
+          },
+          // 菜单管理
+          {
+            path: '/system/module',
+            getComponent: (location, cb) => {
+              registerModel(app, require('./models/system'));
+              require.ensure([], (require) => {
+                cb(null, require('./page/system/module/module.jsx'))
+              })
+            }
           },
           // 日志查看
           {
@@ -88,16 +98,16 @@ let routes = [
               }
           },
           {
-            path: '/system/customer',
+            path: '/crm/customer',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/customer/Customer.jsx'))
               })
             }
           },
           {
-            path: '/system/infocard',
+            path: '/crm/infocard',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
                 cb(null, require('./page/system/infocard/InfoCard.jsx'))

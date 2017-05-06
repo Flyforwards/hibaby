@@ -47,9 +47,6 @@ export default {
           type: 'getProListSuccess',
           payload: data ,
         });
-        // if (location.pathname != "/demo/management") {
-        //   yield put(routerRedux.push("/demo/management"));
-        // }
         yield put({
           type: 'getCurrUserMenu',
           payload: { dataId : 3 },

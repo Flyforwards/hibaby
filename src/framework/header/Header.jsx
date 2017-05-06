@@ -72,6 +72,12 @@ class Header extends React.Component {
             name:event.target.innerHTML
         })
     }
+    refreshMenu(itemId){
+      this.props.dispatch({
+        type : "layout/getCurrUserMenu",
+        payload: {dataId : itemId},
+      });
+    }
     render() {
         const mini = this.props.miniMode
         const menu = (
@@ -106,9 +112,14 @@ class Header extends React.Component {
         let subNodes = [];
         if (projectList != null) {
           subNodes =  projectList.map((item, index) => {
+            if (item.id == 2) {
+              item.path = "/crm/customer";
+            } else if (item.id == 3) {
+              item.path = "/system/groupchar";
+            }
             return (
               <li key = {index} className="menu-item">
-                <Link to={ item.path || "/system/groupchar" } >
+                <Link to={ item.path } onClick={ this.refreshMenu.bind(this,item.id)} >
                   <span className="header-menu-text">{ item.name }</span>
                 </Link>
               </li>

@@ -193,7 +193,6 @@ class Customered extends React.Component {
         });
       }
     render() {
-      console.log("data",this.props.list)
         const { dataSource } = this.state;
         const columns = this.columns;
         const pagination = {
@@ -312,7 +311,6 @@ function Customer({
 
 }
 function mapStateToProps(state) {
-  console.log('state.system',state.system)
   const {
     data,
     total,
