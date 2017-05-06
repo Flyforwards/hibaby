@@ -1,23 +1,29 @@
 "use strict"
 import React, {Component} from 'react'
-import './position.scss'
+import './service.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from '../../../common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'
+import {Link} from 'react-router';
 class position extends Component {
     constructor(props) {
         super(props)
         this.state = {}
         this.columns = [{
-          title: '编号',
-          dataIndex: 'Numbering',
-          key:'Numbering',
-          width: '100px',
-        }, {
-          title: '角色名称',
+          title: '服务项目名称',
           dataIndex: 'name',
           key:'name',
-          width: '600px',
+          width: '300px',
+        }, {
+          title: '服务项目内容',
+          dataIndex: 'content',
+          key:'content',
+          width: '300px',
+        },{
+          title: '服务项目价格',
+          dataIndex: 'price',
+          key:'price',
+          width: '300px',
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -28,9 +34,7 @@ class position extends Component {
               dataList.length >= 1 ?
               (
                 <div>
-                  <a href="#" className="firstA" onClick={this.Edit}>编辑</a>
-                  <a href="#" className="firstA" onClick={this.permissions}>设置权限</a>
-                  <a href="#" className="firstA" onClick={this.Member}>成员列表</a>
+                  <a href="#" className="firstA" onClick={this.Edit}>查看</a>
                   <a href="#" className="firstB" onClick={this.delete}>删除</a>
                 </div>
               ) : null
@@ -42,13 +46,7 @@ class position extends Component {
       console.log("查询")
     }
     Edit(){
-      console.log("编辑")
-    }
-    permissions(){
-      console.log("设置权限")
-    }
-    Member(){
-      console.log("成员列表")
+      console.log("查看")
     }
     delete(){
       console.log("删除")
@@ -73,7 +71,7 @@ class position extends Component {
       };
         return (
            <div className="management-cent">
-            <div className="name">部门<Input /><span onClick={this.managementInquire}>查询</span></div>
+            <div className="name"><Link to="/localchar/find"><span >添加</span></Link></div>
             <div className="CreateModaList">
                 <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
                 <p className="allList">共计0条,范围1-10</p>

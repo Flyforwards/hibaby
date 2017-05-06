@@ -1,11 +1,12 @@
-"use strict"
 
-import React from 'react'
-import {connect} from 'dva'
-import './system.scss'
-import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd'
-import {routerRedux} from 'dva/router'
-import {Link} from 'react-router'
+"use strict"
+import React from 'react';
+
+import {connect} from 'dva';
+import './place.scss';
+import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd';
+import {routerRedux} from 'dva/router';
+import {Link} from 'react-router';
 import Current from '../../Current'
 
 class SystemIndex extends React.Component {
@@ -34,10 +35,14 @@ class SystemIndex extends React.Component {
         render: (text, record, index) => {
 
           return ( < Link to = {
-              `/demo/view?dataId=${record.id}`
+              `/localchar/find`
             } > 查看 </Link>)
           },
         }];
+    }
+    componentDidMount(){
+          var list=this.props.list
+        console.log(this.props.list+"place")
     }
     render() {
       const columns = this.columns;
@@ -47,11 +52,11 @@ class SystemIndex extends React.Component {
         pageSize:3,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
-            pathname: '/system/groupchar',
+            pathname: '/system/localchar',
             query: {
               "page": current,
               "results": 3,
-              "type": 1
+              "type": 2
             },
           }));
         },
@@ -59,48 +64,28 @@ class SystemIndex extends React.Component {
       return ( <div className = "
           container2"
          >
-        < div className = "
-          buttonwrapper"
-         >
-        < Link to = "/demo/add" > < Button
-        /*className = "editable-add-btn" */
-        className="addBtn"> 添加 </Button></Link >
+        < div className = "buttonwrapper">
+            < Link to = "/localchar/add" >
+                < Button className="addBtn"> 添加 </Button>
+            </Link >
         </div>
-        {this.props.list?
-        < Table rowKey = "id"
-        bordered dataSource = {
-          this.props.list
-        }
-        columns = {
-          columns
-        }
 
-        pagination = {
-          pagination
-        }
-        />:null}
-        < Current page = {
-        this.props.page
-      }
-      totalpage = {
-        this.props.totalpage
-      }
-      total = {
-        this.props.total
-      }
-      results = {
-        this.props.results
-      }
-      range = {
-        this.props.range
-      }
-      />
-        </div>
+        {this.props.list?
+        < Table rowKey = "id" bordered dataSource = {this.props.list}
+        columns = {columns} pagination = {pagination}/>:null}
+        < Current page = {this.props.page}
+            totalpage = {this.props.totalpage}
+            total = {this.props.total}
+            results = {this.props.results}
+            range = {this.props.range}
+        />
+    </div>
     );
   }
 }
 
 function management({
+
   dispatch,
   loading,
   data: list,
@@ -132,7 +117,8 @@ function management({
 
 }
 function mapStateToProps(state) {
-  // console.log("modelss",state.system)
+  console.log("modelss",state.system)
+
   const {
     data,
     total,
