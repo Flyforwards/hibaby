@@ -12,6 +12,12 @@ export default {
 		list:[],
 	},
 	reducers: {
+		
+		getDepartmentNodesList(state,{payload:{data:nodes,code}}){
+	      let getDepartmentNodesdata= {...state,nodes,code};
+	      console.log("getDepartmentNodes",nodes)
+	      return getDepartmentNodesdata
+	    },
 		DictionarySave(state,{payload:{data:dictionary,code}}){
 	      let Dictionarydata= {...state, dictionary, code};
 	      console.log("Dictionary",dictionary)
@@ -201,6 +207,25 @@ export default {
 			if (code == 0) {
 
 					// yield put(routerRedux.push('/login'));
+			}
+		},
+		//获取组织架构的列表
+		*getDepartmentNodes({payload: values}, { call, put }) {
+			const {
+				data: {
+					data,
+					code
+				}
+			} = yield call(systemService.getDepartmentNodes, values);
+			console.log("获取组织",data)
+			if (code == 0) {
+				yield put({
+					type: 'getDepartmentNodesList',
+					payload: {
+						data,
+						code
+					}
+				});
 			}
 		},
 		*permissionAdd({payload: values}, { call, put }) {
@@ -513,6 +538,12 @@ export default {
 							"sortField": "string",
 							"sortOrder": "string",
 							"type": 1
+						}
+					});
+		          dispatch({
+						type: 'getDepartmentNodes',
+						payload: {
+							...query
 						}
 					});
 		        }

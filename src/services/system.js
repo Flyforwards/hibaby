@@ -36,6 +36,14 @@ export function fromModal(values) {
     body: JSON.stringify(values),
   })
 }
+//获取组织架构列表
+export function getDepartmentNodes(values) {
+  return request('/crm/api/v1/department/getDepartmentNodes', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//获取权限管理列表
 export function listByPage(values) {
   return request('/crm/api/v1/permission/listByPage', {
     method: 'POST',
