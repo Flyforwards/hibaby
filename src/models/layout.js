@@ -21,16 +21,16 @@ export default {
       payload,
     }, {call, put}) {
       const { data: { data, code, err}} = yield call(usersService.getEndemic)
-
       if (code == 0 && err == null) {
           yield put({
             type: 'querySuccess',
             payload: data ,
           })
-        if (location.pathname === '/login') {
-          yield put(routerRedux.push('/club'))
-        }
+        // if (location.pathname === '/login') {
+        //   yield put(routerRedux.push('/club'))
+        // }
       } else {
+        throw err;
         if (location.pathname !== '/login') {
       //     let from = location.pathname
       //     if (location.pathname === '/dashboard') {
@@ -38,11 +38,12 @@ export default {
       //     }
           window.location = `${location.origin}/login`
         }
+
       }
     },
     *getProjectList({ payload }, {call, put}) {
       const { data: { data, code, err}} = yield call(usersService.getProjectList)
-      if (code == 0) {
+      if (code == 0 && err == null) {
         yield put({
           type: 'getProListSuccess',
           payload: data ,
@@ -52,22 +53,25 @@ export default {
           payload: { dataId : 3 },
         });
       } else {
+        throw err || "请求出错";
       }
     },
     // 获取当用户，当前信息区域的某个模块的菜单
     *getCurrUserMenu({ payload:  value  }, {call, put}) {
-      const { data: { data, code } }  = yield call(usersService.getCurrUserMenu, value);
-      if (code == 0) {
+      const { data: { data, code, err } }  = yield call(usersService.getCurrUserMenu, value);
+      if (code == 0 && err == null) {
         yield put({
           type: 'getMenuSuccess',
           payload: data ,
         });
+      } else {
+        throw err || "请求出错";
       }
     },
     *setEndemic({ payload: { selClub } }, { call, put }) {
       const value = { endemicId : selClub.id };
-      const { data: { data, code } }  = yield call(usersService.setEndemic, value);
-      if (code == 0) {
+      const { data: { data, code , err } }  = yield call(usersService.setEndemic, value);
+      if (code == 0 && err == null) {
         // 保存地方中心
         session.set("endemic", selClub);
         yield put(routerRedux.push("/"))
@@ -75,6 +79,9 @@ export default {
         yield put({
           type : 'getProjectList',
         });
+      } else {
+        console.log(err);
+        throw err || "请求出错";
       }
     },
   },

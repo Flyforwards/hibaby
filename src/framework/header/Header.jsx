@@ -35,34 +35,6 @@ class Header extends React.Component {
         }
 
     }
-    logout() {
-        this.props.onSetLoading(true)
-        this.props.onSetLoading(false)
-        session.set('isLogin', false)
-        hashHistory.push('/login')
-        return
-        request({
-            url: '/logout',
-            type: 'get',
-            dataType: 'json'
-        })
-            .then(res => {
-                this.props.onSetLoading(false)
-                if (res.code === '0') {
-                    session.set('isLogin', false)
-                    hashHistory.push('/login')
-                } else {
-                    message.error(res.msg)
-                }
-            })
-            .catch(err => {
-                console.log('error>>>', err)
-                message.error(err.statusText)
-                this.props.onSetLoading(false)
-            })
-
-
-    }
     onToggle() {
         this.props.onMiniChange(!this.props.miniMode)
     }
@@ -108,8 +80,35 @@ class Header extends React.Component {
         </Menu>
         )
         const userInfo = session.get('userInfo') || {userName: '李芳'}
-        const projectList = this.props.projectList;
+        let projectList = this.props.projectList;
         let subNodes = [];
+        if (projectList == null) {
+          projectList = [{
+            description : "首页",
+            id : 1,
+            isHave : null,
+            isSelect : null,
+            name :  "首页",
+            orderBy : 0,
+            path : "",
+          },{
+          description :  "CRM",
+          id : 2,
+          isHave : null,
+          isSelect : null,
+          name  : "CRM",
+          orderBy : 1,
+          path : "/crm/customer"},
+            {
+            description : "系统管理",
+            id :  3,
+            isHave : null,
+            isSelect : null,
+            name  : "系统管理",
+            orderBy : 2,
+            path : "/system/groupchar",
+          }];
+        }
         if (projectList != null) {
           subNodes =  projectList.map((item, index) => {
             if (item.id == 2) {
@@ -125,7 +124,7 @@ class Header extends React.Component {
               </li>
                   )
           })
-        };
+        }
         return (
             <header className="yt-admin-framework-header clearfix">
                 <h1 className="yt-admin-framework-header-brand">

@@ -9,11 +9,13 @@ function parseJSON(response) {
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
+  } else {
+    throw response;
   }
+}
 
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
+function catchErr(response) {
+  throw response.statusText;
 }
 
 /**
@@ -42,5 +44,5 @@ export default function request(url, options) {
     .then(checkStatus)
     .then(parseJSON)
     .then(data => ({ data }))
-    .catch(err => ({ err }));
+    .catch(catchErr);
 }

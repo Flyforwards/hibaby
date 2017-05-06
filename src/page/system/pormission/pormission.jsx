@@ -83,4 +83,4 @@ class pormission extends Component {
     }
 }
 
-export default pormission
+export default pormission;

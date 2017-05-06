@@ -81,8 +81,8 @@ let routes = [
           {
             path: '/system/module',
             getComponent: (location, cb) => {
-              registerModel(app, require('./models/system'));
               require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/system/module/module.jsx'))
               })
             }
@@ -91,8 +91,8 @@ let routes = [
           {
               path: '/system/logsview',
               getComponent: (location, cb) => {
-                  registerModel(app, require('./models/system'));
                   require.ensure([], (require) => {
+                    registerModel(app, require('./models/system'));
                       cb(null, require('./page/system/LogView/LogView.jsx'))
                   })
               }
@@ -154,13 +154,6 @@ let routes = [
               }
           }
         ],
-        onEnter(nextState, replace) {
-            // 可以验证是否登录
-            console.info("%c nextState >>>", "color:orange", nextState)
-            if (!session.get('isLogin')) {
-                replace('/login')
-            }
-        }
     },
     {
         path: '/login',
@@ -193,11 +186,7 @@ let routes = [
         path: '*',
         indexRoute: {
             onEnter(nextState, replace) {
-                if (!session.get('isLogin')) {
-                    replace('/login')
-                } else {
-                    replace('/404')
-                }
+              replace('/404')
             }
         }
     }
