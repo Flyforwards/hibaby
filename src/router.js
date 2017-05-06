@@ -87,40 +87,51 @@ let routes = [
                   })
               }
           },
-          // 职位管理
           {
-              path: '/system/position',
-              getComponent: (location, cb) => {
-                  require.ensure([], (require) => {
-                      registerModel(app, require('./models/users'));
-                      cb(null, require('./page/system/position/position.jsx'))
-                  })
-              }
+            path: '/system/pormission',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/users'));
+                cb(null, require('./page/system/pormission/pormission.jsx'))
+              })
+            }
+          },
+          // 菜单管理
+          {
+            path: '/system/module',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/users'));
+                cb(null, require('./page/system/module/module.jsx'))
+              })
+            }
           },
           // 日志查看
           {
               path: '/system/logsview',
               getComponent: (location, cb) => {
-                  registerModel(app, require('./models/system'));
                   require.ensure([], (require) => {
+                    registerModel(app, require('./models/system'));
                       cb(null, require('./page/system/LogView/LogView.jsx'))
                   })
               }
           },
+          // 客户档案
           {
-            path: '/system/customer',
+            path: '/crm/customer',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/users'));
-                cb(null, require('./page/customer/Customer.jsx'))
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/crm/customer/Customer.jsx'))
               })
             }
           },
+          // 会员卡管理
           {
-            path: '/system/infocard',
+            path: '/crm/infocard',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                cb(null, require('./page/system/infocard/InfoCard.jsx'))
+                cb(null, require('./page/crm/infocard/InfoCard.jsx'))
               })
             }
           },
@@ -170,11 +181,11 @@ let routes = [
 
 
           {
-            path: '/fromModal',
+            path: '/frommodal',
             getComponent: (location, cb) => {
             require.ensure([], (require) => {
             registerModel(app, require('./models/system'));
-            cb(null, require('./page/Customer/fromModal.jsx'))
+            cb(null, require('./page/crm/Customer/fromModal.jsx'))
           })
           }
           },
@@ -189,13 +200,6 @@ let routes = [
               }
           }
         ],
-        onEnter(nextState, replace) {
-            // 可以验证是否登录
-            console.info("%c nextState >>>", "color:orange", nextState)
-            if (!session.get('isLogin')) {
-                replace('/login')
-            }
-        }
     },
     {
         path: '/login',
@@ -228,11 +232,7 @@ let routes = [
         path: '*',
         indexRoute: {
             onEnter(nextState, replace) {
-                if (!session.get('isLogin')) {
-                    replace('/login')
-                } else {
-                    replace('/404')
-                }
+              replace('/404')
             }
         }
     }

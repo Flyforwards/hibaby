@@ -29,6 +29,7 @@ export function Dictionary(values) {
     body: JSON.stringify(values),
   })
 }
+//获取主模块
 export function fromModal(values) {
   return request('/crm/api/v1/project/list', {
     method: 'POST',

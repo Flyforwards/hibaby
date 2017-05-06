@@ -22,8 +22,6 @@ class NormalLoginForm extends React.Component {
 
         handleSubmit = (e) => {
             e.preventDefault();
-            // session.set('isLogin', true)
-            // browserHistory.push('/demo/management')
             this.props.form.validateFields((err, values) => {
                 if (!err) {
                     // console.log(this.props.dispatch)

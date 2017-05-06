@@ -51,7 +51,6 @@ export default {
 				const { data: { data, code, err} } = yield call(loginService.login, values);
 				if (code == 0 && err == null) {
           session.set("token", data.token);
-          session.set('isLogin', true);
 					yield put(routerRedux.push('/club'));
 				} else {
           throw err;

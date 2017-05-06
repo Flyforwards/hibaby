@@ -4,14 +4,18 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
+import {local, session} from '../../../common/util/storage.js'
+import SelectList from './from.jsx'
 
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
+
+const fromList = local.get("fromList")
 import _ from 'lodash'
 @createForm()
-class FromCreateModal extends Component {
+class AddFromCreateModal extends Component {
     constructor(props) {
         super(props)
     }
@@ -19,21 +23,20 @@ class FromCreateModal extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk(visible) {
-      this.props.form.validateFieldsAndScroll((err, values) => {
+    handleOk() {
+        this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+         console.log("projectId",local.get("projectId"))
           this.props.dispatch({
-            type: 'system/permissionUpdata',
+            type: 'system/permissionAdd',
             payload: {
                 actionPath:values.actionPath,
                 alias: values.alias,
-                description: values.description,
+                description: values.authority,
                 name: values.name,
-                orderBy:values.orderBy,
-                parentId: 2,
-                projectId: 1,
-                id:2
+                orderBy:Number(values.orderBy),
+                parentId: Number(values.mainName),
+                projectId: local.get("projectId")
             }
         });
         }
@@ -52,7 +55,6 @@ class FromCreateModal extends Component {
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
-    // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
         console.log(Date.now())
         setTimeout(() => {
@@ -64,21 +66,33 @@ class FromCreateModal extends Component {
             }
         }, 1000)
     }
+    onSelect = (value,key) => {
+      var projectId = value
+      console.log("上级选择其Id",projectId)
+      this.props.dispatch({
+          type: 'system/SelectList',
+          payload: {
+              "projectId":value
+          }
+      });
+    }
     render() {
         const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
-        let list = []
-         {
-          if(modelsList){
-            list = modelsList
-          }else{
-
-          }
-        }
-        const {getFieldDecorator} = form
+        const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
         }
+        let nodes = [];
+        const mainName = local.get("Dictionary");
+        if (mainName !=null) {
+          nodes = mainName.map((item,index)=>{
+            return (
+                <Option value={item.id} key={index} >{item.name}</Option>
+            )
+          })
+        }
+
         return (
             <Modal
                 visible={visible}
@@ -95,47 +109,47 @@ class FromCreateModal extends Component {
                 <Form onSubmit={this.handleSubmit}>
                 <FormItem
                   label="主模块"
-                  labelCol={{ span: 4 }}
+                  labelCol={{ span: 6 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('mainName', {
-                  initialValue: list.mainName,
+               {getFieldDecorator('mainName', {
                   rules: [],
                 })(
-                   <Input/>
+                  <Select placeholder="请选择" onSelect={this.onSelect}>
+                    {
+                      nodes
+                    }
+                  </Select>
                 )}
-                </FormItem>
+              </FormItem>
                 <FormItem
                   label="英文描述"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('actionPath', {
-                  initialValue: list.actionPath,
+                {getFieldDecorator('alias', {
                   rules: [],
                 })(
                    <Input/>
                 )}
                 </FormItem>
                 <FormItem
-                  label="上级权限"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('description', {
-                  initialValue: list.description,
+               {getFieldDecorator('authority', {
                   rules: [],
+                  onChange: this.handleSelectChange,
                 })(
-                   <Input/>
+                  <SelectList />
                 )}
-                </FormItem>
+              </FormItem>
                 <FormItem
                   label="名称"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('name', {
-                  initialValue: list.name,
                   rules: [],
                 })(
                    <Input/>
@@ -147,7 +161,6 @@ class FromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('actionPath', {
-                  initialValue: list.actionPath,
                   rules: [],
                 })(
                    <Input/>
@@ -159,7 +172,6 @@ class FromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('orderBy', {
-                  initialValue: list.orderBy,
                   rules: [],
                 })(
                    <Input/>
@@ -171,16 +183,16 @@ class FromCreateModal extends Component {
         )
     }
 }
-function FromCreateModal({
+function AddFromCreateModal({
     dispatch,
     data,
     code
 }) {
-  return ( <div >
-    < FromCreateModal dispatch = {
+  return ( < div >
+    < AddFromCreateModal dispatch = {
       dispatch
     }
-    /> </div >
+    /> </div>
   )
 }
 function mapStateToProps(state) {
@@ -193,5 +205,4 @@ function mapStateToProps(state) {
     data
   };
 }
-
-export default connect(mapStateToProps)(FromCreateModal)
+export default connect(mapStateToProps)(AddFromCreateModal)

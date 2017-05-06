@@ -4,17 +4,16 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
-import {local, session} from '../../common/util/storage.js'
+import {local, session} from '../../../common/util/storage.js' 
 import SelectList from './from.jsx'
+
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-const mainName = local.get("mainName")
-const fromList = local.get("fromList")
-import _ from 'lodash'
+import _ from 'lodash'  
 @createForm()
-class AddFromCreateModal extends Component {
+class FromCreateModal extends Component {
     constructor(props) {
         super(props)
     }
@@ -22,20 +21,21 @@ class AddFromCreateModal extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk() {
-        this.props.form.validateFieldsAndScroll((err, values) => {
+    handleOk(list) {
+      this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          // console.log('Received values of form: ', values);
           this.props.dispatch({
-            type: 'system/permissionAdd',
+            type: 'system/permissionUpdataList',
             payload: {
                 actionPath:values.actionPath,
-                alias: values.alias,
-                description: values.description,
+                alias:values.alias,
+                description: values.nam,
                 name: values.name,
-                orderBy:values.orderBy,
-                parentId: 2,
-                projectId: 1
+                orderBy:Number(values.orderBy),
+                parentId: Number(values.mainName),
+                projectId: local.get("projectId"),
+                id:list.id
             }
         });
         }
@@ -66,13 +66,40 @@ class AddFromCreateModal extends Component {
             }
         }, 1000)
     }
+    onSelect = (value,key) => {
+      console.log("shu",value);
+      this.props.dispatch({
+          type: 'system/SelectList',
+          payload: {
+              "projectId":value
+          }
+      });
+    }
     render() {
         const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
-        const { getFieldDecorator } = this.props.form;
+        let list = []
+         {
+          if(modelsList){
+            list = modelsList
+          }else{
+
+          }
+        }
+        const {getFieldDecorator} = form
         const formItemLayout = {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
         }
+        let nodes = [];
+        const mainName = local.get("Dictionary");
+        if (mainName != null) {
+          nodes = mainName.map((item,index)=>{
+                    return (
+                        <Option value={item.id} key={index} >{item.name}</Option>
+                    )
+                  })
+        }
+        
         return (
             <Modal
                 visible={visible}
@@ -81,7 +108,7 @@ class AddFromCreateModal extends Component {
                 onCancel={this.handleCancel.bind(this)}
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
-                onOk={this.handleOk.bind(this,visible)}
+                onOk={this.handleOk.bind(this,list)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
             >
@@ -92,10 +119,14 @@ class AddFromCreateModal extends Component {
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('mainName', {
-                  rules: [],
+                 {getFieldDecorator('mainName', {
+                  rules: []
                 })(
-                   <Input/>
+                  <Select placeholder="请选择" onSelect={this.onSelect}>
+                    {
+                        nodes
+                    }
+                  </Select>
                 )}
                 </FormItem>
                 <FormItem
@@ -104,20 +135,21 @@ class AddFromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('alias', {
+                  initialValue: list.name,
                   rules: [],
                 })(
                    <Input/>
                 )}
                 </FormItem>
                 <FormItem
-                  label="上级权限"
+                 
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-                {getFieldDecorator('description', {
-                  rules: [],
+                {getFieldDecorator('authority', {
+                  rules: []
                 })(
-                   <Input/>
+                  <SelectList />
                 )}
                 </FormItem>
                 <FormItem
@@ -126,6 +158,7 @@ class AddFromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('name', {
+                  initialValue: list.name,
                   rules: [],
                 })(
                    <Input/>
@@ -137,6 +170,7 @@ class AddFromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('actionPath', {
+                  initialValue: list.actionPath,
                   rules: [],
                 })(
                    <Input/>
@@ -148,7 +182,8 @@ class AddFromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('orderBy', {
-                  rules: [],
+                  initialValue: list.orderBy,
+                   rules: []
                 })(
                    <Input/>
                 )}
@@ -159,16 +194,16 @@ class AddFromCreateModal extends Component {
         )
     }
 }
-function AddFromCreateModal({
+function FromCreateModal({
     dispatch,
     data,
     code
 }) {
-  return ( < div >
-    < AddFromCreateModal dispatch = {
+  return ( <div >
+    < FromCreateModal dispatch = {
       dispatch
     }
-    /> </div>
+    /> </div >
   )
 }
 function mapStateToProps(state) {
@@ -181,4 +216,5 @@ function mapStateToProps(state) {
     data
   };
 }
-export default connect(mapStateToProps)(AddFromCreateModal)
+
+export default connect(mapStateToProps)(FromCreateModal)

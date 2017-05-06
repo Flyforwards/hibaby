@@ -1,10 +1,10 @@
 "use strict"
 import React, {Component} from 'react'
-import './position.scss'
+import './pormission.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from '../../../common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'
-class position extends Component {
+class pormission extends Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -83,4 +83,4 @@ class position extends Component {
     }
 }
 
-export default position
+export default pormission;
