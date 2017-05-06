@@ -83,6 +83,16 @@ class AddFromCreateModal extends Component {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
         }
+        let nodes = [];
+        const mainName = local.get("mainName");
+        if (mainName !=null) {
+          nodes = mainName.map((item,index)=>{
+                    return (
+                        <Option value={item.id} key={index} >{item.name}</Option>
+                    )
+                  })
+        }
+
         return (
             <Modal
                 visible={visible}
@@ -107,11 +117,8 @@ class AddFromCreateModal extends Component {
                 })(
                   <Select placeholder="请选择" onSelect={this.onSelect}>
                     {
-                    local.get("mainName").map((item,index)=>{
-                    return (
-                        <Option value={item.id} key={index} >{item.name}</Option>
-                    )
-                  })}
+                      nodes
+                    }
                   </Select>
                 )}
               </FormItem>

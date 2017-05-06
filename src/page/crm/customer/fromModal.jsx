@@ -16,16 +16,6 @@ const Dictionary = local.get("Dictionary")
 @createForm()
 class FromModaled extends Component {
     constructor(props) {
-        super(props) 
-        this.state = {
-          modifyModalVisible: false
-        }
-    }
-}
-
-
-class FromModal extends Component {
-    constructor(props) {
         super(props)
         this.columns = [{
           title: '主模块',
@@ -67,6 +57,7 @@ class FromModal extends Component {
                 path: '/xxxx/xxxx/xxx',
                 people:'里方法'
               }],
+              modifyModalVisible: false
         }
     }
     state = {
@@ -136,6 +127,15 @@ class FromModal extends Component {
             labelCol: { span: 5 },
             wrapperCol: { span: 19 },
         }
+        let mainName = local.get("mainName");
+        let nodes = [];
+        if (mainName != null) {
+          nodes = mainName.map((item,index)=>{
+            return (
+                <Option value={item.id} key={index} >{item.name}</Option>
+            )})
+        }
+
         return (
             <div className="fromList">
               <Form 
@@ -152,11 +152,8 @@ class FromModal extends Component {
                 })(
                   <Select placeholder="请选择" onSelect={this.onSelect}>
                     {
-                    local.get("mainName").map((item,index)=>{
-                    return (
-                        <Option value={item.id} key={index} >{item.name}</Option>
-                    )
-                  })}
+                      nodes
+                    }
                   </Select>
                 )}
               </FormItem>
@@ -208,7 +205,22 @@ class FromModal extends Component {
         )
     }
 }
+function FromModal({
+    dispatch,
+    list,
+    code
+}) {
+  return ( < div >
+    < FromModaled dispatch = {
+      dispatch
+    }
+    list = {
+        list
+    }
+    /> </div>
+  )
 
+}
 function mapStateToProps(state) {
   const {
     data,
