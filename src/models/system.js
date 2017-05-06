@@ -153,7 +153,8 @@ export default {
 				list,
 				projectId
 			};
-			
+			local.set("index",SelectListdata.data)
+			console.log("5.5",SelectListdata.data)
 			return SelectListdata;
 		},
 		addField(state, payload) {

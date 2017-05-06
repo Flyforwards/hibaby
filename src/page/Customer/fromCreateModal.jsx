@@ -160,7 +160,11 @@ class FromCreateModal extends Component {
                 >
                 {getFieldDecorator('orderBy', {
                   initialValue: list.orderBy,
-                  rules: [],
+                   rules: [{
+                    type: 'number', message: 'The input is not valid E-mail!',
+                  },{
+                    required: true, message: 'Please input your E-mail!',
+                  }],
                 })(
                    <Input/>
                 )}

@@ -10,7 +10,7 @@ const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-const mainName = local.get("mainName")
+// const mainName = local.get("mainName")
 const fromList = local.get("fromList")
 import _ from 'lodash'
 @createForm()
@@ -33,7 +33,7 @@ class AddFromCreateModal extends Component {
                 alias: values.alias,
                 description: values.description,
                 name: values.name,
-                orderBy:values.orderBy,
+                orderBy:Number(values.orderBy),
                 parentId: 2,
                 projectId: 1
             }
