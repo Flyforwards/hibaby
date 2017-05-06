@@ -2,11 +2,25 @@
 import React, {Component} from 'react'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
 import './fromModal.scss'
-import {aaa} from '../../constants.js'
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
+
+const aaa = [{
+  module: 'crm',
+  authority: '客户档案',
+  name: '客户档案',
+  path: '/xxxx/xxxx/xxx',
+  people:'里方法'
+},{
+  module: 'crm',
+  authority: '客户档案',
+  name: '客户档案',
+  path: '/xxxx/xxxx/xxx',
+  people:'里方法'
+}];
+
 const treeData = [{
       label: 'Node1',
       value: '0-0',
@@ -27,7 +41,7 @@ const treeData = [{
     }];
 class FromModal extends Component {
     constructor(props) {
-        super(props)  
+        super(props)
         this.columns = [{
           title: '主模块',
           dataIndex: 'module',
@@ -70,7 +84,7 @@ class FromModal extends Component {
               }],
         }
     }
-    state = { 
+    state = {
         visible: false,
         value: undefined
     }
@@ -87,7 +101,7 @@ class FromModal extends Component {
     }
     checkbox(index) {
         console.log("index",index)
-        
+
     }
     handleAfterClose() {
         this.props.form.resetFields()

@@ -97,20 +97,22 @@ let routes = [
                   })
               }
           },
+          // 客户档案
           {
             path: '/crm/customer',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
                 registerModel(app, require('./models/system'));
-                cb(null, require('./page/customer/Customer.jsx'))
+                cb(null, require('./page/crm/customer/Customer.jsx'))
               })
             }
           },
+          // 会员卡管理
           {
             path: '/crm/infocard',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                cb(null, require('./page/system/infocard/InfoCard.jsx'))
+                cb(null, require('./page/crm/infocard/InfoCard.jsx'))
               })
             }
           },
@@ -137,7 +139,7 @@ let routes = [
             getComponent: (location, cb) => {
             require.ensure([], (require) => {
             registerModel(app, require('./models/system'));
-            cb(null, require('./page/Customer/fromModal.jsx'))
+            cb(null, require('./page/crm/Customer/fromModal.jsx'))
           })
           }
           },
