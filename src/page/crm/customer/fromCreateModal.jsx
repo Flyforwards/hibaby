@@ -94,10 +94,10 @@ class FromCreateModal extends Component {
         const mainName = local.get("Dictionary");
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{
-                    return (
-                        <Option value={item.id} key={index} >{item.name}</Option>
-                    )
-                  })
+            return (
+                <Option value={item.id} key={index} >{item.name}</Option>
+            )
+          })
         }
 
         return (
@@ -216,5 +216,4 @@ function mapStateToProps(state) {
     data
   };
 }
-
 export default connect(mapStateToProps)(FromCreateModal)

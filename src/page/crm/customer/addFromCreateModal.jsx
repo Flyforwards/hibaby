@@ -92,7 +92,6 @@ class AddFromCreateModal extends Component {
             )
           })
         }
-
         return (
             <Modal
                 visible={visible}

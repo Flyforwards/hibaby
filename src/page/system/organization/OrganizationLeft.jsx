@@ -11,11 +11,9 @@ const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
-class OrganizationLeft extends React.Component {
+class OrganizationLefted extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-        }
     }
     componentDidMount(){
       $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")
@@ -75,6 +73,11 @@ class OrganizationLeft extends React.Component {
         })
     }
     render() {
+      let nodes = [];
+      if (this.props.data != null) {
+        
+      }
+      console.log("数据树",this.props.data)
       const loop = data => data.map((item) => {
         if (item.children && item.children.length) {
           return <TreeNode key={item.name} title={item.name}>{loop(item.children)}</TreeNode>;
@@ -107,11 +110,15 @@ class OrganizationLeft extends React.Component {
 function OrganizationLeft({
   dispatch,
   loading,
+  nodes,
   code
 }) {
   return ( < div >
-    <OrganizationLeft dispatch = {
+    <OrganizationLefted dispatch = {
       dispatch
+    }
+    nodes = {
+      nodes
     }
     /></div >
   )
@@ -119,11 +126,12 @@ function OrganizationLeft({
 function mapStateToProps(state) {
   console.log("modelss",state.system)
   const {
-    data,
+    nodes,
     code
   } = state.system;
   return {
     loading: state.loading.models.system,
+    nodes,
     code
     };
 }
