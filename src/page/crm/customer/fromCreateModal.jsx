@@ -4,18 +4,16 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
-import {local, session} from '../../common/util/storage.js'
+import {local, session} from '../../../common/util/storage.js' 
 import SelectList from './from.jsx'
 
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-// const mainName = local.get("mainName")
-const fromList = local.get("fromList")
-import _ from 'lodash'
+import _ from 'lodash'  
 @createForm()
-class AddFromCreateModal extends Component {
+class FromCreateModal extends Component {
     constructor(props) {
         super(props)
     }
@@ -23,20 +21,21 @@ class AddFromCreateModal extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk() {
-        this.props.form.validateFieldsAndScroll((err, values) => {
+    handleOk(list) {
+      this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-         console.log("projectId",local.get("projectId"))
+          // console.log('Received values of form: ', values);
           this.props.dispatch({
-            type: 'system/permissionAdd',
+            type: 'system/permissionUpdataList',
             payload: {
                 actionPath:values.actionPath,
-                alias: values.alias,
-                description: values.authority,
+                alias:values.alias,
+                description: values.nam,
                 name: values.name,
                 orderBy:Number(values.orderBy),
                 parentId: Number(values.mainName),
-                projectId: local.get("projectId")
+                projectId: local.get("projectId"),
+                id:list.id
             }
         });
         }
@@ -55,6 +54,7 @@ class AddFromCreateModal extends Component {
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
+    // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
         console.log(Date.now())
         setTimeout(() => {
@@ -67,8 +67,7 @@ class AddFromCreateModal extends Component {
         }, 1000)
     }
     onSelect = (value,key) => {
-      var projectId = value
-      console.log("上级选择其Id",projectId)
+      console.log("shu",value);
       this.props.dispatch({
           type: 'system/SelectList',
           payload: {
@@ -78,7 +77,15 @@ class AddFromCreateModal extends Component {
     }
     render() {
         const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
-        const { getFieldDecorator } = this.props.form;
+        let list = []
+         {
+          if(modelsList){
+            list = modelsList
+          }else{
+
+          }
+        }
+        const {getFieldDecorator} = form
         const formItemLayout = {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
@@ -91,7 +98,7 @@ class AddFromCreateModal extends Component {
                 onCancel={this.handleCancel.bind(this)}
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
-                onOk={this.handleOk.bind(this,visible)}
+                onOk={this.handleOk.bind(this,list)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
             >
@@ -99,11 +106,11 @@ class AddFromCreateModal extends Component {
                 <Form onSubmit={this.handleSubmit}>
                 <FormItem
                   label="主模块"
-                  labelCol={{ span: 6 }}
+                  labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-               {getFieldDecorator('mainName', {
-                  rules: [],
+                 {getFieldDecorator('mainName', {
+                  rules: []
                 })(
                   <Select placeholder="请选择" onSelect={this.onSelect}>
                     {
@@ -114,35 +121,37 @@ class AddFromCreateModal extends Component {
                   })}
                   </Select>
                 )}
-              </FormItem>
+                </FormItem>
                 <FormItem
                   label="英文描述"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('alias', {
+                  initialValue: list.name,
                   rules: [],
                 })(
                    <Input/>
                 )}
                 </FormItem>
                 <FormItem
+                 
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
-               {getFieldDecorator('authority', {
-                  rules: [],
-                  onChange: this.handleSelectChange,
+                {getFieldDecorator('authority', {
+                  rules: []
                 })(
                   <SelectList />
                 )}
-              </FormItem>
+                </FormItem>
                 <FormItem
                   label="名称"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('name', {
+                  initialValue: list.name,
                   rules: [],
                 })(
                    <Input/>
@@ -154,6 +163,7 @@ class AddFromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('actionPath', {
+                  initialValue: list.actionPath,
                   rules: [],
                 })(
                    <Input/>
@@ -165,7 +175,8 @@ class AddFromCreateModal extends Component {
                   wrapperCol={{ span: 20 }}
                 >
                 {getFieldDecorator('orderBy', {
-                  rules: [],
+                  initialValue: list.orderBy,
+                   rules: []
                 })(
                    <Input/>
                 )}
@@ -176,16 +187,16 @@ class AddFromCreateModal extends Component {
         )
     }
 }
-function AddFromCreateModal({
+function FromCreateModal({
     dispatch,
     data,
     code
 }) {
-  return ( < div >
-    < AddFromCreateModal dispatch = {
+  return ( <div >
+    < FromCreateModal dispatch = {
       dispatch
     }
-    /> </div>
+    /> </div >
   )
 }
 function mapStateToProps(state) {
@@ -198,4 +209,5 @@ function mapStateToProps(state) {
     data
   };
 }
-export default connect(mapStateToProps)(AddFromCreateModal)
+
+export default connect(mapStateToProps)(FromCreateModal)

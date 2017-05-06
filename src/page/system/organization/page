@@ -71,19 +71,7 @@ export const classification = [
       }
     ]},
 ];
-export const aaa = [{
-  module: 'crm',
-  authority: '客户档案',
-  name: '客户档案',
-  path: '/xxxx/xxxx/xxx',
-  people:'里方法'
-},{
-  module: 'crm',
-  authority: '客户档案',
-  name: '客户档案',
-  path: '/xxxx/xxxx/xxx',
-  people:'里方法'
-}];
+
 export const dataList = [{
   Numbering: 'a1234567',
   name: '李芳芳',

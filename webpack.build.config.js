@@ -13,7 +13,7 @@ console.log('BUILD_ENV >>>', process.env.BUILD_ENV)
 var BUILD_ENV = process.env.BUILD_ENV
 
 var PUBLIC_PATH = {
-    'dev': 'http://dev.yourhost.com/antd-admin/',
+    'dev': '/',
     'test': 'http://test.yourhost.com/antd-admin/',
     'prod': 'http://myqianlan.com/antd-admin-boilerplate/dist/',
 }
@@ -38,7 +38,7 @@ var webpackConfig = {
     },
 
     entry: {
-        index: './src/entry/index.jsx',
+        index: './src/index.js',
         vendor: ['jquery', 'moment', 'classnames', 'react', 'react-dom', 'react-router', 'antd']
     },
     cache: true,

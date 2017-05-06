@@ -1,10 +1,10 @@
 "use strict"
 import React, {Component} from 'react'
-import './position.scss'
+import './pormission.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from '../../../common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'
-class position extends Component {
+class pormission extends Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -77,10 +77,10 @@ class position extends Component {
             <div className="CreateModaList">
                 <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
                 <p className="allList">共计0条,范围1-10</p>
-            </div> 
+            </div>
            </div>
         )
     }
 }
 
-export default position
+export default pormission;

@@ -4,3 +4,5 @@ export const departments = ["信息管理部1","信息管理部2","信息管理�
 export const locals = ["总部","地方"];
 export const SystemRoles = ["普通员工","特殊员工"];
 export const status = ["正常","异常"];
+
+

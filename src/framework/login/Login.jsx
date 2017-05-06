@@ -37,38 +37,36 @@ class Login extends React.Component {
             this.setState({
                 loading: false
             })
-            session.set('isLogin', true)
-            browserHistory.push('/home')
-            return
+            // browserHistory.push('/home')
+            // return
 
-            request({
-                url: '/login',
-                type: 'post',
-                dataType: 'json',
-                data: loginData
-            })
-                .then(res => {
-                    console.log(res)
-                    this.setState({
-                        loading: false
-                    })
-                    if (res.code === '0') {
-                        session.set('isLogin', true)
-                        session.set('userInfo', res.data.user)
-                        session.set('menuInfo', res.data.menu)
-                        browserHistory.push('/home')
-                    } else {
-                        message.error(res.msg)
-                    }
-
-                })
-                .catch(err => {
-
-                    message.error(err.statusText)
-                    this.setState({
-                        loading: false
-                    })
-                })
+            // request({
+            //     url: '/login',
+            //     type: 'post',
+            //     dataType: 'json',
+            //     data: loginData
+            // })
+            //     .then(res => {
+            //         console.log(res)
+            //         this.setState({
+            //             loading: false
+            //         })
+            //         if (res.code === '0') {
+            //             session.set('userInfo', res.data.user)
+            //             session.set('menuInfo', res.data.menu)
+            //             browserHistory.push('/home')
+            //         } else {
+            //             message.error(res.msg)
+            //         }
+            //
+            //     })
+            //     .catch(err => {
+            //
+            //         message.error(err.statusText)
+            //         this.setState({
+            //             loading: false
+            //         })
+            //     })
         })
     }
 

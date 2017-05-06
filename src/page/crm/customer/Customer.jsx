@@ -6,7 +6,7 @@ import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
-import Current from '../Current'
+import Current from '../../Current'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -311,7 +311,6 @@ function Customer({
 
 }
 function mapStateToProps(state) {
-  console.log('state.system',state.system)
   const {
     data,
     total,

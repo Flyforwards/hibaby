@@ -6,10 +6,9 @@ import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popc
 import './fromModal.scss'
 import SelectList from './from.jsx'
 import TabalList from './TabalList.jsx'
-import {local, session} from '../../common/util/storage.js'
+import {local, session} from '../../../common/util/storage.js'
 import FromCreateModal from './fromCreateModal.jsx'
 import AddFromCreateModal from './addFromCreateModal.jsx'
-
 const createForm = Form.create
 const FormItem = Form.Item
 const Option = Select.Option
@@ -20,7 +19,66 @@ class FromModaled extends Component {
         super(props) 
         this.state = {
           modifyModalVisible: false
-        } 
+        }
+    }
+}
+
+
+class FromModal extends Component {
+    constructor(props) {
+        super(props)
+        this.columns = [{
+          title: '主模块',
+          dataIndex: 'module',
+          width: '90px',
+        }, {
+          title: '上级权限',
+          dataIndex: 'authority',
+          width: '90px',
+        }, {
+          title: '名称',
+          dataIndex: 'name',
+          width: '90px',
+        }, {
+          title: '路径',
+          dataIndex: 'path',
+          width: '90px',
+        },{
+          title: '操作',
+          dataIndex: 'operating',
+          width: '90px',
+          render: (text, record, index) => {
+            return (
+              this.state.dataSource.length >= 1 ?
+              (
+                <Popconfirm title="是否要删除该数据?" onConfirm={() => this.onDelete(index)}>
+                 <a href="#">增加</a>
+                  <a href="#">修改</a>
+                </Popconfirm>
+              ) : null
+            );
+          },
+        }];
+        this.state = {
+            dataSource: [{
+                module: 'crm',
+                authority: '客户档案',
+                name: '客户档案',
+                path: '/xxxx/xxxx/xxx',
+                people:'里方法'
+              }],
+        }
+    }
+    state = {
+        visible: false,
+        value: undefined
+    }
+    onChange = (value) => {
+        console.log(arguments);
+        this.setState({ value });
+    }
+    handleCancel() {
+        this.props.onCancel()
     }
     addList(){
       this.setState({
@@ -31,6 +89,9 @@ class FromModaled extends Component {
         this.setState({
             modifyModalVisible: false,
         })
+      }
+    checkbox(index) {
+        console.log("index",index)
     }
     Inquire(){
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -147,22 +208,7 @@ class FromModaled extends Component {
         )
     }
 }
-function FromModal({
-    dispatch,
-    data,
-    code
-}) {
-  return ( < div >
-    < FromModaled dispatch = {
-      dispatch
-    }
-    data = {
-      data
-    }
-    / > < /div >
-  )
 
-}
 function mapStateToProps(state) {
   const {
     data,
