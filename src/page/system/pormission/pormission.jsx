@@ -1,10 +1,12 @@
 "use strict"
-import React, {Component} from 'react'
-import './pormission.scss'
-import {Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message} from 'antd'
-import {connect} from 'dva';
-const createForm = Form.create
-const FormItem = Form.Item
+import React, {Component} from 'react';
+import { Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message } from 'antd';
+import { connect } from 'dva';
+const createForm = Form.create;
+const FormItem = Form.Item;
+import  './pormission.scss';
+import AddRoleFrom from './AddRoleFrom';
+import SettingPormissionFrom from './SettingPormissionFrom'
 
 
 @createForm()
@@ -12,7 +14,15 @@ class pormissionForm extends Component{
   constructor(props) {
     super(props)
   }
-  state = { visible: false }
+  state = {
+    visible: false,
+    modifyModalVisible: false,
+    settingModalVisible: false,
+    record, null,
+    value: undefined,
+    add: true, // 编辑还是添加
+    isDel: false,
+  }
   handleCancel() {
     this.props.onCancel()
   }
@@ -85,7 +95,7 @@ class Pormission extends Component {
         this.columns = [{
           title: '编号',
           dataIndex: 'id',
-          key:'id',
+          key:'ids',
           width: '100px',
         }, {
           title: '角色名称',
@@ -99,11 +109,11 @@ class Pormission extends Component {
           width: '300px',
           render: (text, record, index) => {
             return (
-                <div key = { record }>
-                  <a href="#" className="firstA" onClick={this.Edit}>编辑</a>
-                  <a href="#" className="firstA" onClick={this.permissions}>设置权限</a>
-                  <a href="#" className="firstA" onClick={this.Member}>成员列表</a>
-                  <a href="#" className="firstB" onClick={this.delete}>删除</a>
+                <div key = { index }>
+                  <a href="#" className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</a>
+                  <a href="#" className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</a>
+                  <a href="#" className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</a>
+                  <a href="#" className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
                 </div>
             );
           },
@@ -112,30 +122,68 @@ class Pormission extends Component {
     componentWillMount() {
       this.props.dispatch({
         type : "pormission/getRolesByPage",
-        payload : { page : 1, size : 5}
+        payload : { page : 1, size : 10}
       });
     }
-
     managementInquire() {
       console.log("查询")
     }
-    Edit(){
-      console.log("编辑")
+  // 编辑
+    editPermissions(record){
+      console.log("编辑", record)
+      this.setState({
+        modifyModalVisible: true,
+        record: record,
+        add: false,
+        isDel: false,
+      })
     }
-    permissions(){
-      console.log("设置权限")
-    }
-    Member(){
-      console.log("成员列表")
-    }
-    delete(){
-      console.log("删除")
-    }
-    add() {
+    // 设置权限
+    setPermissions(record){
+      console.log("设置权限", record)
+      this.setState({
+        settingModalVisible: true,
+        record: record,
+      })
 
+    }
+    showMemberList(record){
+      console.log("成员列表", record)
+    }
+
+    delete(record){
+      console.log("删除", record)
+      this.setState({
+        modifyModalVisible: true,
+        record: record,
+        add: false,
+        isDel: true,
+      })
+    }
+
+    // 添加
+    addList(){
+      this.setState({
+        modifyModalVisible: true,
+        record: null,
+        add: true,
+        isDel: false,
+      })
+    }
+    handleCreateModalCancel() {
+        this.setState({
+          modifyModalVisible: false,
+          settingModalVisible: false,
+        })
     }
     render() {
         let { total, data } = this.props.pormission;
+        if (data != null) {
+          data.map((item,index)=>{
+            item.key = item.id;
+            return item;
+          })
+        }
         const pagination = {
           total: total, //数据总条数
           showQuickJumper: true,
@@ -150,14 +198,28 @@ class Pormission extends Component {
         //   }));
         },
 
-      };
+        };
         return (
            <div className="management-cent">
-            <div className="name">部门<Input /> <Button className="find" onClick={this.managementInquire}>查询</Button> <Button className="add" onClick={this.managementInquire}>添加</Button> </div>
+            <div className="name">部门<Input />
+              <Button className="find" onClick={this.managementInquire}>查询</Button>
+              <Button className="add" onClick={ this.addList.bind(this) }>添加</Button>
+            </div>
             <div className="CreateModaList">
-                <Table bordered dataSource={ data } columns={ this.columns } pagination = { pagination } rowKey="Numbering"/>
+                <Table bordered dataSource={ data } columns={ this.columns } pagination = { pagination }/>
                 <p className="allList">共计0条,范围1-10</p>
             </div>
+             <AddRoleFrom
+               visible ={ this.state.modifyModalVisible }
+               onCancel ={ this.handleCreateModalCancel.bind(this) }
+               record = { this.state.record }
+               add = { this.state.add }
+               isDel = { this.state.isDel }
+             />
+             <SettingPormissionFrom
+               visible ={ this.state.settingModalVisible }
+               onCancel ={ this.handleCreateModalCancel.bind(this) }
+             />
            </div>
         )
     }
