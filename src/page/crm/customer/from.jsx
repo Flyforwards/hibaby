@@ -44,13 +44,11 @@ function SelectList({
     list,
     code
 }) {
-  return ( < div >
-    < SelectListed dispatch = {
+  return ( <div>
+    <SelectListed dispatch = {
       dispatch
     }
-    list = {
-        list
-    }
+    list = { list }
     /> </div>
   )
 

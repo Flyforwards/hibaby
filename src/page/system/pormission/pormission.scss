@@ -1,29 +1,47 @@
 .management-cent{
 	.name{
-		margin:10px 0px 10px 10px; 
+		margin:10px 0px 10px 10px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
-	    font-weight: 400;
-	    font-style: normal;
-	    font-size: 14px;
-	    color:#333;
-	    span{
-			display:inline-block;
-			color: #FFFFFF;
-			width: 140px;
-		    height: 40px;
-		    margin-left:10px;
-		    text-align: center;
-		    line-height: 40px;
-		    background: inherit;
-		    background-color: rgba(255, 102, 0, 1);
-		    border: none;
-		    border-radius: 5px;
-		    font-family: '微软雅黑 Regular', '微软雅黑';
-		    font-weight: 400;
-		    font-style: normal;
-		    font-size: 14px;
-		}
-	}
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color:#333;
+  }
+
+  .add{
+    display:inline-block;
+    color: #FFFFFF;
+    width: 140px;
+    height: 40px;
+    margin-left: 35px;
+    text-align: center;
+    line-height: 40px;
+    background: inherit;
+    background-color: rgba(255, 102, 0, 1);
+    border: none;
+    border-radius: 5px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+  }
+  .find{
+    display:inline-block;
+    color: #FFFFFF;
+    width: 140px;
+    height: 40px;
+    margin-left: 80px;
+    text-align: center;
+    line-height: 40px;
+    background: inherit;
+    background-color: rgba(255, 102, 0, 1);
+    border: none;
+    border-radius: 5px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+  }
 	.ant-input{
 		width:220px;
 		height:40px;
@@ -52,13 +70,14 @@
 				display: inline-block;
 				color: #0066FF;
 				text-decoration: none;
-				margin:0 22px; 
+				margin:0 40px;
 				float:left;
 			}
 			.firstB{
 				color: #FF0000;
 				float:right;
-				text-decoration: none;
+        margin:0 40px;
+        text-decoration: none;
 			}
 		}
 	}
@@ -66,8 +85,8 @@
 	    height:230px;
 	    font-size: 14px;
 	    line-height: 2.5;
-	    margin-top:-10px;  
-	} 
+	    margin-top:-10px;
+	}
 	.allList{
 		width:400px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
@@ -77,8 +96,8 @@
 	    color: #999999;
 	    text-align: left;
 	    display:inline-block;
-	    margin-top:-40px; 
-	    margin-left:10px; 
+	    margin-top:-40px;
+	    margin-left:10px;
 	    float:left;
 	}
 }

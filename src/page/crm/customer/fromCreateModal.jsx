@@ -4,14 +4,14 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
-import {local, session} from '../../../common/util/storage.js' 
+import {local, session} from '../../../common/util/storage.js'
 import SelectList from './from.jsx'
 
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-import _ from 'lodash'  
+import _ from 'lodash'
 @createForm()
 class FromCreateModal extends Component {
     constructor(props) {
@@ -76,7 +76,7 @@ class FromCreateModal extends Component {
       });
     }
     render() {
-        const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
+        const { visible, form, confirmLoading,modelsList,ListIndex } = this.props
         let list = []
          {
           if(modelsList){
@@ -99,7 +99,7 @@ class FromCreateModal extends Component {
             )
           })
         }
-        
+
         return (
             <Modal
                 visible={visible}
@@ -142,7 +142,7 @@ class FromCreateModal extends Component {
                 )}
                 </FormItem>
                 <FormItem
-                 
+
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >

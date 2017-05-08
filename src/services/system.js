@@ -74,3 +74,11 @@ export function view(values) {
     body: JSON.stringify(values),
   })
 }
+
+
+export function getRolesByPage(values) {
+  return request('/crm/api/v1/role/listByPage', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
