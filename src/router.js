@@ -52,7 +52,7 @@ let routes = [
               path: '/system/organization',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      registerModel(app, require('./models/system'));
+                      registerModel(app, require('./models/organization'));
                       cb(null, require('./page/system/organization/Organization.jsx'))
                   })
               }

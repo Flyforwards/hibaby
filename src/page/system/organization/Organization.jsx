@@ -5,13 +5,11 @@ import { connect } from 'dva'
 import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
-
 import { routerRedux } from 'dva/router'
 import { Link} from 'react-router'
-import { classification,dataList } from '../../../constants.js'
-
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
+import { roleId } from '../../../constants.js'
 
 
 const Option = Select.Option
@@ -20,109 +18,66 @@ const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
 
 
-class Organizationed extends React.Component {
+class Organization extends React.Component {
     constructor(props) {
         super(props)
         this.columns = [{
           title: '编号',
-          dataIndex: 'Numbering',
-          key:'Numbering',
-          width: '100px',
+          dataIndex: 'identifier',
+          key:'identifier',
+          width: '10%',
         }, {
           title: '姓名',
           dataIndex: 'name',
           key:'name',
-          width: '100px',
+          width: '10%',
         }, {
           title: '职位',
-          dataIndex: 'position',
-          key:'position',
-          width: '100px',
+          dataIndex: 'positionId',
+          key:'positionId',
+          width: '10%',
         }, {
           title: '隶属部门',
-          dataIndex: 'department',
-          key: 'department',
-          width: '100px',
+          dataIndex: 'deptId',
+          key: 'deptId',
+          width: '10%',
         },{
           title: '地方中心',
-          dataIndex: 'local',
-          key: 'local',
-          width: '100px',
+          dataIndex: 'endemicId',
+          key: 'endemicId',
+          width: '10%',
         },{
           title: '系统角色',
-          dataIndex: 'system',
-          key: 'system',
-          width: '100px',
+          dataIndex: 'roleId',
+          key: 'roleId',
+          width: '10%',
         },{
           title: '账户状态',
           dataIndex: 'status',
           key: 'status',
-          width: '100px',
+          width: '10%',
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
-          width: '100px',
+          width: '10%',
           render: (text, record, index) => {
             return (
-              dataList.length >= 1 ?
-              (
                 <span>
                  <a href="#" className="firstA" onClick={this.toView.bind(this)}>查看</a>
                   <a href="#" className="twoA" onClick={this.Disabled.bind(this)}>禁用</a>
                 </span>
-              ) : null
             );
           },
         }];
         this.state = {
             count: 2,
             createModalVisible: false,
-            expandedKeys: ['ss', 'aaa', 'bbbb'],
             ulTop:0,
-            upblock:'none'
+            upblock:'none',
+            status:0,
+            character:0
         }
-    }
-    componentDidMount(){
-      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")
-      $(".plus").click(function(e){
-          if(this.state.upblock == 'none'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY-33,
-              upblock:'block'
-            })
-            return
-          }
-          if(this.state.upblock == 'block'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY,
-              upblock:'none'
-            })
-            return
-          }
-      }.bind(this))
-    }
-
-    expandHandler = () => {
-      setTimeout(() => {
-        $("li").find("li .ant-tree-title").after("<span class='plus'>+</span>")
-         $(".plus").click(function(e){
-          if(this.state.upblock == 'none'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY-33,
-              upblock:'block'
-            })
-            return
-          }
-          if(this.state.upblock == 'block'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY,
-              upblock:'none'
-            })
-            return
-          }
-      }.bind(this))
-      }, 50)
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -142,8 +97,33 @@ class Organizationed extends React.Component {
     Disabled() {
       console.log("禁用")
     }
+    //按条件查询用户
     OrganizationInquire() {
-      console.log("查询")
+      console.log("查询",)
+       this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            name: $(".userName").val(),
+            nodeid: 3,
+            roleId: this.state.character,
+            status: this.state.status,
+            page: 1,
+            size: 5,
+            tissueProperty: 2
+        },
+      });
+    }
+    //获取系统角色的id
+    onSelectCharacter(value){
+     this.setState({
+        character:value
+     })
+    }
+    //获取账户状态的id
+    onSelectStatus(value){
+     this.setState({
+        status:value
+     })
     }
     OrganizationAdd() {
       console.log("新增员工")
@@ -172,57 +152,61 @@ class Organizationed extends React.Component {
       handleAdd = () => {
         const { count, dataSource } = this.state;
         const newData = {
-          Numbering: 'a123456',
+          identifier: 'a123456',
           name: '李芳芳',
-          position: '产品经理',
-          department: '信息管理部',
-          local: '总部',
-          system: '普通员工',
+          positionId: '产品经理',
+          deptId: '信息管理部',
+          endemicId: '总部',
+          roleId: '普通员工',
           status: '正常',
         };
         this.setState({
-          dataSource: [...dataSource, newData],
-          count: count + 1,
+          dataSource: [...dataSource, newData]
         });
       }
     render() {
-        const { dataSource } = this.state;
+        let ListLnformation = []
+        if(this.props.list != null){
+          ListLnformation = this.props.list
+        }
         const columns = this.columns;
         const pagination = {
-        total: 100,
-        showQuickJumper: true,
-        onChange: (current) => {
-          this.props.dispatch(routerRedux.push({
-            pathname: '/system',
-            query: {
-              "page": current,
-              "results": 3,
-              "type": 1
-            },
-          }));
-        },
-      };
+          total:this.props.total,
+          showQuickJumper: true,
+          defaultPageSize:5,
+          onChange: (current) => {
+            this.props.dispatch({
+              type: 'organization/organizationList',
+              payload: {
+                  nodeid: 3,
+                  page: current,
+                  size: 5,
+                  tissueProperty: 2
+              },
+            });
+          },
+        };
+        const traversalRoleId = (roleId) => {
+          return roleId.map((item,index)=>{
+             return <Option value={index} key={index}>{item}</Option>
+          })
+        }
+        const traversalRoleIdData = traversalRoleId(roleId)
         return (
             <main className="yt-admin-framework-Customer-a">
             <OrganizationLeft/>
             <div className="Organization-right">
             <div className="Organization-nav">
-              <div className="name">姓名<Input ref="O"/></div>
+              <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType">
-                    <Option value="jack">Jack</Option>
-                    <Option value="时尚">请选择</Option>
-                    <Option value="disabled">Disabled</Option>
-                    <Option value="Yiminghe">yiminghe</Option>
-
+                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                      {traversalRoleIdData}
                   </Select>
               </div>
               <div className="status">账户状态
-                <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType">
-                    <Option value="jack">Jack</Option>
-                    <Option value="时尚">请选择</Option>
-                    <Option value="disabled">Disabled</Option>
-                    <Option value="Yiminghe">yiminghe</Option>
+                <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
+                    <Option value="0">正常</Option>
+                    <Option value="1">异常</Option>
                   </Select>
               </div>
               <span className="Organization-Inquire" onClick={this.OrganizationAdd.bind(this)}>新增员工</span>
@@ -230,7 +214,7 @@ class Organizationed extends React.Component {
             </div>
             {this.props.list?
             <div className="CreateModaList">
-                <Table bordered dataSource={this.props.list} columns={columns} pagination = {pagination} rowKey="Numbering"/>
+                <Table bordered dataSource={ListLnformation} columns={columns} pagination = {pagination} rowKey="Numbering"/>
                 < Current page = {
                       this.props.page
                     }
@@ -256,11 +240,10 @@ class Organizationed extends React.Component {
         )
     }
 }
-
 function Organization({
   dispatch,
   loading,
-  data: list,
+  list,
   total,
   page,
   results,
@@ -287,18 +270,17 @@ function Organization({
   )
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.system)
   const {
-    data,
+    list,
     total,
     page,
     results,
     range,
     code
-  } = state.system;
+  } = state.organization;
   return {
-    loading: state.loading.models.system,
-    data,
+    loading: state.loading.models.organization,
+    list,
     total,
     page,
     results,
@@ -306,5 +288,4 @@ function mapStateToProps(state) {
     code
     };
 }
-
 export default connect(mapStateToProps)(Organization)

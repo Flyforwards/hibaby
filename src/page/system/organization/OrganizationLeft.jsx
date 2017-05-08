@@ -14,25 +14,10 @@ const TreeNode = Tree.TreeNode;
 class OrganizationLefted extends React.Component {
     constructor(props) {
         super(props)
-    }
-    componentDidMount(){
-      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")
-      $(".plus").click(function(e){
-          if(this.state.upblock == 'none'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY-33,
-              upblock:'block'
-            })
-            return
-          }
-          if(this.state.upblock == 'block'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY,
-              upblock:'none'
-            })
-            return
-          }
-      }.bind(this))
+        this.state = {
+          upblock:'none',
+          ulTop:0
+        }
     }
     expandHandler = () => {
       setTimeout(() => {
@@ -47,13 +32,30 @@ class OrganizationLefted extends React.Component {
           }
           if(this.state.upblock == 'block'){
             this.setState({
-              ulTop:e.pageY-e.offsetY,
               upblock:'none'
             })
             return
           }
       }.bind(this))
       }, 50)
+    }
+    onSelect(){
+     $(".plus").click(function(e){
+          if(this.state.upblock == 'none'){
+            this.setState({
+              ulTop:e.pageY-e.offsetY-33,
+              upblock:'block'
+            })
+            return
+          }
+          if(this.state.upblock == 'block'){
+            this.setState({
+              ulTop:e.pageY-e.offsetY,
+              upblock:'none'
+            })
+            return
+          }
+      }.bind(this))
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -73,28 +75,32 @@ class OrganizationLefted extends React.Component {
         })
     }
     render() {
-      let nodes = [];
-      if (this.props.data != null) {
-        
+      let loops = []
+      const nodesIteration = (nodes) => {
+        return nodes.map((item) => {
+          if (item.nodes && item.nodes.length) {
+            return <TreeNode key={item.id} title={item.name}>{nodesIteration(item.nodes)}</TreeNode>;
+          }
+          return <TreeNode key={item.id} title={item.name} />;
+      })
       }
-      console.log("数据树",this.props.data)
-      const loop = data => data.map((item) => {
-        if (item.children && item.children.length) {
-          return <TreeNode key={item.name} title={item.name}>{loop(item.children)}</TreeNode>;
+      if (this.props.data != null) {
+        const  nodes  = this.props.data.nodes;
+          loops = nodesIteration(nodes);
+          loops.unshift(<TreeNode key={this.props.data.id} title={this.props.data.name}/>)
+          $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")  
         }
-        return <TreeNode key={item.name} title={item.name} />;
-      });
         return (
             <div className="Organization-left">
                 <Tree
                   className="draggable-tree"
-                  defaultExpandedKeys={this.state.expandedKeys}
                   draggable
                   onExpand={this.expandHandler.bind(this)}
                   onDragEnter={this.onDragEnter}
+                  onSelect={this.onSelect.bind(this)}
                   onDrop={this.onDrop}
                 >
-                  {loop(classification)}
+                { loops }
                 </Tree>
                 <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
                   <li>添加子节点</li>
@@ -110,28 +116,27 @@ class OrganizationLefted extends React.Component {
 function OrganizationLeft({
   dispatch,
   loading,
-  nodes,
+  data,
   code
 }) {
   return ( < div >
     <OrganizationLefted dispatch = {
       dispatch
     }
-    nodes = {
-      nodes
+    data = {
+      data
     }
     /></div >
   )
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.system)
   const {
-    nodes,
+    data,
     code
-  } = state.system;
+  } = state.organization;
   return {
-    loading: state.loading.models.system,
-    nodes,
+    loading: state.loading.models.organization,
+    data,
     code
     };
 }
