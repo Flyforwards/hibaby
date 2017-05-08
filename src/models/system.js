@@ -10,12 +10,12 @@ export default {
 		data: [],
 		total: null,
 		list:[],
+		nodes:[],
 	},
 	reducers: {
+		getDepartmentNodesList(state,{payload:{ data: { nodes} ,code }}){
 
-		getDepartmentNodesList(state,{payload:{data:nodes,code}}){
-	      let getDepartmentNodesdata= {...state,nodes,code};
-	      console.log("getDepartmentNodes",nodes)
+	      let getDepartmentNodesdata = {...state,nodes,code};
 	      return getDepartmentNodesdata
 	    },
 		DictionarySave(state,{payload:{data:dictionary,code}}){
@@ -39,21 +39,6 @@ export default {
 			local.set("listByPage",arr)
 			return {...listByPageldata,range};
 		},
-		organizationSave(state,{payload:{data,total,page,size,code}}){
-	      let organizationdata = {...state,
-				data,
-				total,
-				page,
-				size,
-				code,
-			};
-			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
-				totalpage:Math.ceil(total/size),
-			}
-			return {...organizationdata,range};
-	    },
 		LogViewSave(state,{payload:{data,total,page,size,code}}){
 	      let LogViewdata = {...state,
 				data,
@@ -164,7 +149,6 @@ export default {
 				code
 			};
 			local.set("Dictionary",data)
-			console.log("4444444",local.get("Dictionary"))
 			return fromModaldata;
 		},
 		SelectListSave(state, {
@@ -217,11 +201,8 @@ export default {
 					code
 				}
 			} = yield call(systemService.add, values);
-
-			// yield put({ type: 'submitSave', payload: { data, code } });
 			if (code == 0) {
-
-					// yield put(routerRedux.push('/login'));
+				// yield put(routerRedux.push('/login'));
 			}
 		},
 		//获取组织架构的列表
@@ -232,7 +213,6 @@ export default {
 					code
 				}
 			} = yield call(systemService.getDepartmentNodes, values);
-			console.log("获取组织",data)
 			if (code == 0) {
 				yield put({
 					type: 'getDepartmentNodesList',
@@ -243,6 +223,7 @@ export default {
 				});
 			}
 		},
+		//添加权限管理
 		*permissionAdd({payload: values}, { call, put }) {
 			const {
 				data: {
@@ -357,7 +338,7 @@ export default {
 	      	data: {
 		      		data,
 		      		total,
-		      		page = 1,
+		      		page,
 		      		size,
 		      		code
 	      }} = yield call(systemService.organization, values);
@@ -589,7 +570,7 @@ export default {
 						}
 					});
 		        }
-		        if(pathname === '/system/organization') {
+        if(pathname === '/system/organization') {
 		          dispatch({
 						type: 'organization',
 						payload: {
