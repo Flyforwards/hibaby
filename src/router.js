@@ -52,7 +52,7 @@ let routes = [
               path: '/system/organization',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      registerModel(app, require('./models/system'));
+                      registerModel(app, require('./models/organization'));
                       cb(null, require('./page/system/organization/Organization.jsx'))
                   })
               }
@@ -84,6 +84,16 @@ let routes = [
                   require.ensure([], (require) => {
                       registerModel(app, require('./models/system'));
                       cb(null, require('./page/system/service/service.jsx'))
+                  })
+              }
+          },
+          //添加服务项目
+          {
+              path: '/service/Addservice',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/system'));
+                      cb(null, require('./page/system/service/Addservice.jsx'))
                   })
               }
           },
@@ -156,7 +166,25 @@ let routes = [
             }
           },
           //查看集团列表信息
-
+          {
+            path: '/groupchar/check',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/system/management/check.js'))
+              })
+            }
+          },
+          //集团列表查看编辑
+          {
+            path: '/groupchar/edit',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/system'));
+                cb(null, require('./page/system/management/edit.js'))
+              })
+            }
+          },
           //查看地方列表信息
           {
             path: '/localchar/find',
