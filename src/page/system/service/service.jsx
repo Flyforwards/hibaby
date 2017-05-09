@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import './service.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from '../../../common/request/request.js'
-import {classification,dataList,ww} from '../../../constants.js'
+import {classification,dataList,ww} from 'common/constants.js'
 import {Link} from 'react-router';
 class position extends Component {
     constructor(props) {

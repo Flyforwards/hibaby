@@ -12,36 +12,34 @@ const FormItem = Form.Item
 class ShowMemberListFrom extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
     this.columns = [{
       title: '编号',
-      dataIndex: 'id',
-      key:'ids',
-      width: '100px',
+      dataIndex: 'identifier',
+      key:'identifier',
     }, {
       title: '姓名',
       dataIndex: 'name',
       key:'name',
     }, {
       title: '职位',
-      dataIndex: 'position',
-      key:'position',
+      dataIndex: 'positionId',
+      key:'positionId',
     }, {
       title: '隶属部门',
-      dataIndex: 'department',
-      key:'department',
+      dataIndex: 'deptId',
+      key:'deptId',
     }, {
       title: '地方中心',
-      dataIndex: 'endemic',
-      key:'endemic',
+      dataIndex: 'endemicId',
+      key:'endemicId',
     }, {
       title: '系统角色',
-      dataIndex: 'roleName',
-      key:'roleName',
+      dataIndex: 'roleId',
+      key:'roleId',
     },{
       title: '账户状态',
-      dataIndex: 'accountState',
-      key:'accountState',
+      dataIndex: 'status',
+      key:'status',
     },{
       title: '操作',
       dataIndex: 'operating',
@@ -84,28 +82,27 @@ class ShowMemberListFrom extends Component {
   render() {
     const { visible, record } = this.props
     const { getFieldDecorator } = this.props.form;
-    let { total, data } = this.props;
-
-    if (data != null) {
-      data.map((item,index)=>{
-        item.key = item.id;
-        return item;
-      })
+    let { userList,total } = this.props;
+    if (userList != null) {
+      userList.map((record, index)=> {
+        record.key = index;
+      });
+    } else {
+      userList = []
     }
+
     const pagination = {
       total: total, //数据总条数
       showQuickJumper: true,
-      onChange: (current) => {
-        //   this.props.dispatch(routerRedux.push({
-        //     pathname: '/system',
-        //     query: {
-        //       "page": current,
-        //       "results": 3,
-        //       "type": 1
-        //     },
-        //   }));
+      pageSize: 10,
+      onChange: (page, pageSize) => {
+        this.props.dispatch({
+            type: "permission/getUserPageListByRoleId",
+            payload: { dataId: this.props.selectRole.id, page, size: pageSize},
+          }
+        );
       },
-    };
+    }
     return (
       <Modal
         visible = { visible }
@@ -124,8 +121,7 @@ class ShowMemberListFrom extends Component {
             <Button className="find" onClick={this.managementInquire}>查询</Button>
           </div>
           <div className="CreateModaList">
-            <Table bordered dataSource={ data } columns={ this.columns } pagination = { pagination }/>
-            <p className="allList">共计0条,范围1-10</p>
+            <Table bordered dataSource={ userList } columns={ this.columns } pagination = { pagination }/>
           </div>
         </div>
 
@@ -133,27 +129,16 @@ class ShowMemberListFrom extends Component {
     )
   }
 }
-function ShowMemberListFrom({
-  dispatch,
-  data,
-  code
-}) {
-  return (
-    <div>
-      <ShowMemberListFrom dispatch = { dispatch } />
-    </div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
-    data,
-    code,
-    total,
+    userList,
+    total
   } = state.permission;
   return {
     loading: state.loading.models.system,
-    data,
-    total,
+    userList,
+    total
   };
 }
 export default connect(mapStateToProps)(ShowMemberListFrom)

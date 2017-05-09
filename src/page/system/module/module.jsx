@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import './module.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from '../../../common/request/request.js'
-import {classification,dataList,ww} from '../../../constants.js'
+import { classification,dataList,ww } from 'common/constants.js'
 import { connect } from 'dva'
 
 class Module extends Component {

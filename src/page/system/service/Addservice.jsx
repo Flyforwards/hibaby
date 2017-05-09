@@ -2,8 +2,8 @@
 import React, {Component} from 'react'
 import './service.scss'
 import {Form, Input, Button, Radio } from 'antd'
-import request from '../../../common/request/request.js'
-import {classification,dataList,ww} from '../../../constants.js'
+import request from 'common/request/request.js'
+import {classification,dataList,ww} from 'common/constants.js'
 import {Link} from 'react-router';
 const FormItem = Form.Item;
 

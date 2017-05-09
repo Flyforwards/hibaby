@@ -1,6 +1,6 @@
 
 import request from '../utils/request';
-import  { PAGE_SIZE　} from '../constants';
+import  { PAGE_SIZE　} from 'common/constants';
 const headers={
   "Content-Type":"application/json"
 }

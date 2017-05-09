@@ -13,7 +13,8 @@ import Page from 'framework/page'
 class permission extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+        }
         this.columns = [{
           title: '编号',
           dataIndex: 'id',
@@ -64,7 +65,7 @@ class permission extends Component {
     setPermissions(record){
       console.log("设置权限", record)
       this.props.dispatch({
-        type: "permission/getProjectList",
+        type: "permission/treeByRoleID",
         payload: { record }
       })
       this.setState({
@@ -73,8 +74,13 @@ class permission extends Component {
       })
 
     }
+    // 展示当前角色的成员列表
     showMemberList(record){
       console.log("成员列表", record)
+      this.props.dispatch({
+        type: "permission/getUserPageListByRoleId",
+        payload: { dataId: record.id, page: 1, size: 10 }
+      })
       this.setState({
         showMemberModalVisible: true,
         record: record,
@@ -147,10 +153,12 @@ class permission extends Component {
              <SettingPermissionFrom
                visible ={ this.state.settingModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
+               selectRole = { this.state.record }
              />
              <ShowMemberListFrom
                visible ={ this.state.showMemberModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
+               selectRole = { this.state.record }
              />
            </div>
         )

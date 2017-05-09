@@ -70,12 +70,21 @@ export function getCurrUserMenu(values) {
 }
 
 // 根据角色Id主模块ID查看权限
-export function getpermissionTree(values) {
-  return request('/crm/api/v1/permission/treeByRooleIdAndProjectId', {
+export function treeByRoleID(values) {
+  return request('/crm/api/v1/permission/treeByRoleId', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
+// 根据系统角色查询用户列表
+export function getUserPageListByRoleId(values) {
+  return request('/crm/api/v1/user/getUserPageListByRoleId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 
 

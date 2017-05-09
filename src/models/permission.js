@@ -10,7 +10,8 @@ export default {
     code: 0,
     total: 0,
     role: null,
-    projectList: null,
+    permissionList: null,
+    userList: null,
   },
   reducers: {
     getRolesSuccess(state, {payload: {data, page, size, total}}) {
@@ -19,12 +20,11 @@ export default {
     // roleAddSuccess(state, {payload: { data }}) {
     //   return {...state, data};
     // }
-
-    getProListSuccess (state, { payload: projectList }) {
-      return {
-        ...state,
-        projectList,
-      }
+    getTreeSuccess(state, { payload: { data: permissionList } }) {
+      return {...state, permissionList};
+    },
+    getRoleUserPagSuccess(state, { payload: { data: userList, total } }) {
+      return {...state, userList, total};
     },
   },
   effects: {
@@ -71,28 +71,31 @@ export default {
       if (code == 0) {
         yield put({
           type : 'getRolesByPage',
-          payload : {page : 1 , size : 10}
+          payload : { page : 1 , size : 10 }
         });
       } else {
         throw err || "请求出错";
       }
     },
-    *getProjectList({ payload }, {call, put}) {
-      const { data: { data : projectList, code, err}} = yield call(usersService.getProjectList)
+    *treeByRoleID({ payload }, {call, put}) {
+      const  { record } = payload
+      const values = { dataId : record.id }
+      const {data: {data , code , err}} =  yield call(usersService.treeByRoleID, values)
       if (code == 0 && err == null) {
-        const { record } = payload;
-
-        if (projectList != null && projectList.length > 0) {
-          let lastProject = projectList[projectList.length - 1];
-          const value = {  projectId: lastProject.id,  roleId: record.id  }
-          const data = yield call(usersService.getpermissionTree, value)
-
-          console.log(data);
-
-        }
         yield put({
-          type: 'getProListSuccess',
-          payload: projectList ,
+          type : 'getTreeSuccess',
+          payload : { data }
+        });
+      } else {
+        throw err || "请求出错";
+      }
+    },
+    *getUserPageListByRoleId({ payload: values }, {call, put}) {
+      const {data: {data, total , code , err}} =  yield call(usersService.getUserPageListByRoleId, values)
+      if (code == 0 && err == null) {
+        yield put({
+          type : 'getRoleUserPagSuccess',
+          payload : { data, total }
         });
       } else {
         throw err || "请求出错";

@@ -38,39 +38,46 @@ class SettingPermissionFrom extends Component {
   render() {
     const { visible, record } = this.props
     const { getFieldDecorator } = this.props.form;
-    let projectLists = []
+    let permissionLists = []
 
 
-    const { projectList } = this.props;
-    if (projectList != null) {
-      projectLists = projectList;
+    const { permissionList } = this.props;
+    if (permissionList != null) {
+      permissionLists = permissionList;
     }
-    const subText3 = [
-      { name : "我的消息", key : 10 },
-      { name : "活动管理", key : 20 }
-      ];
-    const plainOptions = ["显示", "搜索", "删除","更改","添加",
-      "更新","充值","教育","魔术师","天天向上","喜欢吃饺子",
-      "面包","馒头","面条","蛋糕","油条","茶叶蛋","豆浆","豆腐","包子","红薯","甜甜圈","烤红薯","土豆泥","土豆饼","馒头饼","西红柿鸡蛋"
-    ];
-
-    const subNodes = subText3.map((record, index) => {
-      return (
-          <div className="overflow" key={index}>
-            <div className="subTagThree"> { record.name }</div>
-            <div className="checkBox">
-              <CheckboxGroup options={ plainOptions } onChange={ this.onChange } />
-            </div>
-        </div>)
-    });
 
 
-    const nodes = projectLists.map((record, index) => {
+    const nodes = permissionLists.map((record, index) => {
+      let subNodes = [];
+      if (record.children != null) {
+        let subSubNodes = [];
+        subNodes = record.children.map((subRecord, index1) => {
+            if (subRecord.children != null) {
+              subSubNodes = subRecord.children.map((subRec, index2) => {
+                  return (
+                    <div className="overflow" key={index1 * 10 + index2}>
+                      <div className="subTagThree"> { subRec.name }</div>
+                      <div className="checkBox">
+                        <CheckboxGroup options={ subRec.children } onChange={ this.onChange } />
+                      </div>
+                    </div>)
+              })
+            }
+            return (
+                <div>
+                  <div className="subTagTwo">
+                    { subRecord.name }
+                  </div>
+                  {
+                    subSubNodes
+                  }
+                </div>
+              )
+        });
+      }
+
         return (
-          <TabPane className="settingFrom" tab={record.name} key={index}>
-            <div className="subTagTwo">
-              会员卡管理
-            </div>
+          <TabPane className="settingFrom" tab={record.projectName} key={index}>
             {
               subNodes
             }
@@ -101,14 +108,11 @@ class SettingPermissionFrom extends Component {
 
 function mapStateToProps(state) {
   const {
-    data,
-    code,
-    projectList
+    permissionList
   } = state.permission;
   return {
-    loading: state.loading.models.system,
-    data,
-    projectList
+    loading: state.loading.models.permission,
+    permissionList
   };
 }
 export default connect(mapStateToProps)(SettingPermissionFrom)
