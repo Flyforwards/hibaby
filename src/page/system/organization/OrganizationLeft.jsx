@@ -84,10 +84,10 @@ class OrganizationLefted extends React.Component {
           return <TreeNode key={item.id} title={item.name} />;
       })
       }
-      if (this.props.data != null) {
-        const  nodes  = this.props.data.nodes;
+      if (this.props.leftList != null) {
+        const  nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
-          loops.unshift(<TreeNode key={this.props.data.id} title={this.props.data.name}/>)
+          loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name}/>)
           $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")  
         }
         return (
@@ -117,14 +117,15 @@ function OrganizationLeft({
   dispatch,
   loading,
   data,
+  leftList,
   code
 }) {
   return ( < div >
     <OrganizationLefted dispatch = {
       dispatch
     }
-    data = {
-      data
+    leftList = {
+      leftList
     }
     /></div >
   )
@@ -132,11 +133,13 @@ function OrganizationLeft({
 function mapStateToProps(state) {
   const {
     data,
+    leftList,
     code
   } = state.organization;
   return {
     loading: state.loading.models.organization,
     data,
+    leftList,
     code
     };
 }

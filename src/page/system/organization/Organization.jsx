@@ -76,7 +76,8 @@ class Organization extends React.Component {
             ulTop:0,
             upblock:'none',
             status:0,
-            character:0
+            character:0,
+            userName:null
         }
     }
     onDrop = (info) => {
@@ -99,7 +100,9 @@ class Organization extends React.Component {
     }
     //按条件查询用户
     OrganizationInquire() {
-      console.log("查询",)
+      this.setState({
+        userName:$(".userName").val()
+      })
        this.props.dispatch({
         type: 'organization/organizationList',
         payload: {
@@ -178,7 +181,10 @@ class Organization extends React.Component {
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
+                  name: this.state.userName,
                   nodeid: 3,
+                  roleId: this.state.character,
+                  status: this.state.status,
                   page: current,
                   size: 5,
                   tissueProperty: 2
@@ -209,7 +215,7 @@ class Organization extends React.Component {
                     <Option value="1">异常</Option>
                   </Select>
               </div>
-              <span className="Organization-Inquire" onClick={this.OrganizationAdd.bind(this)}>新增员工</span>
+              <span className="Organization-Inquire"><Link to='/system/organization/addUser'>新增员工</Link></span>
               <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
             </div>
             {this.props.list?
