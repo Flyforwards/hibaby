@@ -69,4 +69,14 @@ export function getCurrUserMenu(values) {
   })
 }
 
+// 根据角色Id主模块ID查看权限
+export function getpermissionTree(values) {
+  return request('/crm/api/v1/permission/treeByRooleIdAndProjectId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
 

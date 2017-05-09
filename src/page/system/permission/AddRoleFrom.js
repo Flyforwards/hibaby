@@ -1,11 +1,11 @@
 "use strict"
 
-import React, {Component} from 'react'
-import {connect} from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
-
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 const createForm = Form.create
 const FormItem = Form.Item
+import "./permission.scss"
 
 @createForm()
 class AddRoleFrom extends Component {
@@ -20,35 +20,33 @@ class AddRoleFrom extends Component {
     if (!this.props.isDel) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-
           if (this.props.add) {
             this.props.dispatch({
-              type: 'pormission/submitCreateRole',
+              type: 'permission/submitCreateRole',
               payload: {roleName: values.name}
             })
           } else {
             this.props.dispatch({
-              type: 'pormission/submitEditRole',
+              type: 'permission/submitEditRole',
               payload: {
                 roleName: values.name,
                 id: this.props.record.id,
               }
             })
           }
+          this.props.onCancel()
         }
       });
     } else {
       this.props.dispatch({
-        type: 'pormission/submitDelRole',
+        type: 'permission/submitDelRole',
         payload: {
           dataId: this.props.record.id,
         }
       })
+      this.props.onCancel()
     }
-    this.props.onCancel()
   }
-
-
 
   handleAfterClose() {
 
@@ -125,32 +123,23 @@ class AddRoleFrom extends Component {
         onOk = {this.handleOk.bind(this)}
         closable = { false }
         width = { 300 }
+        wrapClassName = { "vertical-center-modal" }
       >
-        <div className="fromCreateList">
-          {
-            node
-          }
-        </div>
+      <div className="fromCreateList">
+        {
+          node
+        }
+      </div>
       </Modal>
-    )
+  )
   }
 }
-function AddRoleFrom({
-  dispatch,
-  data,
-  code
-}) {
-  return (
-    <div>
-      <AddRoleFrom dispatch = { dispatch } />
-    </div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     data,
     code
-  } = state.pormission;
+  } = state.permission;
   return {
     loading: state.loading.models.system,
     data

@@ -6,3 +6,6 @@ export const roleId = ["普通员工","特殊员工"];
 export const status = ["正常","异常"];
 
 
+export const permission_page_size = 10;
+
+
