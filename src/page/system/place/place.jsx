@@ -3,7 +3,7 @@
 import React from 'react';
 
 import {connect} from 'dva';
-import './place.scss';
+import './system.scss';
 import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd';
 import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
@@ -13,6 +13,10 @@ class SystemIndex extends React.Component {
   constructor(props) {
     super(props);
     this.columns = [{
+        title: '序号',
+        dataIndex: 'id',
+        key: 'id'
+      },{
         title: '字段名称',
         dataIndex: 'operatorName',
         key: 'operatorName'
@@ -41,8 +45,9 @@ class SystemIndex extends React.Component {
         }];
     }
     componentDidMount(){
-          var list=this.props.list
-        console.log(this.props.list+"place")
+        console.log(this.columns)
+        console.log(this.props)
+
     }
     render() {
       const columns = this.columns;
@@ -84,7 +89,7 @@ class SystemIndex extends React.Component {
   }
 }
 
-function management({
+function place({
 
   dispatch,
   loading,
@@ -117,7 +122,7 @@ function management({
 
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.system)
+  console.log("abc",state.place)
 
   const {
     data,
@@ -139,4 +144,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(management);
+export default connect(mapStateToProps)(place);

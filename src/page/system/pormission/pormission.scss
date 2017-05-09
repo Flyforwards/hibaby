@@ -1,4 +1,4 @@
-.management-cent{
+.pormission-cent{
 	.name{
 		margin:10px 0px 10px 10px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
@@ -61,26 +61,24 @@
 	.ant-table-tbody > tr > td {
 	    text-align:center;
 	    background-color: #fff;
-		font-family: '微软雅黑 Regular', '微软雅黑';
+		  font-family: '微软雅黑 Regular', '微软雅黑';
 	    font-weight: 400;
 	    font-size: 14px;
 		div{
 			width:100%;
-			.firstA{
-				display: inline-block;
-				color: #0066FF;
-				text-decoration: none;
-				margin:0 40px;
-				float:left;
-			}
-			.firstB{
-				color: #FF0000;
-				float:right;
-        margin:0 40px;
-        text-decoration: none;
-			}
+      .firstA{
+        display: inline-block;
+        color: #0066FF;
+        width:25%;
+      }
+      .firstB{
+        display: inline-block;
+        color: #FF0000;
+        width:25%;
+      }
 		}
 	}
+
 	.ant-modal-body {
 	    height:230px;
 	    font-size: 14px;

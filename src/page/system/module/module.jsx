@@ -116,7 +116,7 @@ class Module extends Component {
       },
     };
     return (
-      <div className="management-cent">
+      <div className="module-cent">
         <div className="CreateModaList">
           <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
           <p className="allList">共计0条,范围1-10</p>

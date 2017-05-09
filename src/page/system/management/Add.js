@@ -61,13 +61,8 @@ class AddData extends React.Component {
           < p className = "label" > 选项一 < /p>
           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
            < Input ref="xuanname" type = "textarea"
-          rows = {
-            6
-          }
-          className = "
-            input2
-          "
-          /> </div></div> ), (
+          rows = {6}
+          className = "input2"/> </div></div> ), (
            < div className = "
             div2
           "

@@ -8,6 +8,12 @@ export function system(values) {
     body: JSON.stringify(values),
   })
 }
+export function place(values) {
+  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 //添加权限
 export function permissionAdd(values) {
   return request('/crm/api/v1/permission/add', {
@@ -68,7 +74,7 @@ export function add(values) {
     body: JSON.stringify(values),
   })
 }
-export function view(values) {
+export function viewData(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainAndSide', {
     method: 'POST',
     body: JSON.stringify(values),
@@ -82,3 +88,24 @@ export function getRolesByPage(values) {
     body: JSON.stringify(values),
   })
 }
+
+export function roleAdd(values) {
+  return request('/crm/api/v1/role/add', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+export function roleEdit(values) {
+  return request('/crm/api/v1/role/edit', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function roleDel(values) {
+  return request('/crm/api/v1/role/del', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+

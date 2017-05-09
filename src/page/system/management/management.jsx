@@ -9,9 +9,14 @@ import {Link} from 'react-router'
 import Current from '../../Current'
 
 class SystemIndex extends React.Component {
+
   constructor(props) {
     super(props);
     this.columns = [{
+        title: '序号',
+        dataIndex: 'id',
+        key: 'id'
+      },{
         title: '字段名称',
         dataIndex: 'operatorName',
         key: 'operatorName'
@@ -33,12 +38,19 @@ class SystemIndex extends React.Component {
         dataIndex: 'operation',
         render: (text, record, index) => {
 
-          return ( < Link to = {
-              `/demo/view?dataId=${record.id}`
-            } > 查看 </Link>)
+          return ( < Link to =
+              '/groupchar/check'
+             > 查看 </Link>)
           },
         }];
     }
+
+    componentDidMount(){
+        console.log(this.columns)
+        console.log(this.props)
+
+    }
+
     render() {
       const columns = this.columns;
       const pagination = {
@@ -132,7 +144,7 @@ function management({
 
 }
 function mapStateToProps(state) {
-  // console.log("modelss",state.system)
+  console.log("modelss",state.system)
   const {
     data,
     total,

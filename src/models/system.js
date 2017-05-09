@@ -84,6 +84,21 @@ export default {
 			}
 			return {...systemdata,range};
 		},
+		placeSave(state, { payload: {data,total,page,size,code}}) {
+			let placedata = {...state,
+				data,
+				total,
+				page,
+				size,
+				code,
+			};
+			let range = {
+				start: page == 1 ? 1 : (page - 1) * 3 + 1,
+				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
+				totalpage:Math.ceil(total/size),
+			}
+			return {...placedata,range};
+		},
 		addSave(state, {
 			payload: {
 				data,
@@ -158,7 +173,7 @@ export default {
 				...state, arr2
 			}
 		},
-		viewSave(state, {
+		viewDataSave(state, {
 			payload: {
 				data,
 				code
@@ -413,7 +428,38 @@ export default {
 				});
 			}
 		},
-		*view({
+
+		*place({
+			payload: values
+		}, {
+			call,
+			put
+		}) {
+			const {
+				data: {
+					data,
+					total,
+					page = 1,
+					size,
+					code
+				}
+			} = yield call(systemService.place, values);
+
+			if (code == 0) {
+				yield put({
+					type: 'placeSave',
+					payload: {
+						data,
+						total,
+						page,
+						size,
+						code
+					}
+				});
+			}
+		},
+
+		*viewData({
 			payload
 		}, {
 			call,
@@ -424,11 +470,11 @@ export default {
 					data,
 					code
 				}
-			} = yield call(systemService.view, payload);
+			} = yield call(systemService.viewData, payload);
 
 			if (code == 0) {
 				yield put({
-					type: 'viewSave',
+					type: 'viewDataSave',
 					payload: {
 						data,
 						code
@@ -451,6 +497,19 @@ export default {
 
 					dispatch({
 						type: 'system',
+						payload: {
+							...query,
+							"size": 3,
+							"sortField": "string",
+							"sortOrder": "string",
+							"type": 1
+						}
+					});
+				}
+				if (pathname === '/system/localchar') {
+
+					dispatch({
+						type: 'place',
 						payload: {
 							...query,
 							"size": 3,
@@ -511,9 +570,27 @@ export default {
 						}
 					});
 		        }
-				if (pathname === '/demo/view') {
+        if(pathname === '/system/organization') {
+		          dispatch({
+						type: 'organization',
+						payload: {
+							...query,
+							"size": PAGE_SIZE,
+							"sortField": "string",
+							"sortOrder": "string",
+							"type": 1
+						}
+					});
+		          dispatch({
+						type: 'getDepartmentNodes',
+						payload: {
+							...query
+						}
+					});
+		        }
+				if (pathname === '/system/check') {
 					dispatch({
-						type: 'view',
+						type: 'viewData',
 						payload: query
 					});
 				}
