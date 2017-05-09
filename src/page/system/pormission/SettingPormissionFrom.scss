@@ -8,12 +8,23 @@
   height: 40px;
   line-height: 40px;
   text-indent: 14px;
+  margin-bottom: 10px;
 }
 
 .subTagThree{
   color: #010101;
   font-size: 14px;
-  height: 20px;
-  line-height: 20px;
+  height: 30px;
+  line-height: 30px;
   text-indent: 14px;
+  float: left;
+}
+.overflow{
+  overflow:hidden;
+}
+
+.checkBox {
+  margin-left: 100px;
+  line-height: 30px;
+  margin-bottom: 30px;
 }

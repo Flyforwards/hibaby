@@ -7,7 +7,7 @@ const FormItem = Form.Item;
 import  './pormission.scss';
 import AddRoleFrom from './AddRoleFrom';
 import SettingPormissionFrom from './SettingPormissionFrom'
-
+import Page from 'framework/page'
 
 @createForm()
 class pormissionForm extends Component{
@@ -101,12 +101,12 @@ class Pormission extends Component {
           title: '角色名称',
           dataIndex: 'roleName',
           key:'roleName',
-          width: '500px',
+
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
-          width: '300px',
+          width: '500px',
           render: (text, record, index) => {
             return (
                 <div key = { index }>
@@ -200,7 +200,8 @@ class Pormission extends Component {
 
         };
         return (
-           <div className="management-cent">
+          <Page>
+           <div className="pormission-cent">
             <div className="name">部门<Input />
               <Button className="find" onClick={this.managementInquire}>查询</Button>
               <Button className="add" onClick={ this.addList.bind(this) }>添加</Button>
@@ -221,6 +222,7 @@ class Pormission extends Component {
                onCancel ={ this.handleCreateModalCancel.bind(this) }
              />
            </div>
+          </Page>
         )
     }
 }
