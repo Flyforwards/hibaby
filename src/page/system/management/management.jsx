@@ -39,7 +39,7 @@ class SystemIndex extends React.Component {
         render: (text, record, index) => {
 
           return ( < Link to =
-              '/groupchar/check'
+              {`/groupchar/check?id=${record.id}`}
              > 查看 </Link>)
           },
         }];

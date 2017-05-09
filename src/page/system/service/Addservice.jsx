@@ -29,15 +29,15 @@ class AddService extends Component {
           return (
             <div>
               <Form layout={formLayout}>
-
+                <h3>服务项目信息</h3>
                 <FormItem
-                  label="Field A"
+                  label="项目名称"
                   {...formItemLayout}
                 >
                   <Input placeholder="input placeholder" />
                 </FormItem>
                 <FormItem
-                  label="Field B"
+                  label="项目价格"
                   {...formItemLayout}
                 >
                   <Input placeholder="input placeholder" />
