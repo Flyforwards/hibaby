@@ -10,14 +10,23 @@ export default {
 		data: null,
 		total: null,
 		list:null,
+		leftList:null,
 	},
 	reducers: {
 		getUserPageListByDeptId(state,{payload:{ data,code }}){
 	      let getUserPageListByDeptIddata = {...state,data,code};
 	      return getUserPageListByDeptIddata
 	    },
-		getDepartmentNodesList(state,{payload:{ data,code }}){
-	      let getDepartmentNodesdata = {...state,data,code};
+	    addUserSave(state,{payload:{ data,code }}){
+	      let addUserdata = {...state,data,code};
+	      return addUserddata
+	    },
+	    getEmpSerial(state,{payload:{ data,code }}){
+	      let getEmpSerialdata = {...state,data,code};
+	      return getEmpSerialdata
+	    },
+		getDepartmentNodesList(state,{payload:{ data:leftList,code }}){
+	      let getDepartmentNodesdata = {...state,leftList,code};
 	      return getDepartmentNodesdata
 	    },
 	    organizationPage(state,{payload:{data:list,total,page,size,code}}){
@@ -50,10 +59,29 @@ export default {
 				});
 			}
 		},
+		//添加用户信息
+		*addUser({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.addUser, values);
+			if (code == 0) {
+				message.success("添加用户信息成功");
+			}
+		},
+		//生成用户编码
+		*getEmpSerialList({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.getEmpSerial, values);
+			if (code == 0) {
+				yield put({
+					type: 'getEmpSerial',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
 		//根据条件获取用户列表
 		*getUserPageListByDeptId({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getUserPageListByDeptId, values);
-			console.log("getUserPageListByDeptId",data,code)
 			if (code == 0) {
 				yield put({
 					type: 'getUserPageListByDeptId',
@@ -111,6 +139,12 @@ export default {
 			                size: 5,
 			                tissueProperty: 2
 						}
+					});
+		        }
+		        if(pathname === '/system/organization/addUser') {
+		        	dispatch({
+						type: 'getEmpSerialList',
+						payload: query
 					});
 		        }
 			})

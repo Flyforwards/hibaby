@@ -57,6 +57,16 @@ let routes = [
                   })
               }
           },
+          //添加用户信息
+           {
+              path: '/system/organization/addUser',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/organization'));
+                      cb(null, require('./page/system/organization/addUser.jsx'))
+                  })
+              }
+          },
           // 集团字段
           {
               path: '/system/groupchar',
