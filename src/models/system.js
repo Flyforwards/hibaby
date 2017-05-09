@@ -588,10 +588,12 @@ export default {
 						}
 					});
 		        }
-				if (pathname === '/system/check') {
+				if (pathname === '/groupchar/check') {
 					dispatch({
 						type: 'viewData',
-						payload: query
+						payload:{
+							...query
+						}
 					});
 				}
 			})

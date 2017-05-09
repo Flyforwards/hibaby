@@ -6,13 +6,15 @@ var Nzh = require("nzh");
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
 class List extends React.Component {
+
       constructor(props) {
             super(props);
             this.state = {
               bigNum:'三'
             }
       }
-      componentDidMount(){
+      componentDidMount(url){
+
           var index=this.props.index;
           var nzhcn = Nzh.cn;
           var num=Number(index);
@@ -83,9 +85,6 @@ class CheckData extends React.Component {
             bigNum: nzhcn.encodeS(newnum)
           })
  }
- getData(state){
-    console.log("abc",state.system)
- }
     delete(e){
         var index=e.target.getAttribute("data-index");
         var lists=this.state.lists;
@@ -116,13 +115,25 @@ class CheckData extends React.Component {
           }
         })
       }
+
     render() {
+      console.log(window.location)
+      console.log(this.props.data)
+      const url=window.location.href
+      const myid=GetQueryString("id");
+      console.log(myid)
+      const item=this.props.data
+      const itemId=item.map(res=>{
+        if(res.id=myid){
+          return(res)
+        }
+      })
         return (
             <div className="xuanxiang container2">
                 <Card title = "字段信息:" >
                     <div className = "div">
                       <p className ="label" > 字段名称 < /p>
-                      <Input ref="title" type = "textarea" className ="input" />
+                      <Input ref="title" type = "textarea" className ="input" value={`{res.name}`}/>
                     </div>
                     <div className = "div">
                       <p className = "label"> 字段描述 < /p>
@@ -146,10 +157,35 @@ class CheckData extends React.Component {
     }
 }
 
-function check({dispatch}) {
+
+function GetQueryString(name){
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+function GetProId () {
+
+}
+
+
+function check({dispatch,data:data,code}) {
     return (<div >
-              <CheckData dispatch = {dispatch}/>
+              <CheckData dispatch = {dispatch} data = {data}/>
             </div>
       )
   }
-export default connect()(check);
+
+  function mapStateToProps(state) {
+    console.log("modelss",state.system)
+    const {
+      data,
+      code
+    } = state.system;
+
+    return {
+      loading: state.loading.models.system,
+      data,
+      code
+    };
+  }
+export default connect(mapStateToProps)(check);
