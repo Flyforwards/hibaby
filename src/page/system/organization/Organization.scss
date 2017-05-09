@@ -12,11 +12,11 @@
 	    margin-top: -187px;
 	}
 }
+.yt-admin-framework-Customer-a{
 .Organization-right{
-	width:867px;
-	min-width:867px;
-	margin-left:220px; 
-	margin-top:10px;
+	width:79%;
+	float:left;
+	margin-left:1%; 
 }
 :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after {
     font-size: 20px;
@@ -25,8 +25,7 @@
 	font-size: 20px;
 }
 .Organization-left{
-	width:206px;
-	min-width:206px;
+	width:20%;
 	float:left;
 	background-color:#fff;
 	min-height:500px;
@@ -35,7 +34,7 @@
 	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {
 		font-size: 14px;
 		display:inline-block;
-		width:207px;
+		width:217px;
 		font-weight: 400;
 	}
 	.ant-tree li a:hover {
@@ -142,6 +141,11 @@
 	    height: 30px;
 	    background: inherit;
 	    background-color:#f1f1f1; 
+	    a{
+	    	width:100%;
+	    	height:100%;
+	    	display:block;
+	    }
 	}
 	.Organization-add{
 		float:right;
@@ -371,7 +375,7 @@
 	}
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
-    font-size: 12px;
+    font-size: 21px;
     font-size: 7px\9;
     content: "\e707";
     font-weight: 700;
@@ -380,7 +384,7 @@
     margin-top:5px; 
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
-	font-size: 12px;
+	font-size: 21px;
     font-size: 7px\9;
     content: "\e707";
     font-weight: 700;
@@ -415,4 +419,5 @@
 		background-color:#f89d2d;
 		color:#fff;
 	}
+}
 }

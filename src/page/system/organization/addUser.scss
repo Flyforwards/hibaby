@@ -1,0 +1,151 @@
+.addUser{
+	min-width: 1100px;
+	label{
+		font-size:14px;
+	}
+	.ant-calendar-picker-icon:after{
+		font-size:24px;
+		margin-left:-14px;
+		margin-top: -6px; 
+	}
+	.basicInformation,.entryInformation,.contactInformation{
+		width:100%;
+		height:40px;
+		line-height:40px;
+		font-size:14px;
+		color:#fff;
+		margin: 10px 0px 10px 10px;
+		text-indent:20px;
+		background-color: rgba(102, 102, 102, 1);
+	}
+	.img{
+		width:100px;
+		height:100px;
+		float:left;
+		border-radius: 50%;
+		background-color: #999;
+		margin:20px 40px 20px 20px; 
+	}
+	.basicInformationForm{
+		width:100%;
+		background-color: #fff;
+		margin-left:10px;
+		margin-bottom: 10px; 
+		.ant-form-item-label{
+			margin-right:10px; 
+		}
+		.userName{
+			margin-top: 20px;
+			input{
+				width:310px;
+			}
+		}
+		.Numbering{
+			margin-top: 20px; 
+			margin-left:40px;
+			input{
+				width:310px;
+			}
+		}
+		.gender{
+			margin:-53px 0px 0px 170px; 
+		}
+		.entryTime{
+			margin:-53px 0px 0px 230px;
+			input{
+				width:310px;
+			}
+			.ant-calendar{
+				width:310px;
+			}
+		}
+	}
+	.entryInformationForm{
+		width:100%;
+		background-color: #fff;
+		margin-left:10px;
+		padding-left: 60px; 
+		.ant-form-item-label{
+			margin-right:10px; 
+		}
+		.localCenter{
+			margin-left:60px; 
+			margin-top: 20px;
+			input{
+				width:310px;
+			}
+		}
+		.affiliatedDepartment{
+			margin-left:50px; 
+			margin-top: 20px;
+			.ant-select-selection--single{
+				width:310px;
+			}
+		}
+		.directLeadership{
+			margin-left:61px; 
+			margin-top: 20px;
+			input{
+				width:230px;
+			}
+		}
+		.button{
+			.ant-form-item-control-wrapper{
+				margin-left:10px;
+				margin-top: 20px; 
+			}
+		}
+		.position{
+			margin-left:72px;
+			margin-top: 20px;
+			margin-bottom: 20px; 
+			.ant-select-selection--single{
+				width:310px;
+			}
+		}
+		.systemRole{
+			margin-left:60px;
+			margin-bottom: 20px;
+			.ant-select-selection--single{
+				width:310px;
+			}
+		}
+		.addRole{
+			.ant-form-item-control-wrapper{
+				margin-left:120px;
+				width:136px;
+			}
+		}
+	}
+	.contactInformationForm{
+		width:100%;
+		background-color: #fff;
+		margin-left:10px;
+		margin-bottom: 20px; 
+		.ant-form-item-label{
+			margin-right:10px; 
+		}
+		.password,.information,.companyEmail,.internalExtension{
+			margin-left:104px; 
+			margin-top: 20px;
+			input{
+				width:310px;
+			}
+		}
+		.phoneNumber{
+			margin-left:91px; 
+			margin-top: 20px;
+			input{
+				width:310px;
+			}
+		}
+		.internalExtension{
+			margin-bottom: 20px;
+		}
+	}
+	.returnButton,.saveButton{
+		float:right;
+		margin: 0 20px;
+		width:100px;
+	}
+}

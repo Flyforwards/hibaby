@@ -25,6 +25,17 @@ export function getUserPageListByDeptId(values) {
     body: JSON.stringify(values),
   })
 }
-
-
-
+//添加用户信息
+export function addUser(values) {
+  return request('/crm/api/v1/user/addUser', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//生成用户编号
+export function getEmpSerial(values) {
+  return request('/crm/api/v1/serial/getEmpSerial', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
