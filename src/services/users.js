@@ -88,15 +88,12 @@ export function configRolePermission(values) {
 }
 
 
-// 获取地方中心的部门列表
+// 根据地方中心查询下属部门
 export function getDeptListByEndemicId(values) {
   return request('/crm/api/v1/department/getDeptListByEndemicId', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
-
-
-
 
 

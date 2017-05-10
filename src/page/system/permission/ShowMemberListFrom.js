@@ -7,6 +7,7 @@ import "./permission.scss"
 const createForm = Form.create
 const FormItem = Form.Item
 import AddMemberFrom from './AddMemberFrom'
+import  { session } from 'common/util/storage.js';
 
 
 @createForm()
@@ -104,7 +105,11 @@ class ShowMemberListFrom extends Component {
 
   }
 
+  // 为角色分配用户
   addClick() {
+    this.props.dispatch({
+      type: "permission/getDeptListByEndemicId",
+    })
     this.setState({
       showAddMemberModalVisible: true,
     })
@@ -180,7 +185,7 @@ function mapStateToProps(state) {
     memberTotal
   } = state.permission;
   return {
-    loading: state.loading.models.system,
+    loading: state.loading.models.permission,
     userList,
     departmentList,
     club,

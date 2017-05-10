@@ -16,6 +16,7 @@ export default {
     club: null,
     departmentList:[],
     memberTotal: 0,
+    currentOrganizationTree: [],
   },
   reducers: {
     getRolesSuccess(state, {payload: {data, page, size, total}}) {
@@ -33,6 +34,10 @@ export default {
     getDictionSuccess(state, { payload: { selClub: club, departmentLists: departmentList } }) {
       return {...state, club, departmentList};
     },
+    getOrganizationTree(state, { payload: { data: currentOrganizationTree, club }}) {
+      return {...state, club, currentOrganizationTree};
+    }
+
   },
   effects: {
     *getRolesByPage({ payload: values }, {call,put }) {
@@ -131,10 +136,26 @@ export default {
         throw err || "请求出错";
       }
     },
+    // 给角色分配权限
     *configRolePermission({ payload: values }, {call, put}) {
       const {data: {data, code , err}} =  yield call(usersService.configRolePermission, values)
       if (code == 0 && err == null) {
         console.log(data);
+      } else {
+        throw err || "请求出错";
+      }
+    },
+
+    // 获取当前地区的部门信息
+    *getDeptListByEndemicId({ payload },{call, put}) {
+      const club =  session.get("endemic");
+      const values = { dataId: club.id };
+      const {data: {data, code , err}} =  yield call(usersService.getDeptListByEndemicId, values)
+      if (code == 0 && err == null) {
+        yield put({
+          type: "getOrganizationTree",
+          payload: { data, club }
+        })
       } else {
         throw err || "请求出错";
       }
