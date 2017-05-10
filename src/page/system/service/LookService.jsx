@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import './service.scss'
-import {Card,Form, Input, Button, Radio ,AutoComplete } from 'antd'
+import {Card,Form, Input, Button, Radio, Modal} from 'antd'
 import request from '../../../common/request/request.js'
 import {classification,dataList} from '../../../constants.js'
 import {Link} from 'react-router';
@@ -12,21 +12,8 @@ class AddService extends Component {
             super(props)
             this.state = {
                 formLayout: 'inline',
-                dataSource: [],
             };
       }
-      handleSearch = (value) => {
-         this.setState({
-           dataSource: !value ? [] : [
-             value,
-             value + value,
-             value + value + value,
-           ],
-         });
-       }
-       handleKeyPress = (ev) => {
-         console.log('handleKeyPress', ev);
-       }
 
       handleFormLayoutChange = (e) => {
          this.setState({ formLayout: e.target.value });
@@ -80,8 +67,11 @@ class AddService extends Component {
                       <Link className="BackBtn" to='/system/serviceitem'>
                           <Button>返回</Button>
                       </Link>
-                      <Link className="SaveBtn" to='/system/serviceitem'>
-                          <Button>保存</Button>
+                      <Link className="DelBtn">
+                          <Button>删除</Button>
+                      </Link>
+                      <Link className="EditBtn" to='/system/serviceitem'>
+                          <Button>编辑</Button>
                       </Link>
                 </div>
             </div>

@@ -5,39 +5,6 @@ import {Card,Input,Button} from 'antd';
 var Nzh = require("nzh");
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
-class List extends React.Component {
-
-      constructor(props) {
-            super(props);
-            this.state = {
-              bigNum:'三'
-            }
-      }
-      componentDidMount(url){
-
-          var index=this.props.index;
-          var nzhcn = Nzh.cn;
-          var num=Number(index);
-          var newnum=num+1;
-          this.setState({
-            bigNum: nzhcn.encodeS(newnum)
-          })
-      }
-render() {
-      console.log("index",this.props.index)
-      return (<div className = "div2">
-                  <p className = "label" data-index={this.props.index}>选项{this.state.bigNum} </p>
-                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                      <Input type = "textarea" rows = {6} data-index={this.props.index} className = "input2"
-                          defaultValue={this.props.index}/>
-                      <span className = "editable-add-btn" onClick={this.props.delete} data-index={this.props.index}>
-                          删除
-                      </span>
-                  </div>
-               </div >
-      )
-    }
-}
 class CheckData extends React.Component {
 
     constructor(props) {
