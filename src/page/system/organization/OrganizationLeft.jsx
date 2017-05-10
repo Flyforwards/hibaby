@@ -7,6 +7,8 @@ import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import { classification,dataList } from '../../../constants.js'
+import AddChildNode from './AddChildNode.jsx'
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -16,98 +18,93 @@ class OrganizationLefted extends React.Component {
         super(props)
         this.state = {
           upblock:'none',
-          ulTop:0
+          ulTop:0,
+          addChildNodeVisible:false
         }
     }
     expandHandler = () => {
       setTimeout(() => {
         $("li").find("li .ant-tree-title").after("<span class='plus'>+</span>")
-         $(".plus").click(function(e){
-          if(this.state.upblock == 'none'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY-33,
-              upblock:'block'
-            })
-            return
-          }
-          if(this.state.upblock == 'block'){
-            this.setState({
-              upblock:'none'
-            })
-            return
-          }
-      }.bind(this))
       }, 50)
     }
-    onSelect(){
-     $(".plus").click(function(e){
-          if(this.state.upblock == 'none'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY-33,
-              upblock:'block'
-            })
-            return
+    onSelect(value,node){
+      if(value[0] != null){
+        this.props.dispatch({
+          type: 'organization/organizationList',
+          payload: {
+            nodeid: Number(node.selectedNodes[0].key),
+            page: 1,
+            size: 5,
+            tissueProperty: node.selectedNodes[0].props.dataIndex
           }
-          if(this.state.upblock == 'block'){
-            this.setState({
-              ulTop:e.pageY-e.offsetY,
-              upblock:'none'
-            })
-            return
-          }
-      }.bind(this))
+        });
+      }
     }
-    onDrop = (info) => {
-    const loop = (data, key, callback) => {
-      data.forEach((item, index, arr) => {
-        if (item.key === key) {
-          return callback(item, index, arr);
-        }
-        if (item.children) {
-          return loop(item.children, key, callback);
-        }
-      });
-    };
-  }
+    
     showCreateModal() {
         this.setState({
             createModalVisible: true
         })
+    }
+    componentDidMount(){
+      setTimeout(() => {
+      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 350)
+      $(document).on('click', '.plus', function(e) {
+          if(this.state.upblock == 'none'){
+              this.setState({
+                ulTop:e.pageY-e.offsetY-21,
+                upblock:'block'
+              })
+              return
+            }
+            if(this.state.upblock == 'block'){
+              this.setState({
+                ulTop:e.pageY-e.offsetY,
+                upblock:'none'
+              })
+              return
+            }
+        }.bind(this));
+    }
+    //添加子节点
+    AddChildNode(){
+      this.setState({
+        addChildNodeVisible:true
+      })
     }
     render() {
       let loops = []
       const nodesIteration = (nodes) => {
         return nodes.map((item) => {
           if (item.nodes && item.nodes.length) {
-            return <TreeNode key={item.id} title={item.name}>{nodesIteration(item.nodes)}</TreeNode>;
+            return <TreeNode key={item.id} title={item.name} dataIndex={item.tissueProperty}>{nodesIteration(item.nodes)}</TreeNode>;
           }
-          return <TreeNode key={item.id} title={item.name} />;
+          return <TreeNode key={item.id} title={item.name} dataIndex={item.tissueProperty} />;
       })
       }
       if (this.props.leftList != null) {
         const  nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
-          loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name}/>)
-          $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")  
-        }
+          loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty}/>) 
+        } 
         return (
             <div className="Organization-left">
                 <Tree
                   className="draggable-tree"
-                  draggable
                   onExpand={this.expandHandler.bind(this)}
-                  onDragEnter={this.onDragEnter}
                   onSelect={this.onSelect.bind(this)}
-                  onDrop={this.onDrop}
                 >
                 { loops }
                 </Tree>
                 <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
-                  <li>添加子节点</li>
+                  <li onClick={this.AddChildNode.bind(this)}>添加子节点</li>
                   <li>查看详情</li>
                   <li>删除</li>
                   <li>ID 0002</li>
                 </ul>
+                <AddChildNode
+                    visible={ this.state.addChildNodeVisible }
+                />
             </div>
         )
     }

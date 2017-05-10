@@ -15,11 +15,9 @@ class SelectListed extends Component {
     this.setState({ value });
   }
   onSelect = (value,node, extra) => {
-    console.log("key",value)
     local.set("projectId",value)
   }
     render() {
-      console.log(this.props.list)
         return (
             <div className="SelectList">
               <span>上级权限

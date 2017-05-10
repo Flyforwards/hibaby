@@ -1,3 +1,4 @@
+
 import * as organizationService from '../services/organization';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
@@ -11,11 +12,27 @@ export default {
 		total: null,
 		list:null,
 		leftList:null,
+		optionData:null,
+		dataId:null,
+		dataEndemicId:null,
 	},
 	reducers: {
 		getUserPageListByDeptId(state,{payload:{ data,code }}){
 	      let getUserPageListByDeptIddata = {...state,data,code};
 	      return getUserPageListByDeptIddata
+	    },
+	    getDeptListByEndemicIdSave(state,{payload:{data:dataEndemicId,code}}){
+	      let getDeptListByEndemicIddata= {...state, dataEndemicId, code};
+	      return getDeptListByEndemicIddata
+	    },
+	    roleSelectDataSave(state,{payload:{data:selectData,code}}){
+	      let roleSelectdata= {...state, selectData, code};
+	      local.set("rolSelectData",selectData)
+	      return roleSelectdata
+	    },
+	    positionSave(state,{payload:{data:dataId,code}}){
+	      let Positiondata= {...state, dataId, code};
+	      return Positiondata
 	    },
 	    addUserSave(state,{payload:{ data,code }}){
 	      let addUserdata = {...state,data,code};
@@ -59,6 +76,32 @@ export default {
 				});
 			}
 		},
+		//系统角色下拉列表
+		*roleSelectData({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.roleSelectData, values);
+			if (code == 0) {
+				yield put({
+					type: 'roleSelectDataSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//根据地方中心id查询下属部门
+		*getDeptListByEndemicId({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.getDeptListByEndemicId, values);
+			if (code == 0) {
+				yield put({
+					type: 'getDeptListByEndemicIdSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
 		//添加用户信息
 		*addUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.addUser, values);
@@ -79,6 +122,13 @@ export default {
 				});
 			}
 		},
+		//根据部门id获取下属职位
+		*position({ payload: values }, {call,put }){
+	      const {data: {data, code}} = yield call(organizationService.getPositionByDeptId,values);
+	      if(code == 0) {
+	        yield put({ type: 'positionSave', payload: { data, code } });
+	      }
+	    },
 		//根据条件获取用户列表
 		*getUserPageListByDeptId({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getUserPageListByDeptId, values);
@@ -127,6 +177,10 @@ export default {
 			}) => {
 		        if(pathname === '/system/organization') {
 		            dispatch({
+						type: 'roleSelectData',
+						payload: query
+					});
+					dispatch({
 						type: 'getDepartmentNodes',
 						payload: query
 					});
