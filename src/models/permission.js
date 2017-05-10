@@ -2,6 +2,7 @@
 import * as systemService from '../services/system';
 import * as usersService from '../services/users';
 import { message } from 'antd';
+import  { session } from 'common/util/storage.js';
 
 export default {
   namespace: 'permission',
@@ -9,9 +10,12 @@ export default {
     data: [],
     code: 0,
     total: 0,
-    role: null,
+    role: 0,
     permissionList: null,
     userList: null,
+    club: null,
+    departmentList:[],
+    memberTotal: 0,
   },
   reducers: {
     getRolesSuccess(state, {payload: {data, page, size, total}}) {
@@ -23,8 +27,11 @@ export default {
     getTreeSuccess(state, { payload: { data: permissionList } }) {
       return {...state, permissionList};
     },
-    getRoleUserPagSuccess(state, { payload: { data: userList, total } }) {
-      return {...state, userList, total};
+    getRoleUserPagSuccess(state, { payload: { data: userList, total:memberTotal } }) {
+      return {...state, userList, memberTotal};
+    },
+    getDictionSuccess(state, { payload: { selClub: club, departmentLists: departmentList } }) {
+      return {...state, club, departmentList};
     },
   },
   effects: {
@@ -90,16 +97,48 @@ export default {
         throw err || "请求出错";
       }
     },
+
+    // 根据角色Id 请求成员列表
     *getUserPageListByRoleId({ payload: values }, {call, put}) {
+      const  { first }  = values;
+      if (first) {
+        let departmentLists =[];
+        const selClub =  session.get("endemic");
+        const arg = { dataId: selClub.id };
+        //  获取部门字典
+        const {data:  {data : departmentList, code , err }} =  yield call(usersService.getDeptListByEndemicId, arg)
+        if (code == 0 && err == null) {
+          departmentLists = departmentList;
+        } else {
+          throw err || "请求出错";
+        }
+
+        yield put({
+          type: 'getDictionSuccess',
+          payload: { selClub, departmentLists}
+        });
+        //  获取职位字典
+
+      }
+
       const {data: {data, total , code , err}} =  yield call(usersService.getUserPageListByRoleId, values)
       if (code == 0 && err == null) {
         yield put({
           type : 'getRoleUserPagSuccess',
-          payload : { data, total }
+          payload : { data, total,}
         });
       } else {
         throw err || "请求出错";
       }
     },
+    *configRolePermission({ payload: values }, {call, put}) {
+      const {data: {data, code , err}} =  yield call(usersService.configRolePermission, values)
+      if (code == 0 && err == null) {
+        console.log(data);
+      } else {
+        throw err || "请求出错";
+      }
+    },
+
   },
 }

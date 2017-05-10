@@ -85,6 +85,22 @@ export function getUserPageListByRoleId(values) {
   })
 }
 
+export function configRolePermission(values) {
+  return request('/crm/api/v1/role/configRolePermission', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+// 获取地方中心的部门列表
+export function getDeptListByEndemicId(values) {
+  return request('/crm/api/v1/department/getDeptListByEndemicId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 
 

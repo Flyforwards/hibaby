@@ -6,7 +6,6 @@ import { Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
 const createForm = Form.create
 const FormItem = Form.Item
-import AddMemberFrom from './AddMemberFrom'
 
 
 @createForm()
@@ -78,10 +77,7 @@ class ShowMemberListFrom extends Component {
     }];
 
   }
-  state = {
-    visible: false,
-    showAddMemberModalVisible: false
-  }
+  state = { visible: false }
   handleCancel() {
     this.props.onCancel()
   }
@@ -89,9 +85,8 @@ class ShowMemberListFrom extends Component {
     this.props.onCancel()
   }
 
-  delete(record) {
+  delete(record) {}
 
-  }
 
   handleAfterClose() {
 
@@ -102,18 +97,6 @@ class ShowMemberListFrom extends Component {
   }
   callback() {
 
-  }
-
-  addClick() {
-    this.setState({
-      showAddMemberModalVisible: true,
-    })
-  }
-
-  cancelModal() {
-    this.setState({
-      showAddMemberModalVisible: false,
-    })
   }
 
 
@@ -144,29 +127,23 @@ class ShowMemberListFrom extends Component {
     }
     return (
       <Modal key= { visible }
-        visible = { visible }
-        title = "成员列表"
-        okText =  "保存"
-        cancelText = "返回"
-        onCancel = {this.handleCancel.bind(this)}
-        afterClose = {this.handleAfterClose.bind(this)}
-        onOk = {this.handleOk.bind(this)}
-        closable = { false }
-        width = { 1000 }
+             visible = { visible }
+             okText =  "保存"
+             cancelText = "关闭"
+             onCancel = {this.handleCancel.bind(this)}
+             afterClose = {this.handleAfterClose.bind(this)}
+             onOk = {this.handleOk.bind(this)}
+             closable = { false }
+             width = { 1000 }
       >
         <div className="permission-cent">
           <div className="divs">
-            <Button className="add" onClick={ this.addClick.bind(this) }>添加</Button>
+            <Button className="add" onClick={ this.managementInquire }>添加</Button>
           </div>
           <div className="CreateModaList">
             <Table bordered dataSource={ userList } columns={ this.columns } pagination = { pagination }/>
           </div>
         </div>
-        <AddMemberFrom
-          visible ={ this.state.showAddMemberModalVisible }
-          onCancel ={ this.cancelModal.bind(this) }
-          selectRole = { this.props.selectRole }
-        />
       </Modal>
     )
   }
