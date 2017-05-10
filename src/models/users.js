@@ -12,10 +12,6 @@ export default {
   	save(state, {payload: {data: list, total, page}}) {
   		return {...state, list, total, page};
   	},
-    positionSave(state,{payload:{data,code}}){
-      let Positiondata= {...state, data, code};
-      return Positiondata
-    },
     loginSave(state, {payload: {data, code}}) {
       let logindata= {...state, data, code};
       return logindata;
@@ -43,12 +39,6 @@ export default {
        yield put(routerRedux.push('/club'));
       }
       // yield put({ type: 'loginSave', payload: { data, code } });
-    },
-    *position({ payload: values }, {call,put }){
-      const {data: {data, code}} = yield call(usersService.position,values);
-      if(code == 0) {
-        yield put({ type: 'positionSave', payload: { data, code } });
-      }
     },
     *test({ payload: values }, { call, put }) {
       const  {data: {data, code}}  = yield call(usersService.test, values);
@@ -81,9 +71,6 @@ export default {
   			if(pathname === '/users') {
   				dispatch({type: 'fetch', payload: query});
   			}
-        if(pathname === '/organization') {
-          dispatch({type: 'position', payload: {}});
-        }
         if(pathname === '/fromModal') {
           dispatch({type: 'fromModal', payload: {}});
           console.log("数据字典")

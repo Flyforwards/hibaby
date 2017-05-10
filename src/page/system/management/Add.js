@@ -123,7 +123,7 @@ class AddData extends React.Component {
        console.log(this.refs.description.value)
 
         this.props.dispatch({
-          type: 'system/add',
+          type: 'demo/add',
           payload: {
 
             "description": this.refs.description.props.value,
@@ -185,16 +185,31 @@ class AddData extends React.Component {
 
 }
 
-function Add({
-  dispatch
-}) {
+function Add({dispatch,data,code}){
   return ( < div >
-    < AddData dispatch = {
-      dispatch
-    }
-    /> </div>
+    < AddData dispatch = {dispatch} data={data}/> </div>
   )
+}
+function mapStateToProps(state) {
+  console.log("modelss",state.save)
+  const {
+    data,
+    total,
+    page,
+    results,
+    range,
+    code
+  } = state.save;
 
+  return {
+    loading: state.loading.models.save,
+    data,
+    total,
+    page,
+    results,
+    range,
+    code
+  };
 }
 
-export default connect()(Add);
+export default connect(mapStateToProps)(Add);

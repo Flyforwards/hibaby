@@ -35,8 +35,8 @@ class AddFromCreateModal extends Component {
                 description: values.authority,
                 name: values.name,
                 orderBy:Number(values.orderBy),
-                parentId: Number(values.mainName),
-                projectId: local.get("projectId")
+                parentId:local.get("projectId"),//上级
+                projectId: Number(values.mainName)//主模块
             }
         });
         }

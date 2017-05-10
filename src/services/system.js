@@ -1,12 +1,23 @@
 
 import request from '../utils/request';
+import  { PAGE_SIZE　} from 'common/constants';
 
+//集团保存接口
+export function systemsave(values) {
+  return request('/crm/api/v1/dictionary/saveDictionary', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//集团列表数据
 export function system(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
+//地方列表数据
 export function place(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
     method: 'POST',
@@ -107,4 +118,3 @@ export function roleDel(values) {
     body: JSON.stringify(values),
   })
 }
-

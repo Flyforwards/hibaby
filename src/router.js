@@ -107,6 +107,26 @@ let routes = [
                   })
               }
           },
+          //查看服务详情
+          {
+              path: '/service/look',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/system'));
+                      cb(null, require('./page/system/service/LookService.jsx'))
+                  })
+              }
+          },
+          //编辑服务信息
+          {
+              path: '/service/edit',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/system'));
+                      cb(null, require('./page/system/service/Editser.jsx'))
+                  })
+              }
+          },
           {
             path: '/system/permission',
             getComponent: (location, cb) => {
@@ -160,7 +180,7 @@ let routes = [
             path: '/demo/add',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
+                registerModel(app, require('./models/save'));
                 cb(null, require('./page/system/management/Add.js'))
               })
             }

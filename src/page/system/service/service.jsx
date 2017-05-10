@@ -71,7 +71,7 @@ class position extends Component {
       };
         return (
            <div className="management-cent">
-            <div className="name"><Link to="/service/Addservice"><span >添加</span></Link></div>
+            <div className="name"><Link to="/service/look"><span >添加</span></Link></div>
             <div className="CreateModaList">
                 <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
                 <p className="allList">共计0条,范围1-10</p>

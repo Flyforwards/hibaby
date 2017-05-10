@@ -5,39 +5,6 @@ import {Card,Input,Button} from 'antd';
 var Nzh = require("nzh");
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
-class List extends React.Component {
-
-      constructor(props) {
-            super(props);
-            this.state = {
-              bigNum:'三'
-            }
-      }
-      componentDidMount(url){
-
-          var index=this.props.index;
-          var nzhcn = Nzh.cn;
-          var num=Number(index);
-          var newnum=num+1;
-          this.setState({
-            bigNum: nzhcn.encodeS(newnum)
-          })
-      }
-render() {
-      console.log("index",this.props.index)
-      return (<div className = "div2">
-                  <p className = "label" data-index={this.props.index}>选项{this.state.bigNum} </p>
-                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                      <Input type = "textarea" rows = {6} data-index={this.props.index} className = "input2"
-                          defaultValue={this.props.index}/>
-                      <span className = "editable-add-btn" onClick={this.props.delete} data-index={this.props.index}>
-                          删除
-                      </span>
-                  </div>
-               </div >
-      )
-    }
-}
 class CheckData extends React.Component {
 
     constructor(props) {
@@ -45,6 +12,7 @@ class CheckData extends React.Component {
         this.add=this.add.bind(this);
         this.delete=this.delete.bind(this);
         this.handelTrans=this.handelTrans.bind(this);
+        this.handleChange=this.handleChange.bind(this);
         this.state={
               lists: [
                       (<div className = "div2">
@@ -115,6 +83,19 @@ class CheckData extends React.Component {
           }
         })
       }
+      handleChange() {
+         const myid=GetQueryString("id");
+         const item=this.props.data
+         const name=item.map(res=>{
+             if(res.id=myid){
+               return(res.name)
+             }
+         })
+         this.setState({
+            value: name
+         })
+         console.log(name)
+     }
 
     render() {
       console.log(window.location)
@@ -133,7 +114,7 @@ class CheckData extends React.Component {
                 <Card title = "字段信息:" >
                     <div className = "div">
                       <p className ="label" > 字段名称 < /p>
-                      <Input ref="title" type = "textarea" className ="input" value={`{res.name}`}/>
+                      <Input ref="value" type = "textarea" className ="input" value={this.state.value}  onChange={this.handleChange}/>
                     </div>
                     <div className = "div">
                       <p className = "label"> 字段描述 < /p>

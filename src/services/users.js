@@ -18,12 +18,7 @@ export function customer(values) {
     body: JSON.stringify(values),
   })
 }
-export function position(values) {
-  return request('/crm/api/v1/position/getPositionByDeptId', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
+
 export function test(values) {
   return request('/crm/api/v1/getVerCode', {
     method: 'POST',

@@ -33,8 +33,8 @@ class FromCreateModal extends Component {
                 description: values.nam,
                 name: values.name,
                 orderBy:Number(values.orderBy),
-                parentId: Number(values.mainName),
-                projectId: local.get("projectId"),
+                parentId:0,
+                projectId: Number(values.mainName),
                 id:list.id
             }
         });
@@ -67,7 +67,6 @@ class FromCreateModal extends Component {
         }, 1000)
     }
     onSelect = (value,key) => {
-      console.log("shu",value);
       this.props.dispatch({
           type: 'system/SelectList',
           payload: {
