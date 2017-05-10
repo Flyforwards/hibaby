@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import './service.scss'
-import {Form, Input, Button, Radio } from 'antd'
+import {Card,Form, Input, Button, Radio } from 'antd'
 import request from '../../../common/request/request.js'
 import {classification,dataList,ww} from '../../../constants.js'
 import {Link} from 'react-router';
@@ -27,34 +27,33 @@ class AddService extends Component {
             wrapperCol: { span: 14, offset: 4 },
           } : null;
           return (
-            <div>
-              <Form layout={formLayout}>
-                <h3>服务项目信息</h3>
-                <FormItem
-                  label="项目名称"
-                  {...formItemLayout}
-                >
-                  <Input placeholder="input placeholder" />
-                </FormItem>
-                <FormItem
-                  label="项目价格"
-                  {...formItemLayout}
-                >
-                  <Input placeholder="input placeholder" />
-                </FormItem>
+            <Card className="AddService" bordered={true} >
+                 <h3>服务项目信息:</h3>
+                  <Form  layout={formLayout}>
 
-              </Form>
-              <Form>
-              <FormItem
-                label="Field A"
-                {...formItemLayout}
-              >
-                <Input placeholder="input placeholder" />
-              </FormItem>
+                      <FormItem
+                        label="项目名称"
+                        {...formItemLayout}
+                      >
+                      <Input placeholder="input placeholder" />
+                    </FormItem>
+                    <FormItem className="itemprice"
+                      label="项目价格"
+                      {...formItemLayout}
+                    >
+                    <div className="price">
+                        <span className="priceLeft">￥</span>
+                        <input type="text" placeholder=" " />
+                        <span className="priceRight">元</span>
+                    </div>
+                    </FormItem>
 
-
-            </Form>
-            </div>
+                  </Form>
+                  <div className="conService">
+                      <h4>项目内容</h4>
+                      <Card></Card>
+                  </div>
+            </Card>
           );
         }
 

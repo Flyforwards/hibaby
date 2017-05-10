@@ -45,6 +45,7 @@ class CheckData extends React.Component {
         this.add=this.add.bind(this);
         this.delete=this.delete.bind(this);
         this.handelTrans=this.handelTrans.bind(this);
+        this.handleChange=this.handleChange.bind(this);
         this.state={
               lists: [
                       (<div className = "div2">
@@ -115,6 +116,19 @@ class CheckData extends React.Component {
           }
         })
       }
+      handleChange() {
+         const myid=GetQueryString("id");
+         const item=this.props.data
+         const name=item.map(res=>{
+             if(res.id=myid){
+               return(res.name)
+             }
+         })
+         this.setState({
+            value: name
+         })
+         console.log(name)
+     }
 
     render() {
       console.log(window.location)
@@ -133,7 +147,7 @@ class CheckData extends React.Component {
                 <Card title = "字段信息:" >
                     <div className = "div">
                       <p className ="label" > 字段名称 < /p>
-                      <Input ref="title" type = "textarea" className ="input" value={`{res.name}`}/>
+                      <Input ref="value" type = "textarea" className ="input" value={this.state.value}  onChange={this.handleChange}/>
                     </div>
                     <div className = "div">
                       <p className = "label"> 字段描述 < /p>
