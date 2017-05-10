@@ -1,6 +1,6 @@
 .management-cent{
 	.name{
-		margin:10px 0px 10px 10px; 
+		margin:10px 0px 10px 10px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
 	    font-weight: 400;
 	    font-style: normal;
@@ -52,7 +52,7 @@
 				display: inline-block;
 				color: #0066FF;
 				text-decoration: none;
-				margin:0 22px; 
+				margin:0 22px;
 				float:left;
 			}
 			.firstB{
@@ -66,8 +66,8 @@
 	    height:230px;
 	    font-size: 14px;
 	    line-height: 2.5;
-	    margin-top:-10px;  
-	} 
+	    margin-top:-10px;
+	}
 	.allList{
 		width:400px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
@@ -77,8 +77,167 @@
 	    color: #999999;
 	    text-align: left;
 	    display:inline-block;
-	    margin-top:-40px; 
-	    margin-left:10px; 
+	    margin-top:-40px;
+	    margin-left:10px;
 	    float:left;
 	}
+
+}
+.AddService{
+		margin: 10px;
+		height: auto;
+		border:1px solid #d9d9d9;
+		h3{
+			 margin:-10px 0 0 -10px;
+			 height:16px;
+			 font-size:14px;
+			 font-weight:900;
+			 color:#333;
+		}
+		.ant-form-inline{
+				margin: 20px 0 10px 10px;
+				height:auto;
+			.ant-form-item-label{
+					height:45px;
+					line-height:45px;
+					label{
+						font-size:14px;
+						color:#333;
+					}
+					label:after{
+						content: " ";
+						margin: 0 8px 0 2px;
+						position: relative;
+						top: -0.5px
+					}
+				}
+			}
+			.ant-form-item-control-wrapper{
+				width:500px;
+				height:45px;
+					.ant-form-item-control {
+						height:45px;
+							input{
+								height:45px;
+							}
+						.price{
+								height:45px;
+								width:500px;
+								border-radius:4px;
+								border: 1px solid #d9d9d9;
+								.priceLeft{
+										height:45px;
+										width:45px;
+										float:left;
+										line-height:45px;
+										text-align:center;
+										font-size:14px;
+										color:#333;
+								}
+								input{
+										width:400px;
+										float:left;
+										text-align:center;
+										height:43px;
+										line-height:43px;
+										border:0;
+										font-size:14px;
+										outline: none;
+								}
+								.priceRight{
+										height:44px;
+										width:44px;
+										margin-top:-0.5px;
+										float:right;
+										line-height:45px;
+										text-align:center;
+										font-size:14px;
+										color:#333;
+										border-top-right-radius: 4px;
+										border-bottom-right-radius: 4px;
+										background:#ddd;
+								}
+							}
+						.price:hover{
+							border-color:#108ee9;
+						}
+					}
+			}
+			.procontent{
+					height:45px;
+					width:66px;
+					margin:10px 0;
+					float:left;
+			}
+			.ConService{
+					height:auto;
+					width: 1076px;
+					position: relative;
+					top:10px;
+					.ant-input{
+							outline:none;
+					}
+			}
+}
+.btn{
+		height:40px;
+		margin:10px;
+		.BackBtn{
+				display:block;
+				height:30px;
+				width:100px;
+				float:left;
+				margin-left:900px;
+				border-radius:4px;
+				.ant-btn{
+						height:30px;
+						width:100px;
+				}
+		}
+		.SaveBtn{
+				display:block;
+				height:30px;
+				width:100px;
+				float:left;
+				margin-left:10px;
+				border-radius:4px;
+				.ant-btn{
+						background:#108ee9 ;
+						height:30px;
+						width:100px;
+						color:#fff;
+				}
+		}
+		.DelBtn{
+				display:block;
+				height:30px;
+				width:100px;
+				float:left;
+				margin-left:10px;
+				border-radius:4px;
+				.ant-btn{
+						background:#108ee9 ;
+						height:30px;
+						width:100px;
+						color:#fff;
+				}
+		}
+		.EditBtn{
+				display:block;
+				height:30px;
+				width:100px;
+				float:left;
+				margin-left:10px;
+				border-radius:4px;
+				.ant-btn{
+						background:#108ee9 ;
+						height:30px;
+						width:100px;
+						color:#fff;
+				}
+		}
+
+}
+.collection-create-form_last-form-item {
+  margin-bottom: 0;
 }

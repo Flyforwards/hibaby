@@ -6,7 +6,6 @@ import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
-import { classification,dataList } from '../../../constants.js'
 import AddChildNode from './AddChildNode.jsx'
 
 const Option = Select.Option

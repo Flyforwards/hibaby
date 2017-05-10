@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import './service.scss'
 import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import request from '../../../common/request/request.js'
-import {classification,dataList,ww} from '../../../constants.js'
+import {classification,dataList,ww} from 'common/constants.js'
 import {Link} from 'react-router';
 class position extends Component {
     constructor(props) {
@@ -71,7 +71,7 @@ class position extends Component {
       };
         return (
            <div className="management-cent">
-            <div className="name"><Link to="/service/Addservice"><span >添加</span></Link></div>
+            <div className="name"><Link to="/service/look"><span >添加</span></Link></div>
             <div className="CreateModaList">
                 <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
                 <p className="allList">共计0条,范围1-10</p>
