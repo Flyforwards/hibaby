@@ -77,7 +77,7 @@ let routes = [
                   })
               }
           },
-          //地方字段
+          // 地方字段
           {
               path: '/system/localchar',
               getComponent: (location, cb) => {
@@ -128,11 +128,11 @@ let routes = [
               }
           },
           {
-            path: '/system/pormission',
+            path: '/system/permission',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/pormission'));
-                cb(null, require('./page/system/pormission/pormission.jsx'))
+                registerModel(app, require('./models/permission'));
+                cb(null, require('./page/system/permission/permission.jsx'))
               })
             }
           },

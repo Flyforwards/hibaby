@@ -2,7 +2,7 @@ import * as organizationService from '../services/organization';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from '../common/util/storage.js';
-import {PAGE_SIZE} from '../constants.js'
+import {PAGE_SIZE} from 'common/constants.js'
 
 export default {
 	namespace: 'checkview',

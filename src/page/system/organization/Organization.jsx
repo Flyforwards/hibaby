@@ -9,7 +9,7 @@ import { routerRedux } from 'dva/router'
 import { Link} from 'react-router'
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
-import { roleId } from '../../../constants.js'
+import { roleId } from 'common/constants.js'
 
 
 const Option = Select.Option

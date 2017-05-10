@@ -1,9 +1,15 @@
 "use strict"
 import React, {Component} from 'react'
 import './service.scss'
+<<<<<<< HEAD
 import {Card,Form, Input, Button, Radio ,AutoComplete } from 'antd'
 import request from '../../../common/request/request.js'
 import {classification,dataList} from '../../../constants.js'
+=======
+import {Form, Input, Button, Radio } from 'antd'
+import request from 'common/request/request.js'
+import {classification,dataList,ww} from 'common/constants.js'
+>>>>>>> 454a23e59e496e2e5270df4551343d08a8418ecd
 import {Link} from 'react-router';
 const FormItem = Form.Item;
 

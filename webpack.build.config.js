@@ -30,7 +30,7 @@ var webpackConfig = {
         alias: {
             'component': path.resolve(__dirname, './src/component'),
             'common': path.resolve(__dirname, './src/common'),
-            'framework': path.resolve(__dirname, './src/framework')
+            'framework': path.resolve(__dirname, './src/framework'),
         }
     },
     resolveLoader: {

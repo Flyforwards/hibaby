@@ -6,7 +6,7 @@ import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
-import { classification,dataList } from '../../../constants.js'
+import { classification,dataList } from 'common/constants.js'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -88,7 +88,7 @@ class OrganizationLefted extends React.Component {
         const  nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
           loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name}/>)
-          $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")  
+          $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")
         }
         return (
             <div className="Organization-left">
