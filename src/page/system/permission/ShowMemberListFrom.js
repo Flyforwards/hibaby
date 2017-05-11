@@ -6,6 +6,8 @@ import { Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
 const createForm = Form.create
 const FormItem = Form.Item
+import AddMemberFrom from './AddMemberFrom'
+import  { session } from 'common/util/storage.js';
 
 
 @createForm()
@@ -24,22 +26,44 @@ class ShowMemberListFrom extends Component {
       title: '职位',
       dataIndex: 'positionId',
       key:'positionId',
+      render: (record) => {
+        return record
+      }
     }, {
       title: '隶属部门',
       dataIndex: 'deptId',
       key:'deptId',
+      render: (record) =>  {
+        const deptId = record;
+        let dept = this.props.departmentList.map((record)=> {
+          if (deptId == record.id) {
+            console.log(record);
+            return record.name;
+          }
+        });
+        return dept || "无";
+      }
     }, {
       title: '地方中心',
       dataIndex: 'endemicId',
       key:'endemicId',
+      render: () => {
+        return this.props.club.name;
+      }
     }, {
       title: '系统角色',
       dataIndex: 'roleId',
       key:'roleId',
+      render: () => {
+        return this.props.selectRole.roleName;
+      }
     },{
       title: '账户状态',
       dataIndex: 'status',
       key:'status',
+      render: ( record ) => {
+        return record == 0 ? "正常":"禁用";
+      }
     },{
       title: '操作',
       dataIndex: 'operating',
@@ -55,7 +79,10 @@ class ShowMemberListFrom extends Component {
     }];
 
   }
-  state = { visible: false }
+  state = {
+    visible: false,
+    showAddMemberModalVisible: false
+  }
   handleCancel() {
     this.props.onCancel()
   }
@@ -63,8 +90,9 @@ class ShowMemberListFrom extends Component {
     this.props.onCancel()
   }
 
-  delete(record) {}
+  delete(record) {
 
+  }
 
   handleAfterClose() {
 
@@ -77,12 +105,28 @@ class ShowMemberListFrom extends Component {
 
   }
 
+  // 为角色分配用户
+  addClick() {
+    this.props.dispatch({
+      type: "permission/getDeptListByEndemicId",
+    })
+    this.setState({
+      showAddMemberModalVisible: true,
+    })
+  }
+
+  cancelModal() {
+    this.setState({
+      showAddMemberModalVisible: false,
+    })
+  }
+
 
 
   render() {
     const { visible, record } = this.props
     const { getFieldDecorator } = this.props.form;
-    let { userList,total } = this.props;
+    let { userList, memberTotal } = this.props;
     if (userList != null) {
       userList.map((record, index)=> {
         record.key = index;
@@ -92,19 +136,19 @@ class ShowMemberListFrom extends Component {
     }
 
     const pagination = {
-      total: total, //数据总条数
+      total: memberTotal, //数据总条数
       showQuickJumper: true,
       pageSize: 10,
       onChange: (page, pageSize) => {
         this.props.dispatch({
             type: "permission/getUserPageListByRoleId",
-            payload: { dataId: this.props.selectRole.id, page, size: pageSize},
+            payload: { roleId: this.props.selectRole.id, page, size: pageSize, first: false},
           }
         );
       },
     }
     return (
-      <Modal
+      <Modal key= { visible }
         visible = { visible }
         title = "成员列表"
         okText =  "保存"
@@ -116,15 +160,18 @@ class ShowMemberListFrom extends Component {
         width = { 1000 }
       >
         <div className="permission-cent">
-          <div >
-            <span className="span_border"></span>
-            <Button className="find" onClick={this.managementInquire}>查询</Button>
+          <div className="divs">
+            <Button className="add" onClick={ this.addClick.bind(this) }>添加</Button>
           </div>
           <div className="CreateModaList">
             <Table bordered dataSource={ userList } columns={ this.columns } pagination = { pagination }/>
           </div>
         </div>
-
+        <AddMemberFrom
+          visible ={ this.state.showAddMemberModalVisible }
+          onCancel ={ this.cancelModal.bind(this) }
+          selectRole = { this.props.selectRole }
+        />
       </Modal>
     )
   }
@@ -133,12 +180,16 @@ class ShowMemberListFrom extends Component {
 function mapStateToProps(state) {
   const {
     userList,
-    total
+    departmentList,
+    club,
+    memberTotal
   } = state.permission;
   return {
-    loading: state.loading.models.system,
+    loading: state.loading.models.permission,
     userList,
-    total
+    departmentList,
+    club,
+    memberTotal
   };
 }
 export default connect(mapStateToProps)(ShowMemberListFrom)
