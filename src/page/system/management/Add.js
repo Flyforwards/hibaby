@@ -6,7 +6,9 @@ import './system.scss';
 import {
   Card,
   Input,
-  Button
+  Button,
+  Form,
+  Icon
 } from 'antd';
 var Nzh = require("nzh");
 import { browserHistory } from 'dva/router';
@@ -56,17 +58,20 @@ class AddData extends React.Component {
         this.handelTrans=this.handelTrans.bind(this);
         this.state={
 
-          lists: [( < div className = "div2"
-          >
+          lists: [(
+            < div className = "div2">
+            <FormItem {...formItemLayout} label="E-mail" hasFeedback>
           < p className = "label" > 选项一 < /p>
           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
            < Input ref="xuanname" type = "textarea"
           rows = {6}
-          className = "input2"/> </div></div> ), (
-           < div className = "
-            div2
-          "
-           >
+          className = "input2"/> </div>
+          </FormItem>
+          </div>
+         ), (
+
+           < div className = "div2">
+           <FormItem {...formItemLayout} label="E-mail" hasFeedback>
           < p className ="label"
             > 选项二 < /p>
           <div className="posi" style={{position:'relative',overflow:'hidden'}}> < Input type = "textarea"
@@ -76,7 +81,9 @@ class AddData extends React.Component {
           className = "input2"
           />
           </div>
-          </div>)],
+          </FormItem>
+          </div>
+          )],
           bigNum:['三','四','五','六','七','八','九']
         }
     }
@@ -84,7 +91,8 @@ class AddData extends React.Component {
         var lists=this.state.lists;
         var len=this.state.lists.length-2;
         lists.push(< div  className = "div2"
-           > < p className = "label"
+           > <FormItem {...formItemLayout} label="E-mail" hasFeedback>
+           < p className = "label"
            data-index={this.state.lists.length+1}>选项{this.state.bigNum[len]} < /p>
           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
            < Input type = "textarea"
@@ -94,8 +102,9 @@ class AddData extends React.Component {
           data-index={this.state.lists.length}
           className = "input2"
             defaultValue={this.state.lists.length}
-          />< span className = "editable-add-btn"
-          onClick={this.delete} data-index={this.state.lists.length}> 删除 < /span></div></div >)
+          /></div></FormItem>
+          < span className = "editable-add-btn"
+          onClick={this.delete} data-index={this.state.lists.length}> 删除 < /span></div >)
         this.setState({lists:lists})
     }
  handelTrans(e){
@@ -121,7 +130,7 @@ class AddData extends React.Component {
       handleSave = (e) => {
         e.preventDefault();
        console.log(this.refs.description.value)
-
+       console.log(this.refs.title.props.value)
         this.props.dispatch({
           type: 'demo/add',
           payload: {
@@ -140,7 +149,7 @@ class AddData extends React.Component {
         })
       }
     render() {
-
+        console.log();
         return (
         < div className="xuanxiang container2">
 
@@ -160,10 +169,9 @@ class AddData extends React.Component {
       /> </div> < /Card>
 
       < Card title = "下拉选项:" >
-
-      {
-        this.state.lists
-      }
+      <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
+          {this.state.lists}
+      </Form>
       < Button
       className = "editable-add-btn add"
       onClick = {

@@ -3,7 +3,6 @@ import React, {Component} from 'react'
 import './service.scss'
 import {Card,Form, Input, Button, Radio, Modal} from 'antd'
 import request from '../../../common/request/request.js'
-import {classification,dataList} from '../../../constants.js'
 import {Link} from 'react-router';
 const FormItem = Form.Item;
 

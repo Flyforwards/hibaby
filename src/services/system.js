@@ -1,7 +1,5 @@
 
 import request from '../utils/request';
-<<<<<<< HEAD
-import  { PAGE_SIZE　} from '../constants';
 //集团保存接口
 export function systemsave(values) {
   return request('/crm/api/v1/dictionary/saveDictionary', {
@@ -10,9 +8,6 @@ export function systemsave(values) {
   })
 }
 //集团列表数据
-=======
-
->>>>>>> 454a23e59e496e2e5270df4551343d08a8418ecd
 export function system(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
     method: 'POST',

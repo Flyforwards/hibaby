@@ -1,8 +1,8 @@
-import * as systemService from '../services/save';
+import * as saveService from '../services/save';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from '../common/util/storage.js';
-import {PAGE_SIZE} from '../constants.js'
+import {PAGE_SIZE} from 'common/constants.js'
 
 export default {
 	namespace: 'save',
@@ -23,8 +23,10 @@ export default {
 				data,
 				code
 			}
+			let dictionarySideDOs=data.dictionarySideDOs;
 			console.log(data);
 			return  {...savedata,
+				   dictionarySideDOs
 			};
 		},
 	},
