@@ -60,3 +60,10 @@ export function roleSelectData(values) {
     body: JSON.stringify(values),
   })
 }
+//保存组织架构节点信息
+export function saveDepartment(values) {
+  return request('/crm/api/v1/department/saveDepartment', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

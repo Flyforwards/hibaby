@@ -21,6 +21,10 @@ export default {
 	      let getUserPageListByDeptIddata = {...state,data,code};
 	      return getUserPageListByDeptIddata
 	    },
+	    saveDepartmentSave(state,{payload:{ data,code }}){
+	      let saveDepartmentdata = {...state,data,code};
+	      return saveDepartmentdata
+	    },
 	    getDeptListByEndemicIdSave(state,{payload:{data:dataEndemicId,code}}){
 	      let getDeptListByEndemicIddata= {...state, dataEndemicId, code};
 	      return getDeptListByEndemicIddata
@@ -82,6 +86,20 @@ export default {
 			if (code == 0) {
 				yield put({
 					type: 'roleSelectDataSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//保存组织架构节点信息
+		*saveDepartment({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.saveDepartment, values);
+			console.log("保存组织架构节点信息",code)
+			if (code == 0) {
+				yield put({
+					type: 'saveDepartmentSave',
 					payload: {
 						data,
 						code

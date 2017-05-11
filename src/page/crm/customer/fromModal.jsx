@@ -87,7 +87,6 @@ class FromModaled extends Component {
     Inquire(){
         this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          concole.log("projectId",local.get("projectId"))
           this.props.dispatch({
             type: 'system/permissionAdd',
             payload: {
@@ -104,7 +103,6 @@ class FromModaled extends Component {
       });
     }
     emptied(){
-      console.log($("input").val())
         $(".ant-select-selection-selected-value").html("请选择")
         $(".name").val("")
         $(".actionPath").val("")
@@ -175,7 +173,6 @@ class FromModaled extends Component {
                 >
                {getFieldDecorator('name', {
                   rules: [],
-                  onChange: this.handleSelectChange,
                 })(
                    <Input className="name"/>
                 )}
@@ -187,7 +184,6 @@ class FromModaled extends Component {
                 >
                {getFieldDecorator('actionPath', {
                   rules: [],
-                  onChange: this.handleSelectChange,
                 })(
                   <Input className="actionPath"/>
                 )}
