@@ -106,7 +106,7 @@
 		.systemRole{
 			margin-left:60px;
 			margin-bottom: 20px;
-			.ant-select-selection--single{
+			.ant-select-selection--multiple{
 				width:310px;
 			}
 		}
@@ -114,6 +114,7 @@
 			.ant-form-item-control-wrapper{
 				margin-left:120px;
 				width:136px;
+				margin-bottom:20px;
 			}
 		}
 	}

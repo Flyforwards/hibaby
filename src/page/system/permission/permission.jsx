@@ -15,6 +15,7 @@ class permission extends Component {
         super(props)
         this.state = {
         }
+        this.record = null;
         this.columns = [{
           title: '编号',
           dataIndex: 'id',
@@ -53,45 +54,41 @@ class permission extends Component {
     }
   // 编辑
     editPermissions(record){
-      console.log("编辑", record)
+      this.record = record;
       this.setState({
         modifyModalVisible: true,
-        record: record,
         add: false,
         isDel: false,
       })
     }
     // 设置权限
     setPermissions(record){
-      console.log("设置权限", record)
       this.props.dispatch({
         type: "permission/treeByRoleID",
         payload: { record }
       })
+      this.record = record;
       this.setState({
         settingModalVisible: true,
-        record: record,
       })
 
     }
     // 展示当前角色的成员列表
     showMemberList(record){
-      console.log("成员列表", record)
+      this.record = record;
       this.props.dispatch({
         type: "permission/getUserPageListByRoleId",
-        payload: { dataId: record.id, page: 1, size: 10 }
+        payload: { roleId: record.id, page: 1, size: 10, first: true}
       })
       this.setState({
         showMemberModalVisible: true,
-        record: record,
       })
     }
 
     delete(record){
-      console.log("删除", record)
+      this.record = record;
       this.setState({
         modifyModalVisible: true,
-        record: record,
         add: false,
         isDel: true,
       })
@@ -101,7 +98,6 @@ class permission extends Component {
     addList(){
       this.setState({
         modifyModalVisible: true,
-        record: null,
         add: true,
         isDel: false,
       })
@@ -136,29 +132,28 @@ class permission extends Component {
         };
         return (
            <div className="permission-cent">
-            <div className="name">部门<Input />
-              <Button className="find" onClick={this.managementInquire}>查询</Button>
-              <Button className="add" onClick={ this.addList.bind(this) }>添加</Button>
-            </div>
-            <div className="CreateModaList">
+             <div className="divs">
+               <Button className="add" onClick={ this.addList.bind(this) }>添加</Button>
+             </div>
+             <div className="CreateModaList">
                 <Table bordered dataSource={ data } columns={ this.columns } pagination = { pagination }/>
-            </div>
+             </div>
              <AddRoleFrom
                visible ={ this.state.modifyModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
-               record = { this.state.record }
+               record = { this.record }
                add = { this.state.add }
                isDel = { this.state.isDel }
              />
              <SettingPermissionFrom
                visible ={ this.state.settingModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
-               selectRole = { this.state.record }
+               selectRole = { this.record }
              />
              <ShowMemberListFrom
                visible ={ this.state.showMemberModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
-               selectRole = { this.state.record }
+               selectRole = { this.record }
              />
            </div>
         )

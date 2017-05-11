@@ -9,9 +9,10 @@ import { routerRedux } from 'dva/router'
 import { Link} from 'react-router'
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
-import { roleId } from 'common/constants.js'
+import {local, session} from '../../../common/util/storage.js'
 
 
+const roleId = local.get("rolSelectData")
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -193,8 +194,8 @@ class Organization extends React.Component {
           },
         };
         const traversalRoleId = (roleId) => {
-          return roleId.map((item,index)=>{
-             return <Option value={index} key={index}>{item}</Option>
+          return roleId.map((item)=>{
+             return <Option value={item.id+""} key={item.id}>{item.name}</Option>
           })
         }
         const traversalRoleIdData = traversalRoleId(roleId)
@@ -220,7 +221,7 @@ class Organization extends React.Component {
             </div>
             {this.props.list?
             <div className="CreateModaList">
-                <Table bordered dataSource={ListLnformation} columns={columns} pagination = {pagination} rowKey="Numbering"/>
+                <Table bordered dataSource={ListLnformation} columns={columns} pagination = {pagination} />
                 < Current page = {
                       this.props.page
                     }

@@ -18,12 +18,7 @@ export function customer(values) {
     body: JSON.stringify(values),
   })
 }
-export function position(values) {
-  return request('/crm/api/v1/position/getPositionByDeptId', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
+
 export function test(values) {
   return request('/crm/api/v1/getVerCode', {
     method: 'POST',
@@ -85,7 +80,20 @@ export function getUserPageListByRoleId(values) {
   })
 }
 
+export function configRolePermission(values) {
+  return request('/crm/api/v1/role/configRolePermission', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
+// 根据地方中心查询下属部门
+export function getDeptListByEndemicId(values) {
+  return request('/crm/api/v1/department/getDeptListByEndemicId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 

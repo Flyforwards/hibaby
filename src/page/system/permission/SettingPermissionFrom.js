@@ -13,12 +13,28 @@ const CheckboxGroup = Checkbox.Group;
 class SettingPermissionFrom extends Component {
   constructor(props) {
     super(props)
+    this.checkPermission = {
+    }
   }
-  state = { visible: false }
+  state = {
+    visible: false,
+  }
+
+
+
   handleCancel() {
     this.props.onCancel()
   }
   handleOk() {
+    let ids = [];
+    console.log(this.checkPermission)
+    Object.keys(this.checkPermission).map((record)=> {
+      ids = ids.concat(this.checkPermission[record])
+    });
+    this.props.dispatch({
+      type : "permission/configRolePermission",
+      payload: { roleId: this.props.selectRole.id, permissionIdList: ids }
+    })
     this.props.onCancel()
   }
 
@@ -34,37 +50,58 @@ class SettingPermissionFrom extends Component {
 
   }
 
+  // onChange(checkedValue) {
+  //   console.log(checkedValue);
+  //   this.setState({
+  //     checkPermissionIds: checkedValue,
+  //   });
+  // }
+
 
   render() {
-    const { visible, record } = this.props
     const { getFieldDecorator } = this.props.form;
-    let permissionLists = []
 
-
-    const { permissionList } = this.props;
-    if (permissionList != null) {
-      permissionLists = permissionList;
+    let { permissionList, visible, selectRole  } = this.props;
+    if (permissionList == null) {
+      permissionList = [];
     }
 
-
-    const nodes = permissionLists.map((record, index) => {
+    let nodes = permissionList.map((record, index) => {
       let subNodes = [];
       if (record.children != null) {
         let subSubNodes = [];
         subNodes = record.children.map((subRecord, index1) => {
             if (subRecord.children != null) {
-              subSubNodes = subRecord.children.map((subRec, index2) => {
+                subSubNodes = subRecord.children.map((subRec, index2) => {
+                  let selectValues = [];
+                  if (subRec.children != null) {
+                    subRec.children.map((sub) => {
+                      sub.label = sub.name;
+                      sub.key = sub.id;
+                      sub.value = sub.id;
+                      if (sub.isHave) {
+                        selectValues.push(sub.value);
+                      }
+                    });
+                  }
+                  this.checkPermission[subRec.id] = selectValues;
+
+                  let onChange = (checkedValue) => {
+                    this.checkPermission[subRec.id] = checkedValue;
+                    console.log(this.checkPermission);
+                  }
+
                   return (
-                    <div className="overflow" key={index1 * 10 + index2}>
+                    <div className="overflow" key= {index1 * 10 + index2}>
                       <div className="subTagThree"> { subRec.name }</div>
                       <div className="checkBox">
-                        <CheckboxGroup options={ subRec.children } onChange={ this.onChange } />
+                        <CheckboxGroup options={ subRec.children } defaultValue = {selectValues} onChange={ onChange.bind(this) } />
                       </div>
                     </div>)
               })
             }
             return (
-                <div>
+                <div key = { index1 * 10 }>
                   <div className="subTagTwo">
                     { subRecord.name }
                   </div>
@@ -77,7 +114,7 @@ class SettingPermissionFrom extends Component {
       }
 
         return (
-          <TabPane className="settingFrom" tab={record.projectName} key={index}>
+          <TabPane className="settingFrom" tab={record.projectName} key={ index * 100 }>
             {
               subNodes
             }
@@ -85,7 +122,7 @@ class SettingPermissionFrom extends Component {
     });
 
     return (
-      <Modal
+      <Modal key = { visible }
         visible = { visible }
         title = "设置权限"
         okText =  "保存"
@@ -96,7 +133,7 @@ class SettingPermissionFrom extends Component {
         closable = { false }
         width = { 1000 }
       >
-        <Tabs onChange={this.callback} type="card">
+        <Tabs onChange={ this.callback } defaultActiveKey="0" type="card">
           {
             nodes
           }

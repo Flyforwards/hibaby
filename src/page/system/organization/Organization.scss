@@ -3,7 +3,6 @@
     margin-left: 60px;
 }
 .yt-admin-framework-content {
-    transition: all .3s;
     padding: 0 12px;
     background-color: #eeeeee;
 }
@@ -34,7 +33,7 @@
 	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {
 		font-size: 14px;
 		display:inline-block;
-		width:217px;
+		width:100%;
 		font-weight: 400;
 	}
 	.ant-tree li a:hover {
@@ -311,7 +310,7 @@
 	margin-right: 60px;
 }
 .ant-tree li a {
-    width: 207px;
+    width: 217px;
     margin-left:-20px;
     text-indent: 20px; 
     height:30px;
@@ -324,18 +323,18 @@
     margin-left: -7px;
     li{
     	a{
-    		width:207px; 
+    		width:217px; 
     	}
     }
 }
 .Organization-left .ant-tree li ul li a {
-    width: 207px;
+    width: 217px;
    	margin-left:-20px; 
     text-indent: 30px;
 }
 .Organization-left .ant-tree li{
 	position: relative;
-	width:207px;
+	width:217px;
 }
 .Organization-left .ant-tree .plus{
 		margin-right:10px;
@@ -352,7 +351,7 @@
 	}
 }
 .Organization-left .ant-tree li ul li a:hover {
-    width: 207px;
+    width: 217px;
     margin-left:-20px; 
     text-indent: 30px;
 }
@@ -362,7 +361,7 @@
 				margin-left:-10px;
 			}
 		}
-	width:207px;
+	width:217px;
 	background-color: #fff;
 	margin-left:-16px; 
 	
@@ -375,22 +374,24 @@
 	}
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
-    font-size: 21px;
+    font-size: 12px;
     font-size: 7px\9;
     content: "\e707";
     font-weight: 700;
     color: #f89d2d;
     background-color: #f89d2d;
     margin-top:5px; 
+    margin-left:10px; 
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
-	font-size: 21px;
+	font-size: 12px;
     font-size: 7px\9;
     content: "\e707";
     font-weight: 700;
     color: #f89d2d;
     background-color: #f89d2d;
     margin-top:5px; 
+    margin-left: 10px;
 }
 :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
     transform: scale(0.29);
@@ -408,7 +409,7 @@
 	width:80px;
 	background-color: #ccc;
 	position:absolute;
-	left:126px;
+	left:136px;
 	li{
 		padding-left:10px;
 		height:30px;

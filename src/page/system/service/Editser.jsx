@@ -2,7 +2,6 @@
 import React, {Component} from 'react'
 import './service.scss'
 import {Card,Form, Input, Button, Radio ,AutoComplete } from 'antd'
-import request from '../../../common/request/request.js'
 import {Link} from 'react-router';
 const FormItem = Form.Item;
 

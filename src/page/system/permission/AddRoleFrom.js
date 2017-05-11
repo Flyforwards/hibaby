@@ -141,7 +141,7 @@ function mapStateToProps(state) {
     code
   } = state.permission;
   return {
-    loading: state.loading.models.system,
+    loading: state.loading.models.permission,
     data
   };
 }
