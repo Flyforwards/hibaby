@@ -47,6 +47,24 @@
       float: left;
     }
 
+    .div-input {
+      height: 40px;
+      margin-bottom: 2px;
+      margin-top: 2px;
+      float: left;
+      width: 80%;
+      border: 2px solid #999999 ;
+    }
+    .li-item {
+      background-color: #f3f3f3;
+      border-radius: 4px;
+      cursor: default;
+      float: left;
+      margin-right: 4px;
+      max-width: 99%;
+      position: relative;
+      overflow: hidden;
+    }
 
     .ant-input{
       height: 40px;

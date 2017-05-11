@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Button, Table, Modal, Form, Input, Select } from 'antd'
+import { Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
 const createForm = Form.create
 const FormItem = Form.Item
@@ -199,6 +199,11 @@ class ShowMemberListFrom extends Component {
       },
     }
 
+    let selects = (
+      <li className="li-item">小明
+      </li>
+    )
+
     // { this.state.addMemberClassName }
     return (
       <Modal key= { visible }
@@ -215,7 +220,11 @@ class ShowMemberListFrom extends Component {
         <div className="permission-cent">
           <div className="divs">
             <div className="input-div">
-              <Select />
+              <div className="div-input">
+                {
+                  selects
+                }
+              </div>
               <div className = { this.state.addMemberClassName }>
                 <AddMemberComponent onCancel = { this.onCancel.bind(this) } selectRole = { this.props.selectRole }/>
               </div>
