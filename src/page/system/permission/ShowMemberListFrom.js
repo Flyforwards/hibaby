@@ -90,6 +90,9 @@ class ShowMemberListFrom extends Component {
   }
 
   handleCancel() {
+    this.setState({
+      addMemberClassName: "component-not-display",
+    })
     this.props.onCancel()
   }
   handleOk() {
@@ -175,7 +178,7 @@ class ShowMemberListFrom extends Component {
   render() {
     const { visible, record } = this.props
     const { getFieldDecorator } = this.props.form;
-    let { userList, memberTotal } = this.props;
+    let { userList, memberTotal, selectedRows } = this.props;
     if (userList != null) {
       userList.map((record, index)=> {
         record.key = record.id;
@@ -199,21 +202,23 @@ class ShowMemberListFrom extends Component {
       },
     }
 
-    let selects = (
-      <li className="li-item">小明
-      </li>
-    )
-
-    // { this.state.addMemberClassName }
+    let selects = selectedRows.map((record)=> {
+      console.log(record);
+      return (
+        <li className="li-item" key = { record.id }>
+          <div className="li-div-item">小明</div>
+          <span className="li-span-item" onClick={ this.addClick }></span>
+       </li>)
+    })
     return (
       <Modal key= { visible }
         visible = { visible }
         title = "成员列表"
         okText =  "保存"
-        cancelText = "返回"
-        onCancel = {this.handleCancel.bind(this)}
-        afterClose = {this.handleAfterClose.bind(this)}
-        onOk = {this.handleOk.bind(this)}
+        cancelText  = "返回"
+        onCancel = { this.handleCancel.bind(this) }
+        afterClose = { this.handleAfterClose.bind(this) }
+        onOk = { this.handleOk.bind(this) }
         closable = { false }
         width = { 1000 }
       >
@@ -256,14 +261,16 @@ function mapStateToProps(state) {
     userList,
     departmentList,
     club,
-    memberTotal
+    memberTotal,
+    selectedRows
   } = state.permission;
   return {
     loading: state.loading.models.permission,
     userList,
     departmentList,
     club,
-    memberTotal
+    memberTotal,
+    selectedRows
   };
 }
 export default connect(mapStateToProps)(ShowMemberListFrom)

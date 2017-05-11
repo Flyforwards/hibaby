@@ -29,7 +29,8 @@ class AddMemberComponent extends Component {
 
   state = {
     visible: false,
-    selectedRowKeys: []
+    selectedRowKeys: [],
+    selectedRows: [],
   }
 
 
@@ -73,9 +74,12 @@ class AddMemberComponent extends Component {
     })
   }
 
-  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys });
+  cellOnSelect = ( selectedRows ) => {
+      console.log(selectedRows);
+      this.props.dispatch({
+        type: "permission/selectedRowsChange",
+        payload: { selectedRows:[selectedRows] },
+      })
   }
 
   onClose() {
@@ -118,11 +122,11 @@ class AddMemberComponent extends Component {
     }
     loops = nodesIteration(endemicTree);
     // loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty}/>)
-    const { selectedRowKeys } = this.state;
+    const { selectedRows } = this.props;
 
     const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
+      selectedRows,
+      onSelect: this.cellOnSelect.bind(this)
     };
     return (
       <div>

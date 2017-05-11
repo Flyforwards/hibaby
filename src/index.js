@@ -7,9 +7,9 @@ import { message } from 'antd';
 // 1. Initialize
 const app = dva({
 	history: browserHistory,
-  onError (error) {
-    // message.error(error.message)
-		throw error;
+ 	onError (error) {
+    message.error(error.message)
+	throw error;
   },
 });
 

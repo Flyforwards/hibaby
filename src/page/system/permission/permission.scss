@@ -55,16 +55,7 @@
       width: 80%;
       border: 2px solid #999999 ;
     }
-    .li-item {
-      background-color: #f3f3f3;
-      border-radius: 4px;
-      cursor: default;
-      float: left;
-      margin-right: 4px;
-      max-width: 99%;
-      position: relative;
-      overflow: hidden;
-    }
+    
 
     .ant-input{
       height: 40px;
@@ -100,6 +91,45 @@
     }
   }
 
+  .li-item {
+      list-style-type:none;
+      background-color: #f3f3f3;
+      border-radius: 4px;
+      cursor: default;
+      float: left;
+      margin-right: 4px;
+      margin-top: 10px;
+      padding: 0 20px 0 10px;
+      max-width: 99%;
+      position: relative;
+      overflow: hidden;
+      height: 20px;
+      line-height: 20px;
+      position: relative;
+      display: list-item;
+  }
+
+  .li-div-item {
+      float: left;
+      font-size: 12px;
+  }
+
+  .li-span-item {
+      float: left;
+      position: absolute;
+      height: 20px;
+      right: 4px;
+      padding: 0 0 0 8px;
+      font-size: 12px;
+      cursor:pointer;
+  }
+  .li-span-item:before {
+    content:"\E633";
+    display: block;
+    font-family: anticon!important;
+    line-height: inherit;
+    font-size: 12px;
+  }
   .close-button-div {
     margin-bottom: 20px;
   }

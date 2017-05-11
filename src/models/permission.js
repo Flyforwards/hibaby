@@ -21,8 +21,12 @@ export default {
     currentDeptTree: [],
     undisUserList: [], // 未分配角色的列表
     undisUserTotal: 0,
+    selectedRows: [],
   },
   reducers: {
+    selectedRowsChange(state, {payload: { selectedRows }}) {
+      return {...state, selectedRows };
+    },
     getRolesSuccess(state, {payload: {data, page, size, total}}) {
       return {...state, data, total};
     },
