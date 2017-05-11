@@ -8,7 +8,7 @@ const createForm = Form.create
 const FormItem = Form.Item
 const TreeNode = Tree.TreeNode;
 
-class AddMemberFrom extends Component {
+class AddMemberComponent extends Component {
   constructor(props) {
     super(props)
     this.columns = [{
@@ -78,6 +78,10 @@ class AddMemberFrom extends Component {
     this.setState({ selectedRowKeys });
   }
 
+  onClose() {
+    this.props.onCancel();
+  }
+
 
   render() {
     const { visible, record } = this.props
@@ -96,8 +100,8 @@ class AddMemberFrom extends Component {
       pageSize: 10,
       onChange: (page, pageSize) => {
         this.props.dispatch({
-          type: "permission/getUserPageListByUserRole",
-          payload: { nodeid:this.nodeId, tissueProperty:this.tissueProperty, roleId:this.props.selectRole.id, page, size: pageSize }
+            type: "permission/getUserPageListByUserRole",
+            payload: { nodeid:this.nodeId, tissueProperty:this.tissueProperty, roleId:this.props.selectRole.id, page, size: pageSize }
           }
         );
       },
@@ -121,17 +125,8 @@ class AddMemberFrom extends Component {
       onChange: this.onSelectChange,
     };
     return (
-      <Modal key= { visible }
-             visible = { visible }
-             okText =  "保存"
-             cancelText = "关闭"
-             onCancel = {this.handleCancel.bind(this)}
-             afterClose = {this.handleAfterClose.bind(this)}
-             onOk = {this.handleOk.bind(this)}
-             closable = { false }
-             width = { 800 }
-      >
-        <div className="addMember">
+      <div>
+        <div>
           <Row gutter={8}>
             <Col className="gutter-row" span={5}>
               <Tree
@@ -145,13 +140,22 @@ class AddMemberFrom extends Component {
               }
               </Tree>
             </Col>
-            <Col className="gutter-row" span={19}>
-              <Table bordered rowSelection={rowSelection} dataSource={ undisUserList } columns={ this.columns} pagination = {pagination} />
+            <Col className="gutter-row" span={ 19 }>
+              <div>
+                <div className="divs">
+                  <Input className="search-input-div" />
+                  <Button className="search-button-div">查询</Button>
+                </div>
+                <Table bordered rowSelection={rowSelection} dataSource={ undisUserList } columns={ this.columns} pagination = {pagination} />
+              </div>
             </Col>
           </Row>
-
         </div>
-      </Modal>
+        <div className="close-button-div" >
+          <Button  onClick={ this.onClose.bind(this) }>关闭</Button>
+        </div>
+      </div>
+
     )
   }
 }
@@ -168,4 +172,4 @@ function mapStateToProps(state) {
     undisUserTotal
   };
 }
-export default connect(mapStateToProps)(AddMemberFrom)
+export default connect(mapStateToProps)(AddMemberComponent)

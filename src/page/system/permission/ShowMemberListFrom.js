@@ -2,18 +2,22 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Button, Table, Modal, Form, Input } from 'antd'
+import { Button, Table, Modal, Form, Input, Select } from 'antd'
 import "./permission.scss"
 const createForm = Form.create
 const FormItem = Form.Item
 import AddMemberFrom from './AddMemberFrom'
 import  { session } from 'common/util/storage.js';
-
+import AlertModalFrom from 'common/AlertModalFrom'
+import AddMemberComponent from './AddMemberComponent'
 
 @createForm()
 class ShowMemberListFrom extends Component {
   constructor(props) {
     super(props)
+    this.selectUser = null;
+    this.page = 1;
+    this.pageSize = 10;
     this.columns = [{
       title: '编号',
       dataIndex: 'identifier',
@@ -48,7 +52,7 @@ class ShowMemberListFrom extends Component {
       dataIndex: 'endemicId',
       key:'endemicId',
       render: () => {
-        return this.props.club.name;
+        // return this.props.club.name;
       }
     }, {
       title: '系统角色',
@@ -80,9 +84,11 @@ class ShowMemberListFrom extends Component {
 
   }
   state = {
-    visible: false,
-    showAddMemberModalVisible: false
+    alertModalVisible: false,
+    showAddMemberModalVisible: false,
+    addMemberClassName: "component-not-display"
   }
+
   handleCancel() {
     this.props.onCancel()
   }
@@ -90,35 +96,78 @@ class ShowMemberListFrom extends Component {
     this.props.onCancel()
   }
 
+  handleCreateModalCancel() {
+    this.setState({
+      alertModalVisible : false,
+    });
+  }
+
+  // 删除角色下的这个用户
   delete(record) {
-
+    this.selectUser = record;
+    this.setState({
+      alertModalVisible : true,
+    });
   }
-
   handleAfterClose() {
-
-  }
-  componentDidMount() {
-
 
   }
   callback() {
 
   }
+  // 确定删除
+  handleAlertModalOk(selectUser) {
+    this.props.dispatch({
+        type: "permission/DelUserRoleInput",
+        payload: {
+          userId: selectUser.id,
+          roleId: this.props.selectRole.id,
+          page: this.page,
+          pageSize: this.pageSize,
+        },
+      }
+    );
+    this.handleCreateModalCancel();
+  }
 
   // 为角色分配用户
   addClick() {
     this.props.dispatch({
-      type: "permission/getDeptListByEndemicId",
+      type: "permission/getDeptByCurrentEndemic",
+      payload: { roleId: this.props.selectRole.id }
     })
-    this.setState({
-      showAddMemberModalVisible: true,
-    })
+    if (this.state.addMemberClassName == "component-display") {
+      this.setState({
+        addMemberClassName: "component-not-display"
+      });
+    } else {
+      this.setState({
+        addMemberClassName: "component-display"
+      });
+    }
+
   }
 
   cancelModal() {
     this.setState({
       showAddMemberModalVisible: false,
     })
+  }
+
+  inputOnFocus() {
+    this.props.dispatch({
+      type: "permission/getDeptByCurrentEndemic",
+      payload: { roleId: this.props.selectRole.id }
+    })
+    this.setState({
+      addMemberClassName: "component-display"
+    });
+  }
+
+  onCancel() {
+    this.setState({
+      addMemberClassName: "component-not-display"
+    });
   }
 
 
@@ -129,7 +178,7 @@ class ShowMemberListFrom extends Component {
     let { userList, memberTotal } = this.props;
     if (userList != null) {
       userList.map((record, index)=> {
-        record.key = index;
+        record.key = record.id;
       });
     } else {
       userList = []
@@ -140,6 +189,8 @@ class ShowMemberListFrom extends Component {
       showQuickJumper: true,
       pageSize: 10,
       onChange: (page, pageSize) => {
+        this.page = page;
+        this.pageSize = pageSize;
         this.props.dispatch({
             type: "permission/getUserPageListByRoleId",
             payload: { roleId: this.props.selectRole.id, page, size: pageSize, first: false},
@@ -147,6 +198,8 @@ class ShowMemberListFrom extends Component {
         );
       },
     }
+
+    // { this.state.addMemberClassName }
     return (
       <Modal key= { visible }
         visible = { visible }
@@ -161,6 +214,12 @@ class ShowMemberListFrom extends Component {
       >
         <div className="permission-cent">
           <div className="divs">
+            <div className="input-div">
+              <Select />
+              <div className = { this.state.addMemberClassName }>
+                <AddMemberComponent onCancel = { this.onCancel.bind(this) } selectRole = { this.props.selectRole }/>
+              </div>
+            </div>
             <Button className="add" onClick={ this.addClick.bind(this) }>添加</Button>
           </div>
           <div className="CreateModaList">
@@ -171,6 +230,12 @@ class ShowMemberListFrom extends Component {
           visible ={ this.state.showAddMemberModalVisible }
           onCancel ={ this.cancelModal.bind(this) }
           selectRole = { this.props.selectRole }
+        />
+        <AlertModalFrom
+          visible ={ this.state.alertModalVisible }
+          onCancel ={ this.handleCreateModalCancel.bind(this) }
+          onOk = { this.handleAlertModalOk.bind(this, this.selectUser) }
+          message = { "是否确定解绑此用户?" }
         />
       </Modal>
     )

@@ -87,7 +87,6 @@ export function configRolePermission(values) {
   })
 }
 
-
 // 根据地方中心查询下属部门
 export function getDeptListByEndemicId(values) {
   return request('/crm/api/v1/department/getDeptListByEndemicId', {
@@ -96,4 +95,26 @@ export function getDeptListByEndemicId(values) {
   })
 }
 
+// 解绑用户角色
+export function DelUserRoleInput(values) {
+  return request('/crm/api/v1/user/DelUserRoleInput', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
+// 获取当前用户选择地方中心的组织架构树
+export function getRoleDepartmentNodes(values) {
+  return request('/crm/api/v1/department/getRoleDepartmentNodes', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 获取选择部门的未分配角色用户
+export function getUserPageListByUserRole(values) {
+  return request('/crm/api/v1/user/getUserPageListByUserRole', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

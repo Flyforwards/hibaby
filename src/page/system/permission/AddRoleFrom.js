@@ -17,7 +17,6 @@ class AddRoleFrom extends Component {
     this.props.onCancel()
   }
   handleOk() {
-    if (!this.props.isDel) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           if (this.props.add) {
@@ -31,28 +30,18 @@ class AddRoleFrom extends Component {
               payload: {
                 roleName: values.name,
                 id: this.props.record.id,
+                page: this.state.page,
+                pageSize: this.state.pageSize,
               }
             })
           }
           this.props.onCancel()
         }
       });
-    } else {
-      this.props.dispatch({
-        type: 'permission/submitDelRole',
-        payload: {
-          dataId: this.props.record.id,
-        }
-      })
-      this.props.onCancel()
-    }
+
   }
 
   handleAfterClose() {
-
-  }
-  componentDidMount() {
-
 
   }
 
@@ -73,44 +62,34 @@ class AddRoleFrom extends Component {
     const roleName = record ? record.roleName:"";
 
     let node = null;
-    let okText = "";
     let modalTitle = "";
-    if (!this.props.isDel) {
-      if (this.props.add) {
-        modalTitle = "添加角色";
-      } else {
-        modalTitle = "编辑角色";
-      }
-      node = (
-        <Form>
-          <FormItem
-            {...( formItemLayout) }
-            label = {'角色名称'}
-            required={ false}
-          >
-            {getFieldDecorator('name', {
-              validateTrigger: ['onChange', 'onBlur'],
-              rules: [{
-                required: true,
-                whitespace: true,
-                message: "请填写角色名称",
-              }],
-              initialValue: roleName
-            })(
-              <Input style={{ width: '60%', marginRight: 8 }} />
-            )}
-          </FormItem>
-        </Form>
-      );
-      okText = "保存";
+    if (this.props.add) {
+      modalTitle = "添加角色";
     } else {
-      modalTitle = "删除角色";
-      node = (
-        <div>是否确定删除此角色？
-        </div>
-      );
-      okText = "确定";
+      modalTitle = "编辑角色";
     }
+    node = (
+      <Form>
+        <FormItem
+          {...( formItemLayout) }
+          label = {'角色名称'}
+          required={ false}
+        >
+          {getFieldDecorator('name', {
+            validateTrigger: ['onChange', 'onBlur'],
+            rules: [{
+              required: true,
+              whitespace: true,
+              message: "请填写角色名称",
+            }],
+            initialValue: roleName
+          })(
+            <Input style={{ width: '60%', marginRight: 8 }} />
+          )}
+        </FormItem>
+      </Form>
+    );
+
 
     return (
       <Modal
@@ -141,7 +120,7 @@ function mapStateToProps(state) {
     code
   } = state.permission;
   return {
-    loading: state.loading.models.permission,
+    loading: state.loading.models.system,
     data
   };
 }
