@@ -210,7 +210,7 @@ let routes = [
             path: '/groupchar/edit',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
+                registerModel(app, require('./models/save'));
                 cb(null, require('./page/system/management/edit.js'))
               })
             }

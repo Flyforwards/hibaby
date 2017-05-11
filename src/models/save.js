@@ -35,6 +35,11 @@ export default {
 		}) {
 			return  {...state,data };
 		},
+		editDataSave(state, {
+			payload: { data }
+		}) {
+			return  {...state,data };
+		},
 	},
 	effects: {
 		*saveData({payload: values}, { call, put }) {
@@ -66,6 +71,19 @@ export default {
 
 			}
 		},
+
+		*editData({payload: values}, { call, put }) {
+			const {data: {code,data,err}} = yield call(saveService.editData, values);
+			if (code == 0 && err == null) {
+				yield put({
+					type: 'editDataSave',
+					payload: {
+						data,
+					}
+				});
+
+			}
+		},
 	},
 	subscriptions: {
 		setup({
@@ -86,6 +104,12 @@ export default {
 				if (pathname === '/groupchar/check') {
 					dispatch({
 						type: 'checkData',
+						payload:query
+					});
+				}
+				if (pathname === '/groupchar/edit') {
+					dispatch({
+						type: 'editData',
 						payload:query
 					});
 				}
