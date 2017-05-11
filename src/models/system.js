@@ -173,18 +173,18 @@ export default {
 				...state, arr2
 			}
 		},
-		viewDataSave(state, {
+		checkDataSave(state, {
 			payload: {
 				data,
 				code
 			}
 		}) {
-			let viewdata = {...state,
+			let checkdata = {...state,
 				data,
 				code
 			};
 			let arr2 = data.dictionarySideDOs;
-			return  {...viewdata,
+			return  {...checkdata,
 				arr2
 			};;
 		},
@@ -459,7 +459,7 @@ export default {
 			}
 		},
 
-		*viewData({
+		*checkData({
 			payload
 		}, {
 			call,
@@ -468,15 +468,17 @@ export default {
 			const {
 				data: {
 					data,
+					arr2,
 					code
 				}
-			} = yield call(systemService.viewData, payload);
+			} = yield call(systemService.checkData, payload);
 
 			if (code == 0) {
 				yield put({
-					type: 'viewDataSave',
+					type: 'checkDataSave',
 					payload: {
 						data,
+						arr2,
 						code
 					}
 				});
@@ -590,7 +592,7 @@ export default {
 		        }
 				if (pathname === '/groupchar/check') {
 					dispatch({
-						type: 'viewData',
+						type: 'checkData',
 						payload:{
 							...query
 						}

@@ -1,7 +1,5 @@
 
 import request from '../utils/request';
-import  { PAGE_SIZE　} from 'common/constants';
-
 //集团保存接口
 export function systemsave(values) {
   return request('/crm/api/v1/dictionary/saveDictionary', {
@@ -84,7 +82,7 @@ export function add(values) {
     body: JSON.stringify(values),
   })
 }
-export function viewData(values) {
+export function checkData(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainAndSide', {
     method: 'POST',
     body: JSON.stringify(values),
