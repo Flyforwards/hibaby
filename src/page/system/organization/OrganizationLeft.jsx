@@ -18,7 +18,8 @@ class OrganizationLefted extends React.Component {
         this.state = {
           upblock:'none',
           ulTop:0,
-          addChildNodeVisible:false
+          addChildNodeVisible:false,
+          ID:null
         }
     }
     expandHandler = () => {
@@ -28,26 +29,34 @@ class OrganizationLefted extends React.Component {
     }
     onSelect(value,node){
       if(value[0] != null){
-        this.props.dispatch({
-          type: 'organization/organizationList',
-          payload: {
-            nodeid: Number(node.selectedNodes[0].key),
-            page: 1,
-            size: 5,
-            tissueProperty: node.selectedNodes[0].props.dataIndex
-          }
-        });
+        if(node.selectedNodes[0].key !=1){
+          this.setState({
+            ID:node.selectedNodes[0].key
+          })
+          this.props.dispatch({
+            type: 'organization/organizationList',
+            payload: {
+              nodeid: Number(node.selectedNodes[0].key),
+              page: 1,
+              size: 5,
+              tissueProperty: node.selectedNodes[0].props.dataIndex
+            }
+          });
+        }else{
+          this.setState({
+            ID:node.selectedNodes[0].key
+          })
+        }
       }
     }
-    
-    showCreateModal() {
+    handleCreateModalCancel() {
         this.setState({
-            createModalVisible: true
+            addChildNodeVisible: false
         })
     }
     componentDidMount(){
       setTimeout(() => {
-      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 350)
+      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 450)
       $(document).on('click', '.plus', function(e) {
           if(this.state.upblock == 'none'){
               this.setState({
@@ -99,10 +108,13 @@ class OrganizationLefted extends React.Component {
                   <li onClick={this.AddChildNode.bind(this)}>添加子节点</li>
                   <li>查看详情</li>
                   <li>删除</li>
-                  <li>ID 0002</li>
+                  <li>ID {this.state.ID}</li>
                 </ul>
                 <AddChildNode
                     visible={ this.state.addChildNodeVisible }
+                    handleOk={this.state.handleOk}
+                    onCancel={ this.handleCreateModalCancel.bind(this) }
+                    ID = {this.state.ID}
                 />
             </div>
         )

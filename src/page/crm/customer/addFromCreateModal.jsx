@@ -26,7 +26,6 @@ class AddFromCreateModal extends Component {
     handleOk() {
         this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-         console.log("projectId",local.get("projectId"))
           this.props.dispatch({
             type: 'system/permissionAdd',
             payload: {

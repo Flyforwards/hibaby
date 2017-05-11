@@ -20,9 +20,7 @@ class DropDownMenued extends React.Component {
       super(props);
     }
     onSelect(value){
-      // systemRoleData.push(value)
       const fields = this.props.form.getFieldsValue();
-      console.log("qing",fields)
     }
     render() {   
       let selectData = []
