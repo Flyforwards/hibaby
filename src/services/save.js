@@ -10,3 +10,10 @@ export function saveData(values) {
     body: JSON.stringify(values),
   })
 }
+//集团数据查看
+export function checkData(values) {
+  return request('/crm/api/v1/dictionary/getDictionaryMainAndSide', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

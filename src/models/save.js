@@ -29,6 +29,12 @@ export default {
 				   dictionarySideDOs
 			};
 		},
+
+		checkDataSave(state, {
+			payload: { data }
+		}) {
+			return  {...state,data };
+		},
 	},
 	effects: {
 		*saveData({payload: values}, { call, put }) {
@@ -42,6 +48,19 @@ export default {
 					payload: {
 						data,
 						code
+					}
+				});
+
+			}
+		},
+
+		*checkData({payload: values}, { call, put }) {
+			const {data: {code,data,err}} = yield call(saveService.checkData, values);
+			if (code == 0 && err == null) {
+				yield put({
+					type: 'checkDataSave',
+					payload: {
+						data,
 					}
 				});
 
@@ -61,6 +80,12 @@ export default {
 				if (pathname === '/demo/add') {
 					dispatch({
 						type: 'saveData',
+						payload:query
+					});
+				}
+				if (pathname === '/groupchar/check') {
+					dispatch({
+						type: 'checkData',
 						payload:query
 					});
 				}
