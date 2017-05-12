@@ -34,28 +34,12 @@ class AddMemberComponent extends Component {
   }
 
 
-  handleCancel() {
-    this.props.onCancel()
-  }
-
-  handleOk() {
-    this.props.onCancel()
-  }
 
   delete(record) {
   }
 
 
   handleAfterClose() {
-
-  }
-
-  componentDidMount() {
-
-
-  }
-
-  callback() {
 
   }
 
@@ -74,12 +58,13 @@ class AddMemberComponent extends Component {
     })
   }
 
-  cellOnSelect = ( selectedRows ) => {
-      console.log(selectedRows);
+  cellOnChange = ( selectedRowKeys, selectedRows ) => {
+    console.log(selectedRows, selectedRowKeys);
       this.props.dispatch({
         type: "permission/selectedRowsChange",
-        payload: { selectedRows:[selectedRows] },
+        payload: { selectedRows, selectedRowKeys },
       })
+
   }
 
   onClose() {
@@ -88,7 +73,6 @@ class AddMemberComponent extends Component {
 
 
   render() {
-    const { visible, record } = this.props
     let { currentDeptTree ,undisUserList, undisUserTotal } = this.props;
     let  endemicTree = [];
     if (currentDeptTree != null) {
@@ -122,11 +106,11 @@ class AddMemberComponent extends Component {
     }
     loops = nodesIteration(endemicTree);
     // loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty}/>)
-    const { selectedRows } = this.props;
+    const { selectedRowKeys } = this.props;
 
     const rowSelection = {
-      selectedRows,
-      onSelect: this.cellOnSelect.bind(this)
+      selectedRowKeys,
+      onChange: this.cellOnChange.bind(this)
     };
     return (
       <div>
@@ -150,7 +134,7 @@ class AddMemberComponent extends Component {
                   <Input className="search-input-div" />
                   <Button className="search-button-div">查询</Button>
                 </div>
-                <Table bordered rowSelection={rowSelection} dataSource={ undisUserList } columns={ this.columns} pagination = {pagination} />
+                <Table bordered rowSelection={ rowSelection } dataSource={ undisUserList } columns={ this.columns} pagination = {pagination} />
               </div>
             </Col>
           </Row>
@@ -169,11 +153,15 @@ function mapStateToProps(state) {
     currentDeptTree,
     undisUserList,
     undisUserTotal,
+    selectedRows,
+    selectedRowKeys
   } = state.permission;
   return {
     currentDeptTree,
     undisUserList,
-    undisUserTotal
+    undisUserTotal,
+    selectedRows,
+    selectedRowKeys
   };
 }
 export default connect(mapStateToProps)(AddMemberComponent)

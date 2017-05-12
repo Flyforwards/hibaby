@@ -96,6 +96,12 @@ class ShowMemberListFrom extends Component {
     this.props.onCancel()
   }
   handleOk() {
+    if (this.props.selectedRows.length > 0) {
+      this.props.dispatch({
+        type: "permission/removeUsers",
+        payload: { selectedRows: this.props.selectedRows },
+      })
+    }
     this.props.onCancel()
   }
 
@@ -173,6 +179,14 @@ class ShowMemberListFrom extends Component {
     });
   }
 
+  removeSelectedRows(record) {
+    console.log(record);
+    this.props.dispatch({
+      type: "permission/removeSelected",
+      payload: { record },
+    });
+  }
+
 
 
   render() {
@@ -202,12 +216,11 @@ class ShowMemberListFrom extends Component {
       },
     }
 
-    let selects = selectedRows.map((record)=> {
-      console.log(record);
+    let selects = selectedRows.map((record, index)=> {
       return (
         <li className="li-item" key = { record.id }>
-          <div className="li-div-item">小明</div>
-          <span className="li-span-item" onClick={ this.addClick }></span>
+          <div className="li-div-item">{ record.name }</div>
+          <span className="li-span-item" onClick={ this.removeSelectedRows.bind(this, record) }></span>
        </li>)
     })
     return (

@@ -22,10 +22,14 @@ export default {
     undisUserList: [], // 未分配角色的列表
     undisUserTotal: 0,
     selectedRows: [],
+    selectedRowKeys: [],
   },
+
+
+
   reducers: {
-    selectedRowsChange(state, {payload: { selectedRows }}) {
-      return {...state, selectedRows };
+    selectedRowsChange(state, {payload: { selectedRows, selectedRowKeys }}) {
+      return {...state, selectedRows, selectedRowKeys };
     },
     getRolesSuccess(state, {payload: {data, page, size, total}}) {
       return {...state, data, total};
@@ -51,6 +55,24 @@ export default {
     // 根据选择组织架构下的部门获取未分配的用户成功
     getUserByNodeIdSuccess(state, { payload: { data: undisUserList, total: undisUserTotal}}) {
       return {...state, undisUserList, undisUserTotal};
+    },
+    // 清除选择的行
+    removeSelected(state, { payload: { record }}) {
+      Array.prototype.indexOf = function(val) {
+        for (var i = 0; i < this.length; i++) {
+          if (this[i] == val) return i;
+        }
+        return -1;
+      };
+      Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+          this.splice(index, 1);
+        }
+      };
+      state.selectedRows.remove(record);
+      state.selectedRowKeys.remove(record.key);
+      return {...state, };
     },
 
   },
@@ -200,7 +222,6 @@ export default {
 
     *getUserPageListByUserRole({ payload: values },{call, put}) {
       const {data: {data, code, total , err}} =  yield call(usersService.getUserPageListByUserRole, values)
-      console.log(data, total);
       if (code == 0 && err == null) {
         yield put({
           type: "getUserByNodeIdSuccess",
@@ -210,6 +231,8 @@ export default {
         throw err || "请求出错";
       }
     },
+
+    // *removeUsers()
 
   },
 }
