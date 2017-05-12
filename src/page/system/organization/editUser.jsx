@@ -6,13 +6,16 @@ import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Sele
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
+import moment from 'moment';
 import {local, session} from '../../../common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
+import EntryInformation from './EntryInformation.jsx'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD';
 //地方中心字段
 const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
@@ -106,8 +109,12 @@ class EditUsered extends React.Component {
          USER = this.props.userID
          SEX = USER.sex == 1?"男":"女"
          entrys = USER.entrys[0]
-         roles = USER.roles.map((item)=>{
-          return item.roleId
+         roles = USER.entrys.map((item)=>{
+          console.log("dsds",item)
+          return item.roles.map((data)=>{
+
+              return data.roleId
+          })
          })
          console.log("roles",roles)
           function getLocalTime(nS) { 
@@ -118,6 +125,7 @@ class EditUsered extends React.Component {
             return `${year}-${month}-${date}`
           } 
           time = getLocalTime('1494230932')
+          console.log(time)
       }
       if(this.props.dataEndemicId != null){
           traversalEndemicId = this.props.dataEndemicId.map((item)=>{
@@ -140,136 +148,58 @@ class EditUsered extends React.Component {
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
-            <div className="basicInformationContent">
-              <img className="img" src={USER.imgURL}></img>
-              <p className="userName"><span>姓名:</span><span className="Two">{USER.name}</span></p>
-              <p className="Numbering"><span>编号:</span><span className="Two">{USER.identifier}</span></p>
-              <p className="gender"><span>性别:</span><span className="Two">{SEX}</span></p>
-              <p className="entryTime"><span>入职时间:</span><span className="Two" ref="time">{ time }</span></p>
-            </div>
-          <div className="entryInformation">入职信息</div>
-          <Form layout="inline" className="entryInformationForm">
-            <FormItem
-             label="地方中心"
-             className="localCenter"
+            <Form layout="inline" className="basicInformationForm">
+           <FormItem
             >
-              {getFieldDecorator('localCenter', {
-                initialValue: entrys.endemicId,
+              {getFieldDecorator('userImg', {
+                rules: [],
               })(
-                <Input disabled = { true }/>
+                <img className="img" src={ USER.imgURL }></img>
               )}
             </FormItem>
             <FormItem
-             label="隶属部门"
-             className="affiliatedDepartment"
+             label="姓名"
+             className="userName"
             >
-            { getFieldDecorator("affiliatedDepartment",{
-              initialValue: entrys.deptId,
-            })(
-              <Select placeholder="请选择" onSelect={this.affiliatedDepartment.bind(this)}>
-                { traversalEndemicId }
-              </Select>
-            )}
-            </FormItem>
-            <FormItem
-             label="直系领导"
-             className="directLeadership"
-            >
-              {getFieldDecorator('directLeadership', {
-                initialValue: entrys.leaderId,
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-             className="button"
-            >
-            <Button type="primary" >选择</Button>
-            </FormItem>
-            <FormItem
-             label="职位"
-             className="position"
-            >
-            { getFieldDecorator("position",{
-              initialValue: entrys.positionId,
-            })(
-              <Select placeholder="请选择">
-                { traversalDataId }
-              </Select>
-            )}
-            </FormItem>
-            <br/>
-            <FormItem
-             label="系统角色"
-             className="systemRole"
-            >
-            { getFieldDecorator("systemRole",{
-              initialValue: roles,
-            })(
-              <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
-                { selectDataList }
-              </Select>
-            )}
-            </FormItem>
-          </Form>
-          <div className="contactInformation">联系方式</div>
-          <Form layout="inline" className="contactInformationForm">
-            <FormItem
-             label="登录手机号"
-             className="phoneNumber"
-            >
-              {getFieldDecorator('phoneNumber', {
-                initialValue: USER.mobile,
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-             label="登录密码"
-             className="password"
-            >
-              {getFieldDecorator('password', {
-                initialValue: "kb123",
-              })(
-                <Input disabled={ true }/>
-              )}
-            </FormItem>
-            <br/>
-            <FormItem
-             label="联系方式"
-             className="information"
-            >
-              {getFieldDecorator('information', {
-                initialValue: entrys.contact,
+              {getFieldDecorator('userName', {
+                initialValue:USER.name
               })(
                 <Input/>
               )}
             </FormItem>
             <FormItem
-             label="公司邮箱"
-             className="companyEmail"
+             label="编号"
+             className="Numbering"
             >
-              {getFieldDecorator('companyEmail', {
-                initialValue: entrys.emaill,
-                 rules: [{
-                    type: 'email'
-                  }],
+              {getFieldDecorator('Numbering', {
+                initialValue: USER.identifier
               })(
-                <Input />
+                <Input disabled = { true }/>
               )}
             </FormItem>
             <br/>
-             <FormItem
-             label="内部分机"
-             className="internalExtension"
+            <FormItem
+             label="性别"
+             className="gender"
             >
-              {getFieldDecorator('internalExtension', {
-                initialValue: entrys.extension,
+              {getFieldDecorator('gender', {
               })(
-                <Input />
+                <span className="Two">{SEX}</span>
+              )}
+            </FormItem>
+            <FormItem
+             label="入职日期"
+             className="entryTime"
+            >
+              {getFieldDecorator('entryTime', {
+               
+              })(
+                 <DatePicker defaultValue={moment(time, dateFormat)} format={dateFormat}/>
               )}
             </FormItem>
           </Form>
+          <EntryInformation />
+          <EntryInformation />
            <Button type="primary" className="saveButton" onClick={this.headelSave}>保存</Button>
            <Button type="primary" className="returnButton" onClick={this.headelReturn}>返回</Button>
         </div>

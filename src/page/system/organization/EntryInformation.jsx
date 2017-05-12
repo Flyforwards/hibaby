@@ -15,7 +15,7 @@ const departmentData = local.set("department")
 let traversalDataId = []
 
 @createForm()
-class AddJobed extends Component {
+class EntryInformationed extends Component {
     constructor(props) {
         super(props)
     }
@@ -61,21 +61,7 @@ class AddJobed extends Component {
     handleAfterClose() {
         this.props.form.resetFields()
     }
-    componentDidMount() {
-        this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
-    }
-    // 在componentDidMount里面使用函数节流防抖等功能
-    asyncValidator(rule, value, callback) {
-        console.log(Date.now())
-        setTimeout(() => {
-            let now = Date.now()
-            if (now % 2 === 1) {
-                callback()
-            } else {
-                callback(new Error('自定义验证函数未通过'))
-            }
-        }, 1000)
-    }
+   
     render() {
       let traversalEndemicId = []
       let selectDataList = []
@@ -100,30 +86,15 @@ class AddJobed extends Component {
         })
       }
         return (
-            <Modal
-                visible={visible}
-                title="添加职位"
-                okText="保存"
-                cancelText="返回"
-                wrapClassName="AddJob"
-                closable={false}
-                confirmLoading={confirmLoading}
-                afterClose={this.handleAfterClose.bind(this)}
-                onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this)}
-                style={{pointerEvents: confirmLoading ? 'none' : ''}}
-                maskClosable={!confirmLoading}
-                width={ 900 }
-            >
             <div className="AddChildNode">
-              <div className="entryInformation">入职信息</div>
+              <div className="entryInformation">入职信息 <Icon type="close" /></div>
               <Form layout="inline" className="entryInformationForm">
             <FormItem
              label="地方中心"
              className="localCenter"
             >
               {getFieldDecorator('localCenter', {
-                initialValue: endemic.name,
+                initialValue: "青岛",
               })(
              <Input  disabled = { true }/>
               )}
@@ -231,15 +202,14 @@ class AddJobed extends Component {
               )}
             </FormItem>
           </Form>
-            </div>
-            </Modal>
+          </div>
         )
     }
 }
 
-AddJob.propTypes = {}
-AddJob.defaultProps = {}
-function AddJob({
+EntryInformation.propTypes = {}
+EntryInformation.defaultProps = {}
+function EntryInformation({
   dispatch,
   data,
   dataEndemicId,
@@ -247,7 +217,7 @@ function AddJob({
   code
 }) {
   return ( < div >
-    <AddJobed dispatch = {
+    <EntryInformationed dispatch = {
       dispatch
     }
     data = {
@@ -277,5 +247,5 @@ function mapStateToProps(state) {
     code
   }
 }
-export default connect(mapStateToProps)(AddJobed)
+export default connect(mapStateToProps)(EntryInformationed)
 
