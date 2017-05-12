@@ -17,3 +17,10 @@ export function checkData(values) {
     body: JSON.stringify(values),
   })
 }
+//编辑集团数据
+export function editData(values) {
+  return request('/crm/api/v1/dictionary/saveDictionary', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

@@ -118,3 +118,14 @@ export function getUserPageListByUserRole(values) {
     body: JSON.stringify(values),
   })
 }
+
+// 绑定用户角色  // 一个传ID 多个逗号连接
+export function bindUserRole(values) {
+  return request('/crm/api/v1/user/bindUserRole', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+

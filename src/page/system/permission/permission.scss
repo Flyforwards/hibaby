@@ -55,7 +55,7 @@
       width: 80%;
       border: 2px solid #999999 ;
     }
-    
+
 
     .ant-input{
       height: 40px;
@@ -74,8 +74,10 @@
       z-index: 9999;
       border: 2px solid #999999 ;
       border-radius: 2px;
-      min-height: 400px;
       margin-top: 42px;
+      height:auto!important;
+      height:400px;
+      min-height: 400px;
     }
 
     .component-not-display {
@@ -88,6 +90,9 @@
       border-radius: 2px;
       min-height: 400px;
       margin-top: 42px;
+      height:auto!important;
+      height:400px;
+      min-height: 400px;
     }
   }
 
@@ -131,7 +136,9 @@
     font-size: 12px;
   }
   .close-button-div {
-    margin-bottom: 20px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
   }
 
   .find{

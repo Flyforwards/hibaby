@@ -8,74 +8,41 @@ const FormItem = Form.Item;
 const createForm = Form.create
 
 @createForm()
-class List extends React.Component {
-      constructor(props) {
-            super(props);
-            this.state = {
-              bigNum:'三'
-            }
-      }
-      componentDidMount(){
-          var index=this.props.index;
-          var nzhcn = Nzh.cn;
-          var num=Number(index)
-          var newnum=num+1
-          this.setState({
-            bigNum: nzhcn.encodeS(newnum)
-          })
-      }
-    render() {
-          console.log("index",this.props.index)
-          return ( <FormItem  className = "div2">
-                      <p className = "label"data-index={this.props.index}>选项{this.state.bigNum} < /p>
-                      <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                          <Input type = "textarea" rows = {6} data-index={this.props.index} className = "input2"
-                                defaultValue={this.props.index}/>
-                          <span className = "editable-add-btn" onClick={this.props.delete} data-index={this.props.index}> 删除 < /span>
-                      </div>
-                    </FormItem >
-            )
-    }
-}
-
-@createForm()
-class AddData extends React.Component {
+class editData extends React.Component {
     constructor(props) {
         super(props);
         const _this = this;
         this.add=this.add.bind(this);
         this.delete=this.delete.bind(this);
-        this.handelTrans=this.handelTrans.bind(this);
         this.handleSave=this.handleSave.bind(this)
         this.state={
-          lists: [(<FormItem key='0' className = "div2">
-          {_this.props.form.getFieldDecorator('field0', {rules: [{ required: true, message: 'Username is required!' }],
-        })(<div>
-                       <p className = "label" > 选项一 < /p>
-                       <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                          <Input  className="input2"/>
-                       </div>
-                       </div>
-                     )}
-                   </FormItem> ),(<FormItem key='1' className="div2">
-                   {_this.props.form.getFieldDecorator('field1', {rules: [{ required: true, message: 'Username is required!' }],
-                 })(<div>
-                                <p className = "label" > 选项二 < /p>
-                                <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                                   <Input  className="input2"/>
-                                </div>
-                                </div>
-                              )}
-                            </FormItem> )
-                 ],
+          lists: [],
           bigNum:['一', '二','三','四','五','六','七','八','九'],
           name:'',
           description:''
         }
     }
     add(){
-        var lists=this.state.lists;
-        let len=this.state.lists.length ;
+        console.log("add>>>>>",this.props.data)
+
+        console.log(this.props.data);
+        const item = this.props.data;
+        let name = "";
+        let description = "";
+        let arr = [];
+        let field=[];
+        if (item !== null) {
+          name = item.name;
+          description = item.description;
+          arr = item.dictionarySideDOs;
+          console.log(arr);
+          field=arr.map(res=>{
+              return(res.name)
+          });
+          console.log(field)
+        };
+          let len=field.length ;
+          let lists=[];
         lists.push(<FormItem key={len} className = "div2">
         {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, message: 'Username is required!' }],
       })(<div>
@@ -89,15 +56,6 @@ class AddData extends React.Component {
                     </FormItem>)
         this.setState({lists:lists})
     }
-   handelTrans(e){
-      var index=e.target.getAttribute("data-index");
-      var nzhcn = Nzh.cn;
-      var num=Number(index)
-      var newnum=num+1
-      this.setState({
-          bigNum: nzhcn.encodeS(newnum)
-      })
-   }
     delete(e){
         var index=e.target.getAttribute("data-index");
         var lists=this.state.lists;
@@ -141,6 +99,37 @@ class AddData extends React.Component {
     render() {
       console.log("edit>>>>>",this.props.data)
       let values = this.props.form;
+      const item = this.props.data;
+      let name = "";
+      let description = "";
+      let arr = [];
+      let field=[];
+      if (item !== null) {
+        name = item.name;
+        description = item.description;
+        arr = item.dictionarySideDOs;
+        console.log(arr);
+        field=arr.map(res=>{
+            return(res.name)
+        });
+        console.log(field)
+      };
+      const children=[];
+      for(let i=0;i<field.length;i++){
+        children.push(<FormItem key={i} className = "div2">
+        {this.props.form.getFieldDecorator(`field${i}`, {rules: [{ required: true, message: 'Username is required!' }],
+      })(<div>
+             <p className = "label" > 选项{this.state.bigNum[i]} < /p>
+             <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                <Input value={field[i]}  className="input2"/>
+             </div>
+          </div>
+           )}
+         </FormItem>
+
+        )
+      }
+
       const { getFieldDecorator } = this.props.form;
       console.log("render>>>",values)
         return (
@@ -167,6 +156,7 @@ class AddData extends React.Component {
               </Card>
               < Card title = "下拉选项:" >
               <Form>
+                   {children}
                    {this.state.lists}
                    <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
               </Form>
@@ -180,9 +170,9 @@ class AddData extends React.Component {
     }
 }
 
-function Add({dispatch}) {
+function edit({dispatch}) {
     return (<div>
-                <AddData dispatch = {dispatch}/>
+                <editData dispatch = {dispatch}/>
             </div>
       )
 }
@@ -199,4 +189,4 @@ function mapStateToProps(state) {
     code
   };
 }
-export default connect(mapStateToProps)(AddData);
+export default connect(mapStateToProps)(editData);
