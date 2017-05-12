@@ -25,6 +25,7 @@ class AddService extends Component {
        render() {
           const { formLayout } = this.state;
           const { dataSource } = this.state;
+          const { getFieldDecorator } = this.props.form;
           const formItemLayout = formLayout === 'horizontal' ? {
             labelCol: { span: 4 },
             wrapperCol: { span: 14 },
@@ -37,11 +38,7 @@ class AddService extends Component {
                 <Card className="AddService" bordered={true} >
                      <h3>服务项目信息:</h3>
                       <Form  layout={formLayout}>
-
-                          <FormItem
-                            label="项目名称"
-                            {...formItemLayout}
-                          >
+                          <FormItem label="项目名称">
                           {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
                         })(  <Input placeholder="input placeholder" />
                           )}
@@ -59,24 +56,17 @@ class AddService extends Component {
                                 <span className="priceRight">元</span>
                             </div>
                         )}
-
-
                         </FormItem>
+                      </Form>
+                      <Form className="AddCentent">
+                          <FormItem  className="procontent" label="项目内容">
+                          {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                        })(
+                            <Input rows = {6} className = "content"/>
+                          )}
 
 
-                        <FormItem  className="procontent"
-                          label="项目内容"
-                          {...formItemLayout}
-                        >
-                        {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
-                      })(
-                            <div className="ConService" style={{position:'relative',overflow:'hidden'}}>
-                                 <Input rows = {6} className = "ServiceInput"/>
-                            </div>
-                        )}
-
-
-                        </FormItem>
+                          </FormItem>
 
                       </Form>
                 </Card>

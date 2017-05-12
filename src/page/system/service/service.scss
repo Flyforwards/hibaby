@@ -163,21 +163,33 @@
 						}
 					}
 			}
-			.procontent{
-					height:45px;
-					width:66px;
-					margin:10px 0;
-					float:left;
-			}
-			.ConService{
-					height:auto;
-					width: 1076px;
-					position: relative;
-					top:10px;
-					.ant-input{
-							outline:none;
+			.AddService{
+				height:auto;
+				margin:10px;
+				.ant-form-item-label{
+						height:45px;
+						width:80px;
+						font-size:14px;
+						color:#333;
+						line-height:45px;
+						float:left;
+						label{
+							font-size:14px;
+							color:#333;
+						}
+						label:after{
+							content: " ";
+							margin: 0 8px 0 2px;
+							position: relative;
+							top: -0.5px
+						}
 					}
-			}
+				}
+				.content{
+					width:1000px;
+					left:76px;
+				}
+
 }
 .btn{
 		height:40px;
