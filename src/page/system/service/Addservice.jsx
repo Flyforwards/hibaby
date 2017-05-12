@@ -4,7 +4,9 @@ import './service.scss'
 import {Card,Form, Input, Button, Radio ,AutoComplete } from 'antd'
 import {Link} from 'react-router';
 const FormItem = Form.Item;
+const createForm = Form.create;
 
+@createForm()
 class AddService extends Component {
         constructor(props) {
             super(props)
@@ -13,15 +15,6 @@ class AddService extends Component {
                 dataSource: [],
             };
       }
-      handleSearch = (value) => {
-         this.setState({
-           dataSource: !value ? [] : [
-             value,
-             value + value,
-             value + value + value,
-           ],
-         });
-       }
        handleKeyPress = (ev) => {
          console.log('handleKeyPress', ev);
        }
@@ -49,17 +42,25 @@ class AddService extends Component {
                             label="项目名称"
                             {...formItemLayout}
                           >
-                          <Input placeholder="input placeholder" />
+                          {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                        })(  <Input placeholder="input placeholder" />
+                          )}
+
                         </FormItem>
                         <FormItem className="itemprice"
                           label="项目价格"
                           {...formItemLayout}
                         >
-                        <div className="price">
-                            <span className="priceLeft">￥</span>
-                            <input type="text" placeholder=" " />
-                            <span className="priceRight">元</span>
-                        </div>
+                        {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                      })(
+                            <div className="price">
+                                <span className="priceLeft">￥</span>
+                                <Input  placeholder=" " />
+                                <span className="priceRight">元</span>
+                            </div>
+                        )}
+
+
                         </FormItem>
 
 
@@ -67,11 +68,16 @@ class AddService extends Component {
                           label="项目内容"
                           {...formItemLayout}
                         >
+                        {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                      })(
+                            <div className="ConService" style={{position:'relative',overflow:'hidden'}}>
+                                 <Input rows = {6} className = "ServiceInput"/>
+                            </div>
+                        )}
+
 
                         </FormItem>
-                        <div className="ConService" style={{position:'relative',overflow:'hidden'}}>
-                             <Input type = "textarea" rows = {6} className = "ServiceInput"/>
-                        </div>
+
                       </Form>
                 </Card>
                 <div className="btn">

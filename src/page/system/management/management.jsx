@@ -7,7 +7,6 @@ import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import Current from '../../Current'
-
 class SystemIndex extends React.Component {
 
   constructor(props) {
@@ -56,13 +55,13 @@ class SystemIndex extends React.Component {
       const pagination = {
         total: this.props.total, //数据总条数
         showQuickJumper: true,
-        pageSize:3,
+        pageSize:10,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
             pathname: '/system/groupchar',
             query: {
               "page": current,
-              "results": 3,
+              "results": 10,
               "type": 1
             },
           }));
@@ -129,7 +128,7 @@ function management({
 
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.system)
+  // console.log("modelss",state.system)
   const {
     data,
     total,

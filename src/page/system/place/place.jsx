@@ -54,13 +54,13 @@ class SystemIndex extends React.Component {
       const pagination = {
         total: this.props.total, //数据总条数
         showQuickJumper: true,
-        pageSize:3,
+        pageSize:10,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
             pathname: '/system/localchar',
             query: {
               "page": current,
-              "results": 3,
+              "results": 10,
               "type": 2
             },
           }));

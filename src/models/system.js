@@ -78,8 +78,8 @@ export default {
 				code,
 			};
 			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
+				start: page == 1 ? 1 : (page - 1) * 10 + 1,
+				end: page == 1 ? data.length : (page - 1) * 10 + data.length,
 				totalpage:Math.ceil(total/size),
 			}
 			return {...systemdata,range};
@@ -93,8 +93,8 @@ export default {
 				code,
 			};
 			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
+				start: page == 1 ? 1 : (page - 1) * 10 + 1,
+				end: page == 1 ? data.length : (page - 1) * 10 + data.length,
 				totalpage:Math.ceil(total/size),
 			}
 			return {...placedata,range};
@@ -501,7 +501,7 @@ export default {
 						type: 'system',
 						payload: {
 							...query,
-							"size": 3,
+							"size": 10,
 							"sortField": "string",
 							"sortOrder": "string",
 							"type": 1
@@ -514,7 +514,7 @@ export default {
 						type: 'place',
 						payload: {
 							...query,
-							"size": 3,
+							"size": 10,
 							"sortField": "string",
 							"sortOrder": "string",
 							"type": 1
