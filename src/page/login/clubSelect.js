@@ -15,7 +15,6 @@ function ClubSelect({ dispatch, clubs}){
     });
   };
 
-  console.log(clubs)
   let buttonNodes =  clubs.map((item, index) => {
     return (<Button key={ index }  onClick = { btnClick.bind(this, index) }  type = "primary" > { item.name } </Button>)
   })

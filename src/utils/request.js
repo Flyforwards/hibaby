@@ -30,7 +30,7 @@ export default function request(url, options) {
   if (! new RegExp("/login").test(url)){
     const headers = {
       "Content-Type":"application/json",
-      "USER_TOKEN":session.get("token")
+      "USER-TOKEN":session.get("token")
     };
     options = {...options, headers};
   } else {

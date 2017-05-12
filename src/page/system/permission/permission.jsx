@@ -78,7 +78,6 @@ class permission extends Component {
     // 展示当前角色的成员列表
     showMemberList(record){
       this.record = record;
-      console.log(record);
       this.props.dispatch({
         type: "permission/getUserPageListByRoleId",
         payload: { roleId: record.id, page: 1, size: 10, first: true}

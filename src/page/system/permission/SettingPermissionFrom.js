@@ -24,7 +24,6 @@ class SettingPermissionFrom extends Component {
   }
   handleOk() {
     let ids = [];
-    console.log(this.checkPermission)
     Object.keys(this.checkPermission).map((record)=> {
       ids = ids.concat(this.checkPermission[record])
     });
@@ -46,14 +45,6 @@ class SettingPermissionFrom extends Component {
   callback() {
 
   }
-
-  // onChange(checkedValue) {
-  //   console.log(checkedValue);
-  //   this.setState({
-  //     checkPermissionIds: checkedValue,
-  //   });
-  // }
-
 
   render() {
 
@@ -91,7 +82,7 @@ class SettingPermissionFrom extends Component {
                     <div className="overflow" key= {index1 * 10 + index2}>
                       <div className="subTagThree"> { subRec.name }</div>
                       <div className="checkBox">
-                        <CheckboxGroup options={ subRec.children } defaultValue = {selectValues} onChange={ onChange.bind(this) } />
+                        <CheckboxGroup options={ subRec.children } defaultValue = { selectValues } onChange={ onChange.bind(this) } />
                       </div>
                     </div>)
               })
@@ -110,7 +101,7 @@ class SettingPermissionFrom extends Component {
       }
 
         return (
-          <TabPane className="settingFrom" tab={ record.projectName } key={ index * 100 }>
+          <TabPane className="settingFrom" tab={ record.projectName } key = { index }>
             {
               subNodes
             }
@@ -118,7 +109,7 @@ class SettingPermissionFrom extends Component {
     });
 
     return (
-      <Modal key = { visible }
+      <Modal key = { this.props.selectRole ? this.props.selectRole.id : visible }
         visible = { visible }
         title = "设置权限"
         okText =  "保存"
@@ -129,7 +120,7 @@ class SettingPermissionFrom extends Component {
         closable = { false }
         width = { 1000 }
       >
-        <Tabs onChange={ this.callback } defaultActiveKey="0" type="card">
+        <Tabs onChange={ this.callback }  type="card" key = { visible }>
           {
             nodes
           }

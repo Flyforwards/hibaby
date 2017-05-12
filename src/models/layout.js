@@ -13,10 +13,20 @@ export default {
 
   subscriptions: {
     setup ({ dispatch }) {
-      dispatch({ type: 'getEndemic' });
+
     },
+
+    setup({ dispatch, history }) {
+      return history.listen(({ pathname, query }) => {
+        if (pathname === '/login') {
+          dispatch({ type: 'getEndemic' });
+        }
+      })
+    }
+
   },
   effects: {
+    // 获取地方中心的接口
     *getEndemic ({  payload, }, {call, put}) {
       const { data: { data, code, err}} = yield call(usersService.getEndemic)
       if (code == 0 && err == null) {
@@ -24,9 +34,9 @@ export default {
             type: 'querySuccess',
             payload: { data } ,
           })
-        // if (location.pathname === '/login') {
-        //   yield put(routerRedux.push('/club'))
-        // }
+        if (location.pathname === '/login') {
+          yield put(routerRedux.push('/club'))
+        }
       } else {
         throw err;
         if (location.pathname !== '/login') {
