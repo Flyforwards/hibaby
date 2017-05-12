@@ -6,6 +6,96 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+
+  /*clubselct.js*/
+  .select{
+    width:200px;
+    position: fixed;
+    top:30%;
+    right:230px;
+
+  }
+
+  .select button{
+    height: 40px;
+    margin-bottom: 10px;
+    width:100%;
+    background-color: #fff;
+    border:1px solid #ccc;
+    color:#000;
+    border-radius: 10px;
+  }
+
+  .select img {
+    margin:0 auto;
+    margin-bottom: 40px;
+  }
+  .selectForm .ant-btn-primary:hover,
+  .ant-btn-primary:focus {
+    color: #fff;
+    background-color: #cb7525;
+    border-color: #cb7525;
+  }
+  /* use css to set position of modal */
+
+  .vertical-center-modal {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .vertical-center-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+  }
+
+  .vertical-center-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+  }
+  .ant-modal-header  .ant-modal-title{
+    color:#aaa;
+    text-align: center;
+  }
+
+  .ant-modal-content .ant-modal-footer {
+    text-align: center;
+  }
+
+  .ant-modal-footer .ant-btn-primary {
+    color: #fff;
+    background-color: #cb7525;
+    border-color: #cb7525;
+  }
+
+  .ant-modal-footer .ant-btn-primary:hover,
+  .ant-btn-primary:focus {
+    color: #fff;
+    background-color: #cb7525;
+    border-color: #cb7525;
+  }
+
+  .ant-modal-content {
+    width: 430px;
+    height: 230px;
+  }
+
+  .ant-modal-content .ant-modal-body {
+    padding: 46px;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .ant-btn-lg {
+    height: 30px;
+    width: 190px;
+  }
+
 }
 /* loginindex.css*/
 .loginForm{
@@ -14,21 +104,21 @@
         background-color: #cb7525;
         border-color: #cb7525;
     }
-    
+
      .ant-btn-primary {
         width: 100%;
         background-color: #b67233;
         border: none;
         height: 50px;
     }
-    
+
      .ant-btn-primary:hover,
     .ant-btn-primary:focus {
         color: #fff;
         background-color: #f89d2d;
         border-color: #f89d2d;
     }
-    
+
      .ant-checkbox-wrapper:hover .ant-checkbox,
     .ant-checkbox:hover .ant-checkbox-inner,
     .ant-checkbox-input:focus + .ant-checkbox-inner {
@@ -38,33 +128,35 @@
     .ant-checkbox-wrapper span{
         display:inline-block;
     }
-   
+
      #components-form-demo-normal-login .login-form {
         max-width: 440px;
     }
-    
+
      #components-form-demo-normal-login .login-form-forgot {
         float: right;
     }
-    
+
      #components-form-demo-normal-login .login-form-button {
         width: 100%;
     }
-    
+
      .login-form-forgot {
         color: #f75555;
         float: right;
     }
-    
+
      .ant-input {
         font-size: 14px;
     }
 
-img {
-    margin-left:25%;
-   margin-bottom: 50px;
+    img {
+      margin-left:25%;
+      margin-bottom: 50px;
+    }
 }
-}
+
+
 .login{
   .login-form{
         width: 440px;
@@ -84,51 +176,51 @@ img {
     }
 }
 
-    
 
-   
-    
+
+
+
 
 
 /*find.css*/
 .find{
-.findimg{
-     margin-left:25%;
-   margin-bottom: 18px;
-}
-.return{
-    display: block;
-    margin-bottom: 20px;
-    color:#cb7525;
-    font-weight: bold;
-}
+  .findimg{
+       margin-left:25%;
+     margin-bottom: 18px;
+  }
+  .return{
+      display: block;
+      margin-bottom: 20px;
+      color:#cb7525;
+      font-weight: bold;
+  }
 
-.ant-input-prefix{
-    font-size:12px;
-    width:120px;
-    text-align: center;
-    margin-left:260px;
-    border-left:1px solid #eee;
+  .ant-input-prefix{
+      font-size:12px;
+      width:120px;
+      text-align: center;
+      margin-left:260px;
+      border-left:1px solid #eee;
 
-}
+  }
 
-.red{
-    color:red;
-}
+  .red{
+      color:red;
+  }
  /*findpass.css*/
-    
-     form {
+
+  form {
         width: 440px;
         position: absolute;
         top: 10%;
         right: 230px;
     }
-    
+
      .ant-input-affix-wrapper .ant-input:not(:first-child) {
         padding-left: 10px;
         height: 56px;
     }
-    
+
      .ant-input-affix-wrapper .ant-input-prefix {
         text-align: center;
         width: 230px;
@@ -138,105 +230,6 @@ img {
     #model .ant-input-affix-wrapper .ant-input:not(:first-child) {
     padding-left: 10px;
     height: 56px;
-}
-  } 
-
- /*clubselct.js*/
-    .select{
-    width:200px;
-    position: fixed;
-    top:30%;
-    right:230px;
-
-}
-.select button{
-    height: 40px;
-    margin-bottom: 10px;
-    width:100%;
-    background-color: #fff;
-    border:1px solid #ccc;
-    color:#000;
-    border-radius: 10px;
-}
-.select img {
-    margin:0 auto;
-   margin-bottom: 40px;
-}
-    .selectForm .ant-btn-primary:hover,
-    .ant-btn-primary:focus {
-        color: #fff;
-        background-color: #cb7525;
-        border-color: #cb7525;
     }
-    /* use css to set position of modal */
-    
-    .vertical-center-modal {
-        text-align: center;
-        white-space: nowrap;
-    }
-    
-    .vertical-center-modal:before {
-        content: '';
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-        width: 0;
-    }
-    
-    .vertical-center-modal .ant-modal {
-        display: inline-block;
-        vertical-align: middle;
-        top: 0;
-    }
-    /*
-// Use flex which not working in IE
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.vertical-center-modal .ant-modal {
-  top: 0;
-}
-*/
-  .ant-modal-header  .ant-modal-title{
-      color:#aaa;
-      text-align: center;
-    }
-  
-   
-    .ant-modal-content .ant-modal-footer {
-    text-align: center;
-}
-    
-    .ant-modal-footer .ant-btn-primary {
-        color: #fff;
-        background-color: #cb7525;
-        border-color: #cb7525;
-    }
-    
-    .ant-modal-footer .ant-btn-primary:hover,
-    .ant-btn-primary:focus {
-        color: #fff;
-        background-color: #cb7525;
-        border-color: #cb7525;
-    }
-    
-    .ant-modal-content {
-        width: 430px;
-        height: 230px;
-    }
-    
-    .ant-modal-content .ant-modal-body {
-        padding: 46px;
-        font-size: 12px;
-        line-height: 1.5;
-        font-weight: bold;
-        text-align: center;
-    }
-    
-    .ant-btn-lg {
-        height: 30px;
-        width: 190px;
-    }

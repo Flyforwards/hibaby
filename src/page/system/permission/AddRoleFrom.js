@@ -59,7 +59,7 @@ class AddRoleFrom extends Component {
         sm: { span: 16 },
       },
     };
-    const roleName = record ? record.roleName:"";
+    let roleName = "";
 
     let node = null;
     let modalTitle = "";
@@ -67,6 +67,7 @@ class AddRoleFrom extends Component {
       modalTitle = "添加角色";
     } else {
       modalTitle = "编辑角色";
+      roleName = record ? record.roleName:"";
     }
     node = (
       <Form>

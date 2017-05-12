@@ -9,7 +9,6 @@ const app = dva({
 	history: browserHistory,
  	onError (error) {
     message.error(error.message)
-	throw error;
   },
 });
 

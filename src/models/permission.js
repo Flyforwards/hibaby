@@ -23,12 +23,34 @@ export default {
     undisUserTotal: 0,
     selectedRows: [],
     selectedRowKeys: [],
+    users:[],
   },
 
 
 
+
+
+
   reducers: {
-    selectedRowsChange(state, {payload: { selectedRows, selectedRowKeys }}) {
+
+    removeSelectKeys (state, { payload }) {
+      state.selectedRows = [];
+      state.selectedRowKeys = [];
+      return {...state };
+    },
+    selectedRowsChange(state, {payload: { selectedRowKeys }}) {
+      let selectedRows = [];
+      selectedRowKeys.map((record)=> {
+        const key = record;
+        state.users.map((record)=>{
+          if (record.key == key) {
+            selectedRows.push(record);
+          }
+        })
+      })
+      console.log(selectedRowKeys);
+      console.log(selectedRows)
+
       return {...state, selectedRows, selectedRowKeys };
     },
     getRolesSuccess(state, {payload: {data, page, size, total}}) {
@@ -53,8 +75,22 @@ export default {
       return {...state, currentDeptTree};
     },
     // 根据选择组织架构下的部门获取未分配的用户成功
-    getUserByNodeIdSuccess(state, { payload: { data: undisUserList, total: undisUserTotal}}) {
-      return {...state, undisUserList, undisUserTotal};
+    getUserByNodeIdSuccess(state, { payload: { data: undisUserList, total: undisUserTotal, nodeid }}) {
+      state.users = state.users.concat(undisUserList);
+      Array.prototype.removeRepeatAttr=function(){
+        var tmp={},a=this.slice();
+        let j = 0;
+        for( let i = 0;i<a.length;i++){
+          if(!tmp[a[i].id]){
+            tmp[a[i].id]=!0;
+            j++;
+          }else{
+            this.splice(j,1);
+          }
+        };
+      }
+      state.users.removeRepeatAttr();
+      return {...state, undisUserList, undisUserTotal };
     },
     // 清除选择的行
     removeSelected(state, { payload: { record }}) {
@@ -221,18 +257,38 @@ export default {
     },
 
     *getUserPageListByUserRole({ payload: values },{call, put}) {
+      const { nodeid } = values;
       const {data: {data, code, total , err}} =  yield call(usersService.getUserPageListByUserRole, values)
       if (code == 0 && err == null) {
         yield put({
           type: "getUserByNodeIdSuccess",
-          payload: { data, total }
+          payload: { data, total, nodeid }
         })
       } else {
         throw err || "请求出错";
       }
     },
 
-    // *removeUsers()
+    *bindUserRole({ payload: { selectedRows, roleId  } },{call, put}) {
+      let str = "";
+      selectedRows.map((record,index)=> {
+        if (index == 0) {
+          str = str+String(record.id);
+        } else {
+          str = str+","+String(record.id);
+        }
+      })
+      const {data: {data, code, err}} =  yield call(usersService.bindUserRole, { userId:str, roleId  })
+      if (code == 0 && err == null) {
+        message.success("角色添加用户成功");
+        yield put({
+          type: "getUserPageListByRoleId",
+          payload: { roleId, page: 1, size: 10, first: true }
+        })
+      } else {
+        throw err || "请求出错";
+      }
+    },
 
   },
 }

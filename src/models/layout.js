@@ -6,7 +6,7 @@ import { local, session } from '../common/util/storage.js'
 export default {
   namespace: 'layout',
   state: {
-    club: null,
+    clubs: [], // 地方中心数据
     projectList: null,
     subMenu: null,
   },
@@ -17,14 +17,12 @@ export default {
     },
   },
   effects: {
-    *getEndemic ({
-      payload,
-    }, {call, put}) {
+    *getEndemic ({  payload, }, {call, put}) {
       const { data: { data, code, err}} = yield call(usersService.getEndemic)
       if (code == 0 && err == null) {
           yield put({
             type: 'querySuccess',
-            payload: data ,
+            payload: { data } ,
           })
         // if (location.pathname === '/login') {
         //   yield put(routerRedux.push('/club'))
@@ -86,10 +84,10 @@ export default {
     },
   },
   reducers: {
-    querySuccess (state, { payload: club }) {
+    querySuccess (state, { payload: { data: clubs } }) {
       return {
         ...state,
-        club,
+        clubs,
       }
     },
     getProListSuccess (state, { payload: projectList }) {

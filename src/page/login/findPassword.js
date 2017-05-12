@@ -109,14 +109,12 @@ class NormalLoginForm extends React.Component {
     }
     render() {
         var text = this.state.liked ? ( <div> 获取验证码 </div>): (<div className="red">{this.state.count}秒后重发</div> );
-        const {
-            getFieldDecorator
-        } = this.props.form;
+        const { getFieldDecorator } = this.props.form;
         return (
           <div className = "container">
             <Form onSubmit = { this.handleSubmit } className = "login-form">
               <img className = "findimg" src = {logo} />
-              <a className = "return" href = "http://localhost:9090/login" > &larr; 返回登录 </a>
+              <a className = "return" href = "/login" > &larr; 返回登录 </a>
               <FormItem> {
                 getFieldDecorator('phone', {
                   rules: [{

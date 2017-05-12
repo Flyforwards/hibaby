@@ -30,7 +30,6 @@ class AddMemberComponent extends Component {
   state = {
     visible: false,
     selectedRowKeys: [],
-    selectedRows: [],
   }
 
 
@@ -58,11 +57,10 @@ class AddMemberComponent extends Component {
     })
   }
 
-  cellOnChange = ( selectedRowKeys, selectedRows ) => {
-    console.log(selectedRows, selectedRowKeys);
+  cellOnChange = ( selectedRowKeys ) => {
       this.props.dispatch({
         type: "permission/selectedRowsChange",
-        payload: { selectedRows, selectedRowKeys },
+        payload: { selectedRowKeys },
       })
 
   }
@@ -153,14 +151,12 @@ function mapStateToProps(state) {
     currentDeptTree,
     undisUserList,
     undisUserTotal,
-    selectedRows,
     selectedRowKeys
   } = state.permission;
   return {
     currentDeptTree,
     undisUserList,
     undisUserTotal,
-    selectedRows,
     selectedRowKeys
   };
 }

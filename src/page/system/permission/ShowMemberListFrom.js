@@ -6,7 +6,6 @@ import { Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
 const createForm = Form.create
 const FormItem = Form.Item
-import AddMemberFrom from './AddMemberFrom'
 import  { session } from 'common/util/storage.js';
 import AlertModalFrom from 'common/AlertModalFrom'
 import AddMemberComponent from './AddMemberComponent'
@@ -85,7 +84,6 @@ class ShowMemberListFrom extends Component {
   }
   state = {
     alertModalVisible: false,
-    showAddMemberModalVisible: false,
     addMemberClassName: "component-not-display"
   }
 
@@ -93,16 +91,19 @@ class ShowMemberListFrom extends Component {
     this.setState({
       addMemberClassName: "component-not-display",
     })
+    this.props.dispatch({
+      type: "permission/removeSelectKeys",
+    });
     this.props.onCancel()
   }
   handleOk() {
     if (this.props.selectedRows.length > 0) {
       this.props.dispatch({
-        type: "permission/removeUsers",
-        payload: { selectedRows: this.props.selectedRows },
+        type: "permission/bindUserRole",
+        payload: { selectedRows: this.props.selectedRows, roleId: this.props.selectRole.id, },
       })
     }
-    this.props.onCancel()
+   this.handleCancel();
   }
 
   handleCreateModalCancel() {
@@ -157,21 +158,6 @@ class ShowMemberListFrom extends Component {
 
   }
 
-  cancelModal() {
-    this.setState({
-      showAddMemberModalVisible: false,
-    })
-  }
-
-  inputOnFocus() {
-    this.props.dispatch({
-      type: "permission/getDeptByCurrentEndemic",
-      payload: { roleId: this.props.selectRole.id }
-    })
-    this.setState({
-      addMemberClassName: "component-display"
-    });
-  }
 
   onCancel() {
     this.setState({
@@ -218,7 +204,7 @@ class ShowMemberListFrom extends Component {
 
     let selects = selectedRows.map((record, index)=> {
       return (
-        <li className="li-item" key = { record.id }>
+        <li className="li-item" key = { index }>
           <div className="li-div-item">{ record.name }</div>
           <span className="li-span-item" onClick={ this.removeSelectedRows.bind(this, record) }></span>
        </li>)
@@ -253,11 +239,6 @@ class ShowMemberListFrom extends Component {
             <Table bordered dataSource={ userList } columns={ this.columns } pagination = { pagination }/>
           </div>
         </div>
-        <AddMemberFrom
-          visible ={ this.state.showAddMemberModalVisible }
-          onCancel ={ this.cancelModal.bind(this) }
-          selectRole = { this.props.selectRole }
-        />
         <AlertModalFrom
           visible ={ this.state.alertModalVisible }
           onCancel ={ this.handleCreateModalCancel.bind(this) }

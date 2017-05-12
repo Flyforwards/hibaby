@@ -1,16 +1,13 @@
 
 import React from 'react'
-import {Button, Popconfirm, message, Menu, Dropdown, Icon, Badge, Collapse} from "antd";
-import FAIcon from 'component/faicon'
+import { Button, Popconfirm, message, Menu, Dropdown, Icon, Badge } from "antd";
 import { hashHistory, Link} from 'react-router'
-import request from 'common/request/request.js'
-import {local, session} from 'common/util/storage.js'
+import { local, session } from 'common/util/storage.js'
 import './index.scss'
-import  UpdateModal from './UpdateModal.jsx'
+import UpdateModal from './UpdateModal.jsx'
 import Logo from './logo.png'
 import UserImg from './user.jpg'
-
-const Panel = Collapse.Panel
+const MenuItem = Menu.Item;
 
 function callback(key) {
   console.log(key);
@@ -35,9 +32,7 @@ class Header extends React.Component {
         }
 
     }
-    onToggle() {
-        this.props.onMiniChange(!this.props.miniMode)
-    }
+
     getName(event,item){
         console.log(event.target.innerHTML)
         this.setState({
@@ -47,36 +42,35 @@ class Header extends React.Component {
     refreshMenu(itemId){
       this.props.dispatch({
         type : "layout/getCurrUserMenu",
-        payload: {dataId : itemId},
+        payload: { dataId : itemId },
       });
     }
     render() {
-        const mini = this.props.miniMode
         const menu = (
         <Menu>
-            <Menu.Item key="0">
+            <MenuItem key="0">
               <a onClick={this.getName.bind(this)}>广州和美</a>
-            </Menu.Item>
+            </MenuItem>
             <Menu.Divider />
-            <Menu.Item key="1">
+            <MenuItem key="1">
               <a onClick={this.getName.bind(this)}>深圳和美</a>
-            </Menu.Item>
+            </MenuItem>
             <Menu.Divider />
-            <Menu.Item key="2">
+            <MenuItem key="2">
                 <a onClick={this.getName.bind(this)}>集团总部</a>
-            </Menu.Item>
+            </MenuItem>
             <Menu.Divider />
-            <Menu.Item key="3">
+            <MenuItem key="3">
                 <a onClick={this.getName.bind(this)}>上海和美</a>
-            </Menu.Item>
+            </MenuItem>
             <Menu.Divider />
-            <Menu.Item key="4">
+            <MenuItem key="4">
                 <a onClick={this.getName.bind(this)}>武汉女子</a>
-            </Menu.Item>
+            </MenuItem>
             <Menu.Divider />
-            <Menu.Item key="5">
+            <MenuItem key="5">
                 <a onClick={this.getName.bind(this)}>广州和美</a>
-            </Menu.Item>
+            </MenuItem>
         </Menu>
         )
         const userInfo = session.get('userInfo') || {userName: '李芳'}
@@ -128,7 +122,7 @@ class Header extends React.Component {
         return (
             <header className="yt-admin-framework-header clearfix">
                 <h1 className="yt-admin-framework-header-brand">
-                    <img src={Logo} className="nav-logo" />
+                    <img src={ Logo } className="nav-logo" />
                     <div className="line"></div>
                     <div className="nav">
                     <Dropdown overlay={menu} trigger={['click']}>
@@ -154,9 +148,9 @@ class Header extends React.Component {
                     <Icon type="caret-down" />
                 </div>
                 <UpdateModal
-                    initialValue={this.state.initialUpdateValue}
-                    visible={ this.state.updateModalVisible }
-                    confirmLoading={ this.state.updateModalConfirmLoading }
+                    initialValue = { this.state.initialUpdateValue }
+                    visible = { this.state.updateModalVisible }
+                    confirmLoading ={ this.state.updateModalConfirmLoading }
                 />
             </header>
         )

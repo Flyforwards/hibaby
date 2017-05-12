@@ -2,14 +2,11 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Modal, Form, Input, Tabs, Checkbox } from 'antd'
+import { Modal, Input, Tabs, Checkbox } from 'antd'
 import "./SettingpermissionFrom.scss"
-const createForm = Form.create
-const FormItem = Form.Item
 const TabPane = Tabs.TabPane;
 const CheckboxGroup = Checkbox.Group;
 
-@createForm()
 class SettingPermissionFrom extends Component {
   constructor(props) {
     super(props)
@@ -59,7 +56,6 @@ class SettingPermissionFrom extends Component {
 
 
   render() {
-    const { getFieldDecorator } = this.props.form;
 
     let { permissionList, visible, selectRole  } = this.props;
     if (permissionList == null) {
@@ -114,7 +110,7 @@ class SettingPermissionFrom extends Component {
       }
 
         return (
-          <TabPane className="settingFrom" tab={record.projectName} key={ index * 100 }>
+          <TabPane className="settingFrom" tab={ record.projectName } key={ index * 100 }>
             {
               subNodes
             }
@@ -133,7 +129,7 @@ class SettingPermissionFrom extends Component {
         closable = { false }
         width = { 1000 }
       >
-        <Tabs onChange={ this.callback } defaultActiveKey ="第一个面板" type="card">
+        <Tabs onChange={ this.callback } defaultActiveKey="0" type="card">
           {
             nodes
           }
