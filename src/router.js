@@ -112,7 +112,7 @@ let routes = [
               path: '/system/serviceitem',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      registerModel(app, require('./models/system'));
+                      registerModel(app, require('./models/service'));
                       cb(null, require('./page/system/service/service.jsx'))
                   })
               }

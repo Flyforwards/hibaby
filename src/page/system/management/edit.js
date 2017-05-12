@@ -2,8 +2,9 @@ import React from 'react';
 import {connect} from 'dva';
 import './system.scss';
 import {Card,Input,Button,Form} from 'antd';
-var Nzh = require("nzh");
 import { browserHistory } from 'dva/router';
+import {Link} from 'react-router';
+import request from 'common/request/request.js'
 const FormItem = Form.Item;
 const createForm = Form.create
 
@@ -16,10 +17,10 @@ class editData extends React.Component {
         this.delete=this.delete.bind(this);
         this.handleSave=this.handleSave.bind(this)
         this.state={
-          lists: [],
-          bigNum:['一', '二','三','四','五','六','七','八','九'],
+          bigNum:['一', '二','三','四','五','六','七','八','九','十','十一','十二'],
           name:'',
-          description:''
+          description:'',
+          lists: []
         }
     }
     add(){
@@ -27,13 +28,10 @@ class editData extends React.Component {
 
         console.log(this.props.data);
         const item = this.props.data;
-        let name = "";
-        let description = "";
         let arr = [];
+        let lists = this.state.lists;
         let field=[];
         if (item !== null) {
-          name = item.name;
-          description = item.description;
           arr = item.dictionarySideDOs;
           console.log(arr);
           field=arr.map(res=>{
@@ -41,15 +39,15 @@ class editData extends React.Component {
           });
           console.log(field)
         };
-          let len=field.length ;
-          let lists=[];
+        let num=field.length
+        let len=lists.length+num ;
         lists.push(<FormItem key={len} className = "div2">
-        {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, message: 'Username is required!' }],
-      })(<div>
-                      <p className = "label" data-index={this.state.lists.length}>选项{this.state.bigNum[len]}</p>
+        {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
+              })(<div>
+                      <p className = "label">选项{this.state.bigNum[len]}</p>
                       <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                           <Input  data-index={len} className = "input2"/>
-                          <span className = "editable-add-btn" onClick={this.delete} data-index={this.state.lists.length}> 删除 </span>
+                          <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
                       </div>
                       </div>
                     )}
@@ -57,7 +55,6 @@ class editData extends React.Component {
         this.setState({lists:lists})
     }
     delete(e){
-        var index=e.target.getAttribute("data-index");
         var lists=this.state.lists;
         lists.splice(index,1);
         this.setState({lists:lists})
@@ -69,14 +66,22 @@ class editData extends React.Component {
     handleSave = (e) => {
        e.preventDefault();
        let values = this.props.form.getFieldsValue();
+       console.log("editsave>>>>",values)
+      //  let data=this.props.data;
+      //  let name=data.name;
+      //  let description=data.description
+      //   let dictionarySideDOs=data.dictionarySideDOs;
+      // let diclen=dictionarySideDOs.length;
+      //  console.log("editsave>>>>>",values)
+        let dictionarySideDOs=[];
        let params = {};
-       let dictionarySideDOs = [];
        Object.keys(values).map((key, index) => {
          if (key.indexOf("field") == 0) {
            let item = {};
            item['name'] = values[key];
            item['serialNumber'] = index;
-          //  console.log('add:handlesave>>',key, value);
+           item['id']
+           console.log('add:handlesave>>',key, values);
            dictionarySideDOs.push(item)
          } else {
            params[key] = values[key];
@@ -86,19 +91,52 @@ class editData extends React.Component {
 
        console.log('add:handlesave>>',params)
        this.props.dispatch({
-          type: 'save/saveData',
-
+          type: 'save/editData',
           payload: {
               name:params.name,
               dictionarySideDOs:params.dictionarySideDOs,
               description:params.description,
+              id:params.id,
               type:1
           }
         })
       }
+
+      //获取table data
+     getTableData(params = {}) {
+         console.log('params:', params);
+
+         this.setState({
+             isTableLoading: true
+         })
+
+         request({
+             url: '/crm/api/v1/dictionary/modifyDictionary',
+             type: 'get',
+             data: {
+                 ...params,
+             },
+             dataType: 'json',
+         }).then((res) => {
+
+             const pagination = this.state.pagination;
+             // 读取数据总条数
+             // pagination.total = data.totalCount;
+             pagination.total = 200;
+
+             this.setState({
+                 isTableLoading: false,
+                 tableData: res.results,
+                 pagination,
+             })
+         })
+     }
+
+
     render() {
       console.log("edit>>>>>",this.props.data)
       let values = this.props.form;
+      console.log(this.state.lists)
       const item = this.props.data;
       let name = "";
       let description = "";
@@ -140,7 +178,7 @@ class editData extends React.Component {
                       {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
                     })(<div>
                           <p className ="label" > 字段名称 </p>
-                          <Input className="input"/>
+                          <Input className="input" value={name}/>
                         </div>
                       )}
                     </FormItem>
@@ -148,7 +186,7 @@ class editData extends React.Component {
                       {getFieldDecorator('description', {rules: [{ required: true, message: '字段描述为必填项！' }],
                     })(<div>
                           <p className = "label"> 字段描述 </p>
-                          <Input className="input"/>
+                          <Input className="input" value={description}/>
                         </div>
                       )}
                       </FormItem>
@@ -162,8 +200,13 @@ class editData extends React.Component {
               </Form>
               </Card >
               <div className="retuSave">
-                  <Button className = "editable-add-btn return" onClick = {this.handleReturn} > 返回 </Button>
-                  <Button className = "editable-add-btn" onClick={this.handleSave}> 保存 </Button>
+
+                  <Link to='groupchar/check'>
+                      <Button className = "editable-add-btn return"> 返回 </Button>
+                  </Link>
+                  <Link to='/groupchar/edit'>
+                      <Button className = "editable-add-btn" onClick={this.handleSave}> 保存 </Button>
+                  </Link>
               </div>
         </div>
      )
