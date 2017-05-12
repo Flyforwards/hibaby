@@ -15,11 +15,20 @@ export default {
 		optionData:null,
 		dataId:null,
 		dataEndemicId:null,
+		userID:null,
 	},
 	reducers: {
 		getUserPageListByDeptId(state,{payload:{ data,code }}){
 	      let getUserPageListByDeptIddata = {...state,data,code};
 	      return getUserPageListByDeptIddata
+	    },
+	    getUserListByIdSave(state,{payload:{ data:userID,code }}){
+	      let getUserListByIddata = {...state,userID,code};
+	      return getUserListByIddata
+	    },
+	    forbiddenUserSave(state,{payload:{ data,code }}){
+	      let forbiddenUserdata = {...state,data,code};
+	      return forbiddenUserdata
 	    },
 	    saveDepartmentSave(state,{payload:{ data,code }}){
 	      let saveDepartmentdata = {...state,data,code};
@@ -80,6 +89,41 @@ export default {
 				});
 			}
 		},
+		//修改用户信息
+		*modifyUser({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.modifyUser, values);
+			console.log("修改用户信息",data)
+			if (code == 0) {
+				message.success("修改用户信息成功");
+			}
+		},
+		//根据用户id查看用户信息
+		*getUserListById({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.getUserListById, values);
+			console.log("根据用户id查看用户信息",data)
+			if (code == 0) {
+				yield put({
+					type: 'getUserListByIdSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//根据用户id禁用用户
+		*forbiddenUser({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.forbiddenUser, values);
+			if (code == 0) {
+				yield put({
+					type: 'forbiddenUserSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
 		//系统角色下拉列表
 		*roleSelectData({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.roleSelectData, values);
@@ -107,9 +151,18 @@ export default {
 				});
 			}
 		},
+		//添加用户入职信息
+		*addUserEntry({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.addUserEntrydata, values);
+			console.log("添加用户入职信息",code)
+			if (code == 0) {
+				message.success("添加用户入职信息成功");
+			}
+		},
 		//根据地方中心id查询下属部门
 		*getDeptListByEndemicId({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getDeptListByEndemicId, values);
+			local.set("department",data)
 			if (code == 0) {
 				yield put({
 					type: 'getDeptListByEndemicIdSave',

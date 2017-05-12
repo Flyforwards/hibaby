@@ -100,13 +100,13 @@ class AddChildNodeed extends Component {
                     </FormItem>
                     <FormItem
                      {...formItemLayout}
-                      label="地方中心"
+                      label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
                         rules: [],
                       })(
                         <Select>
-                            <Option value="86">+86</Option>
+                            <Option value="1">地方中心</Option>
                         </Select>
                       )}
                     </FormItem>

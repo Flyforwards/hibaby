@@ -10,6 +10,7 @@ import { Link} from 'react-router'
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
 import {local, session} from '../../../common/util/storage.js'
+import Disabled from './Disabled.jsx'
 
 
 const roleId = local.get("rolSelectData")
@@ -65,8 +66,8 @@ class Organization extends React.Component {
           render: (text, record, index) => {
             return (
                 <span>
-                 <a href="#" className="firstA" onClick={this.toView.bind(this)}>查看</a>
-                  <a href="#" className="twoA" onClick={this.Disabled.bind(this)}>禁用</a>
+                 <Link to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
+                 <a href="#" className="twoA" onClick={this.Disabled.bind(this,record)}>禁用</a>
                 </span>
             );
           },
@@ -78,7 +79,9 @@ class Organization extends React.Component {
             upblock:'none',
             status:0,
             character:0,
-            userName:null
+            userName:null,
+            toViewVisible:false,
+            ID:null
         }
     }
     onDrop = (info) => {
@@ -93,11 +96,17 @@ class Organization extends React.Component {
       });
     };
   }
+  //查看
     toView() {
       console.log("查看")
     }
-    Disabled() {
-      console.log("禁用")
+    //禁止
+    Disabled(record) {
+      console.log(record)
+      this.setState({
+        toViewVisible:true,
+        ID:record.id
+      })
     }
     //按条件查询用户
     OrganizationInquire() {
@@ -147,7 +156,11 @@ class Organization extends React.Component {
           this.setState({ dataSource });
         };
       }
-
+    handleCreateModalCancel() {
+        this.setState({
+            toViewVisible: false
+        })
+    }
       onDelete = (index) => {
         const dataSource = [...this.state.dataSource];
         dataSource.splice(index, 1);
@@ -242,6 +255,12 @@ class Organization extends React.Component {
             <CreateModal
                 visible={ this.state.createModalVisible }
             />
+             <Disabled
+                    visible={ this.state.toViewVisible }
+                    handleOk={this.state.handleOk}
+                    onCancel={ this.handleCreateModalCancel.bind(this) }
+                    ID = {this.state.ID}
+                />
             </div>
             </main>
         )

@@ -16,9 +16,10 @@ const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
 const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
+const ID = window.location.search.split("=")[1]
 let traversalDataId = []
 
-class AddUsered extends React.Component {
+class EditUsered extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +27,13 @@ class AddUsered extends React.Component {
     }
   }
   componentDidMount(){
-      this.props.dispatch({
+    this.props.dispatch({
+      type: 'organization/getUserListById',
+      payload: {
+       dataId:ID
+      }
+    })
+    this.props.dispatch({
         type: 'organization/getDeptListByEndemicId',
         payload: {
           dataId: endemic.id
@@ -51,17 +58,14 @@ class AddUsered extends React.Component {
   headelSave = ()=>{
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
-        const values = {
-          ...fieldsValue,
-          'entryTime': fieldsValue['entryTime'].format('YYYY-MM-DD')
-        } 
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
         fields.systemRole.map((item)=>{
           roleIdData.push({roleId:item})
         })
+        console.log(this.refs.time.value)
         this.props.dispatch({
-          type: 'organization/addUser',
+          type: 'organization/modifyUser',
           payload: {
             categoryId: endemic.id,
             entrys: [
@@ -73,10 +77,10 @@ class AddUsered extends React.Component {
                 "leaderId": fields.directLeadership,//直系领导
                 "memo": "string",//备注
                 "positionId": fields.position,//职位
-                "type": 0//入职标识
+                "id":ID
               }
             ],
-            gmt_entry: values.entryTime,//入职日期
+            gmt_entry: this.refs.time.value,//入职日期
             identifier: fields.Numbering,//编号//fields.Numbering
             mobile: fields.phoneNumber,//手机号fields.
             name: fields.userName,//用户名//fields.userName
@@ -90,14 +94,37 @@ class AddUsered extends React.Component {
     })
   }
     render() {  
+      let USER = []
+      let SEX = []
+      let roles = []
+      let entrys = []
+      let time = null
       let traversalEndemicId = []
       let selectDataList = []
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+      if(this.props.userID != null){
+         USER = this.props.userID
+         SEX = USER.sex == 1?"男":"女"
+         entrys = USER.entrys[0]
+         roles = USER.roles.map((item)=>{
+          return item.roleId
+         })
+         console.log("roles",roles)
+          function getLocalTime(nS) { 
+            var now = new Date(parseInt(nS) * 1000);
+            var year=now.getFullYear(); 
+            var month=now.getMonth()+1; 
+            var date=now.getDate(); 
+            return `${year}-${month}-${date}`
+          } 
+          time = getLocalTime('1494230932')
+      }
       if(this.props.dataEndemicId != null){
           traversalEndemicId = this.props.dataEndemicId.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
         })
       }
+      
       if(this.props.dataId != null){
           traversalDataId = this.props.dataId.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
@@ -112,58 +139,14 @@ class AddUsered extends React.Component {
       }
       return(
         <div className="addUser">
-         <div className="basicInformation">基本信息</div>
-          <Form layout="inline" className="basicInformationForm">
-           <FormItem
-            >
-              {getFieldDecorator('userImg', {
-                rules: [],
-              })(
-                <div className="img"></div>
-              )}
-            </FormItem>
-            <FormItem
-             label="姓名"
-             className="userName"
-            >
-              {getFieldDecorator('userName', {
-              })(
-                <Input/>
-              )}
-            </FormItem>
-            <FormItem
-             label="编号"
-             className="Numbering"
-            >
-              {getFieldDecorator('Numbering', {
-                initialValue: this.props.data,
-              })(
-                <Input disabled = { true }/>
-              )}
-            </FormItem>
-            <br/>
-            <FormItem
-             label="性别"
-             className="gender"
-            >
-              {getFieldDecorator('gender', {
-              })(
-                <RadioGroup>
-                <Radio value={0}>男</Radio>
-                <Radio value={1}>女</Radio>
-              </RadioGroup>
-              )}
-            </FormItem>
-            <FormItem
-             label="入职日期"
-             className="entryTime"
-            >
-              {getFieldDecorator('entryTime', {
-              })(
-                 <DatePicker />
-              )}
-            </FormItem>
-          </Form>
+          <div className="basicInformation">基本信息</div>
+            <div className="basicInformationContent">
+              <img className="img" src={USER.imgURL}></img>
+              <p className="userName"><span>姓名:</span><span className="Two">{USER.name}</span></p>
+              <p className="Numbering"><span>编号:</span><span className="Two">{USER.identifier}</span></p>
+              <p className="gender"><span>性别:</span><span className="Two">{SEX}</span></p>
+              <p className="entryTime"><span>入职时间:</span><span className="Two" ref="time">{ time }</span></p>
+            </div>
           <div className="entryInformation">入职信息</div>
           <Form layout="inline" className="entryInformationForm">
             <FormItem
@@ -171,7 +154,7 @@ class AddUsered extends React.Component {
              className="localCenter"
             >
               {getFieldDecorator('localCenter', {
-                initialValue: endemic.name,
+                initialValue: entrys.endemicId,
               })(
                 <Input disabled = { true }/>
               )}
@@ -181,6 +164,7 @@ class AddUsered extends React.Component {
              className="affiliatedDepartment"
             >
             { getFieldDecorator("affiliatedDepartment",{
+              initialValue: entrys.deptId,
             })(
               <Select placeholder="请选择" onSelect={this.affiliatedDepartment.bind(this)}>
                 { traversalEndemicId }
@@ -192,6 +176,7 @@ class AddUsered extends React.Component {
              className="directLeadership"
             >
               {getFieldDecorator('directLeadership', {
+                initialValue: entrys.leaderId,
               })(
                 <Input />
               )}
@@ -206,6 +191,7 @@ class AddUsered extends React.Component {
              className="position"
             >
             { getFieldDecorator("position",{
+              initialValue: entrys.positionId,
             })(
               <Select placeholder="请选择">
                 { traversalDataId }
@@ -218,6 +204,7 @@ class AddUsered extends React.Component {
              className="systemRole"
             >
             { getFieldDecorator("systemRole",{
+              initialValue: roles,
             })(
               <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
                 { selectDataList }
@@ -232,6 +219,7 @@ class AddUsered extends React.Component {
              className="phoneNumber"
             >
               {getFieldDecorator('phoneNumber', {
+                initialValue: USER.mobile,
               })(
                 <Input />
               )}
@@ -252,6 +240,7 @@ class AddUsered extends React.Component {
              className="information"
             >
               {getFieldDecorator('information', {
+                initialValue: entrys.contact,
               })(
                 <Input/>
               )}
@@ -261,6 +250,7 @@ class AddUsered extends React.Component {
              className="companyEmail"
             >
               {getFieldDecorator('companyEmail', {
+                initialValue: entrys.emaill,
                  rules: [{
                     type: 'email'
                   }],
@@ -274,6 +264,7 @@ class AddUsered extends React.Component {
              className="internalExtension"
             >
               {getFieldDecorator('internalExtension', {
+                initialValue: entrys.extension,
               })(
                 <Input />
               )}
@@ -286,19 +277,23 @@ class AddUsered extends React.Component {
   }
 }
 
-function AddUser({
+function EditUser({
     dispatch,
     data,
     dataEndemicId,
     dataId,
+    userID,
     code
 }) {
   return ( <div>
-    <AddUsered dispatch = {
+    <EditUsered dispatch = {
       dispatch
     }
     data = {
       data
+    }
+    userID = {
+      userID
     }
     dataEndemicId = {
        dataEndemicId
@@ -314,17 +309,19 @@ function mapStateToProps(state) {
     data,
     dataEndemicId,
     dataId,
+    userID,
     code
   } = state.organization;
 
   return {
     loading: state.loading.models.organization,
     data,
+    userID,
     dataId,
     dataEndemicId,
     code
   };
 }
 
-const addUser = Form.create()(AddUsered);
-export default connect(mapStateToProps)(addUser)
+const editUser = Form.create()(EditUsered);
+export default connect(mapStateToProps)(editUser)

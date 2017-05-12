@@ -67,6 +67,26 @@ let routes = [
                   })
               }
           },
+          //编辑用户信息
+           {
+              path: '/system/organization/editUser',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/organization'));
+                      cb(null, require('./page/system/organization/editUser.jsx'))
+                  })
+              }
+          },
+          //查看用户信息
+          {
+              path: '/system/organization/ViewTheInformation',
+              getComponent: (location, cb) => {
+                  require.ensure([], (require) => {
+                      registerModel(app, require('./models/organization'));
+                      cb(null, require('./page/system/organization/ViewTheInformation.jsx'))
+                  })
+              }
+          },
           // 集团字段
           {
               path: '/system/groupchar',
