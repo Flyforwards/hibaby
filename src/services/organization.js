@@ -95,3 +95,10 @@ export function addUserEntrydata(values) {
     body: JSON.stringify(values),
   })
 }
+//根据入职信息id删除入职信息
+export function deleteUserEntry(values) {
+  return request('/crm/api/v1/user/deleteUserEntry', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

@@ -73,17 +73,17 @@ class AddUsered extends React.Component {
                 "leaderId": fields.directLeadership,//直系领导
                 "memo": "string",//备注
                 "positionId": fields.position,//职位
-                "type": 0//入职标识
+                "identifier": fields.Numbering//编号//fields.Numbering
               }
             ],
-            gmt_entry: values.entryTime,//入职日期
-            identifier: fields.Numbering,//编号//fields.Numbering
-            mobile: fields.phoneNumber,//手机号fields.
-            name: fields.userName,//用户名//fields.userName
-            password: fields.userName,//密码//fields.userName
-            roles: roleIdData,
-            sex: fields.gender,//性别//fields.gender
-            status: fields.status//账号状态//fields.status
+            "gmt_entry": values.entryTime,//入职日期
+            "mobile": fields.phoneNumber,//手机号fields.
+            "name": fields.userName,//用户名//fields.userName
+            "password": fields.password,//密码//fields.userName
+            "roles": roleIdData,
+            "sex": fields.gender,//性别//fields.gender
+            "status": fields.status,//账号状态//fields.status
+            "img":"https://"
           }
         })
       }

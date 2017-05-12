@@ -92,7 +92,6 @@ export default {
 		//修改用户信息
 		*modifyUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.modifyUser, values);
-			console.log("修改用户信息",data)
 			if (code == 0) {
 				message.success("修改用户信息成功");
 			}
@@ -122,6 +121,14 @@ export default {
 						code
 					}
 				});
+			}
+		},
+		//根据入职信息id删除入职信息
+		*deleteUserEntry({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.deleteUserEntry, values);
+			console.log("根据入职信息id删除入职信息",code)
+			if (code == 0) {
+				
 			}
 		},
 		//系统角色下拉列表
