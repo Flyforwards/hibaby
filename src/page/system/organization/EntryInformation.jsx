@@ -51,7 +51,6 @@ class EntryInformationed extends Component {
       let roles = []
       roles = entryContent.roles.map((item)=>{
         return item.roleId
-
       })
       let traversalEndemicId = []
       let selectDataList = []
