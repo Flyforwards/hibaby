@@ -8,6 +8,7 @@ import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
 
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -56,7 +57,7 @@ class OrganizationLefted extends React.Component {
     }
     componentDidMount(){
       setTimeout(() => {
-      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 450)
+      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 800)
       $(document).on('click', '.plus', function(e) {
           if(this.state.upblock == 'none'){
               this.setState({

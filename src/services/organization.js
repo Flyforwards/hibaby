@@ -67,3 +67,31 @@ export function saveDepartment(values) {
     body: JSON.stringify(values),
   })
 }
+//根据用户id禁用用户
+export function forbiddenUser(values) {
+  return request('/crm/api/v1/user/forbiddenUser', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//根据用户id查看用户信息
+export function getUserListById(values) {
+  return request('/crm/api/v1/user/getUserListById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//修改用户信息
+export function modifyUser(values) {
+  return request('/crm/api/v1/user/modifyUser', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//添加用户入职信息
+export function addUserEntrydata(values) {
+  return request('/crm/api/v1/user/addUserEntry', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

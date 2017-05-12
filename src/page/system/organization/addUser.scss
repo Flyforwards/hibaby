@@ -1,4 +1,11 @@
 .addUser{
+	.anticon-close{
+		float:right;
+		margin-right: 37px;
+    	margin-top: 12px;
+    	font-weight: bold;
+    	font-size: 18px;
+	}
 	min-width: 1100px;
 	label{
 		font-size:14px;
@@ -8,6 +15,49 @@
 		margin-left:-14px;
 		margin-top: -6px; 
 	}
+	.basicInformationForm{
+		width:100%;
+		background-color: #fff;
+		margin-left:10px;
+		.ant-form-item-label{
+			margin-right:10px; 
+		}
+		.img{
+			width:100px;
+			height:100px;
+			float:left;
+			border-radius: 50%;
+			background-color: #999;
+			margin:20px 40px 20px 20px; 
+			border:none;
+		}
+		.Numbering{
+			margin-left:60px; 
+			margin-top: 20px;
+			input{
+				width:310px;
+			} 
+		}
+		.userName{
+			margin-left:60px; 
+			margin-top: 20px;
+			input{
+				width:310px;
+			} 
+		}
+		.gender{
+			margin-left: 227px;
+    		margin-top: -40px;
+		}
+		.entryTime{
+			margin-left: 336px;
+    		margin-top: -40px;
+    		input{
+				width:310px;
+			}
+		}
+
+}
 	.basicInformation,.entryInformation,.contactInformation{
 		width:100%;
 		height:40px;
@@ -18,52 +68,12 @@
 		text-indent:20px;
 		background-color: rgba(102, 102, 102, 1);
 	}
-	.img{
-		width:100px;
-		height:100px;
-		float:left;
-		border-radius: 50%;
-		background-color: #999;
-		margin:20px 40px 20px 20px; 
-	}
-	.basicInformationForm{
-		width:100%;
-		background-color: #fff;
-		margin-left:10px;
-		margin-bottom: 10px; 
-		.ant-form-item-label{
-			margin-right:10px; 
-		}
-		.userName{
-			margin-top: 20px;
-			input{
-				width:310px;
-			}
-		}
-		.Numbering{
-			margin-top: 20px; 
-			margin-left:40px;
-			input{
-				width:310px;
-			}
-		}
-		.gender{
-			margin:-53px 0px 0px 170px; 
-		}
-		.entryTime{
-			margin:-53px 0px 0px 230px;
-			input{
-				width:310px;
-			}
-			.ant-calendar{
-				width:310px;
-			}
-		}
-	}
+	
 	.entryInformationForm{
 		width:100%;
 		background-color: #fff;
 		margin-left:10px;
+		margin-top: -10px;
 		padding-left: 60px; 
 		.ant-form-item-label{
 			margin-right:10px; 
@@ -148,5 +158,103 @@
 		float:right;
 		margin: 0 20px;
 		width:100px;
+	}
+}
+.viewTheInformation{
+	.basicInformation,.contactInformation,.entryInformation{
+		width:100%;
+		height:40px;
+		line-height:40px;
+		font-size:14px;
+		color:#fff;
+		margin: 10px 0px 0px 10px;
+		text-indent:20px;
+		background-color: rgba(102, 102, 102, 1);
+	}
+	.entryInformationContent,.basicInformationContent,.contactInformationContent{
+		width:100%;
+		height:160px;
+		background-color: #fff;
+		margin: 0px 0px 10px 10px;
+	}
+	.contactInformationContent{
+		.localCenter,.affiliatedDepartment,.directLeadership,.position,.systemRole{
+			width:30%;
+			float:left;
+			margin-left: 120px;
+			margin-top:30px; 
+			font-weight: 400;
+		    font-style: normal;
+		    font-size: 14px;
+		    color: #999999; 
+			span{
+				display: inline-block;
+			}
+			.Two{
+				text-indent: 20px;
+			}
+		}
+	}
+	.entryInformationContent{
+		.localCenter,.affiliatedDepartment,.directLeadership,.position,.systemRole{
+			width:30%;
+			float:left;
+			margin-left: 120px;
+			margin-top:30px; 
+			font-weight: 400;
+		    font-style: normal;
+		    font-size: 14px;
+		    color: #999999; 
+			span{
+				display: inline-block;
+			}
+			.Two{
+				text-indent: 20px;
+			}
+		}
+	}
+	.basicInformationContent{
+		padding-bottom: 10px;
+		.img{
+			width:100px;
+			height:100px;
+			float:left;
+			border-radius: 50%;
+			background-color: #999;
+			margin:20px 40px 20px 20px; 
+			border:none;
+		}
+		.gender,.entryTime,.Numbering,.userName{
+			width:30%;
+			float:left;
+			margin:30px;
+			font-weight: 400;
+		    font-style: normal;
+		    font-size: 14px;
+		    color: #999999; 
+			span{
+				display: inline-block;
+			}
+			.Two{
+				text-indent: 20px;
+			}
+		}
+	}
+	.ant-btn{
+		float:right;
+		margin: 0 20px;
+		width:140px;
+		height:40;
+		margin-bottom: 20px;
+	}
+	.disabledButton{
+		background-color: rgba(255, 74, 74, 1);
+		color:#fff;
+		border: 0;
+	}
+	.addButton{
+   		background-color: rgba(255, 153, 0, 1);
+   		border: 0;
+   		color:#fff;
 	}
 }
