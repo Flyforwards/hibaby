@@ -133,7 +133,7 @@ class SettingPermissionFrom extends Component {
         closable = { false }
         width = { 1000 }
       >
-        <Tabs onChange={ this.callback } defaultActiveKey="0" type="card">
+        <Tabs onChange={ this.callback } defaultActiveKey ="第一个面板" type="card">
           {
             nodes
           }

@@ -1,4 +1,4 @@
-import * as systemService from '../services/save';
+import * as saveService from '../services/save';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from '../common/util/storage.js';
@@ -23,9 +23,22 @@ export default {
 				data,
 				code
 			}
+			let dictionarySideDOs=data.dictionarySideDOs;
 			console.log(data);
 			return  {...savedata,
+				   dictionarySideDOs
 			};
+		},
+
+		checkDataSave(state, {
+			payload: { data }
+		}) {
+			return  {...state,data };
+		},
+		editDataSave(state, {
+			payload: { data }
+		}) {
+			return  {...state,data };
 		},
 	},
 	effects: {
@@ -45,6 +58,32 @@ export default {
 
 			}
 		},
+
+		*checkData({payload: values}, { call, put }) {
+			const {data: {code,data,err}} = yield call(saveService.checkData, values);
+			if (code == 0 && err == null) {
+				yield put({
+					type: 'checkDataSave',
+					payload: {
+						data,
+					}
+				});
+
+			}
+		},
+
+		*editData({payload: values}, { call, put }) {
+			const {data: {code,data,err}} = yield call(saveService.editData, values);
+			if (code == 0 && err == null) {
+				yield put({
+					type: 'editDataSave',
+					payload: {
+						data,
+					}
+				});
+
+			}
+		},
 	},
 	subscriptions: {
 		setup({
@@ -59,6 +98,18 @@ export default {
 				if (pathname === '/demo/add') {
 					dispatch({
 						type: 'saveData',
+						payload:query
+					});
+				}
+				if (pathname === '/groupchar/check') {
+					dispatch({
+						type: 'checkData',
+						payload:query
+					});
+				}
+				if (pathname === '/groupchar/edit') {
+					dispatch({
+						type: 'editData',
 						payload:query
 					});
 				}

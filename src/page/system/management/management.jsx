@@ -39,8 +39,8 @@ class SystemIndex extends React.Component {
         render: (text, record, index) => {
 
           return ( < Link to =
-              {`/groupchar/check?id=${record.id}`}
-             > 查看 </Link>)
+              {`/groupchar/check?dataId=${record.id}`}
+            > 查看 </Link>)
           },
         }];
     }
@@ -68,31 +68,16 @@ class SystemIndex extends React.Component {
           }));
         },
       };
-      return ( <div className = "
-          container2"
-         >
-        < div className = "
-          buttonwrapper"
-         >
-        < Link to = "/demo/add" > < Button
-        /*className = "editable-add-btn" */
-        className="addBtn"> 添加 </Button></Link >
+      return ( <div className = "container2">
+        <div className = "buttonwrapper">
+        <Link to = '/demo/add'>
+        <Button /*className = "editable-add-btn" */ className="addBtn"> 添加 </Button>
+        </Link >
         </div>
         {this.props.list?
-        < Table rowKey = "id"
-        bordered dataSource = {
-          this.props.list
-        }
-        columns = {
-          columns
-        }
-
-        pagination = {
-          pagination
-        }
-        />:null}
-        < Current page = {
-        this.props.page
+        < Table rowKey = "id"  bordered dataSource = {this.props.list} columns = { columns}
+          pagination = { pagination} />:null}
+        < Current page = {this.props.page
       }
       totalpage = {
         this.props.totalpage

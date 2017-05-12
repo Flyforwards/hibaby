@@ -8,6 +8,7 @@ import  './permission.scss';
 import AddRoleFrom from './AddRoleFrom';
 import SettingPermissionFrom from './SettingpermissionFrom'
 import ShowMemberListFrom from './ShowMemberListFrom'
+import AlertModalFrom from 'common/AlertModalFrom'
 import Page from 'framework/page'
 
 class permission extends Component {
@@ -16,6 +17,8 @@ class permission extends Component {
         this.state = {
         }
         this.record = null;
+        this.page = 1;
+        this.pageSize = 10;
         this.columns = [{
           title: '编号',
           dataIndex: 'id',
@@ -52,13 +55,12 @@ class permission extends Component {
     managementInquire() {
       console.log("查询")
     }
-  // 编辑
+    // 编辑
     editPermissions(record){
       this.record = record;
       this.setState({
         modifyModalVisible: true,
         add: false,
-        isDel: false,
       })
     }
     // 设置权限
@@ -76,6 +78,7 @@ class permission extends Component {
     // 展示当前角色的成员列表
     showMemberList(record){
       this.record = record;
+      console.log(record);
       this.props.dispatch({
         type: "permission/getUserPageListByRoleId",
         payload: { roleId: record.id, page: 1, size: 10, first: true}
@@ -84,13 +87,12 @@ class permission extends Component {
         showMemberModalVisible: true,
       })
     }
-
+    // 删除弹框
     delete(record){
       this.record = record;
       this.setState({
-        modifyModalVisible: true,
+        alertModalVisible: true,
         add: false,
-        isDel: true,
       })
     }
 
@@ -99,7 +101,6 @@ class permission extends Component {
       this.setState({
         modifyModalVisible: true,
         add: true,
-        isDel: false,
       })
     }
     handleCreateModalCancel() {
@@ -107,8 +108,22 @@ class permission extends Component {
           modifyModalVisible: false,
           settingModalVisible: false,
           showMemberModalVisible: false,
+          alertModalVisible: false,
         })
     }
+    // 确定删除
+    handleAlertModalOk(record) {
+        this.props.dispatch({
+          type: 'permission/submitDelRole',
+          payload: {
+            dataId: record.id,
+            page: this.page,
+            pageSize: this.pageSize,
+          }
+        })
+      this.handleCreateModalCancel();
+    }
+
     render() {
         let { total, data } = this.props.permission;
         if (data != null) {
@@ -122,6 +137,8 @@ class permission extends Component {
           showQuickJumper: true,
           pageSize: 10,
           onChange: (page, pageSize) => {
+            this.page = page;
+            this.pageSize = pageSize;
             this.props.dispatch({
               type: "permission/getRolesByPage",
               payload: { page, size : pageSize },
@@ -143,7 +160,14 @@ class permission extends Component {
                onCancel ={ this.handleCreateModalCancel.bind(this) }
                record = { this.record }
                add = { this.state.add }
-               isDel = { this.state.isDel }
+               page = { this.page }
+               pageSize = { this.pageSize }
+             />
+             <AlertModalFrom
+               visible ={ this.state.alertModalVisible }
+               onCancel ={ this.handleCreateModalCancel.bind(this) }
+               onOk = { this.handleAlertModalOk.bind(this, this.record) }
+               message = { "是否确定删除此角色?" }
              />
              <SettingPermissionFrom
                visible ={ this.state.settingModalVisible }
@@ -155,6 +179,7 @@ class permission extends Component {
                onCancel ={ this.handleCreateModalCancel.bind(this) }
                selectRole = { this.record }
              />
+
            </div>
         )
     }
