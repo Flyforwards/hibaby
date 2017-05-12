@@ -33,10 +33,14 @@ var webpackConfig = {
                 },
                 changeOrigin: true
             },
-            // '*': {
-            //     target: 'https://api.douban.com',
-            //     changeOrigin: true
-            // }
+          // 田春阳
+          // '/crm/api/*': {
+          //   target: 'http://192.168.199.124:8087/crm/api',
+          //   pathRewrite: {
+          //     '^/crm/api': ''
+          //   },
+          //   changeOrigin: true
+          // },
         }
     },
     /*

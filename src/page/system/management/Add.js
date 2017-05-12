@@ -2,42 +2,9 @@ import React from 'react';
 import {connect} from 'dva';
 import './system.scss';
 import {Card,Input,Button,Form} from 'antd';
-var Nzh = require("nzh");
-import { browserHistory } from 'dva/router';
+import {Link} from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
-
-@createForm()
-class List extends React.Component {
-      constructor(props) {
-            super(props);
-            this.state = {
-              bigNum:'三'
-            }
-      }
-      componentDidMount(){
-          var index=this.props.index;
-          var nzhcn = Nzh.cn;
-          var num=Number(index)
-          var newnum=num+1
-          this.setState({
-            bigNum: nzhcn.encodeS(newnum)
-          })
-      }
-    render() {
-          console.log("index",this.props.index)
-          return ( <FormItem  className = "div2">
-                      <p className = "label"data-index={this.props.index}>选项{this.state.bigNum} < /p>
-                      <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                          <Input type = "textarea" rows = {6} data-index={this.props.index} className = "input2"
-                                defaultValue={this.props.index}/>
-                          <span className = "editable-add-btn" onClick={this.props.delete} data-index={this.props.index}> 删除 < /span>
-                      </div>
-                    </FormItem >
-            )
-    }
-}
-
 @createForm()
 class AddData extends React.Component {
     constructor(props) {
@@ -45,69 +12,57 @@ class AddData extends React.Component {
         const _this = this;
         this.add=this.add.bind(this);
         this.delete=this.delete.bind(this);
-        this.handelTrans=this.handelTrans.bind(this);
         this.handleSave=this.handleSave.bind(this)
         this.state={
           lists: [(<FormItem key='0' className = "div2">
-          {_this.props.form.getFieldDecorator('field0', {rules: [{ required: true, message: 'Username is required!' }],
-        })(<div>
-                       <p className = "label" > 选项一 < /p>
-                       <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                          <Input  className="input2"/>
-                       </div>
+                      {_this.props.form.getFieldDecorator('field0', {rules: [{ required: true, message: 'Username is required!' }],
+                    })(<div>
+                           <p className = "label" > 选项一 < /p>
+                           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                              <Input rows = {6} className="input2"/>
+                           </div>
                        </div>
                      )}
-                   </FormItem> ),(<FormItem key='1' className="div2">
-                   {_this.props.form.getFieldDecorator('field1', {rules: [{ required: true, message: 'Username is required!' }],
-                 })(<div>
-                                <p className = "label" > 选项二 < /p>
-                                <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                                   <Input  className="input2"/>
-                                </div>
-                                </div>
-                              )}
-                            </FormItem> )
+                   </FormItem> ),
+                   (<FormItem key='1' className="div2">
+                       {_this.props.form.getFieldDecorator('field1', {rules: [{ required: true, message: 'Username is required!' }],
+                     })(<div>
+                            <p className = "label" > 选项二 < /p>
+                            <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                               <Input rows = {6} className="input2"/>
+                            </div>
+                              </div>
+                      )}
+                    </FormItem> )
                  ],
           bigNum:['一', '二','三','四','五','六','七','八','九'],
           name:'',
-          description:''
+          description:'',
+          path:'demo/add'
         }
     }
     add(){
         var lists=this.state.lists;
         let len=this.state.lists.length ;
         lists.push(<FormItem key={len} className = "div2">
-        {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, message: 'Username is required!' }],
-      })(<div>
-                      <p className = "label" data-index={this.state.lists.length}>选项{this.state.bigNum[len]}</p>
-                      <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                          <Input  data-index={len} className = "input2"/>
-                          <span className = "editable-add-btn" onClick={this.delete} data-index={this.state.lists.length}> 删除 </span>
-                      </div>
-                      </div>
-                    )}
+                    {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, message: 'Username is required!' }],
+                      })(<div>
+                              <p className = "label">选项{this.state.bigNum[len]}</p>
+                              <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                                  <Input rows = {6} className = "input2"/>
+                                  <span className = "editable-add-btn" onClick={this.delete} data-index={this.state.lists.length}> 删除 </span>
+                              </div>
+                          </div>
+                        )}
                     </FormItem>)
         this.setState({lists:lists})
     }
-   handelTrans(e){
-      var index=e.target.getAttribute("data-index");
-      var nzhcn = Nzh.cn;
-      var num=Number(index)
-      var newnum=num+1
-      this.setState({
-          bigNum: nzhcn.encodeS(newnum)
-      })
-   }
     delete(e){
         var index=e.target.getAttribute("data-index");
         var lists=this.state.lists;
         lists.splice(index,1);
         this.setState({lists:lists})
     }
-     handleReturn = () =>{
-      browserhistory.go(-1)
-    }
-
     handleSave = (e) => {
        e.preventDefault();
        let values = this.props.form.getFieldsValue();
@@ -137,13 +92,14 @@ class AddData extends React.Component {
               type:1
           }
         })
+      //  window.location.href='/system/groupchar';
       }
     render() {
       let values = this.props.form;
       const { getFieldDecorator } = this.props.form;
       console.log("render>>>",values)
         return (
-              <div className="xuanxiang container2">
+          <div className="xuanxiang container2">
               <Card title = "字段信息:" >
                   <Form>
                       <FormItem className = "div">
@@ -171,11 +127,15 @@ class AddData extends React.Component {
               </Form>
               </Card >
               <div className="retuSave">
-                  <Button className = "editable-add-btn return" onClick = {this.handleReturn} > 返回 </Button>
+                <Link to='/system/groupchar'>
+                  <Button className = "editable-add-btn return"> 返回 </Button>
+                </Link>
+                <Link to='/system/groupchar'>
                   <Button className = "editable-add-btn" onClick={this.handleSave}> 保存 </Button>
+                </Link>
               </div>
         </div>
-     )
+      )
     }
 }
 
@@ -186,16 +146,15 @@ function Add({dispatch}) {
       )
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.save)
-  const {
-    data,
-    code
-  } = state.save;
-
-  return {
-    loading: state.loading.models.save,
-    data,
-    code
-  };
+    console.log("modelss",state.save)
+    const {
+      data,
+      code
+    } = state.save;
+    return {
+      loading: state.loading.models.save,
+      data,
+      code
+    };
 }
 export default connect(mapStateToProps)(AddData);

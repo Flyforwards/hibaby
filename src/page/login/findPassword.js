@@ -61,13 +61,11 @@ class NormalLoginForm extends React.Component {
 
     }
 
-
     handleTest = (e) => {
         e.preventDefault();
         console.log(phone.value)
         if (!(/^1[34578]\d{9}$/.test(phone.value))) {
             this.setModal1Visible(true);
-
             return false;
         } else {
             if (this.state.liked) {
@@ -92,13 +90,8 @@ class NormalLoginForm extends React.Component {
                         'mobile': phone.value
                     }
                 });
-
             }
-
-
         }
-
-
     }
     componentDidMount() {
         clearInterval(this.timer);

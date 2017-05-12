@@ -4,8 +4,6 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tree, Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
-const createForm = Form.create
-const FormItem = Form.Item
 const TreeNode = Tree.TreeNode;
 
 class AddMemberComponent extends Component {
@@ -24,7 +22,6 @@ class AddMemberComponent extends Component {
       dataIndex: 'deptId',
       key: 'deptId',
     }];
-
   }
 
   state = {
@@ -32,15 +29,6 @@ class AddMemberComponent extends Component {
     selectedRowKeys: [],
   }
 
-
-
-  delete(record) {
-  }
-
-
-  handleAfterClose() {
-
-  }
 
   expandHandler() {
 

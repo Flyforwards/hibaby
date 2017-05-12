@@ -48,8 +48,6 @@ export default {
           }
         })
       })
-      console.log(selectedRowKeys);
-      console.log(selectedRows)
 
       return {...state, selectedRows, selectedRowKeys };
     },
@@ -222,7 +220,7 @@ export default {
 
     // 获取当前地区的部门信息
     *getDeptByCurrentEndemic({ payload: { roleId } },{call, put}) {
-      const {data: {data, code , err}} =  yield call(usersService.getRoleDepartmentNodes, {})
+      const {data: {data, code , err}} =  yield call(usersService.getRoleDepartmentNodes, { dataId: roleId })
       if (code == 0 && err == null) {
         if (data.nodes && data.nodes.length > 0) {
           const dept = data.nodes[0];

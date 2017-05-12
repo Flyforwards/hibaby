@@ -36,9 +36,20 @@ export default {
 			return  {...state,data };
 		},
 		editDataSave(state, {
-			payload: { data }
+			payload: {
+				data,
+				code
+			}
 		}) {
-			return  {...state,data };
+			let savedata = {...state,
+				data,
+				code
+			}
+			let dictionarySideDOs=data.dictionarySideDOs;
+			console.log(data);
+			return  {...savedata,
+				   dictionarySideDOs
+			};
 		},
 	},
 	effects: {
@@ -73,12 +84,16 @@ export default {
 		},
 
 		*editData({payload: values}, { call, put }) {
-			const {data: {code,data,err}} = yield call(saveService.editData, values);
-			if (code == 0 && err == null) {
+			const {data: {data,code}} = yield call(saveService.editData, values);
+			console.log(data)
+			if (code == 0) {
+				console.log(data)
+				message.success("更改用户信息成功");
 				yield put({
 					type: 'editDataSave',
 					payload: {
 						data,
+						code
 					}
 				});
 
