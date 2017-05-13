@@ -60,6 +60,31 @@ class AddUsered extends React.Component {
         fields.systemRole.map((item)=>{
           roleIdData.push({roleId:item})
         })
+        console.log(fields.userName)
+        let data ={
+            categoryId: endemic.id,
+            entrys: [
+              {
+                "contact":fields.information, //fields.information,//联系方式
+                "deptId":fields.affiliatedDepartment,//fields.affiliatedDepartment,//隶属部门
+                "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
+                "extension":fields.internalExtension, //fields.internalExtension,//内部分机
+                "leaderId": fields.directLeadership,//直系领导
+                "positionId": fields.position,//职位
+                "identifier": fields.Numbering,//编号//fields.Numbering
+                "roles": roleIdData
+              }
+            ],
+            "gmt_entry": values.entryTime,//入职日期
+            "mobile": fields.phoneNumber,//手机号fields.
+            "name": fields.userName,//用户名//fields.userName
+            "password": fields.password,//密码//fields.userName
+            "sex": fields.gender,//性别//fields.gender
+            "status": 0,//账号状态//fields.status
+            "img":"https://"
+          }
+        console.log(data)
+        debugger;
         this.props.dispatch({
           type: 'organization/addUser',
           payload: {
@@ -71,18 +96,17 @@ class AddUsered extends React.Component {
                 "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
                 "extension":fields.internalExtension, //fields.internalExtension,//内部分机
                 "leaderId": fields.directLeadership,//直系领导
-                "memo": "string",//备注
                 "positionId": fields.position,//职位
-                "identifier": fields.Numbering//编号//fields.Numbering
+                "identifier": fields.Numbering,//编号//fields.Numbering
+                "roles": roleIdData
               }
             ],
             "gmt_entry": values.entryTime,//入职日期
             "mobile": fields.phoneNumber,//手机号fields.
             "name": fields.userName,//用户名//fields.userName
             "password": fields.password,//密码//fields.userName
-            "roles": roleIdData,
             "sex": fields.gender,//性别//fields.gender
-            "status": fields.status,//账号状态//fields.status
+            "status":0 ,//账号状态//fields.status
             "img":"https://"
           }
         })
