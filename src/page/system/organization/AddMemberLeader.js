@@ -3,13 +3,17 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tree, Button, Table, Modal, Form, Input } from 'antd'
-import "./permission.scss"
+import "./AddMemberLeader.scss"
 const TreeNode = Tree.TreeNode;
 
-class AddMemberComponent extends Component {
+class AddMemberLeader extends Component {
   constructor(props) {
     super(props)
     this.columns = [{
+      title: '编号',
+      dataIndex: 'Numbering',
+      key: 'Numbering',
+    },{
       title: '姓名',
       dataIndex: 'name',
       key: 'name',
@@ -21,30 +25,33 @@ class AddMemberComponent extends Component {
       title: '隶属部门',
       dataIndex: 'deptId',
       key: 'deptId',
+    },{
+      title: '地方中心',
+      dataIndex: 'localCenter',
+      key: 'localCenter',
+    },{
+      title: '系统角色',
+      dataIndex: 'roles',
+      key: 'roles',
+    },{
+      title: '账户状态',
+      dataIndex: 'status',
+      key: 'status',
     }];
   }
-
-  state = {
-    visible: false,
-    selectedRowKeys: [],
-  }
-
-
-  expandHandler() {
-
-  }
-
-  onSelect(selectedKeys, e) {
+   onSelect(selectedKeys, e) {
     const  { selectedNodes } = e;
     const node = selectedNodes[0];
     this.nodeId = node.props.nodeId;
     this.tissueProperty = node.props.tissueProperty;
-    this.props.dispatch({
-      type: "permission/getUserPageListByUserRole",
-      payload: { nodeid:node.props.nodeId, tissueProperty:node.props.tissueProperty, roleId:this.props.selectRole.id }
-    })
+     this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            nodeid: this.nodeId,
+            tissueProperty: this.tissueProperty
+        },
+      });
   }
-
   cellOnChange = ( selectedRowKeys ) => {
       this.props.dispatch({
         type: "permission/selectedRowsChange",
@@ -56,31 +63,12 @@ class AddMemberComponent extends Component {
   onClose() {
     this.props.onCancel();
   }
+  expandHandler() {
 
-
+  }
   render() {
-    let { currentDeptTree ,undisUserList, undisUserTotal } = this.props;
-    let  endemicTree = [];
-    if (currentDeptTree != null) {
-      endemicTree = [ currentDeptTree  ];
-    }
-    undisUserList.map((record)=>{
-      record.key = record.id;
-    })
-
-    const pagination = {
-      total: undisUserTotal, //数据总条数
-      showQuickJumper: true,
-      pageSize: 10,
-      onChange: (page, pageSize) => {
-        this.props.dispatch({
-            type: "permission/getUserPageListByUserRole",
-            payload: { nodeid:this.nodeId, tissueProperty:this.tissueProperty, roleId:this.props.selectRole.id, page, size: pageSize }
-          }
-        );
-      },
-    }
-
+    console.log(list)
+    const { visible, treeData, list, total } = this.props
     let loops = []
     const nodesIteration = (nodes, itemKey) => {
       return nodes.map((item, index) => {
@@ -90,16 +78,35 @@ class AddMemberComponent extends Component {
         return <TreeNode key={ itemKey+index } title={item.name+"("+String(item.count)+")"} nodeId={item.id} tissueProperty={item.tissueProperty}/>;
       })
     }
-    loops = nodesIteration(endemicTree);
+    if(list != null){
+      loops = nodesIteration(list);
+    }
+    const pagination = {
+      total: total, //数据总条数
+      showQuickJumper: true,
+      pageSize: 10,
+      onChange: (page, pageSize) => {
+         let nodeId = this.nodeId
+         let tissueProperty = this.tissueProperty
+        this.props.dispatch({
+          type: "organization/organizationList",
+          payload: { 
+            nodeid:nodeId,
+            tissueProperty:tissueProperty,
+            page:page,
+            size: 5,
+          }
+        });
+      },
+    }
     const { selectedRowKeys } = this.props;
-
     const rowSelection = {
       selectedRowKeys,
       onChange: this.cellOnChange.bind(this)
     };
     return (
+      <div className="AddMemberLeader" style={{display:this.props.display}}>
       <div>
-        <div>
           <Row gutter={8}>
             <Col className="gutter-row" span={5}>
               <Tree
@@ -119,7 +126,7 @@ class AddMemberComponent extends Component {
                   <Input className="search-input-div" />
                   <Button className="search-button-div">查询</Button>
                 </div>
-                <Table bordered rowSelection={ rowSelection } dataSource={ undisUserList } columns={ this.columns} pagination = {pagination} />
+                <Table bordered   columns={ this.columns}  />
               </div>
             </Col>
           </Row>
@@ -135,16 +142,12 @@ class AddMemberComponent extends Component {
 
 function mapStateToProps(state) {
   const {
-    currentDeptTree,
-    undisUserList,
-    undisUserTotal,
-    selectedRowKeys
-  } = state.permission;
+    list,
+    total
+  } = state.organization;
   return {
-    currentDeptTree,
-    undisUserList,
-    undisUserTotal,
-    selectedRowKeys
+    list,
+    total
   };
 }
-export default connect(mapStateToProps)(AddMemberComponent)
+export default connect(mapStateToProps)(AddMemberLeader)

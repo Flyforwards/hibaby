@@ -11,8 +11,7 @@ import {local, session} from '../../../common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import EntryInformation from './EntryInformation.jsx'
 import request from '../../../common/request/request.js'
-
-import UploadIMG from './upData.jsx'
+import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -32,18 +31,9 @@ class EditUsered extends React.Component {
       value:1,
       gmt_entry:"00-00-00",
       index:null,
-      display:"block"
+      display:"block",
+      identifier:null
     }
-    state = {
-      previewVisible: false,
-      previewImage: '',
-      fileList: [{
-        uid: -1,
-        name: 'xxx.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      }],
-    };
   }
   componentDidMount(){
     this.props.dispatch({
@@ -59,19 +49,32 @@ class EditUsered extends React.Component {
         }
       })
   }
+  handleCreateModalCancel() {
+        this.setState({
+          visible: false,
+        })
+    }
+  headelReturnTabal(data){
+    this.setState({
+      TableData:data[0]
+    })
+  }
   //返回按键
   headelReturn = ()=>{
    this.props.history.go(-1)
   }
-  //隶属部门被选中时调用的函数
-  affiliatedDepartment = (value,node, extra) => {
-    traversalDataId = []
-     this.props.dispatch({
-        type: 'organization/position',
-        payload: {
-          dataId: value
-        }
-      })
+  //选择直系领导
+  directLeader = ()=>{
+    this.setState({
+      visible:true
+    })
+    this.props.dispatch({
+      type: 'organization/getLeagerDepartmentNodes',
+      payload: {
+          "nodeId": endemic.id,
+          "tissueProperty": endemic.tissueProperty
+      }
+    })
   }
   //删除入职信息
   deleteMessage = (index)=>{
@@ -126,7 +129,7 @@ class EditUsered extends React.Component {
         }else{
             let roleIdData = []
             fields[`systemRole${i}`].map((item)=>{
-              roleIdData.push({roleId:item})
+              roleIdData.push({"roleId":item})
             })
           entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
@@ -139,13 +142,24 @@ class EditUsered extends React.Component {
               "roles": roleIdData
           })
         }
-        }   
-        console.log(USER)  
+        }    
+        console.log({
+            "categoryId": endemic.id,
+            "entrys": entrysData,
+            "gmt_entry": this.state.gmt_entry,//入职日期
+            "mobile": fields.phoneNumber,//手机号fields.
+            "name": fields.userName,//用户名//fields.userName
+            "password": fields.password,//密码//fields.userName
+            "id":ID,
+            "sex":USER.sex,
+            "status":USER.status,
+            "img":"https//:"
+          })
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
             "categoryId": endemic.id,
-           "entrys": entrysData,
+            "entrys": entrysData,
             "gmt_entry": this.state.gmt_entry,//入职日期
             "mobile": fields.phoneNumber,//手机号fields.
             "name": fields.userName,//用户名//fields.userName
@@ -186,12 +200,14 @@ class EditUsered extends React.Component {
          USER = this.props.userID
          SEX = USER.sex == 1?"男":"女"
          let lendata = USER.entrys.length
+         console.log(USER)
          for(var i=0;i<lendata;i++){
             let headelDepartment = this.affiliatedDepartment
             let entryContent = USER.entrys[i]
             let roles = []
             if(USER.entrys[i].type == 0){
                display = 'none'
+               this.state.identifier=USER.entrys[i].identifier
             }else{
                display = 'block'
             }
@@ -216,7 +232,7 @@ class EditUsered extends React.Component {
               })
             }
             EntryInformationList.push(<div className="AddChildNode">
-              <div className="entryInformation">入职信息 <Icon type="close"  style={{display:display}}/></div>
+              <div className="entryInformation">入职信息{i}<Icon type="close"  style={{display:display}}/></div>
               <Form layout="inline" className="entryInformationForm">
             <FormItem
              label="地方中心"
@@ -253,7 +269,7 @@ class EditUsered extends React.Component {
             <FormItem
              className="button"
             >
-            <Button type="primary" >选择</Button>
+            <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
             </FormItem>
             <FormItem
              label="职位"
@@ -377,7 +393,7 @@ class EditUsered extends React.Component {
              className="Numbering"
             >
               {getFieldDecorator('Numbering', {
-                initialValue: USER.identifier
+                initialValue: this.state.identifier
               })(
                 <Input disabled = { true }/>
               )}
@@ -395,6 +411,12 @@ class EditUsered extends React.Component {
             <p className="gmt_entry"><span>入职日期:</span> <DatePicker allowClear={ false } defaultValue={moment(time, dateFormat)} format={dateFormat} onChange={this.onChange.bind(this)}/></p>
           </Form>
          { EntryInformationList }
+         <SelectTheNodeFrom
+           visible={ this.state.visible}
+           onCancel ={ this.handleCreateModalCancel.bind(this) }
+           treeData = {this.props.LeagerData}
+           headelReturnTabal= {this.headelReturnTabal.bind(this)}
+          />
            <Button type="primary" className="saveButton" onClick={this.headelSave.bind(this,USER.entrys,USER)}>保存</Button>
            <Button type="primary" className="returnButton" onClick={this.headelReturn}>返回</Button>
         </div>
@@ -407,6 +429,7 @@ function EditUser({
     data,
     dataEndemicId,
     dataId,
+    LeagerData,
     userID,
     code
 }) {
@@ -419,6 +442,9 @@ function EditUser({
     }
     userID = {
       userID
+    }
+    LeagerData = {
+      LeagerData
     }
     dataEndemicId = {
        dataEndemicId
@@ -435,6 +461,7 @@ function mapStateToProps(state) {
     dataEndemicId,
     dataId,
     userID,
+    LeagerData,
     code
   } = state.organization;
 
@@ -443,6 +470,7 @@ function mapStateToProps(state) {
     data,
     userID,
     dataId,
+    LeagerData,
     dataEndemicId,
     code
   };

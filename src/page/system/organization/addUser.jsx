@@ -8,6 +8,9 @@ import {Link} from 'react-router'
 import './addUser.scss'
 import {local, session} from '../../../common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
+import AddMemberLeader from './AddMemberLeader.js'
+import SelectTheNodeFrom from './SelectTheNodeFrom.js'
+import UPload from 'common/Upload.js'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -22,7 +25,9 @@ class AddUsered extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value:1
+      value:1,
+      visible:false,
+      TableData:null
     }
   }
   componentDidMount(){
@@ -32,6 +37,30 @@ class AddUsered extends React.Component {
           dataId: endemic.id
         }
       })
+  }
+  handleCreateModalCancel() {
+        this.setState({
+          visible: false,
+        })
+    }
+  headelReturnTabal(data){
+    console.log("ss",data)
+    this.setState({
+      TableData:data[0]
+    })
+  }
+  //选择直系领导
+  directLeader = ()=>{
+    this.setState({
+      visible:true
+    })
+    this.props.dispatch({
+      type: 'organization/getLeagerDepartmentNodes',
+      payload: {
+          "nodeId": endemic.id,
+          "tissueProperty": endemic.tissueProperty
+      }
+    })
   }
   //返回按键
   headelReturn = ()=>{
@@ -57,12 +86,15 @@ class AddUsered extends React.Component {
         } 
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
-        fields.systemRole.map((item)=>{
+        if(fields.systemRole){
+          fields.systemRole.map((item)=>{
           roleIdData.push({roleId:item})
         })
+        }
+        console.log(fields.userImg)
         this.props.dispatch({
           type: 'organization/addUser',
-          payload: {
+          payload:{
             categoryId: endemic.id,
             entrys: [
               {
@@ -71,18 +103,16 @@ class AddUsered extends React.Component {
                 "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
                 "extension":fields.internalExtension, //fields.internalExtension,//内部分机
                 "leaderId": fields.directLeadership,//直系领导
-                "memo": "string",//备注
                 "positionId": fields.position,//职位
-                "identifier": fields.Numbering//编号//fields.Numbering
+                "identifier": fields.Numbering,//编号//fields.Numbering
+                "roles": roleIdData
               }
             ],
             "gmt_entry": values.entryTime,//入职日期
             "mobile": fields.phoneNumber,//手机号fields.
             "name": fields.userName,//用户名//fields.userName
             "password": fields.password,//密码//fields.userName
-            "roles": roleIdData,
             "sex": fields.gender,//性别//fields.gender
-            "status": fields.status,//账号状态//fields.status
             "img":"https://"
           }
         })
@@ -93,6 +123,7 @@ class AddUsered extends React.Component {
       let traversalEndemicId = []
       let selectDataList = []
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+
       if(this.props.dataEndemicId != null){
           traversalEndemicId = this.props.dataEndemicId.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
@@ -119,7 +150,8 @@ class AddUsered extends React.Component {
               {getFieldDecorator('userImg', {
                 rules: [],
               })(
-                <div className="img"></div>
+                <div className="img"><UPload /></div>
+
               )}
             </FormItem>
             <FormItem
@@ -192,14 +224,15 @@ class AddUsered extends React.Component {
              className="directLeadership"
             >
               {getFieldDecorator('directLeadership', {
+                initialValue: this.state.TableData?this.state.TableData.id:"",
               })(
-                <Input />
+                <Input disabled={true}/>
               )}
             </FormItem>
             <FormItem
              className="button"
             >
-            <Button type="primary" >选择</Button>
+            <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
             </FormItem>
             <FormItem
              label="职位"
@@ -281,6 +314,12 @@ class AddUsered extends React.Component {
           </Form>
            <Button type="primary" className="saveButton" onClick={this.headelSave}>保存</Button>
            <Button type="primary" className="returnButton" onClick={this.headelReturn}>返回</Button>
+          <SelectTheNodeFrom
+           visible={ this.state.visible}
+           onCancel ={ this.handleCreateModalCancel.bind(this) }
+           treeData = {this.props.LeagerData}
+           headelReturnTabal= {this.headelReturnTabal.bind(this)}
+          />
         </div>
       )
   }
@@ -291,6 +330,7 @@ function AddUser({
     data,
     dataEndemicId,
     dataId,
+    LeagerData,
     code
 }) {
   return ( <div>
@@ -306,6 +346,9 @@ function AddUser({
     dataId = {
       dataId
     }
+    LeagerData = {
+      LeagerData
+    }
     /> </div>
   )
 }
@@ -314,6 +357,7 @@ function mapStateToProps(state) {
     data,
     dataEndemicId,
     dataId,
+    LeagerData,
     code
   } = state.organization;
 
@@ -322,6 +366,7 @@ function mapStateToProps(state) {
     data,
     dataId,
     dataEndemicId,
+    LeagerData,
     code
   };
 }

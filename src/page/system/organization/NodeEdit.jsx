@@ -12,7 +12,7 @@ const endemic  = session.get("endemic")
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 @createForm()
-class AddChildNodeed extends Component {
+class NodeEdited extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -23,24 +23,27 @@ class AddChildNodeed extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk() {
+    handleOk(data) {
         console.log("ok",this.props.ID)
-         console.log("ok",this.state.TableData)
+        console.log("oktablea",this.state.TableData)
+        console.log("okdata",data)
         const fields = this.props.form.getFieldsValue();
         console.log("fields",fields)
+        
         this.props.dispatch({
-            type: 'organization/saveDepartment',
+            type: 'organization/modifyDepartment',
             payload: {
-              abbreviation: fields.referredTo,//简称
-              englishName: fields.englishName,
-              leaderId: this.state.TableData.id,
-              leaderName: this.state.TableData.name,
-              name: fields.fullName,
-              parentId:this.props.ID,
-              tissueProperty: fields.localCenter
+              "abbreviation": fields.referredTo,//简称
+              "englishName": fields.englishName,
+              "leaderId": this.state.TableData.id,
+              "leaderName": this.state.TableData.name,
+              "name": fields.fullName,
+             " parentId":this.props.ID,
+              "tissueProperty": fields.localCenter,
+              "id":data.id
             }
         })
-        this.props.onCancel()
+       
     }
     checkbox() {
         console.log("checkbox")
@@ -88,7 +91,11 @@ class AddChildNodeed extends Component {
         }, 1000)
     }
     render() {
-        const {visible, form, confirmLoading} = this.props
+      let NodesdataEdit ={}
+        const {visible, form, confirmLoading, Nodesdata} = this.props
+        if( Nodesdata != null){
+          NodesdataEdit = Nodesdata
+        }
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
           labelCol: {
@@ -111,7 +118,7 @@ class AddChildNodeed extends Component {
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
                 onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this)}
+                onOk={this.handleOk.bind(this,NodesdataEdit)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
                 width={ 600 }
@@ -126,7 +133,7 @@ class AddChildNodeed extends Component {
                         initialValue:this.props.ID,
                         rules: [],
                       })(
-                        <Input disabled={ true }/>
+                        <Input />
                       )}
                     </FormItem>
                     <FormItem
@@ -134,6 +141,7 @@ class AddChildNodeed extends Component {
                       label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
+                        initialValue:"l",
                         rules: [],
                       })(
                         <Select>
@@ -146,9 +154,10 @@ class AddChildNodeed extends Component {
                       label="全称"
                     >
                       {getFieldDecorator('fullName', {
+                        initialValue:NodesdataEdit.name,
                         rules: [],
                       })(
-                        <Input/>
+                        <Input />
                       )}
                     </FormItem>
                     <FormItem
@@ -156,9 +165,10 @@ class AddChildNodeed extends Component {
                       label="简称"
                     >
                       {getFieldDecorator('referredTo', {
+                        initialValue:NodesdataEdit.abbreviation,
                         rules: [],
                       })(
-                        <Input/>
+                        <Input />
                       )}
                     </FormItem>
                     <FormItem
@@ -166,9 +176,10 @@ class AddChildNodeed extends Component {
                       label="英文名称"
                     >
                       {getFieldDecorator('englishName', {
+                        initialValue:NodesdataEdit.englishName,
                         rules: [],
                       })(
-                        <Input/>
+                        <Input />
                       )}
                     </FormItem>
                     <FormItem
@@ -177,7 +188,7 @@ class AddChildNodeed extends Component {
                       className="nodeLeaderIput"
                     >
                       {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:this.state.TableData?this.state.TableData:""
+                        initialValue:this.state.TableData?this.state.TableData.name:""
                       })(
                         <Input/>
                       )}
@@ -203,14 +214,14 @@ class AddChildNodeed extends Component {
     }
 }
 
-AddChildNode.propTypes = {}
-AddChildNode.defaultProps = {}
-function AddChildNode({
+NodeEdited.propTypes = {}
+NodeEdited.defaultProps = {}
+function NodeEdit({
   dispatch,
   LeagerData
 }) {
   return ( < div >
-    <AddChildNodeed dispatch = {
+    <NodeEdited dispatch = {
       dispatch
     }
     LeagerData = {
@@ -228,5 +239,5 @@ function mapStateToProps(state) {
     LeagerData
     };
 }
-export default connect(mapStateToProps)(AddChildNodeed)
+export default connect(mapStateToProps)(NodeEdited)
 

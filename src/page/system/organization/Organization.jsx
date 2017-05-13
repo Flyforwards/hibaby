@@ -12,7 +12,7 @@ import OrganizationLeft from './OrganizationLeft.jsx'
 import {local, session} from '../../../common/util/storage.js'
 import Disabled from './Disabled.jsx'
 
-
+const endemic  = session.get("endemic")
 const roleId = local.get("rolSelectData")
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
@@ -117,12 +117,12 @@ class Organization extends React.Component {
         type: 'organization/organizationList',
         payload: {
             name: $(".userName").val(),
-            nodeid: 3,
+            nodeid: endemic.id,
             roleId: this.state.character,
             status: this.state.status,
             page: 1,
             size: 5,
-            tissueProperty: 2
+            tissueProperty:endemic.tissueProperty
         },
       });
     }
@@ -196,12 +196,12 @@ class Organization extends React.Component {
               type: 'organization/organizationList',
               payload: {
                   name: this.state.userName,
-                  nodeid: 3,
+                  nodeid: endemic.id,
                   roleId: this.state.character,
                   status: this.state.status,
                   page: current,
                   size: 5,
-                  tissueProperty: 2
+                  tissueProperty: endemic.tissueProperty
               },
             });
           },
