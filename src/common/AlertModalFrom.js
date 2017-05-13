@@ -53,14 +53,4 @@ class AddRoleFrom extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const {
-    data,
-    code
-  } = state.permission;
-  return {
-    loading: state.loading.models.permission,
-    data
-  };
-}
-export default connect(mapStateToProps)(AddRoleFrom)
+export default connect()(AddRoleFrom)

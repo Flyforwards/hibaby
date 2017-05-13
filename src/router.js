@@ -122,17 +122,17 @@ let routes = [
               path: '/service/Addservice',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      registerModel(app, require('./models/system'));
+                      registerModel(app, require('./models/service'));
                       cb(null, require('./page/system/service/Addservice.jsx'))
                   })
               }
           },
           //查看服务详情
           {
-              path: '/service/look',
+              path: '/service/LookService',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      registerModel(app, require('./models/system'));
+                      registerModel(app, require('./models/service'));
                       cb(null, require('./page/system/service/LookService.jsx'))
                   })
               }

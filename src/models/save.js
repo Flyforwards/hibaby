@@ -99,6 +99,16 @@ export default {
 
 			}
 		},
+		*getEditData({payload}, {put, select}) {
+			const data = yield select((state) => state.save.data)
+			// console.log('model:save:getedit>>', data);
+			yield put({
+				type: 'editDataSave',
+				payload: {
+					data
+				}
+			})
+		}
 	},
 	subscriptions: {
 		setup({
@@ -122,12 +132,12 @@ export default {
 						payload:query
 					});
 				}
-				if (pathname === '/groupchar/edit') {
-					dispatch({
-						type: 'editData',
-						payload:query
-					});
-				}
+				// if (pathname === '/groupchar/edit') {
+				// 	dispatch({
+				// 		type: 'getEditData',
+				// 		payload:query
+				// 	});
+				// }
 			})
 		}
 	},
