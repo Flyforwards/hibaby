@@ -15,6 +15,7 @@ class editData extends React.Component {
         super(props);
         console.log("ce>>>>",this.props.data)
         const item = this.props.data;
+        const id =item.id;
         let name="";
         let description="";
         let dictionarySideDOs="";
@@ -33,6 +34,7 @@ class editData extends React.Component {
           description:description,
           dictionarySideDOs:dictionarySideDOs,
           formLayout: 'horizontal',
+          id:id,
           lists: []
         }
         console.log("name>>>>",name)
@@ -83,8 +85,7 @@ class editData extends React.Component {
        let values = this.props.form.getFieldsValue();
        const data=this.props.data;
        const id=data.id;
-       if(id!==null)
-       console.log("editsave>>>>",values)
+       console.log("editsave>>>>",id)
       //  let data=this.props.data;
       //  let name=data.name;
       //  let description=data.description
@@ -92,20 +93,25 @@ class editData extends React.Component {
       // let diclen=dictionarySideDOs.length;
       //  console.log("editsave>>>>>",values)
        let dictionarySideDOs=[];
+          //childId=dictionarySideDOs.
        let params = {};
        Object.keys(values).map((key, index) => {
-         console.log(index)
-         if (key.indexOf("field") == 0 ) {
-           let item = {};
-           item['name'] = values[key];
-           item['serialNumber'] = index;
-           console.log('add:handlesave>>',key, values);
-           dictionarySideDOs.push(item)
-         } else {
+         console.log(key)
+        if(key.indexOf("field") == 0){
+             let item = {};
+             item['name'] = values[key];
+             item['id']=Number(values[key]);
+             item['serialNumber'] = index;
+             console.log('add:handlesave>>',key, values);
+             dictionarySideDOs.push(item);
+             if (key.indexOf("id")==0) {
+                dictionarySideDOs.push(this.state.dictionarySideDOs);
+             }
+         }else{
            params[key] = values[key];
          }
        })
-       params = {...params, dictionarySideDOs};
+       params = {...params, dictionarySideDOs,id};
 
        console.log('add:handlesave>>',params)
        this.props.dispatch({
@@ -114,6 +120,7 @@ class editData extends React.Component {
               name:params.name,
               dictionarySideDOs:params.dictionarySideDOs,
               description:params.description,
+              id:params.id,
               type:1
           }
         })
@@ -165,19 +172,22 @@ class editData extends React.Component {
       } : null;
       const { getFieldDecorator } = this.props.form;
         //console.log('render:subItems>>', dictionarySideDOs)
-      console.log(field);
       let arr=[];
+      let childId=[];
       let field=[];
         arr=this.state.dictionarySideDOs;
         field=arr.map(res=>{
             return(res.name)
+        });
+        childId=arr.map(res=>{
+            return(res.id)
         });
       console.log(field)
       let len=field.length;
       const children=[];
       for(let i=0;i<len;i++){
         children.push(<FormItem className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
-                {getFieldDecorator(`field${i}`, {
+                {getFieldDecorator(`id${childId[i]}`, {
                   initialValue:`${field[i]}`,
                   rules: [{ required: true, message: '字段描述为必填项！' }],
               })(

@@ -90,7 +90,7 @@ export default {
 				console.log(data)
 				message.success("更改用户信息成功");
 				yield put({
-					type: 'editDataSave',
+					type: 'saveDataSave',
 					payload: {
 						data,
 						code
@@ -132,12 +132,12 @@ export default {
 						payload:query
 					});
 				}
-				// if (pathname === '/groupchar/edit') {
-				// 	dispatch({
-				// 		type: 'getEditData',
-				// 		payload:query
-				// 	});
-				// }
+				if (pathname === '/groupchar/edit') {
+					dispatch({
+						type: 'saveData',
+						payload:query
+					});
+				}
 			})
 		}
 	},
