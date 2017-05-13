@@ -2,7 +2,7 @@
 import * as organizationService from '../services/organization';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
-import {local, session} from '../common/util/storage.js';
+import {local, session} from 'common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
 
 export default {
@@ -128,7 +128,7 @@ export default {
 			const {data: {data,code}} = yield call(organizationService.deleteUserEntry, values);
 			console.log("根据入职信息id删除入职信息",code)
 			if (code == 0) {
-				
+
 			}
 		},
 		//系统角色下拉列表

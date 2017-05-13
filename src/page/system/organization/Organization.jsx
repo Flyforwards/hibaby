@@ -9,7 +9,7 @@ import { routerRedux } from 'dva/router'
 import { Link} from 'react-router'
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import Disabled from './Disabled.jsx'
 
 

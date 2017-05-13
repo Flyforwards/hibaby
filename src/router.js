@@ -20,7 +20,7 @@ import {Router, hashHistory} from 'react-router'
 import './framework/app/base.css'
 import './framework/app/common.css'
 
-import {local, session} from './common/util/storage.js'
+import { local, session } from 'common/util/storage.js'
 
 import Layout from './framework/layout/Layout.jsx'
 import Home from './page/home'
@@ -45,6 +45,13 @@ let routes = [
             // onEnter(nextState, replace) {
             //     replace('/home')
             // }
+        },
+        onEnter(nextState, replace) {
+          // 可以验证是否登录
+          console.info("%c nextState >>>", "color:orange", nextState)
+          if (!session.get('isLogin')) {
+            replace('/login')
+          }
         },
         childRoutes: [
           // 组织架构
@@ -310,7 +317,11 @@ let routes = [
         path: '*',
         indexRoute: {
             onEnter(nextState, replace) {
-              replace('/404')
+              if (!session.get('isLogin')) {
+                replace('/login')
+              } else {
+                replace('/404')
+              }
             }
         }
     }

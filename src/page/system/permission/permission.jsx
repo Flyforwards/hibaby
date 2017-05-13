@@ -151,7 +151,7 @@ class permission extends Component {
              <div className="divs">
                <Button className="add" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
-             <div className="CreateModaList">
+             <div>
                 <Table bordered dataSource={ data } columns={ this.columns } pagination = { pagination }/>
              </div>
              <AddRoleFrom

@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import SelectList from './from.jsx'
 
 const createForm = Form.create

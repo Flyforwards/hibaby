@@ -1,6 +1,6 @@
 
 import * as loginService from '../services/login';
-import { local, session } from '../common/util/storage.js'
+import { local, session } from 'common/util/storage.js'
 import { routerRedux } from 'dva/router';
 
 
@@ -51,6 +51,10 @@ export default {
 				const { data: { data, code, err} } = yield call(loginService.login, values);
 				if (code == 0 && err == null) {
           session.set("token", data.token);
+          session.set("isLogin", true);
+          yield put({
+            type : "layout/getEndemic"
+          });
 					yield put(routerRedux.push('/club'));
 				} else {
           throw err;

@@ -7,7 +7,7 @@ import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
 import moment from 'moment';
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import EntryInformation from './EntryInformation.jsx'
 import request from '../../../common/request/request.js'
@@ -98,7 +98,7 @@ class EditUsered extends React.Component {
         }
       })
   }
-  
+
   //保存按键
   headelSave = (entrys,USER)=>{
     this.props.form.validateFields((err, fieldsValue) => {
@@ -139,8 +139,8 @@ class EditUsered extends React.Component {
               "roles": roleIdData
           })
         }
-        }   
-        console.log(USER)  
+        }
+        console.log(USER)
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
@@ -159,25 +159,25 @@ class EditUsered extends React.Component {
       }
     })
   }
-  getLocalTime(nS) { 
+  getLocalTime(nS) {
       var now = new Date(parseInt(nS));
-      var year=now.getFullYear(); 
-      var month=now.getMonth()+1; 
-      var date=now.getDate(); 
+      var year=now.getFullYear();
+      var month=now.getMonth()+1;
+      var date=now.getDate();
       return `${year}-${month}-${date}`
-    } 
+    }
   onChange(value,index){
     this.setState({
       gmt_entry:index
     })
   }
-    render() {  
+    render() {
       let USER = []
       let SEX = []
       let roles = []
       let entrys = []
       let traversalEndemicId = []
-      let selectDataList = [] 
+      let selectDataList = []
       let EntryInformationList = []
       var time = '2017-03-10';
       let display = 'block'

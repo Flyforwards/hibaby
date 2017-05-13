@@ -6,16 +6,30 @@ function parseJSON(response) {
   return response.json();
 }
 
+// function checkStatus(response) {
+//   if (response.status >= 200 && response.status < 300) {
+//     // 捕获业务异常抛出
+//     return response;
+//   } else {
+//     throw response;
+//   }
+// }
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
+    // 处理业务错误
     return response;
-  } else {
-    throw response;
   }
+
+  const error = new Error(response.statusText);
+  error.response = response;
+  console.log('request:error>>', response);
+  throw error;
 }
 
-function catchErr(response) {
-  throw response.statusText;
+
+function catchErr(error) {
+  throw error;
 }
 
 /**

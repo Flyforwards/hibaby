@@ -1,8 +1,8 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import './AddJob.scss'
 
 const createForm = Form.create
@@ -25,7 +25,7 @@ class EntryInformationed extends Component {
         this.traversalDataId = []
     }
 
-    
+
     componentDidMount(){
       if(this.props.type == 0){
           this.setState({
@@ -61,7 +61,7 @@ class EntryInformationed extends Component {
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
         })
       }
-      
+
       if(this.props.dataId != null){
           this.traversalDataId = this.props.dataId.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
