@@ -2,15 +2,19 @@
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import './service.scss'
-import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
+import {Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import {classification,dataList,ww} from 'common/constants.js'
-import {routerRedux} from 'dva/router'
+import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
-import Current from '../../Current'
+import Current from '../../Current';
+import AlertModalFrom from 'common/AlertModalFrom'
 class serviceData extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.delete=this.delete.bind(this)
+        this.state = {
+
+        }
         this.columns = [{
           title: '服务项目名称',
           dataIndex: 'name',
@@ -20,26 +24,38 @@ class serviceData extends Component {
           title: '服务项目内容',
           dataIndex: 'contents',
           key:'contents',
-          width: '300px',
+          width: '600px',
         },{
           title: '服务项目价格',
           dataIndex: 'price',
           key:'price',
-          width: '300px',
+          width: '150px',
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
-          width: '300px',
+          width: '150px',
           render: (text, record, index) => {
+          console.log(record)
             return (
                 <div>
-                  <a href="#" className="firstA" onClick={this.Edit}>查看</a>
-                  <a href="#" className="firstB" onClick={this.delete}>删除</a>
+
+                  <Link to={{ pathname: '/service/LookService', query: { id:record.id } }}className="firstA" >查看</Link>
+                  <a href="#" className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
                 </div>
             );
           },
         }];
+    }
+    componentWillMount() {
+
+    }
+    editPermissions(record){
+      this.record = record;
+      this.setState({
+        modifyModalVisible: true,
+        add: false,
+      })
     }
     managementInquire() {
       console.log("查询")
@@ -47,8 +63,29 @@ class serviceData extends Component {
     Edit(){
       console.log("查看")
     }
-    delete(){
-      console.log("删除")
+    // 删除弹框
+    delete(record){
+      this.record = record;
+      this.setState({
+        alertModalVisible: true,
+      })
+    }
+    //确定删除
+    handleAlertModalOk(record) {
+        this.props.dispatch({
+          type: 'service/deleteService',
+          payload: {
+            dataId: record.id,
+            page: this.page,
+            pageSize: this.pageSize,
+          }
+        })
+      this.handleCreateModalCancel();
+    }
+    handleCreateModalCancel() {
+        this.setState({
+          alertModalVisible: false,
+        })
     }
     render() {
         const columns = this.columns;
@@ -69,12 +106,20 @@ class serviceData extends Component {
         };
         return (
            <div className="management-cent">
-            <div className="name"><Link to="/service/Addservice"><span >添加</span></Link></div>
-            <div className="CreateModaList">
-                <Table bordered dataSource={this.props.data} columns={columns} pagination = {pagination} rowKey="Numbering"/>
-                <p className="allList">共计0条,范围1-10</p>
-            </div>
+              <div className="name"><Link to="/service/Addservice"><span >添加</span></Link></div>
+              <div className="CreateModaList">
+                  <Table bordered dataSource={this.props.data} columns={columns} pagination = {pagination}
+                  rowKey="Numbering"/>
+                  <p className="allList">共计0条,范围1-10</p>
+              </div>
+              <AlertModalFrom
+                visible ={ this.state.alertModalVisible }
+                onCancel ={ this.handleCreateModalCancel.bind(this) }
+                onOk = { this.handleAlertModalOk.bind(this, this.record) }
+                message = { "是否确定删除此服务项?" }
+              />
            </div>
+
         )
     }
 }
@@ -82,7 +127,6 @@ class serviceData extends Component {
 function service({
   dispatch,
   loading,
-  data,
   total,
   page,
   results,
@@ -95,9 +139,6 @@ function service({
     }
     loading = {
       loading
-    }
-    data={
-      data
     }
     total = {
       total
@@ -116,6 +157,7 @@ function mapStateToProps(state) {
     total,
     page,
     range,
+    list,
     code
   } = state.service;
 
@@ -123,6 +165,7 @@ function mapStateToProps(state) {
     loading: state.loading.models.service,
     data,
     total,
+    list,
     page,
     range,
     code

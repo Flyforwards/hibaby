@@ -102,3 +102,31 @@ export function deleteUserEntry(values) {
     body: JSON.stringify(values),
   })
 }
+//根据节点id加载负责人组织架构列表
+export function getLeagerDepartmentNodes(values) {
+  return request('/crm/api/v1/department/getLeagerDepartmentNodes', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//根据节点id获取组织架构节点信息
+export function getDepartment(values) {
+  return request('/crm/api/v1/department/getDepartment', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//根据节点id删除组织架构节点
+export function deleteDepartment(values) {
+  return request('/crm/api/v1/department/deleteDepartment', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//更新组织架构节点
+export function modifyDepartment(values) {
+  return request('/crm/api/v1/department/modifyDepartment', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

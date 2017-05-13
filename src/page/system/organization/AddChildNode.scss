@@ -31,3 +31,55 @@
 	    margin-top: -55px;
 	}
 }
+.SeeChildNode{
+	.ant-modal-header{
+		text-align: center;
+		background-color: rgba(228, 228, 228, 1);
+	}
+	.edit{
+		background-color: rgba(22, 155, 213, 1);
+		border: 0;
+	}
+	.delet{
+		background-color: rgba(255, 74, 74, 1);
+		border:none;
+	}
+	.nodeLeaderIput{
+		width:70%;
+		margin-left: 42px;
+	}
+	.nodeLeader{
+		margin-right: 92px;
+	    float: right;
+	    margin-top: -55px;
+	}
+	.ant-modal-footer{
+		display: none
+	}
+	.ant-modal-body{
+		overflow: hidden
+	}
+	.ant-btn-primary{
+		float:right;
+		margin-right:30px; 
+		margin-top:10px; 
+	}
+}
+.Disabled{
+	.ant-modal-header{
+		text-align: center;
+		background-color: rgba(228, 228, 228, 1);
+	}
+	.ant-modal-body{
+		text-align: center;
+	}
+	.nodeLeaderIput{
+		width:70%;
+		margin-left: 42px;
+	}
+	.nodeLeader{
+		margin-right: 92px;
+	    float: right;
+	    margin-top: -55px;
+	}
+}

@@ -5,6 +5,7 @@ import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
 import './AddChildNode.scss'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from '../../../common/util/storage.js'
+import NodeEdit from './NodeEdit.jsx'
 
 const createForm = Form.create
 const FormItem = Form.Item
@@ -12,12 +13,14 @@ const endemic  = session.get("endemic")
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 @createForm()
-class AddChildNodeed extends Component {
+class SeeDtailed extends Component {
     constructor(props) {
         super(props)
         this.state = {
           visible:false,
-          TableData:null
+          TableData:null,
+          display:"block",
+          NodeEditVisible:false
         }
     }
     handleCancel() {
@@ -25,33 +28,42 @@ class AddChildNodeed extends Component {
     }
     handleOk() {
         console.log("ok",this.props.ID)
-         console.log("ok",this.state.TableData)
         const fields = this.props.form.getFieldsValue();
         console.log("fields",fields)
-        this.props.dispatch({
-            type: 'organization/saveDepartment',
-            payload: {
-              abbreviation: fields.referredTo,//简称
-              englishName: fields.englishName,
-              leaderId: this.state.TableData.id,
-              leaderName: this.state.TableData.name,
-              name: fields.fullName,
-              parentId:this.props.ID,
-              tissueProperty: fields.localCenter
-            }
-        })
         this.props.onCancel()
     }
     checkbox() {
         console.log("checkbox")
-
+    }
+    ReturnLeader(){
+      this.props.onCancel()
     }
     handleAfterClose() {
         this.props.form.resetFields()
     }
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
+        console.log(this.props.ID)
     }
+    delet(id){
+      this.props.dispatch({
+        type: 'organization/deleteDepartment',
+          payload: {
+            "dataId":id
+          }
+      })
+    }
+    EditNode(){
+      this.setState({
+          NodeEditVisible: true
+        })
+    }
+    handleNodeEditCancel(){
+      this.setState({
+          NodeEditVisible: false
+        })
+    }
+
      handleCreateModalCancel() {
         this.setState({
           visible: false,
@@ -62,19 +74,7 @@ class AddChildNodeed extends Component {
         TableData:data[0]
       })
     }
-    //选择直系领导
-    directLeader = ()=>{
-      this.setState({
-        visible:true
-      })
-      this.props.dispatch({
-        type: 'organization/getLeagerDepartmentNodes',
-        payload: {
-            "nodeId": endemic.id,
-            "tissueProperty": endemic.tissueProperty
-        }
-      })
-    }
+
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
         console.log(Date.now())
@@ -88,6 +88,14 @@ class AddChildNodeed extends Component {
         }, 1000)
     }
     render() {
+      let Nodesdata = {}
+      let display = "block"
+      if(this.props.getDepartmentNode!=null){
+        Nodesdata = this.props.getDepartmentNode
+      }
+        if(this.props.ID == 1 || this.props.ID == 3){
+            display = "none"
+        }
         const {visible, form, confirmLoading} = this.props
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
@@ -103,10 +111,8 @@ class AddChildNodeed extends Component {
         return (
             <Modal
                 visible={visible}
-                title="添加子节点"
-                okText="保存"
-                cancelText="返回"
-                wrapClassName="AddChildNode"
+                title="节点详情"
+                wrapClassName="SeeChildNode"
                 closable={false}
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
@@ -116,7 +122,7 @@ class AddChildNodeed extends Component {
                 maskClosable={!confirmLoading}
                 width={ 600 }
             >
-            <div className="AddChildNode">
+            <div className="SeeChildNode">
                 <Form onSubmit={this.handleSubmit}>
                     <FormItem
                      {...formItemLayout}
@@ -134,6 +140,7 @@ class AddChildNodeed extends Component {
                       label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
+                        initialValue:"l",
                         rules: [],
                       })(
                         <Select>
@@ -146,9 +153,10 @@ class AddChildNodeed extends Component {
                       label="全称"
                     >
                       {getFieldDecorator('fullName', {
+                        initialValue:Nodesdata.name,
                         rules: [],
                       })(
-                        <Input/>
+                        <Input disabled={true}/>
                       )}
                     </FormItem>
                     <FormItem
@@ -156,9 +164,10 @@ class AddChildNodeed extends Component {
                       label="简称"
                     >
                       {getFieldDecorator('referredTo', {
+                        initialValue:Nodesdata.abbreviation,
                         rules: [],
                       })(
-                        <Input/>
+                        <Input disabled={ true }/>
                       )}
                     </FormItem>
                     <FormItem
@@ -166,36 +175,33 @@ class AddChildNodeed extends Component {
                       label="英文名称"
                     >
                       {getFieldDecorator('englishName', {
+                        initialValue:Nodesdata.englishName,
                         rules: [],
                       })(
-                        <Input/>
+                        <Input disabled={ true }/>
                       )}
                     </FormItem>
                     <FormItem
                      {...formItemLayout}
                       label="节点负责人"
-                      className="nodeLeaderIput"
                     >
-                      {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:this.state.TableData?this.state.TableData:""
+                      {getFieldDecorator('englishName', {
+                        initialValue:Nodesdata.leaderName,
+                        rules: [],
                       })(
-                        <Input/>
-                      )}
-                    </FormItem>
-                    <FormItem
-                    className="nodeLeader"
-                    >
-                      {getFieldDecorator('nodeLeader', {
-                      })(
-                        <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
+                        <Input disabled={ true }/>
                       )}
                     </FormItem>
                 </Form>
-                <SelectTheNodeFrom
-                 visible={ this.state.visible}
-                 onCancel ={ this.handleCreateModalCancel.bind(this) }
-                 treeData = {this.props.LeagerData}
-                 headelReturnTabal= {this.headelReturnTabal.bind(this)}
+                 <Button type="primary" className="edit" onClick={this.EditNode.bind(this,Nodesdata)}>编辑</Button>
+                 <Button type="primary" className="delet" onClick={this.delet.bind(this,this.props.ID)} style={{display:display}}>删除</Button>
+                <Button  type="primary" onClick={this.ReturnLeader.bind(this)}>返回</Button>
+                <NodeEdit
+                    visible={ this.state.NodeEditVisible }
+                    handleOk={this.state.handleOk}
+                    onCancel={ this.handleNodeEditCancel.bind(this) }
+                    ID = {this.props.ID}
+                    Nodesdata = {Nodesdata}
                 />
             </div>
             </Modal>
@@ -203,30 +209,29 @@ class AddChildNodeed extends Component {
     }
 }
 
-AddChildNode.propTypes = {}
-AddChildNode.defaultProps = {}
-function AddChildNode({
+SeeDtailed.propTypes = {}
+SeeDtailed.defaultProps = {}
+function SeeDtail({
   dispatch,
-  LeagerData
+  getDepartmentNode
 }) {
   return ( < div >
-    <AddChildNodeed dispatch = {
+    <SeeDtailed dispatch = {
       dispatch
     }
-    LeagerData = {
-      LeagerData
+    getDepartmentNode = {
+      getDepartmentNode
     }
     /> </div >
   )
 }
 function mapStateToProps(state) {
   const {
-    LeagerData
+    getDepartmentNode
   } = state.organization;
   return {
     loading: state.loading.models.organization,
-    LeagerData
+    getDepartmentNode
     };
 }
-export default connect(mapStateToProps)(AddChildNodeed)
-
+export default connect(mapStateToProps)(SeeDtailed)
