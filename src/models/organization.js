@@ -4,7 +4,7 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from '../common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
-
+const endemic  = session.get("endemic")
 export default {
 	namespace: 'organization',
 	state: {
@@ -16,11 +16,29 @@ export default {
 		dataId:null,
 		dataEndemicId:null,
 		userID:null,
+		LeagerData:null,
+		getDepartmentNode:null,
 	},
 	reducers: {
 		getUserPageListByDeptId(state,{payload:{ data,code }}){
 	      let getUserPageListByDeptIddata = {...state,data,code};
 	      return getUserPageListByDeptIddata
+	    },
+	    deleteDepartmentSave(state,{payload:{ data,code }}){
+	      let deleteDepartmentdata = {...state,data,code};
+	      return deleteDepartmentdata
+	    },
+	    modifyDepartmentSave(state,{payload:{ data,code }}){
+	      let modifyDepartmentdata = {...state,data,code};
+	      return modifyDepartmentdata
+	    },
+	    getDepartmentSave(state,{payload:{ data:getDepartmentNode,code }}){
+	      let getDepartmentdata = {...state,getDepartmentNode,code};
+	      return getDepartmentdata
+	    },
+	    getLeagerDepartmentNodesSave(state,{payload:{ data:LeagerData,code }}){
+	      let getLeagerDepartmentNodesdata = {...state,LeagerData,code};
+	      return getLeagerDepartmentNodesdata
 	    },
 	    getUserListByIdSave(state,{payload:{ data:userID,code }}){
 	      let getUserListByIddata = {...state,userID,code};
@@ -72,6 +90,7 @@ export default {
 				end: page == 1 ? list.length : (page - 1) * 3 + list.length,
 				totalpage:Math.ceil(total/size),
 			}
+			console.log(list)
 			return {...organizationdata,range};
 	    },
 	},
@@ -82,6 +101,49 @@ export default {
 			if (code == 0) {
 				yield put({
 					type: 'getDepartmentNodesList',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//根据节点id删除组织架构节点
+		*deleteDepartment({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.deleteDepartment, values);
+			if (code == 0) {
+				message.success("删除该组织架构节点成功");
+			}
+		},
+		//根据节点id更新组织架构节点
+		*modifyDepartment({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.modifyDepartment, values);
+			console.log("code",code)
+			if (code == 0) {
+				message.success("修改该组织架构节点成功");
+			}
+		},
+		//根据节点id获取组织架构节点信息
+		*getDepartment({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.getDepartment, values);
+			console.log(code)
+			if (code == 0) {
+				yield put({
+					type: 'getDepartmentSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//根据节点id加载负责人组织架构列表
+		*getLeagerDepartmentNodes({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(organizationService.getLeagerDepartmentNodes, values);
+			console.log("根据节点id加载负责人组织架构列表",data)
+			if (code == 0) {
+				yield put({
+					type: 'getLeagerDepartmentNodesSave',
 					payload: {
 						data,
 						code
@@ -266,10 +328,10 @@ export default {
 						type: 'organizationList',
 						payload: {
 							...query,
-							nodeid: 3,
+							nodeid: endemic.id,
 			                page: 1,
 			                size: 5,
-			                tissueProperty: 2
+			                tissueProperty: endemic.tissueProperty
 						}
 					});
 		        }

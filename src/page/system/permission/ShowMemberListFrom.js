@@ -226,7 +226,7 @@ class ShowMemberListFrom extends Component {
             <div className="input-div">
               <div className="div-input">
                 {
-                  selects
+                 selects
                 }
               </div>
               <div className = { this.state.addMemberClassName }>

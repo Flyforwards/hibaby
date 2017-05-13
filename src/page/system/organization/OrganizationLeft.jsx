@@ -7,6 +7,7 @@ import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
+import SeeDtail from './SeeDtail.jsx'
 
 
 const Option = Select.Option
@@ -20,7 +21,9 @@ class OrganizationLefted extends React.Component {
           upblock:'none',
           ulTop:0,
           addChildNodeVisible:false,
-          ID:null
+          SeeDtailNodeVisible:false,
+          ID:null,
+          node:null,
         }
     }
     expandHandler = () => {
@@ -32,7 +35,8 @@ class OrganizationLefted extends React.Component {
       if(value[0] != null){
         if(node.selectedNodes[0].key !=1){
           this.setState({
-            ID:node.selectedNodes[0].key
+            ID:node.selectedNodes[0].key,
+            node:node.selectedNodes[0]
           })
           this.props.dispatch({
             type: 'organization/organizationList',
@@ -45,14 +49,31 @@ class OrganizationLefted extends React.Component {
           });
         }else{
           this.setState({
-            ID:node.selectedNodes[0].key
+            ID:node.selectedNodes[0].key,
+            node:node.selectedNodes[0]
           })
         }
       }
     }
+    seeDetails(){
+          this.props.dispatch({
+          type: 'organization/getDepartment',
+          payload: {
+              "dataId":this.state.ID,
+          }
+        })
+      this.setState({
+            SeeDtailNodeVisible: true
+        })
+    }
     handleCreateModalCancel() {
         this.setState({
             addChildNodeVisible: false
+        })
+    }
+    handleSeeModalCancel() {
+        this.setState({
+            SeeDtailNodeVisible: false
         })
     }
     componentDidMount(){
@@ -107,7 +128,7 @@ class OrganizationLefted extends React.Component {
                 </Tree>
                 <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
                   <li onClick={this.AddChildNode.bind(this)}>添加子节点</li>
-                  <li>查看详情</li>
+                  <li onClick={this.seeDetails.bind(this)}>查看详情</li>
                   <li>删除</li>
                   <li>ID {this.state.ID}</li>
                 </ul>
@@ -117,6 +138,13 @@ class OrganizationLefted extends React.Component {
                     onCancel={ this.handleCreateModalCancel.bind(this) }
                     ID = {this.state.ID}
                 />
+                <SeeDtail
+                    visible={ this.state.SeeDtailNodeVisible }
+                    handleOk={this.state.handleOk}
+                    onCancel={ this.handleSeeModalCancel.bind(this) }
+                    ID = {this.state.ID}
+                />
+                
             </div>
         )
     }
@@ -127,6 +155,7 @@ function OrganizationLeft({
   loading,
   data,
   leftList,
+  getDepartmentNode,
   code
 }) {
   return ( < div >
@@ -136,6 +165,9 @@ function OrganizationLeft({
     leftList = {
       leftList
     }
+    getDepartmentNode = {
+      getDepartmentNode
+    }
     /></div >
   )
 }
@@ -143,12 +175,14 @@ function mapStateToProps(state) {
   const {
     data,
     leftList,
+    getDepartmentNode,
     code
   } = state.organization;
   return {
     loading: state.loading.models.organization,
     data,
     leftList,
+    getDepartmentNode,
     code
     };
 }

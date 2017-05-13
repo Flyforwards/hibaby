@@ -24,14 +24,29 @@
 			margin-right:10px; 
 		}
 		.img{
-			width:100px;
-			height:100px;
-			float:left;
-			border-radius: 50%;
-			background-color: #999;
-			margin:20px 40px 20px 20px; 
+			margin:20px 40px 20px 11px; 
 			border:none;
+			float:left;
+			.avatar-uploader,
+			.avatar-uploader-trigger,
+			.avatar {
+			  width: 100px;
+			  height: 100px;
+			}
+			.avatar-uploader {
+			  display: block;
+			  border: 1px dashed #d9d9d9;
+			  border-radius: 6px;
+			  cursor: pointer;
+			}
+			.avatar-uploader-trigger {
+			  display: table-cell;
+			  vertical-align: middle;
+			  font-size: 28px;
+			  color: #999;
+			}
 		}
+
 		.Numbering{
 			margin-left:60px; 
 			margin-top: 20px;
