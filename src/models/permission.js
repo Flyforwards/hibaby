@@ -212,7 +212,7 @@ export default {
     *configRolePermission({ payload: values }, {call, put}) {
       const {data: {data, code , err}} =  yield call(usersService.configRolePermission, values)
       if (code == 0 && err == null) {
-        console.log(data);
+        message.success("设置权限成功");
       } else {
         throw err || "请求出错";
       }

@@ -22,6 +22,22 @@ class Header extends React.Component {
             count:9,
             name:"总部"
         }
+        this.userMenu=(
+            <div>
+              <div>
+                <Button>个人中心</Button>
+              </div>
+              <div>
+                <Button onClick={ this.logout.bind(this)}>退出登录</Button>
+              </div>
+            </div>
+        )
+    }
+
+    logout() {
+      this.props.dispatch({
+        type: "layout/logout",
+      })
     }
     componentDidMount() {
         const projectList = this.props.projectList;
@@ -44,6 +60,9 @@ class Header extends React.Component {
         type : "layout/getCurrUserMenu",
         payload: { dataId : itemId },
       });
+    }
+    clickUserIcon(){
+
     }
     render() {
         const menu = (
@@ -125,7 +144,7 @@ class Header extends React.Component {
                     <img src={ Logo } className="nav-logo" />
                     <div className="line"></div>
                     <div className="nav">
-                    <Dropdown overlay={menu} trigger={['click']}>
+                    <Dropdown overlay={ menu } trigger={['click']}>
                         <a className="ant-dropdown-link" href="#">
                             <span className="nav-two">{this.state.name}</span>
                             <Icon type="caret-down" />
@@ -141,12 +160,14 @@ class Header extends React.Component {
                     subNodes
                   }
                 </ul>
-                <div className="header-menu-name">
+                <Dropdown overlay={this.userMenu} placement="bottomCenter" trigger={['click'] }>
+                  <div className="header-menu-name">
                     <img src={UserImg}/>
                     <p> <span className="user-name">李芳</span>
-                    <span className="user-pro">运营经理</span></p>
+                      <span className="user-pro">运营经理</span></p>
                     <Icon type="caret-down" />
-                </div>
+                  </div>
+                </Dropdown>
                 <UpdateModal
                     initialValue = { this.state.initialUpdateValue }
                     visible = { this.state.updateModalVisible }

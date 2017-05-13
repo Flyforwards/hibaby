@@ -6,12 +6,15 @@ const host = "http://118.190.112.88:8087";
 export function fetch({ page }) {
   return request(`/crm/api/v1/user/list?_page=${page}&_limit=PAGE_SIZE`);
 }
+
 export function login(values) {
   return request('/crm/api/v1/login', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
+
 export function customer(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
     method: 'POST',
@@ -37,6 +40,7 @@ export function findValue(values) {
     body: JSON.stringify(values),
   })
 }
+// 获取地方中心列表
 export function getEndemic() {
   return request('/crm/api/v1/department/getEndemic', {
     method: 'POST',
@@ -126,6 +130,15 @@ export function bindUserRole(values) {
     body: JSON.stringify(values),
   })
 }
+
+// 查询当前用户选择的地方中心
+export function getCurrentUserEndemic(values) {
+  return request('/crm/api/v1/user/getCurrentUserEndemic', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 
 

@@ -6,7 +6,7 @@ import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popc
 import './fromModal.scss'
 import SelectList from './from.jsx'
 import TabalList from './TabalList.jsx'
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import FromCreateModal from './fromCreateModal.jsx'
 import AddFromCreateModal from './addFromCreateModal.jsx'
 const createForm = Form.create
@@ -136,7 +136,7 @@ class FromModaled extends Component {
 
         return (
             <div className="fromList">
-              <Form 
+              <Form
                 onSubmit={this.handleSubmit}
                 className="ant-advanced-search-form"
               >
