@@ -1,150 +1,289 @@
 import React from 'react';
 import {connect} from 'dva';
 import './system.scss';
-import {Card,Input,Button} from 'antd';
-var Nzh = require("nzh");
+import {Card,Input,Button,Form} from 'antd';
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
-class List extends React.Component {
-      constructor(props) {
-            super(props);
-            this.state = {
-              bigNum:'三'
-            }
-      }
-      componentDidMount(){
-          var index=this.props.index;
-          var nzhcn = Nzh.cn;
-          var num=Number(index);
-          var newnum=num+1;
-          this.setState({
-            bigNum: nzhcn.encodeS(newnum)
-          })
-      }
-render() {
-      console.log("index",this.props.index)
-      return (<div className = "div2">
-                  <p className = "label" data-index={this.props.index}>选项{this.state.bigNum} </p>
-                  <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                      <Input type = "textarea" rows = {6} data-index={this.props.index} className = "input2"
-                          defaultValue={this.props.index}/>
-                      <span className = "editable-add-btn" onClick={this.props.delete} data-index={this.props.index}>
-                          删除
-                      </span>
-                  </div>
-               </div >
-      )
-    }
-}
-class FindData extends React.Component {
+import request from 'common/request/request.js'
+const FormItem = Form.Item;
+const createForm = Form.create
+
+@createForm()
+class EditPlaceData extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log("ce>>>>",this.props.data)
+        const item = this.props.data;
+        const { getFieldDecorator } = this.props.form;
+        let description="";
+        let dictionarySideDOs=null;
+        let lists=[];
+        if (item !== null) {
+          dictionarySideDOs=item.dictionarySideDOs;
+          console.log('render:subItems>>', dictionarySideDOs)
+
+        };
+        if(dictionarySideDOs==null){
+          lists.push(
+
+                    <FormItem label="选项一">
+                    {getFieldDecorator('field0', {
+                      //initialValue:"",
+                          rules: [{ required: true ,message: '在此输入内容'}],
+                      })(  <Input />
+                        )}
+                      </FormItem>
+            )
+        }else{
+          lists=[];
+        }
         this.add=this.add.bind(this);
         this.delete=this.delete.bind(this);
-        this.handelTrans=this.handelTrans.bind(this);
+        this.handleSave=this.handleSave.bind(this)
         this.state={
-              lists: [
-                      (<div className = "div2">
-                          <p className = "label" > 选项一 < /p>
-                          <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                              <Input ref="xuanname" type = "textarea" rows = {6} className = "input2"/>
-                          </div>
-                        </div> ),
-                      (<div className = "div2">
-                           <p className ="label"> 选项二 < /p>
-                           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                                <Input type = "textarea" rows = {6} className = "input2"/>
-                           </div>
-                      </div>)
-                     ],
-             bigNum:['三','四','五','六','七','八','九']
-        }
+          bigNum:['一', '二','三','四','五','六','七','八','九','十','十一','十二'],
+          formLayout: 'horizontal',
+          lists:lists        }
     }
     add(){
-        var lists=this.state.lists;
-        var len=this.state.lists.length-2;
-        lists.push(<div className = "div2">
-                       <p className = "label" data-index={this.state.lists.length+1}>选项{this.state.bigNum[len]} < /p>
-                       <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                           <Input type = "textarea" rows = {6} data-index={this.state.lists.length}
-                              className = "input2" defaultValue={this.state.lists.length}/>
-                           <span className = "editable-add-btn" onClick={this.delete} data-index={this.state.lists.length}> 删除 </span>
-                       </div>
-                   </div >)
+        console.log("add>>>>>",this.props.data)
+
+        console.log(this.props.data);
+        const item = this.props.data;
+        let arr = [];
+        let lists = this.state.lists;
+        let field=[];
+        let len=null;
+        if (item !== null) {
+          arr = item.dictionarySideDOs;
+          console.log(arr);
+          field=arr.map(res=>{
+              return(res.name)
+          });
+          console.log(field)
+          let num=field.length;
+          len=lists.length+num ;
+        }else {
+            len=lists.length;
+
+        };
+        lists.push(
+          <FormItem key={len} className = "div2">
+          {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
+                })(<div>
+                    <p className = "label">选项{this.state.bigNum[len]}</p>
+                    <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                        <Input  data-index={len} className = "input2"/>
+                        <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+                    </div>
+                    </div>
+                  )}
+              </FormItem>
+          )
         this.setState({lists:lists})
     }
- handelTrans(e){
-     var index=e.target.getAttribute("data-index");
-        var nzhcn = Nzh.cn;
-          var num=Number(index)
-          var newnum=num+1
-          this.setState({
-            bigNum: nzhcn.encodeS(newnum)
-          })
- }
     delete(e){
-        var index=e.target.getAttribute("data-index");
         var lists=this.state.lists;
         lists.splice(index,1);
         this.setState({lists:lists})
     }
      handleReturn = () =>{
-         browserhistory.go(-1)
-     }
+      browserhistory.go(-1)
+    }
 
     handleSave = (e) => {
-        e.preventDefault();
-        console.log(this.refs.description.value)
-        this.props.dispatch({
-          type: 'system/add',
+       e.preventDefault();
+       let values = this.props.form.getFieldsValue();
+       console.log("values>>>",values)
+       let data=this.props.data;
+       let id=data.id;
+       console.log("editsave>>>>",id);
+      // let dictionarySideDOs=data.dictionarySideDOs;
+      // let diclen=dictionarySideDOs.length;
+      //  console.log("editsave>>>>>",values)
+       let dictionarySideDOs=[];
+       let newArr=[];
+       let _field=[];
+       let str=data.dictionarySideDOs;
+       let Array=str.map(res=>{
+         return(res.id)
+       })
+       console.log("Array>>>",Array)
+          //childId=dictionarySideDOs.
+       let params = {};
+       Object.keys(values,).map((key, index) => {
+         console.log("save>>>>",index)
+        if(key.indexOf("field") !== -1||key.indexOf("id") !== -1){
+
+        if(key.indexOf("field") !== -1){
+          console.log(values)
+             let item = {};
+
+             item['name'] = values[key];
+             item['serialNumber'] = index;
+             console.log('add:handlesave>>',item,item['name']);
+             _field.push(item);
+             console.log('add:handlesave>>',_field);
+           }
+           if(key.indexOf("id") !== -1){
+             console.log(key.indexOf("id"));
+             let _item={};
+             _item['name'] = values[key];
+             _item['serialNumber'] = index;
+             newArr.push(_item);
+           }
+
+         }else{
+           params[key] = values[key];
+         }
+       })
+       console.log(dictionarySideDOs)
+       if(newArr!==null){
+
+       for(let n=0;n<newArr.length;n++){
+         let obj={};
+         obj['name']=newArr[n].name;
+         obj['serialNumber']=newArr[n].serialNumber;
+         console.log("idArr>>>",Array[n]);
+         obj['id']=Array[n];
+         console.log(obj['id']);
+         dictionarySideDOs.push(obj);
+       }
+       for(let m=0;m<_field.length;m++){
+         dictionarySideDOs.push(_field[m])
+       }
+       console.log("newArr>>>",dictionarySideDOs);
+     }
+       params = {...params, dictionarySideDOs,id};
+
+       console.log('add:handlesave>>',params)
+       this.props.dispatch({
+          type: 'space/EditPlaceData',
           payload: {
-
-            "description": this.refs.description.props.value,
-            "dictionarySideDOs": [{
-
-              "name": this.refs.xuanname.props.value,
-              "serialNumber": 0
-            }],
-
-            "name": this.refs.title.props.value,
-            "type": 1
-
+              name:params.name,
+              dictionarySideDOs:params.dictionarySideDOs,
+              description:params.description,
+              id:params.id,
+              type:2
           }
         })
-      }
+    }
     render() {
+      console.log("edit>>>>>",this.props.data)
+      let form = this.props.form;
+      const item = this.props.data;
+      const { formLayout } = this.state;
+      //const { dataSource } = this.state;
+      const formItemLayout = formLayout === 'horizontal' ? {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 14 },
+      } : null;
+      const buttonItemLayout = formLayout === 'horizontal' ? {
+        wrapperCol: { span: 14, offset: 4 },
+      } : null;
+      const { getFieldDecorator } = this.props.form;
+        //console.log('render:subItems>>', dictionarySideDOs)
+      let arr=[];
+      let children=[];
+      let field=[];
+      let childId=[];
+      let name="";
+      let description="";
+      if(item!==null){
+        arr=item.dictionarySideDOs;
+        name=item.name;
+        description=item.description;
+      }
+
+        if(arr !==null){
+
+            field=arr.map(res=>{
+                return(res.name)
+            });
+            console.log(field)
+            childId=arr.map(res=>{
+                return(res.id)
+            });
+
+
+        }
+        let len=field.length;
+        for(let i=0;i<len;i++){
+          children.push(<FormItem className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
+                  {getFieldDecorator(`id${childId[i]}`, {
+                    initialValue:`${field[i]}`,
+                    rules: [{ required: true, message: '字段描述为必填项！' }],
+                })(
+                      <Input className="input" />
+                  )}
+                  </FormItem>
+          )
+        }
+      console.log("render>>>",getFieldDecorator)
         return (
-            <div className="xuanxiang container2">
-                <Card title = "字段信息:" >
-                    <div className = "div">
-                      <p className ="label" > 字段名称 < /p>
-                      <Input ref="title" type = "textarea" className ="input" />
-                    </div>
-                    <div className = "div">
-                      <p className = "label"> 字段描述 < /p>
-                      <Input ref="description" type = "textarea"  className = "input" autosize = {{minRows: 2}}/>
-                    </div>
-                </Card>
-                <Card title = "下拉选项:" >
-                    {this.state.lists}
-                    <Button className = "editable-add-btn add" onClick = {this.add} > 添加 < /Button>
-                </Card >
-                <div className="retuSave">
-                    <Button className = "editable-add-btn return" onClick = {this.handleReturn} > 返回 < /Button>
-                    <Button className = "editable-add-btn" onClick = {this.handleSave}> 保存 </Button>
-                </div>
-           </div>
-        )
+              <div className="xuanxiang container2">
+              <Card title = "字段信息:" >
+                  <Form layout={formLayout}>
+                  <FormItem label="字段名称">
+                  {getFieldDecorator('name', {
+                    initialValue:`${name}`,
+                        rules: [{ required: true, message: '字段名称为必填项！' }],
+                    })(  <Input placeholder="input placeholder" />
+                      )}
+                    </FormItem>
+                      <FormItem className = "div" label="字段描述">
+                      {getFieldDecorator('description', {
+                        initialValue:`${description}`,
+                        rules: [{ required: true, message: '字段描述为必填项！' }],
+                    })(
+                          <Input className="input" />
+                      )}
+                      </FormItem>
+                  </Form>
+              </Card>
+              < Card title = "下拉选项:" >
+              <Form>
+                   {children}
+                   {this.state.lists}
+                   <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
+              </Form>
+              </Card >
+              <div className="retuSave">
+
+                  <Link to='localchar/find'>
+                      <Button className = "editable-add-btn return"> 返回 </Button>
+                  </Link>
+                  <Link to='localchar/editplace'>
+                      <Button className = "editable-add-btn" onClick={this.handleSave}> 保存 </Button>
+                  </Link>
+              </div>
+        </div>
+     )
     }
 }
 
-function find({dispatch}) {
-    return (
-            <div >
-              <FindData dispatch = {dispatch}/>
+function EditPlaceData({dispatch, data}) {
+    return (<div>
+                <EditPlaceData dispatch = {dispatch} data={data}/>
             </div>
       )
-  }
+}
+function mapStateToProps(state) {
+  console.log("modelss",state.space)
+  const {
+    data,
+    code,
+    field,
+    len,
+  } = state.space;
 
-export default connect()(find);
+  return {
+    loading: state.loading.models.space,
+    data,
+    code,
+    field,
+    code,
+  };
+}
+export default connect(mapStateToProps)(EditPlaceData);

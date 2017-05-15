@@ -513,7 +513,7 @@ export default {
 							"size": 10,
 							"sortField": "string",
 							"sortOrder": "string",
-							"type": 1
+							"type": 2
 						}
 					});
 				}
