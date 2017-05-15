@@ -32,9 +32,9 @@ export default {
 		},
 
 		checkDataSave(state, {
-			payload: { data }
+			payload: { data:item }
 		}) {
-			return  {...state,data };
+			return  {...state,item };
 		},
 		editDataSave(state, {
 			payload: {

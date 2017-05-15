@@ -17,7 +17,7 @@ class AddData extends React.Component {
           lists: [(<FormItem key='0' className = "div2">
                       {_this.props.form.getFieldDecorator('field0', {rules: [{ required: true, message: 'Username is required!' }],
                     })(<div>
-                           <p className = "label" > 选项一 < /p>
+                           <p className = "label" > 选项一 </p>
                            <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                               <Input type="textarea" rows = {6} className="input2"/>
                            </div>
@@ -27,7 +27,7 @@ class AddData extends React.Component {
                    (<FormItem key='1' className="div2">
                        {_this.props.form.getFieldDecorator('field1', {rules: [{ required: true, message: 'Username is required!' }],
                      })(<div>
-                            <p className = "label" > 选项二 < /p>
+                            <p className = "label" > 选项二 </p>
                             <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                                <Input type="textarea" rows = {6} className="input2"/>
                             </div>

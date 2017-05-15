@@ -1,10 +1,16 @@
 import React from 'react';
 import {connect} from 'dva';
 import './system.scss';
-import {Card,Input,Button} from 'antd';
-var Nzh = require("nzh");
+import {Card,Input,Button,Form} from 'antd';
+import  {NUM_TO_TEXT}  from 'common/constants';
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
+
+const FormItem = Form.Item;
+const createForm = Form.create();
+var Nzh = require("nzh");
+
+@createForm
 class CheckData extends React.Component {
     constructor(props) {
         super(props);
@@ -28,50 +34,48 @@ class CheckData extends React.Component {
          console.log(value)
      }
     render() {
-      const item = this.props.data;
-      let name = "";
-      let description = "";
-      let arr = [];
-      let field=[];
-      let field0="";
-      let field1="";
-      if (item !== null) {
-        name = item.name;
-        description = item.description;
-        arr = item.dictionarySideDOs;
-        console.log(arr);
-        field=arr.map(res=>{
-            return(res.name)
-        });
-        console.log(field)
-        field0=field[0];
-        field1=field[1];
+      const { getFieldDecorator } = this.props.form;
+      const item = this.props.data ? this.props.data : {};
+      let {name='', description='', arr=[]} = item;
+      const formItemLayout = {
+        labelCol: { span: 2 },
+        wrapperCol: { span: 22 },
       };
+
+      let fields=[];
+      if (item.dictionarySideDOs && item.dictionarySideDOs.length > 0) {
+        arr = item.dictionarySideDOs;
+
+        fields = arr.map((value, index) => {
+          <FormItem {...formItemLayout} label={`Field ${i}`}>
+            {getFieldDecorator(`field-${i}`)(
+              <Input placeholder="placeholder" />
+            )}
+          </FormItem>
+        })
+
+      };
+      console.log('check:render:fields>>', fields);
         return (
             <div className="xuanxiang container2">
                 <Card title = "字段信息:" >
-                    <div className = "div">
-                      <p className ="label" > 字段名称 < /p>
-                      <Input type = "textarea" className ="input" value={name} />
-                    </div>
-                    <div className = "div">
-                      <p className = "label"> 字段描述 < /p>
-                      <Input type = "textarea"  className = "input" value={ description }  autosize = {{minRows: 2}}/>
-                    </div>
+                  <FormItem {...formItemLayout} label='字段名称'>
+                    {getFieldDecorator('name',{
+                      initialValue: name ? name : '',
+                    })(
+                      <Input  />
+                    )}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label='字段描述'>
+                    {getFieldDecorator('description',{
+                      initialValue: description ? description : '',
+                    })(
+                      <Input  />
+                    )}
+                  </FormItem>
                 </Card>
                 <Card title = "下拉选项:" >
-                    <div className = "div2">
-                        <p className = "label" > 选项一 < /p>
-                        <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                            <Input type = "textarea"  value={field0} rows = {6} className = "input2"/>
-                        </div>
-                      </div>
-                      <div className = "div2">
-                           <p className ="label"> 选项二 < /p>
-                           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                                <Input type = "textarea" rows = {6} value={field1}  className = "input2"/>
-                           </div>
-                      </div>
+                  {fields}
                 </Card >
                 <div className="retuSave">
                     <Link to='/system/groupchar'>
@@ -104,7 +108,7 @@ function check({dispatch,data,code}) {
 
 function mapStateToProps(state) {
   const {
-    data
+    item: data
   } = state.save;
 
   return {
