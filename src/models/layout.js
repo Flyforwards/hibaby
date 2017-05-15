@@ -31,7 +31,7 @@ export default {
             payload: { clubs } ,
           })
 
-          const { data: { data, code, err}} = yield call(usersService.getCurrentUserEndemic)
+          const { data: { data, code, err}} = yield call(usersService.getCurrentUserSelectEndemic)
           // 判断当前用户是否选择了地方中心
           if (code === 0 && err === null) {
             session.set("endemic", data);
@@ -57,9 +57,7 @@ export default {
           }
         }
       } catch(err) {
-        session.remove("token");
-        session.remove("endemic");
-        session.remove("isLogin");
+
         if (location.pathname !== '/login') {
           let from = location.pathname
           if (location.pathname === '/') {
@@ -115,7 +113,6 @@ export default {
 
     // 退出登录
     *logout({ payload }, { call, put }) {
-      console.log("logout")
       const { data: { data, code , err } }  = yield call(loginService.logout);
       if (code == 0 && err == null) {
         session.remove("isLogin");

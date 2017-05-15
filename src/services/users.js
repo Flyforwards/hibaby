@@ -132,8 +132,8 @@ export function bindUserRole(values) {
 }
 
 // 查询当前用户选择的地方中心
-export function getCurrentUserEndemic(values) {
-  return request('/crm/api/v1/user/getCurrentUserEndemic', {
+export function getCurrentUserSelectEndemic(values) {
+  return request('/crm/api/v1/user/getCurrentUserSelectEndemic', {
     method: 'POST',
     body: JSON.stringify(values),
   })

@@ -100,7 +100,6 @@ class Module extends Component {
   render() {
     const { dataSource } = this.state;
     const columns = this.columns;
-    console.log("Organization",this.props.data)
     const pagination = {
       total: 100, //数据总条数
       showQuickJumper: true,

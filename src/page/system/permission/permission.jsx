@@ -73,8 +73,8 @@ class permission extends Component {
       this.setState({
         settingModalVisible: true,
       })
-
     }
+
     // 展示当前角色的成员列表
     showMemberList(record){
       this.record = record;
