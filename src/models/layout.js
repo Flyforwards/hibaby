@@ -31,7 +31,12 @@ export default {
             payload: { clubs } ,
           })
 
-          const { data: { data, code, err}} = yield call(usersService.getCurrentUserSelectEndemic)
+          const { data: { data: userInfo, code: code2, err: err2}} = yield call(usersService.getCurrentUserInfo)
+          if (code2 ===0 && err2 === null) {
+            session.set("userInfo", userInfo);
+          }
+
+          const { data: { data, code, err}} = yield call(usersService.getCurrentUserSelectEndemic);
           // 判断当前用户是否选择了地方中心
           if (code === 0 && err === null) {
             session.set("endemic", data)
