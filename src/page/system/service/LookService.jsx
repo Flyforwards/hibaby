@@ -44,24 +44,26 @@ class LookService extends Component {
              }
            })
            }
+
            handleCreateModalCancel() {
                this.setState({
                  alertModalVisible: false,
                })
            }
        render() {
-          const addressid=GetQueryString("id")
+          let addressid=GetQueryString("id")
           const item=this.props.data ;
+          console.log("addressid>>>",addressid)
           let values ={};
           let name='';
+          let id=null;
             for(let i=0;i<item.length;i++){
-                if(item[i].id==addressid && item[i] == undefined){
-
-                }else{
-                    values=item[i]
+                if(item[i].id==addressid && item[i] !== undefined){
+                      values=item[i]
                 }
             }
-            name=values.name
+            name=values.name;
+              console.log("LookId>>>>",values)
           console.log("LookId>>>>",name)
           const { formLayout } = this.state;
           const { getFieldDecorator } = this.props.form;
@@ -108,7 +110,7 @@ class LookService extends Component {
                       <Link className="DelBtn" >
                           <Button onClick={this.delete.bind(this,addressid)}>删除</Button>
                       </Link>
-                      <Link className="EditBtn" to='/service/edit'>
+                      <Link className="EditBtn" to={{pathname:'/service/edit',query:{id:`${addressid}`}}}>
                           <Button>编辑</Button>
                       </Link>
                 </div>
@@ -164,16 +166,12 @@ function mapStateToProps(state) {
   console.log("modelss",state.service)
   const {
     data,
-    total,
-    page,
     code
   } = state.service;
 
   return {
     loading: state.loading.models.service,
     data,
-    total,
-    page,
     code
   };
 }

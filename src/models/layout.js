@@ -34,7 +34,7 @@ export default {
           const { data: { data, code, err}} = yield call(usersService.getCurrentUserSelectEndemic)
           // 判断当前用户是否选择了地方中心
           if (code === 0 && err === null) {
-            session.set("endemic", data);
+            // session.set("endemic", data)
             if (location.pathname === '/login') {
               yield put(routerRedux.push('/'))
             }

@@ -6,7 +6,7 @@ import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Sele
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
-import {local, session} from 'common/util/storage.js'
+import {local, session} from '../../../common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import AddMemberLeader from './AddMemberLeader.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
@@ -17,7 +17,7 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
-const endemic  = session.get("endemic")
+const endemic  = session.get("endemic")[0]
 const SelectData = local.get("rolSelectData")
 let traversalDataId = []
 
@@ -44,7 +44,6 @@ class AddUsered extends React.Component {
         })
     }
   headelReturnTabal(data){
-    console.log("ss",data)
     this.setState({
       TableData:data[0]
     })
@@ -83,7 +82,7 @@ class AddUsered extends React.Component {
         const values = {
           ...fieldsValue,
           'entryTime': fieldsValue['entryTime'].format('YYYY-MM-DD')
-        }
+        } 
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
         if(fields.systemRole){
@@ -119,7 +118,7 @@ class AddUsered extends React.Component {
       }
     })
   }
-    render() {
+    render() {  
       let traversalEndemicId = []
       let selectDataList = []
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;

@@ -34,7 +34,8 @@ class EditUsered extends React.Component {
       index:null,
       display:"block",
       identifier:null,
-      Leager:null
+      Leager:null,
+      TableData:[]
     }
   }
   componentDidMount(){
@@ -57,7 +58,6 @@ class EditUsered extends React.Component {
         })
     }
   headelReturnTabal(data){
-    this.state.TableData.push(data[0])
     this.setState({
       TableData:data[0]
     })
@@ -87,12 +87,7 @@ class EditUsered extends React.Component {
           "dataId": Number(index)
         }
     })
-    this.props.dispatch({
-      type: 'organization/getUserListById',
-      payload: {
-       dataId:ID
-      }
-    })
+    history.go(0)
   }
   //隶属部门被选中时调用的函数
   affiliatedDepartment = (value,node, extra) => {
@@ -104,7 +99,6 @@ class EditUsered extends React.Component {
         }
       })
   }
-
   //保存按键
   headelSave = (entrys,USER)=>{
     this.props.form.validateFields((err, fieldsValue) => {
@@ -112,12 +106,13 @@ class EditUsered extends React.Component {
         const fields = this.props.form.getFieldsValue();
         let entrysData = []
         for (var i=0;i<entrys.length;i++){
-          if(entrys[i].type == 0){
-            let roleIdData = []
-            fields[`systemRole${i}`].map((item)=>{
-              roleIdData.push({roleId:item})
+          let roleIdData = []
+          if(fields[`systemRole${i}`]){
+           fields[`systemRole${i}`].map((item)=>{
+              roleIdData.push({"roleId":item})
             })
-            console.log(fields.Numbering)
+          }
+          if(entrys[i].type == 0){
             entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
@@ -130,10 +125,6 @@ class EditUsered extends React.Component {
               "identifier": fields.Numbering//编号//fields.Numbering
           })
         }else{
-            let roleIdData = []
-            fields[`systemRole${i}`].map((item)=>{
-              roleIdData.push({"roleId":item})
-            })
           entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
@@ -146,18 +137,19 @@ class EditUsered extends React.Component {
           })
         }
       }
+      console.log("password",)
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
             "categoryId": endemic.id,
             "entrys": entrysData,
-            "gmt_entry": this.state.gmt_entry,//入职日期
-            "mobile": fields.phoneNumber,//手机号fields.
-            "name": fields.userName,//用户名//fields.userName
-            "password": fields.password,//密码//fields.userName
+            "gmt_entry": this.state.gmt_entry,
+            "mobile": fields.phoneNumber,
+            "name": fields.userName,
+            "password": fields.password =="*********"?null:fields.password,
             "id":ID,
             "sex":USER.sex,
-            "status":USER.status
+            "img":USER.img
           }
         })
       }
@@ -205,25 +197,26 @@ class EditUsered extends React.Component {
             })
             if(this.props.dataEndemicId != null){
                 traversalEndemicId = this.props.dataEndemicId.map((item,index)=>{
-                  return (<Option value={item.id+""} key={index+""}>{item.name}</Option>)
+                  return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
               })
             }
             if(this.props.dataId != null){
                 traversalDataId = this.props.dataId.map((item,index)=>{
 
-                  return (<Option value={item.id+""} key={index+""}>{item.name}</Option>)
+                  return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
               })
             }else{
               traversalDataId = null
             }
             if(SelectData != null){
                 selectDataList = SelectData.map((item,index)=>{
-                  return (<Option value={item.id+""} key={index+""}>{item.name}</Option>)
+                  return (<Option key={item.id}>{item.name}</Option>)
               })
             }
-            EntryInformationList.push(<div className="AddChildNode" key={i+""}>
-              <div className="entryInformation">入职信息{i}<Icon type="close"  style={{display:display}}/></div>
-              <Form layout="inline" className="entryInformationForm">
+            console.log(this.state.TableData)
+            EntryInformationList.push(<div className="AddChildNode" key={i}>
+            <div className="entryInformation">入职信息{i}<Icon type="close"  style={{display:display}} onClick={this.deleteMessage.bind(this,entryContent.id)} /></div>
+            <Form layout="inline" className="entryInformationForm">
             <FormItem
              label="地方中心"
              className="localCenter"
@@ -251,7 +244,7 @@ class EditUsered extends React.Component {
              className="directLeadership"
             >
               {getFieldDecorator(`directLeadership${i}`, {
-              initialValue:"1"
+              initialValue:this.state.TableData != []?this.state.TableData.id:entryContent.leaderId
               })(
                 <Input />
               )}
@@ -287,8 +280,8 @@ class EditUsered extends React.Component {
             )}
             </FormItem>
           </Form>
-          <div className="contactInformation">联系方式</div>
-          <Form layout="inline" className="contactInformationForm">
+          <div className="contactInformation" key={i+30}>联系方式</div>
+          <Form layout="inline" className="contactInformationForm" key={i+100}>
             <FormItem
              label="登录手机号"
              className="phoneNumber"
@@ -355,6 +348,7 @@ class EditUsered extends React.Component {
          })
          time = this.getLocalTime(USER.gmt_entry)
       }
+      console.log(USER.imgURL)
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
@@ -364,7 +358,7 @@ class EditUsered extends React.Component {
               {getFieldDecorator('userImg', {
                 rules: [],
               })(
-                <img className="img" src={USER.imgURL}/>
+               <div className="img"><UPload /></div>
               )}
             </FormItem>
             <FormItem
