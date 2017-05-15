@@ -66,7 +66,15 @@ export default {
 			state.selectedRowKeys.remove(record.key);
 			return {...state, };
 		},
-
+		//编辑服务内容
+		editServiceSave(state, { payload: {data,code}}) {
+			let editservice = {...state,
+				data,
+				code
+			};
+			console.log("ss",data)
+			return {...editservice};
+		},
 		//其他
 },
 	effects: {
@@ -159,7 +167,43 @@ export default {
         throw err || "请求出错";
       }
     },
+		//编辑服务内容
+		*editService({
+			payload: values
+		}, {
+			call,
+			put
+		}) {
+			const {
+				data: {
+					data,
+					code
+				}
+			} = yield call(serviceService.editService, values);
+			console.log("effects>>>",data)
+			if (code == 0) {
+				yield put({
+					type: 'editServiceSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
 
+//获取编辑页面所需数据
+		*getEditData({payload}, {put, select}) {
+			const data = yield select((state) => state.LookService.data)
+			console.log(dictionarySideDOs)
+			 console.log('model:save:getedit>>', data);
+			yield put({
+				type: 'editServiceSave',
+				payload: {
+					data,
+				}
+			})
+		}
 		//其他
 	},
 	subscriptions: {
@@ -198,6 +242,16 @@ export default {
 					console.log("service")
 					dispatch({
 						type: 'LookService',
+						payload: {
+							...query,
+						}
+					});
+				}
+				//编辑服务内容
+				if (pathname === '/service/edit') {
+					console.log("service")
+					dispatch({
+						type: 'editService',
 						payload: {
 							...query,
 						}

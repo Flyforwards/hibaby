@@ -11,6 +11,7 @@ export default {
 		total: null,
 		list:null,
 		leftList:null,
+		dictionarySideDOs:null
 	},
 	reducers: {
 		saveDataSave(state, {
@@ -54,7 +55,7 @@ export default {
 	},
 	effects: {
 		*saveData({payload: values}, { call, put }) {
-			const {data: {data,code}} = yield call(saveService.saveData, values);
+			const {data: {data,id,code}} = yield call(saveService.saveData, values);
 			console.log(data)
 			if (code == 0) {
 				console.log(data)
@@ -90,7 +91,7 @@ export default {
 				console.log(data)
 				message.success("更改用户信息成功");
 				yield put({
-					type: 'saveDataSave',
+					type: 'editDataSave',
 					payload: {
 						data,
 						code
@@ -101,11 +102,12 @@ export default {
 		},
 		*getEditData({payload}, {put, select}) {
 			const data = yield select((state) => state.save.data)
+			console.log(dictionarySideDOs)
 			// console.log('model:save:getedit>>', data);
 			yield put({
 				type: 'editDataSave',
 				payload: {
-					data
+					data,
 				}
 			})
 		}
@@ -134,7 +136,7 @@ export default {
 				}
 				if (pathname === '/groupchar/edit') {
 					dispatch({
-						type: 'saveData',
+						type: 'editData',
 						payload:query
 					});
 				}

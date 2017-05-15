@@ -28,3 +28,10 @@ export function deleteService(values) {
     body: JSON.stringify(values),
   })
 }
+//编辑服务项目
+export function editService(values) {
+  return request('/crm/api/v1/serviceInfo/edit', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

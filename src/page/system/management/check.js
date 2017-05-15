@@ -95,7 +95,7 @@ function GetQueryString(name){
 
 
 
-function check({dispatch,data:data,code}) {
+function check({dispatch,data,code}) {
     return (<div >
               <CheckData dispatch = {dispatch} data = {data}/>
             </div>

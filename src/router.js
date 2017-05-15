@@ -149,7 +149,7 @@ let routes = [
               path: '/service/edit',
               getComponent: (location, cb) => {
                   require.ensure([], (require) => {
-                      registerModel(app, require('./models/system'));
+                      registerModel(app, require('./models/service'));
                       cb(null, require('./page/system/service/Editser.jsx'))
                   })
               }
