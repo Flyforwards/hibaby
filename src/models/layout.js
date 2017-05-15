@@ -1,7 +1,8 @@
 
 import * as usersService from '../services/users';
+import * as loginService from '../services/login';
 import { routerRedux } from 'dva/router'
-import { local, session } from '../common/util/storage.js'
+import { local, session } from 'common/util/storage.js'
 
 export default {
   namespace: 'layout',
@@ -13,40 +14,60 @@ export default {
 
   subscriptions: {
     setup ({ dispatch }) {
-
+        dispatch({ type: 'getEndemic' });
     },
-
-    setup({ dispatch, history }) {
-      return history.listen(({ pathname, query }) => {
-        if (pathname === '/login') {
-          dispatch({ type: 'getEndemic' });
-        }
-      })
-    }
 
   },
   effects: {
-    // 获取地方中心的接口
+
+    // 获取地方中心的接口  全局验证是否登录
     *getEndemic ({  payload, }, {call, put}) {
-      const { data: { data, code, err}} = yield call(usersService.getEndemic)
-      if (code == 0 && err == null) {
+      try {
+        const { data: { data: clubs, code : code1, err: err1}} = yield call(usersService.getEndemic)
+        if (code1 == 0 && err1 == null) {
+
           yield put({
             type: 'querySuccess',
-            payload: { data } ,
+            payload: { clubs } ,
           })
-        if (location.pathname === '/login') {
-          yield put(routerRedux.push('/club'))
-        }
-      } else {
-        throw err;
-        if (location.pathname !== '/login') {
-      //     let from = location.pathname
-      //     if (location.pathname === '/dashboard') {
-      //       from = '/dashboard'
-      //     }
-          window.location = `${location.origin}/login`
-        }
 
+          const { data: { data, code, err}} = yield call(usersService.getCurrentUserEndemic)
+          // 判断当前用户是否选择了地方中心
+          if (code === 0 && err === null) {
+            session.set("endemic", data);
+            if (location.pathname === '/login') {
+              yield put(routerRedux.push('/'))
+            }
+            // 未选择地方中心则选择地方中心
+          } else {
+            yield put(routerRedux.push('/club'))
+          }
+
+        } else {
+          session.remove("token");
+          session.remove("endemic");
+          session.remove("isLogin");
+          if (location.pathname !== '/login') {
+            let from = location.pathname
+            console.log(from)
+            if (location.pathname === '/') {
+              from = '/'
+            }
+            window.location = `${location.origin}/login?from=${from}`
+          }
+        }
+      } catch(err) {
+        session.remove("token");
+        session.remove("endemic");
+        session.remove("isLogin");
+        if (location.pathname !== '/login') {
+          let from = location.pathname
+          if (location.pathname === '/') {
+            from = '/'
+          }
+          window.location = `${location.origin}/login?from=${from}`
+        }
+        throw err;
       }
     },
     *getProjectList({ payload }, {call, put}) {
@@ -88,13 +109,26 @@ export default {
           type : 'getProjectList',
         });
       } else {
-        console.log(err);
         throw err || "请求出错";
       }
     },
+
+    // 退出登录
+    *logout({ payload }, { call, put }) {
+      console.log("logout")
+      const { data: { data, code , err } }  = yield call(loginService.logout);
+      if (code == 0 && err == null) {
+        session.remove("isLogin");
+        session.remove("token");
+        session.remove("endemic");
+       yield put(routerRedux.push('/login'))
+      } else {
+        throw err || "请求出错";
+    }
+},
   },
   reducers: {
-    querySuccess (state, { payload: { data: clubs } }) {
+    querySuccess (state, { payload: { clubs } }) {
       return {
         ...state,
         clubs,

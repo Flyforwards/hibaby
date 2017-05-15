@@ -7,6 +7,13 @@ export function login(values) {
     body: JSON.stringify(values),
   })
 }
+
+export function logout() {
+  return request('/crm/api/v1/user/logout', {
+    method: 'POST',
+  })
+}
+
 export function test(values) {
   return request('/crm/api/v1/getVerCode', {
     method: 'POST',

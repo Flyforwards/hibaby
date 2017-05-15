@@ -1,4 +1,6 @@
 .permission-cent{
+  margin-left: 10px;
+  margin-right: 10px;
 	.name{
 		margin:10px 0px 10px 10px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
@@ -126,7 +128,7 @@
       right: 4px;
       padding: 0 0 0 8px;
       font-size: 12px;
-      cursor:pointer;
+      cursor: pointer;
   }
   .li-span-item:before {
     content:"\E633";

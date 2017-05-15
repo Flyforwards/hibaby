@@ -3,7 +3,7 @@
 import React from 'react'
 import {connect} from 'dva'
 import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select} from 'antd'
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
@@ -22,7 +22,7 @@ class DropDownMenued extends React.Component {
     onSelect(value){
       const fields = this.props.form.getFieldsValue();
     }
-    render() {   
+    render() {
       let selectData = []
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.SelectData != null){

@@ -1,7 +1,7 @@
 import * as saveService from '../services/save';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
-import {local, session} from '../common/util/storage.js';
+import {local, session} from 'common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
 
 export default {
@@ -90,7 +90,7 @@ export default {
 				console.log(data)
 				message.success("更改用户信息成功");
 				yield put({
-					type: 'editDataSave',
+					type: 'saveDataSave',
 					payload: {
 						data,
 						code
@@ -99,6 +99,16 @@ export default {
 
 			}
 		},
+		*getEditData({payload}, {put, select}) {
+			const data = yield select((state) => state.save.data)
+			// console.log('model:save:getedit>>', data);
+			yield put({
+				type: 'editDataSave',
+				payload: {
+					data
+				}
+			})
+		}
 	},
 	subscriptions: {
 		setup({
@@ -124,7 +134,7 @@ export default {
 				}
 				if (pathname === '/groupchar/edit') {
 					dispatch({
-						type: 'editData',
+						type: 'saveData',
 						payload:query
 					});
 				}

@@ -4,7 +4,7 @@ import {Menu, Icon, Switch} from 'antd';
 const SubMenu = Menu.SubMenu;
 import FAIcon from '../../component/faicon'
 import './index.scss'
-import {local, session} from '../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 
 class Sidebar extends React.Component {
     constructor(props) {

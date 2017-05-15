@@ -6,7 +6,7 @@ import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Sele
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import Disabled from './Disabled.jsx'
 import AddJobed from './AddJob.jsx'
@@ -69,7 +69,7 @@ class ViewTheInformationed extends React.Component {
   headelReturn = ()=>{
      this.props.history.go(-1)
   }
-    render() { 
+    render() {
       let USER = []
       let SEX = []
       let roles = []
@@ -110,13 +110,13 @@ class ViewTheInformationed extends React.Component {
               </div>
               </div>)
          }
-          function getLocalTime(nS) { 
+          function getLocalTime(nS) {
             var now = new Date(parseInt(nS) * 1000);
-            var year=now.getFullYear(); 
-            var month=now.getMonth()+1; 
-            var date=now.getDate(); 
+            var year=now.getFullYear();
+            var month=now.getMonth()+1;
+            var date=now.getDate();
             return `${year}-${month}-${date}`
-          } 
+          }
           time = getLocalTime('1494230932')
       }
       return(
@@ -170,7 +170,7 @@ function mapStateToProps(state) {
   const {
     userID,
     data
-  
+
   } = state.organization;
 
   return {

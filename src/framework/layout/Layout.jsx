@@ -9,7 +9,6 @@ import Content from '../content/Content.jsx'
 import {local, session} from 'common/util/storage.js'
 import {connect} from 'dva';
 import classNames from 'classnames';
-import request from '../../common/request/request.js'
 
 class Layout extends React.Component {
     constructor(props) {

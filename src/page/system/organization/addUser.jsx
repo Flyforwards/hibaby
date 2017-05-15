@@ -6,7 +6,7 @@ import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Sele
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
-import {local, session} from '../../../common/util/storage.js'
+import {local, session} from 'common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import AddMemberLeader from './AddMemberLeader.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
@@ -83,7 +83,7 @@ class AddUsered extends React.Component {
         const values = {
           ...fieldsValue,
           'entryTime': fieldsValue['entryTime'].format('YYYY-MM-DD')
-        } 
+        }
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
         if(fields.systemRole){
@@ -119,7 +119,7 @@ class AddUsered extends React.Component {
       }
     })
   }
-    render() {  
+    render() {
       let traversalEndemicId = []
       let selectDataList = []
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
