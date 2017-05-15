@@ -140,5 +140,10 @@ export function getCurrentUserSelectEndemic(values) {
 }
 
 
-
-
+// 获取当前登录的用户信息
+export function getCurrentUserInfo(values) {
+  return request('/crm/api/v1/user/getCurrentUserInfo', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
