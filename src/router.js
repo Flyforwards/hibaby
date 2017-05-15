@@ -217,7 +217,7 @@ let routes = [
             path: '/localchar/add',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
+                registerModel(app, require('./models/placedata'));
                 cb(null, require('./page/system/place/Add.js'))
               })
             }
@@ -247,7 +247,7 @@ let routes = [
             path: '/localchar/find',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
+                registerModel(app, require('./models/placedata'));
                 cb(null, require('./page/system/place/find.js'))
               })
             }
@@ -257,7 +257,7 @@ let routes = [
             path: '/localchar/editplace',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/system'));
+                registerModel(app, require('./models/placedata'));
                 cb(null, require('./page/system/place/editplace.js'))
               })
             }

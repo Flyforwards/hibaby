@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
 @createForm()
-class AddData extends React.Component {
+class PlaceAdd extends React.Component {
     constructor(props) {
         super(props);
         const _this = this;
@@ -38,7 +38,7 @@ class AddData extends React.Component {
           bigNum:['一', '二','三','四','五','六','七','八','九'],
           name:'',
           description:'',
-          path:'/demo/add'
+          path:'/localchar/add'
         }
     }
     add(){
@@ -83,13 +83,13 @@ class AddData extends React.Component {
 
        console.log('add:handlesave>>',params)
        this.props.dispatch({
-          type: 'save/saveData',
+          type: 'space/AddPlaceData',
 
           payload: {
               name:params.name,
               dictionarySideDOs:params.dictionarySideDOs,
               description:params.description,
-              type:1
+              type:2
           }
         })
       }
@@ -126,10 +126,10 @@ class AddData extends React.Component {
               </Form>
               </Card >
               <div className="retuSave">
-                <Link to='/system/groupchar'>
+                <Link to='system/localchar'>
                   <Button className = "editable-add-btn return"> 返回 </Button>
                 </Link>
-                <Link to='/system/groupchar'>
+                <Link to='/system/localchar'>
                   <Button className = "editable-add-btn" onClick={this.handleSave}> 保存 </Button>
                 </Link>
               </div>
@@ -138,22 +138,22 @@ class AddData extends React.Component {
     }
 }
 
-function Add({dispatch}) {
+function PlaceAdd({dispatch}) {
     return (<div>
-                <AddData dispatch = {dispatch}/>
+                <PlaceAdd dispatch = {dispatch}/>
             </div>
       )
 }
 function mapStateToProps(state) {
-    console.log("modelss",state.save)
+    console.log("modelss",state.space)
     const {
       data,
       code
-    } = state.save;
+    } = state.space;
     return {
-      loading: state.loading.models.save,
+      loading: state.loading.models.space,
       data,
       code
     };
 }
-export default connect(mapStateToProps)(AddData);
+export default connect(mapStateToProps)(PlaceAdd);

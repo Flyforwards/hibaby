@@ -38,9 +38,9 @@ class SystemIndex extends React.Component {
         dataIndex: 'operation',
         render: (text, record, index) => {
 
-          return ( < Link to = {
-              `/localchar/find`
-            } > 查看 </Link>)
+          return ( < Link to =
+            {`/localchar/find?dataId=${record.id}`}
+             > 查看 </Link>)
           },
         }];
     }
