@@ -108,7 +108,7 @@ class LookService extends Component {
                       <Link className="DelBtn" >
                           <Button onClick={this.delete.bind(this,addressid)}>删除</Button>
                       </Link>
-                      <Link className="EditBtn" to='/system/serviceitem'>
+                      <Link className="EditBtn" to='/service/edit'>
                           <Button>编辑</Button>
                       </Link>
                 </div>

@@ -1,11 +1,14 @@
 "use strict"
 import React, {Component} from 'react'
+import {connect} from 'dva'
 import './service.scss'
 import {Card,Form, Input, Button, Radio ,AutoComplete } from 'antd'
 import {Link} from 'react-router';
 const FormItem = Form.Item;
+const createForm = Form.create;
 
-class AddService extends Component {
+@createForm()
+class EditService extends Component {
         constructor(props) {
             super(props)
             this.state = {
@@ -13,15 +16,6 @@ class AddService extends Component {
                 dataSource: [],
             };
       }
-      handleSearch = (value) => {
-         this.setState({
-           dataSource: !value ? [] : [
-             value,
-             value + value,
-             value + value + value,
-           ],
-         });
-       }
        handleKeyPress = (ev) => {
          console.log('handleKeyPress', ev);
        }
@@ -31,14 +25,13 @@ class AddService extends Component {
        }
        render() {
           const { formLayout } = this.state;
-          const { dataSource } = this.state;
-          const formItemLayout = formLayout === 'horizontal' ? {
+        const { getFieldDecorator } = this.props.form;
+        const formItemLayout = formLayout === 'horizontal' ? {
             labelCol: { span: 4 },
             wrapperCol: { span: 14 },
           } : null;
-          const buttonItemLayout = formLayout === 'horizontal' ? {
-            wrapperCol: { span: 14, offset: 4 },
-          } : null;
+            let item=this.props.data;
+            console.log("item>>>>",item)
           return (
             <div className="ServiceBox">
                 <Card className="AddService" bordered={true} >
@@ -49,17 +42,26 @@ class AddService extends Component {
                             label="项目名称"
                             {...formItemLayout}
                           >
+                          {getFieldDecorator('field0', {
+                            //initialValue:"",
+                                rules: [{ required: true ,message: '在此输入内容'}],
+                            })(
                           <Input placeholder="input placeholder" />
+                          )}
                         </FormItem>
                         <FormItem className="itemprice"
                           label="项目价格"
                           {...formItemLayout}
                         >
+                        {getFieldDecorator('field0', {
+                          //initialValue:"",
+                              rules: [{ required: true ,message: '在此输入内容'}],
+                          })(
                         <div className="price">
                             <span className="priceLeft">￥</span>
                             <input type="text" placeholder=" " />
                             <span className="priceRight">元</span>
-                        </div>
+                        </div>)}
                         </FormItem>
 
 
@@ -69,9 +71,13 @@ class AddService extends Component {
                         >
 
                         </FormItem>
+                        {getFieldDecorator('field0', {
+                          //initialValue:"",
+                              rules: [{ required: true ,message: '在此输入内容'}],
+                          })(
                         <div className="ConService" style={{position:'relative',overflow:'hidden'}}>
                              <Input type = "textarea" rows = {6} className = "ServiceInput"/>
-                        </div>
+                        </div>)}
                       </Form>
                 </Card>
                 <div className="btn">
@@ -95,4 +101,50 @@ class AddService extends Component {
         }
 }
 
-export default AddService
+function EditService({
+  dispatch,
+  loading,
+  data,
+  total,
+  page,
+  results,
+  code
+}) {
+  return ( < div >
+    < EditService dispatch = {
+      dispatch
+    }
+    loading = {
+      loading
+    }
+    data={
+      data
+    }
+    total = {
+      total
+    }
+    page={page}
+    results={results}
+    /> </div >
+  )
+
+}
+function mapStateToProps(state) {
+  console.log("modelss",state.service)
+  const {
+    data,
+    total,
+    page,
+    code
+  } = state.service;
+
+  return {
+    loading: state.loading.models.service,
+    data,
+    total,
+    page,
+    code
+  };
+}
+
+export default connect(mapStateToProps)(EditService);

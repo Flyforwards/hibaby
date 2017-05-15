@@ -15,30 +15,36 @@ class editData extends React.Component {
         super(props);
         console.log("ce>>>>",this.props.data)
         const item = this.props.data;
-        const id =item.id;
-        let name="";
+        const { getFieldDecorator } = this.props.form;
         let description="";
-        let dictionarySideDOs="";
+        let dictionarySideDOs=null;
+        let lists=[];
         if (item !== null) {
-          name=item.name;
-          description=item.description;
           dictionarySideDOs=item.dictionarySideDOs;
           console.log('render:subItems>>', dictionarySideDOs)
+
         };
+        if(dictionarySideDOs==null){
+          lists.push(
+
+                    <FormItem label="选项一">
+                    {getFieldDecorator('field0', {
+                      //initialValue:"",
+                          rules: [{ required: true ,message: '在此输入内容'}],
+                      })(  <Input />
+                        )}
+                      </FormItem>
+            )
+        }else{
+          lists=[];
+        }
         this.add=this.add.bind(this);
         this.delete=this.delete.bind(this);
         this.handleSave=this.handleSave.bind(this)
         this.state={
           bigNum:['一', '二','三','四','五','六','七','八','九','十','十一','十二'],
-          name:name,
-          description:description,
-          dictionarySideDOs:dictionarySideDOs,
           formLayout: 'horizontal',
-          id:id,
-          lists: []
-        }
-        console.log("name>>>>",name)
-        console.log("description>>>>",description)
+          lists:lists        }
     }
     add(){
         console.log("add>>>>>",this.props.data)
@@ -48,6 +54,7 @@ class editData extends React.Component {
         let arr = [];
         let lists = this.state.lists;
         let field=[];
+        let len=null;
         if (item !== null) {
           arr = item.dictionarySideDOs;
           console.log(arr);
@@ -55,20 +62,25 @@ class editData extends React.Component {
               return(res.name)
           });
           console.log(field)
+          let num=field.length;
+          len=lists.length+num ;
+        }else {
+            len=lists.length;
+
         };
-        let num=field.length
-        let len=lists.length+num ;
-        lists.push(<FormItem key={len} className = "div2">
-        {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
-              })(<div>
-                      <p className = "label">选项{this.state.bigNum[len]}</p>
-                      <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                          <Input  data-index={len} className = "input2"/>
-                          <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
-                      </div>
-                      </div>
-                    )}
-                    </FormItem>)
+        lists.push(
+          <FormItem key={len} className = "div2">
+          {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
+                })(<div>
+                    <p className = "label">选项{this.state.bigNum[len]}</p>
+                    <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+                        <Input  data-index={len} className = "input2"/>
+                        <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+                    </div>
+                    </div>
+                  )}
+              </FormItem>
+          )
         this.setState({lists:lists})
     }
     delete(e){
@@ -83,34 +95,66 @@ class editData extends React.Component {
     handleSave = (e) => {
        e.preventDefault();
        let values = this.props.form.getFieldsValue();
-       const data=this.props.data;
-       const id=data.id;
-       console.log("editsave>>>>",id)
-      //  let data=this.props.data;
-      //  let name=data.name;
-      //  let description=data.description
-      //   let dictionarySideDOs=data.dictionarySideDOs;
+       console.log("values>>>",values)
+       let data=this.props.data;
+       let id=data.id;
+       console.log("editsave>>>>",id);
+      // let dictionarySideDOs=data.dictionarySideDOs;
       // let diclen=dictionarySideDOs.length;
       //  console.log("editsave>>>>>",values)
        let dictionarySideDOs=[];
+       let newArr=[];
+       let _field=[];
+       let str=data.dictionarySideDOs;
+       let Array=str.map(res=>{
+         return(res.id)
+       })
+       console.log("Array>>>",Array)
           //childId=dictionarySideDOs.
        let params = {};
-       Object.keys(values).map((key, index) => {
-         console.log(key)
-        if(key.indexOf("field") == 0){
+       Object.keys(values,).map((key, index) => {
+         console.log("save>>>>",index)
+        if(key.indexOf("field") !== -1||key.indexOf("id") !== -1){
+
+        if(key.indexOf("field") !== -1){
+          console.log(values)
              let item = {};
+
              item['name'] = values[key];
-             item['id']=Number(values[key]);
              item['serialNumber'] = index;
-             console.log('add:handlesave>>',key, values);
-             dictionarySideDOs.push(item);
-             if (key.indexOf("id")==0) {
-                dictionarySideDOs.push(this.state.dictionarySideDOs);
-             }
+             console.log('add:handlesave>>',item,item['name']);
+             _field.push(item);
+             console.log('add:handlesave>>',_field);
+           }
+           if(key.indexOf("id") !== -1){
+             console.log(key.indexOf("id"));
+             let _item={};
+             _item['name'] = values[key];
+             _item['serialNumber'] = index;
+             newArr.push(_item);
+           }
+
          }else{
            params[key] = values[key];
          }
        })
+       console.log(dictionarySideDOs)
+       if(newArr!==null){
+
+       for(let n=0;n<newArr.length;n++){
+         let obj={};
+         obj['name']=newArr[n].name;
+         obj['serialNumber']=newArr[n].serialNumber;
+         console.log("idArr>>>",Array[n]);
+         obj['id']=Array[n];
+         console.log(obj['id']);
+         dictionarySideDOs.push(obj);
+       }
+       for(let m=0;m<_field.length;m++){
+         dictionarySideDOs.push(_field[m])
+       }
+       console.log("newArr>>>",dictionarySideDOs);
+     }
        params = {...params, dictionarySideDOs,id};
 
        console.log('add:handlesave>>',params)
@@ -124,45 +168,13 @@ class editData extends React.Component {
               type:1
           }
         })
-      }
-
-      //获取table data
-     getTableData(params = {}) {
-         console.log('params:', params);
-
-         this.setState({
-             isTableLoading: true
-         })
-
-         request({
-             url: '/crm/api/v1/dictionary/modifyDictionary',
-             type: 'get',
-             data: {
-                 ...params,
-             },
-             dataType: 'json',
-         }).then((res) => {
-
-             const pagination = this.state.pagination;
-             // 读取数据总条数
-             // pagination.total = data.totalCount;
-             pagination.total = 200;
-
-             this.setState({
-                 isTableLoading: false,
-                 tableData: res.results,
-                 pagination,
-             })
-         })
-     }
-
-
+    }
     render() {
       console.log("edit>>>>>",this.props.data)
       let form = this.props.form;
       const item = this.props.data;
       const { formLayout } = this.state;
-      const { dataSource } = this.state;
+      //const { dataSource } = this.state;
       const formItemLayout = formLayout === 'horizontal' ? {
         labelCol: { span: 4 },
         wrapperCol: { span: 14 },
@@ -173,31 +185,44 @@ class editData extends React.Component {
       const { getFieldDecorator } = this.props.form;
         //console.log('render:subItems>>', dictionarySideDOs)
       let arr=[];
-      let childId=[];
+      let children=[];
       let field=[];
-        arr=this.state.dictionarySideDOs;
-        field=arr.map(res=>{
-            return(res.name)
-        });
-        childId=arr.map(res=>{
-            return(res.id)
-        });
-      console.log(field)
-      let len=field.length;
-      const children=[];
-      for(let i=0;i<len;i++){
-        children.push(<FormItem className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
-                {getFieldDecorator(`id${childId[i]}`, {
-                  initialValue:`${field[i]}`,
-                  rules: [{ required: true, message: '字段描述为必填项！' }],
-              })(
-                    <Input className="input" />
-                )}
-                </FormItem>
-
-
-        )
+      let childId=[];
+      let name="";
+      let description="";
+      if(item!==null){
+        arr=item.dictionarySideDOs;
+        name=item.name;
+        description=item.description;
       }
+
+        if(arr !==null){
+
+            field=arr.map(res=>{
+                return(res.name)
+            });
+            console.log(field)
+            childId=arr.map(res=>{
+                return(res.id)
+            });
+
+
+        }
+        let len=field.length;
+        for(let i=0;i<len;i++){
+          children.push(<FormItem className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
+                  {getFieldDecorator(`id${childId[i]}`, {
+                    initialValue:`${field[i]}`,
+                    rules: [{ required: true, message: '字段描述为必填项！' }],
+                })(
+                      <Input className="input" />
+                  )}
+                  </FormItem>
+          )
+        }
+
+
+
 
 
       console.log("render>>>",getFieldDecorator)
@@ -207,14 +232,14 @@ class editData extends React.Component {
                   <Form layout={formLayout}>
                   <FormItem label="字段名称">
                   {getFieldDecorator('name', {
-                    initialValue:`${this.state.name}`,
+                    initialValue:`${name}`,
                         rules: [{ required: true, message: '字段名称为必填项！' }],
                     })(  <Input placeholder="input placeholder" />
                       )}
                     </FormItem>
                       <FormItem className = "div" label="字段描述">
                       {getFieldDecorator('description', {
-                        initialValue:`${ this.state.description}`,
+                        initialValue:`${description}`,
                         rules: [{ required: true, message: '字段描述为必填项！' }],
                     })(
                           <Input className="input" />

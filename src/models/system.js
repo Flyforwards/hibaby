@@ -183,9 +183,7 @@ export default {
 				data,
 				code
 			};
-			let arr2 = data.dictionarySideDOs;
 			return  {...checkdata,
-				arr2
 			};;
 		},
 	},
@@ -460,7 +458,7 @@ export default {
 		},
 
 		*checkData({
-			payload
+			payload:values
 		}, {
 			call,
 			put
@@ -468,17 +466,15 @@ export default {
 			const {
 				data: {
 					data,
-					arr2,
 					code
 				}
-			} = yield call(systemService.checkData, payload);
+			} = yield call(systemService.checkData, values);
 
 			if (code == 0) {
 				yield put({
 					type: 'checkDataSave',
 					payload: {
 						data,
-						arr2,
 						code
 					}
 				});
