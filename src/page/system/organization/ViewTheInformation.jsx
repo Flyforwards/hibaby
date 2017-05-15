@@ -76,19 +76,23 @@ class ViewTheInformationed extends React.Component {
       let entrys = []
       let time = null
       let JobInformation = []
+      let identifier =null
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
          SEX = USER.sex == 1?"男":"女"
-          entrys = USER.entrys
+         entrys = USER.entrys
          roles = USER.entrys.map((item)=>{
+          if(item.type == 0){
+            identifier = item.identifier
+          }
           return item.roles.map((data)=>{
             return data.roleId
           })
          })
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
-            JobInformation.push(<div>
+            JobInformation.push(<div key={lendata.toString()}>
                 <div className="entryInformation">入职信息{i}</div>
                 <div className="entryInformationContent">
                   <p className="localCenter"><span>地方中心:</span><span className="Two">{entrys[i].endemicId}</span></p>
@@ -119,9 +123,9 @@ class ViewTheInformationed extends React.Component {
         <div className="viewTheInformation">
           <div className="basicInformation">基本信息</div>
             <div className="basicInformationContent">
-              <img className="img" src={USER.imgURL}></img>
+              <img className="img" src={USER.imgURL}/>
               <p className="userName"><span>姓名:</span><span className="Two">{USER.name}</span></p>
-              <p className="Numbering"><span>编号:</span><span className="Two">{USER.identifier}</span></p>
+              <p className="Numbering"><span>编号:</span><span className="Two">{identifier}</span></p>
               <p className="gender"><span>性别:</span><span className="Two">{SEX}</span></p>
               <p className="entryTime"><span>入职时间:</span><span className="Two">{ time }</span></p>
             </div>

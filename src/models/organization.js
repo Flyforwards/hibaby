@@ -161,7 +161,6 @@ export default {
 		//根据用户id查看用户信息
 		*getUserListById({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getUserListById, values);
-			console.log("根据用户id查看用户信息",data)
 			if (code == 0) {
 				yield put({
 					type: 'getUserListByIdSave',
