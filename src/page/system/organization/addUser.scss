@@ -26,6 +26,9 @@
 		.img{
 			margin:20px 40px 20px 11px; 
 			border:none;
+			width: 100px;
+   			height: 100px;
+
 			float:left;
 			.avatar-uploader,
 			.avatar-uploader-trigger,
@@ -251,7 +254,6 @@
 			height:100px;
 			float:left;
 			border-radius: 50%;
-			background-color: #999;
 			margin:20px 40px 20px 20px; 
 			border:none;
 		}

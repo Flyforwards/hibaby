@@ -20,6 +20,12 @@ function beforeUpload(file) {
 }
 
 class Avatar extends React.Component {
+   constructor(props) {
+    super(props);
+    this.state = {
+     imageUrl:null
+    }
+  }
   state = {};
   handleChange = (info) => {
     if (info.file.status === 'done') {
@@ -33,16 +39,13 @@ class Avatar extends React.Component {
     const props = {
       name: 'file',
       multiple: false,
-      showUploadList: true,
+      showUploadList: false,
       action: '/crm/api/v1/uploadImg',
       onChange(info) {
         const status = info.file.status;
         if (status !== 'uploading') {
-          console.log(info.fileList);
           let len = info.fileList.length
           URl = info.fileList[len-1].response.data.fileUrlList[0]
-          local.set("Img",URl)
-          console.log(URl);
         }
         if (status === 'done') {
           message.success(`${info.file.name} file uploaded successfully.`);
@@ -51,18 +54,12 @@ class Avatar extends React.Component {
         }
       },
     };
-
-
     const imageUrl = this.state.imageUrl;
     return (
       <Upload
         {...props}
         className="avatar-uploader"
-        //name="avatar"
-        //showUploadList={false}
-        // action="/crm/api/v1/uploadImg"
-        // beforeUpload={beforeUpload}
-        // onChange={this.handleChange}
+        onChange={this.handleChange}
       >
         {
           imageUrl ?

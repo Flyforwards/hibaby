@@ -12,6 +12,7 @@ import DropDownMenued from './dropDownMenu.jsx'
 import EntryInformation from './EntryInformation.jsx'
 import request from '../../../common/request/request.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
+import UPload from 'common/Upload.js'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -32,7 +33,8 @@ class EditUsered extends React.Component {
       gmt_entry:"00-00-00",
       index:null,
       display:"block",
-      identifier:null
+      identifier:null,
+      Leager:null
     }
   }
   componentDidMount(){
@@ -55,6 +57,7 @@ class EditUsered extends React.Component {
         })
     }
   headelReturnTabal(data){
+    this.state.TableData.push(data[0])
     this.setState({
       TableData:data[0]
     })
@@ -142,19 +145,7 @@ class EditUsered extends React.Component {
               "roles": roleIdData
           })
         }
-        }
-        console.log({
-            "categoryId": endemic.id,
-            "entrys": entrysData,
-            "gmt_entry": this.state.gmt_entry,//入职日期
-            "mobile": fields.phoneNumber,//手机号fields.
-            "name": fields.userName,//用户名//fields.userName
-            "password": fields.password,//密码//fields.userName
-            "id":ID,
-            "sex":USER.sex,
-            "status":USER.status,
-            "img":"https//:"
-          })
+      }
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
@@ -166,8 +157,7 @@ class EditUsered extends React.Component {
             "password": fields.password,//密码//fields.userName
             "id":ID,
             "sex":USER.sex,
-            "status":USER.status,
-            "img":"https//:"
+            "status":USER.status
           }
         })
       }
@@ -200,7 +190,6 @@ class EditUsered extends React.Component {
          USER = this.props.userID
          SEX = USER.sex == 1?"男":"女"
          let lendata = USER.entrys.length
-         console.log(USER)
          for(var i=0;i<lendata;i++){
             let headelDepartment = this.affiliatedDepartment
             let entryContent = USER.entrys[i]
@@ -215,23 +204,24 @@ class EditUsered extends React.Component {
               return item.roleId
             })
             if(this.props.dataEndemicId != null){
-                traversalEndemicId = this.props.dataEndemicId.map((item)=>{
-                  return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
+                traversalEndemicId = this.props.dataEndemicId.map((item,index)=>{
+                  return (<Option value={item.id+""} key={index+""}>{item.name}</Option>)
               })
             }
             if(this.props.dataId != null){
-                traversalDataId = this.props.dataId.map((item)=>{
-                  return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
+                traversalDataId = this.props.dataId.map((item,index)=>{
+
+                  return (<Option value={item.id+""} key={index+""}>{item.name}</Option>)
               })
             }else{
               traversalDataId = null
             }
             if(SelectData != null){
-                selectDataList = SelectData.map((item)=>{
-                  return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
+                selectDataList = SelectData.map((item,index)=>{
+                  return (<Option value={item.id+""} key={index+""}>{item.name}</Option>)
               })
             }
-            EntryInformationList.push(<div className="AddChildNode">
+            EntryInformationList.push(<div className="AddChildNode" key={i+""}>
               <div className="entryInformation">入职信息{i}<Icon type="close"  style={{display:display}}/></div>
               <Form layout="inline" className="entryInformationForm">
             <FormItem
@@ -261,7 +251,7 @@ class EditUsered extends React.Component {
              className="directLeadership"
             >
               {getFieldDecorator(`directLeadership${i}`, {
-                initialValue:entryContent.leaderId
+              initialValue:"1"
               })(
                 <Input />
               )}
@@ -365,7 +355,6 @@ class EditUsered extends React.Component {
          })
          time = this.getLocalTime(USER.gmt_entry)
       }
-      console.log(time)
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
@@ -375,7 +364,7 @@ class EditUsered extends React.Component {
               {getFieldDecorator('userImg', {
                 rules: [],
               })(
-                <img className="img" src={ USER.imgURL }></img>
+                <img className="img" src={USER.imgURL}/>
               )}
             </FormItem>
             <FormItem

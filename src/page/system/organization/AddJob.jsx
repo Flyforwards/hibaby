@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from 'common/util/storage.js'
 import './AddJob.scss'
 
@@ -18,17 +19,22 @@ let traversalDataId = []
 class AddJobed extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+          visible:false,
+          TableData:null
+        }
     }
     handleCancel() {
         this.props.onCancel()
     }
     handleOk() {
         const fields = this.props.form.getFieldsValue();
-        console.log("fields",fields)
         let roles = []
-        fields.systemRole.map((item)=>{
-          roles.push({roleId:item})
-        })
+        if(fields.systemRole != null){
+            fields.systemRole.map((item)=>{
+              roles.push({roleId:item})
+            })
+        }
         this.props.dispatch({
             type: 'organization/addUserEntry',
             payload: {
@@ -36,7 +42,7 @@ class AddJobed extends Component {
               "deptId": endemic.id,
               "emaill": fields.companyEmail,
               "extension":fields.internalExtension+"",
-              "leaderId": 2,//直系领导
+              "leaderId": fields.directLeadership,//直系领导
               "positionId": fields.position,
               "roles":roles,
               "userId": this.props.ID
@@ -60,6 +66,29 @@ class AddJobed extends Component {
   }
     handleAfterClose() {
         this.props.form.resetFields()
+    }
+    select(){
+      this.setState({
+        visible:true
+      })
+      this.props.dispatch({
+        type: 'organization/getLeagerDepartmentNodes',
+        payload: {
+            "nodeId": endemic.id,
+            "tissueProperty": endemic.tissueProperty
+        }
+      })
+    }
+    headelReturnTabal(data){
+      console.log("data",data)
+      this.setState({
+        TableData:data[0]
+      })
+    }
+    handleCreateModalCancel() {
+        this.setState({
+          visible: false,
+        })
     }
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
@@ -144,6 +173,7 @@ class AddJobed extends Component {
              className="directLeadership"
             >
               {getFieldDecorator('directLeadership', {
+                initialValue: this.state.TableData?this.state.TableData.id:"",
               })(
                 <Input />
               )}
@@ -151,7 +181,7 @@ class AddJobed extends Component {
             <FormItem
              className="button"
             >
-            <Button type="primary" >选择</Button>
+            <Button type="primary" onClick={this.select.bind(this)}>选择</Button>
             </FormItem>
             <FormItem
              label="职位"
@@ -231,8 +261,14 @@ class AddJobed extends Component {
               )}
             </FormItem>
           </Form>
-            </div>
-            </Modal>
+          <SelectTheNodeFrom
+           visible={ this.state.visible}
+           onCancel ={ this.handleCreateModalCancel.bind(this) }
+           treeData = {this.props.LeagerData}
+           headelReturnTabal= {this.headelReturnTabal.bind(this)}
+          />
+          </div>
+          </Modal>
         )
     }
 }
@@ -244,6 +280,7 @@ function AddJob({
   data,
   dataEndemicId,
   dataId,
+  LeagerData,
   code
 }) {
   return ( < div >
@@ -259,6 +296,9 @@ function AddJob({
     dataId = {
       dataId
     }
+    LeagerData = {
+      LeagerData
+    }
     /> </div >
   )
 }
@@ -267,12 +307,14 @@ function mapStateToProps(state) {
     data,
     dataEndemicId,
     dataId,
+    LeagerData,
     code
   } = state.organization;
   return {
     loading: state.loading.models.organization,
     data,
     dataId,
+    LeagerData,
     dataEndemicId,
     code
   }
