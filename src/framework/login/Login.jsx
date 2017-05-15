@@ -21,10 +21,6 @@ class Login extends React.Component {
         this.onKeyPressLogin = this.onKeyPressLogin.bind(this)
     }
 
-    componentDidMount() {
-        session.removeAll()
-    }
-
     login() {
         this.props.form.validateFields((err, values) => {
             if (err) return

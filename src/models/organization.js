@@ -90,7 +90,7 @@ export default {
 				end: page == 1 ? list.length : (page - 1) * 3 + list.length,
 				totalpage:Math.ceil(total/size),
 			}
-			console.log(list)
+			console.log("list",list)
 			return {...organizationdata,range};
 	    },
 	},
@@ -140,7 +140,7 @@ export default {
 		//根据节点id加载负责人组织架构列表
 		*getLeagerDepartmentNodes({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getLeagerDepartmentNodes, values);
-			console.log("根据节点id加载负责人组织架构列表",data)
+			console.log("根据节点id加载负责人组织架构列表",code)
 			if (code == 0) {
 				yield put({
 					type: 'getLeagerDepartmentNodesSave',
@@ -222,9 +222,8 @@ export default {
 		//添加用户入职信息
 		*addUserEntry({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.addUserEntrydata, values);
-			console.log("添加用户入职信息",code)
 			if (code == 0) {
-				message.success("添加用户入职信息成功");
+				message.success("添加用户信息成功");
 			}
 		},
 		//根据地方中心id查询下属部门
@@ -244,8 +243,20 @@ export default {
 		//添加用户信息
 		*addUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.addUser, values);
-			if (code == 0) {
-				message.success("添加用户信息成功");
+			console.log("添加用户入职信息",data)
+			switch(data.type)
+			{
+			case 1:
+			  message.success("添加用户信息成功");
+			  break;
+			case 2:
+			  message.success("用户信息已存在");
+			  break;
+			case 3:
+			  message.success(`用户${data.name}已在${data.endemicName}`);
+			  break;
+			default:
+			  break;
 			}
 		},
 		//生成用户编码
@@ -323,16 +334,7 @@ export default {
 						type: 'getDepartmentNodes',
 						payload: query
 					});
-		         	dispatch({
-						type: 'organizationList',
-						payload: {
-							...query,
-							nodeid: endemic.id,
-			                page: 1,
-			                size: 5,
-			                tissueProperty: endemic.tissueProperty
-						}
-					});
+		         	
 		        }
 		        if(pathname === '/system/organization/addUser') {
 		        	dispatch({

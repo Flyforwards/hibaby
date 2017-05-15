@@ -210,6 +210,7 @@ class Customered extends React.Component {
         },
       };
         return (
+        <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
             <div className="Customer-title">
             <div className="Customer-nav">
@@ -277,6 +278,7 @@ class Customered extends React.Component {
                 onCancel={ this.handleCreateModalCancel.bind(this) }
             />
           </main>
+          </div>
         )
     }
 }

@@ -1,12 +1,35 @@
-.SelectTheNodeFrom {
-  .ant-modal-title{
-    text-align: center;
+.settingFrom {
+
+  .subTagTwo{
+    background-color: rgb(115, 115, 115);
+    color: #ffffff;
+    font-size: 18px;
+    height: 40px;
+    line-height: 40px;
+    text-indent: 14px;
+    margin-bottom: 10px;
   }
-  .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
-   padding: 0px;
+
+
+  .overflow{
+    overflow:hidden;
+
   }
+
+  .subTagThree{
+    color: #010101;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    text-indent: 14px;
+    float: left;
+  }
+
+  .checkBox {
+    margin-left: 100px;
+    line-height: 30px;
+    margin-bottom: 30px;
+  }
+
 }
-
-
-
 

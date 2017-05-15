@@ -103,7 +103,7 @@ class AddRoleFrom extends Component {
         onOk = {this.handleOk.bind(this)}
         closable = { false }
         width = { 300 }
-        wrapClassName = { "vertical-center-modal" }
+        wrapClassName = { "add-vertical-center-modal" }
       >
       <div className="fromCreateList">
         {

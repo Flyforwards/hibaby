@@ -53,7 +53,7 @@ export default {
           session.set("token", data.token);
           session.set("isLogin", true);
           yield put({
-            type : "layout/getEndemic"
+            type : "layout/getCurrentUserEndemic"
           });
 					yield put(routerRedux.push('/club'));
 				} else {

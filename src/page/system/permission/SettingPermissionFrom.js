@@ -13,15 +13,14 @@ class SettingPermissionFrom extends Component {
     this.checkPermission = {
     }
   }
-  state = {
-    visible: false,
-  }
-
-
 
   handleCancel() {
     this.props.onCancel()
+    this.props.dispatch({
+      type: "permission/clearPermissionList",
+    });
   }
+
   handleOk() {
     let ids = [];
     Object.keys(this.checkPermission).map((record)=> {
@@ -34,25 +33,18 @@ class SettingPermissionFrom extends Component {
     this.props.onCancel()
   }
 
-
-  handleAfterClose() {
-
-  }
-  componentDidMount() {
-
-  }
-
   callback() {
 
   }
 
+  onChange(e) {
+    console.log(e);
+  }
+
+
   render() {
 
     let { permissionList, visible, selectRole  } = this.props;
-    if (permissionList == null) {
-      permissionList = [];
-    }
-
     let nodes = permissionList.map((record, index) => {
       let subNodes = [];
       if (record.children != null) {
@@ -75,9 +67,7 @@ class SettingPermissionFrom extends Component {
 
                   let onChange = (checkedValue) => {
                     this.checkPermission[subRec.id] = checkedValue;
-                    console.log(this.checkPermission);
                   }
-
                   return (
                     <div className="overflow" key= {index1 * 10 + index2}>
                       <div className="subTagThree"> { subRec.name }</div>
@@ -101,7 +91,7 @@ class SettingPermissionFrom extends Component {
       }
 
         return (
-          <TabPane className="settingFrom" tab={ record.projectName } key = { index }>
+          <TabPane className="settingFrom" tab={ record.projectName }  key = { index }>
             {
               subNodes
             }
@@ -109,18 +99,17 @@ class SettingPermissionFrom extends Component {
     });
 
     return (
-      <Modal key = { this.props.selectRole ? this.props.selectRole.id : visible }
+      <Modal key = { visible }
         visible = { visible }
         title = "设置权限"
         okText =  "保存"
         cancelText = "返回"
-        onCancel = {this.handleCancel.bind(this)}
-        afterClose = {this.handleAfterClose.bind(this)}
-        onOk = {this.handleOk.bind(this)}
+        onCancel = { this.handleCancel.bind(this) }
+        onOk = { this.handleOk.bind(this) }
         closable = { false }
         width = { 1000 }
       >
-        <Tabs onChange={ this.callback }  type="card" key = { visible }>
+        <Tabs onChange={ this.callback } defaultActiveKey = { "0" }  type="card" key = { visible }>
           {
             nodes
           }

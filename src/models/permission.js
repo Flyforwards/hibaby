@@ -13,7 +13,7 @@ export default {
     code: 0,
     total: 0,
     role: 0,
-    permissionList: null,
+    permissionList: [],
     userList: null,
     club: null,
     departmentList:[],
@@ -109,6 +109,10 @@ export default {
       return {...state, };
     },
 
+    clearPermissionList(state, { payload}) {
+      const permissionList = [];
+      return {...state,permissionList};
+    },
   },
   effects: {
     *getRolesByPage({ payload: values }, {call,put }) {

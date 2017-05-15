@@ -177,7 +177,7 @@ class AddChildNodeed extends Component {
                       className="nodeLeaderIput"
                     >
                       {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:this.state.TableData?this.state.TableData:""
+                        initialValue:this.state.TableData?this.state.TableData.name:""
                       })(
                         <Input/>
                       )}
