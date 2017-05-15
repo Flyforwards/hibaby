@@ -8,9 +8,11 @@ import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
 import SeeDtail from './SeeDtail.jsx'
-
+import DeleteNode from './DeleteNode.jsx'
+import {local, session} from 'common/util/storage.js'
 
 const Option = Select.Option
+const endemic  = session.get("endemic")
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
@@ -24,6 +26,7 @@ class OrganizationLefted extends React.Component {
           SeeDtailNodeVisible:false,
           ID:null,
           node:null,
+          DeleteNodeVisible:false
         }
     }
     expandHandler = () => {
@@ -66,9 +69,20 @@ class OrganizationLefted extends React.Component {
             SeeDtailNodeVisible: true
         })
     }
+    DeleteNode(){
+      console.log(this.state.ID)
+      this.setState({
+        DeleteNodeVisible:true
+      })
+    }
     handleCreateModalCancel() {
         this.setState({
             addChildNodeVisible: false
+        })
+    }
+    handleDeleteNodeCancel() {
+        this.setState({
+             DeleteNodeVisible: false
         })
     }
     handleSeeModalCancel() {
@@ -79,6 +93,11 @@ class OrganizationLefted extends React.Component {
     componentDidMount(){
       setTimeout(() => {
       $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 800)
+      if(endemic.categoryId == 999){
+        $('.plus :first').hide()
+      }else{
+         $('.plus :first').show()
+      }
       $(document).on('click', '.plus', function(e) {
           if(this.state.upblock == 'none'){
               this.setState({
@@ -129,7 +148,7 @@ class OrganizationLefted extends React.Component {
                 <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
                   <li onClick={this.AddChildNode.bind(this)}>添加子节点</li>
                   <li onClick={this.seeDetails.bind(this)}>查看详情</li>
-                  <li>删除</li>
+                  <li onClick={this.DeleteNode.bind(this)}>删除</li>
                   <li>ID {this.state.ID}</li>
                 </ul>
                 <AddChildNode
@@ -144,7 +163,12 @@ class OrganizationLefted extends React.Component {
                     onCancel={ this.handleSeeModalCancel.bind(this) }
                     ID = {this.state.ID}
                 />
-                
+                <DeleteNode
+                    visible={ this.state.DeleteNodeVisible }
+                    handleOk={this.state.handleOk}
+                    onCancel={ this.handleDeleteNodeCancel.bind(this) }
+                    ID = {this.state.ID}
+                />
             </div>
         )
     }

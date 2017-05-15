@@ -92,7 +92,6 @@ class ViewTheInformationed extends React.Component {
          })
          const set = new Set([1, 2, 3, 4, 4]);
          let temp = [...set]
-          console.log(temp)
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
             JobInformation.push(<div key={lendata.toString()}>

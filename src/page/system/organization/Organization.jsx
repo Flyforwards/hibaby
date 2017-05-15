@@ -97,7 +97,6 @@ class Organization extends React.Component {
     };
   }
   componentDidMount(){
-    console.log("endemic.id",endemic.id)
     this.props.dispatch({
       type: 'organization/organizationList',
       payload: {

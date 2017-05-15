@@ -141,6 +141,7 @@ class SelectTheNodeFrom extends Component {
              closable = { false }
              width = { 800 }
       >
+      <div className="SelectTheNodeFromConennt">
         <div className="SelectTheNodeFrom">
          <Row gutter={8}>
             <Col className="gutter-row" span={5}>
@@ -161,6 +162,7 @@ class SelectTheNodeFrom extends Component {
             </Col>
           </Row>
         </div>
+      </div>
       </Modal>
     )
   }

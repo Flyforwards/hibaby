@@ -10,7 +10,7 @@ const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 @createForm()
-class Disabl extends Component {
+class DeleteNode extends Component {
     constructor(props) {
         super(props)
     }
@@ -18,8 +18,9 @@ class Disabl extends Component {
         this.props.onCancel()
     }
     handleOk() {
+        console.log("ok",Number(this.props.ID))
         this.props.dispatch({
-            type: 'organization/forbiddenUser',
+            type: 'organization/deleteDepartment',
             payload: {
               dataId:Number(this.props.ID)
             }
@@ -67,20 +68,20 @@ class Disabl extends Component {
                 width={ 200 }
             >
             <div>
-              是否确定禁用此员工？
+              是否确定删除此节点？
             </div>
             </Modal>
         )
     }
 }
 
-Disabl.propTypes = {}
-Disabl.defaultProps = {}
+DeleteNode.propTypes = {}
+DeleteNode.defaultProps = {}
 function Disabled({
   dispatch
 }) {
   return ( < div >
-    <Disabl dispatch = {
+    <DeleteNode dispatch = {
       dispatch
     }
     /> </div >
@@ -93,5 +94,5 @@ function mapStateToProps(state) {
     loading: state.loading.models.organization
     };
 }
-export default connect(mapStateToProps)(Disabl)
+export default connect(mapStateToProps)(DeleteNode)
 

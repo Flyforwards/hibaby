@@ -23,7 +23,7 @@ class NodeEdited extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk(data) {
+    handleOk(NodesdataEdit) {
         console.log("ok",this.props.ID)
         console.log("oktablea",this.state.TableData)
         console.log("okdata",data)
@@ -35,12 +35,12 @@ class NodeEdited extends Component {
             payload: {
               "abbreviation": fields.referredTo,//简称
               "englishName": fields.englishName,
-              "leaderId": this.state.TableData.id,
-              "leaderName": this.state.TableData.name,
+              "leaderId": this.state.TableData.id?this.state.TableData.id:NodesdataEdit.leaderId,
+              "leaderName": this.state.TableData.name?this.state.TableData.name:NodesdataEdit.operatorName,
               "name": fields.fullName,
              " parentId":this.props.ID,
               "tissueProperty": fields.localCenter,
-              "id":data.id
+              "id":NodesdataEdit.id
             }
         })
        
@@ -107,10 +107,11 @@ class NodeEdited extends Component {
             sm: { span: 14 },
           },
         };
+        console.log(NodesdataEdit)
         return (
             <Modal
                 visible={visible}
-                title="添加子节点"
+                title="节点详情"
                 okText="保存"
                 cancelText="返回"
                 wrapClassName="AddChildNode"
@@ -121,7 +122,7 @@ class NodeEdited extends Component {
                 onOk={this.handleOk.bind(this,NodesdataEdit)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
-                width={ 600 }
+                width={ 700 }
             >
             <div className="AddChildNode">
                 <Form onSubmit={this.handleSubmit}>
@@ -133,7 +134,7 @@ class NodeEdited extends Component {
                         initialValue:this.props.ID,
                         rules: [],
                       })(
-                        <Input />
+                        <Input display={true}/>
                       )}
                     </FormItem>
                     <FormItem
@@ -141,7 +142,7 @@ class NodeEdited extends Component {
                       label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
-                        initialValue:"l",
+                        initialValue:"青岛",
                         rules: [],
                       })(
                         <Select>
@@ -188,7 +189,7 @@ class NodeEdited extends Component {
                       className="nodeLeaderIput"
                     >
                       {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:this.state.TableData?this.state.TableData.name:""
+                        initialValue:NodesdataEdit.operatorName
                       })(
                         <Input/>
                       )}

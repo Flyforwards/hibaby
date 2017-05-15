@@ -17,7 +17,7 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
-const endemic  = session.get("endemic")[0]
+const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
 let traversalDataId = []
 
@@ -90,7 +90,6 @@ class AddUsered extends React.Component {
           roleIdData.push({roleId:item})
         })
         }
-        console.log(fields.userImg)
         this.props.dispatch({
           type: 'organization/addUser',
           payload:{

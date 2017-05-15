@@ -210,6 +210,7 @@ export default {
 			const {data: {data,code}} = yield call(organizationService.saveDepartment, values);
 			console.log("保存组织架构节点信息",code)
 			if (code == 0) {
+				message.success("保存组织架构节点信息成功");
 				yield put({
 					type: 'saveDepartmentSave',
 					payload: {
