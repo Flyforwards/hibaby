@@ -1,9 +1,13 @@
 .AddJob{
+	overflow: hidden;
 	.ant-modal-header{
 		text-align: center;
 	}
 	label{
 		font-size:14px;
+	}
+	.ant-modal-content{
+		top:-60px;
 	}
 	.ant-calendar-picker-icon:after{
 		font-size:24px;

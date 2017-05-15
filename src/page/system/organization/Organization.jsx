@@ -12,13 +12,13 @@ import OrganizationLeft from './OrganizationLeft.jsx'
 import {local, session} from 'common/util/storage.js'
 import Disabled from './Disabled.jsx'
 
-const endemic  = session.get("endemic")
+
 const roleId = local.get("rolSelectData")
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
-
+const endemic  = session.get("endemic")
 
 class Organization extends React.Component {
     constructor(props) {
@@ -77,8 +77,8 @@ class Organization extends React.Component {
             createModalVisible: false,
             ulTop:0,
             upblock:'none',
-            status:0,
-            character:0,
+            status:null,
+            character:null,
             userName:null,
             toViewVisible:false,
             ID:null
@@ -95,6 +95,21 @@ class Organization extends React.Component {
         }
       });
     };
+  }
+  componentDidMount(){
+    console.log("endemic.id",endemic.id)
+    this.props.dispatch({
+      type: 'organization/organizationList',
+      payload: {
+        "name":null,
+        "roleId":null,
+        "nodeid": endemic.id,
+        "status":null,
+        "page": 1,
+        "size": 5,
+       "tissueProperty": endemic.tissueProperty
+      }
+    });
   }
   //查看
     toView() {
@@ -116,13 +131,13 @@ class Organization extends React.Component {
        this.props.dispatch({
         type: 'organization/organizationList',
         payload: {
-            name: $(".userName").val(),
-            nodeid: endemic.id,
-            roleId: this.state.character,
-            status: this.state.status,
-            page: 1,
-            size: 5,
-            tissueProperty:endemic.tissueProperty
+            "name": $(".userName").val(),
+            "nodeid": endemic[0].id,
+            "roleId": this.state.character,
+            "status": this.state.status,
+            "page": 1,
+            "size": 10,
+            "tissueProperty":endemic[0].tissueProperty
         },
       });
     }
@@ -184,7 +199,10 @@ class Organization extends React.Component {
     render() {
         let ListLnformation = []
         if(this.props.list != null){
-          ListLnformation = this.props.list
+          ListLnformation = this.props.list;
+          ListLnformation.map((record)=>{
+            record.key = record.id;
+          });
         }
         const columns = this.columns;
         const pagination = {
@@ -192,16 +210,25 @@ class Organization extends React.Component {
           showQuickJumper: true,
           defaultPageSize:5,
           onChange: (current) => {
+            console.log("data",{
+                  "name": this.state.userName,
+                  "nodeid": endemic.id,
+                  "roleId": this.state.character,
+                  "status": this.state.status,
+                  "page": current,
+                  "size": 5,
+                  "tissueProperty": endemic.tissueProperty
+              })
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
-                  name: this.state.userName,
-                  nodeid: endemic.id,
-                  roleId: this.state.character,
-                  status: this.state.status,
-                  page: current,
-                  size: 5,
-                  tissueProperty: endemic.tissueProperty
+                  "name": this.state.userName,
+                  "nodeid": endemic.id,
+                  "roleId": this.state.character,
+                  "status": this.state.status,
+                  "page": current,
+                  "size": 5,
+                  "tissueProperty": endemic.tissueProperty
               },
             });
           },
@@ -213,6 +240,7 @@ class Organization extends React.Component {
         }
         const traversalRoleIdData = traversalRoleId(roleId)
         return (
+        <div className="organizationConnet">
             <main className="yt-admin-framework-Customer-a">
             <OrganizationLeft/>
             <div className="Organization-right">
@@ -263,6 +291,7 @@ class Organization extends React.Component {
                 />
             </div>
             </main>
+          </div>
         )
     }
 }

@@ -160,6 +160,7 @@
   }
 
   .ant-table-thead > tr > th {
+    padding:0px;
     background-color: rgba(102, 102, 102, 1);
     font-weight: 500;
     transition: background .3s ease;
@@ -171,6 +172,7 @@
     color: #FFFFFF;
 }
   .ant-table-tbody > tr > td {
+     padding:0px;
       text-align:center;
       background-color: #fff;
       font-family: '微软雅黑 Regular', '微软雅黑';
