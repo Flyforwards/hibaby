@@ -4,16 +4,17 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
-const createForm = Form.create
-const FormItem = Form.Item
+
 import  { session } from 'common/util/storage.js';
 import AlertModalFrom from 'common/AlertModalFrom'
 import AddMemberComponent from './AddMemberComponent'
 
-@createForm()
+import { departmentDict, positionDict} from 'common/constants';
+
 class ShowMemberListFrom extends Component {
   constructor(props) {
     super(props)
+    this.endemic = session.get("endemic");
     this.selectUser = null;
     this.page = 1;
     this.pageSize = 10;
@@ -30,28 +31,22 @@ class ShowMemberListFrom extends Component {
       dataIndex: 'positionId',
       key:'positionId',
       render: (record) => {
-        return record
+        console.log(record);
+        return departmentDict[record];
       }
     }, {
       title: '隶属部门',
       dataIndex: 'deptId',
       key:'deptId',
       render: (record) =>  {
-        const deptId = record;
-        let dept = this.props.departmentList.map((record)=> {
-          if (deptId == record.id) {
-            console.log(record);
-            return record.name;
-          }
-        });
-        return dept || "无";
+        return positionDict[record];
       }
     }, {
       title: '地方中心',
       dataIndex: 'endemicId',
       key:'endemicId',
       render: () => {
-        // return this.props.club.name;
+        return this.endemic ? this.endemic.name : "";
       }
     }, {
       title: '系统角色',
@@ -75,7 +70,7 @@ class ShowMemberListFrom extends Component {
       render: (text, record, index) => {
         return (
           <div key = { index }>
-            <a href="#" className="firstC" onClick={ this.delete.bind(this,record )}>删除</a>
+            <a className="firstC" onClick={ this.delete.bind(this,record )}>删除</a>
           </div>
         );
       },
@@ -177,7 +172,6 @@ class ShowMemberListFrom extends Component {
 
   render() {
     const { visible, record } = this.props
-    const { getFieldDecorator } = this.props.form;
     let { userList, memberTotal, selectedRows } = this.props;
     if (userList != null) {
       userList.map((record, index)=> {

@@ -191,19 +191,6 @@ export default {
 				});
 			}
 		},
-
-//获取编辑页面所需数据
-		*getEditData({payload}, {put, select}) {
-			const data = yield select((state) => state.LookService.data)
-			console.log(dictionarySideDOs)
-			 console.log('model:save:getedit>>', data);
-			yield put({
-				type: 'editServiceSave',
-				payload: {
-					data,
-				}
-			})
-		}
 		//其他
 	},
 	subscriptions: {

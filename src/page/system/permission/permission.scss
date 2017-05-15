@@ -275,7 +275,7 @@
 
 }
 
-.vertical-center-modal {
+.add-vertical-center-modal {
   text-align: center;
   white-space: nowrap;
   .ant-modal {
@@ -286,7 +286,7 @@
   }
 }
 
-.vertical-center-modal:before {
+.add-vertical-center-modal:before {
   content: '';
   display: inline-block;
   height: 100%;

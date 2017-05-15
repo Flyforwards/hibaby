@@ -40,9 +40,9 @@ export function findValue(values) {
     body: JSON.stringify(values),
   })
 }
-// 获取地方中心列表
-export function getEndemic() {
-  return request('/crm/api/v1/department/getEndemic', {
+// 获取当前用户可以访问的地方中心列表
+export function getCurrentUserEndemic() {
+  return request('/crm/api/v1/user/getCurrentUserEndemic', {
     method: 'POST',
   })
 }
@@ -132,8 +132,8 @@ export function bindUserRole(values) {
 }
 
 // 查询当前用户选择的地方中心
-export function getCurrentUserEndemic(values) {
-  return request('/crm/api/v1/user/getCurrentUserEndemic', {
+export function getCurrentUserSelectEndemic(values) {
+  return request('/crm/api/v1/user/getCurrentUserSelectEndemic', {
     method: 'POST',
     body: JSON.stringify(values),
   })
