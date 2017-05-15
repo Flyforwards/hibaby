@@ -145,7 +145,7 @@ class AddJobed extends Component {
                 width={ 900 }
             >
             <div className="AddChildNode">
-              <div className="entryInformation">入职信息</div>
+              <div className="entryInformation">职位信息</div>
               <Form layout="inline" className="entryInformationForm">
             <FormItem
              label="地方中心"

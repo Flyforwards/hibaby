@@ -90,6 +90,9 @@ class ViewTheInformationed extends React.Component {
             return data.roleId
           })
          })
+         const set = new Set([1, 2, 3, 4, 4]);
+         let temp = [...set]
+          console.log(temp)
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
             JobInformation.push(<div key={lendata.toString()}>
@@ -99,7 +102,7 @@ class ViewTheInformationed extends React.Component {
                   <p className="affiliatedDepartment"><span>隶属部门:</span><span className="Two">{entrys[i].deptId}</span></p>
                   <p className="directLeadership"><span>直系领导:</span><span className="Two">{entrys[i].leaderId}</span></p>
                   <p className="position"><span>职位:</span><span className="Two">{entrys[i].positionId}</span></p>
-                  <p className="systemRole"><span>系统角色:</span><span className="Two">{roles}</span></p>
+                  <p className="systemRole"><span>系统角色:</span><span className="Two">{temp}</span></p>
                 </div>
               <div className="contactInformation">联系方式</div>
               <div className="contactInformationContent">
@@ -111,13 +114,13 @@ class ViewTheInformationed extends React.Component {
               </div>)
          }
           function getLocalTime(nS) {
-            var now = new Date(parseInt(nS) * 1000);
+            var now = new Date(parseInt(nS));
             var year=now.getFullYear();
             var month=now.getMonth()+1;
             var date=now.getDate();
             return `${year}-${month}-${date}`
           }
-          time = getLocalTime('1494230932')
+          time = getLocalTime(USER.gmt_entry)
       }
       return(
         <div className="viewTheInformation">
