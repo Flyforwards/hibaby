@@ -47,11 +47,15 @@ class CheckData extends React.Component {
         arr = item.dictionarySideDOs;
 
         fields = arr.map((value, index) => {
-          <FormItem {...formItemLayout} label={`Field ${i}`}>
-            {getFieldDecorator(`field-${i}`)(
-              <Input placeholder="placeholder" />
-            )}
-          </FormItem>
+          return (
+            <FormItem {...formItemLayout} label={`选项 ${NUM_TO_TEXT[index]}`} key={index}>
+              {getFieldDecorator(`field-${index}`,{
+                initialValue: value.name
+              })(
+                <Input />
+              )}
+            </FormItem>
+            )
         })
 
       };
