@@ -40,9 +40,9 @@ export function findValue(values) {
     body: JSON.stringify(values),
   })
 }
-// 获取地方中心列表
-export function getEndemic() {
-  return request('/crm/api/v1/department/getEndemic', {
+// 获取当前用户可以访问的地方中心列表
+export function getCurrentUserEndemic() {
+  return request('/crm/api/v1/user/getCurrentUserEndemic', {
     method: 'POST',
   })
 }

@@ -58,7 +58,7 @@ class NormalLoginForm extends React.Component {
                         required: true,
                         message: '请输入密码!'
                     }],
-                })( <Input prefix = { <span> 密码 </span>} type="password" placeholder="初次登录，密码为身份证的后5位" /> )
+                })( <Input prefix = { <span> 密码 </span>} type="password" placeholder="请输入您的密码" /> )
                 }
             </FormItem>
             <FormItem > {

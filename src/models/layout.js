@@ -14,16 +14,16 @@ export default {
 
   subscriptions: {
     setup ({ dispatch }) {
-        dispatch({ type: 'getEndemic' });
+        dispatch({ type: 'getCurrentUserEndemic' });
     },
 
   },
   effects: {
 
-    // 获取地方中心的接口  全局验证是否登录
-    *getEndemic ({  payload, }, {call, put}) {
+    // 获取当前用户可以访问的地方中心的接口  全局验证是否登录
+    *getCurrentUserEndemic ({  payload, }, {call, put}) {
       try {
-        const { data: { data: clubs, code : code1, err: err1}} = yield call(usersService.getEndemic)
+        const { data: { data: clubs, code : code1, err: err1}} = yield call(usersService.getCurrentUserEndemic)
         if (code1 == 0 && err1 == null) {
 
           yield put({
@@ -34,7 +34,7 @@ export default {
           const { data: { data, code, err}} = yield call(usersService.getCurrentUserSelectEndemic)
           // 判断当前用户是否选择了地方中心
           if (code === 0 && err === null) {
-            // session.set("endemic", data)
+            session.set("endemic", data)
             if (location.pathname === '/login') {
               yield put(routerRedux.push('/'))
             }

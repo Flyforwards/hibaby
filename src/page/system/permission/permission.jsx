@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import { Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message } from 'antd';
 import { connect } from 'dva';
-const createForm = Form.create;
-const FormItem = Form.Item;
 import  './permission.scss';
 import AddRoleFrom from './AddRoleFrom';
 import SettingPermissionFrom from './SettingpermissionFrom'
@@ -37,10 +35,10 @@ class permission extends Component {
           render: (text, record, index) => {
             return (
                 <div key = { index }>
-                  <a href="#" className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</a>
-                  <a href="#" className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</a>
-                  <a href="#" className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</a>
-                  <a href="#" className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
+                  <a className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</a>
+                  <a className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</a>
+                  <a className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</a>
+                  <a className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
                 </div>
             );
           },
