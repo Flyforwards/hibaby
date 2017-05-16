@@ -23,10 +23,6 @@ class FindTop extends Component {
     }, {
       title: '部门',
       dataIndex: 'name',
-      filters: [
-        { text: 'Male', value: 'male' },
-        { text: 'Female', value: 'female' }
-      ],
       width: '20%'
     }, {
       title: '最后编辑人',
@@ -107,7 +103,7 @@ class FindTop extends Component {
             <Button type="primary" htmlType="submit">查询</Button>
           </FormItem>
         </Form>
-        <Table rowKey='je' style={{ 'marginLeft': '20px' }} columns={this.columns} dataSource={data} pagination={ pagination} />
+        <Table rowKey='id' style={{ 'marginLeft': '20px' }} columns={this.columns} dataSource={data} pagination={ pagination} />
       </div>
     )
   }

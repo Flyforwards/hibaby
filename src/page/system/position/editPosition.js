@@ -73,7 +73,7 @@ class EditableTable extends Component {
       width: '35%',
       render: function (text, record, index) {
         return (<span>
-          选项{text + 1}
+          选项{index+1}
         </span>)
       }
     }, {
@@ -135,17 +135,21 @@ class EditableTable extends Component {
   }
   
   handleAdd = () => {
-    const { positionInfo } = this.props;
-    const deptId = positionInfo[0].deptId
-    
+    const { positionInfo, record } = this.props;
+    console.log(this.props,'')
+    const deptId = record.id
+    //console.log(positionInfo,'??')
     function getCount() {
       var b = 0;
-      positionInfo.map((v, k) => {
-        if (v.rank > b) {
-          b = v.rank;
-        }
-      });
-      return b + 1
+      if (positionInfo) {
+        positionInfo.map((v, k) => {
+          if (v.rank > b) {
+            b = v.rank;
+            console.log(v.rank,'rank')
+          }
+        });
+      }
+      return b+1;
     }
     
     const count = getCount();
@@ -207,10 +211,10 @@ class LocalizedModal extends Component {
     const { positionInfo, dispatch } = this.props;
     dispatch({
       type: 'position/addEditPosition',
-      payload: { "positionDOs":positionInfo }
+      payload: { "positionDOs": positionInfo }
     })
     this.setState({
-      visible: false,
+      visible: false
     });
   }
   
