@@ -1,0 +1,21 @@
+.find {
+  width: 100%;
+  line-height: 80px;
+  padding-left: 20px;
+  .findTxt{
+    display: inline-block;
+    padding: 6px 7px;
+    line-height: 74px;
+    font-size: 18px;
+    margin-right: 20px;
+  }
+  input{
+    height: 40px;
+    font-size: 18px;
+  }
+  button{
+    width: 140px;
+    font-size: 20px;
+    height: 38px;
+  }
+}

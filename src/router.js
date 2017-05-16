@@ -64,6 +64,18 @@ let routes = [
                   })
               }
           },
+          
+          //职位管理
+          {
+            path: '/system/position',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/position'));
+                cb(null, require('./page/system/position/position.jsx'))
+              })
+            }
+          },
+          
           //添加用户信息
            {
               path: '/system/organization/addUser',
@@ -217,7 +229,7 @@ let routes = [
             path: '/localchar/add',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/placedata'));
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/system/place/Add.js'))
               })
             }
@@ -247,7 +259,7 @@ let routes = [
             path: '/localchar/find',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/placedata'));
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/system/place/find.js'))
               })
             }
@@ -257,7 +269,7 @@ let routes = [
             path: '/localchar/editplace',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/placedata'));
+                registerModel(app, require('./models/system'));
                 cb(null, require('./page/system/place/editplace.js'))
               })
             }
