@@ -29,7 +29,6 @@ class Avatar extends React.Component {
   state = {};
   handleChange = (info) => {
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
     }
   }
@@ -55,6 +54,7 @@ class Avatar extends React.Component {
           message.error(`${info.file.name} file upload failed.`);
         }
         this.props.headelImg(imageUrl)
+        console.log("imageUrl",imageUrl)
       },
     };
     if(this.state.imageUrl){
