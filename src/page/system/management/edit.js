@@ -45,6 +45,7 @@ class editData extends React.Component {
         this.add=this.add.bind(this);
         this.delete=this.delete.bind(this);
         this.handleSave=this.handleSave.bind(this)
+        this.handleDec=this.handleDec.bind(this)
         this.state={
           bigNum:['一', '二','三','四','五','六','七','八','九','十','十一','十二'],
           formLayout: 'horizontal',
@@ -87,20 +88,6 @@ class editData extends React.Component {
             </FormItem>
             <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
             </div>
-
-
-          //
-          // <FormItem {...formItemLayout} key={len} className = "div2" la>
-          // {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
-          //       })(<div>
-          //           <p className = "label"></p>
-          //           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-          //               <Input  data-index={len} className = "input2"/>
-          //               <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
-          //           </div>
-          //           </div>
-          //         )}
-          //     </FormItem>
           )
         this.setState({lists:lists})
     }
@@ -111,6 +98,30 @@ class editData extends React.Component {
     }
      handleReturn = () =>{
       browserhistory.go(-1)
+    }
+    handleDec(childId,e){
+      e.preventDefault();
+       let values = this.props.form.getFieldsValue();
+       console.log("dec>>>",values)
+       const data=this.props.data
+      console.log(data)
+      let item=data.dictionarySideDOs;
+      console.log("item>>>>",item)
+      let arr={};
+      let dictionarySideDOs=[];
+      if(item!==null){
+
+      dictionarySideDOs=item.map((keys,index)=>{
+          let newItem=[];
+          if(keys.id !==childId){
+            newItem=item.splice(index,1)
+          }
+          console.log("childId",newItem)
+
+          return(newItem)
+        })
+      }
+      console.log("newdictionarySideDOs>>>",dictionarySideDOs)
     }
     handleSave = (e) => {
        e.preventDefault();
@@ -135,7 +146,6 @@ class editData extends React.Component {
        Object.keys(values,).map((key, index) => {
          console.log("save>>>>",index)
         if(key.indexOf("field") !== -1||key.indexOf("id") !== -1){
-
         if(key.indexOf("field") !== -1){
           console.log(values)
              let item = {};
@@ -225,11 +235,12 @@ class editData extends React.Component {
                 return(res.id)
             });
         }
+        console.log("childId>>>235>>",childId)
         let len=field.length;
         for(let i=0;i<len;i++){
           if(i==0){
               children.push(
-                <div>
+                <div key={childId[0]}>
                   <FormItem {...formItemLayout} className = "div" label="选项一">
                       {getFieldDecorator(`id${childId[0]}`, {
                         initialValue:`${field[0]}`,
@@ -242,7 +253,7 @@ class editData extends React.Component {
               )
           }else {
             children.push(
-              <div>
+              <div key={childId[i]}>
                 <FormItem {...formItemLayout} className = "div" label={`选项${this.state.bigNum[i]}`}>
                     {getFieldDecorator(`id${childId[i]}`, {
                       initialValue:`${field[i]}`,
@@ -251,7 +262,7 @@ class editData extends React.Component {
                         <Input className="input" />
                     )}
                     </FormItem>
-                    <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+                    <span className = "editable-add-btn" onClick={this.handleDec.bind(this,`${childId[i]}`)}> 删除 </span>
               </div>
             )
           }
