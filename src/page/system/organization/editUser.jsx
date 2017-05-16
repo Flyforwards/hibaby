@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select,Upload,Modal} from 'antd'
+import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select,Upload,Modal,message} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
@@ -23,14 +23,13 @@ const len = null
 //地方中心字段
 const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
-const ID = window.location.search.split("=")[1]
 let traversalDataId = []
 class EditUsered extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value:1,
-      gmt_entry:"00-00-00",
+      gmt_entry:null,
       index:null,
       display:"block",
       identifier:null,
@@ -40,6 +39,7 @@ class EditUsered extends React.Component {
     }
   }
   componentDidMount(){
+    let ID = window.location.search.split("=")[1]
     this.props.dispatch({
       type: 'organization/getUserListById',
       payload: {
@@ -139,6 +139,11 @@ class EditUsered extends React.Component {
         }
       }
       console.log("password",this.state.NewuserImg)
+      let ID = window.location.search.split("=")[1]
+      console.log(ID)
+      if(this.state.gmt_entry==null){
+        message.warning('请选择入职日期');
+      }else{
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
@@ -150,9 +155,10 @@ class EditUsered extends React.Component {
             "password": fields.password =="*********"?null:fields.password,
             "id":ID,
             "sex":USER.sex,
-            "img":USER.img
+            "img":this.state.NewuserImg?this.state.NewuserImg:USER.img
           }
         })
+      }
       }
     })
   }
@@ -189,6 +195,7 @@ class EditUsered extends React.Component {
          USER = this.props.userID
          SEX = USER.sex == 1?"男":"女"
          let lendata = USER.entrys.length
+         time = this.getLocalTime(USER.gmt_entry)
          for(var i=0;i<lendata;i++){
             let headelDepartment = this.affiliatedDepartment
             let entryContent = USER.entrys[i]
@@ -216,7 +223,7 @@ class EditUsered extends React.Component {
             }
             if(SelectData != null){
                 selectDataList = SelectData.map((item,index)=>{
-                  return (<Option key={ item.id * 100 }>{item.name}</Option>)
+                  return (<Option value={item.id+""} key={ item.id * 100 }>{item.name}</Option>)
               })
             }
             EntryInformationList.push(
@@ -365,7 +372,6 @@ class EditUsered extends React.Component {
               return data.roleId
           })
          })
-         time = this.getLocalTime(USER.gmt_entry)
       }
       return(
         <div className="addUser">
@@ -376,7 +382,7 @@ class EditUsered extends React.Component {
               {getFieldDecorator('userImg', {
                 rules: [],
               })(
-               <div className="img"><UPload urlList={USER.imgURL} headelImg={this.headelImg.bind(this)}/></div>
+               <div className="img"><UPload urlList={USER.imgURL} headelUserImg={this.headelImg.bind(this)}/></div>
               )}
             </FormItem>
             <FormItem

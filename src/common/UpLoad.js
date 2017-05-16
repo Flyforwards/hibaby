@@ -1,6 +1,7 @@
 import { Upload, Icon, Modal ,message} from 'antd';
 import React, {Component} from 'react'
 import {local, session} from 'common/util/storage.js'
+import IMG from './img.png'
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
@@ -28,13 +29,24 @@ class Avatar extends React.Component {
   }
   state = {};
   handleChange = (info) => {
-    if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
-    }
+    const status = info.file.status;
+        if (status !== 'uploading') {
+
+        }
+        if (status === 'done') {
+          getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
+          const len = info.fileList.length;
+          const fileKey = info.fileList[len-1].response.data.fileKey
+          console.log(info.fileList[len-1].response.data.fileKey)
+          this.props.headelUserImg(fileKey)
+          message.success(`${info.file.name} file uploaded successfully.`);
+        } else if (status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+
   }
 
   render() {
-    let URl = null
     let imageUrl = null
     let display = 'block'
     const props = {
@@ -42,20 +54,7 @@ class Avatar extends React.Component {
       multiple: false,
       showUploadList: false,
       action: '/crm/api/v1/uploadImg',
-      onChange(info) {
-        const status = info.file.status;
-        if (status !== 'uploading') {
-          let len = info.fileList.length
-          URl = info.fileList[len-1].response.data.fileUrlList[0]
-        }
-        if (status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully.`);
-        } else if (status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-        this.props.headelImg(imageUrl)
-        console.log("imageUrl",imageUrl)
-      },
+      className: "avatar-uploader",
     };
     if(this.state.imageUrl){
       imageUrl = this.state.imageUrl;
@@ -65,12 +64,11 @@ class Avatar extends React.Component {
     return (
       <Upload
         {...props}
-        className="avatar-uploader"
-        onChange={this.handleChange}
-      >
+        onChange = { this.handleChange.bind(this) }
+      >  
         {
           imageUrl ?
-            <img src={imageUrl} alt="" className="avatar" /> :<Icon type="plus" className="avatar-uploader-trigger" />
+            <img src={ imageUrl } alt="头像" className="avatar" onerror="this.src='{IMG};this.onerror=null'"/> :<Icon type="plus" className="avatar-uploader-trigger" />
         }
       </Upload>
     );

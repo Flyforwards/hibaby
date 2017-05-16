@@ -70,16 +70,19 @@ class SelectTheNodeFrom extends Component {
   }
   onSelect(selectedKeys, e) {
     const  { selectedNodes } = e;
-    const node = selectedNodes[0];
-    this.nodeId = node.props.nodeId;
-    this.tissueProperty = node.props.tissueProperty;
-     this.props.dispatch({
+    console.log(selectedNodes[0])
+    if(selectedNodes[0]){
+      const node = selectedNodes[0];
+      this.nodeId = node.props.nodeId;
+      this.tissueProperty = node.props.tissueProperty;
+      this.props.dispatch({
         type: 'organization/organizationList',
         payload: {
             nodeid: this.nodeId,
             tissueProperty: this.tissueProperty
         },
       });
+    }
   }
 
   render() {
@@ -148,7 +151,7 @@ class SelectTheNodeFrom extends Component {
               <Tree
                 className="draggable-tree"
                 onExpand={ this.expandHandler.bind(this) }
-                onSelect={ this.onSelect.bind(this) }
+                onSelect={ this.onSelect.bind(this,) }
                 defaultExpandedKeys = { ["0"] }
                 defaultSelectedKeys = { ["10"] }
               >

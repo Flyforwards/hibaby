@@ -130,6 +130,8 @@ export default {
 			const {data: {data,code}} = yield call(organizationService.deleteDepartment, values);
 			if (code == 0) {
 				message.success("删除该组织架构节点成功");
+			}else{
+				message.success("该组织架构节点存在关联数据无法删除");
 			}
 		},
 		//根据节点id更新组织架构节点
