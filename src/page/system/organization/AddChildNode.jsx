@@ -1,7 +1,7 @@
 "use strict" 
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,message} from 'antd'
 import './AddChildNode.scss'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from '../../../common/util/storage.js'
@@ -28,7 +28,10 @@ class AddChildNodeed extends Component {
          console.log("ok",this.state.TableData)
         const fields = this.props.form.getFieldsValue();
         console.log("fields",fields)
-        this.props.dispatch({
+        if(this.state.TableData ==null){
+          message.error('请选择节点负责人');
+        }else{
+          this.props.dispatch({
             type: 'organization/saveDepartment',
             payload: {
               abbreviation: fields.referredTo,//简称
@@ -36,11 +39,12 @@ class AddChildNodeed extends Component {
               leaderId: this.state.TableData.id,
               leaderName: this.state.TableData.name,
               name: fields.fullName,
-              parentId:this.props.ID,
+              parentId:this.props.parentId,
               tissueProperty: fields.localCenter
             }
         })
         this.props.onCancel()
+      }
     }
     checkbox() {
         console.log("checkbox")
@@ -90,6 +94,7 @@ class AddChildNodeed extends Component {
     render() {
         const {visible, form, confirmLoading} = this.props
         const { getFieldDecorator } = this.props.form;
+        let localCenterData = []
         const formItemLayout = {
           labelCol: {
             xs: { span: 24 },
@@ -100,6 +105,14 @@ class AddChildNodeed extends Component {
             sm: { span: 14 },
           },
         };
+        if(this.props.TissueProperty != null){
+          const loops = (roleId) => {
+            return roleId.map((item)=>{
+               return <Option value={item.id+""} key={item.id}>{item.tissueProperty}</Option>
+            })
+          }
+          localCenterData = loops(this.props.TissueProperty)
+        }
         return (
             <Modal
                 visible={visible}
@@ -137,7 +150,9 @@ class AddChildNodeed extends Component {
                         rules: [],
                       })(
                         <Select>
-                            <Option value="1">地方中心</Option>
+                            {
+                              localCenterData
+                            }
                         </Select>
                       )}
                     </FormItem>

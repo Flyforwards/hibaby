@@ -35,7 +35,8 @@ class EditUsered extends React.Component {
       display:"block",
       identifier:null,
       Leager:null,
-      TableData:[]
+      TableData:[],
+      NewuserImg:null
     }
   }
   componentDidMount(){
@@ -137,7 +138,7 @@ class EditUsered extends React.Component {
           })
         }
       }
-      console.log("password",)
+      console.log("password",this.state.NewuserImg)
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
@@ -153,6 +154,12 @@ class EditUsered extends React.Component {
           }
         })
       }
+    })
+  }
+  headelImg(NewuserImg){
+    console.log("NewuserImg",NewuserImg)
+    this.setState({
+      NewuserImg:NewuserImg
     })
   }
   getLocalTime(nS) {
@@ -197,148 +204,160 @@ class EditUsered extends React.Component {
             })
             if(this.props.dataEndemicId != null){
                 traversalEndemicId = this.props.dataEndemicId.map((item,index)=>{
-                  return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
+                  return (<Option value={item.id+""} key={ item.id }>{ item.name }</Option>)
               })
             }
             if(this.props.dataId != null){
                 traversalDataId = this.props.dataId.map((item,index)=>{
-
-                  return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
+                  return (<Option value={item.id+""} key={ item.id * 10 }>{ item.name }</Option>)
               })
             }else{
               traversalDataId = null
             }
             if(SelectData != null){
                 selectDataList = SelectData.map((item,index)=>{
-                  return (<Option key={item.id}>{item.name}</Option>)
+                  return (<Option key={ item.id * 100 }>{item.name}</Option>)
               })
             }
-            console.log(this.state.TableData)
-            EntryInformationList.push(<div className="AddChildNode" key={i}>
-            <div className="entryInformation">入职信息{i}<Icon type="close"  style={{display:display}} onClick={this.deleteMessage.bind(this,entryContent.id)} /></div>
-            <Form layout="inline" className="entryInformationForm">
-            <FormItem
-             label="地方中心"
-             className="localCenter"
-            >
-              {getFieldDecorator('localCenter', {
-                initialValue: endemic.name,
-              })(
-             <Input  disabled = { true }/>
-              )}
-            </FormItem>
-            <FormItem
-             label="隶属部门"
-             className="affiliatedDepartment"
-            >
-            { getFieldDecorator(`affiliatedDepartment${i}`,{
-              initialValue: entryContent.deptId
-            })(
-              <Select placeholder="请选择" onSelect = {this.affiliatedDepartment.bind(this)}>
-                { traversalEndemicId }
-              </Select>
-            )}
-            </FormItem>
-            <FormItem
-             label="直系领导"
-             className="directLeadership"
-            >
-              {getFieldDecorator(`directLeadership${i}`, {
-              initialValue:this.state.TableData != []?this.state.TableData.id:entryContent.leaderId
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-             className="button"
-            >
-            <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
-            </FormItem>
-            <FormItem
-             label="职位"
-             className="position"
-            >
-            { getFieldDecorator(`position${i}`,{
-              initialValue:entryContent.positionId
-            })(
-              <Select placeholder="请选择">
-                { traversalDataId }
-              </Select>
-            )}
-            </FormItem>
-            <br/>
-            <FormItem
-             label="系统角色"
-             className="systemRole"
-            >
-            { getFieldDecorator(`systemRole${i}`,{
-              initialValue:roles
-            })(
-              <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
-                { selectDataList }
-              </Select>
-            )}
-            </FormItem>
-          </Form>
-          <div className="contactInformation" key={i+30}>联系方式</div>
-          <Form layout="inline" className="contactInformationForm" key={i+100}>
-            <FormItem
-             label="登录手机号"
-             className="phoneNumber"
-            >
-              {getFieldDecorator('phoneNumber', {
-                initialValue:USER.mobile
-              })(
-                <Input disabled ={ true }/>
-              )}
-            </FormItem>
-            { entryContent.type==0?
-            <FormItem
-             label="登录密码"
-             className="password"
-            >
-              {getFieldDecorator('password', {
-                initialValue:"*********",
-              })(
-                <Input/>
-              )}
-            </FormItem>:null}
-            <br/>
-            <FormItem
-             label="联系方式"
-             className="information"
-            >
-              {getFieldDecorator(`information${i}`, {
-                initialValue:entryContent.contact
-              })(
-                <Input/>
-              )}
-            </FormItem>
-            <FormItem
-             label="公司邮箱"
-             className="companyEmail"
-            >
-              {getFieldDecorator(`companyEmail${i}`, {
-                initialValue:entryContent.emaill,
-                 rules: [{
-                    type: 'email'
-                  }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <br/>
-             <FormItem
-             label="内部分机"
-             className="internalExtension"
-            >
-              {getFieldDecorator(`internalExtension${i}`, {
-                initialValue: entryContent.extension
-              })(
-                <Input />
-              )}
-            </FormItem>
-          </Form>
+            EntryInformationList.push(
+              <div className="AddChildNode" key={ i }>
+                 <div className="entryInformation">入职信息{i}
+                  <Icon type="close"  style={{display:display}} onClick={this.deleteMessage.bind(this,entryContent.id)} />
+                 </div>
+                <Form layout="inline" className="entryInformationForm">
+                  <FormItem
+                   label="地方中心"
+                   className="localCenter"
+                   key = { i * 10 + 1 }
+                  >
+                    {getFieldDecorator('localCenter', {
+                      initialValue: endemic.name,
+                    })(
+                   <Input  disabled = { true }/>
+                    )}
+                  </FormItem>
+                  <FormItem
+                   label="隶属部门"
+                   className="affiliatedDepartment"
+                   key = { i * 10 + 2 }
+                  >
+                  { getFieldDecorator(`affiliatedDepartment${i}`,{
+                    initialValue: entryContent.deptId
+                  })(
+                    <Select placeholder="请选择" onSelect = {this.affiliatedDepartment.bind(this)}>
+                      { traversalEndemicId }
+                    </Select>
+                  )}
+                  </FormItem>
+                  <FormItem
+                   label="直系领导"
+                   className="directLeadership"
+                   key = { i * 10 + 3 }
+                  >
+                    {getFieldDecorator(`directLeadership${i}`, {
+                    initialValue:this.state.TableData != []?this.state.TableData.id:entryContent.leaderId
+                    })(
+                      <Input />
+                    )}
+                  </FormItem>
+                  <FormItem
+                   className="button"
+                   key = { i * 10 + 4 }
+                  >
+                  <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
+                  </FormItem>
+                  <FormItem
+                   label="职位"
+                   className="position"
+                   key = { i * 10 + 5 }
+                  >
+                  { getFieldDecorator(`position${i}`,{
+                    initialValue:entryContent.positionId
+                  })(
+                    <Select placeholder="请选择">
+                      { traversalDataId }
+                    </Select>
+                  )}
+                  </FormItem>
+                  <br/>
+                  <FormItem
+                   label="系统角色"
+                   className="systemRole"
+                   key = { i * 10 + 6 }
+                  >
+                  { getFieldDecorator(`systemRole${i}`,{
+                    initialValue:roles
+                  })(
+                    <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
+                      { selectDataList }
+                    </Select>
+                  )}
+                  </FormItem>
+                </Form>
+                <div className="contactInformation">联系方式</div>
+                <Form layout="inline" className="contactInformationForm">
+                  <FormItem
+                   label="登录手机号"
+                   className="phoneNumber"
+                   key = { i * 100 + 1 }
+                  >
+                    {getFieldDecorator('phoneNumber', {
+                      initialValue:USER.mobile
+                    })(
+                      <Input disabled ={ true }/>
+                    )}
+                  </FormItem>
+                  { entryContent.type==0?
+                  <FormItem
+                   label="登录密码"
+                   className="password"
+                   key = { i * 100 + 2 }
+                  >
+                    {getFieldDecorator('password', {
+                      initialValue:"*********",
+                    })(
+                      <Input/>
+                    )}
+                  </FormItem>:null}
+                  <br/>
+                  <FormItem
+                   label="联系方式"
+                   className="information"
+                   key = { i * 100 + 3 }
+                  >
+                    {getFieldDecorator(`information${i}`, {
+                      initialValue:entryContent.contact
+                    })(
+                      <Input/>
+                    )}
+                  </FormItem>
+                  <FormItem
+                   label="公司邮箱"
+                   className="companyEmail"
+                   key = { i * 100 + 4 }
+                  >
+                    {getFieldDecorator(`companyEmail${i}`, {
+                      initialValue:entryContent.emaill,
+                       rules: [{
+                          type: 'email'
+                        }],
+                    })(
+                      <Input />
+                    )}
+                  </FormItem>
+                  <br/>
+                 <FormItem
+                   label="内部分机"
+                   className="internalExtension"
+                   key = { i * 100 + 5 }
+                  >
+                  {getFieldDecorator(`internalExtension${i}`, {
+                    initialValue: entryContent.extension
+                  })(
+                    <Input />
+                  )}
+                </FormItem>
+                </Form>
           </div>)
          }
         roles = USER.entrys.map((item)=>{
@@ -348,7 +367,6 @@ class EditUsered extends React.Component {
          })
          time = this.getLocalTime(USER.gmt_entry)
       }
-      console.log(USER.imgURL)
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
@@ -358,7 +376,7 @@ class EditUsered extends React.Component {
               {getFieldDecorator('userImg', {
                 rules: [],
               })(
-               <div className="img"><UPload /></div>
+               <div className="img"><UPload urlList={USER.imgURL} headelImg={this.headelImg.bind(this)}/></div>
               )}
             </FormItem>
             <FormItem
@@ -391,17 +409,20 @@ class EditUsered extends React.Component {
                 <span className="Two">{SEX}</span>
               )}
             </FormItem>
-            <p className="gmt_entry"><span>入职日期:</span> <DatePicker allowClear={ false } defaultValue={moment(time, dateFormat)} format={dateFormat} onChange={this.onChange.bind(this)}/></p>
+            <p className="gmt_entry">
+              <span>入职日期:</span>
+              <DatePicker allowClear={ false } defaultValue={moment(time, dateFormat)} format={dateFormat} onChange={this.onChange.bind(this)}/>
+            </p>
           </Form>
          { EntryInformationList }
          <SelectTheNodeFrom
-           visible={ this.state.visible}
+           visible={ this.state.visible }
            onCancel ={ this.handleCreateModalCancel.bind(this) }
-           treeData = {this.props.LeagerData}
-           headelReturnTabal= {this.headelReturnTabal.bind(this)}
+           treeData = { this.props.LeagerData }
+           headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
-           <Button type="primary" className="saveButton" onClick={this.headelSave.bind(this,USER.entrys,USER)}>保存</Button>
-           <Button type="primary" className="returnButton" onClick={this.headelReturn}>返回</Button>
+           <Button type="primary" className="saveButton" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
+           <Button type="primary" className="returnButton" onClick={ this.headelReturn }>返回</Button>
         </div>
       )
   }

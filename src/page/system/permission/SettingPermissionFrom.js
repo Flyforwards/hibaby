@@ -37,10 +37,6 @@ class SettingPermissionFrom extends Component {
 
   }
 
-  onChange(e) {
-    console.log(e);
-  }
-
 
   render() {
 

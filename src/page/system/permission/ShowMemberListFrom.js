@@ -31,7 +31,6 @@ class ShowMemberListFrom extends Component {
       dataIndex: 'positionId',
       key:'positionId',
       render: (record) => {
-        console.log(record);
         return departmentDict[record];
       }
     }, {
@@ -161,7 +160,6 @@ class ShowMemberListFrom extends Component {
   }
 
   removeSelectedRows(record) {
-    console.log(record);
     this.props.dispatch({
       type: "permission/removeSelected",
       payload: { record },

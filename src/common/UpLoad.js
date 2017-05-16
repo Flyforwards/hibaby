@@ -12,7 +12,7 @@ function beforeUpload(file) {
   if (!isJPG) {
     message.error('You can only upload JPG file!');
   }
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 5;
   if (!isLt2M) {
     message.error('Image must smaller than 2MB!');
   }
@@ -29,13 +29,14 @@ class Avatar extends React.Component {
   state = {};
   handleChange = (info) => {
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
     }
   }
 
   render() {
     let URl = null
+    let imageUrl = null
+    let display = 'block'
     const props = {
       name: 'file',
       multiple: false,
@@ -52,9 +53,15 @@ class Avatar extends React.Component {
         } else if (status === 'error') {
           message.error(`${info.file.name} file upload failed.`);
         }
+        this.props.headelImg(imageUrl)
+        console.log("imageUrl",imageUrl)
       },
     };
-    const imageUrl = this.state.imageUrl;
+    if(this.state.imageUrl){
+      imageUrl = this.state.imageUrl;
+    }else if(this.props.urlList){
+      imageUrl = this.props.urlList
+    }
     return (
       <Upload
         {...props}
@@ -63,8 +70,7 @@ class Avatar extends React.Component {
       >
         {
           imageUrl ?
-            <img src={imageUrl} alt="" className="avatar" /> :
-            <Icon type="plus" className="avatar-uploader-trigger" />
+            <img src={imageUrl} alt="" className="avatar" /> :<Icon type="plus" className="avatar-uploader-trigger" />
         }
       </Upload>
     );
