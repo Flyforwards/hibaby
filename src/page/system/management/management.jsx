@@ -67,29 +67,29 @@ class SystemIndex extends React.Component {
         },
       };
       return ( <div className = "container2">
-        <div className = "buttonwrapper">
-        <Link to = '/demo/add'>
-        <Button /*className = "editable-add-btn" */ className="addBtn"> 添加 </Button>
-        </Link >
-        </div>
-        {this.props.list?
-        < Table rowKey = "id"  bordered dataSource = {this.props.list ? this.props.list : []} columns = { columns}
-          pagination = { pagination} />:null}
-        < Current page = {this.props.page
-      }
-      totalpage = {
-        this.props.totalpage
-      }
-      total = {
-        this.props.total
-      }
-      results = {
-        this.props.results
-      }
-      range = {
-        this.props.range
-      }
-      />
+                    <div className = "buttonwrapper">
+                    <Link to = '/demo/add'>
+                    <Button /*className = "editable-add-btn" */ className="addBtn"> 添加 </Button>
+                    </Link >
+                    </div>
+                    {this.props.list?
+                    < Table rowKey = "id"  bordered dataSource = {this.props.list ? this.props.list : []} columns = { columns}
+                      pagination = { pagination} />:null}
+                    < Current page = {this.props.page
+                  }
+                  totalpage = {
+                    this.props.totalpage
+                  }
+                  total = {
+                    this.props.total
+                  }
+                  results = {
+                    this.props.results
+                  }
+                  range = {
+                    this.props.range
+                  }
+                  />
         </div>
     );
   }

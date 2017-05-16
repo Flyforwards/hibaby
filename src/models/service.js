@@ -37,7 +37,7 @@ export default {
 				code
 			};
 			console.log("ss",data)
-			return {...addservicedata};
+			return addservicedata;
 		},
 		//查看服务详情
 		LookServiceSave(state, { payload: {data,code}}) {
@@ -46,7 +46,7 @@ export default {
 				code
 			};
 			console.log("ss",data)
-			return {...lookservicedata};
+			return lookservicedata;
 		},
 		//删除服务项目
 		deleteServiceSave(state, { payload: { record }}) {
@@ -73,7 +73,7 @@ export default {
 				code
 			};
 			console.log("ss",data)
-			return {...editservice};
+			return editservice;
 		},
 		//其他
 },
@@ -120,13 +120,10 @@ export default {
 			} = yield call(serviceService.AddService, values);
 			console.log("effects>>>",data)
 			if (code == 0) {
-				yield put({
-					type: 'AddServiceSave',
-					payload: {
-						data,
-						code
-					}
-				});
+				message.success("添加服务项目成功")
+				yield put(
+					routerRedux.push('/system/serviceitem')
+				);
 			}
 		},
 		//查看服务详情
@@ -182,13 +179,8 @@ export default {
 			} = yield call(serviceService.editService, values);
 			console.log("effects>>>",data)
 			if (code == 0) {
-				yield put({
-					type: 'editServiceSave',
-					payload: {
-						data,
-						code
-					}
-				});
+				message.success("服务项目数据更新成功")
+				yield put(routerRedux.push("/system/serviceitem"))
 			}
 		},
 		//其他
@@ -218,7 +210,6 @@ export default {
 				if (pathname === '/service/Addservice') {
 					console.log("service")
 					dispatch({
-						type: 'AddService',
 						payload: {
 							...query,
 						}
@@ -238,7 +229,6 @@ export default {
 				if (pathname === '/service/edit') {
 					console.log("service")
 					dispatch({
-						type: 'editService',
 						payload: {
 							...query,
 						}

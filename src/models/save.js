@@ -27,8 +27,7 @@ export default {
 				code
 			}
 			console.log(data);
-			return  {...savedata,
-			};
+			return  savedata;
 		},
 		//查看集团列表数据
 		checkDataSave(state, {
@@ -51,13 +50,7 @@ export default {
 			if (code == 0) {
 				console.log(data)
 				message.success("添加用户信息成功");
-				yield put({
-					type: 'saveDataSave',
-					payload: {
-						data,
-						code
-					}
-				});
+				yield put(routerRedux.push("system/groupchar"));
 
 			}
 		},
@@ -81,10 +74,7 @@ export default {
 			if (code == 0) {
 				console.log(data)
 				message.success("更改用户信息成功");
-				yield put({
-					type: 'editDataSave',
-					payload: { data }
-				});
+				yield put(routerRedux.push("system/groupchar"));
 
 			}
 		},
@@ -111,12 +101,12 @@ export default {
 				query
 			}) => {
 				//添加集团列表
-				if (pathname === '/demo/add') {
-					dispatch({
-						type: 'saveData',
-						payload:query
-					});
-				}
+				// if (pathname === '/demo/add') {
+				// 	dispatch({
+				// 		type:'saveData'
+				// 		payload:{...query,}
+				// 	});
+				// }
 				//查看集团列表数据
 				if (pathname === '/groupchar/check') {
 					dispatch({
@@ -125,12 +115,12 @@ export default {
 					});
 				}
 				//编辑集团列表数据
-				if (pathname === '/groupchar/edit') {
-					dispatch({
-						type: 'editData',
-						payload:query
-					});
-				}
+				// if (pathname === '/groupchar/edit') {
+				// 	dispatch({
+				// 		type: 'editData',
+				// 		payload:query
+				// 	});
+				// }
 			})
 		}
 	},

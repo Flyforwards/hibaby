@@ -36,8 +36,6 @@ class EditService extends Component {
                 }
               }
               console.log("edit>>>",values)
-
-
               console.log("editName>>>",price)
             this.state = {
                 formLayout: 'inline',
@@ -104,10 +102,10 @@ class EditService extends Component {
                             {...formItemLayout}
                           >
                           {getFieldDecorator('name', {
-                              initialValue:`${name}`,
+                              initialValue:`${this.state.name}`,
                                 rules: [{ required: true ,message: '在此输入内容'}],
                             })(
-                          <Input placeholder="input placeholder" />
+                          <Input  />
                           )}
                         </FormItem>
 
