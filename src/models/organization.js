@@ -4,7 +4,6 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from 'common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
-const endemic  = session.get("endemic")
 export default {
 	namespace: 'organization',
 	state: {

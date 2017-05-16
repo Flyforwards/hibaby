@@ -39,7 +39,6 @@ class OrganizationLefted extends React.Component {
     onSelect(value,node){
       let TissueProperty = null
       if(value[0] != null){
-        console.log('111111',node);
         TissueProperty=node.selectedNodes[0].props.dataIndex
         if(node.selectedNodes[0].key !=1){
           this.setState({
@@ -48,7 +47,6 @@ class OrganizationLefted extends React.Component {
             parentId:node.selectedNodes[0].props.parentId,
           })
           TissueProperty=node.selectedNodes[0].props.dataIndex
-          console.log("TissueProperty",TissueProperty)
           if(TissueProperty==3){
            this.addDisplay="none"
           }else{
@@ -110,7 +108,6 @@ class OrganizationLefted extends React.Component {
         })
     }
     componentDidMount(){
-      console.log("userInfo",userInfo)
       setTimeout(() => {
       $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 800)
       if(userInfo.categoryId == 1){
