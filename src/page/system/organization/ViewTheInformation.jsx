@@ -10,7 +10,7 @@ import {local, session} from 'common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import Disabled from './Disabled.jsx'
 import AddJobed from './AddJob.jsx'
-
+import IMG from 'common/img.png'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -27,7 +27,8 @@ class ViewTheInformationed extends React.Component {
     this.state = {
       ID:null,
       toViewVisible: false,
-      AddJobVisible: false
+      AddJobVisible: false,
+      error: false
     }
   }
   componentDidMount(){
@@ -58,6 +59,11 @@ class ViewTheInformationed extends React.Component {
   AddJobVisibleCancel() {
     this.setState({
         AddJobVisible: false
+    })
+  }
+   onError() {
+    this.setState({
+      error: true,
     })
   }
   headelDisabled = ()=>{
@@ -122,12 +128,17 @@ class ViewTheInformationed extends React.Component {
           }
           time = getLocalTime(USER.gmt_entry)
       }
-      let dataID = window.location.search.split("=")[1]
+      let imageUrl = USER.imgURL;
+
+      let dataID = window.location.search.split("=")[1];
+      if ( this.state.error ) {
+        imageUrl = IMG;
+      } 
       return(
         <div className="viewTheInformation">
           <div className="basicInformation">基本信息</div>
             <div className="basicInformationContent">
-              <img className="img" src={USER.imgURL}/>
+              <img className="img" src={ imageUrl } onError={ this.onError.bind(this) }/>
               <p className="userName"><span>姓名:</span><span className="Two">{USER.name}</span></p>
               <p className="Numbering"><span>编号:</span><span className="Two">{identifier}</span></p>
               <p className="gender"><span>性别:</span><span className="Two">{SEX}</span></p>

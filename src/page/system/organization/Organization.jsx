@@ -170,7 +170,6 @@ class Organization extends React.Component {
         let ListLnformation = []
         if(this.props.list != null){
           ListLnformation = this.props.list;
-          console.log(ListLnformation)
           ListLnformation.map((record)=>{
             record.key = record.id;
           });
@@ -218,7 +217,7 @@ class Organization extends React.Component {
               <div className="status">账户状态
                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
                     <Option value="0">正常</Option>
-                    <Option value="1">异常</Option>
+                    <Option value="1">禁用</Option>
                   </Select>
               </div>
               <span className="Organization-Inquire"><Link to='/system/organization/addUser'>新增员工</Link></span>

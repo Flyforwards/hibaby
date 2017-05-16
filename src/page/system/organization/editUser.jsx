@@ -140,7 +140,7 @@ class EditUsered extends React.Component {
       }
       console.log("password",this.state.NewuserImg)
       let ID = window.location.search.split("=")[1]
-      console.log(ID)
+      console.log()
       if(this.state.gmt_entry==null){
         message.warning('请选择入职日期');
       }else{

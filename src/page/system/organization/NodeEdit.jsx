@@ -29,20 +29,23 @@ class NodeEdited extends Component {
         console.log("fields",fields)
         console.log("父级节点",this.props.parentId)
          console.log("组织性质",fields.localCenter)      
-        // this.props.dispatch({
-        //     type: 'organization/modifyDepartment',
-        //     payload: {
-        //       "abbreviation": fields.referredTo,//简称
-        //       "englishName": fields.englishName,
-        //       "leaderId": this.state.TableData?this.state.TableData.id:NodesdataEdit.leaderId,
-        //       "leaderName": this.state.TableData?this.state.TableData.name:NodesdataEdit.operatorName,
-        //       "name": fields.fullName,
-        //      " parentId":this.props.parentId,//青岛的ID
-        //       "tissueProperty":"1",
-        //       "id":NodesdataEdit.id
-        //     }
-        // })
-       
+        this.props.dispatch({
+            type: 'organization/modifyDepartment',
+            payload: {
+              "abbreviation": fields.referredTo,//简称
+              "englishName": fields.englishName,
+              "leaderId": this.state.TableData?this.state.TableData.id:NodesdataEdit.leaderId,
+              "leaderName": this.state.TableData?this.state.TableData.name:NodesdataEdit.operatorName,
+              "name": fields.fullName,
+             " parentId":this.props.parentId,//青岛的ID
+              "tissueProperty":"1",//fields.localCenter,
+              "id":NodesdataEdit.id
+            }
+        })
+        this.props.dispatch({
+            type: 'organization/getDepartmentNodes',
+            payload: {}
+        });
     }
     checkbox() {
         console.log("checkbox")

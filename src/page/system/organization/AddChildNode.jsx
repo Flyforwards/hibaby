@@ -17,15 +17,20 @@ class AddChildNodeed extends Component {
         super(props)
         this.state = {
           visible:false,
-          TableData:null
+          TableData:null,
+          NodeDisplay:"none"
         }
     }
     handleCancel() {
-        this.props.onCancel()
+       this.setState({
+          TableData:"",
+          NodeDisplay:"none"
+        })
+      this.props.onCancel()
     }
     handleOk() {
         console.log("ok",this.props.ID)
-         console.log("ok",this.state.TableData)
+        console.log("ok",this.state.TableData)
         const fields = this.props.form.getFieldsValue();
         console.log("fields",fields)
         if(this.state.TableData ==null){
@@ -43,6 +48,14 @@ class AddChildNodeed extends Component {
               tissueProperty: fields.localCenter
             }
         })
+        this.setState({
+          TableData:"",
+          NodeDisplay:"block"
+        })
+        this.props.dispatch({
+            type: 'organization/getDepartmentNodes',
+            payload: {}
+        });
         this.props.onCancel()
       }
     }
@@ -69,7 +82,8 @@ class AddChildNodeed extends Component {
     //选择直系领导
     directLeader = ()=>{
       this.setState({
-        visible:true
+        visible:true,
+        NodeDisplay:"block"
       })
       this.props.dispatch({
         type: 'organization/getLeagerDepartmentNodes',
@@ -194,7 +208,7 @@ class AddChildNodeed extends Component {
                       {getFieldDecorator('nodeLeaderIput', {
                         initialValue:this.state.TableData?this.state.TableData.name:""
                       })(
-                        <Input/>
+                        <Input style={{display:this.state.NodeDisplay}}/>
                       )}
                     </FormItem>
                     <FormItem

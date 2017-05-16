@@ -265,6 +265,9 @@ class AddUsered extends React.Component {
              className="phoneNumber"
             >
               {getFieldDecorator('phoneNumber', {
+                 rules: [{
+                    pattern: /^1[34578]\d{9}$/, message: '手机号不正确'
+                  }],
               })(
                 <Input />
               )}
@@ -295,7 +298,7 @@ class AddUsered extends React.Component {
             >
               {getFieldDecorator('companyEmail', {
                  rules: [{
-                    type: 'email'
+                    type: 'email', message: '邮箱格式不正确'
                   }],
               })(
                 <Input />
