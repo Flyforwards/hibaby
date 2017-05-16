@@ -64,6 +64,18 @@ let routes = [
                   })
               }
           },
+          
+          //职位管理
+          {
+            path: '/system/position',
+            getComponent: (location, cb) => {
+              require.ensure([], (require) => {
+                registerModel(app, require('./models/position'));
+                cb(null, require('./page/system/position/position.jsx'))
+              })
+            }
+          },
+          
           //添加用户信息
            {
               path: '/system/organization/addUser',

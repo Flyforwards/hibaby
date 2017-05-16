@@ -1,11 +1,11 @@
-import * as saveService from '../services/save';
+import * as spaceService from '../services/placedata';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from 'common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
 
 export default {
-	namespace: 'save',
+	namespace: 'space',
 	state: {
 		data: null,
 		total: null,
@@ -14,31 +14,31 @@ export default {
 		dictionarySideDOs:null
 	},
 	reducers: {
-		//添加集团列表数据
-		saveDataSave(state, {
+		//添加地方列表数据
+		AddPlaceDataSave(state, {
 			payload: {
 				data,
 				code
 			}
 		}) {
-			let savedata = {...state,
+			let addplacedata = {...state,
 				data,
 				code
 			}
-			let dictionarySideDOs=data.dictionarySideDOs;
+
 			console.log(data);
-			return  {...savedata,
-				   dictionarySideDOs
+			return  {...addplacedata,
+
 			};
 		},
-		//查看集团列表数据
-		checkDataSave(state, {
-			payload: { data:item }
+		//查看地方列表数据
+		PlaceFindSave(state, {
+			payload: { data }
 		}) {
-			return  {...state,item };
+			return  {...state,data };
 		},
-		//编辑集团列表数据
-		editDataSave(state, {
+		//编辑列表数据
+		EditPlaceDataSave(state, {
 			payload: {
 				data,
 				code
@@ -48,23 +48,21 @@ export default {
 				data,
 				code
 			}
-			let dictionarySideDOs=data.dictionarySideDOs;
 			console.log(data);
 			return  {...savedata,
-				   dictionarySideDOs
 			};
 		},
 	},
 	effects: {
-		//添加集团列表数据
-		*saveData({payload: values}, { call, put }) {
-			const {data: {data,id,code}} = yield call(saveService.saveData, values);
+		//添加地方列表数据
+		*AddPlaceData({payload: values}, { call, put }) {
+			const {data: {data,id,code}} = yield call(spaceService.AddPlaceData, values);
 			console.log(data)
 			if (code == 0) {
 				console.log(data)
 				message.success("添加用户信息成功");
 				yield put({
-					type: 'saveDataSave',
+					type: 'AddPlaceDataSave',
 					payload: {
 						data,
 						code
@@ -73,12 +71,12 @@ export default {
 
 			}
 		},
-		//查看集团列表数据
-		*checkData({payload: values}, { call, put }) {
-			const {data: {code,data,err}} = yield call(saveService.checkData, values);
+		//查看地方列表数据
+		*PlaceFind({payload: values}, { call, put }) {
+			const {data: {code,data,err}} = yield call(spaceService.PlaceFind, values);
 			if (code == 0 && err == null) {
 				yield put({
-					type: 'checkDataSave',
+					type: 'PlaceFindSave',
 					payload: {
 						data,
 					}
@@ -86,15 +84,15 @@ export default {
 
 			}
 		},
-		//编辑集团列表数据
-		*editData({payload: values}, { call, put }) {
-			const {data: {data,code}} = yield call(saveService.editData, values);
+		//编辑地方列表数据
+		*EditPlaceData({payload: values}, { call, put }) {
+			const {data: {data,code}} = yield call(spaceService.EditPlaceData, values);
 			console.log(data)
 			if (code == 0) {
 				console.log(data)
 				message.success("更改用户信息成功");
 				yield put({
-					type: 'editDataSave',
+					type: 'EditPlaceDataSave',
 					payload: {
 						data,
 						code
@@ -103,13 +101,13 @@ export default {
 
 			}
 		},
-		//获取集团列表所需数据
-		*getEditData({payload}, {put, select}) {
-			const data = yield select((state) => state.save.data)
+		//获取地方列表所需数据
+		*getEditPlaceData({payload}, {put, select}) {
+			const data = yield select((state) => state.space.data)
 			console.log(dictionarySideDOs)
 			// console.log('model:save:getedit>>', data);
 			yield put({
-				type: 'editDataSave',
+				type: 'EditPlaceDataSave',
 				payload: {
 					data,
 				}
@@ -125,24 +123,24 @@ export default {
 				pathname,
 				query
 			}) => {
-				//添加集团列表
-				if (pathname === '/demo/add') {
+				//添加地方列表
+				if (pathname === '/localchar/add') {
 					dispatch({
-						type: 'saveData',
+						type: 'AddPlaceData',
 						payload:query
 					});
 				}
-				//查看集团列表数据
-				if (pathname === '/groupchar/check') {
+				//查看地方列表数据
+				if (pathname === '/localchar/find') {
 					dispatch({
-						type: 'checkData',
+						type: 'PlaceFind',
 						payload:query
 					});
 				}
-				//编辑集团列表数据
-				if (pathname === '/groupchar/edit') {
+				//编辑地方列表数据
+				if (pathname === 'localchar/editplace') {
 					dispatch({
-						type: 'editData',
+						type: 'EditPlaceData',
 						payload:query
 					});
 				}

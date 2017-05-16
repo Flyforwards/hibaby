@@ -11,6 +11,7 @@ export default {
 		total: null,
 		list:[],
 		nodes:[],
+    item:{},
 	},
 	reducers: {
 		getDepartmentNodesList(state,{payload:{ data: { nodes} ,code }}){
@@ -175,12 +176,12 @@ export default {
 		},
 		checkDataSave(state, {
 			payload: {
-				data,
+				data: item,
 				code
 			}
 		}) {
 			let checkdata = {...state,
-				data,
+				item,
 				code
 			};
 			return  {...checkdata,
@@ -513,7 +514,7 @@ export default {
 							"size": 10,
 							"sortField": "string",
 							"sortOrder": "string",
-							"type": 1
+							"type": 2
 						}
 					});
 				}
@@ -586,14 +587,14 @@ export default {
 						}
 					});
 		        }
-				if (pathname === '/groupchar/check') {
-					dispatch({
-						type: 'checkData',
-						payload:{
-							...query
-						}
-					});
-				}
+				// if (pathname === '/groupchar/check') {
+				// 	dispatch({
+				// 		type: 'checkData',
+				// 		payload:{
+				// 			...query
+				// 		}
+				// 	});
+				// }
 			})
 		}
 	},
