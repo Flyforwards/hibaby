@@ -50,9 +50,7 @@ class permission extends Component {
         payload : { page : 1, size : 10}
       });
     }
-    managementInquire() {
-      console.log("查询")
-    }
+
     // 编辑
     editPermissions(record){
       this.record = record;

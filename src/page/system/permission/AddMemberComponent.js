@@ -27,6 +27,22 @@ class AddMemberComponent extends Component {
   state = {
     visible: false,
     selectedRowKeys: [],
+    defaultSelectedKeys: ["10"],
+  }
+
+  search() {
+    const currentTree = this.props.currentDeptTree;
+    const char = this.refs.input.refs.input.value;
+    if ( currentTree != null && char != null && char.length > 0) {
+      this.nodeId = currentTree.id;
+      this.tissueProperty =  currentTree.tissueProperty
+      this.props.dispatch({
+          type: "permission/getUserPageListByUserRole",
+          payload: { nodeid:currentTree.id, tissueProperty: currentTree.tissueProperty, roleId:this.props.selectRole.id, name: char }
+        }
+      );
+    }
+
   }
 
 
@@ -36,13 +52,16 @@ class AddMemberComponent extends Component {
 
   onSelect(selectedKeys, e) {
     const  { selectedNodes } = e;
-    const node = selectedNodes[0];
-    this.nodeId = node.props.nodeId;
-    this.tissueProperty = node.props.tissueProperty;
-    this.props.dispatch({
-      type: "permission/getUserPageListByUserRole",
-      payload: { nodeid:node.props.nodeId, tissueProperty:node.props.tissueProperty, roleId:this.props.selectRole.id }
-    })
+    if (selectedNodes !== null && selectedNodes.length !== 0) {
+      const node = selectedNodes[0];
+      this.nodeId = node.props.nodeId;
+      this.tissueProperty = node.props.tissueProperty;
+      this.props.dispatch({
+        type: "permission/getUserPageListByUserRole",
+        payload: { nodeid:this.nodeId, tissueProperty:this.tissueProperty, roleId:this.props.selectRole.id }
+      })
+    }
+
   }
 
   cellOnChange = ( selectedRowKeys ) => {
@@ -67,6 +86,10 @@ class AddMemberComponent extends Component {
     undisUserList.map((record)=>{
       record.key = record.id;
     })
+    if (this.nodeId === null && this.tissueProperty === null) {
+      this.nodeId = this.props.nodeid;
+      this.tissueProperty = this.props.tissueProperty;
+    }
 
     const pagination = {
       total: undisUserTotal, //数据总条数
@@ -75,7 +98,7 @@ class AddMemberComponent extends Component {
       onChange: (page, pageSize) => {
         this.props.dispatch({
             type: "permission/getUserPageListByUserRole",
-            payload: { nodeid:this.nodeId, tissueProperty:this.tissueProperty, roleId:this.props.selectRole.id, page, size: pageSize }
+            payload: { nodeid: this.nodeId, tissueProperty: this.tissueProperty, roleId:this.props.selectRole.id, page, size: pageSize }
           }
         );
       },
@@ -97,6 +120,7 @@ class AddMemberComponent extends Component {
       selectedRowKeys,
       onChange: this.cellOnChange.bind(this)
     };
+    //  <Button className="search-button-div">重置</Button>
     return (
       <div>
         <div>
@@ -107,7 +131,7 @@ class AddMemberComponent extends Component {
                 onExpand={ this.expandHandler.bind(this) }
                 onSelect={ this.onSelect.bind(this) }
                 defaultExpandedKeys = { ["0"] }
-                defaultSelectedKeys = { ["10"] }
+                defaultSelectedKeys = { this.state.defaultSelectedKeys }
               >{
                 loops
               }
@@ -116,8 +140,8 @@ class AddMemberComponent extends Component {
             <Col className="gutter-row" span={ 19 }>
               <div>
                 <div className="divs">
-                  <Input className="search-input-div" />
-                  <Button className="search-button-div">查询</Button>
+                  <Input className="search-input-div" ref="input" />
+                  <Button className="search-button-div" onClick={ this.search.bind(this) }>查询</Button>
                 </div>
                 <Table bordered rowSelection={ rowSelection } dataSource={ undisUserList } columns={ this.columns} pagination = {pagination} />
               </div>
@@ -138,13 +162,17 @@ function mapStateToProps(state) {
     currentDeptTree,
     undisUserList,
     undisUserTotal,
-    selectedRowKeys
+    selectedRowKeys,
+    nodeid,
+    tissueProperty
   } = state.permission;
   return {
     currentDeptTree,
     undisUserList,
     undisUserTotal,
-    selectedRowKeys
+    selectedRowKeys,
+    nodeid,
+    tissueProperty
   };
 }
 export default connect(mapStateToProps)(AddMemberComponent)
