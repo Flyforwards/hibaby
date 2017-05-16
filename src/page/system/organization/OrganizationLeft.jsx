@@ -110,12 +110,14 @@ class OrganizationLefted extends React.Component {
         })
     }
     componentDidMount(){
+      console.log("userInfo",userInfo)
       setTimeout(() => {
       $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 800)
-      if(endemic.categoryId == 999){
-        $('.plus :first').hide()
+      if(userInfo.categoryId == 1){
+        console.log("q", $(".plus:first").css("display")=="none")
+        $(".plus:first").hide()
       }else{
-         $('.plus :first').show()
+         $('.plus:first').show()
       }
       $(document).on('click', '.plus', function(e) {
           if(this.state.upblock == 'none'){
