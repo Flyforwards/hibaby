@@ -11,7 +11,8 @@ export default {
 		total: null,
 		list:null,
 		leftList:null,
-		dictionarySideDOs:null
+		dictionarySideDOs:null,
+		item: null
 	},
 	reducers: {
 		//添加集团列表数据
@@ -25,10 +26,8 @@ export default {
 				data,
 				code
 			}
-			let dictionarySideDOs=data.dictionarySideDOs;
 			console.log(data);
 			return  {...savedata,
-				   dictionarySideDOs
 			};
 		},
 		//查看集团列表数据
@@ -39,20 +38,9 @@ export default {
 		},
 		//编辑集团列表数据
 		editDataSave(state, {
-			payload: {
-				data,
-				code
-			}
+			payload: { data: item }
 		}) {
-			let savedata = {...state,
-				data,
-				code
-			}
-			let dictionarySideDOs=data.dictionarySideDOs;
-			console.log(data);
-			return  {...savedata,
-				   dictionarySideDOs
-			};
+			return {...state,item}
 		},
 	},
 	effects: {
@@ -95,26 +83,23 @@ export default {
 				message.success("更改用户信息成功");
 				yield put({
 					type: 'editDataSave',
-					payload: {
-						data,
-						code
-					}
+					payload: { data }
 				});
 
 			}
 		},
 		//获取集团列表所需数据
-		*getEditData({payload}, {put, select}) {
-			const data = yield select((state) => state.save.data)
-			console.log(dictionarySideDOs)
-			// console.log('model:save:getedit>>', data);
-			yield put({
-				type: 'editDataSave',
-				payload: {
-					data,
-				}
-			})
-		}
+		// *getEditData({payload}, {put, select}) {
+		// 	const data = yield select((state) => state.save.data)
+		// 	console.log(dictionarySideDOs)
+		// 	console.log('model:save:getedit>>', data);
+		// 	yield put({
+		// 		type: 'editDataSave',
+		// 		payload: {
+		// 			data,
+		// 		}
+		// 	})
+		// }
 	},
 	subscriptions: {
 		setup({

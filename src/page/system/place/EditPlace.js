@@ -31,7 +31,7 @@ class EditPlaceData extends React.Component {
                     {getFieldDecorator('field0', {
                       //initialValue:"",
                           rules: [{ required: true ,message: '在此输入内容'}],
-                      })(  <Input />
+                      })(  <Input  className="input"/>
                         )}
                       </FormItem>
             )
@@ -74,7 +74,7 @@ class EditPlaceData extends React.Component {
                 })(<div>
                     <p className = "label">选项{this.state.bigNum[len]}</p>
                     <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                        <Input  data-index={len} className = "input2"/>
+                        <Input  data-index={len} className = "input"/>
                         <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
                     </div>
                     </div>
@@ -168,6 +168,7 @@ class EditPlaceData extends React.Component {
               type:2
           }
         })
+        routerRedux.push('/system/localchar')
     }
     render() {
       console.log("edit>>>>>",this.props.data)
@@ -229,7 +230,7 @@ class EditPlaceData extends React.Component {
                   {getFieldDecorator('name', {
                     initialValue:`${name}`,
                         rules: [{ required: true, message: '字段名称为必填项！' }],
-                    })(  <Input placeholder="input placeholder" />
+                    })(  <Input className="input" />
                       )}
                     </FormItem>
                       <FormItem className = "div" label="字段描述">
