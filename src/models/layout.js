@@ -9,7 +9,7 @@ export default {
   state: {
     clubs: [], // 地方中心数据
     projectList: null,
-    subMenu: null,
+    subMenu: [],
     userInfo: null,
   },
 
@@ -26,12 +26,7 @@ export default {
       try {
         const { data: { data: clubs, code : code1, err: err1}} = yield call(usersService.getCurrentUserEndemic)
         if (code1 == 0 && err1 == null) {
-
-          yield put({
-            type: 'querySuccess',
-            payload: { clubs } ,
-          })
-
+          session.set("clubs", clubs);
           const { data: { data: userInfo, code: code2, err: err2}} = yield call(usersService.getCurrentUserInfo)
           if (code2 ===0 && err2 === null) {
             session.set("userInfo", userInfo);
@@ -40,17 +35,21 @@ export default {
               payload: { userInfo }
             })
           }
+          yield put({
+            type: 'querySuccess',
+            payload: { clubs } ,
+          })
 
-          const { data: { data: endemic, code: code3, err: err3}} = yield call(usersService.getCurrentUserSelectEndemic);
+          const { data: { data: selEndemic, code: code3, err: err3}} = yield call(usersService.getCurrentUserSelectEndemic);
           // 判断当前用户是否选择了地方中心
           if (code3 === 0 && err3 === null) {
-            session.set("endemic", endemic)
+            session.set("endemic", selEndemic)
             if (location.pathname === '/login') {
               yield put(routerRedux.push('/'))
             }
             // 未选择地方中心则选择地方中心
           } else {
-            if (clubs != null && clubs.length == 1) {
+            if (clubs !== null && clubs.length === 1) {
               const endemic = clubs[0];
               const { data: { code: code4, err: err4}} = yield call(usersService.setEndemic, { endemicId: endemic.id });
               if (code4 === 0 && err4 === null) {
@@ -58,7 +57,6 @@ export default {
                 yield put(routerRedux.push('/'));
               } else {
                 yield put(routerRedux.push('/club'));
-                console.log("设置地方中心错误")
               }
             } else {
               yield put(routerRedux.push('/club'));

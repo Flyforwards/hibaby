@@ -59,8 +59,15 @@ class Header extends React.Component {
         payload: { dataId : itemId },
       });
     }
-    clickUserIcon(){
-
+    // 切换地方中心
+    changeClub(record){
+      const selectEndemic = session.get("endemic")
+      if (selectEndemic != null && record.id != selectEndemic.id) {
+        this.props.dispatch({
+          type: "layout/setEndemic",
+          payload: { selClub: record }
+        })
+      }
     }
     render() {
 
@@ -73,35 +80,33 @@ class Header extends React.Component {
             const entry = entrys[0];
             userPosition = positionDict[entry.positionId];
           }
-
         }
-        const menu = (
-        <Menu>
-            <MenuItem key="0">
-              <a onClick={this.getName.bind(this)}>广州和美</a>
-            </MenuItem>
-            <Menu.Divider />
-            <MenuItem key="1">
-              <a onClick={this.getName.bind(this)}>深圳和美</a>
-            </MenuItem>
-            <Menu.Divider />
-            <MenuItem key="2">
-                <a onClick={this.getName.bind(this)}>集团总部</a>
-            </MenuItem>
-            <Menu.Divider />
-            <MenuItem key="3">
-                <a onClick={this.getName.bind(this)}>上海和美</a>
-            </MenuItem>
-            <Menu.Divider />
-            <MenuItem key="4">
-                <a onClick={this.getName.bind(this)}>武汉女子</a>
-            </MenuItem>
-            <Menu.Divider />
-            <MenuItem key="5">
-                <a onClick={this.getName.bind(this)}>广州和美</a>
-            </MenuItem>
-        </Menu>
-        )
+        const endemicMenu = session.get("clubs");
+        const selectEndemic = session.get("endemic");
+        let leftMenu = [];
+
+        if (endemicMenu != null && endemicMenu.length > 1) {
+          const menuItems = endemicMenu.map((record, index)=>{
+            return (
+              <div key = { index } >
+                <Button onClick={ this.changeClub.bind(this, record) }>{ record.name }</Button>
+              </div>
+            )
+          })
+          const menu = (<div>{ menuItems }</div>)
+
+          leftMenu = (
+            <Dropdown overlay={ menu } placement="bottomCenter" trigger={['click']}>
+              <a className="ant-dropdown-link">
+                <span className="nav-two">{ selectEndemic ? selectEndemic.name: "凯贝姆" }</span>
+                <Icon type="caret-down" />
+              </a>
+            </Dropdown>)
+        } else {
+          leftMenu = (<span className="nav-two">{ selectEndemic ? selectEndemic.name: "凯贝姆" }</span>)
+        }
+
+
         let projectList = this.props.projectList;
         let subNodes = [];
         if (projectList == null) {
@@ -153,12 +158,9 @@ class Header extends React.Component {
                     <img src={ Logo } className="nav-logo" />
                     <div className="line"></div>
                     <div className="nav">
-                    <Dropdown overlay={ menu } trigger={['click']}>
-                        <a className="ant-dropdown-link" href="#">
-                            <span className="nav-two">{this.state.name}</span>
-                            <Icon type="caret-down" />
-                        </a>
-                    </Dropdown>
+                      {
+                        leftMenu
+                      }
                     </div>
                     <ul className="nav-ul">
                         { this.state.list }
