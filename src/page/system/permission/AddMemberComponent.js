@@ -27,7 +27,7 @@ class AddMemberComponent extends Component {
   state = {
     visible: false,
     selectedRowKeys: [],
-    defaultSelectedKeys: ["10"],
+    selectedKeys: [],
   }
 
   search() {
@@ -36,6 +36,9 @@ class AddMemberComponent extends Component {
     if ( currentTree != null && char != null && char.length > 0) {
       this.nodeId = currentTree.id;
       this.tissueProperty =  currentTree.tissueProperty
+      this.setState({
+        selectedKeys: [],
+      })
       this.props.dispatch({
           type: "permission/getUserPageListByUserRole",
           payload: { nodeid:currentTree.id, tissueProperty: currentTree.tissueProperty, roleId:this.props.selectRole.id, name: char }
@@ -131,7 +134,8 @@ class AddMemberComponent extends Component {
                 onExpand={ this.expandHandler.bind(this) }
                 onSelect={ this.onSelect.bind(this) }
                 defaultExpandedKeys = { ["0"] }
-                defaultSelectedKeys = { this.state.defaultSelectedKeys }
+                defaultSelectedKeys = { ["10"] }
+                selectedKeys = { this.state.selectedKeys }
               >{
                 loops
               }

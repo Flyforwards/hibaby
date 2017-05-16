@@ -85,7 +85,6 @@ class PlaceAdd extends React.Component {
        console.log('add:handlesave>>',params)
        this.props.dispatch({
           type: 'space/AddPlaceData',
-
           payload: {
               name:params.name,
               dictionarySideDOs:params.dictionarySideDOs,
@@ -93,7 +92,6 @@ class PlaceAdd extends React.Component {
               type:2
           }
         })
-        routerReducer.push('/system/localchar')
       }
     render() {
       let values = this.props.form;

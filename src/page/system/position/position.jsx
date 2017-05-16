@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import './position.scss'
 import EditPosition from './editPosition'
-import { routerRedux } from 'dva/router';
-import { Select, Button, Row, Col, Input, Icon, Modal, Form, Table } from 'antd'
+import { Button, Input,  Form, Table } from 'antd'
 const FormItem = Form.Item;
 
 

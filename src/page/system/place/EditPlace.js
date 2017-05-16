@@ -230,7 +230,7 @@ class EditPlaceData extends React.Component {
                   {getFieldDecorator('name', {
                     initialValue:`${name}`,
                         rules: [{ required: true, message: '字段名称为必填项！' }],
-                    })(  <Input className="input" />
+                    })(  <Input disabled={true} className="input" />
                       )}
                     </FormItem>
                       <FormItem className = "div" label="字段描述">
@@ -238,7 +238,7 @@ class EditPlaceData extends React.Component {
                         initialValue:`${description}`,
                         rules: [{ required: true, message: '字段描述为必填项！' }],
                     })(
-                          <Input className="input" />
+                          <Input disabled={true} className="input" />
                       )}
                       </FormItem>
                   </Form>
@@ -273,7 +273,7 @@ function EditPlaceData({dispatch, data}) {
 function mapStateToProps(state) {
   console.log("modelss",state.space)
   const {
-    data,
+    item:data,
     code,
     field,
     len,

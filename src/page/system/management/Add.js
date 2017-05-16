@@ -85,7 +85,6 @@ class AddData extends React.Component {
        console.log('add:handlesave>>',params)
        this.props.dispatch({
           type: 'save/saveData',
-
           payload: {
               name:params.name,
               dictionarySideDOs:params.dictionarySideDOs,
@@ -132,9 +131,7 @@ class AddData extends React.Component {
                 <Link to='/system/groupchar'>
                   <Button className = "editable-add-btn return"> 返回 </Button>
                 </Link>
-                <Link to='/system/groupchar'>
                   <Button className = "editable-add-btn" onClick={this.handleSave}> 保存 </Button>
-                </Link>
               </div>
         </div>
       )

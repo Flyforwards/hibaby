@@ -18,243 +18,237 @@
         text-align: center;
         color: rgba(0, 0, 0, 0.85);
     }
-}
+    img {
+        margin-left: 25%;
+        margin-bottom: 50px;
+    }
+    .label {
+        float: left;
+        height: 40px;
+        line-height: 40px;
+        margin-right: 10px;
+        width: 80px;
+        text-align: center;
+    }
+    .input {
+        float: left;
+        width: 90%;
+        height: 40px;
+        text-align: left;
+        font-size: 13px;
+    }
+    .div .posi {
+        position: relative;
+        overflow: hidden;
+    }
+    .input2 {
+        float: left;
+        width: 84%;
+        height: 40px;
+    }
+    .input3{
+      float: left;
+        width: 77.8%;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+    .div {
+        overflow: hidden;
+        margin-bottom: 10px;
+        clear: both;
+    }
 
-img {
-    margin-left: 25%;
-    margin-bottom: 50px;
-}
+    .buttonwrapper {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 10px;
+    }
 
-.label {
-    float: left;
-    height: 40px;
-    line-height: 40px;
-    margin-right: 10px;
-    width: 80px;
-    text-align: center;
-}
+    .addBtn {
+        background-color: #b67233;
+        width: 140px;
+        height: 100%;
+        color: #fff;
+        float: right;
+    }
 
-.input {
-    float: left;
-    width: 90%;
-    height: 40px;
-    text-align: left;
-    font-size: 13px;
-}
+    .addBtn:hover {
+        background-color: #f89d2d;
+        border: none;
+        color: #fff;
+    }
 
-.div .posi {
-    position: relative;
-    overflow: hidden;
-}
+    .add {
+        margin-left: 90px;
+    }
 
-.input2 {
-    float: left;
-    width: 84%;
-    height: 40px;
-}
-.input3{
-  float: left;
-    width: 77.8%;
-    height: 40px;
-    margin-bottom: 10px;
-}
+    .button {
+        background-color: rgba(22, 155, 213, 1)
+    }
 
-.div {
-    overflow: hidden;
-    margin-bottom: 10px;
-    clear: both;
-}
+    .div2 {
+        overflow: hidden;
+        margin-bottom: 10px;
+        clear: both;
+    }
 
-.buttonwrapper {
-    width: 100%;
-    height: 40px;
-    margin-bottom: 10px;
-}
+    input:disabled {
+        background-color: #fff;
+        color: red;
+    }
 
-.addBtn {
-    background-color: #b67233;
-    width: 140px;
-    height: 100%;
-    color: #fff;
-    float: right;
-}
-
-.addBtn:hover {
-    background-color: #f89d2d;
-    border: none;
-    color: #fff;
-}
-
-.add {
-    margin-left: 90px;
-}
-
-.button {
-    background-color: rgba(22, 155, 213, 1)
-}
-
-.div2 {
-    overflow: hidden;
-    margin-bottom: 10px;
-    clear: both;
-}
-
-input:disabled {
-    background-color: #fff;
-    color: red;
-}
-
-.ant-btn {
-    height: 40px;
-}
-
-.editable-add-btn {
-    background-color: #b67233;
-    color: #fff;
-    width: 140px;
-}
-
-.editable-add-btn:hover {
-    background-color: #f89d2d;
-    border: none;
-    color: #fff;
-}
-
-.retuSave {
-    width: 300px;
-    float: right;
-    padding-top: 10px;
-}
-
-.xuanxiang {
-    overflow: hidden;
-}
-
-.return {
-    background-color: #fff;
-    border: none;
-    color: #000;
-    margin-right: 10px;
-}
-
-.return:hover {
-    background-color: #fff;
-    color: rgba(0, 0, 0, 0.85);
-}
-
-.xuanxiang .ant-card {
-    min-width: 860px;
-    margin-bottom: 10px;
-    padding-bottom: 30px;
-}
-
-.ant-card .ant-card-head {
-    border: none
-}
-
-.ant-card .ant-card-body {
-    overflow: hidden;
-}
-
-.xuanxiang {
-    min-width: 860px;
-}
-
-element.style {
-    height: 40px;
-}
-
-.xuanxiang {
     .ant-btn {
+        height: 40px;
+    }
+
+    .editable-add-btn {
+        background-color: #b67233;
+        color: #fff;
+        width: 140px;
+    }
+
+    .editable-add-btn:hover {
+        background-color: #f89d2d;
+        border: none;
+        color: #fff;
+    }
+
+    .retuSave {
+        width: 300px;
+        float: right;
+        padding-top: 10px;
+    }
+
+    .xuanxiang {
+        overflow: hidden;
+    }
+
+    .return {
+        background-color: #fff;
+        border: none;
+        color: #000;
+        margin-right: 10px;
+    }
+
+    .return:hover {
+        background-color: #fff;
+        color: rgba(0, 0, 0, 0.85);
+    }
+
+    .xuanxiang .ant-card {
+        min-width: 860px;
+        margin-bottom: 10px;
+        padding-bottom: 30px;
+    }
+
+    .ant-card .ant-card-head {
+        border: none
+    }
+
+    .ant-card .ant-card-body {
+        overflow: hidden;
+    }
+
+    .xuanxiang {
+        min-width: 860px;
+    }
+
+    element.style {
+        height: 40px;
+    }
+
+    .xuanxiang {
+        .ant-btn {
+            height: 40px;
+            width: 140px;
+        }
+
+
+    .editable-add-btn {
         height: 40px;
         width: 140px;
     }
 
+    .editable-add-btn {
+        float: none;
+    }
 
-.editable-add-btn {
-    height: 40px;
-    width: 140px;
-}
+    .ant-input[disabled] {
 
-.editable-add-btn {
-    float: none;
-}
-
-.ant-input[disabled] {
-
-    background-color: rgba(102, 102, 102, 1);
-    opacity: 1;
-    cursor: not-allowed;
-    color: rgba(0, 0, 0, 0.65)
-}
+        background-color: rgba(102, 102, 102, 1);
+        opacity: 1;
+        cursor: not-allowed;
+        color: rgba(0, 0, 0, 0.65)
+    }
 
 
-.div2 .delBtn {
+    .div2 .delBtn {
 
-    background-color: #f75555;
-    color: #fff;
-    width: 80px;
-    position: absolute;
-    right: 5%;
-    bottom: 0;
-    margin-left: 30px;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 40px;
-}
-#editSave{
-  width:300px;
-  float:right;
-  position:relative;
-}
-.save{
-  background-color:#b67233;
-      color: #fff;
-      width: 140px;
-      position:absolute;
-      top:0;
-      right:10px;
-
-}
-.retBtn {
-  background-color: #b67233;
+        background-color: #f75555;
+        color: #fff;
+        width: 80px;
+        position: absolute;
+        right: 5%;
+        bottom: 0;
+        margin-left: 30px;
+        border-radius: 5px;
+        text-align: center;
+        line-height: 40px;
+    }
+    #editSave{
+      width:300px;
+      float:right;
+      position:relative;
+    }
+    .save{
+      background-color:#b67233;
           color: #fff;
           width: 140px;
-}
-.editable-add-btn {
-    background-color: #b67233;
-    color: #fff;
-    width: 140px
-}
+          position:absolute;
+          top:0;
+          right:10px;
 
-.editable-add-btn:hover {
-    background-color: #f89d2d;
-    border: none;
-    color: #fff;
-}
+    }
+    .retBtn {
+      background-color: #b67233;
+              color: #fff;
+              width: 140px;
+    }
+    .editable-add-btn {
+        background-color: #b67233;
+        color: #fff;
+        width: 140px
+    }
+
+    .editable-add-btn:hover {
+        background-color: #f89d2d;
+        border: none;
+        color: #fff;
+    }
 
 
 
-}
+    }
 
-.dynamic-delete-button {
-  cursor: pointer;
-  position: relative;
-  top: 4px;
-  font-size: 24px;
-  color: #999;
-  transition: all .3s;
-}
-.dynamic-delete-button:hover {
-  color: #777;
-}
-.dynamic-delete-button[disabled] {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-.ant-form-explain{
-  width: 80%;
-  margin:5px 0 0 90px;
-  line-height: 20px;
-  font-size:16px;
+    .dynamic-delete-button {
+      cursor: pointer;
+      position: relative;
+      top: 4px;
+      font-size: 24px;
+      color: #999;
+      transition: all .3s;
+    }
+    .dynamic-delete-button:hover {
+      color: #777;
+    }
+    .dynamic-delete-button[disabled] {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .ant-form-explain{
+      width: 80%;
+      margin:5px 0 0 90px;
+      line-height: 20px;
+      font-size:16px;
+    }
 }
