@@ -203,7 +203,7 @@ class Organization extends React.Component {
         return (
         <div className="organizationConnet">
             <main className="yt-admin-framework-Customer-a">
-            <OrganizationLeft 
+            <OrganizationLeft
               onBtain={this.ObtainOrganization.bind(this)}
             />
             <div className="Organization-right">
@@ -211,7 +211,7 @@ class Organization extends React.Component {
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
                  <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
-                      {traversalRoleIdData}
+                      { traversalRoleIdData }
                   </Select>
               </div>
               <div className="status">账户状态

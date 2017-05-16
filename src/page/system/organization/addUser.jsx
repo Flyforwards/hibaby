@@ -19,6 +19,7 @@ const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
 const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
+const department = local.get("department")
 let traversalDataId = []
 
 class AddUsered extends React.Component {
@@ -31,12 +32,13 @@ class AddUsered extends React.Component {
     }
   }
   componentDidMount(){
+      let endemic = session.get("endemic")
       this.props.dispatch({
-        type: 'organization/getDeptListByEndemicId',
-        payload: {
-          dataId: endemic.id
-        }
-      })
+            type: 'organization/getDeptListByEndemicId',
+            payload: {
+              dataId: endemic.id
+            }
+        })
   }
   handleCreateModalCancel() {
         this.setState({
@@ -339,7 +341,7 @@ function AddUser({
       data
     }
     dataEndemicId = {
-       dataEndemicId
+      dataEndemicId
     }
     dataId = {
       dataId

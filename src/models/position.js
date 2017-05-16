@@ -1,4 +1,5 @@
 import * as postionService from '../services/position';
+import { message } from 'antd'
 
 export default {
   namespace: 'position',
@@ -71,10 +72,8 @@ export default {
       if (code == 0) {
         yield put({
           type: 'delPosition',
-          payload: {
-            data
-          }
         });
+        message.success("删除成功");
       }
     },
     
