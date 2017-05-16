@@ -111,7 +111,6 @@ class FindTop extends Component {
       </div>
     )
   }
-  
 }
 const Position = Form.create()(FindTop);
 
