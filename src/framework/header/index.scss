@@ -145,6 +145,7 @@
         }
     }
 }
+
 .header-menu-name {
     position: absolute;
     top:0;
@@ -167,7 +168,8 @@
         font-size:14px;
     }
     p{
-        float:left;
+        float: left;
+        margin-right: 18px;
         span{
             display: block;
         }

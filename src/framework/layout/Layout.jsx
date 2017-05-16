@@ -79,7 +79,7 @@ class Layout extends React.Component {
             'yt-admin-framework': true
         });
         let menuData = [];
-        const { projectList, subMenu } = this.props.layout;
+        const { projectList, subMenu, userInfo } = this.props.layout;
         if (subMenu != null) {
           menuData = subMenu;
         } else {
@@ -101,11 +101,12 @@ class Layout extends React.Component {
             <div className={cls}>
                 <Spin key="yt-admin-framework-layout" spinning={this.state.loading} size="large">
                     <Header
-                        miniMode={this.state.mini}
-                        onMiniChange={this.handleMiniChange.bind(this)}
-                        onSetLoading={this.handleSetLoading.bind(this)}
-                        projectList={projectList}
-                        dispatch={this.props.dispatch}
+                        miniMode ={ this.state.mini }
+                        onMiniChange = { this.handleMiniChange.bind(this) }
+                        onSetLoading = { this.handleSetLoading.bind(this) }
+                        projectList = { projectList }
+                        userInfo = { userInfo }
+                        dispatch = {this.props.dispatch}
                     />
                     <Sidebar miniMode={this.state.mini} menuData={menuData} location={this.props.location}/>
                     <Content>

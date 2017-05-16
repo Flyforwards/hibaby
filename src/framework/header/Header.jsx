@@ -7,11 +7,9 @@ import './index.scss'
 import UpdateModal from './UpdateModal.jsx'
 import Logo from './logo.png'
 import UserImg from './user.jpg'
+import { positionDict } from 'common/constants';
 const MenuItem = Menu.Item;
 
-function callback(key) {
-  console.log(key);
-}
 class Header extends React.Component {
     constructor(props) {
         super(props)
@@ -65,6 +63,18 @@ class Header extends React.Component {
 
     }
     render() {
+
+        let userName = "凯贝姆";
+        let userPosition = "凯贝姆";
+        if (this.props.userInfo != null) {
+          userName = this.props.userInfo.name;
+          const entrys = this.props.userInfo.entrys;
+          if ( entrys !=null && entrys.length > 0) {
+            const entry = entrys[0];
+            userPosition = positionDict[entry.positionId];
+          }
+
+        }
         const menu = (
         <Menu>
             <MenuItem key="0">
@@ -92,7 +102,6 @@ class Header extends React.Component {
             </MenuItem>
         </Menu>
         )
-        const userInfo = session.get('userInfo') || {userName: '李芳'}
         let projectList = this.props.projectList;
         let subNodes = [];
         if (projectList == null) {
@@ -152,7 +161,7 @@ class Header extends React.Component {
                     </Dropdown>
                     </div>
                     <ul className="nav-ul">
-                        {this.state.list}
+                        { this.state.list }
                     </ul>
                 </h1>
                 <ul className="yt-admin-framework-header-menu clearfix">
@@ -160,11 +169,13 @@ class Header extends React.Component {
                     subNodes
                   }
                 </ul>
-                <Dropdown overlay={this.userMenu} placement="bottomCenter" trigger={['click'] }>
+                <Dropdown overlay={ this.userMenu } placement="bottomCenter" trigger={ ['click'] }>
                   <div className="header-menu-name">
                     <img src={UserImg}/>
-                    <p> <span className="user-name">李芳</span>
-                      <span className="user-pro">运营经理</span></p>
+                    <p className="user-info-p">
+                      <span className="user-name">{ userName }</span>
+                      <span className="user-pro">{ userPosition }</span>
+                    </p>
                     <Icon type="caret-down" />
                   </div>
                 </Dropdown>

@@ -10,6 +10,7 @@ export default {
     clubs: [], // 地方中心数据
     projectList: null,
     subMenu: null,
+    userInfo: null,
   },
 
   subscriptions: {
@@ -34,18 +35,35 @@ export default {
           const { data: { data: userInfo, code: code2, err: err2}} = yield call(usersService.getCurrentUserInfo)
           if (code2 ===0 && err2 === null) {
             session.set("userInfo", userInfo);
+            yield put({
+              type: 'getUserInfoSuccess',
+              payload: { userInfo }
+            })
           }
 
-          const { data: { data, code, err}} = yield call(usersService.getCurrentUserSelectEndemic);
+          const { data: { data: endemic, code: code3, err: err3}} = yield call(usersService.getCurrentUserSelectEndemic);
           // 判断当前用户是否选择了地方中心
-          if (code === 0 && err === null) {
-            session.set("endemic", data)
+          if (code3 === 0 && err3 === null) {
+            session.set("endemic", endemic)
             if (location.pathname === '/login') {
               yield put(routerRedux.push('/'))
             }
             // 未选择地方中心则选择地方中心
           } else {
-            yield put(routerRedux.push('/club'))
+            if (clubs != null && clubs.length == 1) {
+              const endemic = clubs[0];
+              const { data: { code: code4, err: err4}} = yield call(usersService.setEndemic, { endemicId: endemic.id });
+              if (code4 === 0 && err4 === null) {
+                session.set("endemic", endemic)
+                yield put(routerRedux.push('/'));
+              } else {
+                yield put(routerRedux.push('/club'));
+                console.log("设置地方中心错误")
+              }
+            } else {
+              yield put(routerRedux.push('/club'));
+            }
+
           }
 
         } else {
@@ -100,6 +118,7 @@ export default {
         throw err || "请求出错";
       }
     },
+
     *setEndemic({ payload: { selClub } }, { call, put }) {
       const value = { endemicId : selClub.id };
       const { data: { data, code , err } }  = yield call(usersService.setEndemic, value);
@@ -146,6 +165,12 @@ export default {
       return {
         ...state,
         subMenu,
+      }
+    },
+    getUserInfoSuccess (state, { payload: { userInfo } }) {
+      return {
+        ...state,
+        userInfo,
       }
     },
   },
