@@ -80,7 +80,7 @@ class LookService extends Component {
                      <h3>服务项目信息:</h3>
                       <Form  layout={formLayout}>
                           <FormItem label="项目名称">
-                            <Input  value={name}  />
+                            <Input disabled={true}  value={name}  />
 
 
                         </FormItem>
@@ -91,7 +91,7 @@ class LookService extends Component {
 
                             <div className="price">
                                 <span className="priceLeft">￥</span>
-                                <Input  value={`${values.price}`} placeholder=" " />
+                                <Input disabled={true} value={`${values.price}`} placeholder=" " />
                                 <span className="priceRight">元</span>
                             </div>
 
@@ -99,7 +99,7 @@ class LookService extends Component {
                       </Form>
                       <Form className="AddCentent" layout={formLayout}>
                           <FormItem  className="procontent" label="项目内容">
-                            <Input rows = {6} value={`${values.contents}`} className = "content"/>
+                            <Input disabled={true} value={`${values.contents}`} className = "content"/>
                           </FormItem>
                       </Form>
                 </Card>

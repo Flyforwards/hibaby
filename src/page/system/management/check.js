@@ -43,7 +43,7 @@ class CheckData extends React.Component {
       };
       const editid=GetQueryString("dataId");
       let fields=[];
-      if (item.dictionarySideDOs && item.dictionarySideDOs.length > 0) {
+      if (item.dictionarySideDOs && item.dictionarySideDOs.length >= 0) {
         arr = item.dictionarySideDOs;
 
         fields = arr.map((value, index) => {
@@ -52,7 +52,7 @@ class CheckData extends React.Component {
               {getFieldDecorator(`field-${index}`,{
                 initialValue: value.name
               })(
-                <Input />
+                <Input disabled={true} />
               )}
             </FormItem>
             )
@@ -67,14 +67,14 @@ class CheckData extends React.Component {
                     {getFieldDecorator('name',{
                       initialValue: name ? name : '',
                     })(
-                      <Input  />
+                      <Input disabled={true}/>
                     )}
                   </FormItem>
                   <FormItem {...formItemLayout} label='字段描述'>
                     {getFieldDecorator('description',{
                       initialValue: description ? description : '',
                     })(
-                      <Input  />
+                      <Input disabled={true} />
                     )}
                   </FormItem>
                 </Card>

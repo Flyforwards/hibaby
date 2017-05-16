@@ -27,33 +27,22 @@ export default {
 			}
 
 			console.log(data);
-			return  {...addplacedata,
-
-			};
+			return  addplacedata;
 		},
 		//查看地方列表数据
 		PlaceFindSave(state, {
-			payload: { data }
-		}) {
-			return  {...state,data };
-		},
+					payload: { data:item }
+				}) {
+					return  {...state,item };
+				},
 		//编辑列表数据
-		EditPlaceDataSave(state, {
-			payload: {
-				data,
-				code
-			}
+		EditPlaceDataSave(state,  {
+			payload: { data: item }
 		}) {
-			let savedata = {...state,
-				data,
-				code
-			}
-			console.log(data);
-			return  {...savedata,
-			};
+			return {...state,item}
 		},
 	},
-	effects: {
+	effects:{
 		//添加地方列表数据
 		*AddPlaceData({payload: values}, { call, put }) {
 			const {data: {data,id,code}} = yield call(spaceService.AddPlaceData, values);
@@ -61,14 +50,7 @@ export default {
 			if (code == 0) {
 				console.log(data)
 				message.success("添加用户信息成功");
-				yield put({
-					type: 'AddPlaceDataSave',
-					payload: {
-						data,
-						code
-					}
-				});
-
+				yield put(routerRedux.push('/system/localchar'));
 			}
 		},
 		//查看地方列表数据
@@ -81,7 +63,6 @@ export default {
 						data,
 					}
 				});
-
 			}
 		},
 		//编辑地方列表数据
@@ -91,14 +72,7 @@ export default {
 			if (code == 0) {
 				console.log(data)
 				message.success("更改用户信息成功");
-				yield put({
-					type: 'EditPlaceDataSave',
-					payload: {
-						data,
-						code
-					}
-				});
-
+				yield put(routerRedux.push("/system/localchar"));
 			}
 		},
 		//获取地方列表所需数据
@@ -124,12 +98,12 @@ export default {
 				query
 			}) => {
 				//添加地方列表
-				if (pathname === '/localchar/add') {
-					dispatch({
-						type: 'AddPlaceData',
-						payload:query
-					});
-				}
+				// if (pathname === '/localchar/add') {
+				// 	dispatch({
+				// 		type: 'AddPlaceData',
+				// 		payload:query
+				// 	});
+				// }
 				//查看地方列表数据
 				if (pathname === '/localchar/find') {
 					dispatch({
@@ -138,12 +112,11 @@ export default {
 					});
 				}
 				//编辑地方列表数据
-				if (pathname === 'localchar/editplace') {
-					dispatch({
-						type: 'EditPlaceData',
-						payload:query
-					});
-				}
+				// if (pathname === 'localchar/editplace') {
+				// 	dispatch({
+				// 		payload:query
+				// 	});
+				// }
 			})
 		}
 	},

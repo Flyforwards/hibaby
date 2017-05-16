@@ -112,7 +112,6 @@ class editData extends React.Component {
      handleReturn = () =>{
       browserhistory.go(-1)
     }
-
     handleSave = (e) => {
        e.preventDefault();
        let values = this.props.form.getFieldsValue();
@@ -194,7 +193,7 @@ class editData extends React.Component {
     render() {
       console.log("edit>>>>>",this.props.data)
       let form = this.props.form;
-      const item = this.props.data;
+      const item = this.props.data ? this.props.data : {};
       const { formLayout } = this.state;
       //const { dataSource } = this.state;
       const formItemLayout = formLayout === 'horizontal' ? {
@@ -217,9 +216,7 @@ class editData extends React.Component {
         name=item.name;
         description=item.description;
       }
-
-        if(arr !==null){
-
+      if(arr !==null){
             field=arr.map(res=>{
                 return(res.name)
             });
@@ -230,25 +227,35 @@ class editData extends React.Component {
         }
         let len=field.length;
         for(let i=0;i<len;i++){
-          children.push(
-            <div>
-              <FormItem {...formItemLayout} className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
-                  {getFieldDecorator(`id${childId[i]}`, {
-                    initialValue:`${field[i]}`,
-                    rules: [{ required: true, message: '字段描述为必填项！' }],
-                })(
-                      <Input className="input" />
-                  )}
-                  </FormItem>
-                  <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
-                  </div>
-          )
+          if(i==0){
+              children.push(
+                <div>
+                  <FormItem {...formItemLayout} className = "div" label="选项一">
+                      {getFieldDecorator(`id${childId[0]}`, {
+                        initialValue:`${field[0]}`,
+                        rules: [{ required: true, message: '字段描述为必填项！' }],
+                    })(
+                          <Input className="input" />
+                      )}
+                      </FormItem>
+                </div>
+              )
+          }else {
+            children.push(
+              <div>
+                <FormItem {...formItemLayout} className = "div" label={`选项${this.state.bigNum[i]}`}>
+                    {getFieldDecorator(`id${childId[i]}`, {
+                      initialValue:`${field[i]}`,
+                      rules: [{ required: true, message: '字段描述为必填项！' }],
+                  })(
+                        <Input className="input" />
+                    )}
+                    </FormItem>
+                    <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+              </div>
+            )
+          }
         }
-
-
-
-
-
       console.log("render>>>",getFieldDecorator)
         return (
               <div className="xuanxiang container2">
@@ -258,7 +265,7 @@ class editData extends React.Component {
                   {getFieldDecorator('name', {
                     initialValue:`${name}`,
                         rules: [{ required: true, message: '字段名称为必填项！' }],
-                    })(  <Input placeholder="input placeholder" />
+                    })(  <Input disabled={true} className="input" placeholder="input placeholder" />
                       )}
                     </FormItem>
                       <FormItem {...formItemLayout} className = "div" label="字段描述">
@@ -266,13 +273,14 @@ class editData extends React.Component {
                         initialValue:`${description}`,
                         rules: [{ required: true, message: '字段描述为必填项！' }],
                     })(
-                          <Input className="input" />
+                          <Input disabled={true} className="input" />
                       )}
                       </FormItem>
                   </Form>
               </Card>
               < Card title = "下拉选项:" >
               <Form>
+
                    {children}
                    {this.state.lists}
                    <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
