@@ -20,7 +20,6 @@ const { MonthPicker, RangePicker } = DatePicker;
 const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
 let traversalDataId = []
-const dataID = window.location.search.split("=")[1]
 
 class ViewTheInformationed extends React.Component {
   constructor(props) {
@@ -32,6 +31,7 @@ class ViewTheInformationed extends React.Component {
     }
   }
   componentDidMount(){
+    let dataID = window.location.search.split("=")[1]
     this.props.dispatch({
       type: 'organization/getUserListById',
       payload: {
@@ -61,6 +61,7 @@ class ViewTheInformationed extends React.Component {
     })
   }
   headelDisabled = ()=>{
+    let dataID = window.location.search.split("=")[1]
     this.setState({
         toViewVisible:true,
         ID:dataID
@@ -90,7 +91,7 @@ class ViewTheInformationed extends React.Component {
             return data.roleId
           })
          })
-         const set = new Set([1, 2, 3, 4, 4]);
+         const set = new Set(roles);
          let temp = [...set]
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
@@ -121,6 +122,7 @@ class ViewTheInformationed extends React.Component {
           }
           time = getLocalTime(USER.gmt_entry)
       }
+      let dataID = window.location.search.split("=")[1]
       return(
         <div className="viewTheInformation">
           <div className="basicInformation">基本信息</div>

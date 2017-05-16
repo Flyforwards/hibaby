@@ -24,6 +24,10 @@ export default {
     selectedRows: [],
     selectedRowKeys: [],
     users:[],
+    // 默认选择的节点 --添加成员
+    nodeid: null,
+    // 默认节点的组织信心  --添加成员
+    tissueProperty: null,
   },
 
 
@@ -109,9 +113,13 @@ export default {
       return {...state, };
     },
 
-    clearPermissionList(state, { payload}) {
+    clearPermissionList(state, { payload }) {
       const permissionList = [];
-      return {...state,permissionList};
+      return { ...state,permissionList};
+    },
+
+    setDefaultDepatInfo(state, { payload: { nodeid, tissueProperty } }) {
+      return { ...state, nodeid, tissueProperty };
     },
   },
   effects: {
@@ -226,18 +234,24 @@ export default {
     *getDeptByCurrentEndemic({ payload: { roleId } },{call, put}) {
       const {data: {data, code , err}} =  yield call(usersService.getRoleDepartmentNodes, { dataId: roleId })
       if (code == 0 && err == null) {
+        yield put({
+          type: "getDeptByEndemicSuccess",
+          payload: { data }
+        })
         if (data.nodes && data.nodes.length > 0) {
           const dept = data.nodes[0];
           const { id: nodeid , tissueProperty } = dept
+          // 默认选择第一个部门，将这个部门的信息保存起来
+          yield put({
+            type: "setDefaultDepatInfo",
+            payload: { nodeid, tissueProperty }
+          })
           yield put({
             type: "getUserPageListByUserRole",
             payload: { roleId, nodeid, tissueProperty, page : 1, pageSize: 10 },
           })
         }
-        yield put({
-          type: "getDeptByEndemicSuccess",
-          payload: { data }
-        })
+
       } else {
         throw err || "请求出错";
       }

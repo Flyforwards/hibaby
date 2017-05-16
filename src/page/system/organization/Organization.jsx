@@ -170,6 +170,7 @@ class Organization extends React.Component {
         let ListLnformation = []
         if(this.props.list != null){
           ListLnformation = this.props.list;
+          console.log(ListLnformation)
           ListLnformation.map((record)=>{
             record.key = record.id;
           });
