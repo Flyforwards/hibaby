@@ -130,3 +130,10 @@ export function modifyDepartment(values) {
     body: JSON.stringify(values),
   })
 }
+//获取组织性质字典
+export function getTissueProperty(values) {
+  return request('/crm/api/v1/department/getTissueProperty', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

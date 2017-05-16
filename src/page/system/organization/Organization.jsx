@@ -81,7 +81,9 @@ class Organization extends React.Component {
             character:null,
             userName:null,
             toViewVisible:false,
-            ID:null
+            ID:null,
+            nodeid:endemic.id,
+            tissueProperty:endemic.tissueProperty
         }
     }
     onDrop = (info) => {
@@ -106,14 +108,10 @@ class Organization extends React.Component {
         "status":null,
         "page": 1,
         "size": 5,
-       "tissueProperty": endemic.tissueProperty
+       "tissueProperty":endemic.tissueProperty
       }
     });
   }
-  //查看
-    toView() {
-      console.log("查看")
-    }
     //禁止
     Disabled(record) {
       console.log(record)
@@ -131,12 +129,12 @@ class Organization extends React.Component {
         type: 'organization/organizationList',
         payload: {
             "name": $(".userName").val(),
-            "nodeid": endemic[0].id,
+            "nodeid": this.state.nodeid,
             "roleId": this.state.character,
             "status": this.state.status,
             "page": 1,
             "size": 10,
-            "tissueProperty":endemic[0].tissueProperty
+            "tissueProperty":this.state.tissueProperty
         },
       });
     }
@@ -152,49 +150,22 @@ class Organization extends React.Component {
         status:value
      })
     }
-    OrganizationAdd() {
-      console.log("新增员工")
-    }
     showCreateModal() {
         this.setState({
             createModalVisible: true
         })
     }
-    sdsd() {
-      console.log("dsd")
-    }
-    onCellChange = (index, key) => {
-        return (value) => {
-          const dataSource = [...this.state.dataSource];
-          dataSource[index][key] = value;
-          this.setState({ dataSource });
-        };
-      }
     handleCreateModalCancel() {
         this.setState({
             toViewVisible: false
         })
     }
-      onDelete = (index) => {
-        const dataSource = [...this.state.dataSource];
-        dataSource.splice(index, 1);
-        this.setState({ dataSource });
-      }
-      handleAdd = () => {
-        const { count, dataSource } = this.state;
-        const newData = {
-          identifier: 'a123456',
-          name: '李芳芳',
-          positionId: '产品经理',
-          deptId: '信息管理部',
-          endemicId: '总部',
-          roleId: '普通员工',
-          status: '正常',
-        };
-        this.setState({
-          dataSource: [...dataSource, newData]
-        });
-      }
+    ObtainOrganization(nodeid,tissueProperty){
+      this.setState({
+          nodeid:nodeid,
+          tissueProperty:tissueProperty
+      })
+    }
     render() {
         let ListLnformation = []
         if(this.props.list != null){
@@ -209,25 +180,16 @@ class Organization extends React.Component {
           showQuickJumper: true,
           defaultPageSize:5,
           onChange: (current) => {
-            console.log("data",{
-                  "name": this.state.userName,
-                  "nodeid": endemic.id,
-                  "roleId": this.state.character,
-                  "status": this.state.status,
-                  "page": current,
-                  "size": 5,
-                  "tissueProperty": endemic.tissueProperty
-              })
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
                   "name": this.state.userName,
-                  "nodeid": endemic.id,
+                  "nodeid": this.state.nodeid,
                   "roleId": this.state.character,
                   "status": this.state.status,
                   "page": current,
                   "size": 5,
-                  "tissueProperty": endemic.tissueProperty
+                  "tissueProperty": this.state.tissueProperty
               },
             });
           },
@@ -241,7 +203,9 @@ class Organization extends React.Component {
         return (
         <div className="organizationConnet">
             <main className="yt-admin-framework-Customer-a">
-            <OrganizationLeft/>
+            <OrganizationLeft 
+              onBtain={this.ObtainOrganization.bind(this)}
+            />
             <div className="Organization-right">
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>

@@ -18,11 +18,16 @@ export default {
 		userID:null,
 		LeagerData:null,
 		getDepartmentNode:null,
+		TissueProperty:null
 	},
 	reducers: {
 		getUserPageListByDeptId(state,{payload:{ data,code }}){
 	      let getUserPageListByDeptIddata = {...state,data,code};
 	      return getUserPageListByDeptIddata
+	    },
+	    getTissuePropertyList(state,{payload:{ data:TissueProperty,code }}){
+	      let getTissuePropertyListdata = {...state,TissueProperty,code};
+	      return getTissuePropertyListdata
 	    },
 	    deleteDepartmentSave(state,{payload:{ data,code }}){
 	      let deleteDepartmentdata = {...state,data,code};
@@ -90,7 +95,6 @@ export default {
 				end: page == 1 ? list.length : (page - 1) * 3 + list.length,
 				totalpage:Math.ceil(total/size),
 			}
-			console.log("list",list)
 			return {...organizationdata,range};
 	    },
 	},
@@ -101,6 +105,20 @@ export default {
 			if (code == 0) {
 				yield put({
 					type: 'getDepartmentNodesList',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//获取组织性质字典
+		*getTissueProperty({payload: values}, { call, put }) {
+			const {data: {data,code}} =  yield call(organizationService.getTissueProperty, values);
+			console.log("获取组织性质字典",data)
+			if (code == 0) {
+				yield put({
+					type: 'getTissuePropertyList',
 					payload: {
 						data,
 						code

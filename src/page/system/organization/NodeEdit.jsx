@@ -24,25 +24,24 @@ class NodeEdited extends Component {
         this.props.onCancel()
     }
     handleOk(NodesdataEdit) {
-        console.log("ok",this.props.ID)
-        console.log("oktablea",this.state.TableData)
-        console.log("okdata",data)
+        console.log("okdata",NodesdataEdit)
         const fields = this.props.form.getFieldsValue();
         console.log("fields",fields)
-        
-        this.props.dispatch({
-            type: 'organization/modifyDepartment',
-            payload: {
-              "abbreviation": fields.referredTo,//简称
-              "englishName": fields.englishName,
-              "leaderId": this.state.TableData.id?this.state.TableData.id:NodesdataEdit.leaderId,
-              "leaderName": this.state.TableData.name?this.state.TableData.name:NodesdataEdit.operatorName,
-              "name": fields.fullName,
-             " parentId":this.props.ID,
-              "tissueProperty": fields.localCenter,
-              "id":NodesdataEdit.id
-            }
-        })
+        console.log("父级节点",this.props.parentId)
+         console.log("组织性质",fields.localCenter)      
+        // this.props.dispatch({
+        //     type: 'organization/modifyDepartment',
+        //     payload: {
+        //       "abbreviation": fields.referredTo,//简称
+        //       "englishName": fields.englishName,
+        //       "leaderId": this.state.TableData?this.state.TableData.id:NodesdataEdit.leaderId,
+        //       "leaderName": this.state.TableData?this.state.TableData.name:NodesdataEdit.operatorName,
+        //       "name": fields.fullName,
+        //      " parentId":this.props.parentId,//青岛的ID
+        //       "tissueProperty":"1",
+        //       "id":NodesdataEdit.id
+        //     }
+        // })
        
     }
     checkbox() {
@@ -92,6 +91,7 @@ class NodeEdited extends Component {
     }
     render() {
       let NodesdataEdit ={}
+      let localCenterData = []
         const {visible, form, confirmLoading, Nodesdata} = this.props
         if( Nodesdata != null){
           NodesdataEdit = Nodesdata
@@ -107,7 +107,14 @@ class NodeEdited extends Component {
             sm: { span: 14 },
           },
         };
-        console.log(NodesdataEdit)
+        if(this.props.TissueProperty != null){
+          const loops = (roleId) => {
+            return roleId.map((item)=>{
+               return <Option value={item.id+""} key={item.id}>{item.tissueProperty}</Option>
+            })
+          }
+          localCenterData = loops(this.props.TissueProperty)
+        }
         return (
             <Modal
                 visible={visible}
@@ -119,7 +126,7 @@ class NodeEdited extends Component {
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
                 onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this,NodesdataEdit)}
+                onOk={this.handleOk.bind(this,NodesdataEdit,this.props.ID)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
                 width={ 700 }
@@ -146,7 +153,9 @@ class NodeEdited extends Component {
                         rules: [],
                       })(
                         <Select>
-                            <Option value="1">地方中心</Option>
+                            {
+                              localCenterData
+                            }
                         </Select>
                       )}
                     </FormItem>
