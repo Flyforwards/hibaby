@@ -209,14 +209,14 @@ class EditUsered extends React.Component {
             }
             if(this.props.dataId != null){
                 traversalDataId = this.props.dataId.map((item,index)=>{
-                  return (<Option value={item.id+""} key={ item.id }>{ item.name }</Option>)
+                  return (<Option value={item.id+""} key={ item.id * 10 }>{ item.name }</Option>)
               })
             }else{
               traversalDataId = null
             }
             if(SelectData != null){
                 selectDataList = SelectData.map((item,index)=>{
-                  return (<Option key={ item.id }>{item.name}</Option>)
+                  return (<Option key={ item.id * 100 }>{item.name}</Option>)
               })
             }
             EntryInformationList.push(
