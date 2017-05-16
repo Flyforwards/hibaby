@@ -35,7 +35,8 @@ class EditUsered extends React.Component {
       display:"block",
       identifier:null,
       Leager:null,
-      TableData:[]
+      TableData:[],
+      NewuserImg:null
     }
   }
   componentDidMount(){
@@ -137,7 +138,7 @@ class EditUsered extends React.Component {
           })
         }
       }
-      console.log("password",)
+      console.log("password",this.state.NewuserImg)
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
@@ -153,6 +154,12 @@ class EditUsered extends React.Component {
           }
         })
       }
+    })
+  }
+  headelImg(NewuserImg){
+    console.log("NewuserImg",NewuserImg)
+    this.setState({
+      NewuserImg:NewuserImg
     })
   }
   getLocalTime(nS) {
@@ -348,7 +355,6 @@ class EditUsered extends React.Component {
          })
          time = this.getLocalTime(USER.gmt_entry)
       }
-      console.log(USER.imgURL)
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
@@ -358,7 +364,7 @@ class EditUsered extends React.Component {
               {getFieldDecorator('userImg', {
                 rules: [],
               })(
-               <div className="img"><UPload /></div>
+               <div className="img"><UPload urlList={USER.imgURL} headelImg={this.headelImg.bind(this)}/></div>
               )}
             </FormItem>
             <FormItem

@@ -28,6 +28,7 @@ export function test(values) {
     body: JSON.stringify(values),
   })
 }
+
 export function findSubmit(values) {
   return request('/crm/api/v1/resetPassword', {
     method: 'POST',

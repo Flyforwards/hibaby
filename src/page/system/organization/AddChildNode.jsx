@@ -36,7 +36,7 @@ class AddChildNodeed extends Component {
               leaderId: this.state.TableData.id,
               leaderName: this.state.TableData.name,
               name: fields.fullName,
-              parentId:this.props.ID,
+              parentId:this.props.parentId,
               tissueProperty: fields.localCenter
             }
         })
@@ -90,6 +90,7 @@ class AddChildNodeed extends Component {
     render() {
         const {visible, form, confirmLoading} = this.props
         const { getFieldDecorator } = this.props.form;
+        let localCenterData = []
         const formItemLayout = {
           labelCol: {
             xs: { span: 24 },
@@ -100,6 +101,14 @@ class AddChildNodeed extends Component {
             sm: { span: 14 },
           },
         };
+        if(this.props.TissueProperty != null){
+          const loops = (roleId) => {
+            return roleId.map((item)=>{
+               return <Option value={item.id+""} key={item.id}>{item.tissueProperty}</Option>
+            })
+          }
+          localCenterData = loops(this.props.TissueProperty)
+        }
         return (
             <Modal
                 visible={visible}
@@ -137,7 +146,9 @@ class AddChildNodeed extends Component {
                         rules: [],
                       })(
                         <Select>
-                            <Option value="1">地方中心</Option>
+                            {
+                              localCenterData
+                            }
                         </Select>
                       )}
                     </FormItem>

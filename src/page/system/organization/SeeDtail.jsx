@@ -140,12 +140,10 @@ class SeeDtailed extends Component {
                       label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
-                        initialValue:"l",
+                        initialValue:Nodesdata.id,
                         rules: [],
                       })(
-                        <Select>
-                            <Option value="1">地方中心</Option>
-                        </Select>
+                       <Input disabled={ true }/>
                       )}
                     </FormItem>
                     <FormItem
@@ -201,7 +199,9 @@ class SeeDtailed extends Component {
                     handleOk={this.state.handleOk}
                     onCancel={ this.handleNodeEditCancel.bind(this) }
                     ID = {this.props.ID}
+                    parentId ={this.props.parentId}
                     Nodesdata = {Nodesdata}
+                    TissueProperty ={this.props.TissueProperty}
                 />
             </div>
             </Modal>

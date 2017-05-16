@@ -27,7 +27,7 @@ var webpackConfig = {
         },
         proxy: {
             '/crm/api/*': {
-                target: 'http://118.190.112.88:8087/crm/api',
+                target: 'http://dev.hbbcare.com:8087/crm/api',
                 pathRewrite: {
                     '^/crm/api': ''
                 },
