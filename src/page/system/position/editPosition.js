@@ -136,7 +136,6 @@ class EditableTable extends Component {
   
   handleAdd = () => {
     const { positionInfo, record } = this.props;
-    console.log(this.props,'')
     const deptId = record.id
     //console.log(positionInfo,'??')
     function getCount() {
@@ -145,7 +144,6 @@ class EditableTable extends Component {
         positionInfo.map((v, k) => {
           if (v.rank > b) {
             b = v.rank;
-            console.log(v.rank,'rank')
           }
         });
       }
