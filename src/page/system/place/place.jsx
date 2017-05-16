@@ -18,8 +18,8 @@ class SystemIndex extends React.Component {
         key: 'id'
       },{
         title: '字段名称',
-        dataIndex: 'operatorName',
-        key: 'operatorName'
+        dataIndex: 'name',
+        key: 'name'
       }, {
         title: '字段描述',
         dataIndex: 'description',

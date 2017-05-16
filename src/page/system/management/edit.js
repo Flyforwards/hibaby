@@ -16,6 +16,10 @@ class editData extends React.Component {
         console.log("ce>>>>",this.props.data)
         const item = this.props.data;
         const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: { span: 2 },
+            wrapperCol: { span: 22 },
+          };
         let description="";
         let dictionarySideDOs=null;
         let lists=[];
@@ -27,7 +31,7 @@ class editData extends React.Component {
         if(dictionarySideDOs==null){
           lists.push(
 
-                    <FormItem label="选项一">
+                    <FormItem {...formItemLayout} label="选项一">
                     {getFieldDecorator('field0', {
                       //initialValue:"",
                           rules: [{ required: true ,message: '在此输入内容'}],
@@ -48,9 +52,12 @@ class editData extends React.Component {
     }
     add(){
         console.log("add>>>>>",this.props.data)
-
-        console.log(this.props.data);
         const item = this.props.data;
+        const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: { span: 2 },
+            wrapperCol: { span: 22 },
+          };
         let arr = [];
         let lists = this.state.lists;
         let field=[];
@@ -68,18 +75,32 @@ class editData extends React.Component {
             len=lists.length;
 
         };
+
         lists.push(
-          <FormItem key={len} className = "div2">
-          {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
-                })(<div>
-                    <p className = "label">选项{this.state.bigNum[len]}</p>
-                    <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                        <Input  data-index={len} className = "input2"/>
-                        <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
-                    </div>
-                    </div>
-                  )}
-              </FormItem>
+          <div>
+          <FormItem {...formItemLayout} label={`选项${this.state.bigNum[len]}`}>
+          {getFieldDecorator('field0', {
+            //initialValue:"",
+                rules: [{ required: true ,message: '在此输入内容'}],
+            })(  <Input className=""/ >
+              )}
+            </FormItem>
+            <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+            </div>
+
+
+          //
+          // <FormItem {...formItemLayout} key={len} className = "div2" la>
+          // {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
+          //       })(<div>
+          //           <p className = "label"></p>
+          //           <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+          //               <Input  data-index={len} className = "input2"/>
+          //               <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+          //           </div>
+          //           </div>
+          //         )}
+          //     </FormItem>
           )
         this.setState({lists:lists})
     }
@@ -168,6 +189,7 @@ class editData extends React.Component {
               type:1
           }
         })
+        routerRedux.push('/system/groupchar')
     }
     render() {
       console.log("edit>>>>>",this.props.data)
@@ -176,8 +198,8 @@ class editData extends React.Component {
       const { formLayout } = this.state;
       //const { dataSource } = this.state;
       const formItemLayout = formLayout === 'horizontal' ? {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
+        labelCol: { span: 2 },
+        wrapperCol: { span: 22 },
       } : null;
       const buttonItemLayout = formLayout === 'horizontal' ? {
         wrapperCol: { span: 14, offset: 4 },
@@ -205,12 +227,12 @@ class editData extends React.Component {
             childId=arr.map(res=>{
                 return(res.id)
             });
-
-
         }
         let len=field.length;
         for(let i=0;i<len;i++){
-          children.push(<FormItem className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
+          children.push(
+            <div>
+              <FormItem {...formItemLayout} className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
                   {getFieldDecorator(`id${childId[i]}`, {
                     initialValue:`${field[i]}`,
                     rules: [{ required: true, message: '字段描述为必填项！' }],
@@ -218,6 +240,8 @@ class editData extends React.Component {
                       <Input className="input" />
                   )}
                   </FormItem>
+                  <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+                  </div>
           )
         }
 
@@ -230,14 +254,14 @@ class editData extends React.Component {
               <div className="xuanxiang container2">
               <Card title = "字段信息:" >
                   <Form layout={formLayout}>
-                  <FormItem label="字段名称">
+                  <FormItem {...formItemLayout} label="字段名称">
                   {getFieldDecorator('name', {
                     initialValue:`${name}`,
                         rules: [{ required: true, message: '字段名称为必填项！' }],
                     })(  <Input placeholder="input placeholder" />
                       )}
                     </FormItem>
-                      <FormItem className = "div" label="字段描述">
+                      <FormItem {...formItemLayout} className = "div" label="字段描述">
                       {getFieldDecorator('description', {
                         initialValue:`${description}`,
                         rules: [{ required: true, message: '字段描述为必填项！' }],
@@ -277,7 +301,7 @@ function edit({dispatch, data}) {
 function mapStateToProps(state) {
   console.log("modelss",state.save)
   const {
-    data,
+    item: data,
     code,
     field,
     len,
