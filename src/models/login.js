@@ -55,7 +55,6 @@ export default {
           yield put({
             type : "layout/getCurrentUserEndemic"
           });
-					yield put(routerRedux.push('/club'));
 				} else {
           throw err;
         }

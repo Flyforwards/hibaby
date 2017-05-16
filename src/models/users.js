@@ -28,23 +28,7 @@ export default {
     },
   },
   effects: {
-  	*fetch({ payload: { page = 1 } }, { call, put }) {
-  		const { data: {data}, headers } = yield call(usersService.fetch, { page });
-  		yield put({ type: 'save', payload: { data } });
-  	},
-    *login({ payload: values }, { call, put }) {
-      const  {data: {data, code}}  = yield call(usersService.login, values);
-      if(code == 0) {
 
-       yield put(routerRedux.push('/club'));
-      }
-      // yield put({ type: 'loginSave', payload: { data, code } });
-    },
-    *test({ payload: values }, { call, put }) {
-      const  {data: {data, code}}  = yield call(usersService.test, values);
-
-      yield put({ type: 'testSave', payload: { data, code } });
-    },
     *findSubmit({ payload: values }, { call, put }) {
       const  {data: {data, code}}  = yield call(usersService.findSubmit, values);
 

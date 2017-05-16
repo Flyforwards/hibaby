@@ -6,6 +6,7 @@
         transition: all .3s;
     }
 }
+
 .yt-admin-framework-header {
     background-color:#d9d9d9;
     height: 50px;
@@ -31,6 +32,7 @@
         margin-top: 10px;
     }
 }
+
 .nav-logo{
     display: inline-block;
     float:left;
@@ -38,6 +40,7 @@
     margin-top:10px;
     margin-left:20px;
 }
+
 .line {
     width:1px;
     height:30px;
@@ -46,6 +49,7 @@
     left:130px;
     top:10px;
 }
+
 .nav {
     position: relative;
     width:110px;
@@ -53,6 +57,7 @@
     float:right;
     margin-right:-10px;
 }
+
 .ant-dropdown-menu {
     margin-top: -22px;
     margin-left:-9px;
@@ -77,20 +82,21 @@
         margin:0 auto;
     }
 }
+
 .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
     background-color: #b67233;
 }
+
 .nav i{
     position:absolute;
-    font-size:10px;
-    top:25px;
-    right:20px;
-    color:#fff;
+    font-size: 10px;
+    top: 18px;
+    right: 20px;
+    color: #fff;
 }
+
 .nav-two {
     display:inline-block;
-    width:70px;
-    height:60px;
     margin-right:22px;
     text-align: left;
     font-family: '微软雅黑 Regular', '微软雅黑';
@@ -100,6 +106,7 @@
     color: #fcfcfc;
     overflow: hidden;
 }
+
 .yt-admin-framework-header-sidebar-toggle {
     float: left;
     .toggle-icon {
@@ -116,6 +123,7 @@
         }
     }
 }
+
 .yt-admin-framework-header-menu {
     width:100%;
     min-width:1149px;

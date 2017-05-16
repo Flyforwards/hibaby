@@ -6,8 +6,8 @@ import Header from '../header/Header.jsx'
 
 import Sidebar from '../sidebar/Sidebar.jsx'
 import Content from '../content/Content.jsx'
-import {local, session} from 'common/util/storage.js'
-import {connect} from 'dva';
+import { local, session} from 'common/util/storage.js'
+import { connect } from 'dva';
 import classNames from 'classnames';
 
 class Layout extends React.Component {
@@ -23,41 +23,6 @@ class Layout extends React.Component {
 
     }
 
-    /**
-     * menuData
-     * path name icon
-     * @path 重要 既做路径，又作为唯一key
-     * [{
- *      name: '404',
- *      icon: 'circle',
- *      path: '/404'
- *      children: [
- *          {
- *              name: '405',
- *              path: '/405',
- *              icon: 'circle'
- *          },
- *          {
- *              name: '401',
- *              icon: 'circle',
- *              path: '/401'
- *              children: [{
- *                  name: '409',
- *                  path: '/409',
- *                  icon: 'circle'
- *              }]
- *          }
- *      ]
- * },
-     * {
- *      name: '403',
- *      path: '/403',
- *      icon: 'circle'
- * }]
-     *
-     *
-     **/
-
     handleMiniChange(mode) {
         local.set('mini', mode)
         this.setState({
@@ -66,7 +31,6 @@ class Layout extends React.Component {
     }
 
     handleSetLoading(type) {
-
         this.setState({
             loading: type
         })
@@ -98,7 +62,7 @@ class Layout extends React.Component {
         }
 
         return (
-            <div className={cls}>
+            <div className={ cls }>
                 <Spin key="yt-admin-framework-layout" spinning={this.state.loading} size="large">
                     <Header
                         miniMode ={ this.state.mini }
@@ -108,7 +72,7 @@ class Layout extends React.Component {
                         userInfo = { userInfo }
                         dispatch = {this.props.dispatch}
                     />
-                    <Sidebar miniMode={this.state.mini} menuData={menuData} location={this.props.location}/>
+                    <Sidebar miniMode={ this.state.mini } menuData={menuData} location={this.props.location}/>
                     <Content>
                         {
                             this.props.children
