@@ -216,7 +216,7 @@ let routes = [
           },
           //添加集团项目列表内容
           {
-            path: '/demo/add',
+            path: '/groupchar/add',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
                 registerModel(app, require('./models/save'));
@@ -226,7 +226,7 @@ let routes = [
           },
           //添加地方项目列表
           {
-            path: '/localchar/add',
+            path: '/localChar/add',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
                 registerModel(app, require('./models/placedata'));

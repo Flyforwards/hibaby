@@ -45,15 +45,14 @@ export default {
 	effects: {
 		//添加集团列表数据
 		*saveData({payload: values}, { call, put }) {
-			const {data: {data,id,code}} = yield call(saveService.saveData, values);
-			console.log(data)
+			const {data: { data, id, code} } = yield call(saveService.saveData, values);
 			if (code == 0) {
-				console.log(data)
 				message.success("添加用户信息成功");
 				yield put(routerRedux.push("system/groupchar"));
 
 			}
 		},
+
 		//查看集团列表数据
 		*checkData({payload: values}, { call, put }) {
 			const {data: {code,data,err}} = yield call(saveService.checkData, values);

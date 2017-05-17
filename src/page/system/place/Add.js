@@ -36,7 +36,6 @@ class PlaceAdd extends React.Component {
                       )}
                     </FormItem> )
                  ],
-          bigNum:['一', '二','三','四','五','六','七','八','九'],
           name:'',
           description:'',
           path:'/localchar/add'
@@ -48,7 +47,7 @@ class PlaceAdd extends React.Component {
         lists.push(<FormItem key={len} className = "div2">
                     {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, message: 'Username is required!' }],
                       })(<div>
-                              <p className = "label">选项{this.state.bigNum[len]}</p>
+                              <p className = "label">选项${len}</p>
                               <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                                   <Input type="textarea" rows = {6} className = "input2"/>
                                   <span className = "editable-add-btn" onClick={this.delete} data-index={this.state.lists.length}> 删除 </span>

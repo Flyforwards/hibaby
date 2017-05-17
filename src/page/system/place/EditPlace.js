@@ -42,7 +42,6 @@ class EditPlaceData extends React.Component {
         this.delete=this.delete.bind(this);
         this.handleSave=this.handleSave.bind(this)
         this.state={
-          bigNum:['一', '二','三','四','五','六','七','八','九','十','十一','十二'],
           formLayout: 'horizontal',
           lists:lists        }
     }
@@ -72,7 +71,7 @@ class EditPlaceData extends React.Component {
           <FormItem key={len} className = "div2">
           {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
                 })(<div>
-                    <p className = "label">选项{this.state.bigNum[len]}</p>
+                    <p className = "label">选项${len}</p>
                     <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                         <Input  data-index={len} className = "input"/>
                         <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
@@ -211,7 +210,7 @@ class EditPlaceData extends React.Component {
         }
         let len=field.length;
         for(let i=0;i<len;i++){
-          children.push(<FormItem className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
+          children.push(<FormItem className = "div" label={"选项"+`${i}`}>
                   {getFieldDecorator(`id${childId[i]}`, {
                     initialValue:`${field[i]}`,
                     rules: [{ required: true, message: '字段描述为必填项！' }],

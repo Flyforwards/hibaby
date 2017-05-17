@@ -68,9 +68,9 @@ class SystemIndex extends React.Component {
       };
       return ( <div className = "container2">
                     <div className = "buttonwrapper">
-                    <Link to = '/demo/add'>
-                    <Button /*className = "editable-add-btn" */ className="addBtn"> 添加 </Button>
-                    </Link >
+                      <Link to = '/groupChar/add'>
+                        <Button className="addBtn"> 添加 </Button>
+                      </Link >
                     </div>
                     {this.props.list?
                     < Table rowKey = "id"  bordered dataSource = {this.props.list ? this.props.list : []} columns = { columns}
@@ -124,8 +124,8 @@ function management({
     range={range}
     /> </div >
   )
-
 }
+
 function mapStateToProps(state) {
   // console.log("modelss",state.system)
   const {
