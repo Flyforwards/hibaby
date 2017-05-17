@@ -124,6 +124,12 @@ class ViewTheInformationed extends React.Component {
             var year=now.getFullYear();
             var month=now.getMonth()+1;
             var date=now.getDate();
+            if(month<10){
+              month = "0"+month
+            }
+            if(date<10){
+              date = "0"+date
+            }
             return `${year}-${month}-${date}`
           }
           time = getLocalTime(USER.gmt_entry)

@@ -13,7 +13,6 @@ import {local, session} from 'common/util/storage.js'
 
 const Option = Select.Option
 const endemic  = session.get("endemic")
-const userInfo  = session.get("userInfo")
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
@@ -37,14 +36,22 @@ class OrganizationLefted extends React.Component {
       }, 50)
     }
     onSelect(value,node){
+      this.addDisplay="block"
+      this.deleteDisplay="none"
       let TissueProperty = null
       if(value[0] != null){
         TissueProperty=node.selectedNodes[0].props.dataIndex
+        if(TissueProperty==0){
+           this.deleteDisplay="none"
+          }else{
+           this.deleteDisplay="block"
+          }
         if(node.selectedNodes[0].key !=1){
           this.setState({
             ID:node.selectedNodes[0].key,
             node:node.selectedNodes[0],
             parentId:node.selectedNodes[0].props.parentId,
+            dataIndex:node.selectedNodes[0].props.dataIndex
           })
           TissueProperty=node.selectedNodes[0].props.dataIndex
           if(TissueProperty==3){
@@ -65,15 +72,17 @@ class OrganizationLefted extends React.Component {
         }else{
           this.setState({
             ID:node.selectedNodes[0].key,
-            node:node.selectedNodes[0]
+            node:node.selectedNodes[0],
+            parentId:node.selectedNodes[0].props.parentId,
+             dataIndex:node.selectedNodes[0].props.dataIndex
           })
         }
         this.props.dispatch({
           type: 'organization/getTissueProperty',
-          payload: {
-              "dataId": TissueProperty
+          payload:{
+            "dataId":node.selectedNodes[0].props.dataIndex
           }
-        })
+      })
       }
     }
     seeDetails(){
@@ -96,6 +105,7 @@ class OrganizationLefted extends React.Component {
         this.setState({
             addChildNodeVisible: false
         })
+        window.location.reload( true )
     }
     handleDeleteNodeCancel() {
         this.setState({
@@ -110,8 +120,18 @@ class OrganizationLefted extends React.Component {
         })
     }
     componentDidMount(){
+      this.props.dispatch({
+          type: 'organization/getAllTissueProperty'
+      })
+      const userInfo  = session.get("userInfo")
+      console.log(userInfo)
       setTimeout(() => {
-      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 800)
+      $("li").find(".ant-tree-title").after("<span class='plus'>+</span>");
+        if(userInfo.categoryId != 0){
+          $("li").find(".plus").eq(0).css('display','none');
+        }
+      }, 800)
+
       $(document).on('click', '.plus', function(e) {
           if(this.state.upblock == 'none'){
               this.setState({
@@ -149,9 +169,8 @@ class OrganizationLefted extends React.Component {
       if (this.props.leftList != null) {
         const  nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
-          loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={nodes[0].parentId} />)
+          loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={this.props.leftList.parentId} />)
         } 
-        console.log("父级节点",this.state.parentId)
         return (  
             <div className="Organization-left">
                 <Tree
@@ -162,10 +181,10 @@ class OrganizationLefted extends React.Component {
                 { loops }
                 </Tree>
                 <ul className="nameList" style={{top:this.state.ulTop,display:this.state.upblock}}>
-                  <li onClick={this.AddChildNode.bind(this)} style={{display:this.addDisplay}}>添加子节点</li>
-                  <li onClick={this.seeDetails.bind(this)}>查看详情</li>
-                  <li onClick={this.DeleteNode.bind(this)}>删除</li>
-                  <li>ID {this.state.ID}</li>
+                  <li className="li" onClick={this.AddChildNode.bind(this)} style={{display:this.addDisplay}}>添加子节点</li>
+                  <li className="li" onClick={this.seeDetails.bind(this)}>查看详情</li>
+                  <li className="li" onClick={this.DeleteNode.bind(this)} style={{display:this.deleteDisplay}}>删除</li>
+                  <li className="fourLi">ID {this.state.ID}</li>
                 </ul>
                 <AddChildNode
                     visible={ this.state.addChildNodeVisible }
@@ -174,6 +193,7 @@ class OrganizationLefted extends React.Component {
                     ID = {this.state.ID}
                     parentId ={this.state.parentId}
                     TissueProperty = {this.props.TissueProperty}
+                    dataIndex = {this.state.dataIndex}
                 />
                 <SeeDtail
                     visible={ this.state.SeeDtailNodeVisible }
@@ -181,7 +201,9 @@ class OrganizationLefted extends React.Component {
                     onCancel={ this.handleSeeModalCancel.bind(this) }
                     ID = {this.state.ID}
                     parentId ={this.state.parentId}
+                    dataIndex = {this.state.dataIndex}
                     TissueProperty = {this.props.TissueProperty}
+                    AllTissueProperty = { this.props.AllTissueProperty }
                 />
                 <DeleteNode
                     visible={ this.state.DeleteNodeVisible }
@@ -190,6 +212,7 @@ class OrganizationLefted extends React.Component {
                     ID = {this.state.ID}
                     parentId ={this.state.parentId}
                     TissueProperty = {this.props.TissueProperty}
+                    dataIndex = {this.state.dataIndex}
                 />
             </div>
         )
@@ -203,6 +226,7 @@ function OrganizationLeft({
   leftList,
   getDepartmentNode,
   TissueProperty,
+  AllTissueProperty,
   code
 }) {
   return ( < div >
@@ -217,6 +241,9 @@ function OrganizationLeft({
     }
     getDepartmentNode = {
       getDepartmentNode
+    } 
+    AllTissueProperty = {
+      AllTissueProperty
     }
     /></div >
   )
@@ -227,6 +254,7 @@ function mapStateToProps(state) {
     leftList,
     getDepartmentNode,
     TissueProperty,
+    AllTissueProperty,
     code
   } = state.organization;
   return {
@@ -235,6 +263,7 @@ function mapStateToProps(state) {
     leftList,
     getDepartmentNode,
     TissueProperty,
+    AllTissueProperty,
     code
     };
 }

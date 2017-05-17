@@ -102,6 +102,7 @@ class EditUsered extends React.Component {
   }
   //保存按键
   headelSave = (entrys,USER)=>{
+
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const fields = this.props.form.getFieldsValue();
@@ -158,6 +159,7 @@ class EditUsered extends React.Component {
             "img":this.state.NewuserImg?this.state.NewuserImg:USER.img
           }
         })
+        history.go(-1)
       }
       }
     })
@@ -188,14 +190,13 @@ class EditUsered extends React.Component {
       let traversalEndemicId = []
       let selectDataList = []
       let EntryInformationList = []
-      var time = '2017-03-10';
+      var time = null;
       let display = 'block'
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
          SEX = USER.sex == 1?"男":"女"
          let lendata = USER.entrys.length
-         time = this.getLocalTime(USER.gmt_entry)
          for(var i=0;i<lendata;i++){
             let headelDepartment = this.affiliatedDepartment
             let entryContent = USER.entrys[i]
@@ -373,6 +374,7 @@ class EditUsered extends React.Component {
           })
          })
       }
+      time = this.getLocalTime(USER.gmt_entry)
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
@@ -415,10 +417,12 @@ class EditUsered extends React.Component {
                 <span className="Two">{SEX}</span>
               )}
             </FormItem>
-            <p className="gmt_entry">
+            { time !="NaN-NaN-NaN"?
+              <p className="gmt_entry">
               <span>入职日期:</span>
-              <DatePicker allowClear={ false } defaultValue={moment(time, dateFormat)} format={dateFormat} onChange={this.onChange.bind(this)}/>
-            </p>
+              <DatePicker allowClear={ false } defaultValue={moment(time)} format={dateFormat} onChange={this.onChange.bind(this)}/>
+            </p>:null
+            }
           </Form>
          { EntryInformationList }
          <SelectTheNodeFrom

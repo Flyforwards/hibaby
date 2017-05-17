@@ -137,3 +137,10 @@ export function getTissueProperty(values) {
     body: JSON.stringify(values),
   })
 }
+//获取所有组织性质字典
+export function getAllTissueProperty(values) {
+  return request('/crm/api/v1/department/getAllTissueProperty', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
