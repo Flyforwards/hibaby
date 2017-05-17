@@ -17,7 +17,8 @@ export default {
 		userID:null,
 		LeagerData:null,
 		getDepartmentNode:null,
-		TissueProperty:null
+		TissueProperty:null,
+		AllTissueProperty:null,
 	},
 	reducers: {
 		getUserPageListByDeptId(state,{payload:{ data,code }}){
@@ -26,6 +27,10 @@ export default {
 	    },
 	    getTissuePropertyList(state,{payload:{ data:TissueProperty,code }}){
 	      let getTissuePropertyListdata = {...state,TissueProperty,code};
+	      return getTissuePropertyListdata
+	    },
+	    getAllTissuePropertyList(state,{payload:{ data:AllTissueProperty,code }}){
+	      let getTissuePropertyListdata = {...state,AllTissueProperty,code};
 	      return getTissuePropertyListdata
 	    },
 	    deleteDepartmentSave(state,{payload:{ data,code }}){
@@ -114,10 +119,22 @@ export default {
 		//获取组织性质字典
 		*getTissueProperty({payload: values}, { call, put }) {
 			const {data: {data,code}} =  yield call(organizationService.getTissueProperty, values);
-			console.log("获取组织性质字典",data)
 			if (code == 0) {
 				yield put({
 					type: 'getTissuePropertyList',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//获取所有组织性质字典
+		*getAllTissueProperty({payload: values}, { call, put }) {
+			const {data: {data,code}} =  yield call(organizationService.getAllTissueProperty, values);
+			if (code == 0) {
+				yield put({
+					type: 'getAllTissuePropertyList',
 					payload: {
 						data,
 						code
@@ -130,6 +147,10 @@ export default {
 			const {data: {data,code}} = yield call(organizationService.deleteDepartment, values);
 			if (code == 0) {
 				message.success("删除该组织架构节点成功");
+				yield put({
+					type: 'getDepartmentNodes',
+					payload: { }
+				});
 			}else{
 				message.success("该组织架构节点存在关联数据无法删除");
 			}
@@ -137,7 +158,6 @@ export default {
 		//根据节点id更新组织架构节点
 		*modifyDepartment({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.modifyDepartment, values);
-			console.log("code",code)
 			if (code == 0) {
 				message.success("修改该组织架构节点成功");
 			}
@@ -145,7 +165,6 @@ export default {
 		//根据节点id获取组织架构节点信息
 		*getDepartment({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getDepartment, values);
-			console.log(code)
 			if (code == 0) {
 				yield put({
 					type: 'getDepartmentSave',
@@ -159,7 +178,7 @@ export default {
 		//根据节点id加载负责人组织架构列表
 		*getLeagerDepartmentNodes({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getLeagerDepartmentNodes, values);
-			console.log("根据节点id加载负责人组织架构列表",code)
+			console.log("根据节点id加载负责人组织架构列表",data)
 			if (code == 0) {
 				yield put({
 					type: 'getLeagerDepartmentNodesSave',
@@ -206,7 +225,6 @@ export default {
 		//根据入职信息id删除入职信息
 		*deleteUserEntry({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.deleteUserEntry, values);
-			console.log("根据入职信息id删除入职信息",code)
 			if (code == 0) {
 
 			}
@@ -227,9 +245,12 @@ export default {
 		//保存组织架构节点信息
 		*saveDepartment({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.saveDepartment, values);
-			console.log("保存组织架构节点信息",code)
 			if (code == 0) {
 				message.success("保存组织架构节点信息成功");
+				yield put({
+					type: 'getDepartmentNodes',
+					payload: { }
+				});
 				yield put({
 					type: 'saveDepartmentSave',
 					payload: {
@@ -263,14 +284,13 @@ export default {
 		//添加用户信息
 		*addUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.addUser, values);
-			console.log("添加用户入职信息",data)
 			switch(data.type)
 			{
 			case 1:
 			  message.success("添加用户信息成功");
 			  break;
 			case 2:
-			  message.success("用户信息已存在");
+			  message.success("该手机号已被注册");
 			  break;
 			case 3:
 			  message.success(`用户${data.name}已在${data.endemicName}`);

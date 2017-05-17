@@ -406,16 +406,23 @@
 	width:80px;
 	background-color: #ccc;
 	position:absolute;
-	left:136px;
-	li{
+	left:144px;
+	.li{
 		padding-left:10px;
 		height:30px;
 		font-size:12px;
 		line-height: 30px;
 	}
-	li:hover{
+	.li:hover{
 		background-color:#f89d2d;
 		color:#fff;
+	}
+	.fourLi{
+		color:#f89d2d;
+		padding-left:10px;
+		height:30px;
+		font-size:12px;
+		line-height: 30px;
 	}
 }
 }

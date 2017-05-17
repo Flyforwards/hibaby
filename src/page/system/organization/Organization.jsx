@@ -18,7 +18,7 @@ const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
-const endemic  = session.get("endemic")
+let endemic  = session.get("endemic")
 
 class Organization extends React.Component {
     constructor(props) {
@@ -98,7 +98,12 @@ class Organization extends React.Component {
       });
     };
   }
+  //获取部门
+  acquisitionDepartment(id){
+
+  }
   componentDidMount(){
+    let endemic  = session.get("endemic")
     this.props.dispatch({
       type: 'organization/organizationList',
       payload: {
@@ -220,7 +225,11 @@ class Organization extends React.Component {
                     <Option value="1">禁用</Option>
                   </Select>
               </div>
-              <span className="Organization-Inquire"><Link to='/system/organization/addUser'>新增员工</Link></span>
+              {this.state.tissueProperty == 3? 
+                <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
+                <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
+              }
+             
               <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
             </div>
             {this.props.list?

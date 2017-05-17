@@ -52,6 +52,7 @@ class SeeDtailed extends Component {
             "dataId":id
           }
       })
+      this.props.onCancel()
     }
     EditNode(){
       this.setState({
@@ -89,7 +90,19 @@ class SeeDtailed extends Component {
     }
     render() {
       let Nodesdata = {}
+      let tissueProperty = ""
+      let tissuePropertyId = ""
       let display = "block"
+      let dataIndex = this.props.dataIndex
+      let AllTissueProperty= this.props.AllTissueProperty
+      if(dataIndex !=null && AllTissueProperty !=null){
+          AllTissueProperty.map((item)=>{
+            if(item.id == dataIndex){
+              tissueProperty=item.tissueProperty
+              tissuePropertyId = item.id
+            }
+          })
+      }
       if(this.props.getDepartmentNode!=null){
         Nodesdata = this.props.getDepartmentNode
       }
@@ -108,7 +121,6 @@ class SeeDtailed extends Component {
             sm: { span: 14 },
           },
         }; 
-        
         return (
             <Modal
                 visible={visible}
@@ -141,7 +153,7 @@ class SeeDtailed extends Component {
                       label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
-                        initialValue:Nodesdata.id,
+                        initialValue:tissueProperty,
                         rules: [],
                       })(
                        <Input disabled={ true }/>
@@ -202,7 +214,9 @@ class SeeDtailed extends Component {
                     ID = {this.props.ID}
                     parentId ={this.props.parentId}
                     Nodesdata = {Nodesdata}
-                    TissueProperty ={this.props.TissueProperty}
+                    TissuePropertyName ={ tissueProperty }
+                    TissuePropertyID = { tissuePropertyId }
+                    TissueProperty = {this.props.TissueProperty}
                 />
             </div>
             </Modal>
