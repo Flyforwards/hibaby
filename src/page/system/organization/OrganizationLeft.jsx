@@ -99,23 +99,19 @@ class OrganizationLefted extends React.Component {
     }
     handleDeleteNodeCancel() {
         this.setState({
-             DeleteNodeVisible: false
+             DeleteNodeVisible: false,
+             upblock:"none"
         })
     }
     handleSeeModalCancel() {
         this.setState({
-            SeeDtailNodeVisible: false
+            SeeDtailNodeVisible: false,
+            upblock:"none"
         })
     }
     componentDidMount(){
       setTimeout(() => {
       $("li").find(".ant-tree-title").after("<span class='plus'>+</span>")}, 800)
-      if(userInfo.categoryId == 1){
-        console.log("q", $(".plus:first").css("display")=="none")
-        $(".plus:first").hide()
-      }else{
-         $('.plus:first').show()
-      }
       $(document).on('click', '.plus', function(e) {
           if(this.state.upblock == 'none'){
               this.setState({
@@ -136,7 +132,8 @@ class OrganizationLefted extends React.Component {
     //添加子节点
     AddChildNode(){
       this.setState({
-        addChildNodeVisible:true
+        addChildNodeVisible:true,
+        upblock:"none"
       })
     }
     render() {
@@ -154,6 +151,7 @@ class OrganizationLefted extends React.Component {
           loops = nodesIteration(nodes);
           loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={nodes[0].parentId} />)
         } 
+        console.log("父级节点",this.state.parentId)
         return (  
             <div className="Organization-left">
                 <Tree

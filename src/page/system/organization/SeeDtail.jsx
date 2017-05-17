@@ -107,7 +107,8 @@ class SeeDtailed extends Component {
             xs: { span: 24 },
             sm: { span: 14 },
           },
-        };
+        }; 
+        
         return (
             <Modal
                 visible={visible}
