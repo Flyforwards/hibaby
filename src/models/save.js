@@ -69,9 +69,7 @@ export default {
 		//编辑集团列表数据
 		*editData({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(saveService.editData, values);
-			console.log(data)
 			if (code == 0) {
-				console.log(data)
 				message.success("更改用户信息成功");
 				yield put(routerRedux.push("system/groupchar"));
 

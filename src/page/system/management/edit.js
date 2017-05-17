@@ -12,11 +12,6 @@ class editData extends React.Component {
     constructor(props) {
         super(props);
 
-        this.formItemLayout = {
-            labelCol: { span: 2 },
-            wrapperCol: { span: 22 },
-        };
-
         this.editItem = null;
     }
 

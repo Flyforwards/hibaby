@@ -226,10 +226,10 @@ let routes = [
           },
           //添加地方项目列表
           {
-            path: '/localChar/add',
+            path: '/localchar/add',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/placedata'));
+                registerModel(app, require('./models/localData'));
                 cb(null, require('./page/system/place/Add.js'))
               })
             }
@@ -259,18 +259,18 @@ let routes = [
             path: '/localchar/find',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/placedata'));
+                registerModel(app, require('./models/localData'));
                 cb(null, require('./page/system/place/find.js'))
               })
             }
           },
           //地方列表查看编辑
           {
-            path: '/localchar/editplace',
+            path: '/localchar/editPlace',
             getComponent: (location, cb) => {
               require.ensure([], (require) => {
-                registerModel(app, require('./models/placedata'));
-                cb(null, require('./page/system/place/editplace.js'))
+                registerModel(app, require('./models/localData'));
+                cb(null, require('./page/system/place/EditPlace.js'))
               })
             }
           },

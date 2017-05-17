@@ -44,11 +44,6 @@ class SystemIndex extends React.Component {
         }];
     }
 
-    componentDidMount(){
-        console.log(this.columns)
-        console.log(this.props)
-    }
-
     render() {
       const columns = this.columns;
       const pagination = {

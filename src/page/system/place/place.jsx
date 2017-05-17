@@ -44,11 +44,7 @@ class SystemIndex extends React.Component {
           },
         }];
     }
-    componentDidMount(){
-        console.log(this.columns)
-        console.log(this.props)
 
-    }
     render() {
       const columns = this.columns;
       const pagination = {
@@ -69,16 +65,16 @@ class SystemIndex extends React.Component {
       return ( <div className = "
           PlaceProject"
          >
-        < div className = "buttonwrapper">
-            < Link to = "/localchar/add" >
-                < Button className="addBtn"> 添加 </Button>
-            </Link >
+        <div className = "buttonwrapper">
+            <Link to = "/localchar/add" >
+                <Button className="addBtn"> 添加 </Button>
+            </Link>
         </div>
 
         {this.props.list?
-        < Table rowKey = "id" bordered dataSource = {this.props.list}
+        <Table rowKey = "id" bordered dataSource = {this.props.list}
         columns = {columns} pagination = {pagination}/>:null}
-        < Current page = {this.props.page}
+        <Current page = {this.props.page}
             totalpage = {this.props.totalpage}
             total = {this.props.total}
             results = {this.props.results}
@@ -90,7 +86,6 @@ class SystemIndex extends React.Component {
 }
 
 function place({
-
   dispatch,
   loading,
   data: list,
@@ -122,8 +117,6 @@ function place({
 
 }
 function mapStateToProps(state) {
-  console.log("abc",state.place)
-
   const {
     data,
     total,

@@ -16,38 +16,7 @@ class AddGroupChar extends React.Component {
         super(props);
         this.uuid = 1;
     }
-    //
-    // delete(index){
-    //   // var index = e.target.getAttribute("data-index");
-    //   // var lists = this.state.lists;
-    //   // lists.splice(index,1);
-    //   // this.setState( {lists: lists} )
-    //
-    //   const { getFieldValue } = this.props.form;
-    //   let addData = this.state.addData;
-    //   addData.map((record, index)=>{
-    //     record.name = getFieldValue(`field${ index+1 }`) || "";
-    //   })
-    //   console.log(addData)
-    //   addData.splice(index, 1);
-    //   console.log(addData)
-    //   this.setState(addData);
-    //
-    // }
-    //
-    //
-    // add(){
-    //   const { getFieldValue } = this.props.form;
-    //
-    //   let addData = this.state.addData;
-    //   addData.map((record, index)=>{
-    //     record.name = getFieldValue(`field${ index+1 }`) || "";
-    //   })
-    //   console.log(addData);
-    //   addData.push({ name: "" });
-    //   console.log(addData);
-    //   this.setState(addData);
-    // }
+
     remove = (k) => {
       const { form } = this.props;
       // can use data-binding to get
@@ -76,22 +45,22 @@ class AddGroupChar extends React.Component {
       });
     }
 
-  // 冒泡排序 // 由小到大
-  bubbleSort =  function(array) {
-    var i = 0,
-      len = array.length,
-      j, d;
-      for (; i < len; i++) {
-        for (j = 0; j < len; j++) {
-          if (array[i].serialNumber < array[j].serialNumber) {
-            d = array[j];
-            array[j] = array[i];
-            array[i] = d;
+    // 冒泡排序 // 由小到大
+    bubbleSort =  function(array) {
+      var i = 0,
+        len = array.length,
+        j, d;
+        for (; i < len; i++) {
+          for (j = 0; j < len; j++) {
+            if (array[i].serialNumber < array[j].serialNumber) {
+              d = array[j];
+              array[j] = array[i];
+              array[i] = d;
+            }
           }
         }
-      }
-    return array;
-  }
+      return array;
+    }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -121,6 +90,7 @@ class AddGroupChar extends React.Component {
         }
       })
     }
+
     render() {
 
       const { getFieldDecorator, getFieldValue } = this.props.form;
