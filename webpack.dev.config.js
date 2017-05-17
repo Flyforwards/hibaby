@@ -64,6 +64,8 @@ var webpackConfig = {
             'component': path.resolve(__dirname, './src/component'),
             'common': path.resolve(__dirname, './src/common'),
             'framework': path.resolve(__dirname, './src/framework'),
+            'models': path.resolve(__dirname, './src/models'),
+            'page': path.resolve(__dirname, './src/page'),
         }
     },
     resolveLoader: {
