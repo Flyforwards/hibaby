@@ -8,7 +8,6 @@ import {local, session} from '../../../common/util/storage.js'
 
 const createForm = Form.create
 const FormItem = Form.Item
-const endemic  = session.get("endemic")
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 @createForm()
@@ -33,31 +32,27 @@ class AddChildNodeed extends Component {
         console.log("ok",this.state.TableData)
         const fields = this.props.form.getFieldsValue();
         console.log("fields",fields)
-        if(this.state.TableData ==null){
-          message.error('请选择节点负责人');
-        }else{
           this.props.dispatch({
             type: 'organization/saveDepartment',
             payload: {
-              abbreviation: fields.referredTo,//简称
+              abbreviation: fields.referredTo,
               englishName: fields.englishName,
-              leaderId: this.state.TableData.id,
-              leaderName: this.state.TableData.name,
+              leaderId: this.state.TableData?this.state.TableData.id:null,
+              leaderName: this.state.TableData?this.state.TableData.name:null,
               name: fields.fullName,
-              parentId:this.props.parentId,
+              parentId:this.props.ID,
               tissueProperty: fields.localCenter
             }
         })
+        this.props.dispatch({
+            type: 'organization/getDepartmentNodes',
+            payload: { }
+        });
         this.setState({
           TableData:"",
           NodeDisplay:"block"
         })
-        this.props.dispatch({
-            type: 'organization/getDepartmentNodes',
-            payload: {}
-        });
         this.props.onCancel()
-      }
     }
     checkbox() {
         console.log("checkbox")
@@ -81,10 +76,12 @@ class AddChildNodeed extends Component {
     }
     //选择直系领导
     directLeader = ()=>{
+      let endemic  = session.get("endemic")
       this.setState({
         visible:true,
         NodeDisplay:"block"
       })
+      console.log("endemic",endemic.tissueProperty)
       this.props.dispatch({
         type: 'organization/getLeagerDepartmentNodes',
         payload: {
@@ -175,9 +172,11 @@ class AddChildNodeed extends Component {
                       label="全称"
                     >
                       {getFieldDecorator('fullName', {
-                        rules: [],
+                        rules: [{
+                          max: 100, message: '输入内容过长'
+                        }],
                       })(
-                        <Input/>
+                        <Input type="textarea" />
                       )}
                     </FormItem>
                     <FormItem
@@ -185,9 +184,11 @@ class AddChildNodeed extends Component {
                       label="简称"
                     >
                       {getFieldDecorator('referredTo', {
-                        rules: [],
+                        rules: [{
+                          max: 100, message: '输入内容过长'
+                        }],
                       })(
-                        <Input/>
+                        <Input type="textarea" />
                       )}
                     </FormItem>
                     <FormItem
@@ -195,9 +196,11 @@ class AddChildNodeed extends Component {
                       label="英文名称"
                     >
                       {getFieldDecorator('englishName', {
-                        rules: [],
+                        rules: [{
+                          max: 100, message: '输入内容过长'
+                        }],
                       })(
-                        <Input/>
+                        <Input type="textarea" />
                       )}
                     </FormItem>
                     <FormItem
@@ -208,7 +211,7 @@ class AddChildNodeed extends Component {
                       {getFieldDecorator('nodeLeaderIput', {
                         initialValue:this.state.TableData?this.state.TableData.name:""
                       })(
-                        <Input style={{display:this.state.NodeDisplay}}/>
+                        <Input style={{display:this.state.NodeDisplay}} disabled = {true}/>
                       )}
                     </FormItem>
                     <FormItem

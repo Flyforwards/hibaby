@@ -8,7 +8,6 @@ import {local, session} from '../../../common/util/storage.js'
 
 const createForm = Form.create
 const FormItem = Form.Item
-const endemic  = session.get("endemic")
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 @createForm()
@@ -24,28 +23,23 @@ class NodeEdited extends Component {
         this.props.onCancel()
     }
     handleOk(NodesdataEdit) {
-        console.log("okdata",NodesdataEdit)
         const fields = this.props.form.getFieldsValue();
-        console.log("fields",fields)
-        console.log("父级节点",this.props.parentId)
-         console.log("组织性质",fields.localCenter)      
+        console.log("组织性质",this.props.TissuePropertyID) 
+        console.log("parentId",this.props.ID) 
         this.props.dispatch({
             type: 'organization/modifyDepartment',
             payload: {
-              "abbreviation": fields.referredTo,//简称
+              "abbreviation": fields.referredTo,
               "englishName": fields.englishName,
               "leaderId": this.state.TableData?this.state.TableData.id:NodesdataEdit.leaderId,
-              "leaderName": this.state.TableData?this.state.TableData.name:NodesdataEdit.operatorName,
+              "leaderName": this.state.TableData?this.state.TableData.name:NodesdataEdit.leaderName,
               "name": fields.fullName,
-             " parentId":this.props.parentId,//青岛的ID
-              "tissueProperty":"1",//fields.localCenter,
+              "parentId":this.props.ID,
+              "tissueProperty":fields.localCenter?fields.localCenter:this.props.TissueProperty.id,
               "id":NodesdataEdit.id
             }
         })
-        this.props.dispatch({
-            type: 'organization/getDepartmentNodes',
-            payload: {}
-        });
+        this.props.onCancel()
     }
     checkbox() {
         console.log("checkbox")
@@ -69,9 +63,11 @@ class NodeEdited extends Component {
     }
     //选择直系领导
     directLeader = ()=>{
+      let endemic  = session.get("endemic")
       this.setState({
         visible:true
       })
+      console.log("endemic.id",endemic.id)
       this.props.dispatch({
         type: 'organization/getLeagerDepartmentNodes',
         payload: {
@@ -93,7 +89,6 @@ class NodeEdited extends Component {
         }, 1000)
     }
     render() {
-      console.log("parentId",this.props.parentId)
       let NodesdataEdit ={}
       let localCenterData = []
         const {visible, form, confirmLoading, Nodesdata} = this.props
@@ -145,7 +140,7 @@ class NodeEdited extends Component {
                         initialValue:this.props.ID,
                         rules: [],
                       })(
-                        <Input display={true}/>
+                        <Input disabled={true}/>
                       )}
                     </FormItem>
                     <FormItem
@@ -153,14 +148,10 @@ class NodeEdited extends Component {
                       label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
-                        initialValue:"2",
+                        initialValue:this.props.TissuePropertyName,
                         rules: [],
                       })(
-                        <Select>
-                            {
-                              localCenterData
-                            }
-                        </Select>
+                         <Input disabled = { true }/>
                       )}
                     </FormItem>
                     <FormItem
@@ -169,9 +160,11 @@ class NodeEdited extends Component {
                     >
                       {getFieldDecorator('fullName', {
                         initialValue:NodesdataEdit.name,
-                        rules: [],
+                        rules: [{
+                          max: 100, message: '输入内容过长'
+                        }],
                       })(
-                        <Input />
+                        <Input type="textarea" />
                       )}
                     </FormItem>
                     <FormItem
@@ -180,9 +173,11 @@ class NodeEdited extends Component {
                     >
                       {getFieldDecorator('referredTo', {
                         initialValue:NodesdataEdit.abbreviation,
-                        rules: [],
+                       rules: [{
+                          max: 100, message: '输入内容过长'
+                        }],
                       })(
-                        <Input />
+                        <Input type="textarea" />
                       )}
                     </FormItem>
                     <FormItem
@@ -191,9 +186,11 @@ class NodeEdited extends Component {
                     >
                       {getFieldDecorator('englishName', {
                         initialValue:NodesdataEdit.englishName,
-                        rules: [],
+                        rules: [{
+                          max: 100, message: '输入内容过长'
+                        }],
                       })(
-                        <Input />
+                        <Input type="textarea" />
                       )}
                     </FormItem>
                     <FormItem
@@ -202,7 +199,7 @@ class NodeEdited extends Component {
                       className="nodeLeaderIput"
                     >
                       {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:NodesdataEdit.operatorName
+                        initialValue:this.state.TableData?this.state.TableData.name:NodesdataEdit.leaderName
                       })(
                         <Input/>
                       )}

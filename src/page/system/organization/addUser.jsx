@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select} from 'antd'
+import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select,message} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
@@ -17,7 +17,6 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
-const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
 const department = local.get("department")
 let traversalDataId = []
@@ -28,7 +27,8 @@ class AddUsered extends React.Component {
     this.state = {
       value:1,
       visible:false,
-      TableData:null
+      TableData:null,
+      NewuserImg:null
     }
   }
   componentDidMount(){
@@ -52,6 +52,7 @@ class AddUsered extends React.Component {
   }
   //选择直系领导
   directLeader = ()=>{
+    let endemic = session.get("endemic")
     this.setState({
       visible:true
     })
@@ -79,11 +80,12 @@ class AddUsered extends React.Component {
   }
   //保存按键
   headelSave = ()=>{
+    let endemic  = session.get("endemic")
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const values = {
           ...fieldsValue,
-          'entryTime': fieldsValue['entryTime'].format('YYYY-MM-DD')
+          'entryTime': fieldsValue['entryTime']
         } 
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
@@ -92,36 +94,92 @@ class AddUsered extends React.Component {
           roleIdData.push({roleId:item})
         })
         }
-        this.props.dispatch({
-          type: 'organization/addUser',
-          payload:{
-            categoryId: endemic.id,
-            entrys: [
-              {
-                "contact":fields.information, //fields.information,//联系方式
-                "deptId":fields.affiliatedDepartment,//fields.affiliatedDepartment,//隶属部门
-                "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
-                "extension":fields.internalExtension, //fields.internalExtension,//内部分机
-                "leaderId": fields.directLeadership,//直系领导
-                "positionId": fields.position,//职位
-                "identifier": fields.Numbering,//编号//fields.Numbering
-                "roles": roleIdData
-              }
-            ],
-            "gmt_entry": values.entryTime,//入职日期
-            "mobile": fields.phoneNumber,//手机号fields.
-            "name": fields.userName,//用户名//fields.userName
-            "password": fields.password,//密码//fields.userName
-            "sex": fields.gender,//性别//fields.gender
-            "img":"https://"
+        if(fields.userName){
+          if(fields.gender==0 || fields.gender==1){
+            if(values.entryTime){
+              if(fields.affiliatedDepartment){
+                  if(fields.directLeadership){
+                    if(fields.position){
+                        if(roleIdData.length>=1){
+                          if(fields.phoneNumber){
+                            if(fields.information){
+                              if(fields.companyEmail){
+                                if(this.state.NewuserImg){
+                                    this.props.dispatch({
+                                      type: 'organization/addUser',
+                                      payload:{
+                                        categoryId: endemic.id,
+                                        entrys: [
+                                          {
+                                            "contact":fields.information, //fields.information,//联系方式
+                                            "deptId":fields.affiliatedDepartment,//fields.affiliatedDepartment,//隶属部门
+                                            "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
+                                            "extension":fields.internalExtension, //fields.internalExtension,//内部分机
+                                            "leaderId": fields.directLeadership,//直系领导
+                                            "positionId": fields.position,//职位
+                                            "identifier": fields.Numbering,//编号//fields.Numbering
+                                            "roles": roleIdData
+                                          }
+                                        ],
+                                        "gmt_entry": values.entryTime,//入职日期
+                                        "mobile": fields.phoneNumber,//手机号fields.
+                                        "name": fields.userName,//用户名//fields.userName
+                                        "password": fields.password,//密码//fields.userName
+                                        "sex": fields.gender,//性别//fields.gender
+                                        "img":this.state.NewuserImg
+                                      }
+                                    })
+                                    history.go(-1)
+                                }else{
+                                  message.warning('请上传头像')
+                                }
+                              }else{
+                              message.warning('请填写公司邮箱')
+                              }
+                            }else{
+                              message.warning('请填写联系方式')
+                            }
+                          }else{
+                            message.warning('请填写手机号')
+                          }
+                        }else{
+                          message.warning('请选择系统角色')
+                        }
+                    }else{
+                      message.warning('请选择职位信息')
+                    }
+                  }else{
+                    message.warning('请选择直系领导')
+                  }
+              }else{
+                message.warning('请选择隶属部门')
+              }  
+            }else{
+              message.warning('请选择入职日期')
+            }
+          }else{
+            message.warning('请选择性别')
           }
-        })
+        }else{
+          message.warning('请输入您的姓名')
+        }
       }
+    })
+  }
+  headelImg(NewuserImg){
+    this.setState({
+      NewuserImg:NewuserImg
     })
   }
     render() {  
       let traversalEndemicId = []
       let selectDataList = []
+      let endemic = session.get("endemic")
+      let NODEID = window.location.search.split("=")[1];
+      let departmentDisabled = false
+      if(NODEID){
+        departmentDisabled = true
+      }
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
 
       if(this.props.dataEndemicId != null){
@@ -150,15 +208,19 @@ class AddUsered extends React.Component {
               {getFieldDecorator('userImg', {
                 rules: [],
               })(
-                <div className="img"><UPload /></div>
+               <div className="img"><UPload urlList={"Img"} headelUserImg={this.headelImg.bind(this)}/></div>
 
               )}
             </FormItem>
             <FormItem
              label="姓名"
              className="userName"
+             required
             >
               {getFieldDecorator('userName', {
+                 rules: [{
+                    max: 10, message: '请按要求输入'
+                  }],
               })(
                 <Input/>
               )}
@@ -176,6 +238,7 @@ class AddUsered extends React.Component {
             <br/>
             <FormItem
              label="性别"
+             required
              className="gender"
             >
               {getFieldDecorator('gender', {
@@ -189,6 +252,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="入职日期"
              className="entryTime"
+             required
             >
               {getFieldDecorator('entryTime', {
               })(
@@ -201,6 +265,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="地方中心"
              className="localCenter"
+             required
             >
               {getFieldDecorator('localCenter', {
                 initialValue: endemic.name,
@@ -211,10 +276,12 @@ class AddUsered extends React.Component {
             <FormItem
              label="隶属部门"
              className="affiliatedDepartment"
+             required
             >
             { getFieldDecorator("affiliatedDepartment",{
+               initialValue:NODEID
             })(
-              <Select placeholder="请选择" onSelect={this.affiliatedDepartment.bind(this)}>
+              <Select placeholder="请选择" onSelect={this.affiliatedDepartment.bind(this)} disabled = { departmentDisabled }>
                 { traversalEndemicId }
               </Select>
             )}
@@ -222,6 +289,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="直系领导"
              className="directLeadership"
+             required
             >
               {getFieldDecorator('directLeadership', {
                 initialValue: this.state.TableData?this.state.TableData.id:"",
@@ -237,6 +305,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="职位"
              className="position"
+             required
             >
             { getFieldDecorator("position",{
             })(
@@ -249,6 +318,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="系统角色"
              className="systemRole"
+             required
             >
             { getFieldDecorator("systemRole",{
             })(
@@ -263,6 +333,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="登录手机号"
              className="phoneNumber"
+             required
             >
               {getFieldDecorator('phoneNumber', {
                  rules: [{
@@ -275,6 +346,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="登录密码"
              className="password"
+             required
             >
               {getFieldDecorator('password', {
                 initialValue: "kb123",
@@ -286,8 +358,14 @@ class AddUsered extends React.Component {
             <FormItem
              label="联系方式"
              className="information"
+             required
+             min ={11}
+             max = {13}
             >
               {getFieldDecorator('information', {
+                  rules: [{
+                    pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '手机号不正确'
+                  }],
               })(
                 <Input/>
               )}
@@ -295,6 +373,7 @@ class AddUsered extends React.Component {
             <FormItem
              label="公司邮箱"
              className="companyEmail"
+             required
             >
               {getFieldDecorator('companyEmail', {
                  rules: [{
@@ -310,6 +389,9 @@ class AddUsered extends React.Component {
              className="internalExtension"
             >
               {getFieldDecorator('internalExtension', {
+                  rules: [{
+                    max: 10, message: '请按要求输入'
+                  }],
               })(
                 <Input />
               )}
