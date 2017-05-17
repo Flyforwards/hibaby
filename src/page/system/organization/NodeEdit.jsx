@@ -93,6 +93,7 @@ class NodeEdited extends Component {
         }, 1000)
     }
     render() {
+      console.log("parentId",this.props.parentId)
       let NodesdataEdit ={}
       let localCenterData = []
         const {visible, form, confirmLoading, Nodesdata} = this.props
@@ -152,7 +153,7 @@ class NodeEdited extends Component {
                       label="组织性质"
                     >
                       {getFieldDecorator('localCenter', {
-                        initialValue:"青岛",
+                        initialValue:"2",
                         rules: [],
                       })(
                         <Select>
