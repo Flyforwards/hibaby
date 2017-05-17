@@ -1,8 +1,8 @@
 import * as systemService from '../services/system';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
-import {local, session} from 'common/util/storage.js';
-import {PAGE_SIZE} from 'common/constants.js'
+import { local, session } from 'common/util/storage.js';
+import { PAGE_SIZE } from 'common/constants.js'
 
 export default {
 	namespace: 'system',
@@ -85,6 +85,7 @@ export default {
 			}
 			return {...systemdata,range};
 		},
+
 		placeSave(state, { payload: {data,total,page,size,code}}) {
 			let placedata = {...state,
 				data,
@@ -100,19 +101,7 @@ export default {
 			}
 			return {...placedata,range};
 		},
-		addSave(state, {
-			payload: {
-				data,
-				code
-			}
-		}) {
-			let adddata = {...state,
-				data,
-				code
-			};
 
-			return adddata;
-		},
 		permissionAddSave(state, {
 			payload: {
 				data,
@@ -188,22 +177,7 @@ export default {
 			};;
 		},
 	},
-	effects: { *add({
-			payload: values
-		}, {
-			call,
-			put
-		}) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(systemService.add, values);
-			if (code == 0) {
-				// yield put(routerRedux.push('/login'));
-			}
-		},
+	effects: {
 		//获取组织架构的列表
 		*getDepartmentNodes({payload: values}, { call, put }) {
 			const {
@@ -428,7 +402,7 @@ export default {
 			}
 		},
 
-		*place({
+		*placeChar({
 			payload: values
 		}, {
 			call,
@@ -499,21 +473,16 @@ export default {
 						payload: {
 							...query,
 							"size": 10,
-							"sortField": "string",
-							"sortOrder": "string",
 							"type": 1
 						}
 					});
 				}
 				if (pathname === '/system/localchar') {
-
 					dispatch({
-						type: 'place',
+						type: 'placeChar',
 						payload: {
 							...query,
 							"size": 10,
-							"sortField": "string",
-							"sortOrder": "string",
 							"type": 2
 						}
 					});
@@ -524,8 +493,6 @@ export default {
 						payload: {
 							...query,
 							"size": PAGE_SIZE,
-							"sortField": "string",
-							"sortOrder": "string",
 							"type": 1
 						}
 					});
@@ -552,8 +519,6 @@ export default {
 							...query,
 							  "page": 1,
 							  "size": 5,
-							  "sortField": "string",
-							  "sortOrder": "string"
 						}
 					});
 		        }
@@ -563,8 +528,6 @@ export default {
 						payload: {
 							...query,
 							"size": PAGE_SIZE,
-							"sortField": "string",
-							"sortOrder": "string",
 							"type": 1
 						}
 					});
@@ -575,8 +538,6 @@ export default {
 						payload: {
 							...query,
 							"size": PAGE_SIZE,
-							"sortField": "string",
-							"sortOrder": "string",
 							"type": 1
 						}
 					});
