@@ -206,29 +206,11 @@ export default {
 						}
 					});
 				}
-				//添加服务项目
-				if (pathname === '/service/Addservice') {
-					console.log("service")
-					dispatch({
-						payload: {
-							...query,
-						}
-					});
-				}
 				//查看服务详情
 				if (pathname === '/service/LookService') {
 					console.log("service")
 					dispatch({
 						type: 'LookService',
-						payload: {
-							...query,
-						}
-					});
-				}
-				//编辑服务内容
-				if (pathname === '/service/edit') {
-					console.log("service")
-					dispatch({
 						payload: {
 							...query,
 						}

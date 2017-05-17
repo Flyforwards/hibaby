@@ -3,7 +3,7 @@
 import React from 'react';
 
 import {connect} from 'dva';
-import './system.scss';
+import './place.scss';
 import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd';
 import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
@@ -67,7 +67,7 @@ class SystemIndex extends React.Component {
         },
       };
       return ( <div className = "
-          container2"
+          PlaceProject"
          >
         < div className = "buttonwrapper">
             < Link to = "/localchar/add" >

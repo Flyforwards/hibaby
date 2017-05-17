@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
+import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
@@ -176,13 +176,10 @@ class EditPlaceData extends React.Component {
       const item = this.props.data;
       const { formLayout } = this.state;
       //const { dataSource } = this.state;
-      const formItemLayout = formLayout === 'horizontal' ? {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
-      } : null;
-      const buttonItemLayout = formLayout === 'horizontal' ? {
-        wrapperCol: { span: 14, offset: 4 },
-      } : null;
+      const formItemLayout = {
+        labelCol: { span: 2 },
+        wrapperCol: { span: 22 },
+      };
       const { getFieldDecorator } = this.props.form;
         //console.log('render:subItems>>', dictionarySideDOs)
       let arr=[];
@@ -211,7 +208,7 @@ class EditPlaceData extends React.Component {
         }
         let len=field.length;
         for(let i=0;i<len;i++){
-          children.push(<FormItem className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
+          children.push(<FormItem {...formItemLayout}  className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
                   {getFieldDecorator(`id${childId[i]}`, {
                     initialValue:`${field[i]}`,
                     rules: [{ required: true, message: '字段描述为必填项！' }],
@@ -223,17 +220,17 @@ class EditPlaceData extends React.Component {
         }
       console.log("render>>>",getFieldDecorator)
         return (
-              <div className="xuanxiang container2">
+              <div className="xuanxiang PlaceProject">
               <Card title = "字段信息:" >
                   <Form layout={formLayout}>
-                  <FormItem label="字段名称">
+                  <FormItem {...formItemLayout} label="字段名称">
                   {getFieldDecorator('name', {
                     initialValue:`${name}`,
                         rules: [{ required: true, message: '字段名称为必填项！' }],
                     })(  <Input disabled={true} className="input" />
                       )}
                     </FormItem>
-                      <FormItem className = "div" label="字段描述">
+                      <FormItem {...formItemLayout} className = "div" label="字段描述">
                       {getFieldDecorator('description', {
                         initialValue:`${description}`,
                         rules: [{ required: true, message: '字段描述为必填项！' }],
