@@ -1,14 +1,14 @@
 "use strict"
 import React, {Component} from 'react'
 import {connect} from 'dva'
-import './service.scss'
+import './MenuInside.scss'
 import {Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import {classification,dataList,ww} from 'common/constants.js'
 import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
 import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
-class serviceData extends Component {
+class MenuInside extends Component {
     constructor(props) {
         super(props)
         this.delete=this.delete.bind(this)
@@ -16,17 +16,27 @@ class serviceData extends Component {
 
         }
         this.columns = [{
-          title: '服务项目名称',
+          title: '主模块',
+          dataIndex: 'projectName',
+          key:'projectName',
+          width: '300px',
+        }, {
+          title: '上级菜单',
+          dataIndex: 'parentName',
+          key:'parentName',
+          width: '300px',
+        },{
+          title: '名称',
           dataIndex: 'name',
           key:'name',
           width: '300px',
-        }, {
-          title: '服务项目内容',
-          dataIndex: 'contents',
-          key:'contents',
-          width: '600px',
         },{
-          title: '服务项目价格',
+          title: '路径',
+          dataIndex: 'price',
+          key:'price',
+          width: '150px',
+        },{
+          title: '权限',
           dataIndex: 'price',
           key:'price',
           width: '150px',
@@ -36,17 +46,32 @@ class serviceData extends Component {
           key: 'operating',
           width: '150px',
           render: (text, record, index) => {
+          console.log(record)
             return (
-                <div className="OperateList" key={ index }>
-                  <Link to={{ pathname: '/service/LookService', query: { id:record.id } }} className="firstA" >查看</Link>
-                  <a className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
+                <div calssName="OperateList">
+                  <Link to={{ pathname: '/service/LookService', query: { id:record.id } }}className="firstA" >查看</Link>
+                  <a href="#" className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
                 </div>
             );
           },
         }];
     }
+    componentWillMount() {
 
-
+    }
+    editPermissions(record){
+      this.record = record;
+      this.setState({
+        modifyModalVisible: true,
+        add: false,
+      })
+    }
+    managementInquire() {
+      console.log("查询")
+    }
+    Edit(){
+      console.log("查看")
+    }
     // 删除弹框
     delete(record){
       this.record = record;
@@ -72,6 +97,7 @@ class serviceData extends Component {
         })
     }
     render() {
+        const columns = this.columns;
         const pagination = {
           total: this.props.total, //数据总条数
           showQuickJumper: true,
@@ -87,20 +113,12 @@ class serviceData extends Component {
             }));
           },
         };
-        if (this.props.data !== null) {
-          this.props.data.map((record)=>{
-            record.key = record.id;
-          })
-        }
         return (
-           <div className="ServiceBox">
-              <div className="name">
-                <Link to="/service/Addservice">
-                  <span >添加</span>
-                </Link>
-              </div>
+           <div className="MenuInsideBox">
+              <div className="name"><Link to="/service/Addservice"><span >添加</span></Link></div>
               <div className="CreateModaList">
-                  <Table bordered dataSource={ this.props.data } columns={ this.columns } pagination = { pagination }/>
+                  <Table bordered dataSource={this.props.data} columns={columns} pagination = {pagination}
+                  rowKey="Numbering"/>
                   <p className="allList">共计0条,范围1-10</p>
               </div>
               <AlertModalFrom
@@ -142,6 +160,7 @@ function service({
 
 }
 function mapStateToProps(state) {
+  console.log("modelss",state.service)
   const {
     data,
     total,

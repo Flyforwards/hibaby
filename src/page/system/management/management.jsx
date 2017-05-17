@@ -44,11 +44,6 @@ class SystemIndex extends React.Component {
         }];
     }
 
-    componentDidMount(){
-        console.log(this.columns)
-        console.log(this.props)
-    }
-
     render() {
       const columns = this.columns;
       const pagination = {
@@ -68,11 +63,11 @@ class SystemIndex extends React.Component {
       };
       return ( <div className = "container2">
                     <div className = "buttonwrapper">
-                    <Link to = '/demo/add'>
-                    <Button /*className = "editable-add-btn" */ className="addBtn"> 添加 </Button>
-                    </Link >
+                      <Link to = '/groupChar/add'>
+                        <Button className="addBtn"> 添加 </Button>
+                      </Link >
                     </div>
-                    {this.props.list?
+                    { this.props.list?
                     < Table rowKey = "id"  bordered dataSource = {this.props.list ? this.props.list : []} columns = { columns}
                       pagination = { pagination} />:null}
                     < Current page = {this.props.page
@@ -124,8 +119,8 @@ function management({
     range={range}
     /> </div >
   )
-
 }
+
 function mapStateToProps(state) {
   // console.log("modelss",state.system)
   const {

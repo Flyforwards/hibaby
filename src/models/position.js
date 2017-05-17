@@ -115,7 +115,7 @@ export default {
             payload: {
               'name': "",
               'page': 1,
-              'size': 4,
+              'size': 10,
               'sortField': "string",
               'sortOrder': "string"
             }

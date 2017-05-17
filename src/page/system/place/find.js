@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
+import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
 import  {NUM_TO_TEXT}  from 'common/constants';
 import { browserHistory } from 'dva/router';
@@ -59,9 +59,8 @@ class FindPlaceData extends React.Component {
         })
 
       };
-      console.log('check:render:fields>>', fields);
         return (
-            <div className="xuanxiang container2">
+            <div className="xuanxiang PlaceProject">
                 <Card title = "字段信息:" >
                   <FormItem {...formItemLayout} label='字段名称'>
                     {getFieldDecorator('name',{
@@ -85,7 +84,7 @@ class FindPlaceData extends React.Component {
                     <Link to='/system/localchar'>
                     <Button className = "editable-add-btn return"> 返回 </Button>
                     </Link>
-                    <Link to={{pathname:'/localchar/editplace',query:{id:`${editid}`}}}>
+                    <Link to={{pathname:'/localchar/editPlace',query:{id:`${editid}`}}}>
                         <Button className = "editable-add-btn"> 编辑 </Button>
                     </Link>
                 </div>
@@ -103,20 +102,13 @@ function GetQueryString(name){
 
 
 
-function FindPlaceData({dispatch,data,code}) {
-    return (<div >
-              <FindPlaceData dispatch = {dispatch} data = {data}/>
-            </div>
-      )
-  }
-
 function mapStateToProps(state) {
   const {
     item: data
-  } = state.space;
+  } = state.localData;
 
   return {
-    loading: state.loading.models.space,
+    loading: state.loading.models.localData,
     data
   };
 }

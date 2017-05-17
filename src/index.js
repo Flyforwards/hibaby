@@ -4,6 +4,7 @@ import { browserHistory } from 'dva/router';
 import createLoding from 'dva-loading';
 import { message } from 'antd';
 
+
 // 1. Initialize
 const app = dva({
 	history: browserHistory,

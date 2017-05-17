@@ -1,17 +1,19 @@
-import * as spaceService from '../services/placedata';
+
+import * as placeService from '../services/placeData';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from 'common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
 
 export default {
-	namespace: 'space',
+	namespace: 'localData',
 	state: {
 		data: null,
 		total: null,
 		list:null,
 		leftList:null,
-		dictionarySideDOs:null
+		dictionarySideDOs: null,
+    item: null
 	},
 	reducers: {
 		//添加地方列表数据
@@ -26,12 +28,11 @@ export default {
 				code
 			}
 
-			console.log(data);
 			return  addplacedata;
 		},
 		//查看地方列表数据
 		PlaceFindSave(state, {
-					payload: { data:item }
+					payload: { data: item }
 				}) {
 					return  {...state,item };
 				},
@@ -43,9 +44,10 @@ export default {
 		},
 	},
 	effects:{
+
 		//添加地方列表数据
 		*AddPlaceData({payload: values}, { call, put }) {
-			const {data: {data,id,code}} = yield call(spaceService.AddPlaceData, values);
+			const {data: {data,id,code}} = yield call(placeService.AddPlaceData, values);
 			console.log(data)
 			if (code == 0) {
 				console.log(data)
@@ -53,9 +55,10 @@ export default {
 				yield put(routerRedux.push('/system/localchar'));
 			}
 		},
+
 		//查看地方列表数据
 		*PlaceFind({payload: values}, { call, put }) {
-			const {data: {code,data,err}} = yield call(spaceService.PlaceFind, values);
+			const {data: {code,data,err}} = yield call(placeService.PlaceFind, values);
 			if (code == 0 && err == null) {
 				yield put({
 					type: 'PlaceFindSave',
@@ -65,28 +68,16 @@ export default {
 				});
 			}
 		},
+
 		//编辑地方列表数据
 		*EditPlaceData({payload: values}, { call, put }) {
-			const {data: {data,code}} = yield call(spaceService.EditPlaceData, values);
-			console.log(data)
+			const {data: {data,code}} = yield call(placeService.EditPlaceData, values);
 			if (code == 0) {
-				console.log(data)
 				message.success("更改用户信息成功");
 				yield put(routerRedux.push("/system/localchar"));
 			}
 		},
-		//获取地方列表所需数据
-		*getEditPlaceData({payload}, {put, select}) {
-			const data = yield select((state) => state.space.data)
-			console.log(dictionarySideDOs)
-			// console.log('model:save:getedit>>', data);
-			yield put({
-				type: 'EditPlaceDataSave',
-				payload: {
-					data,
-				}
-			})
-		}
+
 	},
 	subscriptions: {
 		setup({
