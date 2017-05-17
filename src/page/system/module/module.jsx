@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import './module.scss'
-import {Icon, Table, Input, Button, Form, Row, Col, Popconfirm, message} from 'antd'
+import {Icon, Table, Input, Button, Form, Row, Col,Menu,Popconfirm, messageMenu, Dropdown, message} from 'antd'
 import request from '../../../common/request/request.js'
 import { classification,dataList,ww } from 'common/constants.js'
 import { connect } from 'dva'
@@ -11,63 +11,41 @@ class Module extends Component {
     super(props)
     this.state = {}
     this.columns = [{
-      title: '编号',
-      dataIndex: 'id',
-      key:'id',
-      width: '60px',
+      title: '主模块',
+      dataIndex: 'projectName',
+      key:'projectName',
+      width: '200px',
     }, {
-      title: '最后操作人',
-      dataIndex: 'create_id',
-      key:'create_id',
-      width: '100px',
+      title: '上级菜单',
+      dataIndex: 'parentName',
+      key:'parentName',
+      width: '200px',
     },{
-      title: '最后操作时间',
-      dataIndex: 'create_time',
-      key:'create_time',
-      width: '150px',
-    },{
-      title: '菜单名称',
+      title: '名称',
       dataIndex: 'name',
       key:'name',
-      width: '100px',
+      width: '300px',
     },{
-      title: 'icon',
-      dataIndex: 'icon',
-      key:'icon',
-      width: '100px',
-    },{
-      title: '描述',
-      dataIndex: 'description',
-      key:'description',
-      width: '100px',
-    },{
-      title: 'path',
+      title: '路径',
       dataIndex: 'path',
       key:'path',
-      width: '100px',
+      width: '300px',
     },{
-      title: '所属模块',
-      dataIndex: 'project_id',
-      key:'project_id',
-      width: '100px',
-    },{
-      title: '父级菜单',
-      dataIndex: 'parent_id',
-      key:'parent_id',
-      width: '100px',
+      title: '权限名称',
+      dataIndex: 'permissionName',
+      key:'permissionName',
+      width: '300px',
     },{
       title: '操作',
       dataIndex: 'operating',
       key: 'operating',
-      width: '300px',
+      width: '150px',
       render: (text, record, index) => {
         return (
           dataList.length >= 1 ?
             (
               <div>
                 <a href="#" className="firstA" onClick={this.Edit}>编辑</a>
-                <a href="#" className="firstA" onClick={this.permissions}>设置权限</a>
-                <a href="#" className="firstA" onClick={this.Member}>成员列表</a>
                 <a href="#" className="firstB" onClick={this.delete}>删除</a>
               </div>
             ) : (<div></div>)
@@ -80,6 +58,16 @@ class Module extends Component {
     this.props.dispatch({
       type: "system/getAllMenu"
     });
+  }
+
+  handleButtonClick(e) {
+    message.info('Click on left button.');
+    console.log('click left button', e);
+  }
+
+  handleMenuClick(e) {
+    message.info('Click on menu item.');
+    console.log('click', e);
   }
 
   managementInquire() {
@@ -104,18 +92,35 @@ class Module extends Component {
       total: 100, //数据总条数
       showQuickJumper: true,
       onChange: (current) => {
-        //   this.props.dispatch(routerRedux.push({
-        //     pathname: '/system',
-        //     query: {
-        //       "page": current,
-        //       "results": 3,
-        //       "type": 1
-        //     },
-        //   }));
+          this.props.dispatch(routerRedux.push({
+             pathname: '/system/module',
+             query: {
+               "page": current,
+               "results": 3
+             },
+         }));
       },
     };
+    const menu = (
+        <Menu onClick={this.handleMenuClick.bind(this)}>
+          <Menu.Item key="1">系统管理</Menu.Item>
+          <Menu.Item key="2">CRM系统</Menu.Item>
+          <Menu.Item key="3">套房管理</Menu.Item>
+          <Menu.Item key="4">服务管理</Menu.Item>
+          <Menu.Item key="5">膳食厨房</Menu.Item>
+          <Menu.Item key="6">进销存管理</Menu.Item>
+        </Menu>
+      );
     return (
-      <div className="module-cent">
+      <div className="MenuInside">
+        <div className="menuHeard">
+            <div className="MainModule">
+                <h4 className="projectName">主模块：</h4>
+                <Dropdown.Button onClick={this.handleButtonClick.bind(this)} overlay={menu}>
+                 请选择
+                </Dropdown.Button>
+            </div>
+        </div>
         <div className="CreateModaList">
           <Table bordered dataSource={dataList} columns={columns} pagination = {pagination} rowKey="Numbering"/>
           <p className="allList">共计0条,范围1-10</p>

@@ -274,9 +274,6 @@ let routes = [
               })
             }
           },
-
-
-
           {
             path: '/frommodal',
             getComponent: (location, cb) => {

@@ -86,7 +86,7 @@ class editData extends React.Component {
             })(  <Input className=""/ >
               )}
             </FormItem>
-            <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
+            <span className = "editable-add-btn delBtn" onClick={this.delete}> 删除 </span>
             </div>
           )
         this.setState({lists:lists})
@@ -241,7 +241,7 @@ class editData extends React.Component {
           if(i==0){
               children.push(
                 <div key={childId[0]}>
-                  <FormItem {...formItemLayout} className = "div" label="选项一">
+                  <FormItem {...formItemLayout} className = "childCen" label="选项一">
                       {getFieldDecorator(`id${childId[0]}`, {
                         initialValue:`${field[0]}`,
                         rules: [{ required: true, message: '字段描述为必填项！' }],
@@ -253,8 +253,8 @@ class editData extends React.Component {
               )
           }else {
             children.push(
-              <div key={childId[i]}>
-                <FormItem {...formItemLayout} className = "div" label={`选项${this.state.bigNum[i]}`}>
+              <div className="childPro div2" key={childId[i]}>
+                <FormItem {...formItemLayout} className = "childCen" label={`选项${this.state.bigNum[i]}`}>
                     {getFieldDecorator(`id${childId[i]}`, {
                       initialValue:`${field[i]}`,
                       rules: [{ required: true, message: '字段描述为必填项！' }],
@@ -262,7 +262,7 @@ class editData extends React.Component {
                         <Input className="input" />
                     )}
                     </FormItem>
-                    <span className = "editable-add-btn" onClick={this.handleDec.bind(this,`${childId[i]}`)}> 删除 </span>
+                    <span className = "editable-add-btn delBtn" onClick={this.handleDec.bind(this,`${childId[i]}`)}> 删除 </span>
               </div>
             )
           }
@@ -291,14 +291,12 @@ class editData extends React.Component {
               </Card>
               < Card title = "下拉选项:" >
               <Form>
-
                    {children}
                    {this.state.lists}
                    <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
               </Form>
               </Card >
               <div className="retuSave">
-
                   <Link to='groupchar/check'>
                       <Button className = "editable-add-btn return"> 返回 </Button>
                   </Link>

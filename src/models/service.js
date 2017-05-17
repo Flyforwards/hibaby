@@ -159,7 +159,8 @@ export default {
         yield put({
           type : 'ServicePage',
           payload : { page : page || 0 , size : pageSize || 10 }
-        });
+        }
+			);
       } else {
         throw err || "请求出错";
       }
