@@ -69,19 +69,19 @@ class FindTop extends Component {
   }
   
   render() {
-    const { form, data, total, dispatch ,positionInfo} = this.props;
+    const { form, data, total, dispatch} = this.props
     const { getFieldDecorator } = form;
     const pagination = {
       total: total, //数据总条数
       showQuickJumper: true,
-      pageSize: 1,
+      pageSize: 10,
       onChange: (current) => {
         dispatch({
           type: 'position/getDepartmentInfo',
           payload: {
             'name': this.state.name,
             'page': current,
-            'size': 1,
+            'size': 10,
             'sortField': "string",
             'sortOrder': "string"
           }
