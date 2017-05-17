@@ -1,14 +1,14 @@
 "use strict"
 import React, {Component} from 'react'
 import {connect} from 'dva'
-import './service.scss'
+import './MenuInside.scss'
 import {Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import {classification,dataList,ww} from 'common/constants.js'
 import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
 import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
-class serviceData extends Component {
+class MenuInside extends Component {
     constructor(props) {
         super(props)
         this.delete=this.delete.bind(this)
@@ -16,17 +16,27 @@ class serviceData extends Component {
 
         }
         this.columns = [{
-          title: '服务项目名称',
+          title: '主模块',
+          dataIndex: 'projectName',
+          key:'projectName',
+          width: '300px',
+        }, {
+          title: '上级菜单',
+          dataIndex: 'parentName',
+          key:'parentName',
+          width: '300px',
+        },{
+          title: '名称',
           dataIndex: 'name',
           key:'name',
           width: '300px',
-        }, {
-          title: '服务项目内容',
-          dataIndex: 'contents',
-          key:'contents',
-          width: '600px',
         },{
-          title: '服务项目价格',
+          title: '路径',
+          dataIndex: 'price',
+          key:'price',
+          width: '150px',
+        },{
+          title: '权限',
           dataIndex: 'price',
           key:'price',
           width: '150px',
@@ -104,7 +114,7 @@ class serviceData extends Component {
           },
         };
         return (
-           <div className="ServiceBox">
+           <div className="MenuInsideBox">
               <div className="name"><Link to="/service/Addservice"><span >添加</span></Link></div>
               <div className="CreateModaList">
                   <Table bordered dataSource={this.props.data} columns={columns} pagination = {pagination}

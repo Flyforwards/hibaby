@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
+import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
 import {Link} from 'react-router';
 import {routerReducer} from 'react-router-redux'
@@ -97,7 +97,7 @@ class PlaceAdd extends React.Component {
       const { getFieldDecorator } = this.props.form;
       console.log("render>>>",values)
         return (
-          <div className="xuanxiang container2">
+          <div className="xuanxiang   PlaceProject">
               <Card title = "字段信息:" >
                   <Form>
                       <FormItem className = "div">

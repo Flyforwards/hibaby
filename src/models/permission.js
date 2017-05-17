@@ -29,12 +29,6 @@ export default {
     // 默认节点的组织信心  --添加成员
     tissueProperty: null,
   },
-
-
-
-
-
-
   reducers: {
 
     removeSelectKeys (state, { payload }) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
+import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
 import  {NUM_TO_TEXT}  from 'common/constants';
 import { browserHistory } from 'dva/router';
@@ -61,7 +61,7 @@ class FindPlaceData extends React.Component {
       };
       console.log('check:render:fields>>', fields);
         return (
-            <div className="xuanxiang container2">
+            <div className="xuanxiang PlaceProject">
                 <Card title = "字段信息:" >
                   <FormItem {...formItemLayout} label='字段名称'>
                     {getFieldDecorator('name',{
