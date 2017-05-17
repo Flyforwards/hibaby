@@ -46,10 +46,6 @@ class EditPlaceData extends React.Component {
         });
       }
     }
-
-
-
-
     handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
@@ -131,7 +127,7 @@ class EditPlaceData extends React.Component {
             key={ k }
           >
             <p className = "label" >{ `选项${String(index+1)}` }</p>
-            <div className="posi" style={{position:'relative',overflow:'hidden'}}>
+            <div className="posi childCen" style={{position:'relative',overflow:'hidden'}}>
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
                 rules: [{ required: true, message: '选项不能为空' }],
@@ -141,7 +137,7 @@ class EditPlaceData extends React.Component {
               )}
             </div>
             {
-              index >=2?(<span className = "editable-add-btn" onClick={ () => this.remove(k) } > 删除 </span>):null
+              index >=2?(<span className = "editable-add-btn delBtn" onClick={ () => this.remove(k) } > 删除 </span>):null
             }
           </FormItem>
         );
@@ -152,14 +148,14 @@ class EditPlaceData extends React.Component {
         <div className="xuanxiang PlaceProject">
           <Card title = "字段信息:" >
             <Form layout={ 'horizontal' }>
-              <FormItem {...formItemLayout} label="字段名称">
+              <FormItem {...formItemLayout} className="childCen" label="字段名称">
                 {getFieldDecorator('name', {
                   initialValue:`${name}`,
                   rules: [{ required: true, message: '字段名称为必填项！' }],
                 })(  <Input disabled={true} className="input" placeholder="input placeholder" />
                 )}
               </FormItem>
-              <FormItem {...formItemLayout} className = "div" label="字段描述">
+              <FormItem {...formItemLayout} className = "div childCen" label="字段描述">
                 {getFieldDecorator('description', {
                   initialValue:`${description}`,
                   rules: [{ required: true, message: '字段描述为必填项！' }],
