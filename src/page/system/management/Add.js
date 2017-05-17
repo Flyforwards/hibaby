@@ -5,6 +5,7 @@ import './system.scss';
 import {Card,Input,Button,Form} from 'antd';
 import {Link} from 'react-router';
 import {routerReducer} from 'react-router-redux';
+import manager from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 
@@ -45,23 +46,6 @@ class AddGroupChar extends React.Component {
       });
     }
 
-    // 冒泡排序 // 由小到大
-    bubbleSort =  function(array) {
-      var i = 0,
-        len = array.length,
-        j, d;
-        for (; i < len; i++) {
-          for (j = 0; j < len; j++) {
-            if (array[i].serialNumber < array[j].serialNumber) {
-              d = array[j];
-              array[j] = array[i];
-              array[i] = d;
-            }
-          }
-        }
-      return array;
-    }
-
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -77,7 +61,7 @@ class AddGroupChar extends React.Component {
               }
             }
           });
-          names = this.bubbleSort(names);
+          names = manager.bubbleSort(names);
           // 对数据进行整合
           names.map((record, index)=>{
             record.serialNumber = index+1;

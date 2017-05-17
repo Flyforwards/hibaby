@@ -59,7 +59,6 @@ class FindPlaceData extends React.Component {
         })
 
       };
-      console.log('check:render:fields>>', fields);
         return (
             <div className="xuanxiang PlaceProject">
                 <Card title = "字段信息:" >

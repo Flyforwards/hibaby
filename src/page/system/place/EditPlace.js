@@ -2,9 +2,8 @@ import React from 'react';
 import {connect} from 'dva';
 import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
-import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
-import request from 'common/request/request.js'
+import manager from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 
@@ -49,22 +48,7 @@ class EditPlaceData extends React.Component {
     }
 
 
-    // 冒泡排序 // 由小到大
-    bubbleSort =  function(array) {
-      var i = 0,
-        len = array.length,
-        j, d;
-      for (; i < len; i++) {
-        for (j = 0; j < len; j++) {
-          if (array[i].serialNumber < array[j].serialNumber) {
-            d = array[j];
-            array[j] = array[i];
-            array[i] = d;
-          }
-        }
-      }
-      return array;
-    }
+
 
     handleSubmit = (e) => {
       e.preventDefault();
@@ -81,7 +65,7 @@ class EditPlaceData extends React.Component {
               }
             }
           });
-          names = this.bubbleSort(names);
+          names = manager.bubbleSort(names);
           // 对数据进行整合
           names.map((record, index)=>{
             let name = record;
@@ -94,10 +78,19 @@ class EditPlaceData extends React.Component {
             )
             name.serialNumber = index+1;
           })
+
+          let ids = this.editItem.dictionarySideDOs.map((record)=>record.id);
+          names.map((record)=>{
+            if (record.id) {
+              ids.remove(record.id);
+            }
+          })
+
+          const delIds = ids.map((record)=>{ return { id: record }});
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'localData/EditPlaceData',
-            payload: { id: this.editItem.id, name: values.name, type: 2, description: values.description, dictionarySideDOs: names }
+            payload: { id: this.editItem.id, name: values.name, type: 2, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds }
           })
         }
       })

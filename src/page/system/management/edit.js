@@ -5,6 +5,7 @@ import { Card,Input,Button,Form } from 'antd';
 import { Link } from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
+import manager from 'common/util'
 
 @createForm()
 class editData extends React.Component {
@@ -48,23 +49,6 @@ class editData extends React.Component {
     }
 
 
-    // 冒泡排序 // 由小到大
-    bubbleSort =  function(array) {
-      var i = 0,
-        len = array.length,
-        j, d;
-      for (; i < len; i++) {
-        for (j = 0; j < len; j++) {
-          if (array[i].serialNumber < array[j].serialNumber) {
-            d = array[j];
-            array[j] = array[i];
-            array[i] = d;
-          }
-        }
-      }
-      return array;
-    }
-
     handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
@@ -80,11 +64,12 @@ class editData extends React.Component {
               }
             }
           });
-          names = this.bubbleSort(names);
+          // 冒泡排序
+          names = manager.bubbleSort(names);
           // 对数据进行整合
           names.map((record, index)=>{
             let name = record;
-            // 旧选项更改附带Id
+            // 编辑旧选项更改附带Id
             this.editItem.dictionarySideDOs.map((record)=>{
               let side = record;
               if (name.serialNumber === side.serialNumber) {
@@ -93,10 +78,21 @@ class editData extends React.Component {
             )
             name.serialNumber = index+1;
           })
+
+          let ids = this.editItem.dictionarySideDOs.map((record)=>record.id);
+          names.map((record)=>{
+            if (record.id) {
+              ids.remove(record.id);
+            }
+          })
+
+
+          const delIds = ids.map((record)=>{ return { id: record }});
+
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'save/editData',
-            payload: { id: this.editItem.id, name: values.name, type: 1, description: values.description, dictionarySideDOs: names }
+            payload: { id: this.editItem.id, name: values.name, type: 1, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds  }
           })
         }
       })

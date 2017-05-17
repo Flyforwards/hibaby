@@ -67,7 +67,7 @@ class SystemIndex extends React.Component {
                         <Button className="addBtn"> 添加 </Button>
                       </Link >
                     </div>
-                    {this.props.list?
+                    { this.props.list?
                     < Table rowKey = "id"  bordered dataSource = {this.props.list ? this.props.list : []} columns = { columns}
                       pagination = { pagination} />:null}
                     < Current page = {this.props.page

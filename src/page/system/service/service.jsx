@@ -36,32 +36,17 @@ class serviceData extends Component {
           key: 'operating',
           width: '150px',
           render: (text, record, index) => {
-          console.log(record)
             return (
-                <div calssName="OperateList">
-                  <Link to={{ pathname: '/service/LookService', query: { id:record.id } }}className="firstA" >查看</Link>
-                  <a href="#" className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
+                <div className="OperateList" key={ index }>
+                  <Link to={{ pathname: '/service/LookService', query: { id:record.id } }} className="firstA" >查看</Link>
+                  <a className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
                 </div>
             );
           },
         }];
     }
-    componentWillMount() {
 
-    }
-    editPermissions(record){
-      this.record = record;
-      this.setState({
-        modifyModalVisible: true,
-        add: false,
-      })
-    }
-    managementInquire() {
-      console.log("查询")
-    }
-    Edit(){
-      console.log("查看")
-    }
+
     // 删除弹框
     delete(record){
       this.record = record;
@@ -87,7 +72,6 @@ class serviceData extends Component {
         })
     }
     render() {
-        const columns = this.columns;
         const pagination = {
           total: this.props.total, //数据总条数
           showQuickJumper: true,
@@ -103,12 +87,20 @@ class serviceData extends Component {
             }));
           },
         };
+        if (this.props.data !== null) {
+          this.props.data.map((record)=>{
+            record.key = record.id;
+          })
+        }
         return (
            <div className="ServiceBox">
-              <div className="name"><Link to="/service/Addservice"><span >添加</span></Link></div>
+              <div className="name">
+                <Link to="/service/Addservice">
+                  <span >添加</span>
+                </Link>
+              </div>
               <div className="CreateModaList">
-                  <Table bordered dataSource={this.props.data} columns={columns} pagination = {pagination}
-                  rowKey="Numbering"/>
+                  <Table bordered dataSource={ this.props.data } columns={ this.columns } pagination = { pagination }/>
                   <p className="allList">共计0条,范围1-10</p>
               </div>
               <AlertModalFrom
@@ -150,7 +142,6 @@ function service({
 
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.service)
   const {
     data,
     total,
