@@ -1,10 +1,11 @@
 "use strict"
-import React, {Component} from 'react'
-import './module.scss'
-import {Icon, Table, Input, Button, Form, Row, Col,Menu,Popconfirm, messageMenu, Dropdown, message} from 'antd'
-import request from '../../../common/request/request.js'
-import { classification,dataList,ww } from 'common/constants.js'
+import React, {Component} from 'react';
+import './module.scss';
+import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, messageMenu,Select} from 'antd';
+import request from '../../../common/request/request.js';
+import { classification,dataList,ww } from 'common/constants.js';
 import { connect } from 'dva'
+const Option = Select.Option;
 
 class Module extends Component {
   constructor(props) {
@@ -55,21 +56,12 @@ class Module extends Component {
   }
 
   componentWillMount() {
-    this.props.dispatch({
-      type: "system/getAllMenu"
-    });
+
   }
 
-  handleButtonClick(e) {
-    message.info('Click on left button.');
-    console.log('click left button', e);
+   handleChange(value) {
+    console.log(`selected ${value}`);
   }
-
-  handleMenuClick(e) {
-    message.info('Click on menu item.');
-    console.log('click', e);
-  }
-
   managementInquire() {
     console.log("查询")
   }
@@ -101,24 +93,28 @@ class Module extends Component {
          }));
       },
     };
-    const menu = (
-        <Menu onClick={this.handleMenuClick.bind(this)}>
-          <Menu.Item key="1">系统管理</Menu.Item>
-          <Menu.Item key="2">CRM系统</Menu.Item>
-          <Menu.Item key="3">套房管理</Menu.Item>
-          <Menu.Item key="4">服务管理</Menu.Item>
-          <Menu.Item key="5">膳食厨房</Menu.Item>
-          <Menu.Item key="6">进销存管理</Menu.Item>
-        </Menu>
-      );
+
     return (
       <div className="MenuInside">
         <div className="menuHeard">
             <div className="MainModule">
                 <h4 className="projectName">主模块：</h4>
-                <Dropdown.Button onClick={this.handleButtonClick.bind(this)} overlay={menu}>
-                 请选择
-                </Dropdown.Button>
+                <Select className="SelectMenu"
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="请选择"
+                  optionFilterProp="children"
+                  onChange={this.handleChange.bind(this)}
+                  filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  <Option key="meun1" value="系统管理">系统管理</Option>
+                  <Option key="meun2"  value="CRM系统">CRM系统</Option>
+                  <Option key="meun3"  value="套房管理">套房管理</Option>
+                  <Option key="meun4"  value="套房管理">套房管理</Option>
+                  <Option key="meun5"  value="服务管理">服务管理</Option>
+                  <Option key="meun6"  value="膳食厨房">膳食厨房</Option>
+                  <Option key="meun7"  value="进销存管理">进销存管理</Option>
+                </Select>
             </div>
         </div>
         <div className="CreateModaList">

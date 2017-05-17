@@ -1,6 +1,7 @@
 
 import * as systemService from '../services/system';
 import * as usersService from '../services/users';
+import manager from 'common/util'
 import { message } from 'antd';
 import  { session } from 'common/util/storage.js';
 
@@ -73,35 +74,13 @@ export default {
     // 根据选择组织架构下的部门获取未分配的用户成功
     getUserByNodeIdSuccess(state, { payload: { data: undisUserList, total: undisUserTotal, nodeid }}) {
       state.users = state.users.concat(undisUserList);
-      Array.prototype.removeRepeatAttr=function(){
-        var tmp={},a=this.slice();
-        let j = 0;
-        for( let i = 0;i<a.length;i++){
-          if(!tmp[a[i].id]){
-            tmp[a[i].id]=!0;
-            j++;
-          }else{
-            this.splice(j,1);
-          }
-        };
-      }
+
       state.users.removeRepeatAttr();
       return {...state, undisUserList, undisUserTotal };
     },
     // 清除选择的行
     removeSelected(state, { payload: { record }}) {
-      Array.prototype.indexOf = function(val) {
-        for (var i = 0; i < this.length; i++) {
-          if (this[i] == val) return i;
-        }
-        return -1;
-      };
-      Array.prototype.remove = function(val) {
-        var index = this.indexOf(val);
-        if (index > -1) {
-          this.splice(index, 1);
-        }
-      };
+
       state.selectedRows.remove(record);
       state.selectedRowKeys.remove(record.key);
       return {...state, };

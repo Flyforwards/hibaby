@@ -50,18 +50,7 @@ export default {
 		},
 		//删除服务项目
 		deleteServiceSave(state, { payload: { record }}) {
-			Array.prototype.indexOf = function(val) {
-				for (var i = 0; i < this.length; i++) {
-					if (this[i] == val) return i;
-				}
-				return -1;
-			};
-			Array.prototype.remove = function(val) {
-				var index = this.indexOf(val);
-				if (index > -1) {
-					this.splice(index, 1);
-				}
-			};
+
 			state.selectedRows.remove(record);
 			state.selectedRowKeys.remove(record.key);
 			return {...state, };

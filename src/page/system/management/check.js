@@ -59,7 +59,6 @@ class CheckData extends React.Component {
         })
 
       };
-      console.log('check:render:fields>>', fields);
         return (
             <div className="xuanxiang container2">
                 <Card title = "字段信息:" >

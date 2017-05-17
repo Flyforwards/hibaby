@@ -2,9 +2,8 @@ import React from 'react';
 import {connect} from 'dva';
 import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
-import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
-import request from 'common/request/request.js'
+import manager from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 
@@ -13,275 +12,184 @@ class EditPlaceData extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log("ce>>>>",this.props.data)
-        const item = this.props.data;
-        const { getFieldDecorator } = this.props.form;
-        let description="";
-        let dictionarySideDOs=null;
-        let lists=[];
-        if (item !== null) {
-          dictionarySideDOs=item.dictionarySideDOs;
-          console.log('render:subItems>>', dictionarySideDOs)
+        this.editItem = null;
 
-        };
-        if(dictionarySideDOs==null){
-          lists.push(
-
-                    <FormItem label="选项一">
-                    {getFieldDecorator('field0', {
-                      //initialValue:"",
-                          rules: [{ required: true ,message: '在此输入内容'}],
-                      })(  <Input  className="input"/>
-                        )}
-                      </FormItem>
-            )
-        }else{
-          lists=[];
-        }
-        this.add=this.add.bind(this);
-        this.delete=this.delete.bind(this);
-        this.handleSave=this.handleSave.bind(this)
-        this.state={
-          bigNum:['一', '二','三','四','五','六','七','八','九','十','十一','十二'],
-          formLayout: 'horizontal',
-          lists:lists        }
     }
-    add(){
-        console.log("add>>>>>",this.props.data)
+    remove = (k) => {
+      const { form } = this.props;
+      // can use data-binding to get
+      const keys = form.getFieldValue('keys');
+      // We need at least one passenger
+      if (keys.length === 1) {
+        return;
+      }
 
-        console.log(this.props.data);
-        const item = this.props.data;
-        let arr = [];
-        let lists = this.state.lists;
-        let field=[];
-        let len=null;
-        if (item !== null) {
-          arr = item.dictionarySideDOs;
-          console.log(arr);
-          field=arr.map(res=>{
-              return(res.name)
+      // can use data-binding to set
+      form.setFieldsValue({
+        keys: keys.filter(key => key !== k),
+      });
+    }
+
+    add = () => {
+      const { form } = this.props;
+      if (this.editItem!== null && this.editItem.dictionarySideDOs.length>0) {
+        // can use data-binding to get
+        const keys = form.getFieldValue('keys');
+        const side = this.editItem.dictionarySideDOs[this.editItem.dictionarySideDOs.length -1];
+        const newKey = side.serialNumber > keys[keys.length -1] ? side.serialNumber+1:keys[keys.length -1]+1;
+
+        const nextKeys = keys.concat(newKey);
+        // can use data-binding to set
+        // important! notify form to detect changes
+        form.setFieldsValue({
+          keys: nextKeys,
+        });
+      }
+    }
+    handleSubmit = (e) => {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          let names = [];
+          // 取出数据
+          Object.keys(values).map((key, index) => {
+            if (key.indexOf("names-") == 0) {
+              const strs = key.split('-');
+              if ( strs.length >= 2 ) {
+                const serialNumber = parseInt(strs[1])
+                names.push({ name: values[key], serialNumber })
+              }
+            }
           });
-          console.log(field)
-          let num=field.length;
-          len=lists.length+num ;
-        }else {
-            len=lists.length;
+          names = manager.bubbleSort(names);
+          // 对数据进行整合
+          names.map((record, index)=>{
+            let name = record;
+            // 旧选项更改附带Id
+            this.editItem.dictionarySideDOs.map((record)=>{
+              let side = record;
+              if (name.serialNumber === side.serialNumber) {
+                name.id = side.id;
+              }}
+            )
+            name.serialNumber = index+1;
+          })
 
-        };
-        lists.push(
-          <FormItem key={len} className = "div2">
-          {this.props.form.getFieldDecorator(`field${len}`, {rules: [{ required: true, }],
-                })(<div>
-                    <p className = "label">选项{this.state.bigNum[len]}</p>
-                    <div className="posi" style={{position:'relative',overflow:'hidden'}}>
-                        <Input  data-index={len} className = "input"/>
-                        <span className = "editable-add-btn" onClick={this.delete}> 删除 </span>
-                    </div>
-                    </div>
-                  )}
-              </FormItem>
-          )
-        this.setState({lists:lists})
+          let ids = this.editItem.dictionarySideDOs.map((record)=>record.id);
+          names.map((record)=>{
+            if (record.id) {
+              ids.remove(record.id);
+            }
+          })
+
+          const delIds = ids.map((record)=>{ return { id: record }});
+          // 集团字段为1 地方字段为2
+          this.props.dispatch({
+            type: 'localData/EditPlaceData',
+            payload: { id: this.editItem.id, name: values.name, type: 2, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds }
+          })
+        }
+      })
     }
-    delete(e){
-        var lists=this.state.lists;
-        lists.splice(index,1);
-        this.setState({lists:lists})
-    }
-     handleReturn = () =>{
-      browserhistory.go(-1)
-    }
 
-    handleSave = (e) => {
-       e.preventDefault();
-       let values = this.props.form.getFieldsValue();
-       console.log("values>>>",values)
-       let data=this.props.data;
-       let id=data.id;
-       console.log("editsave>>>>",id);
-      // let dictionarySideDOs=data.dictionarySideDOs;
-      // let diclen=dictionarySideDOs.length;
-      //  console.log("editsave>>>>>",values)
-       let dictionarySideDOs=[];
-       let newArr=[];
-       let _field=[];
-       let str=data.dictionarySideDOs;
-       let Array=str.map(res=>{
-         return(res.id)
-       })
-       console.log("Array>>>",Array)
-          //childId=dictionarySideDOs.
-       let params = {};
-       Object.keys(values,).map((key, index) => {
-         console.log("save>>>>",index)
-        if(key.indexOf("field") !== -1||key.indexOf("id") !== -1){
-
-        if(key.indexOf("field") !== -1){
-          console.log(values)
-             let item = {};
-
-             item['name'] = values[key];
-             item['serialNumber'] = index;
-             console.log('add:handlesave>>',item,item['name']);
-             _field.push(item);
-             console.log('add:handlesave>>',_field);
-           }
-           if(key.indexOf("id") !== -1){
-             console.log(key.indexOf("id"));
-             let _item={};
-             _item['name'] = values[key];
-             _item['serialNumber'] = index;
-             newArr.push(_item);
-           }
-
-         }else{
-           params[key] = values[key];
-         }
-       })
-       console.log(dictionarySideDOs)
-       if(newArr!==null){
-
-       for(let n=0;n<newArr.length;n++){
-         let obj={};
-         obj['name']=newArr[n].name;
-         obj['serialNumber']=newArr[n].serialNumber;
-         console.log("idArr>>>",Array[n]);
-         obj['id']=Array[n];
-         console.log(obj['id']);
-         dictionarySideDOs.push(obj);
-       }
-       for(let m=0;m<_field.length;m++){
-         dictionarySideDOs.push(_field[m])
-       }
-       console.log("newArr>>>",dictionarySideDOs);
-     }
-       params = {...params, dictionarySideDOs,id};
-
-       console.log('add:handlesave>>',params)
-       this.props.dispatch({
-          type: 'space/EditPlaceData',
-          payload: {
-              name:params.name,
-              dictionarySideDOs:params.dictionarySideDOs,
-              description:params.description,
-              id:params.id,
-              type:2
-          }
-        })
-        routerRedux.push('/system/localchar')
-    }
     render() {
-      console.log("edit>>>>>",this.props.data)
-      let form = this.props.form;
-      const item = this.props.data;
-      const { formLayout } = this.state;
-      //const { dataSource } = this.state;
+      const { item } = this.props;
+
+      if (this.editItem === null && item !== null) {
+        this.editItem = item;
+      }
+
       const formItemLayout = {
         labelCol: { span: 2 },
         wrapperCol: { span: 22 },
       };
-      const { getFieldDecorator } = this.props.form;
-        //console.log('render:subItems>>', dictionarySideDOs)
-      let arr=[];
-      let children=[];
-      let field=[];
-      let childId=[];
+
       let name="";
       let description="";
-      if(item!==null){
-        arr=item.dictionarySideDOs;
-        name=item.name;
-        description=item.description;
+      let arr = [];
+      let initKeys  = [];
+      if( this.editItem !== null ){
+        arr = this.editItem.dictionarySideDOs;
+        name = this.editItem.name;
+        description = this.editItem.description;
+        initKeys = arr.map((record)=>record.serialNumber)
       }
 
-        if(arr !==null){
 
-            field=arr.map(res=>{
-                return(res.name)
-            });
-            console.log(field)
-            childId=arr.map(res=>{
-                return(res.id)
-            });
-
-
-        }
-        let len=field.length;
-        for(let i=0;i<len;i++){
-          children.push(<FormItem {...formItemLayout}  className = "div" label={"选项"+`${this.state.bigNum[i]}`}>
-                  {getFieldDecorator(`id${childId[i]}`, {
-                    initialValue:`${field[i]}`,
-                    rules: [{ required: true, message: '字段描述为必填项！' }],
-                })(
-                      <Input className="input" />
-                  )}
-                  </FormItem>
-          )
-        }
-      console.log("render>>>",getFieldDecorator)
+      const { getFieldDecorator, getFieldValue } = this.props.form;
+      getFieldDecorator('keys', { initialValue: initKeys });
+      const keys = getFieldValue('keys');
+      const formItems = keys.map((k, index) => {
+        const initValue = arr[k-1] ? arr[k-1].name : ""
         return (
-              <div className="xuanxiang PlaceProject">
-              <Card title = "字段信息:" >
-                  <Form layout={formLayout}>
-                  <FormItem {...formItemLayout} label="字段名称">
-                  {getFieldDecorator('name', {
-                    initialValue:`${name}`,
-                        rules: [{ required: true, message: '字段名称为必填项！' }],
-                    })(  <Input disabled={true} className="input" />
-                      )}
-                    </FormItem>
-                      <FormItem {...formItemLayout} className = "div" label="字段描述">
-                      {getFieldDecorator('description', {
-                        initialValue:`${description}`,
-                        rules: [{ required: true, message: '字段描述为必填项！' }],
-                    })(
-                          <Input disabled={true} className="input" />
-                      )}
-                      </FormItem>
-                  </Form>
-              </Card>
-              < Card title = "下拉选项:" >
-              <Form>
-                   {children}
-                   {this.state.lists}
-                   <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
-              </Form>
-              </Card >
-              <div className="retuSave">
+          <FormItem
+            lassName = "div2"
+            key={ k }
+          >
+            <p className = "label" >{ `选项${String(index+1)}` }</p>
+            <div className="posi childCen" style={{position:'relative',overflow:'hidden'}}>
+              { getFieldDecorator(`names-${k}`, {
+                validateTrigger: ['onChange', 'onBlur'],
+                rules: [{ required: true, message: '选项不能为空' }],
+                initialValue: initValue,
+              })(
+                <Input rows = {6} className = "input2"/>
+              )}
+            </div>
+            {
+              index >=2?(<span className = "editable-add-btn delBtn" onClick={ () => this.remove(k) } > 删除 </span>):null
+            }
+          </FormItem>
+        );
+      });
 
-                  <Link to='localchar/find'>
-                      <Button className = "editable-add-btn return"> 返回 </Button>
-                  </Link>
-                  <Link to='localchar/editplace'>
-                      <Button className = "editable-add-btn" onClick={this.handleSave}> 保存 </Button>
-                  </Link>
-              </div>
+
+      return (
+        <div className="xuanxiang PlaceProject">
+          <Card title = "字段信息:" >
+            <Form layout={ 'horizontal' }>
+              <FormItem {...formItemLayout} className="childCen" label="字段名称">
+                {getFieldDecorator('name', {
+                  initialValue:`${name}`,
+                  rules: [{ required: true, message: '字段名称为必填项！' }],
+                })(  <Input disabled={true} className="input" placeholder="input placeholder" />
+                )}
+              </FormItem>
+              <FormItem {...formItemLayout} className = "div childCen" label="字段描述">
+                {getFieldDecorator('description', {
+                  initialValue:`${description}`,
+                  rules: [{ required: true, message: '字段描述为必填项！' }],
+                })(
+                  <Input disabled={true} className="input" />
+                )}
+              </FormItem>
+            </Form>
+          </Card>
+          <Card title = "下拉选项:" >
+            <Form>
+              { formItems }
+              <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
+            </Form>
+          </Card >
+          <div className="retuSave">
+            <Link to='localchar/find'>
+              <Button className = "editable-add-btn return"> 返回 </Button>
+            </Link>
+            <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+          </div>
         </div>
-     )
+      )
     }
 }
 
-function EditPlaceData({dispatch, data}) {
-    return (<div>
-                <EditPlaceData dispatch = {dispatch} data={data}/>
-            </div>
-      )
-}
 function mapStateToProps(state) {
-  console.log("modelss",state.space)
   const {
-    item:data,
-    code,
-    field,
-    len,
-  } = state.space;
+    item,
+  } = state.localData;
 
   return {
-    loading: state.loading.models.space,
-    data,
-    code,
-    field,
-    code,
+    loading: state.loading.models.localData,
+    item
   };
 }
 export default connect(mapStateToProps)(EditPlaceData);

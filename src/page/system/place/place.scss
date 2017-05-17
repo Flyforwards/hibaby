@@ -127,6 +127,22 @@
     .xuanxiang {
         overflow: hidden;
     }
+    .childCen{
+      width: 88%;
+      float:left;
+    }
+    .delBtn{
+      display:block;
+      height:26px;
+      width: 40px;
+      text-align: center;
+      line-height:26px;
+      border-radius:4px;
+      float:left;
+      background: #108ee9;
+      position:relative;
+      left:-40px;
+    }
 
     .return {
         background-color: #fff;

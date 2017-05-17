@@ -1,12 +1,38 @@
 .MenuInside{
   margin: 10px;
+
     .menuHeard{
+      width: 100%;
       height:auto;
       margin-top:20px;
       background:#fff;
       border-radius:5px;
+      overflow:hidden;
+      .MainModule{
+        height:40px;
+        width:300px;
+        float:left;
+        margin:10px 0 0 10px;
+        .projectName{
+          height:40px;
+          width:80px;
+          float:left;
+          line-height: 40px;
+          text-align: center;
+          font-size:14px;
+          color:#333;
+        }
+        .SelectMenu{
+          height:40px;
+          width:100px;
+          .ant-select-selection--single{
+            height:40px;
+          }
+        }
+      }
     }
   .CreateModaList{
+    width:100%;
     height: auto;
     margin-top:10px;
     .ant-table-thead > tr > th {
