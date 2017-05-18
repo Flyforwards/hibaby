@@ -98,12 +98,12 @@ class AddUsered extends React.Component {
           if(fields.gender==0 || fields.gender==1){
             if(values.entryTime){
               if(fields.affiliatedDepartment){
-                  if(fields.directLeadership){
                     if(fields.position){
                         if(roleIdData.length>=1){
                           if(fields.phoneNumber){
                             if(fields.information){
                               if(fields.companyEmail){
+                                console.log("this.state.NewuserImg",this.state.NewuserImg)
                                 if(this.state.NewuserImg){
                                     this.props.dispatch({
                                       type: 'organization/addUser',
@@ -148,9 +148,6 @@ class AddUsered extends React.Component {
                     }else{
                       message.warning('请选择职位信息')
                     }
-                  }else{
-                    message.warning('请选择直系领导')
-                  }
               }else{
                 message.warning('请选择隶属部门')
               }  
@@ -289,7 +286,6 @@ class AddUsered extends React.Component {
             <FormItem
              label="直系领导"
              className="directLeadership"
-             required
             >
               {getFieldDecorator('directLeadership', {
                 initialValue: this.state.TableData?this.state.TableData.id:"",

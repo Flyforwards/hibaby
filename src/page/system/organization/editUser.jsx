@@ -263,7 +263,7 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 3 }
                   >
                     {getFieldDecorator(`directLeadership${i}`, {
-                    initialValue:this.state.TableData != []?this.state.TableData.id:entryContent.leaderId
+                    initialValue:this.state.TableData.length>=1?this.state.TableData.id:entryContent.leaderId
                     })(
                       <Input />
                     )}

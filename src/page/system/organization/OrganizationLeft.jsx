@@ -105,7 +105,6 @@ class OrganizationLefted extends React.Component {
         this.setState({
             addChildNodeVisible: false
         })
-        window.location.reload( true )
     }
     handleDeleteNodeCancel() {
         this.setState({
@@ -131,8 +130,7 @@ class OrganizationLefted extends React.Component {
           $("li").find(".plus").eq(0).css('display','none');
         }
       }, 800)
-
-      $(document).on('click', '.plus', function(e) {
+      $(document).on('click', '#root', function(e) {
           if(this.state.upblock == 'none'){
               this.setState({
                 ulTop:e.pageY-e.offsetY-21,
@@ -176,7 +174,7 @@ class OrganizationLefted extends React.Component {
                 <Tree
                   className="draggable-tree"
                   onExpand={ this.expandHandler.bind(this) }
-                  onSelect={ this.onSelect.bind(this) }
+                  onDragEnter={ this.onSelect.bind(this) }
                 >
                 { loops }
                 </Tree>
