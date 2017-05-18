@@ -1,9 +1,8 @@
 "use strict"
 
-import React, {Component} from 'react'
-import {Icon, Card} from 'antd'
+import React, { Component } from 'react'
+import { Icon, Card } from 'antd'
 import Page from '../../../framework/page'
-import request from '../../../common/request/request.js'
 
 import InfoCard from '../../../component/info-card'
 

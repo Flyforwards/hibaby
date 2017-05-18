@@ -122,7 +122,22 @@
     .xuanxiang {
         overflow: hidden;
     }
-
+    .childCen{
+      width: 88%;
+      float:left;
+    }
+    .delBtn{
+      display:block;
+      height:26px;
+      width: 40px;
+      text-align: center;
+      line-height:26px;
+      border-radius:4px;
+      float:left;
+      background: #108ee9;
+      position:relative;
+      left:-40px;
+    }
     .return {
         background-color: #fff;
         border: none;
@@ -163,16 +178,6 @@
             width: 140px;
         }
 
-
-    .editable-add-btn {
-        height: 40px;
-        width: 140px;
-    }
-
-    .editable-add-btn {
-        float: none;
-    }
-
     .ant-input[disabled] {
 
         background-color: rgba(102, 102, 102, 1);
@@ -182,19 +187,7 @@
     }
 
 
-    .div2 .delBtn {
 
-        background-color: #f75555;
-        color: #fff;
-        width: 80px;
-        position: absolute;
-        right: 5%;
-        bottom: 0;
-        margin-left: 30px;
-        border-radius: 5px;
-        text-align: center;
-        line-height: 40px;
-    }
     #editSave{
       width:300px;
       float:right;
@@ -215,6 +208,7 @@
               width: 140px;
     }
     .editable-add-btn {
+      display:block;
         background-color: #b67233;
         color: #fff;
         width: 140px
@@ -225,10 +219,12 @@
         border: none;
         color: #fff;
     }
-
-
-
+    .content2.delBtn{
+      display:block;
+      height:30px;
+      width:50px;
     }
+  }
 
     .dynamic-delete-button {
       cursor: pointer;
