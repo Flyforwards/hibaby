@@ -48,7 +48,7 @@ export default {
 			const {data: { data, id, code} } = yield call(saveService.saveData, values);
 			if (code == 0) {
 				message.success("添加用户信息成功");
-				yield put(routerRedux.push("system/groupchar"));
+				yield put(routerRedux.push("/system/group-char"));
 
 			}
 		},
@@ -71,7 +71,7 @@ export default {
 			const {data: {data,code}} = yield call(saveService.editData, values);
 			if (code == 0) {
 				message.success("更改用户信息成功");
-				yield put(routerRedux.push("system/groupchar"));
+				yield put(routerRedux.push("/system/group-char"));
 
 			}
 		},
@@ -99,7 +99,7 @@ export default {
 			}) => {
 
 				//查看集团列表数据
-				if (pathname === '/groupchar/check') {
+				if (pathname === '/system/group-char/check') {
 					dispatch({
 						type: 'checkData',
 						payload:query

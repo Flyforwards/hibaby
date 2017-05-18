@@ -172,7 +172,7 @@ class EditPlaceData extends React.Component {
             </Form>
           </Card >
           <div className="retuSave">
-            <Link to='localchar/find'>
+            <Link to='/system/local-char/find'>
               <Button className = "editable-add-btn return"> 返回 </Button>
             </Link>
             <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>

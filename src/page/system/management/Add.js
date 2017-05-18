@@ -131,7 +131,7 @@ class AddGroupChar extends React.Component {
             </Form>
             </Card >
             <div className="retuSave">
-              <Link to='/system/groupchar'>
+              <Link to='/system/group-char'>
                 <Button className = "editable-add-btn return"> 返回 </Button>
               </Link>
                 <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>

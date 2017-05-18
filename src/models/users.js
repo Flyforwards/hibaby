@@ -55,9 +55,8 @@ export default {
   			if(pathname === '/users') {
   				dispatch({type: 'fetch', payload: query});
   			}
-        if(pathname === '/fromModal') {
-          dispatch({type: 'fromModal', payload: {}});
-          console.log("数据字典")
+        if(pathname === '/system/fromModal') {
+          dispatch({type: '/system/fromModal', payload: {}});
         }
   		})
   	}

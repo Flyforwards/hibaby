@@ -52,7 +52,7 @@ export default {
 			if (code == 0) {
 				console.log(data)
 				message.success("添加用户信息成功");
-				yield put(routerRedux.push('/system/localchar'));
+				yield put(routerRedux.push('/system/local-char'));
 			}
 		},
 
@@ -74,7 +74,7 @@ export default {
 			const {data: {data,code}} = yield call(placeService.EditPlaceData, values);
 			if (code == 0) {
 				message.success("更改用户信息成功");
-				yield put(routerRedux.push("/system/localchar"));
+				yield put(routerRedux.push("/system/local-char"));
 			}
 		},
 
@@ -88,15 +88,8 @@ export default {
 				pathname,
 				query
 			}) => {
-				//添加地方列表
-				// if (pathname === '/localchar/add') {
-				// 	dispatch({
-				// 		type: 'AddPlaceData',
-				// 		payload:query
-				// 	});
-				// }
 				//查看地方列表数据
-				if (pathname === '/localchar/find') {
+				if (pathname === '/system/local-char/find') {
 					dispatch({
 						type: 'PlaceFind',
 						payload:query

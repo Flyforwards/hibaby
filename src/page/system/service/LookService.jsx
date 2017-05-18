@@ -18,9 +18,6 @@ class LookService extends Component {
             };
       }
 
-      handleFormLayoutChange = (e) => {
-         this.setState({ formLayout: e.target.value });
-       }
        componentWillMount() {
          this.props.dispatch({
            type : "service/LookService",
@@ -33,6 +30,7 @@ class LookService extends Component {
            alertModalVisible: true,
          })
        }
+
        //确定删除
        handleAlertModalOk(delId) {
            this.props.dispatch({
@@ -43,37 +41,26 @@ class LookService extends Component {
                pageSize: this.pageSize,
              }
            })
-           }
+       }
 
-           handleCreateModalCancel() {
-               this.setState({
-                 alertModalVisible: false,
-               })
-           }
+       handleCreateModalCancel() {
+           this.setState({
+             alertModalVisible: false,
+           })
+       }
        render() {
           let addressid=GetQueryString("id")
           const item=this.props.data ;
-          console.log("addressid>>>",addressid)
           let values ={};
           let name='';
           let id=null;
-            for(let i=0;i<item.length;i++){
-                if(item[i].id==addressid && item[i] !== undefined){
-                      values=item[i]
-                }
-            }
+          for(let i=0;i<item.length;i++){
+              if(item[i].id==addressid && item[i] !== undefined){
+                    values=item[i]
+              }
+          }
             name=values.name;
-              console.log("LookId>>>>",values)
-          console.log("LookId>>>>",name)
           const { formLayout } = this.state;
-          const { getFieldDecorator } = this.props.form;
-          const formItemLayout = formLayout === 'horizontal' ? {
-            labelCol: { span: 4 },
-            wrapperCol: { span: 14 },
-          } : null;
-          const buttonItemLayout = formLayout === 'horizontal' ? {
-            wrapperCol: { span: 14, offset: 4 },
-          } : null;
           return (
             <div className="ServiceBox">
                 <Card className="AddService" bordered={true} >
@@ -100,13 +87,13 @@ class LookService extends Component {
                       </Form>
                 </Card>
                 <div className="btn">
-                      <Link className="BackBtn" to='/system/serviceitem'>
+                      <Link className="BackBtn" to='/system/service-item'>
                           <Button>返回</Button>
                       </Link>
                       <Link className="DelBtn" >
-                          <Button onClick={this.delete.bind(this,addressid)}>删除</Button>
+                          <Button onClick={ this.delete.bind(this,addressid) }>删除</Button>
                       </Link>
-                      <Link className="EditBtn" to={{pathname:'/service/edit',query:{id:`${addressid}`}}}>
+                      <Link className="EditBtn" to={{pathname:'/system/service-item/edit',query:{id:`${addressid}`}}}>
                           <Button>编辑</Button>
                       </Link>
                 </div>
@@ -118,10 +105,6 @@ class LookService extends Component {
                 />
             </div>
           );
-        }
-        componentDidMount(){
-            console.log("LookService>>>>",this.props.data)
-
         }
 }
   function GetQueryString(name){

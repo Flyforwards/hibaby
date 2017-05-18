@@ -39,7 +39,7 @@ class SystemIndex extends React.Component {
         render: (text, record, index) => {
 
           return ( < Link to =
-            {`/localchar/find?dataId=${record.id}`}
+            {`/system/local-char/find?dataId=${record.id}`}
              > 查看 </Link>)
           },
         }];
@@ -53,7 +53,7 @@ class SystemIndex extends React.Component {
         pageSize:10,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
-            pathname: '/system/localchar',
+            pathname: '/system/local-char',
             query: {
               "page": current,
               "results": 10,
@@ -66,7 +66,7 @@ class SystemIndex extends React.Component {
           PlaceProject"
          >
         <div className = "buttonwrapper">
-            <Link to = "/localchar/add" >
+            <Link to = "/system/local-char/add" >
                 <Button className="addBtn"> 添加 </Button>
             </Link>
         </div>

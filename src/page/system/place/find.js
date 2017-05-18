@@ -81,10 +81,10 @@ class FindPlaceData extends React.Component {
                   {fields}
                 </Card >
                 <div className="retuSave">
-                    <Link to='/system/localchar'>
+                    <Link to='/system/local-char'>
                     <Button className = "editable-add-btn return"> 返回 </Button>
                     </Link>
-                    <Link to={{pathname:'/localchar/editPlace',query:{id:`${editid}`}}}>
+                    <Link to={{pathname:'system/local-char/edit',query:{id:`${editid}`}}}>
                         <Button className = "editable-add-btn"> 编辑 </Button>
                     </Link>
                 </div>
