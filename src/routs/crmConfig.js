@@ -21,5 +21,25 @@ export default (app) => [
         })
       }
     },
+  //卡种管理
+  {
+    path: '/crm/card',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/card'));
+        cb(null, require('page/crm/infocard/card/card.js'))
+      })
+    }
+  },
+  //卡种信息
+  {
+    path: '/crm/cardInfo',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/card'));
+        cb(null, require('page/crm/infocard/card/cardInfo.js'))
+      })
+    }
+  },
 ]
 
