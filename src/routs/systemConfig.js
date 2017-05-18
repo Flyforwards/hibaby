@@ -209,7 +209,7 @@ export default (app) => [
     },
   // 权限管理内部,权限表的维护
     {
-      path: '/frommodal',
+      path: '/system/frommodal',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/system'));

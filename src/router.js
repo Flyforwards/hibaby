@@ -12,6 +12,30 @@ import crmConfig from './routs/crmConfig'
 
 
 function RouterConfig({ history, app }) {
+  const welcome = [
+        {
+        path: '/welcome',
+        getComponent: (location, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('page/welcome.js'))
+          })
+        }
+      },{
+      path: '/noJurisdiction',
+        getComponent: (location, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('page/noJurisdiction.js'))
+          })
+        }
+      },{
+      path: '/text',
+        getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('page/welcome.js'))
+        })
+      }
+     },
+  ]
 
 let routes = [
     {
@@ -30,7 +54,7 @@ let routes = [
             replace('/login')
           }
         },
-        childRoutes: [...systemConfig(app),...crmConfig(app)],
+        childRoutes: [...welcome,...systemConfig(app),...crmConfig(app)],
     },
     {
         path: '/login',

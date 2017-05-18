@@ -8,9 +8,11 @@ export default {
   namespace: 'layout',
   state: {
     clubs: [], // 地方中心数据
-    projectList: null,
+    projectList: [],
     subMenu: [],
+    projectTree: [],
     userInfo: null,
+    selectIndex: 0,
   },
 
   subscriptions: {
@@ -89,6 +91,7 @@ export default {
         throw err;
       }
     },
+    // 获取主模块信息
     *getProjectList({ payload }, {call, put}) {
       const { data: { data, code, err}} = yield call(usersService.getProjectList)
       if (code == 0 && err == null) {
@@ -126,7 +129,7 @@ export default {
         yield put(routerRedux.push("/"))
         // 设置地方中心成功刷新数据
         yield put({
-          type : 'getProjectList',
+          type : 'getProjectAndModuleTree',
         });
       } else {
         throw err || "请求出错";
@@ -143,10 +146,112 @@ export default {
        yield put(routerRedux.push('/login'))
       } else {
         throw err || "请求出错";
-    }
-},
+      }
+    },
+    // 获取主模块和菜单树
+    *getProjectAndModuleTree({ payload }, {call, put}) {
+      const { data: { data, code, err}} = yield call(usersService.getProjectAndModuleTree)
+      if (code == 0 && err == null) {
+        const paths = location.pathname.split("/");
+        let projectInx = 0;
+        console.log(paths)
+        if (paths.length >= 2) {
+          const path1 = paths[1];
+          if (data != null && data.length>0) {
+            data.map((record, index)=>{
+              if (record.path == path1) {
+                projectInx = index;
+              }
+            });
+          }
+        }
+        // 选择头部主模块
+        yield put({
+          type: 'updateSelectProject',
+          payload: { selectIndex : projectInx, }
+        })
+
+        // 更新左侧菜单
+        if (data != null && data.length>0) {
+          const project = data[projectInx];
+          yield put({
+            type: 'changeMenu',
+            payload: { subMenu: project.moduleList || [] }
+          })
+        }
+        // 更新头部主模块
+        yield put({
+          type: 'getProjectTreeSuccess',
+          payload: data,
+        });
+
+        // 添加白名单 先只对菜单目录做权限管理
+        if (location.pathname != "/" && paths.length == 3) {
+          let havePer = false
+          // 判断路由权限
+          if (data !==null && data.length>0 ) {
+            data.map((record)=>{
+              record.moduleList.map((item)=>{
+                if (item.children.length > 0) {
+                  item.children.map((re)=>{
+                    if (location.pathname == re.path) {
+                      havePer = true;
+                    }
+                  })
+                } else {
+                  if (location.pathname == item.path) {
+                    havePer = true;
+                  }
+                }
+              });
+            })
+          }
+          if (!havePer) {
+            yield put(routerRedux.replace("/noJurisdiction"))
+          }
+        }
+
+      } else {
+        throw err || "请求出错";
+      }
+    },
+    // 获取主模块和菜单树
+    *pushModule({ payload: { moduleList, selectIndex } }, {call, put}) {
+      yield put({
+        type: 'updateSelectProject',
+        payload: { selectIndex }
+      })
+      if (moduleList != null && moduleList.length > 0) {
+        const module = moduleList[0];
+        if (module.children === null || module.children.length == 0) {
+          yield put(routerRedux.push(module.path));
+        } else {
+          const subModule = module.children[0];
+          yield put(routerRedux.push(subModule.path));
+        }
+      } else {
+        yield put(routerRedux.push('/welcome'));
+      }
+      yield put({
+        type: "changeMenu",
+        payload: { subMenu: moduleList || [] },
+      })
+    },
   },
+
   reducers: {
+    changeMenu (state, { payload: { subMenu } }) {
+      return {
+        ...state,
+        subMenu,
+      }
+    },
+    updateSelectProject (state, { payload: { selectIndex } }) {
+      return {
+        ...state,
+        selectIndex,
+      }
+    },
     querySuccess (state, { payload: { clubs } }) {
       return {
         ...state,
@@ -169,6 +274,12 @@ export default {
       return {
         ...state,
         userInfo,
+      }
+    },
+    getProjectTreeSuccess (state, { payload: projectTree }) {
+      return {
+        ...state,
+        projectTree,
       }
     },
   },
