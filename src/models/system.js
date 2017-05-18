@@ -101,6 +101,22 @@ export default {
 			}
 			return {...placedata,range};
 		},
+		//菜单列表数据
+		MainMenuList(state, { payload: {data,total,page,size,code}}) {
+			let placedata = {...state,
+				data,
+				total,
+				page,
+				size,
+				code,
+			};
+			let range = {
+				start: page == 1 ? 1 : (page - 1) * 10 + 1,
+				end: page == 1 ? data.length : (page - 1) * 10 + data.length,
+				totalpage:Math.ceil(total/size),
+			}
+			return {...placedata,range};
+		},
 
 		permissionAddSave(state, {
 			payload: {
@@ -431,7 +447,36 @@ export default {
 				});
 			}
 		},
+		//菜单liebiao
+		*MeunData({
+			payload: values
+		}, {
+			call,
+			put
+		}) {
+			const {
+				data: {
+					data,
+					total,
+					page = 1,
+					size,
+					code
+				}
+			} = yield call(systemService.place, values);
 
+			if (code == 0) {
+				yield put({
+					type: 'placeSave',
+					payload: {
+						data,
+						total,
+						page,
+						size,
+						code
+					}
+				});
+			}
+		},
 		*checkData({
 			payload:values
 		}, {

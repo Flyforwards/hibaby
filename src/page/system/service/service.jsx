@@ -3,7 +3,6 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import './service.scss'
 import {Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message} from 'antd'
-import {classification,dataList,ww} from 'common/constants.js'
 import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
 import Current from '../../Current';
