@@ -8,6 +8,7 @@ import UpdateModal from './UpdateModal.jsx'
 import Logo from './logo.png'
 import UserImg from './user.jpg'
 import { positionDict } from 'common/constants';
+import { routerRedux } from 'dva/router';
 const MenuItem = Menu.Item;
 
 class Header extends React.Component {
@@ -17,8 +18,7 @@ class Header extends React.Component {
             updateModalVisible: false,
             updateModalConfirmLoading: false,
             initialUpdateValue: {},
-            count:9,
-            name:"总部"
+            selectIndex: 0,
         }
         this.userMenu=(
             <div>
@@ -41,7 +41,7 @@ class Header extends React.Component {
         const projectList = this.props.projectList;
         if (projectList == null) {
           this.props.dispatch({
-            type : "layout/getProjectList"
+            type : "layout/getProjectAndModuleTree"
           });
         }
 
@@ -53,10 +53,10 @@ class Header extends React.Component {
             name:event.target.innerHTML
         })
     }
-    refreshMenu(itemId){
+    refreshMenu(item, index){
       this.props.dispatch({
-        type : "layout/getCurrUserMenu",
-        payload: { dataId : itemId },
+        type: "layout/pushModule",
+        payload: { moduleList: item.moduleList, selectIndex: index, }
       });
     }
     // 切换地方中心
@@ -69,6 +69,7 @@ class Header extends React.Component {
         })
       }
     }
+
     render() {
 
         let userName = "凯贝姆";
@@ -107,10 +108,9 @@ class Header extends React.Component {
         }
 
 
-        let projectList = this.props.projectList;
-        let subNodes = [];
-        if (projectList == null) {
-          projectList = [{
+        let projectTree = this.props.projectTree;
+        if (projectTree.length === 0) {
+          projectTree = [{
             description : "首页",
             id : 1,
             isHave : null,
@@ -136,22 +136,22 @@ class Header extends React.Component {
             path : "/system/groupchar",
           }];
         }
-        if (projectList != null) {
-          subNodes =  projectList.map((item, index) => {
-            if (item.id == 2) {
-              item.path = "/crm/customer";
-            } else if (item.id == 3) {
-              item.path = "/system/groupchar";
-            }
-            return (
-              <li key = {index} className="menu-item">
-                <Link to={ item.path } onClick={ this.refreshMenu.bind(this,item.id)} >
-                  <span className="header-menu-text">{ item.name }</span>
-                </Link>
-              </li>
-                  )
-          })
-        }
+
+        const subNodes =  projectTree.map((item, index) => {
+          let className="menu-item"
+          if ( this.props.selectIndex === index ) {
+            className="menu-item-select"
+          }
+          //
+          return (
+            <li key = { index } className={className}>
+              <Link onClick={ this.refreshMenu.bind(this,item, index)} >
+                <span className="header-menu-text">{ item.name }</span>
+              </Link>
+            </li>
+                )
+        })
+
         return (
             <header className="yt-admin-framework-header clearfix">
                 <h1 className="yt-admin-framework-header-brand">

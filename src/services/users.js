@@ -148,3 +148,14 @@ export function getCurrentUserInfo(values) {
     body: JSON.stringify(values),
   })
 }
+
+
+// 获取主模块树
+export function getProjectAndModuleTree(values) {
+  return request('/crm/api/v1/module/currentUserModuleAllList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+

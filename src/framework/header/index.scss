@@ -143,6 +143,7 @@
             font-style: normal;
             font-size: 16px;
             color: #666;
+            text-decoration:none;
             &:hover {
                 background-color:#f1f1f1;
                 color:#b67233;
@@ -152,6 +153,29 @@
             margin-left: 6px;
         }
     }
+    .menu-item-select {
+      float: left;
+      margin-left:20px;
+      background-color: #b67233;
+      a {
+        display: block;
+        width:120px;
+        text-align: center;
+        line-height: 50px;
+        color: #666;
+        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 16px;
+        background-color:#f1f1f1;
+        color:#b67233;
+        text-decoration:none;
+      }
+      .header-menu-text {
+        margin-left: 6px;
+      }
+    }
+
 }
 
 .header-menu-name {
