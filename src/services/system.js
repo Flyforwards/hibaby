@@ -50,6 +50,13 @@ export function fromModal(values) {
     body: JSON.stringify(values),
   })
 }
+//菜单列表数据
+export function MainMenuList(values) {
+  return request('/crm/api/v1/module/currentUserModuleList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 //获取权限管理列表
 export function listByPage(values) {

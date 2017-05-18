@@ -1,6 +1,6 @@
 .MenuInside{
   margin: 10px;
-
+  overflow: hidden;
     .menuHeard{
       width: 100%;
       height:auto;
@@ -9,24 +9,78 @@
       border-radius:5px;
       overflow:hidden;
       .MainModule{
-        height:40px;
-        width:300px;
+        height:30px;
+        width:230px;
         float:left;
         margin:10px 0 0 10px;
         .projectName{
-          height:40px;
+          height:30px;
           width:80px;
           float:left;
-          line-height: 40px;
+          line-height: 30px;
           text-align: center;
           font-size:14px;
           color:#333;
         }
         .SelectMenu{
-          height:40px;
-          width:100px;
+          height:30px;
+          width:150px;
+          float:left;
           .ant-select-selection--single{
-            height:40px;
+            height:30px;
+          }
+        }
+      }
+      .MeunName{
+        height:30px;
+        width:230px;
+        float:left;
+        margin:10px 0 0 10px;
+        .Name{
+          height:30px;
+          width:60px;
+          float:left;
+          line-height: 30px;
+          text-align: center;
+          font-size:14px;
+          color:#333;
+        }
+        .NameBox{
+          height:28px;
+          width:150px;
+          float:left;
+          .ant-form-item-control {
+            height:28px;
+            .input{
+              height:28px;
+            }
+          }
+        }
+      }
+      .MeunPath{
+        height:30px;
+        height:30px;
+        width:350px;
+        float:left;
+        margin:10px 0 0 0px;
+        .Route{
+          height:30x;
+          width:60px;
+          float:left;
+          line-height: 30px;
+          text-align: center;
+          font-size:14px;
+          color:#333;
+        }
+        .PathBox{
+          height:28px;
+          width:250px;
+          float:left;
+          .ant-form-item-control {
+            height:28px;
+            .input{
+              height:28px;
+            }
           }
         }
       }
@@ -63,7 +117,7 @@
         }
         .firstB{
           color: #FF0000;
-          float:right;
+          float:left;
           text-decoration: none;
         }
       }

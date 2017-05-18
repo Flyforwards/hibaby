@@ -81,6 +81,7 @@ class Sidebar extends React.Component {
         const {current} = this.getMenuPath(this.props.menuData, pathname)
 
         return (
+            <div className="sidebarName">
             <aside className="yt-admin-framework-sidebar">
                 <Menu theme="light"
                       selectedKeys={current}
@@ -91,6 +92,7 @@ class Sidebar extends React.Component {
                     }
                 </Menu>
             </aside>
+            </div>
         )
     }
 }

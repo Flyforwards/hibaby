@@ -52,6 +52,7 @@ class AddChildNodeed extends Component {
           TableData:"",
           NodeDisplay:"block"
         })
+        window.location.reload( true )
         this.props.onCancel()
     }
     checkbox() {

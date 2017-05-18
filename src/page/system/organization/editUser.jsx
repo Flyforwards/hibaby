@@ -13,17 +13,19 @@ import EntryInformation from './EntryInformation.jsx'
 import request from '../../../common/request/request.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import UPload from 'common/Upload.js'
+import DeleteEnery from './DeleteEnery.jsx'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 const dateFormat = 'YYYY-MM-DD';
-const len = null
+let len = null
+let gmt_entry =null
 //地方中心字段
-const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
 let traversalDataId = []
+let TableList = []
 class EditUsered extends React.Component {
   constructor(props) {
     super(props);
@@ -35,11 +37,16 @@ class EditUsered extends React.Component {
       identifier:null,
       Leager:null,
       TableData:[],
-      NewuserImg:null
+      NewuserImg:null,
+      DeleteVisible: false,
+      DeleteIndex:null,
+      dataIndex:null
     }
+    this.dataIndex = null
   }
   componentDidMount(){
     let ID = window.location.search.split("=")[1]
+    let endemic  = session.get("endemic")
     this.props.dispatch({
       type: 'organization/getUserListById',
       payload: {
@@ -58,9 +65,22 @@ class EditUsered extends React.Component {
           visible: false,
         })
     }
+  handleDeleteEneryCancel(){
+     this.setState({
+        DeleteVisible: false,
+      })
+    let ID = window.location.search.split("=")[1]
+    this.props.dispatch({
+      type: 'organization/getUserListById',
+      payload: {
+       dataId:ID
+      }
+    })
+  }
   headelReturnTabal(data){
+    TableList[this.dataIndex]=data[0].id
     this.setState({
-      TableData:data[0]
+      TableData:TableList
     })
   }
   //返回按键
@@ -68,7 +88,9 @@ class EditUsered extends React.Component {
    this.props.history.go(-1)
   }
   //选择直系领导
-  directLeader = ()=>{
+  directLeader = (dataIndex)=>{
+    this.dataIndex =dataIndex
+    let endemic  = session.get("endemic")
     this.setState({
       visible:true
     })
@@ -82,13 +104,10 @@ class EditUsered extends React.Component {
   }
   //删除入职信息
   deleteMessage = (index)=>{
-    this.props.dispatch({
-       type: 'organization/deleteUserEntry',
-        payload: {
-          "dataId": Number(index)
-        }
+    this.setState({
+      DeleteIndex:index,
+      DeleteVisible:true
     })
-    history.go(0)
   }
   //隶属部门被选中时调用的函数
   affiliatedDepartment = (value,node, extra) => {
@@ -102,7 +121,8 @@ class EditUsered extends React.Component {
   }
   //保存按键
   headelSave = (entrys,USER)=>{
-
+    let endemic  = session.get("endemic")
+    let ID = window.location.search.split("=")[1]
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const fields = this.props.form.getFieldsValue();
@@ -110,7 +130,7 @@ class EditUsered extends React.Component {
         for (var i=0;i<entrys.length;i++){
           let roleIdData = []
           if(fields[`systemRole${i}`]){
-           fields[`systemRole${i}`].map((item)=>{
+            fields[`systemRole${i}`].map((item)=>{
               roleIdData.push({"roleId":item})
             })
           }
@@ -139,18 +159,12 @@ class EditUsered extends React.Component {
           })
         }
       }
-      console.log("password",this.state.NewuserImg)
-      let ID = window.location.search.split("=")[1]
-      console.log()
-      if(this.state.gmt_entry==null){
-        message.warning('请选择入职日期');
-      }else{
-        this.props.dispatch({
+      this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
             "categoryId": endemic.id,
             "entrys": entrysData,
-            "gmt_entry": this.state.gmt_entry,
+            "gmt_entry": gmt_entry,
             "mobile": fields.phoneNumber,
             "name": fields.userName,
             "password": fields.password =="*********"?null:fields.password,
@@ -159,13 +173,12 @@ class EditUsered extends React.Component {
             "img":this.state.NewuserImg?this.state.NewuserImg:USER.img
           }
         })
-        history.go(-1)
-      }
+      history.go(-1)
+      window.location.reload( true )
       }
     })
   }
   headelImg(NewuserImg){
-    console.log("NewuserImg",NewuserImg)
     this.setState({
       NewuserImg:NewuserImg
     })
@@ -192,6 +205,8 @@ class EditUsered extends React.Component {
       let EntryInformationList = []
       var time = null;
       let display = 'block'
+      let endemic  = session.get("endemic")
+      let LeaderTableList = null
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
@@ -263,7 +278,7 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 3 }
                   >
                     {getFieldDecorator(`directLeadership${i}`, {
-                    initialValue:this.state.TableData != []?this.state.TableData.id:entryContent.leaderId
+                    initialValue:TableList[i]?TableList[i]:entryContent.leaderId
                     })(
                       <Input />
                     )}
@@ -272,7 +287,7 @@ class EditUsered extends React.Component {
                    className="button"
                    key = { i * 10 + 4 }
                   >
-                  <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
+                  <Button type="primary" onClick={this.directLeader.bind(this,i)}>选择</Button>
                   </FormItem>
                   <FormItem
                    label="职位"
@@ -375,6 +390,7 @@ class EditUsered extends React.Component {
          })
       }
       time = this.getLocalTime(USER.gmt_entry)
+      gmt_entry = time
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
@@ -429,6 +445,12 @@ class EditUsered extends React.Component {
            visible={ this.state.visible }
            onCancel ={ this.handleCreateModalCancel.bind(this) }
            treeData = { this.props.LeagerData }
+           headelReturnTabal= { this.headelReturnTabal.bind(this) }
+          />
+          <DeleteEnery 
+           visible={ this.state.DeleteVisible }
+           onCancel ={ this.handleDeleteEneryCancel.bind(this) }
+           DeleteIndex = { this.state.DeleteIndex }
            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
            <Button type="primary" className="saveButton" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
