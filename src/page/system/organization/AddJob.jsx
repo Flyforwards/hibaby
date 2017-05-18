@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,message} from 'antd'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from 'common/util/storage.js'
 import './AddJob.scss'
@@ -10,7 +10,6 @@ const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
 const departmentData = local.set("department")
 let traversalDataId = []
@@ -25,17 +24,20 @@ class AddJobed extends Component {
         }
     }
     handleCancel() {
+       this.setState({
+        TableData:null
+      })
         this.props.onCancel()
     }
     handleOk() {
+        let endemic  = session.get("endemic")
         const fields = this.props.form.getFieldsValue();
         let roles = []
-        if(fields.systemRole != null){
+        if(fields.systemRole){
             fields.systemRole.map((item)=>{
-              roles.push({roleId:item})
+              roles.push({"roleId":item})
             })
-        }
-        this.props.dispatch({
+            this.props.dispatch({
             type: 'organization/addUserEntry',
             payload: {
               "contact":fields.information,
@@ -49,6 +51,12 @@ class AddJobed extends Component {
             }
         })
         this.props.onCancel()
+        }else{
+            message.warning('请选择系统角色')
+        }
+         this.setState({
+          TableData:null
+        })
     }
     checkbox() {
         console.log("checkbox")
@@ -68,6 +76,7 @@ class AddJobed extends Component {
         this.props.form.resetFields()
     }
     select(){
+      let endemic  = session.get("endemic")
       this.setState({
         visible:true
       })
@@ -128,6 +137,7 @@ class AddJobed extends Component {
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
         })
       }
+      let endemic  = session.get("endemic")
         return (
             <Modal
                 visible={visible}
@@ -175,7 +185,7 @@ class AddJobed extends Component {
               {getFieldDecorator('directLeadership', {
                 initialValue: this.state.TableData?this.state.TableData.id:"",
               })(
-                <Input />
+                <Input disabled={true}/>
               )}
             </FormItem>
             <FormItem
@@ -214,6 +224,9 @@ class AddJobed extends Component {
              className="phoneNumber"
             >
               {getFieldDecorator('phoneNumber', {
+                rules: [{
+                    pattern: /^1[34578]\d{9}$/, message: '手机号不正确'
+                  }],
               })(
                 <Input />
               )}
@@ -232,8 +245,13 @@ class AddJobed extends Component {
             <FormItem
              label="联系方式"
              className="information"
+             min ={11}
+             max = {13}
             >
               {getFieldDecorator('information', {
+                rules: [{
+                    pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '手机号不正确'
+                }],
               })(
                 <Input/>
               )}
@@ -244,7 +262,7 @@ class AddJobed extends Component {
             >
               {getFieldDecorator('companyEmail', {
                  rules: [{
-                    type: 'email'
+                    type: 'email', message: '邮箱格式不正确'
                   }],
               })(
                 <Input />

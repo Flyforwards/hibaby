@@ -1,7 +1,7 @@
 import React from 'react'
-import './Organization.scss'
 import { connect } from 'dva'
-import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
+import "./OrganizationLeft.scss"
+import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree,Menu} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
@@ -12,10 +12,11 @@ import DeleteNode from './DeleteNode.jsx'
 import {local, session} from 'common/util/storage.js'
 
 const Option = Select.Option
-const endemic  = session.get("endemic")
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
+const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
 class OrganizationLefted extends React.Component {
     constructor(props) {
         super(props)
@@ -29,6 +30,7 @@ class OrganizationLefted extends React.Component {
           DeleteNodeVisible:false
         }
         this.addDisplay="block"
+        this.nodes = null
     }
     expandHandler = () => {
       setTimeout(() => {
@@ -37,15 +39,20 @@ class OrganizationLefted extends React.Component {
     }
     onSelect(value,node){
       this.addDisplay="block"
-      this.deleteDisplay="none"
-      let TissueProperty = null
+      this.deleteDisplay="block"
       if(value[0] != null){
-        TissueProperty=node.selectedNodes[0].props.dataIndex
+        this.nodes = node.selectedNodes[0].props.dataIndex
+        let TissueProperty=node.selectedNodes[0].props.dataIndex
         if(TissueProperty==0){
            this.deleteDisplay="none"
           }else{
            this.deleteDisplay="block"
           }
+        if(TissueProperty==3){
+           this.addDisplay="none"
+          }else{
+           this.addDisplay="block"
+        }
         if(node.selectedNodes[0].key !=1){
           this.setState({
             ID:node.selectedNodes[0].key,
@@ -53,12 +60,6 @@ class OrganizationLefted extends React.Component {
             parentId:node.selectedNodes[0].props.parentId,
             dataIndex:node.selectedNodes[0].props.dataIndex
           })
-          TissueProperty=node.selectedNodes[0].props.dataIndex
-          if(TissueProperty==3){
-           this.addDisplay="none"
-          }else{
-           this.addDisplay="block"
-          }
           this.props.onBtain(Number(node.selectedNodes[0].key),node.selectedNodes[0].props.dataIndex)
           this.props.dispatch({
             type: 'organization/organizationList',
@@ -74,15 +75,26 @@ class OrganizationLefted extends React.Component {
             ID:node.selectedNodes[0].key,
             node:node.selectedNodes[0],
             parentId:node.selectedNodes[0].props.parentId,
-             dataIndex:node.selectedNodes[0].props.dataIndex
+            dataIndex:node.selectedNodes[0].props.dataIndex
           })
         }
         this.props.dispatch({
-          type: 'organization/getTissueProperty',
-          payload:{
-            "dataId":node.selectedNodes[0].props.dataIndex
+            type: 'organization/getTissueProperty',
+            payload:{
+              "dataId":node.selectedNodes[0].props.dataIndex
+            }
+        })
+      }else{
+         if(this.nodes==0){
+           this.deleteDisplay="none"
+          }else{
+           this.deleteDisplay="block"
           }
-      })
+        if(this.nodes==3){
+           this.addDisplay="none"
+          }else{
+           this.addDisplay="block"
+        }
       }
     }
     seeDetails(){
@@ -105,7 +117,6 @@ class OrganizationLefted extends React.Component {
         this.setState({
             addChildNodeVisible: false
         })
-        window.location.reload( true )
     }
     handleDeleteNodeCancel() {
         this.setState({
@@ -124,16 +135,14 @@ class OrganizationLefted extends React.Component {
           type: 'organization/getAllTissueProperty'
       })
       const userInfo  = session.get("userInfo")
-      console.log(userInfo)
       setTimeout(() => {
       $("li").find(".ant-tree-title").after("<span class='plus'>+</span>");
         if(userInfo.categoryId != 0){
           $("li").find(".plus").eq(0).css('display','none');
         }
       }, 800)
-
       $(document).on('click', '.plus', function(e) {
-          if(this.state.upblock == 'none'){
+            if(this.state.upblock == 'none'){
               this.setState({
                 ulTop:e.pageY-e.offsetY-21,
                 upblock:'block'
@@ -148,6 +157,23 @@ class OrganizationLefted extends React.Component {
               return
             }
         }.bind(this));
+      
+        $(".Organization-left").click(function(e){
+             if(this.state.upblock == 'block'){
+              this.setState({
+                upblock:'none'
+              })
+              return
+            }
+        }.bind(this))
+        $(".Organization-right").click(function(e){
+             if(this.state.upblock == 'block'){
+              this.setState({
+                upblock:'none'
+              })
+              return
+            }
+        }.bind(this))
     }
     //添加子节点
     AddChildNode(){
@@ -156,8 +182,12 @@ class OrganizationLefted extends React.Component {
         upblock:"none"
       })
     }
+     handleClick = (e) => {
+      console.log('click ', e);
+    }
     render() {
       let loops = []
+      let tissueProperty = null
       const nodesIteration = (nodes) => {
         return nodes.map((item) => {
           if (item.nodes && item.nodes.length) {
@@ -167,9 +197,9 @@ class OrganizationLefted extends React.Component {
       })
       }
       if (this.props.leftList != null) {
-        const  nodes  = this.props.leftList.nodes;
+          let nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
-          loops.unshift(<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={this.props.leftList.parentId} />)
+         loops=[<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={this.props.leftList.parentId}>{loops}</TreeNode>]
         } 
         return (  
             <div className="Organization-left">
@@ -177,6 +207,7 @@ class OrganizationLefted extends React.Component {
                   className="draggable-tree"
                   onExpand={ this.expandHandler.bind(this) }
                   onSelect={ this.onSelect.bind(this) }
+                  autoExpandParent = { true }
                 >
                 { loops }
                 </Tree>
