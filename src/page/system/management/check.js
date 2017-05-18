@@ -41,7 +41,7 @@ class CheckData extends React.Component {
         labelCol: { span: 2 },
         wrapperCol: { span: 22 },
       };
-      const editid=GetQueryString("dataId");
+      const editid = GetQueryString("dataId");
       let fields=[];
       if (item.dictionarySideDOs && item.dictionarySideDOs.length >= 0) {
         arr = item.dictionarySideDOs;
@@ -84,7 +84,7 @@ class CheckData extends React.Component {
                     <Link to='/system/group-char'>
                     <Button className = "editable-add-btn return"> 返回 </Button>
                     </Link>
-                    <Link to={{pathname:'/system/group-char/edit',query:{id:`${editid}`}}}>
+                    <Link to={{pathname:'/system/group-char/edit',query:{ dataId:`${editid}`}}}>
                         <Button className = "editable-add-btn"> 编辑 </Button>
                     </Link>
                 </div>

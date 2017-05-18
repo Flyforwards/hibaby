@@ -13,7 +13,6 @@ class AddService extends Component {
             super(props);
             this.state = {
                 formLayout: 'inline',
-                dataSource: [],
             };
       }
 
@@ -43,7 +42,6 @@ class AddService extends Component {
 
        render() {
           const { formLayout } = this.state;
-          const { dataSource } = this.state;
           const { getFieldDecorator } = this.props.form;
           const formItemLayout = formLayout === 'horizontal' ? {
             labelCol: { span:2 },
@@ -91,18 +89,12 @@ class AddService extends Component {
             </div>
           );
         }
-        componentDidMount(){
-            console.log(this.columns)
-            console.log(this.props)
-
-        }
 }
 
 function service({
   dispatch,
   loading,
   data,
-  code
 }) {
   return ( < div >
     < AddService dispatch = {
@@ -125,16 +117,13 @@ function service({
 
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.service)
   const {
     data,
-    code
   } = state.service;
 
   return {
     loading: state.loading.models.service,
     data,
-    code
   };
 }
 

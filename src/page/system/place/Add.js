@@ -141,12 +141,10 @@ class PlaceAdd extends React.Component {
 function mapStateToProps(state) {
     const {
       item,
-      code
     } = state.localData;
     return {
       loading: state.loading.models.localData,
       item,
-      code
     };
 }
 export default connect(mapStateToProps)(PlaceAdd);

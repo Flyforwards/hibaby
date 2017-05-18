@@ -139,7 +139,7 @@ export default (app) => [
     },
     //  集团字段详情
     {
-      path: '/system/group-char/check',
+      path: '/system/group-char/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/save'));
@@ -159,7 +159,7 @@ export default (app) => [
     },
     //  地方字段详情
     {
-      path: '/system/local-char/find',
+      path: '/system/local-char/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/localData'));

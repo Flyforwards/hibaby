@@ -13,35 +13,27 @@ export default {
 		list:null,
 		leftList:null,
 		dictionarySideDOs: null,
-    item: null
+    item: null,
+    editData: null,
 	},
 	reducers: {
 		//添加地方列表数据
-		AddPlaceDataSave(state, {
-			payload: {
-				data,
-				code
-			}
-		}) {
-			let addplacedata = {...state,
-				data,
-				code
-			}
-
-			return  addplacedata;
+		AddPlaceDataSave(state, { payload: { data, code } }) {
+			return  {...state, data };
 		},
 		//查看地方列表数据
-		PlaceFindSave(state, {
-					payload: { data: item }
-				}) {
-					return  {...state,item };
-				},
+		PlaceFindSave(state, { payload: { data: item } }) {
+      return  {...state,item };
+    },
 		//编辑列表数据
 		EditPlaceDataSave(state,  {
 			payload: { data: item }
 		}) {
-			return {...state,item}
+			return {...state, item}
 		},
+    getEditLocalSave(state,  {  payload: { data: editData } }) {
+      return {...state, editData}
+    },
 	},
 	effects:{
 
@@ -68,6 +60,16 @@ export default {
 				});
 			}
 		},
+    // 编辑数据的数据源
+    *getEditLocal({payload: values}, { call, put }) {
+      const {data: {code,data,err}} = yield call(placeService.PlaceFind, values);
+      if (code == 0 && err == null) {
+        yield put({
+          type: 'getEditLocalSave',
+          payload: { data }
+        });
+      }
+    },
 
 		//编辑地方列表数据
 		*EditPlaceData({payload: values}, { call, put }) {
@@ -89,18 +91,19 @@ export default {
 				query
 			}) => {
 				//查看地方列表数据
-				if (pathname === '/system/local-char/find') {
+				if (pathname === '/system/local-char/detail') {
 					dispatch({
 						type: 'PlaceFind',
-						payload:query
+						payload: query
 					});
 				}
 				//编辑地方列表数据
-				// if (pathname === 'localchar/editplace') {
-				// 	dispatch({
-				// 		payload:query
-				// 	});
-				// }
+				if (pathname === '/system/local-char/edit') {
+            dispatch({
+              type: 'getEditLocal',
+              payload: query
+            });
+				}
 			})
 		}
 	},

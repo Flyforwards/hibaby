@@ -93,10 +93,10 @@ class EditPlaceData extends React.Component {
     }
 
     render() {
-      const { item } = this.props;
+      const { editData } = this.props;
 
-      if (this.editItem === null && item !== null) {
-        this.editItem = item;
+      if (this.editItem === null && editData !== null) {
+        this.editItem = editData;
       }
 
       const formItemLayout = {
@@ -172,7 +172,7 @@ class EditPlaceData extends React.Component {
             </Form>
           </Card >
           <div className="retuSave">
-            <Link to='/system/local-char/find'>
+            <Link to='/system/local-char/detail'>
               <Button className = "editable-add-btn return"> 返回 </Button>
             </Link>
             <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
@@ -184,12 +184,12 @@ class EditPlaceData extends React.Component {
 
 function mapStateToProps(state) {
   const {
-    item,
+    editData,
   } = state.localData;
 
   return {
     loading: state.loading.models.localData,
-    item
+    editData
   };
 }
 export default connect(mapStateToProps)(EditPlaceData);
