@@ -97,13 +97,7 @@ export default {
 				pathname,
 				query
 			}) => {
-				//添加集团列表
-				// if (pathname === '/demo/add') {
-				// 	dispatch({
-				// 		type:'saveData'
-				// 		payload:{...query,}
-				// 	});
-				// }
+
 				//查看集团列表数据
 				if (pathname === '/groupchar/check') {
 					dispatch({

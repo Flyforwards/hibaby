@@ -1,8 +1,8 @@
 import * as systemService from '../services/system';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
-import { local, session } from 'common/util/storage.js';
-import { PAGE_SIZE } from 'common/constants.js'
+import {local, session} from 'common/util/storage.js';
+import {PAGE_SIZE} from 'common/constants.js'
 
 export default {
 	namespace: 'system',
@@ -400,7 +400,7 @@ export default {
 			}
 		},
 
-		*placeChar({
+		*place({
 			payload: values
 		}, {
 			call,
@@ -477,7 +477,7 @@ export default {
 				}
 				if (pathname === '/system/localchar') {
 					dispatch({
-						type: 'placeChar',
+						type: 'place',
 						payload: {
 							...query,
 							"size": 10,
