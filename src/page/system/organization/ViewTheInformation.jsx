@@ -57,8 +57,15 @@ class ViewTheInformationed extends React.Component {
     })
   }
   AddJobVisibleCancel() {
+    let dataID = window.location.search.split("=")[1]
     this.setState({
         AddJobVisible: false
+    })
+    this.props.dispatch({
+      type: 'organization/getUserListById',
+      payload: {
+       dataId:dataID
+      }
     })
   }
    onError() {
@@ -101,7 +108,7 @@ class ViewTheInformationed extends React.Component {
          let temp = [...set]
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
-            JobInformation.push(<div key={lendata.toString()}>
+            JobInformation.push(<div key={i.toString()}>
                 <div className="entryInformation">入职信息{i}</div>
                 <div className="entryInformationContent">
                   <p className="localCenter"><span>地方中心:</span><span className="Two">{entrys[i].endemicId}</span></p>

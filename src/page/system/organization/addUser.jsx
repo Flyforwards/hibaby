@@ -5,7 +5,7 @@ import {connect} from 'dva'
 import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select,message} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
-import './addUser.scss'
+import './addUserInfo.scss'
 import {local, session} from '../../../common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import AddMemberLeader from './AddMemberLeader.js'
@@ -91,7 +91,7 @@ class AddUsered extends React.Component {
         let roleIdData = []
         if(fields.systemRole){
           fields.systemRole.map((item)=>{
-          roleIdData.push({roleId:item})
+          roleIdData.push({"roleId":item})
         })
         }
         if(fields.userName){

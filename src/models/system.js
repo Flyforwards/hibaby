@@ -179,23 +179,23 @@ export default {
 	},
 	effects: {
 		//获取组织架构的列表
-		*getDepartmentNodes({payload: values}, { call, put }) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(systemService.getDepartmentNodes, values);
-			if (code == 0) {
-				yield put({
-					type: 'getDepartmentNodesList',
-					payload: {
-						data,
-						code
-					}
-				});
-			}
-		},
+		// *getDepartmentNodes({payload: values}, { call, put }) {
+		// 	const {
+		// 		data: {
+		// 			data,
+		// 			code
+		// 		}
+		// 	} = yield call(systemService.getDepartmentNodes, values);
+		// 	if (code == 0) {
+		// 		yield put({
+		// 			type: 'getDepartmentNodesList',
+		// 			payload: {
+		// 				data,
+		// 				code
+		// 			}
+		// 		});
+		// 	}
+		// },
 		//添加权限管理
 		*permissionAdd({payload: values}, { call, put }) {
 			const {
@@ -205,7 +205,6 @@ export default {
 				}
 			} = yield call(systemService.permissionAdd, values);
 			if (code == 0) {
-				// const page = yield select(state => state.users.page);
 				message.success("添加成功");
 				yield put({ type: 'listByPage', payload: {
 				  "page": 1,
@@ -305,29 +304,28 @@ export default {
 				});
 			}
 		},
-
-	    *organization({ payload: values }, {call,put }){
-	      const {
-	      	data: {
-		      		data,
-		      		total,
-		      		page,
-		      		size,
-		      		code
-	      }} = yield call(systemService.organization, values);
-	      if(code == 0) {
-	        yield put({
-					type: 'organizationSave',
-					payload: {
-						data,
-						total,
-						page,
-						size,
-						code
-					}
-				});
-			}
-	      },
+	  //   *organization({ payload: values }, {call,put }){
+	  //     const {
+	  //     	data: {
+		 //      		data,
+		 //      		total,
+		 //      		page,
+		 //      		size,
+		 //      		code
+	  //     }} = yield call(systemService.organization, values);
+	  //     if(code == 0) {
+	  //       yield put({
+			// 		type: 'organizationSave',
+			// 		payload: {
+			// 			data,
+			// 			total,
+			// 			page,
+			// 			size,
+			// 			code
+			// 		}
+			// 	});
+			// }
+	  //     },
 	      *customer({ payload: values }, {call,put }){
 	      const {
 	      	data: {
@@ -532,30 +530,6 @@ export default {
 						}
 					});
 		        }
-        if(pathname === '/system/organization') {
-		          dispatch({
-						type: 'organization',
-						payload: {
-							...query,
-							"size": PAGE_SIZE,
-							"type": 1
-						}
-					});
-		          dispatch({
-						type: 'getDepartmentNodes',
-						payload: {
-							...query
-						}
-					});
-		        }
-				// if (pathname === '/groupchar/check') {
-				// 	dispatch({
-				// 		type: 'checkData',
-				// 		payload:{
-				// 			...query
-				// 		}
-				// 	});
-				// }
 			})
 		}
 	},
