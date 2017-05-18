@@ -197,7 +197,7 @@ class AddUsered extends React.Component {
         })
       }
       return(
-        <div className="addUser">
+        <div className="addUserInfo">
          <div className="basicInformation">基本信息</div>
           <Form layout="inline" className="basicInformationForm">
            <FormItem
