@@ -272,6 +272,31 @@ export default {
 				});
 			}
 		},
+<<<<<<< HEAD
+	  //   *organization({ payload: values }, {call,put }){
+	  //     const {
+	  //     	data: {
+		 //      		data,
+		 //      		total,
+		 //      		page,
+		 //      		size,
+		 //      		code
+	  //     }} = yield call(systemService.organization, values);
+	  //     if(code == 0) {
+	  //       yield put({
+			// 		type: 'organizationSave',
+			// 		payload: {
+			// 			data,
+			// 			total,
+			// 			page,
+			// 			size,
+			// 			code
+			// 		}
+			// 	});
+			// }
+	  //     },
+=======
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 	      *customer({ payload: values }, {call,put }){
 	      const {
 	      	data: {
@@ -356,6 +381,43 @@ export default {
 						payload: { ...query, "size": PAGE_SIZE, "type": 1 }
 					});
 		        }
+<<<<<<< HEAD
+		        if(pathname === '/frommodal') {
+		          dispatch({
+						type: 'fromModal',
+						payload: {
+							...query
+						}
+					});
+		          dispatch({
+						type: 'Dictionary',
+						payload: {
+							...query,
+							  "id": 4,
+							  "softDelete": 0,
+							  "type": 1
+						}
+					});
+		          dispatch({
+						type: 'listByPage',
+						payload: {
+							...query,
+							  "page": 1,
+							  "size": 5,
+						}
+					});
+		        }
+		        if(pathname === '/system/logsview') {
+		          dispatch({
+						type: 'LogView',
+						payload: {
+							...query,
+							"size": PAGE_SIZE,
+							"type": 1
+						}
+					});
+		        }
+=======
         if(pathname === '/system/permission-inside') {
             dispatch({
               type: 'fromModal',
@@ -377,6 +439,7 @@ export default {
             payload: { ...query, "size": PAGE_SIZE,  "type": 1 }
             });
         }
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 			})
 		}
 	},

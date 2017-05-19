@@ -66,7 +66,7 @@ class EditUsered extends React.Component {
         })
     }
   handleDeleteEneryCancel(){
-     this.setState({
+    this.setState({
         DeleteVisible: false,
       })
     let ID = window.location.search.split("=")[1]
@@ -223,7 +223,11 @@ class EditUsered extends React.Component {
                display = 'block'
             }
             roles = entryContent.roles.map((item)=>{
-              return item.roleId
+              return SelectData.map((key)=>{
+                if(key.id == item.roleId){
+                    return key.name
+                }
+              })
             })
             if(this.props.dataEndemicId != null){
                 traversalEndemicId = this.props.dataEndemicId.map((item,index)=>{
@@ -325,7 +329,10 @@ class EditUsered extends React.Component {
                    key = { i * 100 + 1 }
                   >
                     {getFieldDecorator('phoneNumber', {
-                      initialValue:USER.mobile
+                      initialValue:USER.mobile,
+                      rules: [{
+                          pattern: /^1[34578]\d{9}$/, message: '手机号不正确'
+                      }],
                     })(
                       <Input disabled ={ true }/>
                     )}
@@ -349,7 +356,10 @@ class EditUsered extends React.Component {
                    key = { i * 100 + 3 }
                   >
                     {getFieldDecorator(`information${i}`, {
-                      initialValue:entryContent.contact
+                      initialValue:entryContent.contact,
+                      rules: [{
+                          pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '手机号不正确'
+                        }],
                     })(
                       <Input/>
                     )}
