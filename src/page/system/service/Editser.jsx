@@ -11,18 +11,14 @@ const createForm = Form.create;
 class EditService extends Component {
         constructor(props) {
             super(props)
-            this.handleSave=this.handleSave.bind(this);
             let dataId=GetQueryString("id");
             const item=this.props.data ;
-            console.log("editid>>>>>",dataId)
-            console.log("edit>>>",item)
             let values =null;
             let id=null;
             let price=null;
             let name='';
             let contents='';
             if(item!==null){
-                console.log("item>>",item)
               for(let i=0;i<item.length;i++){
                     if(item[i].id==dataId && item[i] !== undefined){
                         values=item[i]
@@ -35,8 +31,6 @@ class EditService extends Component {
                     id=values.id;
                 }
               }
-              console.log("edit>>>",values)
-              console.log("editName>>>",price)
             this.state = {
                 formLayout: 'inline',
                 dataSource: [],
@@ -50,23 +44,15 @@ class EditService extends Component {
          console.log('handleKeyPress', ev);
        }
 
-      handleFormLayoutChange = (e) => {
-         this.setState({ formLayout: e.target.value });
-       }
-
-
-
        handleSave = (e) => {
           e.preventDefault();
           let values = this.props.form.getFieldsValue();
-          console.log("values>>>",values)
           let id=this.state.id;
           let params = {};
           Object.keys(values,).map((key, index) => {
               params[key] = values[key];
             })
           params = {...params,id};
-          console.log('add:handlesave>>',params)
           this.props.dispatch({
              type: 'service/editService',
              payload: {
@@ -77,11 +63,6 @@ class EditService extends Component {
              }
            })
       }
-
-
-
-
-
 
        render() {
         const { formLayout } = this.state;
@@ -132,24 +113,15 @@ class EditService extends Component {
                         </Form>
                 </Card>
                 <div className="btn">
-                      <Link className="BackBtn AddBack" to='/system/serviceitem'>
-                          <Button>返回</Button>
-                      </Link>
-                      <Link className="SaveBtn" onClick={this.handleSave}>
-                          <Button>保存</Button>
-                      </Link>
+                  <Link className="BackBtn AddBack" to='/system/service-item'>
+                      <Button>返回</Button>
+                  </Link>
+                  <Button onClick={ this.handleSave.bind(this) } >保存</Button>
                 </div>
             </div>
           );
         }
 
-
-
-        componentDidMount(){
-            console.log(this.columns)
-            console.log(this.props)
-
-        }
 }
 function GetQueryString(name){
      var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -163,8 +135,8 @@ function EditService({
   data,
   code
 }) {
-  return ( < div >
-    < EditService dispatch = {
+  return ( <div>
+    <EditService dispatch = {
       dispatch
     }
     loading = {
@@ -177,8 +149,8 @@ function EditService({
   )
 
 }
+
 function mapStateToProps(state) {
-  console.log("modelss",state.service)
   const {
     data,
     code

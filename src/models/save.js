@@ -12,43 +12,34 @@ export default {
 		list:null,
 		leftList:null,
 		dictionarySideDOs:null,
-		item: null
+		item: null,
+    editData: null,
 	},
 	reducers: {
 		//添加集团列表数据
-		saveDataSave(state, {
-			payload: {
-				data,
-				code
-			}
-		}) {
-			let savedata = {...state,
-				data,
-				code
-			}
-			console.log(data);
-			return  savedata;
+		saveDataSave(state, { payload: { data } }) {
+			return  {...state, data };
 		},
 		//查看集团列表数据
-		checkDataSave(state, {
-			payload: { data:item }
-		}) {
-			return  {...state,item };
+		checkDataSave(state, { payload: { data: item } }) {
+			return  {...state, item };
 		},
 		//编辑集团列表数据
-		editDataSave(state, {
-			payload: { data: item }
-		}) {
-			return {...state,item}
+		editDataSave (state, { payload: { data: item } }) {
+			return { ...state, item}
 		},
+    // 编辑页面获取到的数据
+    getEditDataSave(state, { payload: { data: editData } }) {
+      return  {...state, editData };
+    },
 	},
 	effects: {
 		//添加集团列表数据
 		*saveData({payload: values}, { call, put }) {
-			const {data: { data, id, code} } = yield call(saveService.saveData, values);
+			const {data: { data, code} } = yield call(saveService.saveData, values);
 			if (code == 0) {
 				message.success("添加用户信息成功");
-				yield put(routerRedux.push("system/groupchar"));
+				yield put(routerRedux.push("/system/group-char"));
 
 			}
 		},
@@ -63,55 +54,46 @@ export default {
 						data,
 					}
 				});
-
 			}
 		},
+    *getEditData({payload: values}, { call, put }) {
+      const {data: {code,data,err}} = yield call(saveService.checkData, values);
+      if (code == 0 && err == null) {
+        yield put({
+          type: 'getEditDataSave',
+          payload: { data }
+        });
+      }
+    },
 		//编辑集团列表数据
 		*editData({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(saveService.editData, values);
 			if (code == 0) {
 				message.success("更改用户信息成功");
-				yield put(routerRedux.push("system/groupchar"));
+				yield put(routerRedux.push("/system/group-char"));
 
 			}
 		},
-		//获取集团列表所需数据
-		// *getEditData({payload}, {put, select}) {
-		// 	const data = yield select((state) => state.save.data)
-		// 	console.log(dictionarySideDOs)
-		// 	console.log('model:save:getedit>>', data);
-		// 	yield put({
-		// 		type: 'editDataSave',
-		// 		payload: {
-		// 			data,
-		// 		}
-		// 	})
-		// }
+
 	},
 	subscriptions: {
-		setup({
-			dispatch,
-			history
-		}) {
-			return history.listen(({
-				pathname,
-				query
-			}) => {
+		setup({ dispatch, history }) {
+			return history.listen(({ pathname, query }) => {
 
 				//查看集团列表数据
-				if (pathname === '/groupchar/check') {
+				if (pathname === '/system/group-char/detail') {
 					dispatch({
 						type: 'checkData',
-						payload:query
+						payload: query
 					});
 				}
 				//编辑集团列表数据
-				// if (pathname === '/groupchar/edit') {
-				// 	dispatch({
-				// 		type: 'editData',
-				// 		payload:query
-				// 	});
-				// }
+				if (pathname === '/system/group-char/edit') {
+					dispatch({
+						type: 'getEditData',
+						payload: query
+					});
+				}
 			})
 		}
 	},

@@ -7,6 +7,7 @@ import AddRoleFrom from './AddRoleFrom';
 import SettingPermissionFrom from './SettingpermissionFrom'
 import ShowMemberListFrom from './ShowMemberListFrom'
 import AlertModalFrom from 'common/AlertModalFrom'
+import { routerRedux } from 'dva/router';
 import Page from 'framework/page'
 
 class permission extends Component {
@@ -15,8 +16,6 @@ class permission extends Component {
         this.state = {
         }
         this.record = null;
-        this.page = 1;
-        this.pageSize = 10;
         this.columns = [{
           title: '编号',
           dataIndex: 'id',
@@ -43,12 +42,6 @@ class permission extends Component {
             );
           },
         }];
-    }
-    componentWillMount() {
-      this.props.dispatch({
-        type : "permission/getRolesByPage",
-        payload : { page : 1, size : 10}
-      });
     }
 
     // 编辑
@@ -87,7 +80,6 @@ class permission extends Component {
       this.record = record;
       this.setState({
         alertModalVisible: true,
-        add: false,
       })
     }
 
@@ -98,6 +90,7 @@ class permission extends Component {
         add: true,
       })
     }
+
     handleCreateModalCancel() {
         this.setState({
           modifyModalVisible: false,
@@ -112,60 +105,53 @@ class permission extends Component {
           type: 'permission/submitDelRole',
           payload: {
             dataId: record.id,
-            page: this.page,
-            pageSize: this.pageSize,
           }
         })
       this.handleCreateModalCancel();
     }
 
     render() {
-        let { total, data } = this.props.permission;
-        if (data != null) {
-          data.map((item,index)=>{
-            item.key = item.id;
-            return item;
-          })
+        let { data, pagination, loading, dispatch } = this.props;
+        const tableProps = {
+          loading: loading.effects['permission/getRolesByPage'],
+          dataSource : data ,
+          pagination,
+          onChange (page) {
+            const { query, pathname } = location
+            dispatch(routerRedux.push({
+              pathname,
+              query: {
+                ...query,
+                page: page.current,
+                pageSize: page.pageSize,
+              },
+            }))
+          },
         }
-        const pagination = {
-          total: total, //数据总条数
-          showQuickJumper: true,
-          pageSize: 10,
-          onChange: (page, pageSize) => {
-            this.page = page;
-            this.pageSize = pageSize;
-            this.props.dispatch({
-              type: "permission/getRolesByPage",
-              payload: { page, size : pageSize },
-            }
-          );
-        },
 
-        };
         return (
            <div className="permission-cent">
              <div className="divs">
                <Button className="add" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
-                <Table bordered dataSource={ data } columns={ this.columns } pagination = { pagination }/>
+                <Table {...tableProps} columns={this.columns} bordered rowKey={record => record.id}/>
              </div>
              <AddRoleFrom
                visible ={ this.state.modifyModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
                record = { this.record }
                add = { this.state.add }
-               page = { this.page }
-               pageSize = { this.pageSize }
              />
              <AlertModalFrom
+
                visible ={ this.state.alertModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
                onOk = { this.handleAlertModalOk.bind(this, this.record) }
                message = { "是否确定删除此角色?" }
              />
              <SettingPermissionFrom
-               visible ={ this.state.settingModalVisible }
+               visible = { this.state.settingModalVisible }
                onCancel ={ this.handleCreateModalCancel.bind(this) }
                selectRole = { this.record }
              />
@@ -179,7 +165,18 @@ class permission extends Component {
         )
     }
 }
+function mapStateToProps(state) {
+  const {
+    data,
+    pagination
+  } = state.permission;
+
+  return {
+    loading: state.loading,
+    data,
+    pagination
+  };
+}
 
 
-
-export default connect(( permission ) => ( permission ))(permission);
+export default connect(mapStateToProps)(permission);

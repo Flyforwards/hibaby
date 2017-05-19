@@ -1,8 +1,8 @@
 import * as serviceService from '../services/service';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
-import {local, session} from 'common/util/storage.js';
-import {PAGE_SIZE} from 'common/constants.js'
+import { local, session } from 'common/util/storage.js';
+import { PAGE_SIZE } from 'common/constants.js'
 
 export default {
 	namespace: 'service',
@@ -22,7 +22,6 @@ export default {
 				size,
 				code
 			};
-			console.log("ss",data)
 			let range = {
 				start: page == 1 ? 1 : (page - 1) * 10 + 1,
 				end: page == 1 ? data.length : (page - 1) * 10 + data.length,
@@ -36,7 +35,6 @@ export default {
 				data,
 				code
 			};
-			console.log("ss",data)
 			return addservicedata;
 		},
 		//查看服务详情
@@ -45,7 +43,6 @@ export default {
 				data,
 				code
 			};
-			console.log("ss",data)
 			return lookservicedata;
 		},
 		//删除服务项目
@@ -83,7 +80,6 @@ export default {
 					code
 				}
 			} = yield call(serviceService.ServicePage, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
 				yield put({
 					type: 'ServicePageSave',
@@ -107,11 +103,10 @@ export default {
 					code
 				}
 			} = yield call(serviceService.AddService, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
 				message.success("添加服务项目成功")
 				yield put(
-					routerRedux.push('/system/serviceitem')
+					routerRedux.push('/system/service-item')
 				);
 			}
 		},
@@ -128,7 +123,6 @@ export default {
 					code
 				}
 			} = yield call(serviceService.LookService, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
 				yield put({
 					type: 'LookServiceSave',
@@ -145,11 +139,7 @@ export default {
       const { data: { data, code, err }} = yield call(serviceService.deleteService, { id: dataId });
       if (code == 0) {
         message.success('删除服务项目成功');
-        yield put({
-          type : 'ServicePage',
-          payload : { page : page || 0 , size : pageSize || 10 }
-        }
-			);
+        yield put(routerRedux.push("/system/service-item"))
       } else {
         throw err || "请求出错";
       }
@@ -167,10 +157,9 @@ export default {
 					code
 				}
 			} = yield call(serviceService.editService, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
 				message.success("服务项目数据更新成功")
-				yield put(routerRedux.push("/system/serviceitem"))
+				yield put(routerRedux.push("/system/service-item"))
 			}
 		},
 		//其他
@@ -185,8 +174,7 @@ export default {
 				query
 			}) => {
 				//服务项目列表
-				if (pathname === '/system/serviceitem') {
-					console.log("service")
+				if (pathname === '/system/service-item') {
 					dispatch({
 						type: 'ServicePage',
 						payload: {
@@ -197,8 +185,7 @@ export default {
 					});
 				}
 				//查看服务详情
-				if (pathname === '/service/LookService') {
-					console.log("service")
+				if (pathname === '/system/service/detail') {
 					dispatch({
 						type: 'LookService',
 						payload: {
@@ -208,7 +195,6 @@ export default {
 				}
 				//其他
 			})
-			console.log("subscriptions>>>",data)
 		}
 	},
 };

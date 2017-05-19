@@ -155,25 +155,16 @@ function TabalList({
     total,
     page,
     size,
-    code
 }) {
-  return ( < div >
-    < TabalListed dispatch = {
-      dispatch
-    }
-    arr = {
-        arr
-    }
-    total = {
-      total
-    }
-    page = {
-      page
-    }
-    size = {
-      size
-    }
-    /> </div>
+  return (
+    <div>
+      <TabalListed dispatch = { dispatch }
+      arr = { arr }
+      total = { total }
+      page = { page }
+      size = { size }
+      />
+    </div>
   )
 
 }

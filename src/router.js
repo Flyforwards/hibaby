@@ -28,7 +28,7 @@ function RouterConfig({ history, app }) {
           })
         }
       },{
-      path: '/text',
+      path: '/test',
         getComponent: (location, cb) => {
         require.ensure([], (require) => {
           cb(null, require('page/welcome.js'))
