@@ -112,14 +112,14 @@ class Organization extends React.Component {
         "nodeid": endemic.id,
         "status":null,
         "page": 1,
-        "size": 5,
+        "size": 10,
        "tissueProperty":endemic.tissueProperty
       }
     });
   }
     //禁止
     Disabled(record) {
-      console.log(record)
+      console.log()
       this.setState({
         toViewVisible:true,
         ID:record.id
@@ -183,7 +183,7 @@ class Organization extends React.Component {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
-          defaultPageSize:5,
+          defaultPageSize:10,
           onChange: (current) => {
             this.props.dispatch({
               type: 'organization/organizationList',
@@ -193,7 +193,7 @@ class Organization extends React.Component {
                   "roleId": this.state.character,
                   "status": this.state.status,
                   "page": current,
-                  "size": 5,
+                  "size": 10,
                   "tissueProperty": this.state.tissueProperty
               },
             });

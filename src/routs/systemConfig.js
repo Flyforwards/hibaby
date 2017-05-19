@@ -192,7 +192,7 @@ export default (app) => [
       path: '/system/module',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          registerModel(app, require('models/users'));
+          registerModel(app, require('models/module'));
           cb(null, require('page/system/module/module.jsx'))
         })
       }
@@ -228,4 +228,3 @@ export default (app) => [
       }
     }
 ]
-

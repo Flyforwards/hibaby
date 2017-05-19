@@ -1,11 +1,13 @@
 .AddJob{
-	overflow: hidden;
+	overflow: auto;
 	.ant-modal-header{
 		text-align: center;
 	}
 	label{
 		font-size:14px;
 	}
+	.AddChildNode{
+
 	.ant-modal-content{
 		top:-60px;
 	}
@@ -15,7 +17,7 @@
 		margin-top: -6px; 
 	}
 	.entryInformation,.contactInformation{
-		width:100%;
+		width:97%;
 		height:40px;
 		line-height:40px;
 		font-size:14px;
@@ -25,7 +27,8 @@
 		background-color: rgba(102, 102, 102, 1);
 	}
 	.entryInformationForm{
-		width:100%;
+		width:97%;
+		margin-left: 30px;
 		background-color: #fff;
 		.ant-form-item-label{
 			margin-right:10px; 
@@ -37,7 +40,6 @@
 			}
 		}
 		.affiliatedDepartment{
-			margin-left: 66px;
 			margin-top: 20px;
 			.ant-select-selection--single{
 				width:310px;
@@ -45,7 +47,7 @@
 		}
 		.directLeadership{ 
 			margin-top: 20px;
-			
+			margin-left:9px;
 			input{
 				width:230px;
 			}
@@ -57,7 +59,7 @@
 			}
 		}
 		.position{
-			margin-left:87px;
+			margin-left:24px;
 			margin-top: 20px;
 			margin-bottom: 20px; 
 			.ant-select-selection--single{
@@ -78,7 +80,8 @@
 		}
 	}
 	.contactInformationForm{
-		width:100%;
+		width:97%;
+		margin-left: 30px;
 		background-color: #fff;
 		margin-bottom: 20px; 
 		.ant-form-item-label{
@@ -90,14 +93,21 @@
 				width:310px;
 			}
 		}
+		.password{
+			margin-left: 9px;
+		}
 		.phoneNumber{
 			margin-top: 20px;
 			input{
 				width:310px;
 			}
 		}
+		.information{
+			margin-left: 14px;
+		}
 		.internalExtension{
 			margin-bottom: 20px;
+			margin-left: 18px;
 		}
 	}
 	.returnButton,.saveButton{
@@ -105,4 +115,5 @@
 		margin: 0 20px;
 		width:100px;
 	}
+}
 }

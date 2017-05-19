@@ -212,6 +212,7 @@ export default {
 		//根据用户id禁用用户
 		*forbiddenUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.forbiddenUser, values);
+			message.success("用户信息已被禁用");
 			if (code == 0) {
 				yield put({
 					type: 'forbiddenUserSave',

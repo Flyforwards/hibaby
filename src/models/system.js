@@ -101,6 +101,22 @@ export default {
 			}
 			return {...placedata,range};
 		},
+		//菜单列表数据
+		MainMenuList(state, { payload: {data,total,page,size,code}}) {
+			let placedata = {...state,
+				data,
+				total,
+				page,
+				size,
+				code,
+			};
+			let range = {
+				start: page == 1 ? 1 : (page - 1) * 10 + 1,
+				end: page == 1 ? data.length : (page - 1) * 10 + data.length,
+				totalpage:Math.ceil(total/size),
+			}
+			return {...placedata,range};
+		},
 
 		permissionAddSave(state, {
 			payload: {
@@ -179,23 +195,23 @@ export default {
 	},
 	effects: {
 		//获取组织架构的列表
-		*getDepartmentNodes({payload: values}, { call, put }) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(systemService.getDepartmentNodes, values);
-			if (code == 0) {
-				yield put({
-					type: 'getDepartmentNodesList',
-					payload: {
-						data,
-						code
-					}
-				});
-			}
-		},
+		// *getDepartmentNodes({payload: values}, { call, put }) {
+		// 	const {
+		// 		data: {
+		// 			data,
+		// 			code
+		// 		}
+		// 	} = yield call(systemService.getDepartmentNodes, values);
+		// 	if (code == 0) {
+		// 		yield put({
+		// 			type: 'getDepartmentNodesList',
+		// 			payload: {
+		// 				data,
+		// 				code
+		// 			}
+		// 		});
+		// 	}
+		// },
 		//添加权限管理
 		*permissionAdd({payload: values}, { call, put }) {
 			const {
@@ -205,7 +221,6 @@ export default {
 				}
 			} = yield call(systemService.permissionAdd, values);
 			if (code == 0) {
-				// const page = yield select(state => state.users.page);
 				message.success("添加成功");
 				yield put({ type: 'listByPage', payload: {
 				  "page": 1,
@@ -305,29 +320,28 @@ export default {
 				});
 			}
 		},
-
-	    *organization({ payload: values }, {call,put }){
-	      const {
-	      	data: {
-		      		data,
-		      		total,
-		      		page,
-		      		size,
-		      		code
-	      }} = yield call(systemService.organization, values);
-	      if(code == 0) {
-	        yield put({
-					type: 'organizationSave',
-					payload: {
-						data,
-						total,
-						page,
-						size,
-						code
-					}
-				});
-			}
-	      },
+	  //   *organization({ payload: values }, {call,put }){
+	  //     const {
+	  //     	data: {
+		 //      		data,
+		 //      		total,
+		 //      		page,
+		 //      		size,
+		 //      		code
+	  //     }} = yield call(systemService.organization, values);
+	  //     if(code == 0) {
+	  //       yield put({
+			// 		type: 'organizationSave',
+			// 		payload: {
+			// 			data,
+			// 			total,
+			// 			page,
+			// 			size,
+			// 			code
+			// 		}
+			// 	});
+			// }
+	  //     },
 	      *customer({ payload: values }, {call,put }){
 	      const {
 	      	data: {
@@ -431,7 +445,36 @@ export default {
 				});
 			}
 		},
+		//菜单liebiao
+		*MeunData({
+			payload: values
+		}, {
+			call,
+			put
+		}) {
+			const {
+				data: {
+					data,
+					total,
+					page = 1,
+					size,
+					code
+				}
+			} = yield call(systemService.place, values);
 
+			if (code == 0) {
+				yield put({
+					type: 'placeSave',
+					payload: {
+						data,
+						total,
+						page,
+						size,
+						code
+					}
+				});
+			}
+		},
 		*checkData({
 			payload:values
 		}, {
@@ -532,30 +575,6 @@ export default {
 						}
 					});
 		        }
-        if(pathname === '/system/organization') {
-		          dispatch({
-						type: 'organization',
-						payload: {
-							...query,
-							"size": PAGE_SIZE,
-							"type": 1
-						}
-					});
-		          dispatch({
-						type: 'getDepartmentNodes',
-						payload: {
-							...query
-						}
-					});
-		        }
-				// if (pathname === '/groupchar/check') {
-				// 	dispatch({
-				// 		type: 'checkData',
-				// 		payload:{
-				// 			...query
-				// 		}
-				// 	});
-				// }
 			})
 		}
 	},

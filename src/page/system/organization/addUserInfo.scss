@@ -1,4 +1,4 @@
-.addUser{
+.addUserInfo{
 	.anticon-close{
 		float:right;
 		margin-right: 37px;
@@ -24,7 +24,7 @@
 			margin-right:10px; 
 		}
 		.img{
-			margin:20px 40px 20px 100px; 
+			margin:20px 40px 20px 20px; 
 			border:none;
 			width: 100px;
    			height: 100px;
@@ -58,27 +58,27 @@
 			} 
 		}
 		.userName{
-			margin-left:3px; 
+			margin-left:60px; 
 			margin-top: 20px;
 			input{
 				width:310px;
 			} 
 		}
 		.gender{
-			margin-left: 255px;
+			margin-left: 227px;
     		margin-top: -40px;
 		}
 		.entryTime{
 			float:left;
-			margin-left:30px;
+			margin-left: 635px;
     		margin-top: -56px;
     		input{
 				width:310px;
 			}
 		}
 		.gmt_entry{
-			float:left;
-			margin-left: 670px;
+			float:right;
+			margin-right: 65px;
     		margin-top: -40px;
     		span{
     			font-size: 14px;
@@ -215,7 +215,7 @@
 		.localCenter,.affiliatedDepartment,.directLeadership,.position,.systemRole{
 			width:30%;
 			float:left;
-			margin-left: 21%;
+			margin-left: 120px;
 			margin-top:30px; 
 			font-weight: 400;
 		    font-style: normal;
@@ -232,21 +232,14 @@
 			margin-left: 145px;
 		}
 		.affiliatedDepartment{
-			margin-left: 86px;
-		}
-		.directLeadership{
-			margin-left: 21%;
-		}
-		.position{
-			margin-left: 86px;
-			margin-top:28px; 
+			margin-left: 140px;
 		}
 	}
 	.entryInformationContent{
 		.localCenter,.affiliatedDepartment,.directLeadership,.position,.systemRole{
 			width:18%;
 			float:left;
-			margin-left: 22%;
+			margin-left: 18%;
 			margin-top:20px; 
 			font-weight: 400;
 		    font-style: normal;
@@ -259,14 +252,8 @@
 				text-indent: 20px;
 			}
 		}
-		.phoneNumber,.companyEmail{
-			margin-left: 25%;
-		}
 		.position{
-			margin-left:205px; 
-		}
-		.affiliatedDepartment{
-			margin-left: 205px;
+			margin-left:21%; 
 		}
 	}
 	.basicInformationContent{

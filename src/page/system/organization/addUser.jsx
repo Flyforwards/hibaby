@@ -5,7 +5,7 @@ import {connect} from 'dva'
 import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select,message} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
-import './addUser.scss'
+import './addUserInfo.scss'
 import {local, session} from '../../../common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import AddMemberLeader from './AddMemberLeader.js'
@@ -91,19 +91,19 @@ class AddUsered extends React.Component {
         let roleIdData = []
         if(fields.systemRole){
           fields.systemRole.map((item)=>{
-          roleIdData.push({roleId:item})
+          roleIdData.push({"roleId":item})
         })
         }
         if(fields.userName){
           if(fields.gender==0 || fields.gender==1){
             if(values.entryTime){
               if(fields.affiliatedDepartment){
-                  if(fields.directLeadership){
                     if(fields.position){
                         if(roleIdData.length>=1){
                           if(fields.phoneNumber){
                             if(fields.information){
                               if(fields.companyEmail){
+                                console.log("this.state.NewuserImg",this.state.NewuserImg)
                                 if(this.state.NewuserImg){
                                     this.props.dispatch({
                                       type: 'organization/addUser',
@@ -148,9 +148,6 @@ class AddUsered extends React.Component {
                     }else{
                       message.warning('请选择职位信息')
                     }
-                  }else{
-                    message.warning('请选择直系领导')
-                  }
               }else{
                 message.warning('请选择隶属部门')
               }  
@@ -161,7 +158,11 @@ class AddUsered extends React.Component {
             message.warning('请选择性别')
           }
         }else{
-          message.warning('请输入您的姓名')
+          message.warning('请输入姓名')
+          message.config({
+            top: 100,
+            duration: 0
+          });
         }
       }
     })
@@ -200,7 +201,7 @@ class AddUsered extends React.Component {
         })
       }
       return(
-        <div className="addUser">
+        <div className="addUserInfo">
          <div className="basicInformation">基本信息</div>
           <Form layout="inline" className="basicInformationForm">
            <FormItem
@@ -289,7 +290,6 @@ class AddUsered extends React.Component {
             <FormItem
              label="直系领导"
              className="directLeadership"
-             required
             >
               {getFieldDecorator('directLeadership', {
                 initialValue: this.state.TableData?this.state.TableData.id:"",
@@ -349,7 +349,7 @@ class AddUsered extends React.Component {
              required
             >
               {getFieldDecorator('password', {
-                initialValue: "kb123",
+                initialValue: "kbm12345",
               })(
                 <Input disabled={ true }/>
               )}
@@ -359,8 +359,6 @@ class AddUsered extends React.Component {
              label="联系方式"
              className="information"
              required
-             min ={11}
-             max = {13}
             >
               {getFieldDecorator('information', {
                   rules: [{

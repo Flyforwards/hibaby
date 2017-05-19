@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,message} from 'antd'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from 'common/util/storage.js'
 import './AddJob.scss'
@@ -10,7 +10,6 @@ const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-const endemic  = session.get("endemic")
 const SelectData = local.get("rolSelectData")
 const departmentData = local.set("department")
 let traversalDataId = []
@@ -25,30 +24,60 @@ class AddJobed extends Component {
         }
     }
     handleCancel() {
+       this.setState({
+        TableData:null
+      })
         this.props.onCancel()
     }
     handleOk() {
+        let endemic  = session.get("endemic")
+        let ID = window.location.search.split("=")[1]
         const fields = this.props.form.getFieldsValue();
         let roles = []
-        if(fields.systemRole != null){
-            fields.systemRole.map((item)=>{
-              roles.push({roleId:item})
-            })
-        }
-        this.props.dispatch({
-            type: 'organization/addUserEntry',
-            payload: {
-              "contact":fields.information,
-              "deptId": endemic.id,
-              "emaill": fields.companyEmail,
-              "extension":fields.internalExtension+"",
-              "leaderId": fields.directLeadership,//直系领导
-              "positionId": fields.position,
-              "roles":roles,
-              "userId": this.props.ID
+        if(fields.affiliatedDepartment){
+          if(fields.position){
+            if(fields.systemRole){
+              fields.systemRole.map((item)=>{
+                roles.push({"roleId":item})
+              })
+              if(fields.information){
+                if(fields.companyEmail){
+                    this.props.dispatch({
+                        type: 'organization/addUserEntry',
+                        payload: {
+                          "contact":fields.information,
+                          "deptId": endemic.id,
+                          "emaill": fields.companyEmail,
+                          "extension":fields.internalExtension?fields.internalExtension:"",
+                          "leaderId": fields.directLeadership,//直系领导
+                          "positionId": fields.position,
+                          "roles":roles,
+                          "userId": this.props.ID
+                        }
+                    })
+                  this.props.onCancel()
+                    this.setState({
+                      TableData:null
+                    })
+                }else{
+                  message.warning('请填写公司邮箱')
+                }
+
+              }else{
+                 message.warning('请填写联系方式')
+              }
+
+            }else{
+              message.warning('请选择系统角色')
             }
-        })
-        this.props.onCancel()
+
+          }else{
+            message.warning('请选择职位')
+          }
+
+        }else{
+          message.warning('请选择隶属部门')
+        }
     }
     checkbox() {
         console.log("checkbox")
@@ -68,6 +97,7 @@ class AddJobed extends Component {
         this.props.form.resetFields()
     }
     select(){
+      let endemic  = session.get("endemic")
       this.setState({
         visible:true
       })
@@ -128,6 +158,7 @@ class AddJobed extends Component {
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
         })
       }
+      let endemic  = session.get("endemic")
         return (
             <Modal
                 visible={visible}
@@ -150,6 +181,7 @@ class AddJobed extends Component {
             <FormItem
              label="地方中心"
              className="localCenter"
+             required
             >
               {getFieldDecorator('localCenter', {
                 initialValue: endemic.name,
@@ -160,6 +192,7 @@ class AddJobed extends Component {
             <FormItem
              label="隶属部门"
              className="affiliatedDepartment"
+             required
             >
             { getFieldDecorator("affiliatedDepartment",{
             })(
@@ -175,7 +208,7 @@ class AddJobed extends Component {
               {getFieldDecorator('directLeadership', {
                 initialValue: this.state.TableData?this.state.TableData.id:"",
               })(
-                <Input />
+                <Input disabled={true}/>
               )}
             </FormItem>
             <FormItem
@@ -186,6 +219,7 @@ class AddJobed extends Component {
             <FormItem
              label="职位"
              className="position"
+             required
             >
             { getFieldDecorator("position",{
             })(
@@ -198,6 +232,7 @@ class AddJobed extends Component {
             <FormItem
              label="系统角色"
              className="systemRole"
+             required
             >
             { getFieldDecorator("systemRole",{
             })(
@@ -210,30 +245,14 @@ class AddJobed extends Component {
           <div className="contactInformation">联系方式</div>
           <Form layout="inline" className="contactInformationForm">
             <FormItem
-             label="登录手机号"
-             className="phoneNumber"
-            >
-              {getFieldDecorator('phoneNumber', {
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-             label="登录密码"
-             className="password"
-            >
-              {getFieldDecorator('password', {
-                initialValue: "kb123",
-              })(
-                <Input disabled={ true }/>
-              )}
-            </FormItem>
-            <br/>
-            <FormItem
              label="联系方式"
              className="information"
+             required
             >
               {getFieldDecorator('information', {
+                rules: [{
+                    pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '联系方式不正确'
+                }],
               })(
                 <Input/>
               )}
@@ -241,10 +260,11 @@ class AddJobed extends Component {
             <FormItem
              label="公司邮箱"
              className="companyEmail"
+             required
             >
               {getFieldDecorator('companyEmail', {
                  rules: [{
-                    type: 'email'
+                    type: 'email', message: '邮箱格式不正确'
                   }],
               })(
                 <Input />
