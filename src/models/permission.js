@@ -11,7 +11,6 @@ export default {
   namespace: 'permission',
   state: {
     data: [],
-    code: 0,
     role: 0,
     permissionList: [],
     userList: null,
@@ -243,6 +242,9 @@ export default {
   },
   reducers: {
 
+    getRolesSuccess( state, { payload: { data, pagination }}) {
+      return {...state, data, pagination: {  ...state.pagination,...pagination }};
+    },
     removeSelectKeys (state, { payload }) {
       state.selectedRows = [];
       state.selectedRowKeys = [];
@@ -262,9 +264,6 @@ export default {
       return {...state, selectedRows, selectedRowKeys };
     },
 
-    getRolesSuccess( state, { payload: { data, pagination }}) {
-      return {...state, data, pagination: {  ...state.pagination,...pagination }};
-    },
     // roleAddSuccess(state, {payload: { data }}) {
     //   return {...state, data};
     // }

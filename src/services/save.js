@@ -28,3 +28,11 @@ export function editData(values) {
     body: JSON.stringify(values),
   })
 }
+
+//集团列表数据
+export function groupCharList(values) {
+  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

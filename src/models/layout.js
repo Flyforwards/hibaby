@@ -154,7 +154,6 @@ export default {
       if (code == 0 && err == null) {
         const paths = location.pathname.split("/");
         let projectInx = 0;
-        console.log(paths)
         if (paths.length >= 2) {
           const path1 = paths[1];
           if (data != null && data.length>0) {

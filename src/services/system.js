@@ -7,21 +7,7 @@ export function systemsave(values) {
     body: JSON.stringify(values),
   })
 }
-//集团列表数据
-export function system(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
 
-//地方列表数据
-export function place(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
 //添加权限
 export function permissionAdd(values) {
   return request('/crm/api/v1/permission/add', {

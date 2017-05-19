@@ -1,108 +1,77 @@
+
 import * as serviceService from '../services/service';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
-import { PAGE_SIZE } from 'common/constants.js'
+import { PAGE_SIZE } from 'common/constants.js';
+import { parse } from 'qs';
 
 export default {
 	namespace: 'service',
 	state: {
 		data: [],
-		total: null,
 		page:null,
 		size:null,
+    list: [],
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
 	},
 	reducers: {
 		//服务列表
-		ServicePageSave(state, { payload: {data,total,page,size,code}}) {
-			let servicepagedata = {...state,
-				data,
-				total,
-				page,
-				size,
-				code
-			};
-			let range = {
-				start: page == 1 ? 1 : (page - 1) * 10 + 1,
-				end: page == 1 ? data.length : (page - 1) * 10 + data.length,
-				totalpage:Math.ceil(total/size),
-			}
-			return {...servicepagedata,range};
+		ServicePageSave(state, { payload: { list, pagination }}) {
+      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 		},
+
 		//添加服务项目
-		AddServiceSave(state, { payload: {data,code}}) {
-			let addservicedata = {...state,
-				data,
-				code
-			};
+		AddServiceSave(state, { payload: { data }}) {
+			let addservicedata = {...state, data };
 			return addservicedata;
 		},
 		//查看服务详情
-		LookServiceSave(state, { payload: {data,code}}) {
-			let lookservicedata = {...state,
-				data,
-				code
-			};
+		LookServiceSave(state, { payload: { data }}) {
+			let lookservicedata = {...state, data};
 			return lookservicedata;
 		},
+
 		//删除服务项目
 		deleteServiceSave(state, { payload: { record }}) {
-
 			state.selectedRows.remove(record);
 			state.selectedRowKeys.remove(record.key);
 			return {...state, };
 		},
 		//编辑服务内容
 		editServiceSave(state, { payload: {data,code}}) {
-			let editservice = {...state,
-				data,
-				code
-			};
-			console.log("ss",data)
+			let editservice = { ...state,data, };
 			return editservice;
 		},
 		//其他
 },
 	effects: {
 		//项目列表
-		*ServicePage({
-			payload: values
-		}, {
-			call,
-			put
-		}) {
-			const {
-				data: {
-					data,
-					total,
-					page,
-					size,
-					code
-				}
-			} = yield call(serviceService.ServicePage, values);
+		*ServicePage({ payload: values }, { call, put }) {
+      values = parse(location.search.substr(1))
+			const { data: { data, total, page, size, code } } = yield call(serviceService.ServicePage, values);
 			if (code == 0) {
-				yield put({
-					type: 'ServicePageSave',
-					payload: {
-						data,
-						code
-					}
-				});
+        yield put({
+          type: 'ServicePageSave',
+          payload: {
+            list: data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
 			}
 		},
 		//添加服务项目
-		*AddService({
-			payload: values
-		}, {
-			call,
-			put
-		}) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(serviceService.AddService, values);
+		*AddService({ payload: values }, { call, put }) {
+			const { data: { data, code } } = yield call(serviceService.AddService, values);
 			if (code == 0) {
 				message.success("添加服务项目成功")
 				yield put(
@@ -111,18 +80,8 @@ export default {
 			}
 		},
 		//查看服务详情
-		*LookService({
-			payload: values
-		}, {
-			call,
-			put
-		}) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(serviceService.LookService, values);
+		*LookService({ payload: values }, { call, put }) {
+			const { data: { data, code } } = yield call(serviceService.LookService, values);
 			if (code == 0) {
 				yield put({
 					type: 'LookServiceSave',
@@ -145,18 +104,9 @@ export default {
       }
     },
 		//编辑服务内容
-		*editService({
-			payload: values
-		}, {
-			call,
-			put
-		}) {
+		*editService({ payload: values }, { call, put }) {
 			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(serviceService.editService, values);
+				data: { data, code } } = yield call(serviceService.editService, values);
 			if (code == 0) {
 				message.success("服务项目数据更新成功")
 				yield put(routerRedux.push("/system/service-item"))
@@ -169,19 +119,12 @@ export default {
 			dispatch,
 			history
 		}) {
-			return history.listen(({
-				pathname,
-				query
-			}) => {
+			return history.listen(({ pathname, query }) => {
 				//服务项目列表
 				if (pathname === '/system/service-item') {
 					dispatch({
 						type: 'ServicePage',
-						payload: {
-							...query,
-							"size": 3,
-							"page": 2
-						}
+						payload: query
 					});
 				}
 				//查看服务详情

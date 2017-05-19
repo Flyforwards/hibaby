@@ -123,7 +123,7 @@ class permission extends Component {
               query: {
                 ...query,
                 page: page.current,
-                pageSize: page.pageSize,
+                size: page.pageSize,
               },
             }))
           },

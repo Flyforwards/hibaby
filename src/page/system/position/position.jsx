@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import './position.scss'
@@ -5,16 +6,13 @@ import EditPosition from './editPosition'
 import { Button, Input,  Form, Table } from 'antd'
 const FormItem = Form.Item;
 
-
-
-
 class FindTop extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: ''
     }
-    
+
     this.columns = [{
       title: '序号',
       dataIndex: 'id',
@@ -42,7 +40,7 @@ class FindTop extends Component {
       }
     }];
   }
-  
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -54,10 +52,10 @@ class FindTop extends Component {
         'sortOrder': "string"
       }
       this.handlePageChange(postInfo);
-      
+
     });
   }
-  
+
   handlePageChange(value) {
     this.setState({
       name: value.name
@@ -67,7 +65,7 @@ class FindTop extends Component {
       payload: value
     })
   }
-  
+
   render() {
     const { form, data, total, dispatch} = this.props
     const { getFieldDecorator } = form;
@@ -82,8 +80,6 @@ class FindTop extends Component {
             'name': this.state.name,
             'page': current,
             'size': 10,
-            'sortField': "string",
-            'sortOrder': "string"
           }
         })
       }
