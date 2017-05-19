@@ -320,32 +320,7 @@ export default {
 				});
 			}
 		},
-<<<<<<< HEAD
-	  //   *organization({ payload: values }, {call,put }){
-	  //     const {
-	  //     	data: {
-		 //      		data,
-		 //      		total,
-		 //      		page,
-		 //      		size,
-		 //      		code
-	  //     }} = yield call(systemService.organization, values);
-	  //     if(code == 0) {
-	  //       yield put({
-			// 		type: 'organizationSave',
-			// 		payload: {
-			// 			data,
-			// 			total,
-			// 			page,
-			// 			size,
-			// 			code
-			// 		}
-			// 	});
-			// }
-	  //     },
-=======
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
-	      *customer({ payload: values }, {call,put }){
+	 *customer({ payload: values }, {call,put }){
 	      const {
 	      	data: {
 		      		data,
@@ -367,7 +342,7 @@ export default {
 				});
 			}
 	      },
-	      *LogView({ payload: values }, {call,put }){
+  *LogView({ payload: values }, {call,put }){
 	      const {
 	      	data: {
 		      		data,
