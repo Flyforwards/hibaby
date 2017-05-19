@@ -64,10 +64,17 @@ class Organization extends React.Component {
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
+            let Disabled = false
+            if(record.status == 1){
+              Disabled = true
+            }
             return (
                 <span>
                  <Link to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                 <a href="#" className="twoA" onClick={this.Disabled.bind(this,record)}>禁用</a>
+                 {Disabled?
+                  <a href="#" className="twoB">禁用</a>:
+                  <a href="#" className="twoA" disabled={ false } onClick={this.Disabled.bind(this,record)}>禁用</a>
+                 }
                 </span>
             );
           },
@@ -85,6 +92,7 @@ class Organization extends React.Component {
             nodeid:endemic.id,
             tissueProperty:endemic.tissueProperty
         }
+        this.current = 1
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -113,13 +121,20 @@ class Organization extends React.Component {
         "status":null,
         "page": 1,
         "size": 10,
+<<<<<<< HEAD
        "tissueProperty":endemic.tissueProperty
+=======
+        "tissueProperty":endemic.tissueProperty
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
       }
     });
   }
     //禁止
     Disabled(record) {
+<<<<<<< HEAD
       console.log()
+=======
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
       this.setState({
         toViewVisible:true,
         ID:record.id
@@ -137,7 +152,7 @@ class Organization extends React.Component {
             "nodeid": this.state.nodeid,
             "roleId": this.state.character,
             "status": this.state.status,
-            "page": 1,
+            "page": this.current,
             "size": 10,
             "tissueProperty":this.state.tissueProperty
         },
@@ -164,6 +179,18 @@ class Organization extends React.Component {
         this.setState({
             toViewVisible: false
         })
+      this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": this.state.userName,
+            "nodeid": this.state.nodeid,
+            "roleId": this.state.character,
+            "status": this.state.status,
+            "page": this.current,
+            "size": 10,
+            "tissueProperty": this.state.tissueProperty
+        },
+      });
     }
     ObtainOrganization(nodeid,tissueProperty){
       this.setState({
@@ -185,6 +212,7 @@ class Organization extends React.Component {
           showQuickJumper: true,
           defaultPageSize:10,
           onChange: (current) => {
+            this.current = current
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {

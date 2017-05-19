@@ -37,8 +37,8 @@ class serviceData extends Component {
           render: (text, record, index) => {
             return (
                 <div className="OperateList" key={ index }>
-                  <Link to={{ pathname: '/service/LookService', query: { id:record.id } }} className="firstA" >查看</Link>
-                  <a className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
+                  <Link to={{ pathname: '/system/service-item/detail', query: { id:record.id } }} className="firstA" >查看</Link>
+                  <a className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
                 </div>
             );
           },
@@ -77,7 +77,7 @@ class serviceData extends Component {
           pageSize:10,
           onChange: (current) => {
             this.props.dispatch(routerRedux.push({
-              pathname: '/system/serviceitem',
+              pathname: '/system/service-item',
               query: {
                 "page": current,
                 "results": 10,
@@ -94,7 +94,7 @@ class serviceData extends Component {
         return (
            <div className="ServiceBox">
               <div className="name">
-                <Link to="/service/Addservice">
+                <Link to="/system/service-item/add">
                   <span >添加</span>
                 </Link>
               </div>

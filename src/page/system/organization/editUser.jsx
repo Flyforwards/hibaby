@@ -223,7 +223,11 @@ class EditUsered extends React.Component {
                display = 'block'
             }
             roles = entryContent.roles.map((item)=>{
-              return item.roleId
+              return SelectData.map((key)=>{
+                if(key.id == item.roleId){
+                    return key.name
+                }
+              })
             })
             if(this.props.dataEndemicId != null){
                 traversalEndemicId = this.props.dataEndemicId.map((item,index)=>{

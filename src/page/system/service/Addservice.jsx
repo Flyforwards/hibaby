@@ -11,25 +11,14 @@ const createForm = Form.create;
 class AddService extends Component {
         constructor(props) {
             super(props);
-            this.handleSave=this.handleSave.bind(this);
             this.state = {
                 formLayout: 'inline',
-                dataSource: [],
             };
       }
-       handleKeyPress = (ev) => {
-         console.log('handleKeyPress', ev);
-       }
-
-      handleFormLayoutChange = (e) => {
-         this.setState({ formLayout: e.target.value });
-       }
-
 
        handleSave = (e) => {
           e.preventDefault();
           let values = this.props.form.getFieldsValue();
-          console.log("AddService>>>>",values)
           let params = {};
           let data = [];
           let price=0;
@@ -39,9 +28,7 @@ class AddService extends Component {
               }
           })
           params = {...params};
-          console.log('add:handlesave>>',params)
           price=Number(params.price)
-          console.log(price)
           this.props.dispatch({
              type: 'service/AddService',
              payload: {
@@ -55,7 +42,6 @@ class AddService extends Component {
 
        render() {
           const { formLayout } = this.state;
-          const { dataSource } = this.state;
           const { getFieldDecorator } = this.props.form;
           const formItemLayout = formLayout === 'horizontal' ? {
             labelCol: { span:2 },
@@ -95,20 +81,13 @@ class AddService extends Component {
                       </Form>
                 </Card>
                 <div className="btn">
-                      <Link className="BackBtn AddBack" to='/system/serviceitem'>
-                          <Button>返回</Button>
-                      </Link>
-                      <Link className="SaveBtn AddSave" to='/system/serviceitem'>
-                          <Button onClick={this.handleSave}>保存</Button>
-                      </Link>
+                    <Link className="BackBtn AddBack" to='/system/service-item'>
+                        <Button>返回</Button>
+                    </Link>
+                    <Button onClick={ this.handleSave.bind(this) }>保存</Button>
                 </div>
             </div>
           );
-        }
-        componentDidMount(){
-            console.log(this.columns)
-            console.log(this.props)
-
         }
 }
 
@@ -116,7 +95,6 @@ function service({
   dispatch,
   loading,
   data,
-  code
 }) {
   return ( < div >
     < AddService dispatch = {
@@ -139,16 +117,13 @@ function service({
 
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.service)
   const {
     data,
-    code
   } = state.service;
 
   return {
     loading: state.loading.models.service,
     data,
-    code
   };
 }
 

@@ -59,7 +59,7 @@ export default (app) => [
   // CRM数据管理
     // 集团字段
     {
-      path: '/system/groupchar',
+      path: '/system/group-char',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/system'));
@@ -69,7 +69,7 @@ export default (app) => [
     },
     // 地方字段
     {
-      path: '/system/localchar',
+      path: '/system/local-char',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/system'));
@@ -79,7 +79,7 @@ export default (app) => [
     },
     //服务项目
     {
-      path: '/system/serviceitem',
+      path: '/system/service-item',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/service'));
@@ -89,7 +89,7 @@ export default (app) => [
     },
     //添加服务项目
     {
-      path: '/service/Addservice',
+      path: '/system/service-item/add',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/service'));
@@ -99,7 +99,7 @@ export default (app) => [
     },
     //查看服务详情
     {
-      path: '/service/LookService',
+      path: '/system/service-item/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/service'));
@@ -109,7 +109,7 @@ export default (app) => [
     },
     //编辑服务信息
     {
-      path: '/service/edit',
+      path: '/system/service-item/edit',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/service'));
@@ -119,7 +119,7 @@ export default (app) => [
     },
     //  添加集团字段
     {
-      path: '/groupchar/add',
+      path: '/system/group-char/add',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/save'));
@@ -129,7 +129,7 @@ export default (app) => [
     },
     //  添加地方字段
     {
-      path: '/localchar/add',
+      path: '/system/local-char/add',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/localData'));
@@ -139,7 +139,7 @@ export default (app) => [
     },
     //  集团字段详情
     {
-      path: '/groupchar/check',
+      path: '/system/group-char/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/save'));
@@ -149,7 +149,7 @@ export default (app) => [
     },
     //  编辑集团字段
     {
-      path: '/groupchar/edit',
+      path: '/system/group-char/edit',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/save'));
@@ -159,7 +159,7 @@ export default (app) => [
     },
     //  地方字段详情
     {
-      path: '/localchar/find',
+      path: '/system/local-char/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/localData'));
@@ -169,7 +169,7 @@ export default (app) => [
     },
     //  编辑地方字段
     {
-      path: '/localchar/editPlace',
+      path: '/system/local-char/edit',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/localData'));
@@ -199,7 +199,7 @@ export default (app) => [
     },
   // 日志查看
     {
-      path: '/system/logsview',
+      path: '/system/logs',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/system'));
@@ -209,7 +209,7 @@ export default (app) => [
     },
   // 权限管理内部,权限表的维护
     {
-      path: '/system/frommodal',
+      path: '/system/permission-inside',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/system'));

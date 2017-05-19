@@ -12,15 +12,54 @@ export default (app) => [
         })
       }
     },
+    // 套餐
+    {
+      path: '/crm/serviceinfo',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/serviceinfo.jsx'))
+        })
+      }
+    },
+    // 添加套餐
+    {
+      path: '/crm/serviceinfo/addservice',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/addService.jsx'))
+        })
+      }
+    },
+    //套房
+    {
+      path: '/crm/suite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('page/crm/product/InfoCard.jsx'))
+        })
+      }
+    },
+    //商品
+    {
+      path: '/crm/commodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('page/crm/product/InfoCard.jsx'))
+        })
+      }
+    },
     // 会员卡管理
     {
-      path: '/crm/infoCard',
+      path: '/crm/info-card',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           cb(null, require('page/crm/infocard/InfoCard.jsx'))
         })
       }
     },
+<<<<<<< HEAD
   //卡种管理
   {
     path: '/crm/card',
@@ -41,5 +80,27 @@ export default (app) => [
       })
     }
   },
+=======
+    //卡种管理
+    {
+      path: '/crm/card',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/card'));
+          cb(null, require('page/crm/infocard/card/card.js'))
+        })
+      }
+    },
+    //卡种信息
+    {
+      path: '/crm/cardInfo',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/card'));
+          cb(null, require('page/crm/infocard/card/cardInfo.js'))
+        })
+      }
+    },
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 ]
 

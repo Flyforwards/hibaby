@@ -320,6 +320,7 @@ export default {
 				});
 			}
 		},
+<<<<<<< HEAD
 	  //   *organization({ payload: values }, {call,put }){
 	  //     const {
 	  //     	data: {
@@ -342,6 +343,8 @@ export default {
 			// 	});
 			// }
 	  //     },
+=======
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 	      *customer({ payload: values }, {call,put }){
 	      const {
 	      	data: {
@@ -509,37 +512,25 @@ export default {
 				pathname,
 				query
 			}) => {
-				if (pathname === '/system/groupchar') {
-
+				if (pathname === '/system/group-char') {
 					dispatch({
 						type: 'system',
-						payload: {
-							...query,
-							"size": 10,
-							"type": 1
-						}
+						payload: { ...query, "size": 10, "type": 1 }
 					});
 				}
-				if (pathname === '/system/localchar') {
+				if (pathname === '/system/local-char') {
 					dispatch({
-						type: 'place',
-						payload: {
-							...query,
-							"size": 10,
-							"type": 2
-						}
+					  type: 'place',
+            payload: { ...query, "size": 10, "type": 2 }
 					});
 				}
 				if(pathname === '/Customer') {
-		          dispatch({
-						type: 'customer',
-						payload: {
-							...query,
-							"size": PAGE_SIZE,
-							"type": 1
-						}
+				  dispatch({
+				    type: 'customer',
+						payload: { ...query, "size": PAGE_SIZE, "type": 1 }
 					});
 		        }
+<<<<<<< HEAD
 		        if(pathname === '/frommodal') {
 		          dispatch({
 						type: 'fromModal',
@@ -575,6 +566,29 @@ export default {
 						}
 					});
 		        }
+=======
+        if(pathname === '/system/permission-inside') {
+            dispatch({
+              type: 'fromModal',
+              payload: { ...query }
+            });
+
+            dispatch({
+              type: 'Dictionary',
+              payload: { ...query, "id": 4, "softDelete": 0, "type": 1 }
+					  });
+            dispatch({
+              type: 'listByPage',
+              payload: { ...query, "page": 1, "size": 5, }
+					  });
+        }
+        if(pathname === '/system/logs') {
+          dispatch({
+            type: 'LogView',
+            payload: { ...query, "size": PAGE_SIZE,  "type": 1 }
+            });
+        }
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 			})
 		}
 	},

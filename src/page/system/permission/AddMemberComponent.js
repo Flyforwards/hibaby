@@ -81,7 +81,7 @@ class AddMemberComponent extends Component {
 
 
   render() {
-    let { currentDeptTree ,undisUserList, undisUserTotal } = this.props;
+    let { currentDeptTree ,undisUserList, undisUserTotal, loading } = this.props;
     let  endemicTree = [];
     if (currentDeptTree != null) {
       endemicTree = [ currentDeptTree  ];
@@ -147,7 +147,8 @@ class AddMemberComponent extends Component {
                   <Input className="search-input-div" ref="input" />
                   <Button className="search-button-div" onClick={ this.search.bind(this) }>查询</Button>
                 </div>
-                <Table bordered rowSelection={ rowSelection } dataSource={ undisUserList } columns={ this.columns} pagination = {pagination} />
+                <Table bordered rowSelection={ rowSelection } dataSource={ undisUserList } columns={ this.columns} pagination = {pagination}
+                       loading = { loading.effects['permission/getUserPageListByUserRole'] }  />
               </div>
             </Col>
           </Row>
@@ -171,6 +172,7 @@ function mapStateToProps(state) {
     tissueProperty
   } = state.permission;
   return {
+    loading: state.loading,
     currentDeptTree,
     undisUserList,
     undisUserTotal,

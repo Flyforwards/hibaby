@@ -12,9 +12,13 @@ export default {
 		list:null,
 		leftList:null,
 		dictionarySideDOs:null,
+<<<<<<< HEAD
 		item: null,
 		permission:null,
 		menu:null,
+=======
+		item: null
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 	},
 	reducers: {
 		//菜单列表
@@ -39,6 +43,7 @@ export default {
 			state.selectedRowKeys.remove(record.key);
 			return {...state, };
 		},
+<<<<<<< HEAD
 		//增添菜单数据
 		AddMenuList(state,{payload:{data}}){
 			return{
@@ -78,6 +83,8 @@ export default {
 					code
 				}
 		},
+=======
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 	},
 	effects: {
 
@@ -100,7 +107,11 @@ export default {
 		//删除服务项目
 		*deleteService({ payload: values }, {call,put }) {
       const { page, pageSize, dataId} = values
+<<<<<<< HEAD
       const { data: { data, code, err }} = yield call(moduleService.deleteService, { dataId});
+=======
+      const { data: { data, code, err }} = yield call(moduleService.deleteService, { id: dataId});
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
       if (code == 0) {
         message.success('删除服务项目成功');
         yield put({
@@ -112,6 +123,7 @@ export default {
         throw err || "请求出错";
       }
     },
+<<<<<<< HEAD
 		//增加菜单数据列表
 		*AddMenuData({payload: values}, { call, put }) {
 			const {data: { data,code} } = yield call(moduleService.AddMenuList, values);
@@ -205,6 +217,8 @@ export default {
 				});
 			}
 		},
+=======
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 		//获取集团列表所需数据
 		// *getEditData({payload}, {put, select}) {
 		// 	const data = yield select((state) => state.save.data)
@@ -237,6 +251,7 @@ export default {
 							}
 					});
 				}
+<<<<<<< HEAD
 				//菜单添加保存数据列表
 				//菜单主模块下拉
 				if (pathname === '/system/module') {
@@ -265,6 +280,8 @@ export default {
 							}
 					});
 				}
+=======
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 			})
 		}
 	},

@@ -33,6 +33,15 @@ class AddUsered extends React.Component {
   }
   componentDidMount(){
       let endemic = session.get("endemic")
+      let NODEID = window.location.search.split("=")[1];
+      if(NODEID){
+        this.props.dispatch({
+          type: 'organization/position',
+          payload: {
+            dataId: NODEID
+          }
+        })
+      }
       this.props.dispatch({
             type: 'organization/getDeptListByEndemicId',
             payload: {
@@ -81,6 +90,10 @@ class AddUsered extends React.Component {
   //保存按键
   headelSave = ()=>{
     let endemic  = session.get("endemic")
+    message.config({
+        top: 100,
+        duration: 0.1
+    });
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const values = {
@@ -159,10 +172,13 @@ class AddUsered extends React.Component {
           }
         }else{
           message.warning('请输入姓名')
+<<<<<<< HEAD
           message.config({
             top: 100,
             duration: 0
           });
+=======
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
         }
       }
     })

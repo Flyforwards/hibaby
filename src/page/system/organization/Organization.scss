@@ -194,12 +194,23 @@ overflow: hidden;
 		}
 		.twoA{
 			border:none;
+<<<<<<< HEAD
 			 background-color: #fff;
-		}
-		a{
+=======
+			background-color: #fff;
 			margin-right:9px;
-			margin-left:5px;
-			color:rgba(0, 0, 0, 0.85);
+			margin-left:10px;
+			color:#f75555;
+			text-decoration: none;
+>>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
+		}
+		.twoB{
+			border:none;
+			background-color: #fff;
+			margin-right:9px;
+			margin-left:10px;
+			color:#666;
+			text-decoration: none;
 		}
 	}
 }

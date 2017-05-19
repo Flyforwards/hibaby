@@ -37,10 +37,8 @@ class SystemIndex extends React.Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record, index) => {
-
-          return ( < Link to =
-            {`/localchar/find?dataId=${record.id}`}
-             > 查看 </Link>)
+          return (
+            < Link to = {`/system/local-char/detail?dataId=${record.id}`} > 查看 </Link>)
           },
         }];
     }
@@ -53,7 +51,7 @@ class SystemIndex extends React.Component {
         pageSize:10,
         onChange: (current) => {
           this.props.dispatch(routerRedux.push({
-            pathname: '/system/localchar',
+            pathname: '/system/local-char',
             query: {
               "page": current,
               "results": 10,
@@ -62,25 +60,24 @@ class SystemIndex extends React.Component {
           }));
         },
       };
-      return ( <div className = "
-          PlaceProject"
-         >
-        <div className = "buttonwrapper">
-            <Link to = "/localchar/add" >
-                <Button className="addBtn"> 添加 </Button>
-            </Link>
-        </div>
+      return (
+        <div className = "PlaceProject">
+          <div className = "buttonwrapper">
+              <Link to = "/system/local-char/add" >
+                  <Button className="addBtn"> 添加 </Button>
+              </Link>
+          </div>
 
-        {this.props.list?
-        <Table rowKey = "id" bordered dataSource = {this.props.list}
-        columns = {columns} pagination = {pagination}/>:null}
-        <Current page = {this.props.page}
-            totalpage = {this.props.totalpage}
-            total = {this.props.total}
-            results = {this.props.results}
-            range = {this.props.range}
-        />
-    </div>
+          {this.props.list?
+          <Table rowKey = "id" bordered dataSource = {this.props.list}
+          columns = {columns} pagination = {pagination}/>:null}
+          <Current page = { this.props.page }
+              totalpage = { this.props.totalpage }
+              total = { this.props.total }
+              results = { this.props.results }
+              range = { this.props.range }
+          />
+        </div>
     );
   }
 }
