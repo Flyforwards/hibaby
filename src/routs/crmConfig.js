@@ -59,28 +59,6 @@ export default (app) => [
         })
       }
     },
-<<<<<<< HEAD
-  //卡种管理
-  {
-    path: '/crm/card',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/card'));
-        cb(null, require('page/crm/infocard/card/card.js'))
-      })
-    }
-  },
-  //卡种信息
-  {
-    path: '/crm/cardInfo',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/card'));
-        cb(null, require('page/crm/infocard/card/cardInfo.js'))
-      })
-    }
-  },
-=======
     //卡种管理
     {
       path: '/crm/card',
@@ -101,6 +79,6 @@ export default (app) => [
         })
       }
     },
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
+
 ]
 

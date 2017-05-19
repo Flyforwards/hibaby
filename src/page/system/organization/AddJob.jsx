@@ -34,13 +34,10 @@ class AddJobed extends Component {
         let ID = window.location.search.split("=")[1]
         const fields = this.props.form.getFieldsValue();
         let roles = []
-<<<<<<< HEAD
-=======
         message.config({
             top: 100,
             duration: 0.1
         });
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
         if(fields.affiliatedDepartment){
           if(fields.position){
             if(fields.systemRole){

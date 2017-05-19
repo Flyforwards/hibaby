@@ -121,20 +121,12 @@ class Organization extends React.Component {
         "status":null,
         "page": 1,
         "size": 10,
-<<<<<<< HEAD
        "tissueProperty":endemic.tissueProperty
-=======
-        "tissueProperty":endemic.tissueProperty
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
       }
     });
   }
     //禁止
     Disabled(record) {
-<<<<<<< HEAD
-      console.log()
-=======
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
       this.setState({
         toViewVisible:true,
         ID:record.id
@@ -253,11 +245,11 @@ class Organization extends React.Component {
                     <Option value="1">禁用</Option>
                   </Select>
               </div>
-              {this.state.tissueProperty == 3? 
+              {this.state.tissueProperty == 3?
                 <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
                 <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
               }
-             
+
               <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
             </div>
             {this.props.list?
