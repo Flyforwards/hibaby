@@ -1,7 +1,7 @@
 import dva from 'dva';
 import './index.css';
 import { browserHistory } from 'dva/router';
-import createLoding from 'dva-loading';
+import createLoading from 'dva-loading';
 import { message } from 'antd';
 
 
@@ -14,7 +14,7 @@ const app = dva({
 });
 
 // 2. Plugins
-app.use(createLoding());
+app.use(createLoading({ effects: true }));
 
 // 3. Model
 app.model(require('./models/layout'))

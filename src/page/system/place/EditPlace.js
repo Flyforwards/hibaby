@@ -142,7 +142,7 @@ class EditPlaceData extends React.Component {
           </FormItem>
         );
       });
-
+      const dataId = GetQueryString("dataId");
 
       return (
         <div className="xuanxiang PlaceProject">
@@ -160,7 +160,7 @@ class EditPlaceData extends React.Component {
                   initialValue:`${description}`,
                   rules: [{ required: true, message: '字段描述为必填项！' }],
                 })(
-                  <Input disabled={true} className="input" />
+                  <Input disabled={true} className="input"/>
                 )}
               </FormItem>
             </Form>
@@ -172,7 +172,7 @@ class EditPlaceData extends React.Component {
             </Form>
           </Card >
           <div className="retuSave">
-            <Link to='/system/local-char/detail'>
+            <Link to={{pathname:'/system/local-char/detail',query:{ dataId }}}>
               <Button className = "editable-add-btn return"> 返回 </Button>
             </Link>
             <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
@@ -181,6 +181,13 @@ class EditPlaceData extends React.Component {
       )
     }
 }
+
+function GetQueryString(name){
+  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  var r = window.location.search.substr(1).match(reg);
+  if(r!=null)return  unescape(r[2]); return null;
+}
+
 
 function mapStateToProps(state) {
   const {

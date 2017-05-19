@@ -4,7 +4,7 @@ import * as usersService from '../services/users';
 import manager from 'common/util'
 import { message } from 'antd';
 import  { session } from 'common/util/storage.js';
-
+import { parse } from 'qs'
 
 // tissueProperty 3是部门 2是地方中心
 export default {
@@ -12,7 +12,6 @@ export default {
   state: {
     data: [],
     code: 0,
-    total: 0,
     role: 0,
     permissionList: [],
     userList: null,
@@ -29,79 +28,43 @@ export default {
     nodeid: null,
     // 默认节点的组织信心  --添加成员
     tissueProperty: null,
-  },
-  reducers: {
-
-    removeSelectKeys (state, { payload }) {
-      state.selectedRows = [];
-      state.selectedRowKeys = [];
-      return {...state };
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
     },
-    selectedRowsChange(state, {payload: { selectedRowKeys }}) {
-      let selectedRows = [];
-      selectedRowKeys.map((record)=> {
-        const key = record;
-        state.users.map((record)=>{
-          if (record.key == key) {
-            selectedRows.push(record);
-          }
-        })
+  },
+
+  subscriptions: {
+    setup({ dispatch, history }) {
+      return history.listen(({pathname, query}) => {
+        //查看集团列表数据
+        if (pathname === '/system/permission') {
+          dispatch({
+            type: 'getRolesByPage',
+            payload: query
+          });
+        }
       })
-
-      return {...state, selectedRows, selectedRowKeys };
-    },
-    getRolesSuccess(state, {payload: {data, page, size, total}}) {
-      return {...state, data, total};
-    },
-    // roleAddSuccess(state, {payload: { data }}) {
-    //   return {...state, data};
-    // }
-    getTreeSuccess(state, { payload: { data: permissionList } }) {
-      return {...state, permissionList};
-    },
-    // 获取角色下的用户列表成功
-    getRoleUserPagSuccess(state, { payload: { data: userList, total: memberTotal } }) {
-      return {...state, userList, memberTotal};
-    },
-    getDictionSuccess(state, { payload: { selClub: club, departmentLists: departmentList } }) {
-      return {...state, club, departmentList};
-    },
-
-    // 获取当前地方中心组织架构树成功
-    getDeptByEndemicSuccess(state, { payload: { data: currentDeptTree }}) {
-      return {...state, currentDeptTree};
-    },
-    // 根据选择组织架构下的部门获取未分配的用户成功
-    getUserByNodeIdSuccess(state, { payload: { data: undisUserList, total: undisUserTotal, nodeid }}) {
-      state.users = state.users.concat(undisUserList);
-
-      state.users.removeRepeatAttr();
-      return {...state, undisUserList, undisUserTotal };
-    },
-    // 清除选择的行
-    removeSelected(state, { payload: { record }}) {
-
-      state.selectedRows.remove(record);
-      state.selectedRowKeys.remove(record.key);
-      return {...state, };
-    },
-
-    clearPermissionList(state, { payload }) {
-      const permissionList = [];
-      return { ...state,permissionList};
-    },
-
-    setDefaultDepatInfo(state, { payload: { nodeid, tissueProperty } }) {
-      return { ...state, nodeid, tissueProperty };
-    },
+    }
   },
+
   effects: {
     *getRolesByPage({ payload: values }, {call,put }) {
+      values = parse(location.search.substr(1))
       const { data: { data, total, page, size, code, err }} = yield call(systemService.getRolesByPage, values);
       if (code == 0) {
         yield put({
           type : 'getRolesSuccess',
-          payload : { data, total, page, size }
+          payload : {
+            data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
         });
       } else {
         throw err || "请求出错";
@@ -121,26 +84,24 @@ export default {
       }
     },
     *submitEditRole({ payload: values }, {call,put }) {
-      const { page, pageSize, id, roleName } = values
-      const { data: { data, code, err }} = yield call(systemService.roleEdit, { id, roleName });
+      const { id, roleName } = values
+      const { data: { code, err }} = yield call(systemService.roleEdit, { id, roleName });
       if (code == 0) {
         message.success('编辑角色成功');
         yield put({
           type : 'getRolesByPage',
-          payload : {page : page || 1 , size : pageSize || 10 }
         });
       } else {
         throw err || "请求出错";
       }
     },
     *submitDelRole({ payload: values }, {call,put }) {
-      const { page, pageSize, dataId } = values
+      const { dataId } = values
       const { data: { data, code, err }} = yield call(systemService.roleDel, { dataId });
       if (code == 0) {
         message.success('删除角色成功');
         yield put({
           type : 'getRolesByPage',
-          payload : { page : page || 0 , size : pageSize || 10 }
         });
       } else {
         throw err || "请求出错";
@@ -279,5 +240,71 @@ export default {
       }
     },
 
+  },
+  reducers: {
+
+    removeSelectKeys (state, { payload }) {
+      state.selectedRows = [];
+      state.selectedRowKeys = [];
+      return {...state };
+    },
+    selectedRowsChange(state, {payload: { selectedRowKeys }}) {
+      let selectedRows = [];
+      selectedRowKeys.map((record)=> {
+        const key = record;
+        state.users.map((record)=>{
+          if (record.key == key) {
+            selectedRows.push(record);
+          }
+        })
+      })
+
+      return {...state, selectedRows, selectedRowKeys };
+    },
+
+    getRolesSuccess( state, { payload: { data, pagination }}) {
+      return {...state, data, pagination: {  ...state.pagination,...pagination }};
+    },
+    // roleAddSuccess(state, {payload: { data }}) {
+    //   return {...state, data};
+    // }
+    getTreeSuccess(state, { payload: { data: permissionList } }) {
+      return {...state, permissionList};
+    },
+    // 获取角色下的用户列表成功
+    getRoleUserPagSuccess(state, { payload: { data: userList, total: memberTotal } }) {
+      return {...state, userList, memberTotal};
+    },
+    getDictionSuccess(state, { payload: { selClub: club, departmentLists: departmentList } }) {
+      return {...state, club, departmentList};
+    },
+
+    // 获取当前地方中心组织架构树成功
+    getDeptByEndemicSuccess(state, { payload: { data: currentDeptTree }}) {
+      return {...state, currentDeptTree};
+    },
+    // 根据选择组织架构下的部门获取未分配的用户成功
+    getUserByNodeIdSuccess(state, { payload: { data: undisUserList, total: undisUserTotal, nodeid }}) {
+      state.users = state.users.concat(undisUserList);
+
+      state.users.removeRepeatAttr();
+      return {...state, undisUserList, undisUserTotal };
+    },
+    // 清除选择的行
+    removeSelected(state, { payload: { record }}) {
+
+      state.selectedRows.remove(record);
+      state.selectedRowKeys.remove(record.key);
+      return {...state, };
+    },
+
+    clearPermissionList(state, { payload }) {
+      const permissionList = [];
+      return { ...state,permissionList};
+    },
+
+    setDefaultDepatInfo(state, { payload: { nodeid, tissueProperty } }) {
+      return { ...state, nodeid, tissueProperty };
+    },
   },
 }

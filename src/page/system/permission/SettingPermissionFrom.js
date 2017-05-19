@@ -40,7 +40,7 @@ class SettingPermissionFrom extends Component {
 
   render() {
 
-    let { permissionList, visible, selectRole  } = this.props;
+    let { permissionList, visible, loading  } = this.props;
     let nodes = permissionList.map((record, index) => {
       let subNodes = [];
       if (record.children != null) {
@@ -95,7 +95,8 @@ class SettingPermissionFrom extends Component {
     });
 
     return (
-      <Modal key = { visible }
+      <Modal
+        key = { visible }
         visible = { visible }
         title = "设置权限"
         okText =  "保存"
@@ -120,7 +121,7 @@ function mapStateToProps(state) {
     permissionList
   } = state.permission;
   return {
-    loading: state.loading.models.permission,
+    loading: state.loading,
     permissionList
   };
 }

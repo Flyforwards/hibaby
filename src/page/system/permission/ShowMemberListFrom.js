@@ -169,7 +169,7 @@ class ShowMemberListFrom extends Component {
 
 
   render() {
-    const { visible, record } = this.props
+    const { visible, record, loading } = this.props
     let { userList, memberTotal, selectedRows } = this.props;
     if (userList != null) {
       userList.map((record, index)=> {
@@ -228,7 +228,7 @@ class ShowMemberListFrom extends Component {
             <Button className="add" onClick={ this.addClick.bind(this) }>添加</Button>
           </div>
           <div className="CreateModaList">
-            <Table bordered dataSource={ userList } columns={ this.columns } pagination = { pagination }/>
+            <Table bordered dataSource={ userList } columns={ this.columns } pagination = { pagination } loading = { loading.effects['permission/getUserPageListByRoleId'] }/>
           </div>
         </div>
         <AlertModalFrom
@@ -251,7 +251,7 @@ function mapStateToProps(state) {
     selectedRows
   } = state.permission;
   return {
-    loading: state.loading.models.permission,
+    loading: state.loading,
     userList,
     departmentList,
     club,

@@ -3,8 +3,8 @@ class Current extends React.Component {
   render() {
     let range = this.props.range;
     return (range ?
-      < div style={{marginTop:'-42px'}}>
-      < p > 第 {
+      <div style={{marginTop:'-42px'}}>
+      <p> 第 {
         this.props.page
       }
       页, 共 {
@@ -14,7 +14,7 @@ class Current extends React.Component {
       } - {
         this.props.range.end
       }
-       </p> </div > : null)
+       </p> </div> : null)
   }
 }
 export default Current

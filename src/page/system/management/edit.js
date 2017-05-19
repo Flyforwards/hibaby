@@ -190,7 +190,7 @@ class editData extends React.Component {
           </Form>
           </Card >
           <div className="retuSave">
-            
+
               <Link  to={{pathname:'/system/group-char/detail',query:{ dataId }}}>
                   <Button className = "editable-add-btn return"> 返回 </Button>
               </Link>
