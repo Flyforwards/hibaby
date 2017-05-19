@@ -67,6 +67,7 @@ class ViewTheInformationed extends React.Component {
        dataId:dataID
       }
     })
+    window.location.reload( true )
   }
    onError() {
     this.setState({

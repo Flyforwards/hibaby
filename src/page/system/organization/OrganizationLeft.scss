@@ -3,7 +3,9 @@
 	width:20%;
 	float:left;
 	background-color:#fff;
-	min-height:500px;
+	height:100%;
+	margin-top:10px;
+	min-height: 800px;
 	overflow: hidden;
 	position:relative;
 	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {

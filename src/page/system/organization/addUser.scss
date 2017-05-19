@@ -126,7 +126,7 @@
 			}
 		}
 		.directLeadership{
-			margin-left:61px; 
+			margin-left:70px; 
 			margin-top: 20px;
 			input{
 				width:230px;
@@ -186,6 +186,7 @@
 		}
 		.internalExtension{
 			margin-bottom: 20px;
+			margin-left: 113px
 		}
 	}
 	.returnButton,.saveButton{
@@ -215,7 +216,7 @@
 		.localCenter,.affiliatedDepartment,.directLeadership,.position,.systemRole{
 			width:30%;
 			float:left;
-			margin-left: 17%;
+			margin-left: 21%;
 			margin-top:30px; 
 			font-weight: 400;
 		    font-style: normal;
@@ -232,14 +233,21 @@
 			margin-left: 145px;
 		}
 		.affiliatedDepartment{
-			margin-left: 140px;
+			margin-left: 86px;
+		}
+		.directLeadership{
+			margin-left: 21%;
+		}
+		.position{
+			margin-left: 86px;
+			margin-top:28px; 
 		}
 	}
 	.entryInformationContent{
 		.localCenter,.affiliatedDepartment,.directLeadership,.position,.systemRole{
 			width:18%;
 			float:left;
-			margin-left: 18%;
+			margin-left: 22%;
 			margin-top:20px; 
 			font-weight: 400;
 		    font-style: normal;
@@ -252,8 +260,14 @@
 				text-indent: 20px;
 			}
 		}
+		.phoneNumber,.companyEmail{
+			margin-left: 25%;
+		}
 		.position{
-			margin-left:21%; 
+			margin-left:205px; 
+		}
+		.affiliatedDepartment{
+			margin-left: 205px;
 		}
 	}
 	.basicInformationContent{
@@ -286,7 +300,6 @@
 		.Numbering{
 			margin-left:56px; 
 		}
-
 	}
 	.ant-btn{
 		float:right;

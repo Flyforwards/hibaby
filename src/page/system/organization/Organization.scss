@@ -1,4 +1,6 @@
 .organizationConnet{
+height:100%;
+overflow:hidden; 
 .mini .yt-admin-framework-content {
     transition: all .3s;
     margin-left: 60px;
@@ -7,12 +9,14 @@
     padding: 0 12px;
     background-color: #eeeeee;
 }
-.yt-admin-framework-Customer-a{
+.yt-admin-framework--a{
 	.ant-table {
 	    margin-top: -187px;
 	}
 }
 .yt-admin-framework-Customer-a{
+height:100%;
+overflow: hidden;
 .Organization-right{
 	width:79%;
 	float:left;
@@ -29,7 +33,7 @@
 	height:110px;
 	font-size:14px;
 	margin-top:10px;
-	margin-bottom:200px;
+	margin-bottom:20px;
 	padding-top:20px;
 	.name{
 		float:left;
@@ -189,13 +193,20 @@
 			text-decoration: none;
 		}
 		.twoA{
-			color: #FF0000;
+			border:none;
+			background-color: #fff;
+			margin-right:9px;
+			margin-left:10px;
+			color:#f75555;
 			text-decoration: none;
 		}
-		a{
+		.twoB{
+			border:none;
+			background-color: #fff;
 			margin-right:9px;
-			margin-left:5px;
-			color:rgba(0, 0, 0, 0.85);
+			margin-left:10px;
+			color:#666;
+			text-decoration: none;
 		}
 	}
 }
@@ -332,7 +343,7 @@
 	}
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
-    font-size: 28px;
+    font-size: 24px;
     font-size: 7px\9;
     content: "\E606";
     font-weight: 700;
@@ -340,7 +351,7 @@
     margin-left:10px; 
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
-	font-size: 28px;
+	font-size: 24px;
     font-size: 7px\9;
     content: "\E606";
     font-weight: 700;

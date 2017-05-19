@@ -33,6 +33,15 @@ class AddUsered extends React.Component {
   }
   componentDidMount(){
       let endemic = session.get("endemic")
+      let NODEID = window.location.search.split("=")[1];
+      if(NODEID){
+        this.props.dispatch({
+          type: 'organization/position',
+          payload: {
+            dataId: NODEID
+          }
+        })
+      }
       this.props.dispatch({
             type: 'organization/getDeptListByEndemicId',
             payload: {
@@ -81,6 +90,10 @@ class AddUsered extends React.Component {
   //保存按键
   headelSave = ()=>{
     let endemic  = session.get("endemic")
+    message.config({
+        top: 100,
+        duration: 0.1
+    });
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const values = {
@@ -103,7 +116,6 @@ class AddUsered extends React.Component {
                           if(fields.phoneNumber){
                             if(fields.information){
                               if(fields.companyEmail){
-                                console.log("this.state.NewuserImg",this.state.NewuserImg)
                                 if(this.state.NewuserImg){
                                     this.props.dispatch({
                                       type: 'organization/addUser',
@@ -158,7 +170,7 @@ class AddUsered extends React.Component {
             message.warning('请选择性别')
           }
         }else{
-          message.warning('请输入您的姓名')
+          message.warning('请输入姓名')
         }
       }
     })
@@ -345,7 +357,7 @@ class AddUsered extends React.Component {
              required
             >
               {getFieldDecorator('password', {
-                initialValue: "kb123",
+                initialValue: "kbm12345",
               })(
                 <Input disabled={ true }/>
               )}
@@ -355,8 +367,6 @@ class AddUsered extends React.Component {
              label="联系方式"
              className="information"
              required
-             min ={11}
-             max = {13}
             >
               {getFieldDecorator('information', {
                   rules: [{

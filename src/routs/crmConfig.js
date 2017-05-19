@@ -12,6 +12,44 @@ export default (app) => [
         })
       }
     },
+    // 套餐
+    {
+      path: '/crm/serviceinfo',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/serviceinfo.jsx'))
+        })
+      }
+    },
+    // 添加套餐
+    {
+      path: '/crm/serviceinfo/addservice',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/addService.jsx'))
+        })
+      }
+    },
+    //套房
+    {
+      path: '/crm/suite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('page/crm/product/InfoCard.jsx'))
+        })
+      }
+    },
+    //商品
+    {
+      path: '/crm/commodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('page/crm/product/InfoCard.jsx'))
+        })
+      }
+    },
     // 会员卡管理
     {
       path: '/crm/infoCard',
