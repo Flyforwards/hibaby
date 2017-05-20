@@ -19,7 +19,6 @@ export function deleteService(values) {
     body: JSON.stringify(values),
   })
 }
-<<<<<<< HEAD
 //增添菜单列表数据
 export function AddMenuList(values) {
   return request('/crm/api/v1/module/add', {
@@ -55,5 +54,3 @@ export function MenuPermissionSelect(values) {
     body: JSON.stringify(values),
   })
 }
-=======
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b

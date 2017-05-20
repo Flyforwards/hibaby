@@ -7,12 +7,11 @@ import {routerRedux} from 'dva/router';
 import {Link} from 'react-router';
 import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
-class serviceData extends Component {
+class serviceIndex extends Component {
     constructor(props) {
         super(props)
-        this.delete=this.delete.bind(this)
-        this.state = {
-
+        this.state= {
+          alertModalVisible: false,
         }
         this.columns = [{
           title: '服务项目名称',
@@ -45,7 +44,6 @@ class serviceData extends Component {
         }];
     }
 
-
     // 删除弹框
     delete(record){
       this.record = record;
@@ -59,8 +57,6 @@ class serviceData extends Component {
           type: 'service/deleteService',
           payload: {
             dataId: record.id,
-            page: this.page,
-            pageSize: this.pageSize,
           }
         })
       this.handleCreateModalCancel();
@@ -71,25 +67,22 @@ class serviceData extends Component {
         })
     }
     render() {
-        const pagination = {
-          total: this.props.total, //数据总条数
-          showQuickJumper: true,
-          pageSize:10,
-          onChange: (current) => {
-            this.props.dispatch(routerRedux.push({
-              pathname: '/system/service-item',
+        const { list, loading, pagination, dispatch } = this.props;
+        const tableProps = {
+          loading: loading.effects['service/ServicePage'],
+          dataSource : list ,
+          pagination,
+          onChange (page) {
+            const { query, pathname } = location
+            dispatch(routerRedux.push({
+              pathname,
               query: {
-                "page": current,
-                "results": 10,
-                "type": 1
+                ...query,
+                page: page.current,
+                size: page.pageSize,
               },
-            }));
+            }))
           },
-        };
-        if (this.props.data !== null) {
-          this.props.data.map((record)=>{
-            record.key = record.id;
-          })
         }
         return (
            <div className="ServiceBox">
@@ -99,8 +92,7 @@ class serviceData extends Component {
                 </Link>
               </div>
               <div className="CreateModaList">
-                  <Table bordered dataSource={ this.props.data } columns={ this.columns } pagination = { pagination }/>
-                  <p className="allList">共计0条,范围1-10</p>
+                  <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ this.columns }/>
               </div>
               <AlertModalFrom
                 visible ={ this.state.alertModalVisible }
@@ -109,56 +101,21 @@ class serviceData extends Component {
                 message = { "是否确定删除此服务项?" }
               />
            </div>
-
         )
     }
 }
 
-function service({
-  dispatch,
-  loading,
-  total,
-  page,
-  results,
-  range,
-  code
-}) {
-  return ( < div >
-    < serviceData dispatch = {
-      dispatch
-    }
-    loading = {
-      loading
-    }
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    /> </div >
-  )
 
-}
 function mapStateToProps(state) {
   const {
-    data,
-    total,
-    page,
-    range,
     list,
-    code
+    pagination
   } = state.service;
-
   return {
-    loading: state.loading.models.service,
-    data,
-    total,
+    loading: state.loading,
     list,
-    page,
-    range,
-    code
+    pagination
   };
 }
 
-export default connect(mapStateToProps)(serviceData);
+export default connect(mapStateToProps)(serviceIndex);

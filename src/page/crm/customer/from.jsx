@@ -20,7 +20,7 @@ class SelectListed extends Component {
     render() {
         return (
             <div className="SelectList">
-              <span>上级权限
+              <span>
               <TreeSelect
                 style={{ width: 150 }}
                 key={this.props.list.id}
@@ -62,4 +62,3 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps)(SelectList)
-

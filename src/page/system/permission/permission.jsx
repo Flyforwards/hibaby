@@ -7,6 +7,7 @@ import AddRoleFrom from './AddRoleFrom';
 import SettingPermissionFrom from './SettingpermissionFrom'
 import ShowMemberListFrom from './ShowMemberListFrom'
 import AlertModalFrom from 'common/AlertModalFrom'
+import manager from 'common/util'
 import { routerRedux } from 'dva/router';
 import Page from 'framework/page'
 
@@ -32,13 +33,17 @@ class permission extends Component {
           key: 'operating',
           width: '500px',
           render: (text, record, index) => {
+            const roleConfig = manager.array_contain(this.props.permissionAlias,'roleConfig');
+            const users = manager.array_contain(this.props.permissionAlias,'roleUsers');
+            const roleU = manager.array_contain(this.props.permissionAlias,'roleU')
+            const roleD =  manager.array_contain(this.props.permissionAlias,'roleD')
             return (
-                <div key = { index }>
-                  <a className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</a>
-                  <a className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</a>
-                  <a className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</a>
-                  <a className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
-                </div>
+              <div key = { index }>
+                <a disabled={ !roleU } className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</a>
+                <a disabled={ !roleConfig } className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</a>
+                <a disabled={ !users } className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</a>
+                <a disabled={ !roleD } className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
+              </div>
             );
           },
         }];
@@ -111,7 +116,8 @@ class permission extends Component {
     }
 
     render() {
-        let { data, pagination, loading, dispatch } = this.props;
+
+        let { data, pagination, loading, dispatch, permissionAlias } = this.props;
         const tableProps = {
           loading: loading.effects['permission/getRolesByPage'],
           dataSource : data ,
@@ -123,7 +129,7 @@ class permission extends Component {
               query: {
                 ...query,
                 page: page.current,
-                pageSize: page.pageSize,
+                size: page.pageSize,
               },
             }))
           },
@@ -132,10 +138,10 @@ class permission extends Component {
         return (
            <div className="permission-cent">
              <div className="divs">
-               <Button className="add" onClick={ this.addList.bind(this) }>添加</Button>
+               <Button disabled={ manager.array_contain(permissionAlias,"roleC") } className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
-                <Table {...tableProps} columns={this.columns} bordered rowKey={record => record.id}/>
+                <Table {...tableProps} columns={ this.columns } bordered rowKey={record => record.id}/>
              </div>
              <AddRoleFrom
                visible ={ this.state.modifyModalVisible }
@@ -170,11 +176,12 @@ function mapStateToProps(state) {
     data,
     pagination
   } = state.permission;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     data,
-    pagination
+    pagination,
+    permissionAlias
   };
 }
 

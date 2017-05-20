@@ -9,7 +9,7 @@ const FormItem = Form.Item
 
 
 @createForm()
-class AddModule extends Component {
+class EditModule extends Component {
   constructor(props) {
     super(props)
     this.editItem = null;
@@ -21,21 +21,45 @@ class AddModule extends Component {
   handleOk() {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-            this.props.dispatch({
-              type: 'module/AddMenuData',
-              payload: {
-                description:values.name,
-                name: values.name,
-                icon:"copyright",
-                orderBy:Number(values.orderBy),
-                path:values.path,
-                permissionId:Number(values.permissionId),
-                projectId:Number(values.projectId)
+          let payload={}
+          console.log("values>>>>",values)
+          let permissionId=0;
+          if(Number(values.permissionId)==NaN){
+            permissionId=this.props.record.permissionId
+          }else{
+            permissionId=Number(values.permissionId)
+          }
+          if(Number(values.projectId)==NaN){
+            payload= {
+              description:values.name,
+              name: values.name,
+              icon:"copyright",
+              orderBy:Number(values.orderBy),
+              path:values.path,
+              permissionId:permissionId,
+              projectId:this.props.record.projectId,
+              id:this.props.record.id,
             }
-            })
-
-          this.props.onCancel()
+          }else{
+            payload= {
+              description:values.name,
+              name: values.name,
+              icon:"copyright",
+              orderBy:Number(values.orderBy),
+              path:values.path,
+              permissionId:permissionId,
+              projectId:Number(values.projectId),
+              id:this.props.record.id,
+            }
+          }
+          this.props.dispatch({
+            type: 'module/EditMenuData',
+            payload:payload,
+          })
+            this.props.onCancel()
+            console.log("payload",payload)
         }
+
       });
 
   }
@@ -46,6 +70,7 @@ class AddModule extends Component {
 
 
   render() {
+    console.log("菜单主模块>>>>",this.props.record)
     const { visible, record ,data,list,permission,menu } = this.props
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let modalTitle = "菜单模块：";
@@ -67,6 +92,9 @@ class AddModule extends Component {
     menu.map((arr,index)=>{
       menudata.push(<Option key={arr.id}>{arr.name}</Option>)
     })
+    let item={};
+    item=record?record:{};
+    console.log('record>>>>',item)
     return (
       <Modal
         visible = { visible }
@@ -84,7 +112,7 @@ class AddModule extends Component {
           <Form>
               <div className="MainModule">
                   <h4 className="projectName">主模块：</h4>
-                  {getFieldDecorator('projectId', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('projectId', {initialValue:`${item.projectName}`,rules: [{ required: true, message: '字段名称为必填项！' }],
                   })(<Select className="SelectMenu"
                     showSearch
                     style={{ width:430 }}
@@ -98,7 +126,7 @@ class AddModule extends Component {
               </div>
               <div className="MainModule">
                   <h4 className="parentName">上级菜单：</h4>
-                  {getFieldDecorator('parentId', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('parentId', {initialValue:`${item.parentName}`,rules: [{ required: true, message: '字段名称为必填项！' }],
                   })(
                   <Select className="SelectMenu"
                     showSearch
@@ -112,7 +140,7 @@ class AddModule extends Component {
               </div>
               <div className="MainModule">
                   <h4 className="projectName">权限：</h4>
-                  {getFieldDecorator('permissionId', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('permissionId', {initialValue:`${item.permissionName}`,rules: [{ required: true, message: '字段名称为必填项！' }],
                   })(
                   <Select className="SelectMenu"
                     showSearch
@@ -127,7 +155,7 @@ class AddModule extends Component {
               <div className="MeunName">
                 <h4 className="Name">名称：</h4>
                 <FormItem {...formItemLayout} className = "NameBox">
-                  {getFieldDecorator('name', {initialValue: name,rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('name', {initialValue: `${item.name}`,rules: [{ required: true, message: '字段名称为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
@@ -136,7 +164,7 @@ class AddModule extends Component {
               <div className="MeunPath">
                 <h4 className="Route">路径：</h4>
                 <FormItem {...formItemLayout} className = "PathBox">
-                  {getFieldDecorator('path', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('path', {initialValue: `${item.path}`,rules: [{ required: true, message: '字段名称为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
@@ -144,8 +172,8 @@ class AddModule extends Component {
               </div>
               <div className="MeunPath">
                 <h4 className="orderBy">排序：</h4>
-                <FormItem {...formItemLayout} className = "PathBox">
-                  {getFieldDecorator('orderBy', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                <FormItem {...formItemLayout} className = "orderByBox">
+                  {getFieldDecorator('orderBy', {initialValue: `${item.orderBy}`,rules: [{ required: true, message: '字段名称为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
@@ -175,4 +203,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AddModule)
+export default connect(mapStateToProps)(EditModule)

@@ -12,13 +12,10 @@
 
   .add{
     display:inline-block;
-    color: #FFFFFF;
     width: 140px;
     height: 40px;
     text-align: center;
     line-height: 40px;
-    background: inherit;
-    background-color: rgb(16, 131, 230);
     border: none;
     border-radius: 5px;
     font-family: '微软雅黑 Regular', '微软雅黑';
@@ -194,7 +191,11 @@
         display: inline-block;
         color: #FF0000;
       }
-
+      .firstD{
+        display: inline-block;
+        color: #999999;
+        width:25%;
+      }
 		}
 	}
 

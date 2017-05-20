@@ -99,7 +99,7 @@ class AddUsered extends React.Component {
         const values = {
           ...fieldsValue,
           'entryTime': fieldsValue['entryTime']
-        } 
+        }
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
         if(fields.systemRole){
@@ -163,7 +163,7 @@ class AddUsered extends React.Component {
                     }
               }else{
                 message.warning('请选择隶属部门')
-              }  
+              }
             }else{
               message.warning('请选择入职日期')
             }
@@ -172,13 +172,10 @@ class AddUsered extends React.Component {
           }
         }else{
           message.warning('请输入姓名')
-<<<<<<< HEAD
           message.config({
             top: 100,
             duration: 0
           });
-=======
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
         }
       }
     })
@@ -188,7 +185,7 @@ class AddUsered extends React.Component {
       NewuserImg:NewuserImg
     })
   }
-    render() {  
+    render() {
       let traversalEndemicId = []
       let selectDataList = []
       let endemic = session.get("endemic")

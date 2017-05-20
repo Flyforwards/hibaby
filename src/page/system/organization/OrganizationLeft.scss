@@ -4,10 +4,7 @@
 	float:left;
 	background-color:#fff;
 	height:100%;
-<<<<<<< HEAD
-=======
 	margin-top:10px;
->>>>>>> 494ba3fd91f43df62921e99c4882a5a43ed6570b
 	min-height: 800px;
 	overflow: hidden;
 	position:relative;
@@ -20,11 +17,11 @@
 	.ant-tree li a:hover {
 	    background-color: rgba(204, 204, 204, 1);
 	    font-weight: 400;
-	    margin-left:-20px; 
+	    margin-left:-20px;
 	}
 	.ant-tree li ul {
 		margin-right: 10px;
-		margin-left:10px; 
+		margin-left:10px;
 	}
 	.ant-tree li a.ant-tree-node-selected {
     	background-color: rgba(204, 204, 204, 1);
@@ -38,12 +35,12 @@
 	}
 	.ant-tree-title{
 		display:inline-block;
-		margin-left:-0px; 
+		margin-left:-0px;
 	}
 	.ant-tree li{
-		margin-left:-11px; 
+		margin-left:-11px;
 	}
 	.ant-tree {
-		margin-left:22px; 
+		margin-left:22px;
 	}
 }

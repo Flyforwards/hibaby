@@ -9,15 +9,19 @@ export default {
 	state: {
 		data: null,
 		total: null,
-		list:null,
+		list:[],
 		leftList:null,
 		dictionarySideDOs:null,
-		item: null,
-		permission:null,
-		menu:null,
+		item: [],
+		permission:[],
+		menu:[],
+		edit:[],
 	},
 	reducers: {
 		//菜单列表
+		groupCharSave(state, { payload: { list, pagination }}) {
+			return {...state, list, pagination: {  ...state.pagination,...pagination }};
+		},
 
 		MainMenuList(state, {
 			payload: {data:item,size,page,total}
@@ -47,11 +51,10 @@ export default {
 			}
 		},
 		//编辑菜单数据
-		EditMenuList(state,{payload:{data:item,code}}){
+		EditMenuListData(state,{payload:{data:edit}}){
 				return{
 					...state,
-					item,
-					code
+					edit
 				}
 		},
 		//主模块下拉
@@ -97,12 +100,12 @@ export default {
 				});
 			}
 		},
-		//删除服务项目
+		//删除菜单数据
 		*deleteService({ payload: values }, {call,put }) {
       const { page, pageSize, dataId} = values
       const { data: { data, code, err }} = yield call(moduleService.deleteService, { dataId});
       if (code == 0) {
-        message.success('删除服务项目成功');
+        message.success('删除成功');
         yield put({
           type : 'MenuData',
           payload : { page : page || 0 , size : pageSize || 10 }
@@ -127,22 +130,17 @@ export default {
 			}
 		},
 		//编辑菜单数据列表
-		*EditMenuData({
-			payload: values
-		}, {
-			call,
-			put
-		}) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(moduleService.EditMenuList, values);
-			console.log("effects>>>",data)
+		*EditMenuData({payload: values}, { call, put }) {
+			const {data: { data,code} } = yield call(moduleService.EditMenuListData, values);
 			if (code == 0) {
 				message.success("菜单数据更新成功")
-				yield put(routerRedux.push("/system/module"))
+				yield put({
+						type:'EditMenuListData',
+						payload:{
+							data,
+							code
+						}
+				});
 			}
 		},
 		//菜单主模块下拉选项
