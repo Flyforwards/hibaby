@@ -1,19 +1,23 @@
 import * as saveService from '../services/save';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
-import {local, session} from 'common/util/storage.js';
-import {PAGE_SIZE} from 'common/constants.js'
+import { local, session } from 'common/util/storage.js';
+import { PAGE_SIZE } from 'common/constants.js'
+import { parse } from 'qs'
 
 export default {
 	namespace: 'save',
 	state: {
 		data: null,
-		total: null,
-		list:null,
-		leftList:null,
-		dictionarySideDOs:null,
+		list: [],
 		item: null,
     editData: null,
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
 	},
 	reducers: {
 		//添加集团列表数据
@@ -31,6 +35,10 @@ export default {
     // 编辑页面获取到的数据
     getEditDataSave(state, { payload: { data: editData } }) {
       return  {...state, editData };
+    },
+
+    groupCharSave(state, { payload: { list, pagination }}) {
+      return {...state, list, pagination: {  ...state.pagination,...pagination }};
     },
 	},
 	effects: {
@@ -75,6 +83,33 @@ export default {
 			}
 		},
 
+    *groupChar({ payload: values }, { call, put }) {
+      values = parse(location.search.substr(1))
+      if (values.page === undefined) {
+        values.page = 1;
+      }
+      if (values.size === undefined) {
+        values.size = 10;
+      }
+      if (values.type === undefined) {
+        values.type = 1;
+      }
+      const { data: { data, total, page, size, code } } = yield call(saveService.groupCharList, values);
+      if (code == 0) {
+        yield put({
+          type: 'groupCharSave',
+          payload: {
+            list: data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
+      }
+    },
+
 	},
 	subscriptions: {
 		setup({ dispatch, history }) {
@@ -94,6 +129,13 @@ export default {
 						payload: query
 					});
 				}
+        if (pathname === '/system/group-char') {
+          dispatch({
+            type: 'groupChar',
+            payload: query
+          });
+        }
+
 			})
 		}
 	},

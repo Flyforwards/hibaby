@@ -158,4 +158,12 @@ export function getProjectAndModuleTree(values) {
   })
 }
 
+// 获取主模块树
+export function currentUserPermissionAliasList(values) {
+  return request('/crm/api/v1/permission/currentUserPermissionAliasList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 

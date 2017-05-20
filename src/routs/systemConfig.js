@@ -62,7 +62,7 @@ export default (app) => [
       path: '/system/group-char',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          registerModel(app, require('models/system'));
+          registerModel(app, require('models/save'));
           cb(null, require('page/system/management/management.jsx'))
         })
       }
@@ -72,7 +72,7 @@ export default (app) => [
       path: '/system/local-char',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          registerModel(app, require('models/system'));
+          registerModel(app, require('models/localData'));
           cb(null, require('page/system/place/place.jsx'))
         })
       }

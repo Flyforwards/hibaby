@@ -13,6 +13,7 @@ export default {
     projectTree: [],
     userInfo: null,
     selectIndex: 0,
+    permissionAlias: [],
   },
 
   subscriptions: {
@@ -29,12 +30,22 @@ export default {
         const { data: { data: clubs, code : code1, err: err1}} = yield call(usersService.getCurrentUserEndemic)
         if (code1 == 0 && err1 == null) {
           session.set("clubs", clubs);
+          // 查询用户信息
           const { data: { data: userInfo, code: code2, err: err2}} = yield call(usersService.getCurrentUserInfo)
           if (code2 ===0 && err2 === null) {
             session.set("userInfo", userInfo);
             yield put({
               type: 'getUserInfoSuccess',
               payload: { userInfo }
+            })
+          }
+
+          // 获取当前用户当前选择地方中心的权限别名列表
+          const { data: { data: permissionAlias, code: code5, err: err5}} = yield call(usersService.currentUserPermissionAliasList)
+          if (code5 ===0 && err5 === null) {
+            yield put({
+              type: 'permissionAliasSave',
+              payload: { permissionAlias }
             })
           }
           yield put({
@@ -154,7 +165,6 @@ export default {
       if (code == 0 && err == null) {
         const paths = location.pathname.split("/");
         let projectInx = 0;
-        console.log(paths)
         if (paths.length >= 2) {
           const path1 = paths[1];
           if (data != null && data.length>0) {
@@ -280,6 +290,12 @@ export default {
       return {
         ...state,
         projectTree,
+      }
+    },
+    permissionAliasSave (state, { payload: { permissionAlias } }) {
+      return {
+        ...state,
+        permissionAlias,
       }
     },
   },

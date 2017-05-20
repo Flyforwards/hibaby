@@ -7,6 +7,8 @@ import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messa
 import request from '../../../common/request/request.js';
 import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
+import AddModule from './AddModule'
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const createForm = Form.create
@@ -18,7 +20,8 @@ class Module extends Component {
   constructor(props) {
     super(props);
     this.state={
-        alertModalVisible:false
+        alertModalVisible:false,
+        modifyModalVisible:false
     }
     this.columns = [{
       title: '主模块',
@@ -90,7 +93,6 @@ class Module extends Component {
           })
       }
     });
-    console.log("content>>>>",this.props.form.validateFields)
   }
 
   handleReset = () => {
@@ -109,6 +111,12 @@ class Module extends Component {
       alertModalVisible: true,
     })
   }
+  addList(){
+    this.setState({
+      modifyModalVisible: true,
+      add: true,
+    })
+  }
   //确定删除
   handleAlertModalOk(record) {
       console.log("del>>>",record.id)
@@ -124,9 +132,11 @@ class Module extends Component {
   }
   handleCreateModalCancel() {
       this.setState({
+        modifyModalVisible: false,
         alertModalVisible: false,
       })
   }
+
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     console.log("value>>>>",getFieldValue('key'))
@@ -134,7 +144,6 @@ class Module extends Component {
      labelCol: { span: 5 },
      wrapperCol: { span: 19 },
    };
-    console.log("moduleData>>>>",this.props.data)
     const data=this.props.data?this.props.data:null;
     const columns = this.columns;
     const pagination = {
@@ -204,7 +213,15 @@ class Module extends Component {
                 <div className="Button">
                     <Button className="Select" htmlType="submit">查询</Button>
                     <Button className="Select" onClick={this.handleReset}>清空</Button>
-                    <Button className="Select">新增</Button>
+                    <Button className="Select" onClick={this.addList.bind(this)}>新增</Button>
+                    <AddModule
+                      visible ={ this.state.modifyModalVisible }
+                      onCancel ={ this.handleCreateModalCancel.bind(this) }
+                      record = { this.record }
+                      add = { this.state.add }
+                      page = { this.page }
+                      pageSize = { this.pageSize }
+                    />
                 </div>
             </Form>
         </div>
@@ -224,17 +241,21 @@ class Module extends Component {
   }
 }
 
-function Module({ dispatch, data, code, page, size, total}) {
+function Module({ dispatch, data, code, page, size, total,list,permission,menu}) {
   return (
-    <Module dispatch={dispatch} data={data} id={id} code={code} page={page} size={size} total={total}/>
+    <Module dispatch={dispatch} data={data} id={id} code={code} list={list} permission={permission}
+    menu={menu}  page={page} size={size} total={total}/>
   )
 }
 function mapStateToProps(state) {
-  console.log("module>>>>",state.module)
-  const { item:data,size,total,page} = state.module;
+  console.log("module>>>>",state.module.menu)
+  const { item:data,size,total,page,permission,list,menu} = state.module;
   return {
     loading: state.loading.models.module,
-    data
+    data,
+    permission,
+    list,
+    menu
   };
 }
 

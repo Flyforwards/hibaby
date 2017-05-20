@@ -99,5 +99,6 @@ export default (app) => [
         })
       }
     },
+
 ]
 
