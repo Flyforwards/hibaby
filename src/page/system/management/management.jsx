@@ -7,7 +7,8 @@ import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import Current from '../../Current'
-class SystemIndex extends React.Component {
+
+class GroupCharIndex extends React.Component {
 
   constructor(props) {
     super(props);
@@ -36,111 +37,59 @@ class SystemIndex extends React.Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record, index) => {
-
-          return ( < Link to =
-              {`/groupchar/check?dataId=${record.id}`}
-            > 查看 </Link>)
+          return (
+            <Link to = {`/system/group-char/detail?dataId=${record.id}`} > 查看 </Link>)
           },
         }];
     }
 
     render() {
-      const columns = this.columns;
-      const pagination = {
-        total: this.props.total, //数据总条数
-        showQuickJumper: true,
-        pageSize:10,
-        onChange: (current) => {
-          this.props.dispatch(routerRedux.push({
-            pathname: '/system/groupchar',
+      const { list, loading, pagination, dispatch } = this.props;
+      const tableProps = {
+        loading: loading.effects['save/groupChar'],
+        dataSource : list ,
+        pagination,
+        onChange (page) {
+          const { query, pathname } = location
+          dispatch(routerRedux.push({
+            pathname,
             query: {
-              "page": current,
-              "results": 10,
-              "type": 1
+              ...query,
+              page: page.current,
+              size: page.pageSize,
+              type: 1,
             },
-          }));
+          }))
         },
-      };
-      return ( <div className = "container2">
-                    <div className = "buttonwrapper">
-                      <Link to = '/groupChar/add'>
-                        <Button className="addBtn"> 添加 </Button>
-                      </Link >
-                    </div>
-                    { this.props.list?
-                    < Table rowKey = "id"  bordered dataSource = {this.props.list ? this.props.list : []} columns = { columns}
-                      pagination = { pagination} />:null}
-                    < Current page = {this.props.page
-                  }
-                  totalpage = {
-                    this.props.totalpage
-                  }
-                  total = {
-                    this.props.total
-                  }
-                  results = {
-                    this.props.results
-                  }
-                  range = {
-                    this.props.range
-                  }
-                  />
-        </div>
+      }
+      // <Current page = { this.props.page }  totalpage = { this.props.totalpage }
+      //         total = { this.props.total } results = { this.props.results }
+      //         range = { this.props.range }
+      // />
+      return (
+        <div className = "container2">
+            <div className = "buttonwrapper">
+              <Link to = '/system/group-char/add'>
+                <Button className="addBtn"> 添加 </Button>
+              </Link >
+            </div>
+            <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
+       </div>
     );
   }
 }
 
-function management({
-  dispatch,
-  loading,
-  data: list,
-  total,
-  page,
-  results,
-  range,
-  code
-}) {
-  return ( < div >
-    < SystemIndex dispatch = {
-      dispatch
-    }
-    list = {
-      list
-    }
-    loading = {
-      loading
-    }
-
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    /> </div >
-  )
-}
-
 function mapStateToProps(state) {
-  // console.log("modelss",state.system)
   const {
-    data,
-    total,
-    page,
-    results,
-    range,
-    code
-  } = state.system;
+    list,
+    pagination
+  } = state.save;
 
   return {
-    loading: state.loading.models.system,
-    data,
-    total,
-    page,
-    results,
-    range,
-    code
+    loading: state.loading,
+    list,
+    pagination
   };
 }
 
-export default connect(mapStateToProps)(management);
+export default connect(mapStateToProps)(GroupCharIndex);

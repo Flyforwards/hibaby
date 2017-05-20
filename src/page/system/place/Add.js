@@ -127,7 +127,7 @@ class PlaceAdd extends React.Component {
             </Form>
           </Card >
           <div className="retuSave">
-            <Link to='/system/localchar'>
+            <Link to='/system/local-char'>
               <Button className = "editable-add-btn return"> 返回 </Button>
             </Link>
             <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
@@ -141,12 +141,10 @@ class PlaceAdd extends React.Component {
 function mapStateToProps(state) {
     const {
       item,
-      code
     } = state.localData;
     return {
       loading: state.loading.models.localData,
       item,
-      code
     };
 }
 export default connect(mapStateToProps)(PlaceAdd);

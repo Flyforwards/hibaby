@@ -19,20 +19,20 @@ class CheckData extends React.Component {
         }
     }
 
-      handleChange(e) {
-         const myid=GetQueryString("id");
-         const item=this.props.data ;
-         const value=e.target.value;
-         const name=item.map(res=>{
-             if(res.id=myid){
-               return(res.name)
-             }
-         })
-         this.setState({
-            name:""
-         })
-         console.log(value)
-     }
+    handleChange(e) {
+       const myid=GetQueryString("id");
+       const item=this.props.data ;
+       const value=e.target.value;
+       const name=item.map(res=>{
+           if(res.id=myid){
+             return(res.name)
+           }
+       })
+       this.setState({
+          name:""
+       })
+       console.log(value)
+   }
     render() {
       const { getFieldDecorator } = this.props.form;
       const item = this.props.data ? this.props.data : {};
@@ -41,7 +41,7 @@ class CheckData extends React.Component {
         labelCol: { span: 2 },
         wrapperCol: { span: 22 },
       };
-      const editid=GetQueryString("dataId");
+      const editid = GetQueryString("dataId");
       let fields=[];
       if (item.dictionarySideDOs && item.dictionarySideDOs.length >= 0) {
         arr = item.dictionarySideDOs;
@@ -81,10 +81,10 @@ class CheckData extends React.Component {
                   {fields}
                 </Card >
                 <div className="retuSave">
-                    <Link to='/system/groupchar'>
+                    <Link to='/system/group-char'>
                     <Button className = "editable-add-btn return"> 返回 </Button>
                     </Link>
-                    <Link to={{pathname:'/groupchar/edit',query:{id:`${editid}`}}}>
+                    <Link to={{pathname:'/system/group-char/edit',query:{ dataId:`${editid}`}}}>
                         <Button className = "editable-add-btn"> 编辑 </Button>
                     </Link>
                 </div>

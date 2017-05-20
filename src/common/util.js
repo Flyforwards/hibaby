@@ -34,6 +34,8 @@ function xxx() {
 
 xxx()
 
+
+
 const manager = {
   // 冒泡排序 // 由小到大
   bubbleSort: function (array) {
@@ -50,6 +52,13 @@ const manager = {
       }
     }
     return array;
+  },
+  array_contain: function(array, obj){
+    for (var i = 0; i < array.length; i++){
+      if (array[i] == obj)//如果要求数据类型也一致，这里可使用恒等号===
+        return true;
+    }
+    return false;
   }
 }
 

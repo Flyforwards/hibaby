@@ -22,7 +22,7 @@ class AddRoleFrom extends Component {
           if (this.props.add) {
             this.props.dispatch({
               type: 'permission/submitCreateRole',
-              payload: {roleName: values.name}
+              payload: { roleName: values.name }
             })
           } else {
             this.props.dispatch({
@@ -30,8 +30,6 @@ class AddRoleFrom extends Component {
               payload: {
                 roleName: values.name,
                 id: this.props.record.id,
-                page: this.state.page,
-                pageSize: this.state.pageSize,
               }
             })
           }

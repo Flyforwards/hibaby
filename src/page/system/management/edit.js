@@ -160,7 +160,7 @@ class editData extends React.Component {
           </FormItem>
         );
       });
-
+      const dataId = GetQueryString("dataId");
 
       return (
         <div className="xuanxiang container2">
@@ -186,11 +186,11 @@ class editData extends React.Component {
           <Card title = "下拉选项:" >
           <Form>
                { formItems }
-               <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
+               <Button className = "editable-add-btn add" onClick = { this.add.bind(this) }> 添加 </Button>
           </Form>
           </Card >
           <div className="retuSave">
-              <Link to='groupchar/check'>
+              <Link  to={{pathname:'/system/group-char/detail',query:{ dataId }}}>
                   <Button className = "editable-add-btn return"> 返回 </Button>
               </Link>
               <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
@@ -200,18 +200,18 @@ class editData extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-  const {
-    item: data,
-    code,
-    field,
-  } = state.save;
+function GetQueryString(name){
+  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  var r = window.location.search.substr(1).match(reg);
+  if(r!=null)return  unescape(r[2]); return null;
+}
 
+function mapStateToProps(state) {
+
+  const { editData : data } = state.save;
   return {
     loading: state.loading.models.save,
     data,
-    code,
-    field,
   };
 }
 export default connect(mapStateToProps)(editData);

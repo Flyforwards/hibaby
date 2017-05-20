@@ -7,21 +7,7 @@ export function systemsave(values) {
     body: JSON.stringify(values),
   })
 }
-//集团列表数据
-export function system(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
 
-//地方列表数据
-export function place(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
 //添加权限
 export function permissionAdd(values) {
   return request('/crm/api/v1/permission/add', {
@@ -46,6 +32,13 @@ export function Dictionary(values) {
 //获取主模块
 export function fromModal(values) {
   return request('/crm/api/v1/project/list', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//菜单列表数据
+export function MainMenuList(values) {
+  return request('/crm/api/v1/module/currentUserModuleList', {
     method: 'POST',
     body: JSON.stringify(values),
   })
