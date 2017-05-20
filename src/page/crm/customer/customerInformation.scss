@@ -1,0 +1,35 @@
+.content{
+  margin: 0 20px;
+  antd-col{
+    height: 30px;
+  }
+}
+
+.headDiv{
+  width: 100%;
+  border-width: 10px;
+  border-style:solid;
+  border-color: red;
+}
+.contentDiv{
+  width: 100%;
+}
+.contentDiv .leftContent{
+  width: 20%;
+}
+
+.contentDiv .rightContent{
+  width: 80%;
+}
+
+
+.footDiv{
+  width: 100%;
+}
+.lineView{
+  width: 100%;
+  height: 50px;
+}
+.lineView p{
+  text-align: center;
+}
