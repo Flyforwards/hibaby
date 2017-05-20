@@ -32,6 +32,26 @@ export default (app) => [
         })
       }
     },
+    //查看套餐
+    {
+      path: '/crm/serviceinfo/viewservice',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/viewService.jsx'))
+        })
+      }
+    },
+    //编辑套餐
+    {
+      path: '/crm/serviceinfo/editservice',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/editService.jsx'))
+        })
+      }
+    },
     //套房
     {
       path: '/crm/suite',
