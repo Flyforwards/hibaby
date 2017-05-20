@@ -1,0 +1,29 @@
+.customerContent {
+  .contentDiv{
+    margin-top: 10px;
+    padding: 10px 10px 0px 0px;
+    border:1px solid #999999;
+  }
+
+    margin: 0 20px;
+    .avatar-uploader,
+    .avatar-uploader-trigger,
+
+    .avatar {
+      width: 50%;
+      height: 190px;
+      margin-top: 10px;
+    }
+    .avatar-uploader {
+      display: block;
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .avatar-uploader-trigger {
+      display: table-cell;
+      vertical-align: middle;
+      font-size: 28px;
+      color: #999;
+}
+}

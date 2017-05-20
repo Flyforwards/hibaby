@@ -13,9 +13,10 @@ export default {
 		page:null,
 		size:null,
 		serviceListByPage:null,
+		roomData:null,
+		findById:null,
 	},
 	reducers: {
-		//获取分页数据
 	    listByPageSave(state,{payload:{data:list,total,page,size,code}}){
 	      let listByPagedata = {...state,
 				list,
@@ -30,6 +31,14 @@ export default {
 				totalpage:Math.ceil(total/size),
 			}
 			return {...listByPagedata,range};
+	    },
+	    roomListSave(state,{payload:{ data:roomData,code }}){
+	      let roomListSavedata = {...state,roomData,code};
+	      return roomListSavedata
+	    },
+	    findByIdSave(state,{payload:{ data:findById,code }}){
+	      let findByIdSavedata = {...state,findById,code};
+	      return findByIdSavedata
 	    },
 	    serviceListByPageSave(state,{payload:{data:serviceListByPage,total,page,size,code}}){
 	      let serviceListByPagedata = {...state,
@@ -72,6 +81,63 @@ export default {
 				});
 			}
 		},
+		//添加套餐
+		*add({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.add, values);
+			console.log("添加套餐",code)
+			if (code == 0) {
+				message.success("添加套餐成功");
+			}
+		},
+		//修改套餐
+		*edit({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.edit, values);
+			console.log("修改套餐",code)
+			if (code == 0) {
+				message.success("修改套餐成功");
+			}
+		},
+		//根据套餐ID查询套餐详情
+		*findById({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.findById, values);
+			if (code == 0) {
+				yield put({
+					type: 'findByIdSave',
+					payload: {
+						data
+					}
+				});
+			}
+		},
+		//获取房间分页的列表
+		*roomList({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.roomList, values);
+			console.log("获取房间分页的列表",code)
+			if (code == 0) {
+				yield put({
+					type: 'roomListSave',
+					payload: {
+						data
+					}
+				});
+			}
+		},
 	    //服务项目分页列表
 	    *serviceListByPage({payload: values}, { call, put }) {
 			const {
@@ -100,6 +166,7 @@ export default {
 			const {data: {data,code}} = yield call(packageInfoService.del, values);
 			if (code == 0) {
 				message.success("删除成功");
+				window.location.href="/crm/serviceinfo"
 			}
 		},
 	},
