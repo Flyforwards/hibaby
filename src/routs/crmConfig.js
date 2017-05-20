@@ -1,5 +1,5 @@
 
-import registerModel from './register'
+import registerModel from './register';
 
 export default (app) => [
     // 客户档案
@@ -11,6 +11,16 @@ export default (app) => [
           cb(null, require('page/crm/customer/Customer.jsx'))
         })
       }
+    },
+  //客户列表
+    {
+    path: '/crm/customer/Add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/crm/customer/addCustomer.jsx'))
+      })
+    }
     },
     // 会员卡管理
     {
