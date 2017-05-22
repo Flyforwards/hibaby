@@ -2,14 +2,12 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
-const createForm = Form.create
-const FormItem = Form.Item
+import { Modal } from 'antd'
+
 import "./AlertModalFrom.scss"
 
 
-@createForm()
-class AddRoleFrom extends Component {
+class AlertModalFrom extends Component {
   constructor(props) {
     super(props)
   }
@@ -53,4 +51,4 @@ class AddRoleFrom extends Component {
   }
 }
 
-export default connect()(AddRoleFrom)
+export default connect()(AlertModalFrom)

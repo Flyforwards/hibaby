@@ -79,6 +79,39 @@ export default (app) => [
         })
       }
     },
+    //活动列表
+    {
+      path: '/crm/activity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityIndex.jsx'))
+        })
+      }
+    },
+    //活动列表
+    {
+      path: '/crm/activity/add',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityAddIndex.jsx'))
+        })
+      }
+    },
+  //活动列表
+  {
+    path: '/crm/activity/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/activity'));
+        cb(null, require('page/crm/activity/ActivityDetailIndex.jsx'))
+      })
+    }
+  },
+
+
+
 
 ]
 
