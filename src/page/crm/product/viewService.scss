@@ -1,0 +1,136 @@
+.viewServiceinfo{
+	height:100%;
+	width:97%;
+	.viewServiceinfoList{
+		width:100%;
+		background-color:#fff;
+		height:20%;
+		margin:10px;
+		border-radius: 4px;
+		border:1px solid #999;
+		p{
+			font-family: '微软雅黑 Bold', '微软雅黑';
+		    font-weight: 700;
+		    font-style: normal;
+		    font-size: 14px;
+		    margin-bottom: 10px
+		}
+		.twoA{
+			border:none;
+			background-color: #fff;
+			margin-right:9px;
+			margin-left:10px;
+			color:#f75555;
+			text-decoration: none;
+		}
+		.twoB{
+			border:none;
+			background-color: #fff;
+			margin-right:9px;
+			margin-left:10px;
+			color:#666;
+			text-decoration: none;
+		}
+		.name{
+			margin-left: 10px;
+			margin-bottom: 10px
+		}
+		.ant-input-lg{
+			width:270px;
+			height:40px;
+		}
+		.ant-select-lg{
+			width:270px;
+		}
+		.ant-select-lg .ant-select-selection--single {
+		    height: 40px;
+		    line-height: 40px;
+		}
+		
+	}
+	.viewServiceinfoTable{
+		width:100%;
+		background-color:#fff;
+		height:20%;
+		margin:10px;
+		border-radius: 4px;
+		border:1px solid #999;
+		.ant-table-thead > tr > th {
+		    background-color: rgba(102, 102, 102, 1);
+		    font-weight: 500;
+		    transition: background .3s ease;
+		    text-align: center;
+		    font-family: '微软雅黑 Regular', '微软雅黑';
+		    font-weight: 400;
+		    font-style: normal;
+		    font-size: 14px;
+		    color: #FFFFFF;
+			padding: 10px 5px;
+		}
+		.span{
+			input{
+				width:50%;
+				height:40px;
+				text-align: center;
+			}
+		}
+		.ant-table-tbody > tr > td {
+			padding: 3px 0px;
+		    text-align:center;
+		    background-color: #fff;
+			font-family: '微软雅黑 Regular', '微软雅黑';
+		    font-weight: 400;
+		    font-size: 14px;
+		}
+	}
+	.viewServiceinfoSuite {
+
+		width:100%;
+		background-color:#fff;
+		height:20%;
+		margin:10px;
+		border-radius: 4px;
+		border:1px solid #999;
+		p{
+			font-family: '微软雅黑 Bold', '微软雅黑';
+		    font-weight: 700;
+		    font-style: normal;
+		    font-size: 14px;
+		    margin-bottom: 10px
+		}
+		.room{
+			margin-left: 20px;
+			margin-bottom:10px; 
+		}
+		.ant-select{
+			width:270px;
+			margin-left: 20px;
+		}
+		.ant-select-selection__rendered{
+			line-height: 40px;
+		}
+		.ant-select-selection--single {
+		    height: 40px;
+		    line-height: 40px;
+		}
+		.ant-select-arrow:before{
+			font-size: 20px;
+		}
+	}
+	.ant-btn {
+		margin-left:55%; 
+		width:140px;
+		height:40px;
+	}
+	.ant-btn-primary{
+    	margin-left:30px; 
+    	width:140px;
+    	height:40px;
+	}
+	.delet{
+		background-color: rgba(255, 74, 74, 1);
+		margin-left:30px; 
+		color:#fff;
+		border:none;
+	}
+}

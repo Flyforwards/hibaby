@@ -6,6 +6,7 @@ import { Icon, Card, Button,Table } from 'antd'
 import { Link} from 'react-router'
 import './serviceinfo.scss'
 import Current from '../../Current'
+import Delete from './DeleteService.jsx'
 
 
 class Serviceinfoed extends Component {
@@ -36,39 +37,42 @@ class Serviceinfoed extends Component {
           render: (text, record, index) => {
             return (
                 <span>
-                  <Link to={{ pathname: '/crm/serviceinfo/ViewTheInformation', query: { data:record.id } }}>查看</Link>
+                  <Link to={{ pathname: '/crm/serviceinfo/viewservice', query: { data:record.id } }}>查看</Link>
                   <a href="#" className="twoA" onClick={this.delete.bind(this,record)}>删除</a>
                 </span>
             );
           },
         }];
-
+        this.state = {
+          DeleteVisible:false,
+          ID:null
+        }
     }
     //删除
     delete(record) {
-    console.log(record)
-
-    // this.props.dispatch({
-    //     type: 'packageInfo/listByPage',
-    //     payload: {
-    //         "dataId":record.id
-    //     }
-    // })
-     this.props.dispatch({
-        type: 'packageInfo/listByPage',
-        payload: { }
-    });
+      this.setState({
+        DeleteVisible:true,
+        ID:record.id
+      })
     }
     componentWillMount() {
+    }
+    handleDeleteCancel(){
+      this.setState({
+          DeleteVisible: false,
+      })
+     window.location.reload( true )
     }
     componentDidMount() {
         this.props.dispatch({
             type: 'packageInfo/listByPage',
-            payload: { }
+            payload: { 
+              "page":1,
+              "size":10
+            }
         });
     }
     render() {
-        console.log("sds",this.props.total)
         let ListLnformation = []
         const pagination = {
           total:this.props.total,
@@ -77,15 +81,10 @@ class Serviceinfoed extends Component {
           onChange: (current) => {
             this.current = current
             this.props.dispatch({
-              type: 'organization/organizationList',
+              type: 'packageInfo/listByPage',
               payload: {
-                  "name": this.state.userName,
-                  "nodeid": this.state.nodeid,
-                  "roleId": this.state.character,
-                  "status": this.state.status,
-                  "page": current,
-                  "size": 10,
-                  "tissueProperty": this.state.tissueProperty
+                  "page":current,
+                  "size":10
               },
             });
           },
@@ -119,6 +118,11 @@ class Serviceinfoed extends Component {
                         }
                     />
                 </div>
+                <Delete 
+                   visible={ this.state.DeleteVisible }
+                   onCancel ={ this.handleDeleteCancel.bind(this) }
+                   ID = { this.state.ID }
+                  />
             </div>
         )
     }

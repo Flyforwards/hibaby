@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react'
 import {connect} from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm,Row, Col} from 'antd'
+import {Modal, Form, Input, Radio, Select,Button, Checkbox, Icon, TreeSelect,Table,Popconfirm,Row, Col} from 'antd'
 import './fromModal.scss'
 import SelectList from './from.jsx'
 import TabalList from './TabalList.jsx'
@@ -41,7 +41,7 @@ class FromModaled extends Component {
             return (
               this.state.dataSource.length >= 1 ?
               (
-                <Popconfirm title="是否要删除该数据?" onConfirm={() => this.onDelete(index)}>
+                <Popconfirm key={index} title="是否要删除该数据?" onConfirm={() => this.onDelete(index)}>
                  <a href="#">增加</a>
                   <a href="#">修改</a>
                 </Popconfirm>
@@ -121,10 +121,6 @@ class FromModaled extends Component {
       }}
        const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
         const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-            labelCol: { span: 5 },
-            wrapperCol: { span: 19 },
-        }
         let mainName = local.get("Dictionary");
         let nodes = [];
         if (mainName != null) {
@@ -136,64 +132,39 @@ class FromModaled extends Component {
 
         return (
             <div className="fromList">
-              <Form
-                onSubmit={this.handleSubmit}
-                className="ant-advanced-search-form"
-              >
-                <FormItem
-                  label="主模块"
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 20 }}
-                >
-               {getFieldDecorator('mainName', {
-                  rules: [],
-                })(
-                  <Select placeholder="请选择" onSelect={this.onSelect}>
-                    {
-                      nodes
-                    }
-                  </Select>
-                )}
-              </FormItem>
-                <FormItem
-                  labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
-                >
-               {getFieldDecorator('authority', {
-                  rules: [],
-                  onChange: this.handleSelectChange,
-                })(
-                  <SelectList />
-                )}
-              </FormItem>
-                <FormItem
-                  label="名称"
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 20 }}
-                >
-               {getFieldDecorator('name', {
-                  rules: [],
-                })(
-                   <Input className="name"/>
-                )}
-              </FormItem>
-                <FormItem
-                  label="路径"
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 20 }}
-                >
-               {getFieldDecorator('actionPath', {
-                  rules: [],
-                })(
-                  <Input className="actionPath"/>
-                )}
-              </FormItem>
-              </Form>
-              <i onClick={this.Inquire.bind(this)}>查询</i>
-              <i onClick={this.emptied.bind(this)}>清空</i>
-               <i onClick={this.addList.bind(this)}>新增</i>
-               <TabalList />
-               <AddFromCreateModal
+              <div className="fromhead">
+                  <Form onSubmit={this.handleSubmit} className="ant-advanced-search-form">
+                    <FormItem  label="主模块">
+                     {getFieldDecorator('mainName', {rules: [],})(
+                        <Select placeholder="请选择" onSelect={this.onSelect}>
+                          { nodes}
+                        </Select>
+                      )}
+                    </FormItem>
+                    <FormItem label="上级权限" className="permission">
+                       {getFieldDecorator('authority', {rules: [],onChange: this.handleSelectChange,})(
+                          <SelectList />
+                        )}
+                    </FormItem>
+                    <FormItem label="名称">
+                       {getFieldDecorator('name', {rules: [],})(
+                           <Input className="name"/>
+                        )}
+                    </FormItem>
+                    <FormItem label="路径" >
+                         {getFieldDecorator('actionPath', {rules: [],})(
+                            <Input className="actionPath"/>
+                          )}
+                    </FormItem>
+                  </Form>
+                  <div className="Button">
+                    <Button className="btn" onClick={this.Inquire.bind(this)}>查询</Button>
+                    <Button className="btn" onClick={this.emptied.bind(this)}>清空</Button>
+                    <Button className="btn" onClick={this.addList.bind(this)}>新增</Button>
+                  </div>
+              </div>
+              <TabalList />
+              <AddFromCreateModal
                 visible={ this.state.modifyModalVisible}
                 onCancel={ this.handleCreateModalCancel.bind(this) }
               />
@@ -201,22 +172,11 @@ class FromModaled extends Component {
         )
     }
 }
-function FromModal({
-    dispatch,
-    list,
-    code
-}) {
-  return ( < div >
-    < FromModaled dispatch = {
-      dispatch
-    }
-    list = {
-        list
-    }
-    /> </div>
-  )
-
-}
+function FromModal({dispatch,list,code}){
+      return (<div>
+                  <FromModaled dispatch = {dispatch} list = {list}/>
+              </div>)
+        }
 function mapStateToProps(state) {
   const {
     data,
@@ -229,4 +189,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(FromModal)
-

@@ -137,6 +137,7 @@ class Organization extends React.Component {
       this.setState({
         userName:$(".userName").val()
       })
+
        this.props.dispatch({
         type: 'organization/organizationList',
         payload: {

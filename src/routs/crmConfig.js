@@ -1,5 +1,5 @@
 
-import registerModel from './register'
+import registerModel from './register';
 
 export default (app) => [
     // 客户档案
@@ -12,6 +12,15 @@ export default (app) => [
         })
       }
     },
+  //客户列表
+    {
+    path: '/crm/customer/Add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/crm/customer/addCustomer.jsx'))
+      })
+    }
     // 套餐
     {
       path: '/crm/serviceinfo',
@@ -29,6 +38,26 @@ export default (app) => [
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
           cb(null, require('page/crm/product/addService.jsx'))
+        })
+      }
+    },
+    //查看套餐
+    {
+      path: '/crm/serviceinfo/viewservice',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/viewService.jsx'))
+        })
+      }
+    },
+    //编辑套餐
+    {
+      path: '/crm/serviceinfo/editservice',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/editService.jsx'))
         })
       }
     },
@@ -114,4 +143,3 @@ export default (app) => [
 
 
 ]
-
