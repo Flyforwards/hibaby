@@ -8,22 +8,6 @@ export function saveActivity(values) {
   })
 }
 
-//集团数据查看
-export function checkData(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainAndSide', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
-
-//编辑集团数据
-export function editData(values) {
-  return request('/crm/api/v1/dictionary/modifyDictionary', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
-
 // 地方中心活动列表
 export function getActivityPageList(values) {
   return request('/crm/api/v1/activity/getActivityPageList', {
@@ -35,6 +19,14 @@ export function getActivityPageList(values) {
 // 预约非会员用户
 export function saveOutsiderCustomer(values) {
   return request('/crm/api/v1/activity/saveOutsiderCustomer', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 获取会员用户列表
+export function saveMemberCustomer(values) {
+  return request('/crm/api/v1/activity/saveMemberCustomer', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -55,6 +47,40 @@ export function getActivityById(values) {
     body: JSON.stringify(values),
   })
 }
+
+// 编辑活动保存
+export function updateActivity(values) {
+  return request('/crm/api/v1/activity/updateActivity', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+//根据活动id及筛选条件查询预约人员分页列表
+export function getActivityCustomerPageList(values) {
+  return request('/crm/api/v1/activity/getActivityCustomerPageList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 获取会员用户列表
+export function getCustomerPageList(values) {
+  return request('/crm/api/v1/customer/getCustomerPageList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
+
+
+
+
+
+
 
 
 

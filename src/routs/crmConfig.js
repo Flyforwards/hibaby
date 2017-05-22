@@ -119,7 +119,7 @@ export default (app) => [
         })
       }
     },
-    //活动列表
+    //活动添加
     {
       path: '/crm/activity/add',
       getComponent: (location, cb) => {
@@ -129,13 +129,23 @@ export default (app) => [
         })
       }
     },
-    //活动列表
+    //活动详情
     {
       path: '/crm/activity/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/activity'));
           cb(null, require('page/crm/activity/ActivityDetailIndex.jsx'))
+        })
+      }
+    },
+    //活动编辑
+    {
+      path: '/crm/activity/edit',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityDetailEditIndex.jsx'))
         })
       }
     },

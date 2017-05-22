@@ -2,7 +2,8 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
-import {routerRedux} from 'dva/router';
+import { Link } from 'react-router';
+import { routerRedux } from 'dva/router';
 import AlertModalFrom from 'common/AlertModalFrom'
 import moment from 'moment'
 import AppointmentModalFrom from './appointmentModalFrom'
@@ -12,7 +13,7 @@ import util from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
-
+import { parse } from 'qs'
 
 @createForm()
 class ActivityDetailIndex extends Component {
@@ -34,35 +35,54 @@ class ActivityDetailIndex extends Component {
       key: 'age'
     }, {
       title: '预产期',
-      dataIndex: 'time',
-      key: 'time'
+      dataIndex: 'dueDate',
+      key: 'dueDate'
     }, {
       title: '怀孕周期',
-      dataIndex: 'count',
-      key: 'count'
+      dataIndex: 'gestationalWeeks',
+      key: 'gestationalWeeks'
 
     }, {
       title: '第几胎',
-      dataIndex: 'index',
-      key: 'index'
+      dataIndex: 'fetus',
+      key: 'fetus'
     },{
       title: '联系方式',
-      dataIndex: 'phone',
-      key: 'phone'
+      dataIndex: 'contact',
+      key: 'contact'
     },{
       title: '购买套餐',
-      dataIndex: 'pay',
-      key: 'pay'
+      dataIndex: 'purchasePackage',
+      key: 'purchasePackage'
     },{
       title: '合同编号',
-      dataIndex: 'number',
-      key: 'number'
+      dataIndex: 'contractNumber',
+      key: 'contractNumber'
     },{
       title: '添加人',
-      dataIndex: 'input',
-      key: 'input'
-    }, ];
+      dataIndex: 'operator1',
+      key: 'operator1'
+    },{
+      title: '客户状态',
+      dataIndex: 'customerStatus',
+      key: 'customerStatus'
+    },{
+      title: '操作',
+      dataIndex: 'operation',
+      render: (text, record, index) => {
+        // to = {`/system/group-char/detail?dataId=${record.id}`}
+        return (
+          <div key = { index }>
+            <Link onClick={ this.Sign.bind(this,record)} > 签到 </Link>
+          </div>
+        )
+      },
+    }];
   }
+  Sign(record) {
+
+  }
+
 
 
   cellOnChange() {
@@ -73,6 +93,17 @@ class ActivityDetailIndex extends Component {
       routerRedux.push('/crm/activity')
     )
   }
+  // 编辑
+  edit() {
+    const values = parse(location.search.substr(1))
+    this.props.dispatch(
+      routerRedux.push({
+        pathname: '/crm/activity/edit',
+        query: values
+      })
+    )
+  }
+
 
 
   //删除
@@ -113,6 +144,10 @@ class ActivityDetailIndex extends Component {
         appointmentVisible: false,
         memberVisible: true,
       })
+      this.props.dispatch({
+        type: 'activity/getCustomerPageList',
+        payload: { 'activityId': this.selectRecord.id }
+      })
     } else {
       this.setState({
         notMemberVisible: true,
@@ -128,7 +163,7 @@ class ActivityDetailIndex extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { item } = this.props;
+    const { item, signUserList } = this.props;
 
     const options = [{
       value: 'zhejiang',
@@ -276,13 +311,13 @@ class ActivityDetailIndex extends Component {
             </Form>
               <div>李磊磊
               </div>
-            <Table rowSelection={ rowSelection } columns={this.columns}/>
+            <Table rowKey = { record=>record.id } dataSource={ signUserList } columns={this.columns}/>
           </Card>
           <Row>
             <Col offset={8} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
             <Col span={4}><Button onClick={ this.appointment.bind(this) }  >预约</Button></Col>
             <Col span={4}><Button onClick={ this.deleteActivity.bind(this) }>删除</Button></Col>
-            <Col span={4}><Button>编辑</Button></Col>
+            <Col span={4}><Button  onClick={ this.edit.bind(this) }>编辑</Button></Col>
           </Row>
           <AppointmentModalFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.appointmentVisible } selectRecord={ item } onChoose={ this.onChoose.bind(this)}/>
           <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ item }/>
@@ -296,11 +331,13 @@ class ActivityDetailIndex extends Component {
 function mapStateToProps(state) {
   const {
     item,
+    signUserList
   } = state.activity;
 
   return {
     loading: state.loading,
     item,
+    signUserList
   };
 }
 
