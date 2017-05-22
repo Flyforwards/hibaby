@@ -23,20 +23,17 @@ class EditModule extends Component {
         if (!err) {
           let payload={}
           console.log("values>>>>",values)
-          let permissionId=0;
-          if(Number(values.permissionId)==NaN){
-            permissionId=this.props.record.permissionId
-          }else{
-            permissionId=Number(values.permissionId)
-          }
-          if(Number(values.projectId)==NaN){
+          const record=this.props.record?this.props.record:{}
+          console.log("record>>>",record)
+          if(values.projectId==record.projectName || values.parentId==record.parentName || values.permissionId==record.permissionName){
             payload= {
               description:values.name,
               name: values.name,
               icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
-              permissionId:permissionId,
+              permissionId:this.props.record.permissionId,
+              parentId:this.props.record.parentId,
               projectId:this.props.record.projectId,
               id:this.props.record.id,
             }
@@ -47,7 +44,8 @@ class EditModule extends Component {
               icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
-              permissionId:permissionId,
+              permissionId:Number(values.permissionId),
+              parentId:Number(values.parentId),
               projectId:Number(values.projectId),
               id:this.props.record.id,
             }
@@ -70,7 +68,6 @@ class EditModule extends Component {
 
 
   render() {
-    console.log("菜单主模块>>>>",this.props.record)
     const { visible, record ,data,list,permission,menu } = this.props
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let modalTitle = "菜单模块：";
@@ -94,7 +91,6 @@ class EditModule extends Component {
     })
     let item={};
     item=record?record:{};
-    console.log('record>>>>',item)
     return (
       <Modal
         visible = { visible }
@@ -186,7 +182,6 @@ class EditModule extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log("data>>>>",state.module)
   const {
     data,
     permission,

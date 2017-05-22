@@ -18,6 +18,8 @@ class SelectListed extends Component {
     local.set("projectId",value)
   }
     render() {
+        let list=this.props.list
+        console.log("选择>>>",list)
         return (
             <div className="SelectList">
               <span>

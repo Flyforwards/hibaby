@@ -151,9 +151,7 @@ export default {
 					code
 				}
 			} = yield call(moduleService.MainModuleSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("菜单下拉选项")
 				yield put({
 						type:'MainModuleSelect',
 						payload:{
@@ -171,9 +169,7 @@ export default {
 					code
 				}
 			} = yield call(moduleService.	MenuPermissionSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("权限下拉选项")
 				yield put({
 						type:'MenuPermissionSelect',
 						payload:{
@@ -191,9 +187,7 @@ export default {
 					code
 				}
 			} = yield call(moduleService.	ParentNodeSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("权限下拉选项")
 				yield put({
 						type:'ParentNodeSelect',
 						payload:{

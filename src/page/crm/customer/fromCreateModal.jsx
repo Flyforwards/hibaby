@@ -141,7 +141,7 @@ class FromCreateModal extends Component {
                 )}
                 </FormItem>
                 <FormItem
-
+                  label="上级权限"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >

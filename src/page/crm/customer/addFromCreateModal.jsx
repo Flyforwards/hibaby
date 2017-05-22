@@ -107,7 +107,7 @@ class AddFromCreateModal extends Component {
                 <Form onSubmit={this.handleSubmit}>
                 <FormItem
                   label="主模块"
-                  labelCol={{ span: 6 }}
+                  labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >
                {getFieldDecorator('mainName', {
@@ -132,6 +132,7 @@ class AddFromCreateModal extends Component {
                 )}
                 </FormItem>
                 <FormItem
+                  label="上级菜单"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >

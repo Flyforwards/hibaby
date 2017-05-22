@@ -158,7 +158,6 @@ class AddModule extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log("data>>>>",state.module)
   const {
     data,
     permission,

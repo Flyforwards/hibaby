@@ -88,8 +88,6 @@ class Module extends Component {
     e.preventDefault();
     const data=[];
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
-      console.log(err);
       if(!err){
           this.props.dispatch({
             type: 'module/MenuData',

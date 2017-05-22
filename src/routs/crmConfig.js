@@ -19,8 +19,9 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
-      })
-    }
+        })
+      }
+    },
     // 套餐
     {
       path: '/crm/serviceinfo',
