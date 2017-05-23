@@ -60,7 +60,7 @@ export default {
 		},
 		//主模块下拉
 		MainModuleSelect(state,{payload:{data:list,code}}){
-			local.set("Project",list)
+			local.set("Dictionary",list)
 				return{
 					...state,
 					list,
@@ -68,24 +68,30 @@ export default {
 				}
 		},
 		//菜单权限下拉
-		MenuPermissionSelect(state,{payload:{data:permission,projectId,code}}){
-			console.log("菜单下拉>>>",permission)
-				return{
-					...state,
-					permission,
-					projectId,
-					code
-				}
+		MenuPermissionSelect(state,{payload:{data:permission,projectId}}){
+			let permissiondata={
+				...state,
+				permission,
+				projectId,
+			}
+			  local.set("index",permissiondata.data)
+				console.log("菜单下拉>>>",permission)
+				return permissiondata;
 		},
 
 		//上级菜单下拉
-		ParentNodeSelect(state,{payload:{data:menu,projectId,parentId,code}}){
-				return{
+		ParentNodeSelect(state,{payload:{data:menu,dataId,code}}){
+				let menudata={
 					...state,
 					menu,
-					projectId,
-					parentId,
-					code
+					dataId,
+				}
+				local.set("index",menudata.data)
+				console.log("上级下拉",menu)
+				return {
+					...state,
+					menu,
+					dataId,
 				}
 		},
 	},
@@ -193,8 +199,7 @@ export default {
 			const {
 				data: {
 					data,
-					dataId,
-					parentId,
+					dataId:projectId,
 					code
 				}
 			} = yield call(moduleService.	ParentNodeSelect, values);
@@ -203,8 +208,6 @@ export default {
 						type:'ParentNodeSelect',
 						payload:{
 							data,
-							projectId:dataId,
-							parentId,
 							code
 						}
 				});

@@ -12,26 +12,32 @@ class SelectListed extends Component {
       value: undefined
     }
    onChange = (value) => {
+   console.log("文本>>>>",value)
     this.setState({ value });
   }
+  onSearch=(value)=>{
+      console.log("文本>>>>",value)
+  }
   onSelect = (value,node, extra) => {
-    local.set("projectId",value)
+  console.log("文本>>>>",value)
+    local.set("dataId",value)
   }
     render() {
+        console.log(this.props.menu)
         return (
-            <div className="SelectList">
               <TreeSelect
-                style={{ width: 150 }}
+                style={{ width: 310 }}
                 key={this.props.menu.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 treeData={this.props.menu}
                 placeholder="请选择"
                 treeDefaultExpandAll
+                onChange={this.onChange}
                 onSelect={this.onSelect.bind(this)}
-                onChange={this.onChange.bind(this)}
+                onSearch={this.onSearch.bind(this)}
               />
-            </div>
+
         )
     }
 }
@@ -50,6 +56,7 @@ function SelectMenu({
 
 }
 function mapStateToProps(state) {
+  console.log("上级>>>>",state.module.menu)
   const {
     menu,
     code

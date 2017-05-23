@@ -22,7 +22,7 @@ class SelectListed extends Component {
         return (
             <div className="SelectList">
               <TreeSelect
-                style={{ width: 150 }}
+                style={{ width: 310 }}
                 key={this.props.permission.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}

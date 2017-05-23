@@ -5,6 +5,8 @@ import { connect } from 'dva'
 import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon} from 'antd'
 import './AddModule.scss'
 import {local, session} from 'common/util/storage.js'
+import SelectList from './from.jsx'
+import SelectMenu from './menu.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
 
@@ -66,13 +68,21 @@ class EditModule extends Component {
   handleAfterClose() {
 
   }
-  onChange = (value) => {
-   this.setState({ value });
-
- }
- onSelect = (value,node, extra) => {
-   local.set("projectId",value)
- }
+  onSelect = (value,key) => {
+    console.log("主模块>>>",value)
+    this.props.dispatch({
+        type: 'module/ParentNodeData',
+        payload: {
+            projectId:value,
+        }
+    });
+    this.props.dispatch({
+        type: 'module/MenuPermissionData',
+        payload: {
+            "projectId":value,
+        }
+    });
+  }
 
   render() {
     const { visible, record ,data,list,permission,menu } = this.props
@@ -113,76 +123,41 @@ class EditModule extends Component {
       >
       <div className="AddModuleList">
           <Form>
-              <div className="MainModule">
-                  <h4 className="projectName">主模块：</h4>
-                  {getFieldDecorator('projectId', {initialValue:`${item.projectName}`,rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(<Select className="SelectMenu"
-                    showSearch
-                    style={{ width:430 }}
-                    placeholder="请选择"
-                    optionFilterProp="children"
-                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                  >
-                      {children}
-                  </Select>
+              <FormItem label="主模块" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                  {getFieldDecorator('projectId', {required: false,rules: [],
+                    })(<Select className="SelectMenu" onSelect={this.onSelect} placeholder="请选择">
+                          {children}
+                      </Select>
+                    )}
+              </FormItem>
+              <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                  {getFieldDecorator('parentId', {rules: [{required: false,onChange: this.handleSelectChange}],
+                  })(
+                    <SelectMenu/>
+                  )}
+              </FormItem>
+              <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                  {getFieldDecorator('permissionId', {rules: [{required: false,onChange: this.handleSelectChange}],
+                    })(<SelectList/>)}
+              </FormItem>
+              <FormItem className = "NameBox" label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                {getFieldDecorator('name', {initialValue: `${item.name}`,rules: [{ required: false, message: '字段名称为必填项！' }],
+                })(
+                    <Input className="input"/>
                 )}
-              </div>
-              <div className="MainModule">
-                  <h4 className="parentName">上级菜单：</h4>
-                  {getFieldDecorator('parentId', {initialValue:`${item.parentName}`,rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(
-                  <Select className="SelectMenu"
-                    showSearch
-                    style={{ width: 430 }}
-                    placeholder="请选择"
-                    optionFilterProp="children"
-                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                  >
-                    {menudata}
-                  </Select>)}
-              </div>
-              <div className="MainModule">
-                  <h4 className="projectName">权限：</h4>
-                  {getFieldDecorator('permissionId', {initialValue:`${item.permissionName}`,rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(
-                    <TreeSelect
-                      style={{ width: 150 }}
-                      key={this.props.permission.id}
-                      value={this.state.value}
-                      dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                      treeData={this.props.permission}
-                      placeholder="请选择"
-                      treeDefaultExpandAll
-                      onChange={this.onChange.bind(this)}
-                    />)}
-              </div>
-              <div className="MeunName">
-                <h4 className="Name">名称：</h4>
-                <FormItem {...formItemLayout} className = "NameBox">
-                  {getFieldDecorator('name', {initialValue: `${item.name}`,rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(
-                      <Input className="input"/>
-                  )}
-                </FormItem>
-              </div>
-              <div className="MeunPath">
-                <h4 className="Route">路径：</h4>
-                <FormItem {...formItemLayout} className = "PathBox">
-                  {getFieldDecorator('path', {initialValue: `${item.path}`,rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(
-                      <Input className="input"/>
-                  )}
-                </FormItem>
-              </div>
-              <div className="MeunPath">
-                <h4 className="orderBy">排序：</h4>
-                <FormItem {...formItemLayout} className = "orderByBox">
-                  {getFieldDecorator('orderBy', {initialValue: `${item.orderBy}`,rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(
-                      <Input className="input"/>
-                  )}
-                </FormItem>
-              </div>
+              </FormItem>
+              <FormItem className = "PathBox" label="路径" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                {getFieldDecorator('path', {initialValue: `${item.path}`,rules: [{ required:false, message: '字段名称为必填项！' }],
+                })(
+                    <Input className="input"/>
+                )}
+              </FormItem>
+              <FormItem className = "orderByBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                {getFieldDecorator('orderBy', {initialValue: `${item.orderBy}`,rules: [{ required:false, message: '字段名称为必填项！' }],
+                })(
+                    <Input className="input"/>
+                )}
+              </FormItem>
           </Form>
       </div>
     </Modal>
