@@ -93,9 +93,9 @@ export default {
       }
     },
 
-    // 获取会员用户列表
-    *getCustomerPageList ({ payload: values}, { call, put }) {
-      const {data: {data,code}} = yield call(activityService.getCustomerPageList, { activityId: values.dataId });
+    // 根据筛选条件查询未预约的客户基本信息分页列表
+    *getNoAppointmentCustomerPageList ({ payload: values}, { call, put }) {
+      const {data: {data,code}} = yield call(activityService.getNoAppointmentCustomerPageList, { activityId: values.dataId });
       if (code == 0) {
         console.log(data)
         yield put({
@@ -123,6 +123,19 @@ export default {
           yield put(routerRedux.push("/crm/activity"));
 
         }
+    },
+    // 删除预约客户
+    *deleteUserFromActivity({ payload: values}, { call, put }) {
+      const {data: {data,code}} = yield call(activityService.deleteActivityCustomer, values);
+      if (code == 0) {
+        // 先跳转首页后面再改
+        message.success("删除预约客户成功");
+        // 采用重新请求的方式刷新数据
+        // yield put({
+        //   type: 'deleteUserSave',
+        //   payload: values,
+        // })
+      }
     },
     // 删除活动
     *deleteActivity ({ payload: values}, { call, put }) {

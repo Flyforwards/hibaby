@@ -1,9 +1,9 @@
 
 
-
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal,Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
+import PropTypes from 'prop-types'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
@@ -226,6 +226,14 @@ class AppointmentMemberFrom extends Component {
     )
   }
 }
+
+AppointmentMemberFrom.propTypes = {
+  onCancel: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+  selectRecord: PropTypes.object,
+}
+
+
 function mapStateToProps(state) {
   const {
     userList,
