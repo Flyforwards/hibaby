@@ -171,7 +171,6 @@ class Module extends Component {
       showQuickJumper: true,
       pageSize:10,
       onChange: (current) => {
-        this.current = current
         this.props.dispatch({
           type: 'module/MenuData',
           payload: {
@@ -260,21 +259,25 @@ class Module extends Component {
   }
 }
 
-function Module({ dispatch, data, page, size,edit, total,list,permission,menu}) {
+function Module({ dispatch, data, page, size,edit, total,list,permission,menu,results,
+range}) {
   return (
     <Module dispatch={dispatch} data={data} id={id} list={list} permission={permission}
-    menu={menu} page={page} size={size} edit={edit} total={total}/>
+    menu={menu} page={page} size={size} edit={edit} total={total} range={range} results={results} />
   )
 }
 function mapStateToProps(state) {
-  console.log("菜单>>>",state.module.menu)
-  const { item:data,size,total,page,edit,permission,list,menu} = state.module;
+  console.log("菜单>>>",state.module.item)
+  const { item:data,size,total,page,edit,permission,results,range,list,menu} = state.module;
   return {
     loading: state.loading.models.module,
     data,
     permission,
     list,
     menu,
+    results,
+    range,
+    total,
     edit
   };
 }
