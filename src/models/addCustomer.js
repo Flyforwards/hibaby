@@ -10,7 +10,14 @@ export default {
     permanentCityData:[],
     nationalData:[],
     modal:false,
-    NewuserImg:null,
+    cardIDDLC:[],
+    contractDLC:[],
+    headIcon:'',
+    headIconUrl:'',
+    guestInformationSourceAry:[],
+    concernsAry:[],
+    networkSearchWordsAry:[],
+    intentionPackageAry:[],
     remarkListColumns : [{
       title: '备注内容',
       dataIndex: 'remark',
@@ -29,9 +36,6 @@ export default {
     }]
   },
   reducers: {
-    headUpdate(state, { payload: todo }) {
-      return {...state,NewuserImg:todo};
-    },
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
 
@@ -58,7 +62,32 @@ export default {
     addNationalData(state, { payload: todo }){
       return {...state,nationalData:todo.data};
     },
+    addCardIDDLC(state, { payload: todo }){
+      return {...state,cardIDDLC:todo};
+    },
+    addContractDLC(state, { payload: todo }){
+      return {...state,contractDLC:todo};
+    },
+    addHeadIcon(state, { payload: todo }){
+      return {...state,headIcon:todo.key,headIconUrl:todo.url};
+    },
+    addMutDictData(state, { payload: todo }){
 
+      if(todo.id === 2){
+        return {...state,guestInformationSourceAry:todo.data};
+      }
+      else if(todo.id === 4){
+        return {...state,concernsAry:todo.data};
+      }
+      else if(todo.id === 6){
+        return {...state,networkSearchWordsAry:todo.data};
+      }
+      else if(todo.id === 5){
+        return {...state,intentionPackageAry:todo.data};
+      }
+
+      return {...state};
+    },
   },
   effects: {
     *getProvinceData({ payload: values }, { call, put }) {
@@ -68,7 +97,6 @@ export default {
           type: 'addProvinceData',
           payload: {
             data,
-
           }
         });
       }
@@ -107,10 +135,28 @@ export default {
       }
     },
 
+    *getDataDict({ payload: value },{ call, put }){
+      const { data: { code, data } } = yield call(addCustomerInformation.getDataDict,
+        {
+        "id": value.id,
+        "softDelete": 0,
+        "type": 2
+        });
+      if (code == 0) {
+        console.log(data)
+        yield put({
+          type: 'addMutDictData',
+          payload: {
+            id:value.id,
+            data:data,
+          }
+        });
+      }
+    },
 
     *savaBaseInfo({ payload: values },{ call, put }) {
 
-      const { data: { code, data } } = yield call(addCustomerInformation.saveCustomer,{
+      const dict =  {
         "age": values.age,
         "birthTime": values.birthTime.format(),
         "city": values.city,
@@ -127,25 +173,88 @@ export default {
         "province": values.province,
         "resourceCustomer":0,
         "webSearchTerm":0
-      });
-      if (code == 0) {
-        yield put({
+      };
 
-        });
+      const { data: { code, data,err } } = yield call(addCustomerInformation.saveCustomer,dict);
+      if (code == 0) {
+
+        // yield put({
+        //
+        // });
+      }
+      else {
+        message(err)
       }
     },
 
 
-    *savaExtensionInfo({ payload: values },{ call, put }) {
-      const { data: { code, data } } = yield call(addCustomerInformation.savaExtensionInfo,values);
-      if (code == 0) {
-        yield put({
+    *savaExtensionInfo({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
 
-        });
+
+
+      let caridStr = '';
+      let contractStr = '';
+
+      for (let i = 0; i < state.contractDLC.length;i++){
+        contractStr += state.contractDLC[i];
+        contractStr += ',';
+
+      }
+
+      for (let i = 0; i < state.cardIDDLC.length;i++){
+        caridStr += state.cardIDDLC[i];
+        caridStr += ',';
+      }
+
+      const dict = {
+        "associatedRooms": 0,
+        "cityPermanent": 0,
+        "contact": values.excontact,
+        "contractAppendices": contractStr,
+        "contractNumber": values.contractNumber,
+        "customerId": 45,
+        "customerPhoto": state.headIcon,
+        "detailedPermanent": values.detailedPermanent,
+        "idcard": values.idcard,
+        "idcardScan": caridStr,
+        "imgURL": state.headIconUrl,
+        "insuranceSituation": values.insuranceSituation,
+        "member": 0,
+        "memberNumber": "0",
+        "nation": values.nation,
+        "operator": values.operator,
+        "placeOrigin": values.placeOrigin,
+        "productionDate": values.productionDate.format(),
+        "provincePermanent": values.provincePermanent,
+        "purchasePackage": 0,
+        "specialIdentity": 0};
+
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.savaExtensionInfo,dict);
+      if (code == 0) {
+
+        // yield put({
+        //
+        // });
+      }
+      else {
+        message(err);
+
+
       }
     },
 
     *savaRemark({ payload: values },{ call, put }) {
+
+      // const inputs =[];
+      //
+      // for (let i = 0;i<remarkList.length;i++)
+      // {
+      //   const remark = remarkList[i];
+      //   inputs.push({"customerId": 3,"remarkInfo": remark.remark})
+      // }
+
       const { data: { code, data } } = yield call(addCustomerInformation.savaRemark,values);
       if (code == 0) {
         yield put({
@@ -167,6 +276,30 @@ export default {
           });
           dispatch({
             type: 'getNationDictionary'
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 2,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 4,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 5,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 6,
+            }
           });
         }
         ;

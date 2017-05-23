@@ -35,4 +35,11 @@ export function savaRemark(values) {
     body: JSON.stringify(values),
   })
 };
+//数据字典
+export function getDataDict(values) {
+  return request('/crm/api/v1/dictionary/getDictionary', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
 
