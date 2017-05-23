@@ -65,12 +65,31 @@ export default {
     },
   },
   effects: {
-    // //添加集团列表数据
+    // //添加活动数据
     *saveActivity({payload: values}, { call, put }) {
       const {data: { data, code} } = yield call(activityService.saveActivity, values);
       if (code == 0) {
         message.success("创建活动成功");
         yield put(routerRedux.push("/crm/activity"));
+      }
+    },
+    // 预约客户签到
+    *signedActivityCustomer({payload: values}, { call, put, select }) {
+      const {data: { data, code} } = yield call(activityService.signedActivityCustomer, values);
+      if (code == 0) {
+        message.success("签到成功");
+        const item = yield select(state => state.activity.item)
+        const signPagination = yield select(state => state.activity.signPagination)
+        // 刷新用户列表
+        yield put({
+          type: 'getActivityById',
+          payload: { dataId: item.id}
+        })
+        // 刷新活动信息
+        yield put({
+          type: 'getActivityCustomerPageList',
+          payload: { activityId: item.id, page: signPagination.current, size: signPagination.pageSize}
+        })
       }
     },
 
@@ -231,20 +250,6 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
 
-        // //查看集团列表数据
-        // if (pathname === '/system/group-char/detail') {
-        //   dispatch({
-        //     type: 'checkData',
-        //     payload: query
-        //   });
-        // }
-        // //编辑集团列表数据
-        // if (pathname === '/system/group-char/edit') {
-        //   dispatch({
-        //     type: 'getEditData',
-        //     payload: query
-        //   });
-        // }
         if (pathname === '/crm/activity') {
           dispatch({
             type: 'getActivityPage',

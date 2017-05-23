@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Card, Input, DatePicker, InputNumber, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
+import { Card, Input, DatePicker, InputNumber, Button, Form,Table, Select,Cascader, Row, Col, Modal } from 'antd'
 import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
 import AlertModalFrom from 'common/AlertModalFrom'
@@ -13,7 +13,8 @@ import util from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
-const { RangePicker } = DatePicker;
+const confirm = Modal.confirm;
+const { MonthPicker } = DatePicker;
 
 @createForm()
 class ActivityDetailIndex extends Component {
@@ -36,7 +37,9 @@ class ActivityDetailIndex extends Component {
     }, {
       title: '预产期',
       dataIndex: 'dueDate',
-      key: 'dueDate'
+      render: (record) => {
+        return moment(record).format("YYYY-MM-DD")
+      }
     }, {
       title: '怀孕周期',
       dataIndex: 'gestationalWeeks',
@@ -70,24 +73,42 @@ class ActivityDetailIndex extends Component {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
-        // to = {`/system/group-char/detail?dataId=${record.id}`}
-        return (
-          <div key = { index }>
-            <Link onClick={ this.Sign.bind(this,record)} > 签到 </Link>
-          </div>
-        )
+        if (record.signed) {
+          return (
+            <div key = { index }>
+              <span> 已签到 </span>
+            </div>
+          )
+        } else {
+          return (
+            <div key = { index }>
+              <Link onClick={ this.sign.bind(this,record)} > 签到 </Link>
+            </div>
+          )
+        }
       },
     }];
   }
-  Sign(record) {
 
+  sign(record) {
+    const dispatch = this.props.dispatch;
+    confirm({
+      title: '提示',
+      content: '是否确认此用户签到?',
+      onOk() {
+        dispatch({
+          type: 'activity/signedActivityCustomer',
+          payload: {
+            dataId: record.id,
+          }
+        })
+      },
+      onCancel() {
+      },
+    });
   }
 
 
-
-  cellOnChange() {
-
-  }
   back() {
     this.props.dispatch(
       routerRedux.push('/crm/activity')
@@ -153,13 +174,31 @@ class ActivityDetailIndex extends Component {
         appointmentVisible: false,
       })
     }
-
   }
+
+  onSearch(){
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        values.activityId = this.props.item.id;
+
+        if (values.time != undefined) {
+          values.year = values.time.get('year');
+          values.month = values.time.get('month')+1;
+        }
+        console.log(values);
+
+        this.props.dispatch({
+          type: "activity/getActivityCustomerPageList",
+          payload: values
+        })
+      }
+    })
+  }
+
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const { item, signUserList,loading, signPagination, dispatch } = this.props;
-
     const options = [{
       value: 'zhejiang',
       label: 'Zhejiang',
@@ -199,13 +238,18 @@ class ActivityDetailIndex extends Component {
     let address = "";
     let content = "";
     let activityTime = moment("")
+    let appointments = 0;
+    let signeds = 0;
+    let orders = 0;
     if (item != null) {
       itemName = item.name;
       activityTime = moment(item.activityTime);
       address = item.address;
       content = item.content;
+      appointments = item.appointments;
+      signeds = item.signeds;
+      orders = item.orders;
     }
-
     const tableProps = {
       loading: loading.effects['activity/getActivityCustomerPageList'],
       dataSource : signUserList ,
@@ -246,24 +290,28 @@ class ActivityDetailIndex extends Component {
             <Row>
               <Col span={6}><div>预约客户:</div>
               </Col>
-              <Col span={6}><div>预约人数87人</div>
+              <Col span={6}><div>预约人数{appointments}人</div>
               </Col>
-              <Col span={6}><div>签到人数0人</div>
+              <Col span={6}><div>签到人数{signeds}人</div>
               </Col>
-              <Col span={6}><div>成单率0%</div>
+              <Col span={6}><div>成单率{orders}%</div>
               </Col>
             </Row>
+            <Form>
             <div>
               <Row>
-                <Col span={5}><span>客户名称</span>
+                <Col span={20}>
+                  <FormItem {...formItemLayout}  label="客户名称" >
+                    {getFieldDecorator('sear', {rules: [{ required: false }],
+                    })(
+                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
+                    )}
+                  </FormItem>
                 </Col>
-                <Col span={14}><span><Input /></span>
-                </Col>
-                <Col span={5}><span><Button>搜索</Button></span>
+                <Col span={4}><span><Button onClick={ this.onSearch.bind(this)}>搜索</Button></span>
                 </Col>
               </Row>
             </div>
-            <Form>
               <Row>
                 <Col span={8}>
                   <FormItem {...formItemLayout}  label="年龄" >
@@ -271,6 +319,8 @@ class ActivityDetailIndex extends Component {
                     })(
                       <InputNumber min={1} max={100}  />
                     )}
+                  </FormItem>
+                  <FormItem {...formItemLayout} >
                     {getFieldDecorator('age2', {rules: [{ required: false }],
                     })(
                       <InputNumber min={1} max={100} />
@@ -279,17 +329,9 @@ class ActivityDetailIndex extends Component {
                 </Col>
                 <Col span={8}>
                   <FormItem {...formItemLayout}  label="预产期" >
-                    {getFieldDecorator('startTime', {rules: [{ required: false }],
+                    {getFieldDecorator('time', {rules: [{ required: false }],
                     })(
-                      <DatePicker
-                        format="YYYY-MM-DD"
-                        placeholder="请选择"
-                      />
-                    )}
-                    {getFieldDecorator('endTime', {rules: [{ required: false }],
-                    })(
-                      <DatePicker
-                        format="YYYY-MM-DD"
+                      <MonthPicker
                         placeholder="请选择"
                       />
                     )}

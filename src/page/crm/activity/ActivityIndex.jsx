@@ -44,9 +44,10 @@ class ActivityIndex extends React.Component {
       dataIndex: 'activityTime',
       key: 'modifyTime'
     },{
-      title: '签到人数',
-      dataIndex: 'appointments',
-      key: 'appointments'
+      title: '签到/人数',
+      render: (record) => {
+        return String(record.signeds)+'/'+String(record.appointments);
+      },
     },{
       title: '成单率',
       dataIndex: 'orders',
@@ -55,7 +56,6 @@ class ActivityIndex extends React.Component {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
-        // to = {`/system/group-char/detail?dataId=${record.id}`}
         return (
           <div key = { index }>
             <Link onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
