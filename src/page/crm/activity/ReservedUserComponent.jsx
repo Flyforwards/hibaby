@@ -91,19 +91,6 @@ class ReservedUserComponent extends Component {
     })
   }
 
-  handleOk() {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        values.activityId = this.props.selectRecord.id;
-        this.props.dispatch({
-          type: "activity/saveOutsiderCustomer",
-          payload: values
-        })
-        this.props.onCancel();
-      }
-    })
-  }
-
   render() {
     let { tableProps  } = this.props
     const { getFieldDecorator } = this.props.form;

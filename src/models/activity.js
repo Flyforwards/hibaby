@@ -149,18 +149,29 @@ export default {
       const {data: {data,code}} = yield call(activityService.saveMemberCustomer, values);
       if (code == 0) {
         message.success("预约会员用户成功");
-        // 先跳转首页后面再改
-        yield put(routerRedux.push("/crm/activity"));
-
+        if (values.from ) {
+          yield put(routerRedux.push("/crm/activity"));
+        } else {
+          yield put({
+            type: 'getActivityById',
+            payload: { dataId: values.activityId}
+          })
+        }
       }
     },
     // 预约非会员用户
     *saveOutsiderCustomer({ payload: values}, { call, put }) {
         const {data: {data,code}} = yield call(activityService.saveOutsiderCustomer, values);
         if (code == 0) {
-          // 先跳转首页后面再改
           message.success("预约非会员用户成功");
-          yield put(routerRedux.push("/crm/activity"));
+          if (values.from ) {
+            yield put(routerRedux.push("/crm/activity"));
+          } else {
+            yield put({
+              type: 'getActivityById',
+              payload: { dataId: values.activityId}
+            })
+          }
 
         }
     },
