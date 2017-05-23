@@ -32,9 +32,9 @@ class AddModule extends Component {
                 icon:"copyright",
                 orderBy:Number(values.orderBy),
                 path:values.path,
-                permissionId:Number(values.permissionId),
+                permissionId:local.get("projectId"),
                 projectId:Number(values.projectId),
-                parentId:Number(values.parentId)
+                parentId:local.get("dataId")
               }
             })
             let payload={

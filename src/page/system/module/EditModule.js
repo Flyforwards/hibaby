@@ -35,8 +35,8 @@ class EditModule extends Component {
               icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
-              permissionId:this.props.record.permissionId,
-              parentId:this.props.record.parentId,
+              permissionId:local.get("projectId"),
+              parentId:local.get("dataId"),
               projectId:this.props.record.projectId,
               id:this.props.record.id,
             }
@@ -47,8 +47,8 @@ class EditModule extends Component {
               icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
-              permissionId:Number(values.permissionId),
-              parentId:Number(values.parentId),
+              permissionId:local.get("projectId"),
+              parentId:local.get("dataId"),
               projectId:Number(values.projectId),
               id:this.props.record.id,
             }

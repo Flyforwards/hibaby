@@ -19,10 +19,6 @@ export default {
 	},
 	reducers: {
 		//菜单列表
-		groupCharSave(state, { payload: { list, pagination }}) {
-			return {...state, list, pagination: {  ...state.pagination,...pagination }};
-		},
-
 		MainMenuList(state, {
 			payload: {data:item,size,page,total}
 		}) {
@@ -99,7 +95,7 @@ export default {
 
 		//菜单列表页数据
 		*MenuData({payload: values}, { call, put }) {
-			const {data: { data,size,total,page=1,code} } = yield call(moduleService.MainMenuList, values);
+			const {data: { data,size,total,page,code} } = yield call(moduleService.MainMenuList, values);
 			if (code == 0) {
 				yield put({
 						type:'MainMenuList',
