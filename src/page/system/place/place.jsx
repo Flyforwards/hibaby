@@ -51,11 +51,10 @@ class localCharIndex extends React.Component {
         dataSource : list ,
         pagination,
         onChange (page) {
-          const { query, pathname } = location
+          const { pathname } = location
           dispatch(routerRedux.push({
             pathname,
             query: {
-              ...query,
               page: page.current,
               size: page.pageSize,
               type: 2,

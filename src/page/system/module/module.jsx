@@ -3,11 +3,12 @@ import React, {Component} from 'react';
 import {connect} from 'dva'
 import './module.scss';
 import {routerRedux} from 'dva/router'
-import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messageMenu,Select,message} from 'antd';
+import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messageMenu,Select,TreeSelect,message} from 'antd';
 import request from '../../../common/request/request.js';
 import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
 import AddModule from './AddModule'
+import EditModule from './EditModule'
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -21,7 +22,9 @@ class Module extends Component {
     super(props);
     this.state={
         alertModalVisible:false,
-        modifyModalVisible:false
+        modifyModalVisible:false,
+        EditModuleModal:false,
+        value: undefined,
     }
     this.columns = [{
       title: '主模块',
@@ -64,10 +67,9 @@ class Module extends Component {
       key: 'operating',
       width: '150px',
       render: (text, record, index) => {
-        console.log(record)
         return (
               <div className="OperateList" key={ index }>
-                <a href="#" className="firstA" onClick={this.Edit}>编辑</a>
+                <a href="#" className="firstA" onClick={this.editMenu.bind(this,record)}>编辑</a>
                 <a className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
               </div>
         );
@@ -82,27 +84,37 @@ class Module extends Component {
 
   handleSearch = (e) => {
     e.preventDefault();
+    const data=[];
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
       if(!err){
-          let projectName='';
-          Object.keys(values).map((key, index) => {
-            if (key.indexOf("projectName") == 0) {
-
+          this.props.dispatch({
+            type: 'module/MenuData',
+            payload: {
+                  name: values.name,
+                  path:values.path,
+                  page:this.state.page,
+                  size:10,
+                  projectId: values.projectId
+                }
+              });
             }
           })
-      }
-    });
-  }
+        }
 
   handleReset = () => {
     this.props.form.resetFields();
-  }
-  componentWillMount() {
     this.props.dispatch({
-      type : "module/MenuData",
-    });
-  }
+      type: 'module/MenuData',
+      payload: {
+            name:'',
+            path:'',
+            page:0,
+            size:10,
+            projectId:null
+          }
+        });
+  };
+
 
   // 删除弹框
   delete(record){
@@ -111,15 +123,20 @@ class Module extends Component {
       alertModalVisible: true,
     })
   }
-  addList(){
+  // 编辑
+  editMenu(record){
+    this.record = record;
+    this.setState({
+      EditModuleModal: true,
+    })
+  }
+  addMenuList(){
     this.setState({
       modifyModalVisible: true,
-      add: true,
     })
   }
   //确定删除
   handleAlertModalOk(record) {
-      console.log("del>>>",record.id)
       this.props.dispatch({
         type: 'module/deleteService',
         payload: {
@@ -134,12 +151,15 @@ class Module extends Component {
       this.setState({
         modifyModalVisible: false,
         alertModalVisible: false,
+        EditModuleModal:false
       })
   }
-
+  //权限改变
+  onChange = (value) => {
+   this.setState({ value });
+ }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    console.log("value>>>>",getFieldValue('key'))
     const formItemLayout = {
      labelCol: { span: 5 },
      wrapperCol: { span: 19 },
@@ -147,55 +167,48 @@ class Module extends Component {
     const data=this.props.data?this.props.data:null;
     const columns = this.columns;
     const pagination = {
-      total: 100, //数据总条数
+      total:this.props.total,
       showQuickJumper: true,
-      pageSize: 10,
+      pageSize:10,
       onChange: (current) => {
-          this.props.dispatch(routerRedux.push({
-             pathname: '/module/MenuData',
-             query: {
-             'page': current,
-             size:10,
-             'results': 10
-             },
-         }));
+        this.current = current
+        this.props.dispatch({
+          type: 'module/MenuData',
+          payload: {
+              "page": current,
+              "size": 10,
+          },
+        });
       },
-    };
+    }
+    const list=this.props.list;
+    const children = [];
+    list.map((res,index)=>{
+          children.push(<Option key={res.id}>{res.name}</Option>)
+    });
     if (this.props.data !== null) {
       this.props.data.map((record)=>{
         record.key = record.id;
       })
+
     }
     return (
       <div className="MenuInside">
         <div className="menuHeard">
-        <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
+        <Form className="ant-advanced-search-form">
             <div className="MainModule">
                 <h4 className="projectName">主模块：</h4>
-                {getFieldDecorator('projectName', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                {getFieldDecorator('projectId', {rules: [{ required: false, message: '字段名称为必填项！' }],
                 })(
-                <Select className="SelectMenu"
-                  showSearch
-                  style={{ width: 150 }}
-                  placeholder="请选择"
-                  optionFilterProp="children"
-
-                  filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                >
-                  <Option key='首页' value="首页">首页</Option>
-                  <Option key='系统管理' value="系统管理">系统管理</Option>
-                  <Option key='CRM系统' value="CRM系统">CRM系统</Option>
-                  <Option key='套房管理' value="套房管理">套房管理</Option>
-                  <Option key='服务管理'  value="服务管理">服务管理</Option>
-                  <Option key='膳食厨房'  value="膳食厨房">膳食厨房</Option>
-                  <Option key='进销存管理'  value="进销存管理">进销存管理</Option>
+                <Select className="SelectMenu" style={{ width:180 }} placeholder="请选择">
+                    {children}
                 </Select>)}
             </div>
 
                 <div className="MeunName">
                   <h4 className="Name">名称：</h4>
                   <FormItem className = "NameBox">
-                    {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                    {getFieldDecorator('name', {rules: [{ required: false, message: '字段名称为必填项！' }],
                     })(
                         <Input className="input"/>
                     )}
@@ -204,16 +217,16 @@ class Module extends Component {
                 <div className="MeunPath">
                   <h4 className="Route">路径：</h4>
                   <FormItem {...formItemLayout} className = "PathBox">
-                    {getFieldDecorator('path', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                    {getFieldDecorator('path', {rules: [{ required: false, message: '字段名称为必填项！' }],
                     })(
                         <Input className="input"/>
                     )}
                   </FormItem>
                 </div>
-                <div className="Button">
-                    <Button className="Select" htmlType="submit">查询</Button>
-                    <Button className="Select" onClick={this.handleReset}>清空</Button>
-                    <Button className="Select" onClick={this.addList.bind(this)}>新增</Button>
+                <div className="btn">
+                    <Button className="Select" onClick={this.handleSearch.bind(this)}>查询</Button>
+                    <Button className="Select" onClick={this.handleReset.bind(this)}>清空</Button>
+                    <Button className="Select" onClick={this.addMenuList.bind(this)}>新增</Button>
                     <AddModule
                       visible ={ this.state.modifyModalVisible }
                       onCancel ={ this.handleCreateModalCancel.bind(this) }
@@ -234,28 +247,35 @@ class Module extends Component {
           onOk = { this.handleAlertModalOk.bind(this, this.record) }
           message = { "是否确定删除此服务项?" }
         />
+        <EditModule
+          visible ={ this.state.EditModuleModal}
+          onCancel ={ this.handleCreateModalCancel.bind(this) }
+          record = { this.record }
+          add = { this.state.add }
+          page = { this.page }
+          pageSize = { this.pageSize }
+        />
       </div>
-
     )
-
   }
 }
 
-function Module({ dispatch, data, code, page, size, total,list,permission,menu}) {
+function Module({ dispatch, data, page, size,edit, total,list,permission,menu}) {
   return (
-    <Module dispatch={dispatch} data={data} id={id} code={code} list={list} permission={permission}
-    menu={menu}  page={page} size={size} total={total}/>
+    <Module dispatch={dispatch} data={data} id={id} list={list} permission={permission}
+    menu={menu} page={page} size={size} edit={edit} total={total}/>
   )
 }
 function mapStateToProps(state) {
-  console.log("module>>>>",state.module.menu)
-  const { item:data,size,total,page,permission,list,menu} = state.module;
+  console.log("菜单>>>",state.module.menu)
+  const { item:data,size,total,page,edit,permission,list,menu} = state.module;
   return {
     loading: state.loading.models.module,
     data,
     permission,
     list,
-    menu
+    menu,
+    edit
   };
 }
 

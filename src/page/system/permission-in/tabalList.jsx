@@ -7,7 +7,7 @@ import SelectList from './from.jsx'
 import {local, session} from 'common/util/storage.js'
 import DataConversion from '../../dataConversion'
 import FromCreateModal from './fromCreateModal'
-import Current from '../../Current'
+import AlertModalFrom from 'common/AlertModalFrom'
 import {routerRedux} from 'dva/router'
 
 const Option = Select.Option
@@ -45,8 +45,8 @@ class TabalListed extends Component {
           render: (text, record, index) => {
             return (
                 <div>
-                 <a href="#">删除</a>
-                  <a href="#" onClick={this.modify.bind(this,index)}>修改</a>
+                  <a onClick={this.delete.bind(this,record)}>删除</a>
+                  <a onClick={this.modify.bind(this,index)}>修改</a>
                 </div>
             );
           },
@@ -62,18 +62,27 @@ class TabalListed extends Component {
               }],
               createModalVisible: false,
               modifyModalVisible: false,
+              alertModalVisible:false,
               modifyModalIndex: null
         }
     }
-    showCreateModal() {
-        this.setState({
-            createModalVisible: true
-        })
+    // 删除弹框
+    delete(record){
+      this.record = record;
+      this.setState({
+        alertModalVisible: true,
+      })
     }
-    showModifyModal() {
-        this.setState({
-            modifyModalVisible: true
+    handleAlertModalOk(record) {
+        this.props.dispatch({
+          type: 'system/delpermission',
+          payload: {
+             id: record.id,
+             page: this.page,
+             pageSize: this.pageSize,
+          }
         })
+      this.handleCreateModalCancel();
     }
     handleModifyModalCancel() {
         this.setState({
@@ -83,6 +92,7 @@ class TabalListed extends Component {
     handleCreateModalCancel() {
         this.setState({
             createModalVisible: false,
+            alertModalVisible:false
         })
     }
     addList(){
@@ -108,13 +118,13 @@ class TabalListed extends Component {
         const pagination = {
           total: 40, //数据总条数
           showQuickJumper: true,
-          defaultPageSize:5,
+          pageSize:10,
           onChange: (current) => {
             this.props.dispatch({
                 type: 'system/listByPage',
                 payload: {
                     "page": current,
-                    "size": 5
+                    "size": 10
                 }
             });
           },
@@ -122,27 +132,17 @@ class TabalListed extends Component {
         return (
           <div>
           <Table bordered dataSource = {this.props.arr} columns={this.columns} pagination = {pagination} className="fromModal" rowKey = "class"/>
-          < Current page = {
-                this.props.page
-              }
-              totalpage = {
-                this.props.totalpage
-              }
-              total = {
-                this.props.total
-              }
-              results = {
-                this.props.results
-              }
-              range = {
-                this.props.range
-              }
-              />
           <FromCreateModal
             handleOk={this.state.handleOk}
             modelsList={mainName[this.state.modifyModalIndex]}
             visible={ this.state.modifyModalVisible}
             onCancel={ this.handleModifyModalCancel.bind(this) }
+          />
+          <AlertModalFrom
+            visible ={ this.state.alertModalVisible }
+            onCancel ={ this.handleCreateModalCancel.bind(this) }
+            onOk = { this.handleAlertModalOk.bind(this, this.record) }
+            message = { "是否确定删除此服务项?" }
           />
           </div>
         )
@@ -184,4 +184,3 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps)(TabalList)
-

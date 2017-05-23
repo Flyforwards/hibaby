@@ -33,8 +33,8 @@ export default {
 				code
 			};
 			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? arr.length : (page - 1) * 3 + arr.length,
+				start: page == 1 ? 1 : (page - 1) * 10+ 1,
+				end: page == 1 ? arr.length : (page - 1) * 10 + arr.length,
 				totalpage:Math.ceil(total/size),
 			}
 			local.set("listByPage",arr)
@@ -87,7 +87,13 @@ export default {
 			}
 			return {...placedata,range};
 		},
+   //删除内部权限列表数据
+	 delpermissionSave(state, { payload: { record }}) {
 
+		 state.selectedRows.remove(record);
+		 state.selectedRowKeys.remove(record.key);
+		 return {...state, };
+	 },
 		permissionAddSave(state, {
 			payload: {
 				data,
@@ -181,6 +187,21 @@ export default {
 				  "sortOrder": "string"} });
 			}
 		},
+		//删除内部权限列表数据
+		*delpermission({ payload: values }, {call,put }) {
+			const { page, pageSize, id} = values
+			const { data: { data, code, err }} = yield call(systemService.delpermissionSave, { id});
+			if (code == 0) {
+				message.success('删除成功');
+				yield put({
+					type : 'delpermissionSave',
+					payload : { page : page || 0 , size : pageSize || 10 }
+				}
+			);
+			} else {
+				throw err || "请求出错";
+			}
+		},
 		*permissionUpdataList({payload: values}, { call, put }) {
 			const {
 				data: {
@@ -213,7 +234,7 @@ export default {
 		      		size,
 					code
 				}
-			} = yield call(systemService.listByPage, values);
+			} = yield call(systemService.listByPageSave, values);
 			if (code == 0) {
 				yield put({
 					type: 'listByPageSave',
@@ -261,7 +282,7 @@ export default {
 					projectId,
 					code
 				}
-			} = yield call(systemService.SelectList, values);
+			} = yield call(systemService.SelectListSave, values);
 			if (code == 0) {
 				yield put({
 					type: 'SelectListSave',
@@ -369,7 +390,11 @@ export default {
 					  });
             dispatch({
               type: 'listByPage',
-              payload: { ...query, "page": 1, "size": 5, }
+              payload: { ...query, "page": 1, "size": 10, }
+					  });
+						dispatch({
+              type: 'SelectList',
+              payload: { ...query, "page": 1, "size": 10, }
 					  });
         }
         if(pathname === '/system/logs') {

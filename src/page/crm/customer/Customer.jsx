@@ -217,7 +217,7 @@ class Customered extends React.Component {
                <input placeholder='请输入客户编号、客户姓名、联系方式、合同编号....' />
                 <span className="search"><Button type="primary">搜索</Button></span>
                 <span className="screening"><Button type="primary" onClick={this.showCreateModal.bind(this)}>筛选项</Button></span>
-                <span className="customer"><Button type="primary">新增客户</Button></span>
+                <span className="customer"><Link to="/crm/customer/AddCustomerInfo"><Button type="primary">新增客户</Button></Link> </span>
             </div>
             <div className="Customer-navigation">
                 <div className="age">年龄<input type="number" min="1"/>至<input type="number" min="1"/></div>

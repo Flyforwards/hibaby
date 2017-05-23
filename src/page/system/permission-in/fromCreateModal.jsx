@@ -1,7 +1,7 @@
 "use strict"
 
 import React, {Component} from 'react'
-import {connect} from 'dva'
+import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 import './fromModal.scss'
 import {local, session} from 'common/util/storage.js'
@@ -141,7 +141,7 @@ class FromCreateModal extends Component {
                 )}
                 </FormItem>
                 <FormItem
-
+                  label="上级权限"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 20 }}
                 >

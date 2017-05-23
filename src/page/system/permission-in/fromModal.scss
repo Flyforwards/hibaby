@@ -1,0 +1,149 @@
+.fromList{
+	height:auto;
+	.ant-table-body {
+	    margin-top: 20px;
+	}
+	.fromhead{
+		height:40px;
+		width:100%;
+		background:#fff;
+		margin-top:10px;
+		.ant-form{
+			height:30px;
+			width:80%;
+			float:left;
+			margin-top:5px;
+			margin-left:10px;
+			.ant-row {
+				height:30px;
+				width:210px;
+				float:left;
+				.ant-form-item-label{
+					height:30px;
+					width:60px;
+					font-size:14px;
+					color:#333;
+					float:left;
+					label{
+						height:30px;
+						width:60px;
+						font-size:14px;
+						color:#333;
+						line-height:30px;
+						text-align:center;
+					}
+				}
+
+				.ant-form-item-control-wrapper{
+						height:30px;
+						width:150px;
+						float:left;
+						.ant-form-item-control{
+							height:30px;
+							width:150px;
+							float:left;
+							.ant-select-selection--single {
+								height:30px;
+								width:150px;
+								float:left;
+							}
+					 }
+				}
+			}
+			.permission{
+				width:230px;
+				float:left;
+				margin-left:10px;
+				.ant-form-item-label{
+					height:30px;
+					width:80px;
+					font-size:14px;
+					color:#333;
+					float:left;
+					label{
+						height:30px;
+						width:80px;
+						font-size:14px;
+						color:#333;
+						line-height:30px;
+						text-align:center;
+					}
+				}
+			}
+		}
+	}
+	.Button{
+			height:auto;
+			width:230px;
+			float:left;
+			margin-top:5px;
+		.btn{
+			width:60px;
+			height:30px;
+			float:left;
+			background-color:blue;
+			margin-left:10px;
+			color:#fff;
+			text-align: center;
+			line-height: 30px;
+			cursor: pointer;
+			display: inline-block;
+			border-radius: 4px;
+		}
+	}
+
+	a{
+		display:inline-block;
+		margin: 0 20px;
+	}
+	.ant-table-thead > tr > th {
+		background-color: rgba(102, 102, 102, 1);
+		font-weight: 500;
+		transition: background .3s ease;
+		text-align: center;
+		font-family: '微软雅黑 Regular', '微软雅黑';
+		font-weight: 400;
+		font-style: normal;
+		font-size: 14px;
+		color: #FFFFFF;
+	}
+	.ant-table-tbody > tr > td {
+		text-align:center;
+		background-color: #fff;
+		font-family: '微软雅黑 Regular', '微软雅黑';
+		font-weight: 400;
+		font-size: 14px;
+		div{
+			width:100%;
+			.firstA{
+				display: inline-block;
+				color: #0066FF;
+				text-decoration: none;
+				margin:0 22px;
+				float:left;
+			}
+			.firstB{
+				color: #FF0000;
+				float:left;
+				text-decoration: none;
+			}
+		}
+	}
+	.add-vertical-center-modal {
+	  text-align: center;
+	  white-space: nowrap;
+	  .ant-modal {
+	    display: inline-block;
+	    vertical-align: middle;
+	    top: 0;
+	    text-align: center;
+	  }
+	}
+	  .add-vertical-center-modal:before {
+	    content: '';
+	    display: inline-block;
+	    height: 100%;
+	    vertical-align: middle;
+	    width: 0;
+	  }
+}

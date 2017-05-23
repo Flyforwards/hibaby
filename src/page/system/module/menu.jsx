@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
-import './fromModal.scss'
+import './module.scss'
 import {local, session} from 'common/util/storage.js'
 
 
@@ -12,54 +12,58 @@ class SelectListed extends Component {
       value: undefined
     }
    onChange = (value) => {
+   console.log("文本>>>>",value)
     this.setState({ value });
   }
+  onSearch=(value)=>{
+      console.log("文本>>>>",value)
+  }
   onSelect = (value,node, extra) => {
-    local.set("projectId",value)
+  console.log("文本>>>>",value)
+    local.set("dataId",value)
   }
     render() {
+        console.log(this.props.menu)
         return (
-            <div className="SelectList">
-              <span>上级权限
               <TreeSelect
-                style={{ width: 150 }}
-                key={this.props.list.id}
+                style={{ width: 310 }}
+                key={this.props.menu.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={this.props.list}
+                treeData={this.props.menu}
                 placeholder="请选择"
                 treeDefaultExpandAll
+                onChange={this.onChange}
                 onSelect={this.onSelect.bind(this)}
-                onChange={this.onChange.bind(this)}
+                onSearch={this.onSearch.bind(this)}
               />
-              </span>
-            </div>
+
         )
     }
 }
-function SelectList({
+function SelectMenu({
     dispatch,
-    list,
+    menu,
     code
 }) {
   return ( <div>
     <SelectListed dispatch = {
       dispatch
     }
-    list = { list }
+    menu = {menu}
     /> </div>
   )
 
 }
 function mapStateToProps(state) {
+  console.log("上级>>>>",state.module.menu)
   const {
-    list,
+    menu,
     code
-  } = state.system;
+  } = state.module;
   return {
-    loading: state.loading.models.system,
-    list
+    loading: state.loading.models.module,
+    menu
   };
 }
-export default connect(mapStateToProps)(SelectList)
-
+export default connect(mapStateToProps)(SelectMenu)

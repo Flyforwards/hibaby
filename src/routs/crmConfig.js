@@ -1,5 +1,5 @@
 
-import registerModel from './register'
+import registerModel from './register';
 
 export default (app) => [
     // 客户档案
@@ -11,6 +11,17 @@ export default (app) => [
           cb(null, require('page/crm/customer/Customer.jsx'))
         })
       }
+    },
+    //客户列表
+    {
+      path: '/crm/customer/AddCustomerInfo',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+         registerModel(app, require('models/addCustomer'));
+          cb(null, require('page/crm/customer/addCustomer.jsx'))
+        })
+     }
+
     },
     // 套餐
     {
@@ -130,6 +141,48 @@ export default (app) => [
         })
       }
     },
+    //活动列表
+    {
+      path: '/crm/activity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityIndex.jsx'))
+        })
+      }
+    },
+    //活动添加
+    {
+      path: '/crm/activity/add',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityAddIndex.jsx'))
+        })
+      }
+    },
+    //活动详情
+    {
+      path: '/crm/activity/detail',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityDetailIndex.jsx'))
+        })
+      }
+    },
+    //活动编辑
+    {
+      path: '/crm/activity/edit',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityDetailEditIndex.jsx'))
+        })
+      }
+    },
+
+
+
 
 ]
-

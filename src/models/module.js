@@ -9,15 +9,19 @@ export default {
 	state: {
 		data: null,
 		total: null,
-		list:null,
+		list:[],
 		leftList:null,
 		dictionarySideDOs:null,
-		item: null,
-		permission:null,
-		menu:null,
+		item: [],
+		permission:[],
+		menu:[],
+		edit:[],
 	},
 	reducers: {
 		//菜单列表
+		groupCharSave(state, { payload: { list, pagination }}) {
+			return {...state, list, pagination: {  ...state.pagination,...pagination }};
+		},
 
 		MainMenuList(state, {
 			payload: {data:item,size,page,total}
@@ -30,6 +34,7 @@ export default {
 				end: page == 1 ? item.length : (page - 1) * 3 + item.length,
 				totalpage:Math.ceil(total/size),
 			}
+			local.set("MainMenuList",item)
 			return {...menulist,range };
 		},
 		//删除服务项目
@@ -47,15 +52,15 @@ export default {
 			}
 		},
 		//编辑菜单数据
-		EditMenuList(state,{payload:{data:item,code}}){
+		EditMenuListData(state,{payload:{data:edit}}){
 				return{
 					...state,
-					item,
-					code
+					edit
 				}
 		},
 		//主模块下拉
 		MainModuleSelect(state,{payload:{data:list,code}}){
+			local.set("Dictionary",list)
 				return{
 					...state,
 					list,
@@ -63,19 +68,30 @@ export default {
 				}
 		},
 		//菜单权限下拉
-		MenuPermissionSelect(state,{payload:{data:permission,code}}){
-				return{
-					...state,
-					permission,
-					code
-				}
+		MenuPermissionSelect(state,{payload:{data:permission,projectId}}){
+			let permissiondata={
+				...state,
+				permission,
+				projectId,
+			}
+			  local.set("index",permissiondata.data)
+				console.log("菜单下拉>>>",permission)
+				return permissiondata;
 		},
+
 		//上级菜单下拉
-		ParentNodeSelect(state,{payload:{data:menu,code}}){
-				return{
+		ParentNodeSelect(state,{payload:{data:menu,dataId,code}}){
+				let menudata={
 					...state,
 					menu,
-					code
+					dataId,
+				}
+				local.set("index",menudata.data)
+				console.log("上级下拉",menu)
+				return {
+					...state,
+					menu,
+					dataId,
 				}
 		},
 	},
@@ -97,12 +113,12 @@ export default {
 				});
 			}
 		},
-		//删除服务项目
+		//删除菜单数据
 		*deleteService({ payload: values }, {call,put }) {
       const { page, pageSize, dataId} = values
       const { data: { data, code, err }} = yield call(moduleService.deleteService, { dataId});
       if (code == 0) {
-        message.success('删除服务项目成功');
+        message.success('删除成功');
         yield put({
           type : 'MenuData',
           payload : { page : page || 0 , size : pageSize || 10 }
@@ -127,22 +143,17 @@ export default {
 			}
 		},
 		//编辑菜单数据列表
-		*EditMenuData({
-			payload: values
-		}, {
-			call,
-			put
-		}) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(moduleService.EditMenuList, values);
-			console.log("effects>>>",data)
+		*EditMenuData({payload: values}, { call, put }) {
+			const {data: { data,code} } = yield call(moduleService.EditMenuListData, values);
 			if (code == 0) {
 				message.success("菜单数据更新成功")
-				yield put(routerRedux.push("/system/module"))
+				yield put({
+						type:'EditMenuListData',
+						payload:{
+							data,
+							code
+						}
+				});
 			}
 		},
 		//菜单主模块下拉选项
@@ -153,9 +164,7 @@ export default {
 					code
 				}
 			} = yield call(moduleService.MainModuleSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("菜单下拉选项")
 				yield put({
 						type:'MainModuleSelect',
 						payload:{
@@ -167,15 +176,15 @@ export default {
 		},
 		//菜单权限下拉选项
 		*MenuPermissionData({payload: values}, {call,put}) {
+
 			const {
 				data: {
 					data,
+					projectId,
 					code
 				}
 			} = yield call(moduleService.	MenuPermissionSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("权限下拉选项")
 				yield put({
 						type:'MenuPermissionSelect',
 						payload:{
@@ -190,12 +199,11 @@ export default {
 			const {
 				data: {
 					data,
+					dataId:projectId,
 					code
 				}
 			} = yield call(moduleService.	ParentNodeSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("权限下拉选项")
 				yield put({
 						type:'ParentNodeSelect',
 						payload:{
