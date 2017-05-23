@@ -10,12 +10,12 @@
       overflow:hidden;
       .MainModule{
         height:30px;
-        width:260px;
+        width:23%;
         float:left;
         margin:10px 0 10px 10px;
         .projectName{
           height:30px;
-          width:80px;
+          width:28%;
           float:left;
           line-height: 30px;
           text-align: center;
@@ -24,7 +24,7 @@
         }
         .SelectMenu{
           height:30px;
-          width:180px;
+          width:66%;
           float:left;
           .ant-select-selection--single{
             height:30px;
@@ -33,12 +33,12 @@
       }
       .MeunName{
         height:30px;
-        width:230px;
+        width:20%;
         float:left;
-        margin:10px 0 0 10px;
+        margin-top:10px;
         .Name{
           height:30px;
-          width:60px;
+          width:26%;
           float:left;
           line-height: 30px;
           text-align: center;
@@ -47,7 +47,7 @@
         }
         .NameBox{
           height:28px;
-          width:150px;
+          width:74%;
           float:left;
           .ant-form-item-control {
             height:28px;
@@ -59,13 +59,12 @@
       }
       .MeunPath{
         height:30px;
-        height:30px;
-        width:350px;
+        width:30%;
         float:left;
-        margin:10px 0 0 0px;
+        margin:10px 0 0 10px;
         .Route{
-          height:30x;
-          width:60px;
+          height:30px;
+          width:17%;
           float:left;
           line-height: 30px;
           text-align: center;
@@ -74,7 +73,7 @@
         }
         .PathBox{
           height:28px;
-          width:250px;
+          width:66%;
           float:left;
           .ant-form-item-control {
             height:28px;
@@ -85,7 +84,7 @@
         }
       }
       .btn{
-        width: 300px;
+        width: 24%;
         float:left;
         margin:10px 0 0 10px;
         .ant-btn{
