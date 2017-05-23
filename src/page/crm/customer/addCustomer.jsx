@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'dva';
+import './customerInformation.scss';
 import { Tabs} from 'antd';
 import CustomerInformation from './CustomerInformation';
 const TabPane = Tabs.TabPane;
@@ -13,7 +14,7 @@ function addCustomer() {
   return(
     <div>
       <Tabs  defaultActiveKey="1" onChange={callback} type="card">
-        <TabPane tab="客户信息" key="1">
+        <TabPane className='tabsContent' tab="客户信息" key="1">
           <CustomerInformation/>
         </TabPane>
         <TabPane tab="健康档案" key="2">

@@ -16,19 +16,8 @@ import ReservedUserComponent from './ReservedUserComponent'
 class ActivityDetailIndex extends Component {
   constructor(props) {
     super(props)
-    this.state={
-      appointmentVisible: false,
-      memberVisible: false,
-      notMemberVisible: false,
-      alertModalVisible: false
-    }
-
   }
 
-
-  cellOnChange() {
-
-  }
 
   back() {
     const values = parse(location.search.substr(1))
@@ -41,30 +30,6 @@ class ActivityDetailIndex extends Component {
   }
 
 
-  //删除
-  deleteActivity() {
-    this.setState({
-      alertModalVisible: true,
-    })
-  }
-
-  // 取消弹框
-  onCancel() {
-    this.setState({
-      appointmentVisible: false,
-      memberVisible: false,
-      notMemberVisible: false,
-      alertModalVisible: false
-    })
-  }
-  // 确定删除
-  onOk(record) {
-    this.props.dispatch({
-      type: 'activity/deleteActivity',
-      payload: { dataId: record.id }
-    })
-    this.onCancel();
-  }
   // 保存
   saveEdit() {
     this.props.form.validateFields((err, values) => {
@@ -76,22 +41,6 @@ class ActivityDetailIndex extends Component {
         })
       }
     })
-  }
-
-
-  onChoose(on) {
-    if(on){
-      this.setState({
-        appointmentVisible: false,
-        memberVisible: true,
-      })
-    } else {
-      this.setState({
-        notMemberVisible: true,
-        appointmentVisible: false,
-      })
-    }
-
   }
 
 
@@ -168,7 +117,7 @@ class ActivityDetailIndex extends Component {
         {
           activityInfo
         }
-        <ReservedUserComponent editSignUserList={ editSignUserList } />
+        <ReservedUserComponent key={ editSignUserList.length } editSignUserList={ editSignUserList } />
         <Row>
           <Col offset={16} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
           <Col span={4}><Button onClick={ this.saveEdit.bind(this) }  >保存</Button></Col>

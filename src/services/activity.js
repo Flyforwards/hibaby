@@ -66,12 +66,22 @@ export function getActivityCustomerPageList(values) {
 }
 
 // 获取会员用户列表
-export function getCustomerPageList(values) {
+export function getNoAppointmentCustomerPageList(values) {
   return request('/crm/api/v1/customer/getCustomerPageList', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
+// 删除预约客户
+export function deleteActivityCustomer(values) {
+  return request('/crm/api/v1/activity/deleteActivityCustomer', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
 
 
 

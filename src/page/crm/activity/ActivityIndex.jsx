@@ -118,7 +118,7 @@ class ActivityIndex extends React.Component {
         memberVisible: true,
       })
       this.props.dispatch({
-        type: 'activity/getCustomerPageList',
+        type: 'activity/getNoAppointmentCustomerPageList',
         payload: { 'activityId': this.selectRecord.id }
       })
     } else {
