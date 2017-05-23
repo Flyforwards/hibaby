@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal,  Card,Input,Button,Form } from 'antd'
+import PropTypes from 'prop-types'
 const FormItem = Form.Item;
 const createForm = Form.create
 
@@ -73,5 +74,12 @@ class appointmentNotMemberFrom extends Component {
     )
   }
 }
+
+appointmentNotMemberFrom.propTypes = {
+  onCancel: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+  selectRecord: PropTypes.object,
+}
+
 
 export default connect()(appointmentNotMemberFrom)

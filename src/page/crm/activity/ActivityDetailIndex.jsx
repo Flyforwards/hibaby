@@ -144,9 +144,10 @@ class ActivityDetailIndex extends Component {
         appointmentVisible: false,
         memberVisible: true,
       })
+      const values = parse(location.search.substr(1))
       this.props.dispatch({
         type: 'activity/getCustomerPageList',
-        payload: { 'activityId': this.selectRecord.id }
+        payload: { 'activityId': values.dataId }
       })
     } else {
       this.setState({
@@ -321,12 +322,14 @@ class ActivityDetailIndex extends Component {
           </Row>
           <AppointmentModalFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.appointmentVisible } selectRecord={ item } onChoose={ this.onChoose.bind(this)}/>
           <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ item }/>
-          <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={item }/>
+          <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ item }/>
           <AlertModalFrom  onCancel={ this.onCancel.bind(this) } modalTitle="是否确定删除此活动"  visible={ this.state.alertModalVisible } onOk={ this.onOk.bind(this, item) }/>
         </div>
     )
   }
 }
+
+
 
 function mapStateToProps(state) {
   const {

@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal, Button } from 'antd'
-
+import PropTypes from 'prop-types'
 
 class appointmentModalFrom extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class appointmentModalFrom extends Component {
 
 
   render() {
-    let { visible, modalTitle, selectRecord  } = this.props
+    let { visible, modalTitle  } = this.props
 
     return (
       <Modal
@@ -41,6 +41,12 @@ class appointmentModalFrom extends Component {
       </Modal>
     )
   }
+}
+
+appointmentModalFrom.propTypes = {
+  onCancel: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+  modalTitle: PropTypes.string,
 }
 
 export default connect()(appointmentModalFrom)

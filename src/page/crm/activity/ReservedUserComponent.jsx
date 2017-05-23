@@ -7,7 +7,6 @@ import { Link } from 'react-router';
 import AlertModalFrom from 'common/AlertModalFrom'
 const FormItem = Form.Item;
 const createForm = Form.create;
-import { parse } from 'qs'
 
 
 @createForm()
@@ -79,11 +78,11 @@ class ReservedUserComponent extends Component {
   }
 
   onOk(record) {
-    const query = parse(location.search.substr(1))
     this.props.dispatch({
       type: 'activity/deleteUserFromActivity',
-      // payload:
+      payload: { dataId:  record.id }
     })
+    this.handleCancel();
   }
 
   handleCancel() {
@@ -91,11 +90,11 @@ class ReservedUserComponent extends Component {
       alertModalVisible: false,
     })
   }
+
   handleOk() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.activityId = this.props.selectRecord.id;
-        console.log(values);
         this.props.dispatch({
           type: "activity/saveOutsiderCustomer",
           payload: values
