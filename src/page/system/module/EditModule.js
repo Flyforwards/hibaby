@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
+import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon} from 'antd'
 import './AddModule.scss'
+import {local, session} from 'common/util/storage.js'
 const createForm = Form.create
 const FormItem = Form.Item
 
@@ -65,7 +66,13 @@ class EditModule extends Component {
   handleAfterClose() {
 
   }
+  onChange = (value) => {
+   this.setState({ value });
 
+ }
+ onSelect = (value,node, extra) => {
+   local.set("projectId",value)
+ }
 
   render() {
     const { visible, record ,data,list,permission,menu } = this.props
@@ -138,15 +145,16 @@ class EditModule extends Component {
                   <h4 className="projectName">权限：</h4>
                   {getFieldDecorator('permissionId', {initialValue:`${item.permissionName}`,rules: [{ required: true, message: '字段名称为必填项！' }],
                   })(
-                  <Select className="SelectMenu"
-                    showSearch
-                    style={{ width: 430 }}
-                    placeholder="请选择"
-                    optionFilterProp="children"
-                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                  >
-                    {perdata}
-                  </Select>)}
+                    <TreeSelect
+                      style={{ width: 150 }}
+                      key={this.props.permission.id}
+                      value={this.state.value}
+                      dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                      treeData={this.props.permission}
+                      placeholder="请选择"
+                      treeDefaultExpandAll
+                      onChange={this.onChange.bind(this)}
+                    />)}
               </div>
               <div className="MeunName">
                 <h4 className="Name">名称：</h4>

@@ -34,6 +34,7 @@ export default {
 				end: page == 1 ? item.length : (page - 1) * 3 + item.length,
 				totalpage:Math.ceil(total/size),
 			}
+			local.set("MainMenuList",item)
 			return {...menulist,range };
 		},
 		//删除服务项目
@@ -59,6 +60,7 @@ export default {
 		},
 		//主模块下拉
 		MainModuleSelect(state,{payload:{data:list,code}}){
+			local.set("Project",list)
 				return{
 					...state,
 					list,
@@ -66,18 +68,23 @@ export default {
 				}
 		},
 		//菜单权限下拉
-		MenuPermissionSelect(state,{payload:{data:permission,code}}){
+		MenuPermissionSelect(state,{payload:{data:permission,projectId,code}}){
+			console.log("菜单下拉>>>",permission)
 				return{
 					...state,
 					permission,
+					projectId,
 					code
 				}
 		},
+
 		//上级菜单下拉
-		ParentNodeSelect(state,{payload:{data:menu,code}}){
+		ParentNodeSelect(state,{payload:{data:menu,projectId,parentId,code}}){
 				return{
 					...state,
 					menu,
+					projectId,
+					parentId,
 					code
 				}
 		},
@@ -163,9 +170,11 @@ export default {
 		},
 		//菜单权限下拉选项
 		*MenuPermissionData({payload: values}, {call,put}) {
+
 			const {
 				data: {
 					data,
+					projectId,
 					code
 				}
 			} = yield call(moduleService.	MenuPermissionSelect, values);
@@ -184,6 +193,8 @@ export default {
 			const {
 				data: {
 					data,
+					dataId,
+					parentId,
 					code
 				}
 			} = yield call(moduleService.	ParentNodeSelect, values);
@@ -192,6 +203,8 @@ export default {
 						type:'ParentNodeSelect',
 						payload:{
 							data,
+							projectId:dataId,
+							parentId,
 							code
 						}
 				});

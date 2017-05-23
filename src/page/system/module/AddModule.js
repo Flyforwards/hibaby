@@ -2,12 +2,14 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
+import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon} from 'antd'
 import './AddModule.scss'
+import {local, session} from 'common/util/storage.js'
+import SelectList from './from.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
 
-
+const Option = Select.Option;
 @createForm()
 class AddModule extends Component {
   constructor(props) {
@@ -30,10 +32,21 @@ class AddModule extends Component {
                 orderBy:Number(values.orderBy),
                 path:values.path,
                 permissionId:Number(values.permissionId),
-                projectId:Number(values.projectId)
+                projectId:Number(values.projectId),
+                parentId:Number(values.parentId)
             }
             })
-
+            let payload={
+              description:values.name,
+              name: values.name,
+              icon:"copyright",
+              orderBy:Number(values.orderBy),
+              path:values.path,
+              permissionId:Number(values.permissionId),
+              projectId:Number(values.projectId),
+              parentId:Number(values.parentId)
+            }
+            console.log("保存>>>",payload)
           this.props.onCancel()
         }
       });
@@ -43,8 +56,27 @@ class AddModule extends Component {
   handleAfterClose() {
 
   }
-
-
+  onChange = (value) => {
+   this.setState({ value });
+ }
+ onSelect = (value,node, extra) => {
+   local.set("projectId",value)
+ }
+ //传入权限主模块id
+ onSelectID = (value,key) => {
+   this.props.dispatch({
+       type: 'module/ParentNodeData',
+       payload: {
+           "projectId":value,
+       }
+   });
+   this.props.dispatch({
+       type: 'module/MenuPermissionData',
+       payload: {
+           "projectId":value,
+       }
+   });
+ }
   render() {
     const { visible, record ,data,list,permission,menu } = this.props
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -55,14 +87,12 @@ class AddModule extends Component {
         sm: { span: 25 },
       },
     };
+    console.log("菜单>>>>",permission)
     const children = [];
     const perdata=[];
     const menudata=[];
     list.map((res,index)=>{
-          children.push(<Option key={res.id}>{res.name}</Option>)
-    });
-    permission.map((keys,index)=>{
-          perdata.push(<Option key={keys.id}>{keys.label}</Option>)
+          children.push(<Option value={res.id} key={res.id}>{res.name}</Option>)
     });
     menu.map((arr,index)=>{
       menudata.push(<Option key={arr.id}>{arr.name}</Option>)
@@ -84,9 +114,8 @@ class AddModule extends Component {
           <Form>
               <div className="MainModule">
                   <h4 className="projectName">主模块：</h4>
-                  {getFieldDecorator('projectId', {rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(<Select className="SelectMenu"
-                    showSearch
+                  {getFieldDecorator('projectId', {rules: [{ required:false, message: '字段名称为必填项！' }],
+                })(<Select className="SelectMenu" onClick={this.onSelectID}
                     style={{ width:430 }}
                     placeholder="请选择"
                     optionFilterProp="children"
@@ -98,36 +127,39 @@ class AddModule extends Component {
               </div>
               <div className="MainModule">
                   <h4 className="parentName">上级菜单：</h4>
-                  {getFieldDecorator('parentId', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('parentId', {rules: [{ required: true, message: '上级菜单为必填项！' }],
                   })(
-                  <Select className="SelectMenu"
-                    showSearch
-                    style={{ width: 430 }}
-                    placeholder="请选择"
-                    optionFilterProp="children"
-                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                  >
-                    {menudata}
-                  </Select>)}
+                    <Select className="SelectMenu"
+                      showSearch
+                      style={{ width: 430 }}
+                      placeholder="请选择"
+                      optionFilterProp="children"
+                      filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      {menudata}
+                    </Select>
+                  )}
               </div>
               <div className="MainModule">
                   <h4 className="projectName">权限：</h4>
-                  {getFieldDecorator('permissionId', {rules: [{ required: true, message: '字段名称为必填项！' }],
-                  })(
-                  <Select className="SelectMenu"
-                    showSearch
-                    style={{ width: 430 }}
+                  {getFieldDecorator('permissionId', {rules: [{required: false,onChange: this.handleSelectChange}],
+                  })(<TreeSelect
+                    style={{ width: 150 }}
+                    key={this.props.permission.id}
+                    value={this.state.value}
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    treeData={this.props.permission}
                     placeholder="请选择"
-                    optionFilterProp="children"
-                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                  >
-                    {perdata}
-                  </Select>)}
+                    treeDefaultExpandAll
+                    onSelect={this.onSelect.bind(this)}
+                    onChange={this.onChange.bind(this)}
+                  />
+                    )}
               </div>
               <div className="MeunName">
                 <h4 className="Name">名称：</h4>
                 <FormItem {...formItemLayout} className = "NameBox">
-                  {getFieldDecorator('name', {initialValue: name,rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('name', {initialValue: name,rules: [{ required: true, message: '名称为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
@@ -136,7 +168,7 @@ class AddModule extends Component {
               <div className="MeunPath">
                 <h4 className="Route">路径：</h4>
                 <FormItem {...formItemLayout} className = "PathBox">
-                  {getFieldDecorator('path', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('path', {rules: [{ required: true, message: '路径为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
@@ -145,7 +177,7 @@ class AddModule extends Component {
               <div className="MeunPath">
                 <h4 className="orderBy">排序：</h4>
                 <FormItem {...formItemLayout} className = "PathBox">
-                  {getFieldDecorator('orderBy', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                  {getFieldDecorator('orderBy', {rules: [{ required: true, }],
                   })(
                       <Input className="input"/>
                   )}
@@ -158,6 +190,7 @@ class AddModule extends Component {
   }
 }
 function mapStateToProps(state) {
+  console.log("树形>>>>",state.module)
   const {
     data,
     permission,

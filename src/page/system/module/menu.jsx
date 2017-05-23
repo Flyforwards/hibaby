@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
-import './fromModal.scss'
+import './module.scss'
 import {local, session} from 'common/util/storage.js'
 
 
@@ -20,45 +20,43 @@ class SelectListed extends Component {
     render() {
         return (
             <div className="SelectList">
-              <span>
               <TreeSelect
                 style={{ width: 150 }}
-                key={this.props.list.id}
+                key={this.props.menu.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={this.props.list}
+                treeData={this.props.menu}
                 placeholder="请选择"
                 treeDefaultExpandAll
                 onSelect={this.onSelect.bind(this)}
                 onChange={this.onChange.bind(this)}
               />
-              </span>
             </div>
         )
     }
 }
-function SelectList({
+function SelectMenu({
     dispatch,
-    list,
+    menu,
     code
 }) {
   return ( <div>
     <SelectListed dispatch = {
       dispatch
     }
-    list = { list }
+    menu = {menu}
     /> </div>
   )
 
 }
 function mapStateToProps(state) {
   const {
-    list,
+    menu,
     code
-  } = state.system;
+  } = state.module;
   return {
-    loading: state.loading.models.system,
-    list
+    loading: state.loading.models.module,
+    menu
   };
 }
-export default connect(mapStateToProps)(SelectList)
+export default connect(mapStateToProps)(SelectMenu)
