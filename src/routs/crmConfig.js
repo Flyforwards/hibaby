@@ -32,6 +32,26 @@ export default (app) => [
         })
       }
     },
+     // 添加套房
+    {
+      path: '/crm/serviceinfo/addsuite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/addSuite.jsx'))
+        })
+      }
+    },
+    //查看套房
+    {
+      path: '/crm/serviceinfo/viewsuite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/viewSuite.jsx'))
+        })
+      }
+    },
     //查看套餐
     {
       path: '/crm/serviceinfo/viewservice',
@@ -52,12 +72,23 @@ export default (app) => [
         })
       }
     },
+    //编辑套房
+    {
+      path: '/crm/serviceinfo/editsuite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/editSuite.jsx'))
+        })
+      }
+    },
     //套房
     {
       path: '/crm/suite',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('page/crm/product/InfoCard.jsx'))
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/suite.jsx'))
         })
       }
     },
