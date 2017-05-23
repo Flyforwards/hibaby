@@ -23,36 +23,42 @@ class AppointmentMemberFrom extends Component {
       key: 'age'
     }, {
       title: '预产期',
-      dataIndex: 'time',
-      key: 'time'
+      dataIndex: 'dueDate',
+      key: 'dueDate'
     }, {
       title: '怀孕周期',
-      dataIndex: 'count',
-      key: 'count'
+      dataIndex: 'gestationalWeeks',
+      key: 'gestationalWeeks'
 
     }, {
       title: '第几胎',
-      dataIndex: 'index',
-      key: 'index'
+      dataIndex: 'fetus',
+      key: 'fetus'
     },{
       title: '联系方式',
-      dataIndex: 'phone',
-      key: 'phone'
+      dataIndex: 'contact',
+      key: 'contact'
     },{
       title: '购买套餐',
-      dataIndex: 'pay',
-      key: 'pay'
+      dataIndex: 'purchasePackage',
+      key: 'purchasePackage'
     },{
       title: '合同编号',
-      dataIndex: 'number',
-      key: 'number'
+      dataIndex: 'contractNumber',
+      key: 'contractNumber'
     },{
       title: '添加人',
-      dataIndex: 'input',
-      key: 'input'
-    }, ];
+      dataIndex: 'operator',
+      key: 'operator'
+    }];
+    this.state = {
+      selectedRowKeys: [],
+    }
   }
   handleCancel() {
+    this.setState ({
+      selectedRowKeys: [],
+    })
     this.props.onCancel();
   }
   handleOk() {
@@ -61,7 +67,7 @@ class AppointmentMemberFrom extends Component {
         values.activityId = this.props.selectRecord.id;
         console.log(values);
         this.props.dispatch({
-          type: "activity/saveOutsiderCustomer",
+          type: "activity/saveMemberCustomer",
           payload: values
         })
         this.props.onCancel();
@@ -69,14 +75,29 @@ class AppointmentMemberFrom extends Component {
     })
   }
 
-  cellOnChange() {
+  onOk() {
+    this.props.dispatch({
+      type: "activity/saveMemberCustomer",
+      payload: {
+        activityId: this.props.selectRecord.id,
+        ids: this.state.selectedRowKeys.map((record)=>{ return {dataId:record}})
+      }
+    })
+    this.handleCancel();
+  }
 
+
+
+  cellOnChange = ( selectedRowKeys ) => {
+    this.setState({
+      selectedRowKeys
+    })
   }
 
 
 
   render() {
-    let { visible  } = this.props
+    let { visible,userList  } = this.props
     const { getFieldDecorator } = this.props.form;
 
     const options = [{
@@ -112,9 +133,13 @@ class AppointmentMemberFrom extends Component {
         sm: { span: 16 },
       },
     };
-    const rowSelection={
+
+    const { selectedRowKeys } = this.state;
+
+    const rowSelection = {
+      selectedRowKeys,
       onChange: this.cellOnChange.bind(this)
-    }
+    };
 
     return (
       <Modal
@@ -122,7 +147,7 @@ class AppointmentMemberFrom extends Component {
         visible = { visible }
         title = { "预约" }
         onCancel = { this.handleCancel.bind(this) }
-        onOk = { this.handleOk.bind(this) }
+        onOk = { this.onOk.bind(this) }
         wrapClassName = { "appoint-vertical-center-modal" }
         width ={ 1000 }
       >
@@ -194,16 +219,25 @@ class AppointmentMemberFrom extends Component {
           <Card title="预约客户:">
             <div>李磊磊
             </div>
-            <Table rowSelection={ rowSelection } columns={this.columns}/>
+            <Table rowSelection={ rowSelection }  rowKey = { record=>record.id } dataSource={ userList } columns={this.columns}/>
           </Card>
         </div>
       </Modal>
     )
   }
 }
+function mapStateToProps(state) {
+  const {
+    userList,
+  } = state.activity;
+
+  return {
+    loading: state.loading,
+    userList,
+  };
+}
 
 
 
 
-
-export default connect()(AppointmentMemberFrom)
+export default connect(mapStateToProps)(AppointmentMemberFrom)
