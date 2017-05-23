@@ -1,14 +1,15 @@
 import React from 'react';
 import './customerInformation.scss';
 import { connect } from 'dva';
-import {Upload, Icon,message, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button} from 'antd';
+import UPload from '../../../common/Upload.js'
+import {Upload, Icon,message, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
 const InputGroup = Input.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
 function customerInformation(props) {
 
-  const {modal,tempRemark} = props.users;
+  const {modal,remarkListColumns,remarkList,provinceData,cityData,permanentCityData,nationalData} = props.users;
   const {dispatch} = props;
 
   const formItemLayout = {
@@ -17,6 +18,40 @@ function customerInformation(props) {
     };
 
   const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
+
+
+  const uploadIdcardFileProps = {
+    name: 'idcardScan',
+
+    action: '/crm/api/v1/uploadEnclosure',
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
+  const uploadContractAppendicesFileProps = {
+    name: 'contractAppendices',
+
+    action: '/crm/api/v1/uploadEnclosure',
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
 
 //客资来源
   const  guestInformationSourceAry = ['百度搜索','和美','朋友推荐','hibaby微博微信',
@@ -47,38 +82,60 @@ function customerInformation(props) {
     networkSearchWords.push(<Option key={networkSearchWordsAry[i]}>{networkSearchWordsAry[i]}</Option>);
   }
 
+  const provinceDataChis = [];
+
+  for (let i = 0; i < provinceData.length ; i++) {
+    provinceDataChis.push(<Option key={provinceData[i].id}>{provinceData[i].description}</Option>);
+  }
+
+  const cityDataChis = [];
+
+  for (let i = 0; i < cityData.length ; i++) {
+    cityDataChis.push(<Option key={cityData[i].id}>{cityData[i].description}</Option>);
+  }
+
+  const permanentCityDataChis = [];
+
+  for (let i = 0; i < permanentCityData.length ; i++) {
+    permanentCityDataChis.push(<Option key={permanentCityData[i].id}>{permanentCityData[i].description}</Option>);
+  }
+
+  const nationalDataChis = [];
+  for (let i = 0; i < nationalData.length ; i++) {
+    nationalDataChis.push(<Option key={nationalData[i].id}>{nationalData[i].nation}</Option>);
+  }
 
   const baseInfo = [
-    {title:'客户姓名',component:'Input',children:null},
-    {title:'联系电话',component:'Input',children:null},
-    {title:'出生日期',component:'DatePicker',children:null},
-    {title:'年龄',component:'Input',children:null},
-    {title:'预产期',component:'DatePicker',children:null},
-    {title:'孕周',component:'Input',children:null},
-    {title:'分娩医院',component:'Input',children:null},
-    {title:'孕次/产次',component:'Input',children:null},
-    {title:'客资来源',component:'Select',children:guestInformationSource},
-    {title:'关注点',component:'Select',children:concerns},
-    {title:'意向套餐',component:'Select',children:[]},
-    {title:'网络搜索词',component:'Select',children:networkSearchWords},
+    {title:'客户姓名',component:'Input',submitStr:'name',children:null},
+    {title:'联系电话',component:'InputNumber',submitStr:'contact',children:null},
+    {title:'出生日期',component:'DatePicker',submitStr:'birthTime',children:null},
+    {title:'年龄',component:'InputNumber',submitStr:'age',children:null},
+    {title:'预产期',component:'DatePicker',submitStr:'dueDate',children:null},
+    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',children:null},
+    {title:'分娩医院',component:'Input',submitStr:'hospital',children:null},
+    {title:'孕次/产次',component:'InputNumber',submitStr:'fetus',children:null},
+    {title:'客资来源',component:'Select',submitStr:'resourceCustomer',children:guestInformationSource},
+    {title:'关注点',component:'Select',submitStr:'focus',children:concerns},
+    {title:'意向套餐',component:'Select',submitStr:'intentionPackage',children:[]},
+    {title:'网络搜索词',component:'Select',submitStr:'webSearchTerm',children:networkSearchWords},
   ];
 
   const expandInfo = [
-    {title:'身份证',component:'Input',children:null},
-    {title:'籍贯',component:'Input',children:null},
-    {title:'民族',component:'Select',children:null},
-    {title:'购买套餐',component:'Input',children:null},
-    {title:'保险情况',component:'Input',children:null},
-    {title:'联系人电话',component:'Input',children:null},
-    {title:'会员身份',component:'Select',children:null},
-    {title:'特殊身份',component:'Select',children:null},
-    {title:'宝宝生产日期',component:'Input',children:null},
-    {title:'合同编号',component:'Input',children:null},
-    {title:'关联客房',component:'Input',children:null},
-    {title:'身份证扫描',component:'Input',children:null},
-    {title:'合同附件',component:'Input',children:null},
-    {title:'会员编号',component:'Input',children:null},
-    {title:'操作者',component:'Input',children:null},
+    {title:'身份证',component:'Input',submitStr:'idcard',children:null},
+    {title:'籍贯',component:'Input',submitStr:'placeOrigin',children:null},
+    {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
+    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',children:null},
+    {title:'保险情况',component:'Input',submitStr:'insuranceSituation',children:null},
+    {title:'联系人电话',component:'InputNumber',submitStr:'excontact',children:null},
+    {title:'会员身份',component:'Select',submitStr:'memberNumber',children:null},
+    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:null},
+    {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate',children:null},
+    {title:'合同编号',component:'Input',submitStr:'contractNumber',children:null},
+    {title:'关联客房',component:'Input',submitStr:'associatedRooms',children:null},
+    {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',children:null},
+    {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',children:null},
+    {title:'会员编号',component:'InputNumber',submitStr:'memberNumber',children:null},
+    {title:'操作者2',component:'Input',submitStr:'operator',children:null},
   ];
 
   const imageUrl = null;
@@ -93,13 +150,17 @@ function customerInformation(props) {
       baseInfoDiv.push(
         <Col span={6} key={i}>
           <FormItem {...formItemLayout} label={dict.title}>
-            {getFieldDecorator(`field-${dict.title}`)(
+            {getFieldDecorator(dict.submitStr,)
+            (
               tempDiv
             )}
           </FormItem>
         </Col>
       );
   }
+
+  {/*{ rules: [{ required: true, message: `请输入${dict.title}!`}],}*/}
+
 
   const expandInfoDiv = [];
 
@@ -111,7 +172,7 @@ function customerInformation(props) {
       expandInfoDiv.push(
         <Col span={8} key={i}>
           <FormItem {...formItemLayout} label={dict.title}>
-            {getFieldDecorator(`field-${dict.title}`)(
+            {getFieldDecorator(dict.submitStr)(
               tempDiv
             )}
           </FormItem>
@@ -119,8 +180,50 @@ function customerInformation(props) {
       );
   }
 
-  function handleSubmit(e) {
 
+  function handleSubmit(e) {
+    props.form.validateFields((err, values) => {
+        if (!err) {
+          e.preventDefault();
+
+          // {
+          //   "associatedRooms": 0,
+          //   "cityPermanent": values.cityPermanent,
+          //   "contact": values.excontact,
+          //   "contractAppendices": "string",
+          //   "contractNumber":values.contractNumber,
+          //   "customerId": 3,
+          //   "customerPhoto": "string",
+          //   "detailedPermanent": "string",
+          //   "id": 0,
+          //   "idcard": "string",
+          //   "idcardScan": "string",
+          //   "imgURL": "string",
+          //   "insuranceSituation": "string",
+          //   "member": 0,
+          //   "memberNumber": "string",
+          //   "nation": 0,
+          //   "operator": "string",
+          //   "placeOrigin": "string",
+          //   "productionDate": "2017-05-22T08:13:35.838Z",
+          //   "provincePermanent": 0,
+          //   "purchasePackage": 0,
+          //   "specialIdentity": 0
+          // }
+
+          const inputs =[];
+
+          for (let i = 0;i<remarkList.length;i++)
+          {
+            const remark = remarkList[i];
+            inputs.push({"customerId": 3,"remarkInfo": remark.remark})
+          }
+
+          // dispatch({type:'addCustomer/savaRemark',payload:{inputs:inputs}})
+
+          dispatch({type:'addCustomer/savaBaseInfo',payload:values})
+        }
+      });
   }
 
   function onChange(date, dateString) {
@@ -131,6 +234,13 @@ function customerInformation(props) {
   }
 
   function handleOk(e)  {
+    e.preventDefault();
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        const {tempRemark} = values;
+        dispatch({type:'addCustomer/addRemark',payload:tempRemark})
+      }
+    });
 
     dispatch({type:'addCustomer/hideOrShowModal',payload:false})
   };
@@ -140,11 +250,19 @@ function customerInformation(props) {
 
   }
 
-  function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
+  function provinceSelect(e) {
+    dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:false,dataId:e}})
   }
+
+  function PermanentProvinceSelect(e) {
+    dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:true,dataId:e}})
+  }
+
+
+  function headelImg(NewuserImg){
+    dispatch({type:'addCustomer/headUpdate',payload:NewuserImg})
+  }
+
 
   function handleChange(info) {
     if (info.file.status === 'done') {
@@ -153,17 +271,6 @@ function customerInformation(props) {
     }
   }
 
-  function beforeUpload(file) {
-    const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
-    if (!isJPG) {
-      message.error('You can only upload JPG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJPG && isLt2M;
-  }
 
   function cusComponent(dict) {
     let tempDiv = (<Input/>);
@@ -176,10 +283,27 @@ function customerInformation(props) {
         tempDiv = (<Select defaultValue='请选择'>{dict.children}</Select>);
         break;
       case 'DatePicker':
-        tempDiv = (<DatePicker onChange={onChange} />);
+        tempDiv = (<DatePicker className="antCli" onChange={onChange} />);
         break;
       case 'InputNumber':
-        tempDiv = (<Input defaultValue=''/>);
+        tempDiv = (<InputNumber className="antCli" defaultValue='' onChange={onChange}/>);
+        break;
+      case 'UploadButton':
+      {
+        if(dict.submitStr === 'contractAppendices')
+        {
+          tempDiv = <Upload {...uploadContractAppendicesFileProps}>
+            <Button>
+              <Icon type="upload" /> 上传附件</Button>
+          </Upload>
+        }
+        else if(dict.submitStr === 'idcardScan'){
+          tempDiv = <Upload {...uploadIdcardFileProps}>
+            <Button>
+              <Icon type="upload" /> 上传附件</Button>
+          </Upload>
+        }
+      }
         break;
       default:
     }
@@ -198,13 +322,19 @@ function customerInformation(props) {
 
         <div className='contentDiv'>
           <h3>基本信息</h3>
-          {baseInfoDiv}
+
+          <Row>
+            {baseInfoDiv}
+          </Row>
+
           <Row gutter={15}>
 
             <Col span={6}>
               <FormItem {...formItemLayout} label={'现住址'}>
-                {getFieldDecorator(`field-${'现住址'}`)(
-                  <Select defaultValue="请选择"/>
+                {getFieldDecorator('province')(
+                  <Select  onChange={provinceSelect}  defaultValue="请选择">
+                    {provinceDataChis}
+                  </Select>
                 )}
               </FormItem>
             </Col>
@@ -212,15 +342,17 @@ function customerInformation(props) {
               <Row gutter={15}>
                 <Col span={8}>
                   <FormItem>
-                    {getFieldDecorator(`field-${'现住址'}`)(
-                      <Select defaultValue="请选择"/>
+                    {getFieldDecorator('city')(
+                      <Select defaultValue="请选择">
+                        {cityDataChis}
+                      </Select>
                     )}
                   </FormItem>
                 </Col>
 
                 <Col span={16}>
                   <FormItem>
-                    {getFieldDecorator(`field-${'现住址'}`)(
+                    {getFieldDecorator('detailed')(
                       <Input/>
                     )}
                   </FormItem>
@@ -228,8 +360,8 @@ function customerInformation(props) {
                 </Row>
             </Col>
             <Col span={6}>
-              <FormItem {...formItemLayout} label={'操作者'}>
-                {getFieldDecorator(`field-${'操作者'}`)(
+              <FormItem {...formItemLayout} label={'操作者1'}>
+                {getFieldDecorator('operator')(
                   <Input/>
                 )}
               </FormItem>
@@ -251,20 +383,7 @@ function customerInformation(props) {
                       {getFieldDecorator('userName', {
 
                       })(
-                        <Upload
-                          className="avatar-uploader"
-                          name="avatar"
-                          showUploadList={false}
-                          action="//jsonplaceholder.typicode.com/posts/"
-                          beforeUpload={beforeUpload}
-                          onChange={handleChange}
-                          >
-                          {
-                            imageUrl ?
-                              <img src={imageUrl} alt="" className="avatar" /> :
-                              <Icon type="plus" className="avatar-uploader-trigger" />
-                          }
-                        </Upload>
+                          <div className="img"><UPload urlList={"Img"} headelUserImg={headelImg}/></div>
                         )}
                     </FormItem>
                   </Col>
@@ -279,8 +398,10 @@ function customerInformation(props) {
             <Row gutter={15}>
               <Col span={6}>
                 <FormItem {...formItemLayout} label={'户籍地址'}>
-                  {getFieldDecorator(`field-${'现住址'}`)(
-                    <Select defaultValue="请选择"/>
+                  {getFieldDecorator('provincePermanent')(
+                    <Select onChange={PermanentProvinceSelect} defaultValue="请选择">
+                      {provinceDataChis}
+                    </Select>
                   )}
                 </FormItem>
               </Col>
@@ -288,15 +409,17 @@ function customerInformation(props) {
                 <Row gutter={15}>
                   <Col span={6}>
                     <FormItem>
-                      {getFieldDecorator(`field-${'现住址'}`)(
-                        <Select defaultValue="请选择"/>
+                      {getFieldDecorator('cityPermanent')(
+                        <Select defaultValue="请选择">
+                          {permanentCityDataChis}
+                        </Select>
                       )}
                     </FormItem>
                   </Col>
 
                   <Col span={18}>
                     <FormItem>
-                      {getFieldDecorator(`field-${'现住址'}`)(
+                      {getFieldDecorator('detailedPermanent')(
                         <Input/>
                       )}
                     </FormItem>
@@ -308,20 +431,32 @@ function customerInformation(props) {
 
 
         <div className='contentDiv'>
-          <h3>客户备注</h3>
-          <Button type="primary" onClick={showModal}>添加备注</Button>
+        <Row>
+            <Col span={18}> <h3>客户备注</h3></Col>
+            <Col span={6} className='addRemark'>  <Button type="primary" onClick={showModal}>添加备注</Button> </Col>
+        </Row>
+          <Table texta dataSource={remarkList} columns={remarkListColumns} />
+
           <Modal title="添加备注" visible={modal}
             onOk={handleOk} onCancel={handleCancel}
           >
-              <Input ref='remarkRef'  type="textarea" rows={10} />
+
+            <FormItem>
+              {getFieldDecorator('tempRemark')(
+                <Input type="textarea" rows={10} />
+              )}
+            </FormItem>
+
           </Modal>
         </div>
 
-        <FormItem
-            wrapperCol={{ span: 12, offset: 6 }}
-          >
-            <Button type="primary" htmlType="submit">保存</Button>
+
+          <FormItem className='savaDiv'>
+            <Button className='backBtn'>返回</Button>
+            <Button className='backBtn' type="primary" htmlType="submit">保存</Button>
           </FormItem>
+
+
       </Form>
     </div>
   )
