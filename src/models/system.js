@@ -234,7 +234,7 @@ export default {
 		      		size,
 					code
 				}
-			} = yield call(systemService.listByPage, values);
+			} = yield call(systemService.listByPageSave, values);
 			if (code == 0) {
 				yield put({
 					type: 'listByPageSave',

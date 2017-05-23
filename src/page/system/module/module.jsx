@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva'
 import './module.scss';
 import {routerRedux} from 'dva/router'
-import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messageMenu,Select,message} from 'antd';
+import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messageMenu,Select,TreeSelect,message} from 'antd';
 import request from '../../../common/request/request.js';
 import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
@@ -24,9 +24,7 @@ class Module extends Component {
         alertModalVisible:false,
         modifyModalVisible:false,
         EditModuleModal:false,
-        name:null,
-        path:null,
-        projectName:null,
+        value: undefined,
     }
     this.columns = [{
       title: '主模块',
@@ -108,8 +106,8 @@ class Module extends Component {
     this.props.dispatch({
       type: 'module/MenuData',
       payload: {
-            name: null,
-            path:null,
+            name:'',
+            path:'',
             page:0,
             size:10,
             projectId:null
@@ -156,7 +154,10 @@ class Module extends Component {
         EditModuleModal:false
       })
   }
-
+  //权限改变
+  onChange = (value) => {
+   this.setState({ value });
+ }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const formItemLayout = {
@@ -271,6 +272,7 @@ function Module({ dispatch, data, page, size,edit, total,list,permission,menu}) 
   )
 }
 function mapStateToProps(state) {
+  console.log("permission>>>",state.module.permission)
   const { item:data,size,total,page,edit,permission,list,menu} = state.module;
   return {
     loading: state.loading.models.module,

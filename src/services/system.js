@@ -45,7 +45,7 @@ export function MainMenuList(values) {
 }
 
 //获取权限管理列表
-export function listByPage(values) {
+export function listByPageSave(values) {
   return request('/crm/api/v1/permission/listByPage', {
     method: 'POST',
     body: JSON.stringify(values),
