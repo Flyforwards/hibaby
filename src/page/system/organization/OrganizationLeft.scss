@@ -5,7 +5,7 @@
 	background-color:#fff;
 	height:100%;
 	margin-top:10px;
-	min-height: 800px;
+	min-height:300px;
 	overflow: hidden;
 	position:relative;
 	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {
@@ -35,12 +35,20 @@
 	}
 	.ant-tree-title{
 		display:inline-block;
-		margin-left:-0px;
+		margin-left:15px;
+		margin-top:4px;
 	}
 	.ant-tree li{
 		margin-left:-11px;
 	}
 	.ant-tree {
 		margin-left:22px;
+	}
+	.ant-tree .plus {
+    margin-right: 10px;
+    margin-top: 5px;
+    position: absolute;
+    right: 0px;
+    color: red;
 	}
 }

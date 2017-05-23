@@ -32,7 +32,6 @@ class ReservedUserComponent extends Component {
       title: '怀孕周期',
       dataIndex: 'gestationalWeeks',
       key: 'gestationalWeeks'
-
     }, {
       title: '第几胎',
       dataIndex: 'fetus',
@@ -70,6 +69,7 @@ class ReservedUserComponent extends Component {
       },
     }];
   }
+
   deleteUser(record){
     this.selectRecord = record;
     this.setState({
@@ -105,7 +105,7 @@ class ReservedUserComponent extends Component {
   }
 
   render() {
-    let { visible, editSignUserList  } = this.props
+    let { tableProps  } = this.props
     const { getFieldDecorator } = this.props.form;
 
     const options = [{
@@ -143,7 +143,6 @@ class ReservedUserComponent extends Component {
     };
     return (
       <div>
-
       <Card>
         <Row>
           <Col span={6}><div>预约客户:</div>
@@ -221,7 +220,7 @@ class ReservedUserComponent extends Component {
         </Form>
         <div>李磊磊
         </div>
-        <Table rowKey = { record=>record.id } dataSource={ editSignUserList } columns={ this.columns }/>
+        <Table {...tableProps} rowKey = { record=>record.id } columns={ this.columns }/>
       </Card>
         <AlertModalFrom  onCancel={ this.handleCancel.bind(this) } message="是否确定删除此客户？"  visible={ this.state.alertModalVisible } onOk={ this.onOk.bind(this, this.selectRecord) }/>
       </div>

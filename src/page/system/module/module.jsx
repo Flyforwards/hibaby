@@ -175,13 +175,8 @@ class Module extends Component {
         this.props.dispatch({
           type: 'module/MenuData',
           payload: {
-              "name": this.state.userName,
-              "nodeid": this.state.nodeid,
-              "roleId": this.state.character,
-              "status": this.state.status,
               "page": current,
               "size": 10,
-              "tissueProperty": this.state.tissueProperty
           },
         });
       },
@@ -205,7 +200,7 @@ class Module extends Component {
                 <h4 className="projectName">主模块：</h4>
                 {getFieldDecorator('projectId', {rules: [{ required: false, message: '字段名称为必填项！' }],
                 })(
-                <Select className="SelectMenu" style={{ width: 180 }} placeholder="请选择">
+                <Select className="SelectMenu" style={{ width:180 }} placeholder="请选择">
                     {children}
                 </Select>)}
             </div>
@@ -272,7 +267,7 @@ function Module({ dispatch, data, page, size,edit, total,list,permission,menu}) 
   )
 }
 function mapStateToProps(state) {
-  console.log("permission>>>",state.module.permission)
+  console.log("菜单>>>",state.module.menu)
   const { item:data,size,total,page,edit,permission,list,menu} = state.module;
   return {
     loading: state.loading.models.module,

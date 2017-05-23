@@ -67,7 +67,7 @@ export function getActivityCustomerPageList(values) {
 
 // 获取会员用户列表
 export function getNoAppointmentCustomerPageList(values) {
-  return request('/crm/api/v1/customer/getCustomerPageList', {
+  return request('/crm/api/v1/customer/getNoAppointmentCustomerPageList', {
     method: 'POST',
     body: JSON.stringify(values),
   })
