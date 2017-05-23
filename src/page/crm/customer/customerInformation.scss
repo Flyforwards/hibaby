@@ -10,33 +10,26 @@
 
 
     margin: 0 10px;
-  .img{
-    margin:20px 40px 20px 20px;
-    border:none;
-    width: 100px;
-    height: 200px;
 
-    float:left;
-    .avatar-uploader,
-    .avatar-uploader-trigger,
+
     .avatar {
       width: 100px;
-      height: 100px;
+      height: 200px;
       border-radius: 50%;
     }
     .avatar-uploader {
       display: block;
-      border:0;
+      border: 1px dashed #d9d9d9;
       border-radius: 6px;
       cursor: pointer;
     }
     .avatar-uploader-trigger {
-      display: table-cell;
-      vertical-align: middle;
+      width: 100%;
+      height: 100%;
+      display: block;
       font-size: 28px;
       color: #999;
     }
-  }
 
   .addRemark{
     text-align: right;
