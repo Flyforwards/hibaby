@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
+import { Card, Input, DatePicker, InputNumber, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
 import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
 import AlertModalFrom from 'common/AlertModalFrom'
@@ -13,7 +13,7 @@ import util from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
-import { parse } from 'qs'
+const { RangePicker } = DatePicker;
 
 @createForm()
 class ActivityDetailIndex extends Component {
@@ -95,11 +95,10 @@ class ActivityDetailIndex extends Component {
   }
   // 编辑
   edit() {
-    const values = parse(location.search.substr(1))
     this.props.dispatch(
       routerRedux.push({
         pathname: '/crm/activity/edit',
-        query: values
+        query: { dataId: this.props.item.id }
       })
     )
   }
@@ -144,10 +143,9 @@ class ActivityDetailIndex extends Component {
         appointmentVisible: false,
         memberVisible: true,
       })
-      const values = parse(location.search.substr(1))
       this.props.dispatch({
-        type: 'activity/getCustomerPageList',
-        payload: { 'activityId': values.dataId }
+        type: 'activity/getNoAppointmentCustomerPageList',
+        payload: { 'activityId': this.props.item.id }
       })
     } else {
       this.setState({
@@ -158,13 +156,9 @@ class ActivityDetailIndex extends Component {
 
   }
 
-
-
-
-
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { item, signUserList } = this.props;
+    const { item, signUserList,loading, signPagination, dispatch } = this.props;
 
     const options = [{
       value: 'zhejiang',
@@ -199,9 +193,6 @@ class ActivityDetailIndex extends Component {
         sm: { span: 16 },
       },
     };
-    const rowSelection={
-      onChange: this.cellOnChange.bind(this)
-    }
 
 
     let itemName = "";
@@ -213,6 +204,22 @@ class ActivityDetailIndex extends Component {
       activityTime = moment(item.activityTime);
       address = item.address;
       content = item.content;
+    }
+
+    const tableProps = {
+      loading: loading.effects['activity/getActivityCustomerPageList'],
+      dataSource : signUserList ,
+      pagination: signPagination,
+      onChange (page) {
+        dispatch({
+          type: 'activity/getActivityCustomerPageList',
+          payload:{
+            activityId: item.id,
+            page: page.current,
+            size: page.pageSize,
+          }
+        })
+      },
     }
 
 
@@ -259,10 +266,32 @@ class ActivityDetailIndex extends Component {
             <Form>
               <Row>
                 <Col span={8}>
-                  <FormItem {...formItemLayout}  label="生日" >
-                    {getFieldDecorator('birthday', {rules: [{ required: false }],
+                  <FormItem {...formItemLayout}  label="年龄" >
+                    {getFieldDecorator('age1', {rules: [{ required: false }],
                     })(
-                      <DatePicker format="YYYY-MM-DD" />
+                      <InputNumber min={1} max={100}  />
+                    )}
+                    {getFieldDecorator('age2', {rules: [{ required: false }],
+                    })(
+                      <InputNumber min={1} max={100} />
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={8}>
+                  <FormItem {...formItemLayout}  label="预产期" >
+                    {getFieldDecorator('startTime', {rules: [{ required: false }],
+                    })(
+                      <DatePicker
+                        format="YYYY-MM-DD"
+                        placeholder="请选择"
+                      />
+                    )}
+                    {getFieldDecorator('endTime', {rules: [{ required: false }],
+                    })(
+                      <DatePicker
+                        format="YYYY-MM-DD"
+                        placeholder="请选择"
+                      />
                     )}
                   </FormItem>
                 </Col>
@@ -272,24 +301,16 @@ class ActivityDetailIndex extends Component {
                     })(
                       <Select >
                         <Option value="beijing">北京医院</Option>
-                        <Option value="beijing">协和医院</Option>
-                        <Option value="beijing">人民医院</Option>
+                        <Option value="xiehe">协和医院</Option>
+                        <Option value="renming">人民医院</Option>
                       </Select>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={8}>
-                  <FormItem   {...formItemLayout} label="预产期" >
-                    {getFieldDecorator('time', {rules: [{ required: false, }],
-                    })(
-                      <DatePicker />
                     )}
                   </FormItem>
                 </Col>
               </Row>
               <Row>
                 <Col span={8}>
-                  <FormItem  {...formItemLayout} label="客户身份" >
+                  <FormItem  {...formItemLayout} label="会员身份" >
                     {getFieldDecorator('customer', {rules: [{ required: false }],
                     })(
                       <Select >
@@ -312,7 +333,7 @@ class ActivityDetailIndex extends Component {
             </Form>
               <div>李磊磊
               </div>
-            <Table rowKey = { record=>record.id } dataSource={ signUserList } columns={this.columns}/>
+            <Table {...tableProps} rowKey = { record=>record.id } columns={ this.columns }/>
           </Card>
           <Row>
             <Col offset={8} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
@@ -334,13 +355,15 @@ class ActivityDetailIndex extends Component {
 function mapStateToProps(state) {
   const {
     item,
-    signUserList
+    signUserList,
+    signPagination,
   } = state.activity;
 
   return {
     loading: state.loading,
     item,
-    signUserList
+    signUserList,
+    signPagination,
   };
 }
 

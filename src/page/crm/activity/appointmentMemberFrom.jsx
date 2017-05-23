@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal,Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
 import PropTypes from 'prop-types'
+import {routerRedux} from 'dva/router';
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
@@ -97,7 +98,7 @@ class AppointmentMemberFrom extends Component {
 
 
   render() {
-    let { visible,userList  } = this.props
+    let { dispatch,visible, userList, loading, noAppointmentPagination,selectRecord } = this.props
     const { getFieldDecorator } = this.props.form;
 
     const options = [{
@@ -140,6 +141,21 @@ class AppointmentMemberFrom extends Component {
       selectedRowKeys,
       onChange: this.cellOnChange.bind(this)
     };
+    const tableProps = {
+      loading: loading.effects['activity/getNoAppointmentCustomerPageList'],
+      dataSource: userList ,
+      pagination: noAppointmentPagination,
+      onChange (page) {
+        dispatch({
+          type: 'activity/getNoAppointmentCustomerPageList',
+          payload: {
+            activityId: selectRecord.id,
+            page: page.current,
+            size: page.pageSize,
+          }
+        })
+      },
+    }
 
     return (
       <Modal
@@ -219,7 +235,7 @@ class AppointmentMemberFrom extends Component {
           <Card title="预约客户:">
             <div>李磊磊
             </div>
-            <Table rowSelection={ rowSelection }  rowKey = { record=>record.id } dataSource={ userList } columns={this.columns}/>
+            <Table {...tableProps}  rowSelection={ rowSelection } rowKey = { record=>record.id } columns={this.columns}/>
           </Card>
         </div>
       </Modal>
@@ -231,17 +247,20 @@ AppointmentMemberFrom.propTypes = {
   onCancel: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired,
   selectRecord: PropTypes.object,
+  noAppointmentPagination: PropTypes.object,
 }
 
 
 function mapStateToProps(state) {
   const {
     userList,
+    noAppointmentPagination
   } = state.activity;
 
   return {
     loading: state.loading,
     userList,
+    noAppointmentPagination
   };
 }
 

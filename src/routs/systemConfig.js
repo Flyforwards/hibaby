@@ -213,7 +213,7 @@ export default (app) => [
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/system'));
-          cb(null, require('page/crm/Customer/fromModal.jsx'))
+          cb(null, require('page/system/permission-in/fromModal.jsx'))
         })
       }
     },

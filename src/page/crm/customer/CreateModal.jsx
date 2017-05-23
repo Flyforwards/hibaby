@@ -1,16 +1,17 @@
 "use strict"
 
-import React, { Component } from 'react'
-import { Modal, Form, Input, Radio, Select, Checkbox, Icon } from 'antd'
+import React, { Component } from 'react';
+import { Modal, Form, Input, Radio, Select, Checkbox, Icon,Row, Col } from 'antd';
+import _ from 'lodash';
+import { filterItemList } from 'common/constants'
 const createForm = Form.create
 const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-import _ from 'lodash'
+
 @createForm()
 class CreateModal extends Component {
     constructor(props) {
-        super(props)   
+        super(props)
     }
     state = { visible: false }
     handleCancel() {
@@ -20,9 +21,9 @@ class CreateModal extends Component {
         console.log("ok")
         this.props.onCancel()
     }
-    checkbox(index) {
+    onChange(index) {
         console.log("index",index)
-        
+
     }
     handleAfterClose() {
         this.props.form.resetFields()
@@ -49,36 +50,35 @@ class CreateModal extends Component {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
         }
+        const length = filterItemList.length
+        let elements=[];
+        for (let i=0;i<length;i=i+4) {
+          let nodes=[];
+          for (let j=0;j<4 && i+j<length;j++) {
+            const record = filterItemList[i+j];
+            nodes.push(
+              <Col key={ i+j } span = { 6 }>
+                <Checkbox onChange={ this.onChange }>{ record.name }</Checkbox>
+              </Col>
+            )
+          }
+          elements.push((<Row key={ i }>{ nodes }</Row>));
+
+        }
+
         return (
             <Modal
                 visible={visible}
                 title="筛选项"
                 okText="确定"
-                confirmLoading={confirmLoading}
-                afterClose={this.handleAfterClose.bind(this)}
-                onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this,visible)}
-                style={{pointerEvents: confirmLoading ? 'none' : ''}}
-                maskClosable={!confirmLoading}
-            >
-            <div className="CreateList">
-                <span onClick={this.checkbox.bind(this,1)}><input type="checkbox" id="age"/><label htmlFor="age">年龄</label></span>
-                <span onClick={this.checkbox.bind(this,2)}><input type="checkbox" id="period"/><label htmlFor="period">预产期 ,</label></span>
-                <span onClick={this.checkbox.bind(this,3)}><input type="checkbox" id="pregnancy"/><label htmlFor="pregnancy">孕期</label></span>
-                <span onClick={this.checkbox.bind(this,4)}><input type="checkbox" id="hospitals"/><label htmlFor="hospitals">生产医院</label></span>
-                <span onClick={this.checkbox.bind(this,5)}><input type="checkbox" id="tires"/><label htmlFor="tires">第几胎</label></span>
-                <span onClick={this.checkbox.bind(this,6)}><input type="checkbox" id="information"/><label htmlFor="information">客资来源</label></span>
-                <span onClick={this.checkbox.bind(this,7)}><input type="checkbox" id="point"/><label htmlFor="point">关注点</label></span>
-                <span onClick={this.checkbox.bind(this,8)}><input type="checkbox" id="Package"/><label htmlFor="Package">意向套餐</label></span>
-                <span onClick={this.checkbox.bind(this,9)}><input type="checkbox" id="keyword"/><label htmlFor="keyword">搜索关键字</label></span>
-                <span onClick={this.checkbox.bind(this,10)}><input type="checkbox" id="Operator1"/><label htmlFor="Operator1">操作者1</label></span>
-                <span onClick={this.checkbox.bind(this,11)}><input type="checkbox" id="address"/><label htmlFor="address">现住址</label></span>
-                <span onClick={this.checkbox.bind(this,12)}><input type="checkbox" id="place"/><label htmlFor="place">籍贯</label></span>
-                <span onClick={this.checkbox.bind(this,13)}><input type="checkbox" id="Nation"/><label htmlFor="Nation">民族</label></span>
-                <span onClick={this.checkbox.bind(this,14)}><input type="checkbox" id="package"/><label htmlFor="package">购买套餐</label></span>
-                <span onClick={this.checkbox.bind(this,15)}><input type="checkbox" id="Membership"/><label htmlFor="Membership">会员身份</label></span>
-                <span onClick={this.checkbox.bind(this,16)}><input type="checkbox" id="Operator2"/><label htmlFor="Operator2">操作者2</label></span>
-                <span onClick={this.checkbox.bind(this,17)}><input type="checkbox" id="date"/><label htmlFor="date">宝宝生产日期</label></span>
+                afterClose={ this.handleAfterClose.bind(this) }
+                onCancel={ this.handleCancel.bind(this) }
+                onOk={ this.handleOk.bind(this,visible) }
+                confirmLoading = { confirmLoading }
+            ><div >
+              {
+                elements
+              }
             </div>
             </Modal>
         )

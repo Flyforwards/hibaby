@@ -18,7 +18,6 @@ class ActivityDetailIndex extends Component {
     super(props)
   }
 
-
   back() {
     const values = parse(location.search.substr(1))
     this.props.dispatch(
@@ -28,7 +27,6 @@ class ActivityDetailIndex extends Component {
       })
     )
   }
-
 
   // 保存
   saveEdit() {
@@ -43,13 +41,9 @@ class ActivityDetailIndex extends Component {
     })
   }
 
-
-
-
-
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { editItem, editSignUserList } = this.props;
+    const { editItem, editSignUserList,loading, dispatch, editSignPagination } = this.props;
 
     const formItemLayout = {
       labelCol: {
@@ -111,13 +105,27 @@ class ActivityDetailIndex extends Component {
         </Form>
       </Card>)
     }
-
+    const tableProps = {
+      loading: loading.effects['activity/getActivityCustomerPageListEdit'],
+      dataSource : editSignUserList ,
+      pagination: editSignPagination,
+      onChange (page) {
+        dispatch({
+          type: 'activity/getActivityCustomerPageListEdit',
+          payload:{
+            activityId: editItem.id,
+            page: page.current,
+            size: page.pageSize,
+          }
+        })
+      },
+    }
     return (
       <div>
         {
           activityInfo
         }
-        <ReservedUserComponent key={ editSignUserList.length } editSignUserList={ editSignUserList } />
+        <ReservedUserComponent tableProps={ tableProps }/>
         <Row>
           <Col offset={16} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
           <Col span={4}><Button onClick={ this.saveEdit.bind(this) }  >保存</Button></Col>
@@ -130,13 +138,15 @@ class ActivityDetailIndex extends Component {
 function mapStateToProps(state) {
   const {
     editItem,
-    editSignUserList
+    editSignUserList,
+    editSignPagination
   } = state.activity;
 
   return {
     loading: state.loading,
     editItem,
-    editSignUserList
+    editSignUserList,
+    editSignPagination
   };
 }
 

@@ -14,8 +14,26 @@ export default {
     editItem: null,
     signUserList: [], // 预约用户列表
     editSignUserList: [], // 编辑
-    userList:[], // 签到用户列表
+    userList:[], // 会员用户列表
     pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+    noAppointmentPagination:{ //未预约客户列表
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+    signPagination:{ // 预约客户列表
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+    editSignPagination:{ // 预约客户列表编辑
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
       current: 1,
@@ -24,23 +42,7 @@ export default {
   },
 
   reducers: {
-    // //添加集团列表数据
-    // saveDataSave(state, { payload: { data } }) {
-    //   return  {...state, data };
-    // },
-    // //查看集团列表数据
-    // checkDataSave(state, { payload: { data: item } }) {
-    //   return  {...state, item };
-    // },
-    // //编辑集团列表数据
-    // editDataSave (state, { payload: { data: item } }) {
-    //   return { ...state, item}
-    // },
-    // // 编辑页面获取到的数据
-    // getEditDataSave(state, { payload: { data: editData } }) {
-    //   return  {...state, editData };
-    // },
-    //
+
     getActivityPageSave(state, { payload: { list, pagination }}) {
       return {...state, list, pagination: {  ...state.pagination,...pagination }};
     },
@@ -50,14 +52,16 @@ export default {
     getDetailEditSuccess(state, { payload: { editItem }}) {
       return {...state, editItem};
     },
-    getSignCustomerSave(state, { payload: { signUserList }}) {
-      return {...state, signUserList};
+
+    getCustomerSave(state, { payload: { userList, noAppointmentPagination }}) {
+      return {...state, userList, noAppointmentPagination: {  ...state.noAppointmentPagination,...noAppointmentPagination }};
     },
-    getCustomerSave(state, { payload: { userList }}) {
-      return {...state, userList};
+
+    getSignCustomerSave(state, { payload: { signUserList, signPagination }}) {
+      return {...state, signUserList, signPagination:{  ...state.signPagination,...signPagination } };
     },
-    getSignCustomerSaveEdit(state, { payload: { editSignUserList }}) {
-      return {...state, editSignUserList};
+    getSignCustomerSaveEdit(state, { payload: { editSignUserList, editSignPagination }}) {
+      return {...state, editSignUserList, editSignPagination:{  ...state.editSignPagination,...editSignPagination } };
     },
   },
   effects: {
@@ -72,35 +76,52 @@ export default {
 
     // 获取预约人员列表
     *getActivityCustomerPageList ({ payload: values}, { call, put }) {
-      const {data: {data,code}} = yield call(activityService.getActivityCustomerPageList, { activityId: values.dataId });
+      const {data: {data, page, size, total, code}} = yield call(activityService.getActivityCustomerPageList, values);
       if (code == 0) {
-        console.log(data)
         yield put({
           type: 'getSignCustomerSave',
-          payload: { signUserList: data }
+          payload: {
+            signUserList: data,
+            signPagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },}
         })
       }
     },
     // 获取预约人员列表编辑
     *getActivityCustomerPageListEdit({ payload: values}, { call, put }) {
-      const {data: {data,code}} = yield call(activityService.getActivityCustomerPageList, { activityId: values.dataId });
+      const {data: {data, page, size, total, code}} = yield call(activityService.getActivityCustomerPageList, values);
       if (code == 0) {
-        console.log(data)
         yield put({
           type: 'getSignCustomerSaveEdit',
-          payload: { editSignUserList: data }
+          payload: {
+            editSignUserList: data,
+            editSignPagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            }
+          }
         })
       }
     },
 
     // 根据筛选条件查询未预约的客户基本信息分页列表
     *getNoAppointmentCustomerPageList ({ payload: values}, { call, put }) {
-      const {data: {data,code}} = yield call(activityService.getNoAppointmentCustomerPageList, { activityId: values.dataId });
+      const {data: {data,page,size,total,code}} = yield call(activityService.getNoAppointmentCustomerPageList, values);
       if (code == 0) {
-        console.log(data)
         yield put({
           type: 'getCustomerSave',
-          payload: { userList: data }
+          payload: {
+            userList: data,
+            noAppointmentPagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          }
         })
       }
     },
@@ -125,16 +146,18 @@ export default {
         }
     },
     // 删除预约客户
-    *deleteUserFromActivity({ payload: values}, { call, put }) {
+    *deleteUserFromActivity({ payload: values}, { call, put,select }) {
       const {data: {data,code}} = yield call(activityService.deleteActivityCustomer, values);
       if (code == 0) {
         // 先跳转首页后面再改
         message.success("删除预约客户成功");
         // 采用重新请求的方式刷新数据
-        // yield put({
-        //   type: 'deleteUserSave',
-        //   payload: values,
-        // })
+        const editItem = yield select(state => state.activity.editItem)
+        const editSignPagination = yield select(state => state.activity.editSignPagination)
+        yield put({
+          type: 'getActivityCustomerPageListEdit',
+          payload: { activityId: editItem.id, size: editSignPagination.pageSize, page: editSignPagination.current },
+        })
       }
     },
     // 删除活动
@@ -235,7 +258,7 @@ export default {
           });
           dispatch({
             type: 'getActivityCustomerPageList',
-            payload: query
+            payload: { activityId: query.dataId }
           })
         }
         if (pathname === '/crm/activity/edit') {
@@ -246,7 +269,7 @@ export default {
 
           dispatch({
             type: 'getActivityCustomerPageListEdit',
-            payload: query
+            payload: { activityId: query.dataId }
           })
         }
       })
