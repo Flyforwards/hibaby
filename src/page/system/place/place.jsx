@@ -12,6 +12,7 @@ import Current from '../../Current'
 class localCharIndex extends React.Component {
   constructor(props) {
     super(props);
+    console.log("列表》》》",this.props.list)
     this.columns = [{
         title: '序号',
         dataIndex: 'id',
@@ -44,7 +45,6 @@ class localCharIndex extends React.Component {
     }
 
     render() {
-
       const { list, loading, pagination, dispatch } = this.props;
       const tableProps = {
         loading: loading.effects['localData/localChar'],
@@ -81,8 +81,23 @@ class localCharIndex extends React.Component {
     );
   }
 }
+function getLocalTime(nS) {
+  var now = new Date(parseInt(nS));
+  var year=now.getFullYear();
+  var month=now.getMonth()+1;
+  var date=now.getDate();
+  if(month<10){
+    month = "0"+month
+  }
+  if(date<10){
+    date = "0"+date
+  }
+  return `${year}-${month}-${date}`
+}
+/*time = getLocalTime(USER.gmt_entry)*/
 
 function mapStateToProps(state) {
+
   const {
     list,
     pagination

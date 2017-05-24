@@ -5,18 +5,19 @@
     padding: 10px;
     background-color: #f8f6f2;
     background-size: cover;
+    font-family: "微软雅黑";
     .ant-table-thead > tr > th {
         background-color: dimgray;
-        font-weight: 500;
         transition: background .3s ease;
+        font:100 16px "微软雅黑";
         text-align: center;
-        color: rgba(0, 0, 0, 0.85);
+        color: rgba(255, 255, 255, 0.85);
     }
     .ant-table-tbody > tr > td {
-        font-weight: 500;
         transition: background .3s ease;
         text-align: center;
-        color: rgba(0, 0, 0, 0.85);
+        font:100 14px "微软雅黑";
+        color: rgba(0, 0, 0, 0.7);
     }
     img {
         margin-left: 25%;
