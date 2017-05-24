@@ -230,8 +230,8 @@ export default {
 				data:{
 					data,
 					total,
-		      		page,
-		      		size,
+		      page,
+		      size,
 					code
 				}
 			} = yield call(systemService.listByPageSave, values);
@@ -241,8 +241,8 @@ export default {
 					payload: {
 						data,
 						total,
-			      		page,
-			      		size,
+			      page,
+			      size,
 						code
 					}
 				});

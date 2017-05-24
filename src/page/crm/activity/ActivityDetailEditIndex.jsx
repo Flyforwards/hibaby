@@ -46,15 +46,9 @@ class ActivityDetailIndex extends Component {
     const { editItem, editSignUserList,loading, dispatch, editSignPagination } = this.props;
 
     const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
+      labelCol:{ span: 2 },
+      wrapperCol:{ span:22 }
+    }
 
     getFieldDecorator('id', { initialValue: editItem?editItem.id:0 });
     let activityInfo = (<Card></Card>)
@@ -67,8 +61,11 @@ class ActivityDetailIndex extends Component {
       activityTime = moment(editItem.activityTime);
       address = editItem.address;
       content = editItem.content;
-      activityInfo=(<Card>
-        <div>活动信息:</div>
+      activityInfo=(
+        <Card>
+        <div className="card-title">
+          <h3>活动信息:</h3>
+        </div>
         <Form >
           <FormItem  {...formItemLayout} label="活动名称" >
             {getFieldDecorator('name', {
@@ -99,7 +96,7 @@ class ActivityDetailIndex extends Component {
               rules: [{ required: true, message: '请填写活动内容' }],
               initialValue: content
             })(
-              <Input/>
+              <Input type="textarea" rows={6}/>
             )}
           </FormItem>
         </Form>
@@ -121,15 +118,19 @@ class ActivityDetailIndex extends Component {
       },
     }
     return (
-      <div>
+      <div className="activity-cent">
+        <div className="add-activity">
         {
           activityInfo
         }
-        <ReservedUserComponent tableProps={ tableProps }/>
-        <Row>
-          <Col offset={16} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
-          <Col span={4}><Button onClick={ this.saveEdit.bind(this) }  >保存</Button></Col>
-        </Row>
+        </div>
+        <div className="add-activity">
+          <ReservedUserComponent tableProps={ tableProps }/>
+          <Row>
+            <Col offset={16} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
+            <Col span={4}><Button onClick={ this.saveEdit.bind(this) }  >保存</Button></Col>
+          </Row>
+        </div>
       </div>
     )
   }

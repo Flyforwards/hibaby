@@ -5,8 +5,8 @@ import { connect } from 'dva'
 import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon} from 'antd'
 import './AddModule.scss'
 import {local, session} from 'common/util/storage.js'
-import SelectList from './from.jsx'
-import SelectMenu from './menu.jsx'
+import SelectList from './EditFrom.jsx'
+import SelectMenu from './EditMenu.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
 
@@ -35,8 +35,9 @@ class EditModule extends Component {
               icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
-              permissionId:this.props.record.permissionId,
-              parentId:this.props.record.parentId,
+              permissionId:local.get("projectId"),
+              parentId:local.get("dataId"),
+              icon:values.icon,
               projectId:this.props.record.projectId,
               id:this.props.record.id,
             }
@@ -47,8 +48,9 @@ class EditModule extends Component {
               icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
-              permissionId:Number(values.permissionId),
-              parentId:Number(values.parentId),
+              permissionId:local.get("projectId"),
+              parentId:local.get("dataId"),
+              icon:values.icon,
               projectId:Number(values.projectId),
               id:this.props.record.id,
             }
@@ -100,14 +102,10 @@ class EditModule extends Component {
     list.map((res,index)=>{
           children.push(<Option key={res.id}>{res.name}</Option>)
     });
-    permission.map((keys,index)=>{
-          perdata.push(<Option key={keys.id}>{keys.label}</Option>)
-    });
-    menu.map((arr,index)=>{
-      menudata.push(<Option key={arr.id}>{arr.name}</Option>)
-    })
     let item={};
     item=record?record:{};
+    local.set("value",item.permissionName)
+    local.set("parentValue",item.parentName)
     return (
       <Modal
         visible = { visible }
@@ -123,36 +121,42 @@ class EditModule extends Component {
       >
       <div className="AddModuleList">
           <Form>
-              <FormItem label="主模块" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                  {getFieldDecorator('projectId', {required: false,rules: [],
+              <FormItem label="主模块" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+                  {getFieldDecorator('projectId', {initialValue: `${item.projectName}`,rules: [{ required: false,message: '名称为必填项！'}],
                     })(<Select className="SelectMenu" onSelect={this.onSelect} placeholder="请选择">
                           {children}
                       </Select>
                     )}
               </FormItem>
               <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                  {getFieldDecorator('parentId', {rules: [{required: false,onChange: this.handleSelectChange}],
+                  {getFieldDecorator('parentId', {initialValue: `${item.parentName}`,rules: [{required: false,onChange: this.handleSelectChange}],
                   })(
                     <SelectMenu/>
                   )}
               </FormItem>
               <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                  {getFieldDecorator('permissionId', {rules: [{required: false,onChange: this.handleSelectChange}],
+                  {getFieldDecorator('permissionId', {initialValue: `${item.permissionName}`,rules: [{required: false,onChange: this.handleSelectChange}],
                     })(<SelectList/>)}
               </FormItem>
-              <FormItem className = "NameBox" label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                {getFieldDecorator('name', {initialValue: `${item.name}`,rules: [{ required: false, message: '字段名称为必填项！' }],
+              <FormItem className = "NameBox" label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('name', {initialValue: `${item.name}`,rules: [{ required: false,message: '名称为必填项！'}],
                 })(
                     <Input className="input"/>
                 )}
               </FormItem>
-              <FormItem className = "PathBox" label="路径" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                {getFieldDecorator('path', {initialValue: `${item.path}`,rules: [{ required:false, message: '字段名称为必填项！' }],
+              <FormItem className = "PathBox" label="路径" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('path', {initialValue: `${item.path}`,rules: [{ required:false,}],
                 })(
                     <Input className="input"/>
                 )}
               </FormItem>
-              <FormItem className = "orderByBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+              <FormItem className = "ICON" label="图标" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('icon', {initialValue: `${item.icon}`,rules: [{ required:false, }],
+                })(
+                    <Input className="input"/>
+                )}
+              </FormItem>
+              <FormItem className = "orderByBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('orderBy', {initialValue: `${item.orderBy}`,rules: [{ required:false, message: '字段名称为必填项！' }],
                 })(
                     <Input className="input"/>

@@ -60,13 +60,9 @@ class FromModaled extends Component {
             type: 'system/listByPage',
             payload: {
                 actionPath:values.actionPath,
-                alias: values.alias,
-                description: values.description,
                 name: values.name,
-                orderBy:Number(values.orderBy),
-                parentId: Number(values.parentId),
                 projectId: Number(values.projectId),
-                page: this.current,
+                page: this.state.page,
                 size:10,
             }
         });
@@ -98,7 +94,7 @@ class FromModaled extends Component {
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{
             return (
-                <Option value={item.id} key={index} >{item.name}</Option>
+                <Option key={item.id}  >{item.name}</Option>
             )})
         }
 
@@ -107,7 +103,7 @@ class FromModaled extends Component {
               <div className="fromhead">
                   <Form onSubmit={this.handleSubmit} className="ant-advanced-search-form">
                     <FormItem  label="主模块">
-                     {getFieldDecorator('mainName', {required: false,rules: [],})(
+                     {getFieldDecorator('projectId', {required: false,rules: [],})(
                         <Select placeholder="请选择" onSelect={this.onSelect}>
                           { nodes}
                         </Select>

@@ -9,55 +9,56 @@ import {local, session} from 'common/util/storage.js'
 const Option = Select.Option;
 class SelectListed extends Component {
      state = {
-      value: undefined
+      value:local.get("value")
     }
    onChange = (value) => {
     this.setState({ value });
   }
   onSelect = (value,node, extra) => {
-    local.set("dataId",value)
+    local.set("projectId",value)
   }
     render() {
+        console.log("权限>>>>",this.props.permission)
         return (
+            <div className="SelectList">
               <TreeSelect
                 style={{ width: 310 }}
-                key={this.props.menu.id}
+                key={this.props.permission.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={this.props.menu}
+                treeData={this.props.permission}
                 placeholder="请选择"
                 treeDefaultExpandAll
-                onChange={this.onChange}
                 onSelect={this.onSelect.bind(this)}
+                onChange={this.onChange.bind(this)}
               />
-
+            </div>
         )
     }
-
 }
-function SelectMenu({
+function SelectList({
     dispatch,
-    menu,
+    permission,
     code
 }) {
   return ( <div>
     <SelectListed dispatch = {
       dispatch
     }
-    menu = {menu}
+    permission = {permission}
     /> </div>
   )
 
 }
 function mapStateToProps(state) {
-  console.log("上级>>>>",state.module.menu)
+console.log("permission添加>>>",state.module.permission)
   const {
-    menu,
+    permission,
     code
   } = state.module;
   return {
     loading: state.loading.models.module,
-    menu
+    permission
   };
 }
-export default connect(mapStateToProps)(SelectMenu)
+export default connect(mapStateToProps)(SelectList)

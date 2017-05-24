@@ -203,7 +203,7 @@ class Organization extends React.Component {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
-          defaultPageSize:10,
+          pageSize:10,
           onChange: (current) => {
             this.current = current
             this.props.dispatch({
@@ -236,12 +236,12 @@ class Organization extends React.Component {
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                 <Select defaultValue="请选择" style={{ width:220 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
                       { traversalRoleIdData }
                   </Select>
               </div>
               <div className="status">账户状态
-                <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
+                <Select defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>

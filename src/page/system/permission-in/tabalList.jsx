@@ -131,7 +131,7 @@ class TabalListed extends Component {
         };
         return (
           <div>
-          <Table bordered dataSource = {this.props.arr} columns={this.columns} pagination = {pagination} className="fromModal" rowKey = "class"/>
+          <Table bordered dataSource={this.props.arr} columns={this.columns} pagination = {pagination} className="fromModal" rowKey = "id"/>
           <FromCreateModal
             handleOk={this.state.handleOk}
             modelsList={mainName[this.state.modifyModalIndex]}
@@ -169,6 +169,7 @@ function TabalList({
 
 }
 function mapStateToProps(state) {
+  console.log("权限列表>>>>",state.system.arr)
   const {
     arr,
     total,
