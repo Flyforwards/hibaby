@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
 import { Link} from 'react-router'
-import './viewSuite.scss'
+import './commodity.scss'
 import Current from '../../Current'
  import {local, session} from 'common/util/storage.js'
  import Delete from './DeleteSuite.jsx'
@@ -13,30 +13,42 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 let roomId = []
 
-class ViewSuiteed extends Component {
+class ViewCommodityed extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
-          DeleteVisible:false
+          DeleteVisible: false
         }
     }
     componentWillMount() {
     }
+    handleDeleteCancel(){
+      this.setState({
+        DeleteVisible: false,
+      })
+    }
     componentDidMount() {
         let ID = window.location.search.split("=")[1]
         this.props.dispatch({
-            type: 'packageInfo/roomList',
-            payload: { }
-        });
-         this.props.dispatch({
-            type: 'packageInfo/roomFindById',
-            payload: { 
-              "dataId":ID
-            }
+          type: 'packageInfo/commodityFindById',
+          payload: {
+            "dataId" :ID
+          }
         });
     }
     handleSubmit = ()=>{
       history.go(-1)
+    }
+    roomClick(data,e){
+      if(e.target.className == "roomColor"){
+        e.target.className = "roomColorA"
+        roomId[data] = data
+      }else{
+        e.target.className = "roomColor"
+        roomId[data] = null
+      }
+      console.log(roomId)
     }
     delete() {
       let ID = window.location.search.split("=")[1]
@@ -66,57 +78,65 @@ class ViewSuiteed extends Component {
           })
         }
         return (
-            <div className="viewSuite">
-                <div className="viewSuiteList">
-                <p>套房信息:</p>
+            <div className="viewCommodity">
+                <div className="viewCommodityList">
+                <p>商品信息:</p>
                 <Form layout="inline">
                   <FormItem
-                   label="套房名称"
+                   label="商品名称"
                    className="name"
                   >
                     {getFieldDecorator('name', {
-                      initialValue:this.props.roomFindById?this.props.roomFindById.name:null,
+                      initialValue:this.props.commodityFindById?this.props.commodityFindById.name:null,
                       rules: [],
                     })(
                       <Input disabled = { true }/>
                     )}
                   </FormItem>
                   <FormItem
-                     label="套房价格"
+                     label="商品价格"
                      className="price"
                   >
                   {getFieldDecorator('price', {
-                    initialValue:this.props.roomFindById?this.props.roomFindById.price:null,
+                    initialValue:this.props.commodityFindById?this.props.commodityFindById.price:null,
                     rules: [],
                     })(
                     <Input 
                       addonBefore="￥"
+                      addonAfter='元'
                       disabled = { true }
                     />
                     )}
                   </FormItem>
                    <FormItem
-                   label="套房简介"
+                   label="商品简介"
                    className="introduction"
                    >
                     {getFieldDecorator('introduction', {
-                      initialValue:this.props.roomFindById?this.props.roomFindById.description:null,
+                      initialValue:this.props.commodityFindById?this.props.commodityFindById.remark:null,
                       rules: [],
                     })(
                     <Input type="textarea" autosize={{ minRows: 2, maxRows: 6 }} className="input" disabled = { true }/>
                     )}
                   </FormItem>
+                  <FormItem
+                     label="首字母"
+                     className="nameLetter"
+                  >
+                  {getFieldDecorator('nameLetter', {
+                    initialValue:this.props.commodityFindById?this.props.commodityFindById.nameLetter:null,
+                    rules: [],
+                    })(
+                    <Input 
+                    disabled = {true}
+                    />
+                    )}
+                  </FormItem>
                 </Form>
-                </div>
-                <div className="roomName">
-                 <p>房间信息:</p>
-                  {
-                    roomInformation
-                  }
                 </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
-                <Link to={{ pathname: '/crm/serviceinfo/editsuite', query:{ suite:ID } }}><Button type="primary">编辑</Button></Link>
+                <Link to={{ pathname: '/crm/commodity/editcommodity', query:{ commodity:ID } }}><Button type="primary">编辑</Button></Link>
                 <Delete 
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
@@ -127,16 +147,17 @@ class ViewSuiteed extends Component {
         )
     }
 }
-function ViewSuite({
+function ViewCommodity({
   dispatch,
   serviceListByPage,
   roomData,
   selectData,
   getDictionary,
-  roomFindById
+  roomFindById,
+  commodityFindById
 }) {
   return ( < div >
-    <ViewSuiteed dispatch = {
+    <ViewCommodityed dispatch = {
       dispatch
     }
     selectData = {
@@ -154,6 +175,9 @@ function ViewSuite({
     roomFindById = {
       roomFindById
     }
+    commodityFindById = {
+      commodityFindById
+    }
     /></div>
   )
 }
@@ -163,7 +187,8 @@ function mapStateToProps(state) {
     roomData,
     selectData,
     getDictionary,
-    roomFindById
+    roomFindById,
+    commodityFindById
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
@@ -171,8 +196,9 @@ function mapStateToProps(state) {
     roomData,
     selectData,
     getDictionary,
-    roomFindById
+    roomFindById,
+    commodityFindById
     };
 }
-const viewSuite = Form.create()(ViewSuiteed);
-export default connect(mapStateToProps)(viewSuite)
+const viewCommodity = Form.create()(ViewCommodityed);
+export default connect(mapStateToProps)(viewCommodity)

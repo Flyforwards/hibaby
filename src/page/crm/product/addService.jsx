@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
+import { Icon, Card, Button,Table, Input,Select,Form ,message} from 'antd'
 import { Link} from 'react-router'
 import './serviceinfo.scss'
 import Current from '../../Current'
@@ -52,9 +52,9 @@ class AddServiceed extends Component {
     }
     componentWillMount() {
     }
-     onSelectChange = (selectedRowKeys,selectedRows) => {
-        this.setState({ selectedRows });
-      }
+    onSelectChange = (selectedRowKeys,selectedRows) => {
+      this.setState({ selectedRows });
+    }
     componentDidMount() {
         this.props.dispatch({
             type: 'packageInfo/serviceListByPage',
@@ -92,30 +92,41 @@ class AddServiceed extends Component {
             serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
           }
         })
-        console.log(serviceInfoList)
-        this.props.dispatch({
-          type: 'packageInfo/add',
-          payload: {
-            "name": fields.name,
-            "price": fields.price,
-            "serviceInfoList":serviceInfoList,
-            "suiteId": fields.room,
-            "type": fields.type
+      }
+      if(fields.name){
+        if(fields.price){
+          if(fields.type){
+            if(serviceInfoList.length>=1){
+              this.props.dispatch({
+                  type: 'packageInfo/add',
+                  payload: {
+                    "name": fields.name,
+                    "price": fields.price,
+                    "serviceInfoList":serviceInfoList,
+                    "suiteId": fields.room,
+                    "type": fields.type
+                  }
+              });
+
+            }else{
+              message.warning("请选择服务项目");
+            }
+
+          }else{
+            message.warning("请选择套餐的类型");
           }
-      });
-       this.props.dispatch({
-          type: 'packageInfo/serviceListByPage',
-          payload: { }
-      });
-      history.go(-1)
-    }else{
-      message.success("请选择服务项目");
-    }
-     
+
+        }else{
+          message.warning("请输入套餐的价格");
+        }
+
+      }else{
+        message.warning("请输入套餐的名称");
+      }
     }
     render() {
         let loadingName = true
-        console.log("selectData",this.props.selectData)
+        let len = 1
         const { getFieldDecorator } = this.props.form;
         const columns = this.columns;
         let ListLnformation = []
@@ -142,6 +153,11 @@ class AddServiceed extends Component {
           roomList = this.props.getDictionary.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
           })
+          if(roomList.length>10){
+            len = 10
+          }else{
+            len = roomList.length
+          }
         }
         const { loading, selectedRows } = this.state;
         const rowSelection = {
@@ -181,7 +197,7 @@ class AddServiceed extends Component {
                     {getFieldDecorator('type', {
                       rules: [],
                     })(
-                    <Select
+                    <Select dropdownStyle= {{height:`${len*32}px`,overflow:"auto"}}
                     >
                      {
                       roomList
@@ -197,7 +213,7 @@ class AddServiceed extends Component {
                     columns={ columns } 
                     dataSource={ListLnformation}
                     pagination = { false }
-                    scroll={{ y: 500 }}
+                    scroll={{ y: 470 }}
                     loading = { loadingName }
                   />
                 </div>  

@@ -1,18 +1,14 @@
 
 import React from 'react'
 import { connect } from 'dva'
-import './activityIndex.scss'
-import { Table,Input,Icon,Button,Popconfirm,Pagination } from 'antd'
+import { Table ,Input, Icon, Button, Popconfirm, Pagination, Tabs } from 'antd'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
-import AppointmentModalFrom from './appointmentModalFrom'
-import AppointmentMemberFrom from './appointmentMemberFrom'
-import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
-import moment from 'moment'
-import Current from '../../Current'
-import AlertModalFrom from 'common/AlertModalFrom'
+import './userHealthInformation.scss'
+import NutritionHealthInformation from './NutritionHealthInformation'
+const TabPane = Tabs.TabPane;
 
-class ActivityIndex extends React.Component {
+class userHealthInformation extends React.Component {
 
   constructor(props) {
     super(props);
@@ -43,9 +39,7 @@ class ActivityIndex extends React.Component {
     }, {
       title: '活动时间',
       dataIndex: 'activityTime',
-      render: (record) => {
-        return moment(record).format("YYYY-MM-DD HH:mm:ss")
-      }
+      key: 'modifyTime'
     },{
       title: '签到/人数',
       render: (record) => {
@@ -130,7 +124,10 @@ class ActivityIndex extends React.Component {
         appointmentVisible: false,
       })
     }
+
   }
+
+
 
   render() {
     const { list, loading, pagination, dispatch } = this.props;
@@ -145,38 +142,33 @@ class ActivityIndex extends React.Component {
           query: {
             page: page.current,
             size: page.pageSize,
+            type: 1,
           },
         }))
       },
     }
     return (
-      <div className = "activity-cent">
-        <div className = "button-wrapper">
-          <Link to = '/crm/activity/add'>
-            <Button className="button-add"> 添加 </Button>
-          </Link >
-        </div>
-        <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
-        <AppointmentModalFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.appointmentVisible } selectRecord={ this.selectRecord } onChoose={ this.onChoose.bind(this)}/>
-        <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ this.selectRecord } from={ true }/>
-        <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ this.selectRecord } from={ true }/>
-        <AlertModalFrom  onCancel={ this.onCancel.bind(this) } modalTitle="是否确定删除此活动"  visible={ this.state.alertModalVisible } onOk={ this.onOk.bind(this, this.selectRecord) }/>
+      <div className = "user-health-cent">
+        <Tabs className="tabsContent" defaultActiveKey="1" type="card">
+          <TabPane tab="医疗健康档案" key="1">
+          </TabPane>
+          <TabPane tab="营养部健康档案" key="2">
+            <NutritionHealthInformation />
+          </TabPane>
+          <TabPane tab="美研中心孕期健康档案" key="3">
+            Content of Tab Pane 3
+          </TabPane>
+          <TabPane tab="出院小结" key="4">
+            Content of Tab Pane 3
+          </TabPane>
+        </Tabs>
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  const {
-    list,
-    pagination
-  } = state.activity;
-
-  return {
-    loading: state.loading,
-    list,
-    pagination
-  };
+    return state;
 }
 
-export default connect(mapStateToProps)(ActivityIndex);
+export default connect(mapStateToProps)(userHealthInformation);

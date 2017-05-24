@@ -1,10 +1,18 @@
 import * as cardService from '../services/card';
-import { message } from 'antd'
+import { message } from 'antd';
+import { routerRedux } from 'dva/router';
 
 export default {
   namespace: 'card',
   state: {
-    postValues: {}
+    postValues: {},
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      pageSize:10,
+      total: null,
+    },
   },
   reducers: {
     getCardInfo(state, { payload: { data: cardInfo, total } }) {
@@ -19,14 +27,14 @@ export default {
       let cardKindInfo = { ...state, cardKind }
       return cardKindInfo;
     },
-    
+
     //折扣权限
     zheKouInfo(state, { payload: { data: zheKou } }){
       let zheKouInfo = { ...state, zheKou }
       return zheKouInfo;
     },
     //会员卡级别
-    
+
     levelInfo(state, { payload: { data: level } }){
       let levelInfo = { ...state, level }
       return level;
@@ -57,7 +65,7 @@ export default {
         });
       }
     },
-    
+
     //获取卡种分页列表
     *getCard({ payload: values }, { call, put }) {
       const { data: { code, data, total } } = yield call(cardService.getMembershipcardPageList, values);
@@ -71,7 +79,7 @@ export default {
         });
       }
     },
-    
+
     //根据卡种id获取卡种信息
     *getCardKindInfo({ payload: values }, { call, put }) {
       const { data: { code, data } } = yield call(cardService.getMembershipcardById, values);
@@ -91,16 +99,17 @@ export default {
         });
       }
     },
-    
+
     //保存卡种信息
-    *saveCard({ payload: values }, { call }) {
+    *saveCard({ payload: values }, { call , put }) {
       const { data: { code, data } } = yield call(cardService.saveMembershipcard, values);
       if (code == 0) {
         message.success('保存成功！');
+        yield put(routerRedux.push("/crm/card"));
       }
     },
-    
-    
+
+
     *getPostInfo({ payload: values }, { put }){
       yield put({
         type: 'postCard',
@@ -109,10 +118,10 @@ export default {
         }
       });
     }
-    
-    
+
+
   },
-  
+
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
@@ -120,8 +129,8 @@ export default {
           dispatch({
             type: 'getCard',
             payload: {
-              "page": 1,
-              "size": 2,
+              "page":1,
+              "size":10,
               "sortField": "string",
               "sortOrder": "string"
             }

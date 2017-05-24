@@ -1,22 +1,23 @@
 .PlaceProject {
     height: 100%;
     width: 100%;
-    min-width: 1100px;
     padding: 10px;
     background-color: #f8f6f2;
     background-size: cover;
+    font-family: "微软雅黑";
     .ant-table-thead > tr > th {
         background-color: dimgray;
-        font-weight: 500;
         transition: background .3s ease;
+        font:100 16px "微软雅黑";
         text-align: center;
-        color: rgba(0, 0, 0, 0.85);
+        color: rgba(255, 255, 255, 0.85);
     }
     .ant-table-tbody > tr > td {
-        font-weight: 500;
         transition: background .3s ease;
         text-align: center;
-        color: rgba(0, 0, 0, 0.85);
+        font:100 14px "微软雅黑";
+        color: rgba(0, 0, 0, 0.7);
+        background:#fff;
     }
     img {
         margin-left: 25%;
@@ -24,12 +25,13 @@
     }
 
     .label {
-        float: left;
-        height: 40px;
-        line-height: 40px;
-        margin-right: 10px;
-        width: 80px;
-        text-align: center;
+      float: left;
+      height: 16px;
+      margin-left: 45px;
+      margin-top:10px;
+      width: 6%;
+      font:16px "微软雅黑";
+      text-align: center;
     }
 
     .input {
@@ -46,9 +48,11 @@
     }
 
     .input2 {
-        float: left;
-        width: 84%;
-        height: 40px;
+      float: left;
+      width: 84%;
+      height: 40px;
+      font:14px "微软雅黑";
+      line-height:40px;
     }
     .input3{
       float: left;
@@ -70,11 +74,18 @@
     }
 
     .addBtn {
-        background-color: #b67233;
-        width: 140px;
-        height: 100%;
-        color: #fff;
-        float: right;
+      background-color: #108ee9;
+      width: 140px;
+      height: 100%;
+      color: #fff;
+      float: right;
+      span{
+        height:40px;
+        width:100%;
+        font:14px "微软雅黑";
+        line-height:40px;
+        text-align:center;
+      }
     }
 
     .addBtn:hover {
@@ -84,7 +95,16 @@
     }
 
     .add {
-        margin-left: 90px;
+      margin-left: 90px;
+      height:40px;
+      span{
+        height:100%;
+        display:block;
+        width:100%;
+        font:14px "微软雅黑";
+        text-align:center;
+        line-height: 40px;
+      }
     }
 
     .button {
@@ -96,20 +116,41 @@
         margin-bottom: 10px;
         clear: both;
     }
-
-    input:disabled {
-        background-color: #fff;
-        color: red;
+    .parentCen{
+      margin-left:50px;
     }
-
+    input:disabled {
+      height:40px;
+      background-color: #fff;
+      color:#666;
+      font:14px "微软雅黑";
+      line-height:40px;
+    }
+    label{
+      font:16px "微软雅黑";
+      height:40px;
+      line-height:40px;
+    }
+    label:before{
+      content: '';
+      display: none;
+    }
     .ant-btn {
         height: 40px;
     }
 
     .editable-add-btn {
-        background-color: #b67233;
-        color: #fff;
-        width: 140px;
+      background-color:#108ee9;
+      color: #fff;
+      width: 140px;
+      span{
+        display:block;
+        height:40px;
+        font:14px "微软雅黑";
+        line-height:40px;
+        text-align:center;
+      }
+
     }
 
     .editable-add-btn:hover {
@@ -128,8 +169,10 @@
         overflow: hidden;
     }
     .childCen{
-      width: 88%;
+      width: 86%;
       float:left;
+      margin-left:20px;
+      font:14px "微软雅黑";
     }
     .delBtn{
       display:block;
@@ -138,10 +181,10 @@
       text-align: center;
       line-height:26px;
       border-radius:4px;
-      float:left;
-      background: #108ee9;
-      position:relative;
-      left:-40px;
+      background: red;
+      position:absolute;
+      right:10%;
+      top:15%;
     }
 
     .return {
@@ -183,17 +226,6 @@
             height: 40px;
             width: 140px;
         }
-
-
-    .editable-add-btn {
-        height: 40px;
-        width: 140px;
-    }
-
-    .editable-add-btn {
-        float: none;
-    }
-
     .ant-input[disabled] {
 
         background-color: rgba(102, 102, 102, 1);

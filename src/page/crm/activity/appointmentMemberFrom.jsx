@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal,Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
 import PropTypes from 'prop-types'
-import {routerRedux} from 'dva/router';
+import './activityIndex.scss'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
@@ -159,10 +159,10 @@ class AppointmentMemberFrom extends Component {
         title = { "预约" }
         onCancel = { this.handleCancel.bind(this) }
         onOk = { this.onOk.bind(this) }
-        wrapClassName = { "appoint-vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal" }
         width ={ 1000 }
       >
-        <div>
+        <div className="activity-cent">
           <div>
             <Row>
               <Col span={5}><span>客户名称</span>
@@ -227,10 +227,13 @@ class AppointmentMemberFrom extends Component {
               </Col>
             </Row>
           </Form>
-          <Card title="预约客户:">
+          <Card>
+            <div className="card-title">
+              <h3>预约客户:</h3>
+            </div>
             <div>李磊磊
             </div>
-            <Table {...tableProps}  rowSelection={ rowSelection } rowKey = { record=>record.id } columns={this.columns}/>
+            <Table {...tableProps}  bordered size="small"  rowSelection={ rowSelection } rowKey = { record=>record.id } columns={this.columns}/>
           </Card>
         </div>
       </Modal>

@@ -53,7 +53,7 @@ class appointmentNotMemberFrom extends Component {
         onCancel = { this.handleCancel.bind(this) }
         onOk = { this.handleOk.bind(this) }
         width = { 300 }
-        wrapClassName = { "appoint-vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal" }
       >
         <Form>
           <FormItem {...formItemLayout}>

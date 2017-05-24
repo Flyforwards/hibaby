@@ -45,12 +45,20 @@
 		}
 		.ant-select-lg{
 			width:270px;
+			.ant-select-selection__rendered{
+				height: 40px;
+			}
 		}
 		.ant-select-lg .ant-select-selection--single {
 		    height: 40px;
 		    line-height: 40px;
+		    .ant-select-selection__rendered{
+				height: 40px;
+			}
 		}
-		
+		.ant-select-selection__rendered{
+			height: 40px;
+		}
 	}
 	.roomName{
 		width:100%;

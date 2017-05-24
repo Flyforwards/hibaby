@@ -120,7 +120,7 @@ class editData extends React.Component {
 
       const formItemLayout = {
         labelCol: { span: 2 },
-        wrapperCol: { span: 22 },
+        wrapperCol: { span: 20},
       };
 
       let name="";
@@ -144,7 +144,7 @@ class editData extends React.Component {
             className = ""
             key={ k }
           >
-            <p className = "label" >{ `选项${String(index+1)}` }</p>
+            <h4 className = "label" >{ `选项${String(index+1)}` }</h4>
             <div className="posi childCen " style={{position:'relative',overflow:'hidden'}}>
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
@@ -166,14 +166,14 @@ class editData extends React.Component {
         <div className="xuanxiang container2">
           <Card title = "字段信息:" >
               <Form layout={ 'horizontal' }>
-              <FormItem {...formItemLayout} className="childCen" label="字段名称">
+              <FormItem {...formItemLayout} className="parentCen" label="字段名称">
               {getFieldDecorator('name', {
                 initialValue:`${name}`,
                     rules: [{ required: true, message: '字段名称为必填项！' }],
                 })(  <Input disabled={true} className="input" placeholder="input placeholder" />
                   )}
                 </FormItem>
-                  <FormItem {...formItemLayout} className = "div childCen" label="字段描述">
+                  <FormItem {...formItemLayout} className = "div parentCen" label="字段描述">
                   {getFieldDecorator('description', {
                     initialValue:`${description}`,
                     rules: [{ required: true, message: '字段描述为必填项！' }],

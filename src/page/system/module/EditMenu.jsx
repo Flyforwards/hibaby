@@ -30,7 +30,6 @@ class SelectListed extends Component {
                 onChange={this.onChange}
                 onSelect={this.onSelect.bind(this)}
               />
-
         )
     }
 

@@ -128,7 +128,7 @@ export default {
 					});
 				}
 				//查看服务详情
-				if (pathname === '/system/service/detail') {
+				if (pathname === '/system/service-item/detail') {
 					dispatch({
 						type: 'LookService',
 						payload: {

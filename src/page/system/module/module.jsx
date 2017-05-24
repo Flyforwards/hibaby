@@ -57,6 +57,11 @@ class Module extends Component {
       key:'permissionName',
       width: '150px',
     },{
+      title: '图标',
+      dataIndex: 'icon',
+      key:'icon',
+      width: '150px',
+    },{
       title: '模块编号',
       dataIndex: 'orderBy',
       key:'orderBy',
