@@ -1,0 +1,113 @@
+
+.viewSuite{
+	height:100%;
+	width:97%;
+	.viewSuiteList{
+		width:100%;
+		background-color:#fff;
+		height:20%;
+		margin:10px;
+		border-radius: 4px;
+		border:1px solid #999;
+		p{
+			font-family: '微软雅黑 Bold', '微软雅黑';
+		    font-weight: 700;
+		    font-style: normal;
+		    font-size: 14px;
+		    margin-bottom: 10px
+		}
+		.name{
+			margin-left: 50px;
+			margin-bottom: 10px;
+			width:42%;
+		}
+		.price{
+			margin-left: 10px;
+		}
+		.input{
+			width: 400px;
+		}
+		.introduction{
+			width:100%;
+			margin-left:50px;
+			margin-bottom: 20px;
+			margin-top: 10px;
+			.ant-input-lg{
+				width:880px;
+				height:40px;
+				font-size:20px;
+			}
+		}
+		.ant-input-lg{
+			width:145%;
+			height:40px;
+			font-size:20px;
+		}
+		.ant-select-lg{
+			width:270px;
+		}
+		.ant-select-lg .ant-select-selection--single {
+		    height: 40px;
+		    line-height: 40px;
+		}
+		
+	}
+	.roomName{
+		width:100%;
+		background-color:#fff;
+		height:200px;
+		margin:10px;
+		border-radius: 4px;
+		border:1px solid #999;
+		p{
+			font-family: '微软雅黑 Bold', '微软雅黑';
+		    font-weight: 700;
+		    font-style: normal;
+		    font-size: 14px;
+		    margin-bottom: 10px
+		}
+		.roomColor{
+			display: inline-block;
+			float:left;
+			width:80px;
+			height:40px;
+			border:1px solid #999;
+			text-align: center;
+			line-height: 40px;
+			font-size:20px;
+			margin:10px 26px;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		.roomColorA{
+			display: inline-block;
+			float:left;
+			width:80px;
+			height:40px;
+			border:1px solid #999;
+			text-align: center;
+			line-height: 40px;
+			font-size:20px;
+			margin:10px 26px;
+			border-radius: 4px;
+			cursor: pointer;
+			background-color: #999;
+		}
+	}
+	.ant-btn {
+		margin-left:55%; 
+		width:140px;
+		height:40px;
+	}
+	.ant-btn-primary{
+    	margin-left:30px; 
+    	width:140px;
+    	height:40px;
+	}
+	.delet{
+		background-color: rgba(255, 74, 74, 1);
+		margin-left:30px; 
+		color:#fff;
+		border:none;
+	}
+}

@@ -9,7 +9,7 @@ import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
 import SeeDtail from './SeeDtail.jsx'
 import DeleteNode from './DeleteNode.jsx'
-import {local, session} from 'common/util/storage.js'
+import { local, session } from 'common/util/storage.js'
 
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker

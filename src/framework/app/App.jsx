@@ -3,9 +3,9 @@ import React from 'react'
 import {Router, hashHistory} from 'react-router'
 
 import './base.css'
-import './common.css'
+import './common.scss'
 
-import {local, session} from 'common/util/storage.js'
+import {local, session} from 'common.scss/util/storage.js'
 
 import Layout from '../layout/Layout.jsx'
 import Home from '../../page/home'

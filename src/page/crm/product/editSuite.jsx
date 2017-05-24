@@ -4,14 +4,16 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
 import { Link} from 'react-router'
-import './serviceinfo.scss'
+import './viewSuite.scss'
 import Current from '../../Current'
  import {local, session} from 'common/util/storage.js'
+ import Delete from './DeleteSuite.jsx'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+let roomId = []
 
-class AddServiceed extends Component {
+class ViewSuiteed extends Component {
 
     constructor(props) {
         super(props)
@@ -47,7 +49,7 @@ class AddServiceed extends Component {
         }];
         this.state = {
           selectedRows: [],
-          loading: false,
+          loading: false
         };
     }
     componentWillMount() {
@@ -56,6 +58,7 @@ class AddServiceed extends Component {
         this.setState({ selectedRows });
       }
     componentDidMount() {
+        let ID = window.location.search.split("=")[1]
         this.props.dispatch({
             type: 'packageInfo/serviceListByPage',
             payload: { }
@@ -76,51 +79,83 @@ class AddServiceed extends Component {
             type: 'packageInfo/roomList',
             payload: { }
         });
+        console.log("ID",ID)
+         this.props.dispatch({
+            type: 'packageInfo/roomFindById',
+            payload: { 
+              "dataId":ID
+            }
+        });
     }
     handleSubmit = ()=>{
       history.go(-1)
     }
     handleAdd(){
+      let ID = window.location.search.split("=")[1]
       const fields = this.props.form.getFieldsValue();
-      console.log("fields",this.state.selectedRows)
-      let serviceInfoList =[]
-      if(this.state.selectedRows.length>=1){
-        this.state.selectedRows.map((item)=>{
-          if(item.usageCount){
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
-          }else{
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
-          }
-        })
-        console.log(serviceInfoList)
-        this.props.dispatch({
-          type: 'packageInfo/add',
-          payload: {
-            "name": fields.name,
-            "price": fields.price,
-            "serviceInfoList":serviceInfoList,
-            "suiteId": fields.room,
-            "type": fields.type
-          }
+      let roomIdList = []
+      roomId.map((item)=>{
+        if(item){
+         roomIdList.push(item)
+        }
+      })
+      console.log("fields",roomIdList)
+      this.props.dispatch({
+        type: 'packageInfo/roomEdit',
+        payload: {
+          "id":ID,
+          "description": fields.introduction,
+          "price": fields.price,
+          "name":fields.name,
+          "roomIdList": roomIdList,
+        }
       });
-       this.props.dispatch({
-          type: 'packageInfo/serviceListByPage',
-          payload: { }
+     this.props.dispatch({
+        type: 'packageInfo/suiteListByPage',
+        payload: {
+          "page":1,
+          "size":10
+        }
       });
       history.go(-1)
-    }else{
-      message.success("请选择服务项目");
     }
-     
+    roomClick(data,e){
+      if(e.target.className == "roomColor"){
+        e.target.className = "roomColorA"
+        roomId[data] = data
+      }else{
+        e.target.className = "roomColor"
+        roomId[data] = null
+      }
+      console.log(roomId)
+    }
+    delete() {
+      let ID = window.location.search.split("=")[1]
+      this.setState({
+        DeleteVisible:true,
+        ID:ID
+      })
+    }
+     handleDeleteCancel(){
+      this.setState({
+          DeleteVisible: false,
+      })
+      window.location.reload( true )
     }
     render() {
         let loadingName = true
-        console.log("selectData",this.props.selectData)
+        let roomInformation = []
         const { getFieldDecorator } = this.props.form;
         const columns = this.columns;
         let ListLnformation = []
         let roomList = []
         let selectData = []
+        
+        if(this.props.roomData != null){
+          this.props.roomData.map((item)=>{
+            roomInformation.push(<span key= {item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColor">{item.roomNo}</span>)
+          })
+        }
         if(this.props.selectData != null){
           selectData = this.props.selectData.map((item)=>{
              return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
@@ -149,26 +184,28 @@ class AddServiceed extends Component {
             onChange: this.onSelectChange,
         };
         return (
-            <div className="addServiceinfo">
-                <div className="addServiceinfoList">
-                <p>套餐信息:</p>
+            <div className="viewSuite">
+                <div className="viewSuiteList">
+                <p>套房信息:</p>
                 <Form layout="inline">
                   <FormItem
-                   label="套餐名称"
+                   label="套房名称"
                    className="name"
                   >
                     {getFieldDecorator('name', {
-                       rules: [],
+                      initialValue:this.props.roomFindById?this.props.roomFindById.name:null,
+                      rules: [],
                     })(
                       <Input />
                     )}
                   </FormItem>
                   <FormItem
-                     label="套餐价格"
+                     label="套房价格"
                      className="price"
                   >
                   {getFieldDecorator('price', {
-                      rules: [],
+                    initialValue:this.props.roomFindById?this.props.roomFindById.price:null,
+                    rules: [],
                     })(
                     <Input 
                       addonBefore="￥"
@@ -176,66 +213,46 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                    <FormItem
-                   label="套餐类型"
+                   label="套房简介"
+                   className="introduction"
                    >
-                    {getFieldDecorator('type', {
+                    {getFieldDecorator('introduction', {
+                      initialValue:this.props.roomFindById?this.props.roomFindById.description:null,
                       rules: [],
                     })(
-                    <Select
-                    >
-                     {
-                      roomList
-                     }
-                    </Select>
+                    <Input type="textarea" autosize={{ minRows: 2, maxRows: 6 }} className="input"/>
                     )}
                   </FormItem>
                 </Form>
                 </div>
-                <div className="addServiceinfoTable">
-                  <Table bordered 
-                    rowSelection={rowSelection} 
-                    columns={ columns } 
-                    dataSource={ListLnformation}
-                    pagination = { false }
-                    scroll={{ y: 500 }}
-                    loading = { loadingName }
-                  />
-                </div>  
-                <div className="addServiceinfoSuite">
-                <p>选择套房:</p>
-                <Form layout="inline">
-                  <FormItem
-                   label="套房"
-                   className="room"
-                  >
-                    {getFieldDecorator('room', {
-                       rules: [],
-                    })(
-                      <Select
-                    >
-                     {
-                      selectData
-                     }
-                    </Select>
-                    )}
-                  </FormItem>
-                </Form>
+                <div className="roomName">
+                 <p>房间信息:</p>
+                  {
+                    roomInformation
+                  }
                 </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+                <Delete 
+                  visible={ this.state.DeleteVisible }
+                  onCancel ={ this.handleDeleteCancel.bind(this) }
+                  ID = { this.state.ID }
+                  serviceInfoList = { this.props.findById}
+                />
             </div>
         )
     }
 }
-function AddService({
+function ViewSuite({
   dispatch,
   serviceListByPage,
   roomData,
   selectData,
-  getDictionary
+  getDictionary,
+  roomFindById
 }) {
   return ( < div >
-    <AddServiceed dispatch = {
+    <ViewSuiteed dispatch = {
       dispatch
     }
     selectData = {
@@ -244,12 +261,15 @@ function AddService({
     serviceListByPage = {
       serviceListByPage
     }
-     roomData = {
-       roomData
-     }
-     getDictionary = {
+    roomData = {
+      roomData
+    }
+    getDictionary = {
       getDictionary
-     }
+    }
+    roomFindById = {
+      roomFindById
+    }
     /></div>
   )
 }
@@ -258,15 +278,17 @@ function mapStateToProps(state) {
     serviceListByPage,
     roomData,
     selectData,
-    getDictionary
+    getDictionary,
+    roomFindById
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
     serviceListByPage,
     roomData,
     selectData,
-    getDictionary
+    getDictionary,
+    roomFindById
     };
 }
-const addService = Form.create()(AddServiceed);
-export default connect(mapStateToProps)(addService)
+const viewSuite = Form.create()(ViewSuiteed);
+export default connect(mapStateToProps)(viewSuite)
