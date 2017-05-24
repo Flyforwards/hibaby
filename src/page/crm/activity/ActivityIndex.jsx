@@ -11,6 +11,7 @@ import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
 import moment from 'moment'
 import Current from '../../Current'
 import AlertModalFrom from 'common/AlertModalFrom'
+
 class ActivityIndex extends React.Component {
 
   constructor(props) {
@@ -129,10 +130,7 @@ class ActivityIndex extends React.Component {
         appointmentVisible: false,
       })
     }
-
   }
-
-
 
   render() {
     const { list, loading, pagination, dispatch } = this.props;
@@ -147,7 +145,6 @@ class ActivityIndex extends React.Component {
           query: {
             page: page.current,
             size: page.pageSize,
-            type: 1,
           },
         }))
       },
