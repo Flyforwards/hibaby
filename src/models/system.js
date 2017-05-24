@@ -68,7 +68,7 @@ export default {
 				end: page == 1 ? data.length : (page - 1) * 3 + data.length,
 				totalpage:Math.ceil(total/size),
 			}
-			return {...customerdata,range};s
+			return {...customerdata,range};
 	    },
 
 		//菜单列表数据
