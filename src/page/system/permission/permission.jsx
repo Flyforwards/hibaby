@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message } from 'antd';
 import { connect } from 'dva';
+import {Link} from 'react-router';
 import  './permission.scss';
 import AddRoleFrom from './AddRoleFrom';
 import SettingPermissionFrom from './SettingpermissionFrom'
@@ -39,10 +40,10 @@ class permission extends Component {
             const roleD =  manager.array_contain(this.props.permissionAlias,'roleD')
             return (
               <div key = { index }>
-                <a className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</a>
-                <a className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</a>
-                <a className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</a>
-                <a className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
+                <Link className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
+                <Link className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
+                <Link className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</Link>
+                <Link className="firstB" onClick={ this.delete.bind(this,record )}>删除</Link>
               </div>
             );
           },
