@@ -1,21 +1,23 @@
 .container2 {
     height: 100%;
     width: 100%;
-    min-width: 1100px;
     padding: 10px;
     background-color: #f8f6f2;
     background-size: cover;
+    font-family:"微软雅黑";
     .ant-table-thead > tr > th {
         background-color: dimgray;
-        font-weight: 500;
+        font-weight: 100;
+        font-size:16px;
         transition: background .3s ease;
         text-align: center;
-        color: rgba(0, 0, 0, 0.85);
+        color: rgba(255, 255, 255, 0.85);
     }
     .ant-table-tbody > tr > td {
-        font-weight: 500;
+        font-weight: 100;
         transition: background .3s ease;
         text-align: center;
+        font-size:14px;
         color: rgba(0, 0, 0, 0.85);
     }
     img {
@@ -28,6 +30,7 @@
         line-height: 40px;
         margin-right: 10px;
         width: 80px;
+        font:900 16px "微软雅黑";
         text-align: center;
     }
     .input {
@@ -151,8 +154,8 @@
     }
 
     .xuanxiang .ant-card {
-        min-width: 860px;
-        margin-bottom: 10px;
+        width:90%;
+        margin-top: 10px;
         padding-bottom: 30px;
     }
 

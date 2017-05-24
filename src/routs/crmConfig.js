@@ -7,8 +7,8 @@ export default (app) => [
       path: '/crm/customer',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          registerModel(app, require('models/system'));
-          cb(null, require('page/crm/customer/Customer.jsx'))
+          registerModel(app, require('models/customer'));
+          cb(null, require('page/crm/customer/CustomerIndex.jsx'))
         })
       }
     },

@@ -1,6 +1,7 @@
 import * as addCustomerInformation from '../services/addCustomerInformation';
 import { message } from 'antd'
-
+import { local, session } from 'common/util/storage.js'
+import { routerRedux } from 'dva/router';
 export default {
   namespace: 'addCustomer',
   state: {
@@ -14,10 +15,22 @@ export default {
     contractDLC:[],
     headIcon:'',
     headIconUrl:'',
+
+    operator:'',
+
+    memberNumberValue:'',
+    purchasePackageValue:'',
+
+    //下拉框所需数据
     guestInformationSourceAry:[],
     concernsAry:[],
     networkSearchWordsAry:[],
+    fetusAry:[],
+    hospitalAry:[],
     intentionPackageAry:[],
+    memberAry:[],
+    specialIdentityAry:[],
+
     remarkListColumns : [{
       title: '备注内容',
       dataIndex: 'remark',
@@ -71,10 +84,29 @@ export default {
     addHeadIcon(state, { payload: todo }){
       return {...state,headIcon:todo.key,headIconUrl:todo.url};
     },
+
+    setMemberNumberValue(state, { payload: todo }){
+      return {...state,memberNumberValue:todo.data};
+    },
+    setPurchasePackageValue(state, { payload: todo }){
+      return {...state,purchasePackageValue:todo};
+    },
+    getOperator(state, { payload: todo }){
+      const userInfo  = session.get("userInfo");
+      return {...state,operator:userInfo.name};
+    },
+
     addMutDictData(state, { payload: todo }){
 
-      if(todo.id === 2){
+      if(todo.id === 1){
+
+        return {...state,fetusAry:todo.data};
+      }
+      else if(todo.id === 2){
         return {...state,guestInformationSourceAry:todo.data};
+      }
+      else if(todo.id === 3){
+        return {...state,hospitalAry:todo.data};
       }
       else if(todo.id === 4){
         return {...state,concernsAry:todo.data};
@@ -88,6 +120,16 @@ export default {
 
       return {...state};
     },
+    setMembershipcard(state, { payload: todo }){
+      if(todo.dataId === 1){
+        return {...state,memberAry:todo.data};
+      }
+      else if(todo.dataId === 2){
+        return {...state,specialIdentityAry:todo.data};
+      }
+      return {...state};
+    },
+
   },
   effects: {
     *getProvinceData({ payload: values }, { call, put }) {
@@ -136,14 +178,16 @@ export default {
     },
 
     *getDataDict({ payload: value },{ call, put }){
-      const { data: { code, data } } = yield call(addCustomerInformation.getDataDict,
-        {
-        "id": value.id,
-        "softDelete": 0,
-        "type": 2
-        });
+      const parameter ={
+        id: value.id,
+        softDelete: 0,
+        type: 2,
+      };
+
+
+      const { data: { code, data } } = yield call(addCustomerInformation.getDataDict,parameter);
       if (code == 0) {
-        console.log(data)
+
         yield put({
           type: 'addMutDictData',
           payload: {
@@ -154,33 +198,66 @@ export default {
       }
     },
 
-    *savaBaseInfo({ payload: values },{ call, put }) {
+    *getMembershipcardByType({ payload: value },{ call, put }){
 
-      const dict =  {
-        "age": values.age,
-        "birthTime": values.birthTime.format(),
-        "city": values.city,
-        "contact": values.contact,
-        "detailed": values.detailed,
-        "dueDate": values.dueDate.format(),
-        "fetus": values.fetus,
-        "focus": 0,
-        "gestationalWeeks":values.gestationalWeeks,
-        "hospital":0,
-        "intentionPackage": 0,
-        "name":values.name,
-        "operator":values.operator,
-        "province": values.province,
-        "resourceCustomer":0,
-        "webSearchTerm":0
-      };
+      const { data: { code, data } } = yield call(addCustomerInformation.getMembershipcardByType,value);
 
-      const { data: { code, data,err } } = yield call(addCustomerInformation.saveCustomer,dict);
+      if (code == 0) {
+        yield put({
+          type: 'setMembershipcard',
+          payload: {
+            dataId:value.dataId,
+            data:data,
+          }
+        });
+      }
+    },
+
+    *getMemberSerial({ payload: value },{ call, put }){
+      const { data: { code, data } } = yield call(addCustomerInformation.getMemberSerial,value);
+      if (code == 0) {
+        yield put({
+          type: 'setMemberNumberValue',
+          payload: {
+            data,
+          }
+        });
+      }
+    },
+
+    *getMainCustomerPackageById({ payload: value },{ call, put }){
+
+      const { data: { code, data } } = yield call(addCustomerInformation.getMainCustomerPackageById,{dataId:0});
+
       if (code == 0) {
 
-        // yield put({
-        //
-        // });
+        yield put({
+          type: 'setPurchasePackageValue',
+          payload: {
+            data,
+          }
+        });
+      }
+    },
+
+
+    *savaBaseInfo({ payload: values },{ call, put ,select}) {
+
+      const {baseDict,exDict} = values;
+
+      const { data: { code, data,err } } = yield call(addCustomerInformation.saveCustomer,baseDict);
+      if (code == 0) {
+        if (exDict){
+          yield put({
+            type:'savaExtensionInfo',
+            payload:{
+              ...exDict,id:data
+            }
+          });
+        }
+        else {
+          yield put(routerRedux.push('/crm/customer'));
+        }
       }
       else {
         message(err)
@@ -190,7 +267,6 @@ export default {
 
     *savaExtensionInfo({ payload: values },{ call, put ,select}) {
       const state = yield select(state => state.addCustomer);
-
 
 
       let caridStr = '';
@@ -209,26 +285,27 @@ export default {
 
       const dict = {
         "associatedRooms": 0,
-        "cityPermanent": 0,
+        "cityPermanent": values.cityPermanent,
         "contact": values.excontact,
         "contractAppendices": contractStr,
         "contractNumber": values.contractNumber,
-        "customerId": 45,
+        "customerId": values.id,
         "customerPhoto": state.headIcon,
         "detailedPermanent": values.detailedPermanent,
         "idcard": values.idcard,
         "idcardScan": caridStr,
         "imgURL": state.headIconUrl,
         "insuranceSituation": values.insuranceSituation,
-        "member": 0,
-        "memberNumber": "0",
+        "member": values.member,
+        "memberNumber": state.memberNumberValue,
         "nation": values.nation,
-        "operator": values.operator,
+        "operator": state.operator,
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format(),
         "provincePermanent": values.provincePermanent,
-        "purchasePackage": 0,
-        "specialIdentity": 0};
+        "purchasePackage": values.purchasePackageValue.packageId,
+        "specialIdentity": values.specialIdentity
+      };
 
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.savaExtensionInfo,dict);
@@ -278,9 +355,24 @@ export default {
             type: 'getNationDictionary'
           });
           dispatch({
+            type:'getOperator'
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 1,
+            }
+          });
+          dispatch({
             type: 'getDataDict',
             payload:{
               "id": 2,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 3,
             }
           });
           dispatch({
@@ -300,6 +392,24 @@ export default {
             payload:{
               "id": 6,
             }
+          });
+          dispatch({
+            type: 'getMembershipcardByType',
+            payload:{
+              "dataId": 1,
+            }
+          });
+          dispatch({
+            type: 'getMembershipcardByType',
+            payload:{
+              "dataId": 2,
+            }
+          });
+          dispatch({
+            type: 'getMemberSerial',
+          });
+          dispatch({
+            type: 'getMainCustomerPackageById',
           });
         }
         ;

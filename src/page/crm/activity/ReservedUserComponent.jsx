@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import { Card,Input,Button,Form,Table,Col, Row,DatePicker,Select,Cascader } from 'antd';
 import { Link } from 'react-router';
 import AlertModalFrom from 'common/AlertModalFrom'
+import './activityIndex.scss'
 const FormItem = Form.Item;
 const createForm = Form.create;
 
@@ -131,14 +132,15 @@ class ReservedUserComponent extends Component {
     return (
       <div>
       <Card>
+        <div className="card-title">
+          <h3>预约客户:</h3>
+        </div>
         <Row>
-          <Col span={6}><div>预约客户:</div>
+          <Col offset={6} span={6}><span>预约人数87人</span>
           </Col>
-          <Col span={6}><div>预约人数87人</div>
+          <Col span={6}><span>签到人数0人</span>
           </Col>
-          <Col span={6}><div>签到人数0人</div>
-          </Col>
-          <Col span={6}><div>成单率0%</div>
+          <Col span={6}><span>成单率0%</span>
           </Col>
         </Row>
         <div>
@@ -205,9 +207,7 @@ class ReservedUserComponent extends Component {
             </Col>
           </Row>
         </Form>
-        <div>李磊磊
-        </div>
-        <Table {...tableProps} rowKey = { record=>record.id } columns={ this.columns }/>
+        <Table {...tableProps} bordered size="small" rowKey = { record=>record.id } columns={ this.columns }/>
       </Card>
         <AlertModalFrom  onCancel={ this.handleCancel.bind(this) } message="是否确定删除此客户？"  visible={ this.state.alertModalVisible } onOk={ this.onOk.bind(this, this.selectRecord) }/>
       </div>

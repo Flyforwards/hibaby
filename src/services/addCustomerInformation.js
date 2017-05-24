@@ -42,4 +42,25 @@ export function getDataDict(values) {
     body: JSON.stringify(values),
   })
 };
+//会员身份 特殊身份  1会员 2特殊
+export function getMembershipcardByType(values) {
+  return request('/crm/api/v1/membershipcard/getMembershipcardByType', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+//会员编号
+export function getMemberSerial(values) {
+  return request('/crm/api/v1/serial/getMemberSerial', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+// 购买套餐
+export function getMainCustomerPackageById(values) {
+  return request('/crm/api/v1/customer/getMainCustomerPackageById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
 
