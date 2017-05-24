@@ -40,10 +40,10 @@ class permission extends Component {
             const roleD =  manager.array_contain(this.props.permissionAlias,'roleD')
             return (
               <div key = { index }>
-                <Link disabled={ !roleU } className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
-                <Link disabled={ !roleConfig } className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
-                <Link disabled={ !users } className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</Link>
-                <Link disabled={ !roleD } className="firstB" onClick={ this.delete.bind(this,record )}>删除</Link>
+                <Link className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
+                <Link className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
+                <Link className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</Link>
+                <Link className="firstB" onClick={ this.delete.bind(this,record )}>删除</Link>
               </div>
             );
           },
@@ -134,11 +134,11 @@ class permission extends Component {
             }))
           },
         }
-
+        // disabled={ manager.array_contain(permissionAlias,"roleC") }
         return (
            <div className="permission-cent">
              <div className="divs">
-               <Button disabled={ manager.array_contain(permissionAlias,"roleC") } className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
+               <Button className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
                 <Table {...tableProps} columns={ this.columns } bordered rowKey={record => record.id}/>
