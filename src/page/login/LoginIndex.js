@@ -1,19 +1,16 @@
 
 import React from 'react';
-import {
-    Form,
-    Icon,
-    Input,
-    Button,
-    Checkbox
-} from 'antd';
-
-import  './loginIndex.scss';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { connect } from 'dva';
+import  './LoginIndex.scss';
 import { session } from 'common/util/storage.js';
-import {browserHistory} from 'react-router';
 import logo from './images/logo.png'
+import { Link} from 'react-router'
 const FormItem = Form.Item;
-class NormalLoginForm extends React.Component {
+const createForm = Form.create
+
+@createForm()
+class LoginIndex extends React.Component {
 
   constructor(props) {
       super(props);
@@ -34,12 +31,13 @@ class NormalLoginForm extends React.Component {
 
           }
       });
-
   }
+
   render() {
       const { getFieldDecorator } = this.props.form;
       return (
-        < div className ="container" >
+        <div className="loginForm login">
+        <div className ="login-index" >
           <Form onSubmit = { this.handleSubmit } className = "login-form" >
             <img src = {logo}/>
             <FormItem> {
@@ -66,15 +64,16 @@ class NormalLoginForm extends React.Component {
                     valuePropName: 'checked',
                     initialValue: true,
                 })( <Checkbox> 记住手机号 </Checkbox>) }
-                <a className = "login-form-forgot" href = "http://localhost:9090/find" > 忘记密码？ </a>
+                <Link className = "login-form-forgot" to="/find" > 忘记密码？ </Link>
               <Button type = "primary"
                 htmlType = "submit"
                 className = "login-form-button" > 登录
               </Button>
             </FormItem>
           </Form>
+        </div>
         </div>);
       }
 }
 
-export default Form.create()(NormalLoginForm);
+export default connect()(LoginIndex);
