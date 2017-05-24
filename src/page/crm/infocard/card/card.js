@@ -37,9 +37,9 @@ class Card extends Component {
         </span>
       )
     }];
-    
+
   }
-  
+
   render() {
     const { cardInfo, dispatch, total, postValues } = this.props;
     const { sear, salesDiscount, cardType } = postValues;
@@ -65,17 +65,17 @@ class Card extends Component {
     };
     return (
       <div className="card">
-        <CardFind/>
+        <CardFind />
         <Table class="cardTable" columns={this.columns} bordered rowKey="id" dataSource={cardInfo} pagination={ pagination}/>
       </div>
-    
+
     )
   }
 }
 
 
 function CardCom({ dispatch, cardInfo, total, postValues }) {
-  
+
   return (
     <Card dispatch={dispatch} cardInfo={cardInfo} total={total} postValues={postValues}/>
   )
