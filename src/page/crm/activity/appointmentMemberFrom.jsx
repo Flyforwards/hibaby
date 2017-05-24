@@ -65,13 +65,7 @@ class AppointmentMemberFrom extends Component {
   handleOk() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        values.activityId = this.props.selectRecord.id;
-        console.log(values);
-        this.props.dispatch({
-          type: "activity/saveMemberCustomer",
-          payload: values
-        })
-        this.props.onCancel();
+        // 做搜索筛选
       }
     })
   }
@@ -81,7 +75,8 @@ class AppointmentMemberFrom extends Component {
       type: "activity/saveMemberCustomer",
       payload: {
         activityId: this.props.selectRecord.id,
-        ids: this.state.selectedRowKeys.map((record)=>{ return {dataId:record}})
+        ids: this.state.selectedRowKeys.map((record)=>{ return {dataId:record}}),
+        from: this.props.from
       }
     })
     this.handleCancel();
@@ -98,7 +93,7 @@ class AppointmentMemberFrom extends Component {
 
 
   render() {
-    let { dispatch,visible, userList, loading, noAppointmentPagination,selectRecord } = this.props
+    let { dispatch,visible, userList, loading, noAppointmentPagination,selectRecord,from } = this.props
     const { getFieldDecorator } = this.props.form;
 
     const options = [{
@@ -248,6 +243,8 @@ AppointmentMemberFrom.propTypes = {
   visible: PropTypes.bool.isRequired,
   selectRecord: PropTypes.object,
   noAppointmentPagination: PropTypes.object,
+  // 有两个不同的入口并且有不同的行为从这里判断
+  from: PropTypes.bool,
 }
 
 

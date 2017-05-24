@@ -44,9 +44,10 @@ class ActivityIndex extends React.Component {
       dataIndex: 'activityTime',
       key: 'modifyTime'
     },{
-      title: '签到人数',
-      dataIndex: 'appointments',
-      key: 'appointments'
+      title: '签到/人数',
+      render: (record) => {
+        return String(record.signeds)+'/'+String(record.appointments);
+      },
     },{
       title: '成单率',
       dataIndex: 'orders',
@@ -55,7 +56,6 @@ class ActivityIndex extends React.Component {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
-        // to = {`/system/group-char/detail?dataId=${record.id}`}
         return (
           <div key = { index }>
             <Link onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
@@ -159,8 +159,8 @@ class ActivityIndex extends React.Component {
         </div>
         <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
         <AppointmentModalFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.appointmentVisible } selectRecord={ this.selectRecord } onChoose={ this.onChoose.bind(this)}/>
-        <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ this.selectRecord }/>
-        <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ this.selectRecord }/>
+        <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ this.selectRecord } from={ true }/>
+        <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ this.selectRecord } from={ true }/>
         <AlertModalFrom  onCancel={ this.onCancel.bind(this) } modalTitle="是否确定删除此活动"  visible={ this.state.alertModalVisible } onOk={ this.onOk.bind(this, this.selectRecord) }/>
       </div>
     );

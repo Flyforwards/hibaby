@@ -20,7 +20,7 @@ class appointmentNotMemberFrom extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.activityId = this.props.selectRecord.id;
-        console.log(values);
+        values.from = this.props.from;
         this.props.dispatch({
           type: "activity/saveOutsiderCustomer",
           payload: values

@@ -80,6 +80,14 @@ export function deleteActivityCustomer(values) {
     body: JSON.stringify(values),
   })
 }
+// 根据预约id签到预约客户
+export function signedActivityCustomer(values) {
+  return request('/crm/api/v1/activity/signedActivityCustomer', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 
 

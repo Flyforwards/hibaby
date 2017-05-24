@@ -169,6 +169,7 @@ function TabalList({
 
 }
 function mapStateToProps(state) {
+  console.log("权限列表>>>>",state.system.arr)
   const {
     arr,
     total,
