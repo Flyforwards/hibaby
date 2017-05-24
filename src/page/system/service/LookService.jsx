@@ -142,7 +142,7 @@ function LookService({
 
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.service)
+  console.log("modelss",state.service.data)
   const {
     data,
     code

@@ -12,7 +12,6 @@ import Current from '../../Current'
 class localCharIndex extends React.Component {
   constructor(props) {
     super(props);
-    console.log("列表》》》",this.props.list)
     this.columns = [{
         title: '序号',
         dataIndex: 'id',

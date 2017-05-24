@@ -108,7 +108,38 @@ export default (app) => [
       path: '/crm/commodity',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('page/crm/product/InfoCard.jsx'))
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/commodity.jsx'))
+        })
+      }
+    },
+    // 添加商品
+    {
+      path: '/crm/commodity/addcommodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/addCommodity.jsx'))
+        })
+      }
+    },
+    // 查看商品详情
+    {
+      path: '/crm/commodity/viewcommodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/viewCommodity.jsx'))
+        })
+      }
+    },
+     // 编辑商品
+    {
+      path: '/crm/commodity/editcommodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/editCommodity.jsx'))
         })
       }
     },
@@ -181,8 +212,4 @@ export default (app) => [
         })
       }
     },
-
-
-
-
 ]

@@ -289,6 +289,7 @@ export default {
 			{
 			case 1:
 			  message.success("添加用户信息成功");
+			  yield put(routerRedux.push("/system/organization"));
 			  break;
 			case 2:
 			  message.success("该手机号已被注册");

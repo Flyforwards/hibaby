@@ -4,6 +4,7 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from 'common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
+import { parse } from 'qs'
 export default {
 	namespace: 'packageInfo',
 	state: {
@@ -19,22 +20,25 @@ export default {
 		getDictionary:null,
 		suiteListByPage:null,
 		roomFindById:null,
+		commodityListByPage:[],
+		chineseToPinyin:null,
+		pagination: {
+	      showQuickJumper: true,
+	      showTotal: total => `共 ${total} 条`,
+	      current: 1,
+	      total: null,
+	    },
+	    suitepagination: {
+	      showQuickJumper: true,
+	      showTotal: total => `共 ${total} 条`,
+	      current: 1,
+	      total: null,
+	    },
+	    commodityFindById:null,
 	},
 	reducers: {
-	    listByPageSave(state,{payload:{data:list,total,page,size,code}}){
-	      let listByPagedata = {...state,
-				list,
-				total,
-				page,
-				size,
-				code,
-			};
-			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? list.length : (page - 1) * 3 + list.length,
-				totalpage:Math.ceil(total/size),
-			}
-			return {...listByPagedata,range};
+	    listByPageSave(state,{payload:{list,pagination}}){
+	      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 	    },
 	    roomListSave(state,{payload:{ data:roomData,code }}){
 	      let roomListSavedata = {...state,roomData,code};
@@ -44,9 +48,17 @@ export default {
 	      let findByIdSavedata = {...state,findById,code};
 	      return findByIdSavedata
 	    },
+	    chineseToPinyinSave(state,{payload:{ data:chineseToPinyin,code }}){
+	      let chineseToPinyindata = {...state,chineseToPinyin,code};
+	      return chineseToPinyindata
+	    },
 	    roomFindByIdSave(state,{payload:{ data:roomFindById,code }}){
 	      let roomFindByIdSavedata = {...state,roomFindById,code};
 	      return roomFindByIdSavedata
+	    },
+	    commodityFindByIdSave(state,{payload:{ data:commodityFindById,code }}){
+	      let commodityFindByIdSavedata = {...state,commodityFindById,code};
+	      return commodityFindByIdSavedata
 	    },
 	    getDictionarySave(state,{payload:{ data:getDictionary,code }}){
 	      let getDictionarySavedata = {...state,getDictionary,code};
@@ -56,20 +68,11 @@ export default {
 	      let selectDataSavedata = {...state,selectData,code};
 	      return selectDataSavedata
 	    },
-	    suiteListByPageSave(state,{payload:{data:suiteListByPage,total,page,size,code}}){
-	      let suiteListByPagedata = {...state,
-				suiteListByPage,
-				total,
-				page,
-				size,
-				code,
-			};
-			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? suiteListByPage.length : (page - 1) * 3 + suiteListByPage.length,
-				totalpage:Math.ceil(total/size),
-			}
-			return {...suiteListByPagedata,range};
+	    suiteListByPageSave(state,{payload:{suiteListByPage,suitepagination}}){
+	      return {...state, suiteListByPage, suitepagination: {  ...state.suitepagination,...suitepagination }};
+	    },
+	    commodityListByPageSave(state,{payload:{ commodityListByPage,pagination }}){
+			return {...state, commodityListByPage, pagination: {  ...state.pagination,...pagination }};
 	    },
 	    serviceListByPageSave(state,{payload:{data:serviceListByPage,total,page,size,code}}){
 	      let serviceListByPagedata = {...state,
@@ -90,24 +93,25 @@ export default {
 	effects: {
 		//获取分页的列表
 		*listByPage({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		total,
-		      		page,
-		      		size,
-		      		code
-	      }} = yield call(packageInfoService.listByPage, values);
+			values = parse(location.search.substr(1))
+		      if (values.page === undefined) {
+		        values.page = 1;
+		      }
+		      if (values.size === undefined) {
+		        values.size = 10;
+		      }
+		    const { data: { data, total, page, size, code } } = yield call(packageInfoService.listByPage, values);
 			if (code == 0) {
 				yield put({
 					type: 'listByPageSave',
 					payload: {
-						data,
-						total,
-						page,
-						size,
-						code
-					}
+			            list: data,
+			            pagination: {
+			              current: Number(page) || 1,
+			              pageSize: Number(size) || 10,
+			              total: total,
+			            },
+			        },
 				});
 			}
 		},
@@ -120,6 +124,9 @@ export default {
 	      }} = yield call(packageInfoService.add, values);
 			if (code == 0) {
 				message.success("添加套餐成功");
+				yield put(routerRedux.push("/crm/serviceinfo"));
+			}else if(code == 404){
+				message.success("该套餐已存在");
 			}
 		},
 		//修改套房信息
@@ -131,6 +138,9 @@ export default {
 	      }} = yield call(packageInfoService.roomEdit, values);
 			if (code == 0) {
 				message.success("修改套房信息成功");
+				history.go(-1)
+			}else if(code == 404){
+				message.success("该套放已存在");
 			}
 		},
 		//删除套房
@@ -142,6 +152,7 @@ export default {
 	      }} = yield call(packageInfoService.roomDel, values);
 			if (code == 0) {
 				message.success("删除套房成功");
+				yield put(routerRedux.push("/crm/suite"));
 			}
 		},
 		//添加套房
@@ -153,28 +164,93 @@ export default {
 	      }} = yield call(packageInfoService.roomAdd, values);
 			if (code == 0) {
 				message.success("添加套房成功");
+				yield put(routerRedux.push("/crm/suite"));
+			}else if(code == 403){
+				message.success("套房名称重复");
+			}
+		},
+		//修改商品信息
+		*commodityFindEdit({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.commodityFindEdit, values);
+			if (code == 0) {
+				message.success("修改商品信息成功");
+			}
+		},
+		//删除商品
+		*commodityDel({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.commodityDel, values);
+			if (code == 0) {
+				message.success("删除商品成功");
+				yield put(routerRedux.push("/crm/commodity"));
+			}
+		},
+		//添加商品
+		*commodityAdd({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.commodityAdd, values);
+			if (code == 0) {
+				message.success("添加商品成功");
+				yield put(routerRedux.push("crm/commodity"));
+			}else if(code == 404){
+				message.success("该商品已存在");
 			}
 		},
 		//套房列表信息
 		*suiteListByPage({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		total,
-		      		page,
-		      		size,
-		      		code
-	      }} = yield call(packageInfoService.suiteListByPage, values);
+			values = parse(location.search.substr(1))
+		      if (values.page === undefined) {
+		        values.page = 1;
+		      }
+		      if (values.size === undefined) {
+		        values.size = 10;
+		      }
+		    const { data: { data, total, page, size, code } } = yield call(packageInfoService.suiteListByPage, values);
 			if (code == 0) {
 				yield put({
 					type: 'suiteListByPageSave',
 					payload: {
-						data,
-						total,
-						page,
-						size,
-						code
-					}
+			            suiteListByPage: data,
+			            pagination: {
+			              current: Number(page) || 1,
+			              pageSize: Number(size) || 10,
+			              total: total,
+			            },
+			        },
+				});
+			}
+		},
+		//商品分页列表信息
+		*commodityListByPage({payload: values}, { call, put }) {
+			values = parse(location.search.substr(1))
+		      if (values.page === undefined) {
+		        values.page = 1;
+		      }
+		      if (values.size === undefined) {
+		        values.size = 10;
+		      }
+		    const { data: { data, total, page, size, code } } = yield call(packageInfoService.commodityListByPage, values);
+			if (code == 0) {
+				yield put({
+					type: 'commodityListByPageSave',
+					payload: {
+			            commodityListByPage: data,
+			            pagination: {
+			              current: Number(page) || 1,
+			              pageSize: Number(size) || 10,
+			              total: total,
+			            },
+			        },
 				});
 			}
 		},
@@ -194,6 +270,22 @@ export default {
 				});
 			}
 		},
+		//汉字转拼音首字符
+		*chineseToPinyin({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.chineseToPinyin, values);
+			if (code == 0) {
+				yield put({
+					type: 'chineseToPinyinSave',
+					payload: {
+						data
+					}
+				});
+			}
+		},
 		//修改套餐
 		*edit({payload: values}, { call, put }) {
 			const {
@@ -203,6 +295,7 @@ export default {
 	      }} = yield call(packageInfoService.edit, values);
 			if (code == 0) {
 				message.success("修改套餐成功");
+				history.go(-1)
 			}
 		},
 		//获取套房下拉数据
@@ -231,6 +324,22 @@ export default {
 			if (code == 0) {
 				yield put({
 					type: 'findByIdSave',
+					payload: {
+						data
+					}
+				});
+			}
+		},
+		//根据ID查询商品信息
+		*commodityFindById({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.commodityFindById, values);
+			if (code == 0) {
+				yield put({
+					type: 'commodityFindByIdSave',
 					payload: {
 						data
 					}
@@ -296,22 +405,26 @@ export default {
 			const {data: {data,code}} = yield call(packageInfoService.del, values);
 			if (code == 0) {
 				message.success("删除成功");
-				window.location.href="/crm/serviceinfo"
+				yield put(routerRedux.push("/crm/serviceinfo"));
 			}
 		},
 	},
 	subscriptions: {
-		setup({
-			dispatch,
-			history
-		}) {
-			return history.listen(({
-				pathname,
-				query
-			}) => {
-		        
-		        
-			})
-		}
+		setup({ dispatch, history }) {
+	        return history.listen(({ pathname, query }) => {
+	        if (pathname === '/crm/commodity') {
+	          dispatch({
+	            type: 'commodityListByPage',
+	            payload: query
+	          });
+	        }
+	        if (pathname === '/crm/suite') {
+	          dispatch({
+	            type: 'suiteListByPage',
+	            payload: query
+	          });
+	        }
+	      })
+	    }
 	},
 };

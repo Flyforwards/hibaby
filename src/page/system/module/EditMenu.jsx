@@ -9,7 +9,7 @@ import {local, session} from 'common/util/storage.js'
 const Option = Select.Option;
 class SelectListed extends Component {
      state = {
-      value: local.get('parentValue')
+      value: undefined
     }
    onChange = (value) => {
     this.setState({ value });
@@ -30,7 +30,6 @@ class SelectListed extends Component {
                 onChange={this.onChange}
                 onSelect={this.onSelect.bind(this)}
               />
-
         )
     }
 
