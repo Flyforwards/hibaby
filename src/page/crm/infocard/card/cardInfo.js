@@ -40,19 +40,19 @@ class CardModal extends Component {
       wrapperCol:{ span:15 }
     }
     const formTextItemLayout = {
-      labelCol:{ span:1},
-      wrapperCol:{ span:21 }
+      labelCol:{ span:3},
+      wrapperCol:{ span:19 }
     }
     const formRadioItemLayout = {
-      labelCol:{ span:2},
-      wrapperCol:{ span:20 }
+      labelCol:{ span:5},
+      wrapperCol:{ span:17 }
     }
     return (
       <div  style={{ 'padding': '20px' }}>
-        <Card title="会员卡信息" style={{ width: '80%' }}>
-          <Form onSubmit={this.handleSubmit}>
+        <Card title="会员卡信息" style={{ width: '100%' }}>
+          <Form>
             <Row>
-              <Col span = { 8 } >
+              <Col span = { 8 } style={{width:'251px'}} >
                 <FormItem {...formItemLayout} label="会员卡名称">
                   {getFieldDecorator('name', {
                     initialValue: cardKind && cardKind.name ,
@@ -62,7 +62,7 @@ class CardModal extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span = { 8 }>
+              <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="储值金额" {...formItemLayout}>
                   {getFieldDecorator('storedValue', {
                     initialValue: cardKind && cardKind.storedValue ,
@@ -72,7 +72,7 @@ class CardModal extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span = { 8 }>
+              <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="折扣权限" {...formItemLayout}>
                   {getFieldDecorator('salesDiscount', {
                     initialValue: cardKind && cardKind.salesDiscount ,
@@ -84,7 +84,7 @@ class CardModal extends Component {
               </Col>
             </Row>
             <Row>
-              <Col span = { 8 }>
+              <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="会员卡级别" {...formItemLayout}>
                   {getFieldDecorator('level', {
                     initialValue: cardKind && cardKind.level ,
@@ -93,7 +93,6 @@ class CardModal extends Component {
                     <Select
                       showSearch
                       allowClear
-                      style={{ width: 200 }}
                       placeholder="请选择"
                       optionFilterProp="children"
                       filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -108,8 +107,8 @@ class CardModal extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row style={{paddingLeft:'2%'}}>
-              <Col span={ 24 }>
+            <Row>
+              <Col span={ 24 } style={{width:'400px'}}>
                 <FormItem {...formTextItemLayout} label="备注">
                   {getFieldDecorator('remarks', { initialValue: cardKind && cardKind.remarks }, {
                     //rules: [{ required: true, message: 'Please input your username!' }],
@@ -120,7 +119,7 @@ class CardModal extends Component {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col span={22} style={{width:'401px' }}>
                 <FormItem label="卡种类型" {...formRadioItemLayout}>
                   {getFieldDecorator('cardType', {
                     initialValue: cardKind && cardKind.cardType ,
@@ -161,7 +160,6 @@ function CardModalCom({ dispatch, cardKind, zheKou, level }) {
 }
 function mapStateToProps(state) {
   const { cardKind, level, zheKou } = state.card;
-  console.log("=====carKind",cardKind)
   return {
     loading: state.loading.models.card,
     cardKind,
