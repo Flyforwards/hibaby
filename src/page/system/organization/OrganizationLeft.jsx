@@ -9,7 +9,7 @@ import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
 import SeeDtail from './SeeDtail.jsx'
 import DeleteNode from './DeleteNode.jsx'
-import {local, session} from 'common/util/storage.js'
+import { local, session } from 'common/util/storage.js'
 
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
@@ -157,7 +157,7 @@ class OrganizationLefted extends React.Component {
               return
             }
         }.bind(this));
-      
+
         $(".Organization-left").click(function(e){
              if(this.state.upblock == 'block'){
               this.setState({
@@ -200,8 +200,8 @@ class OrganizationLefted extends React.Component {
           let nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
          loops=[<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={this.props.leftList.parentId}>{loops}</TreeNode>]
-        } 
-        return (  
+        }
+        return (
             <div className="Organization-left">
                 <Tree
                   className="draggable-tree"
@@ -272,7 +272,7 @@ function OrganizationLeft({
     }
     getDepartmentNode = {
       getDepartmentNode
-    } 
+    }
     AllTissueProperty = {
       AllTissueProperty
     }
