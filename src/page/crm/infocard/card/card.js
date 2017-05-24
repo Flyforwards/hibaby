@@ -32,8 +32,8 @@ class Card extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <Link to={{ pathname: '/crm/cardInfo', query: { data:record.id } }} href="#">查看</Link>
-          <span className="ant-divider">删除</span>
+          <Link to={{ pathname: '/crm/cardInfo', query: { data:record.id } }} href="#" style={{ marginRight:'20px' }}>查看</Link>
+          <span>删除</span>
         </span>
       )
     }];
@@ -46,7 +46,7 @@ class Card extends Component {
     const pagination = {
       total: total, //数据总条数
       showQuickJumper: true,
-      pageSize: 2,
+      pageSize: 10,
       onChange: (current) => {
         console.log(current,'当前的页数')
         dispatch({
@@ -56,7 +56,7 @@ class Card extends Component {
             salesDiscount,
             cardType,
             'page': current,
-            'size': 2,
+            'size': 10,
             'sortField': "string",
             'sortOrder': "string"
           }
@@ -65,7 +65,8 @@ class Card extends Component {
     };
     return (
       <div className="card">
-        <CardFind />
+        <CardFind style={{ clear:'both'}}/>
+
         <Table class="cardTable" columns={this.columns} bordered rowKey="id" dataSource={cardInfo} pagination={ pagination}/>
       </div>
 

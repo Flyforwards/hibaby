@@ -227,9 +227,16 @@ class ActivityDetailIndex extends Component {
       labelCol:{ span: 2 },
       wrapperCol:{ span:22 }
     }
-
+    const formItemsLayout = {
+      labelCol:{ span: 7 },
+      wrapperCol:{ span:15 }
+    }
     const formChooseLayout = {
       labelCol:{ span: 10 },
+      wrapperCol:{ span: 14 }
+    }
+    const formChooseOneLayout = {
+      labelCol:{ span: 6 },
       wrapperCol:{ span: 14 }
     }
 
@@ -295,48 +302,58 @@ class ActivityDetailIndex extends Component {
               <h3>预约客户:</h3>
             </div>
             <Row>
-              <Col offset={ 6 } span={6}>预约人数{appointments}人 </Col>
-              <Col span={6}>签到人数{signeds}人 </Col>
-              <Col span={6}>成单率{orders}% </Col>
+              <Col span={ 6 }></Col>
+              <Col span={6} >
+                <FormItem {...formItemsLayout} style={{ width:'249px'}} label= "预约人数">
+                  <Input value={ appointments }  addonAfter="人" readOnly/>
+                </FormItem>
+              </Col>
+              <Col span={6}>
+                <FormItem {...formItemsLayout}  style={{ width:'249px'}} label= "签到人数">
+                  <Input value={ signeds } addonAfter="人" readOnly/>
+                </FormItem>
+               </Col>
+              <Col span={6}>
+                <FormItem {...formItemsLayout} style={{ width:'249px'}} label= "成单率">
+                  <Input value={ orders } addonAfter="人" readOnly/>
+                </FormItem>
+              </Col>
             </Row>
             <Form>
             <div>
-              <Row>
-                <Col span={20}>
-                  <FormItem {...formChooseLayout}  label="客户名称" >
+              <Row style={{width:'1116px'}}>
+                <Col span={10} style={{float:'left'}}>
+                  <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
                     {getFieldDecorator('sear', {rules: [{ required: false }],
                     })(
-                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
+                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
                     )}
                   </FormItem>
                 </Col>
-                <Col span={4}><span><Button onClick={ this.onSearch.bind(this)}>搜索</Button></span>
+                <Col span={4} style={{ float:'left'}}><span><Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>搜索</Button></span>
                 </Col>
               </Row>
             </div>
               <Row>
-                <Col span={8}>
-                  <Row>
-                  <Col span={14}>
-                    <FormItem {...formChooseLayout}  label="年龄" >
+                <Col span={4} style={{width:'160px',marginRight:'10px'}}>
+                    <FormItem {...formChooseOneLayout}  label="年龄" >
                       {getFieldDecorator('age1', {rules: [{ required: false }],
                       })(
                         <InputNumber min={1} max={100}  />
                       )}
                     </FormItem>
-                  </Col>
-                  <Col span={10}>
-                    <FormItem {...formChooseLayout} >
+                </Col>
+                <Col span={3}  style={{width:'160px'}}>
+                    <FormItem {...formChooseLayout} style={{width:'100%'}}>
                       {getFieldDecorator('age2', {rules: [{ required: false }],
                       })(
-                        <InputNumber min={1} max={100} />
+                        <InputNumber min={1} max={100} style={{width:'100% !important'}} />
                       )}
                     </FormItem>
-                  </Col>
-                  </Row>
+
                 </Col>
-                <Col span={8}>
-                  <FormItem {...formChooseLayout}  label="预产期" >
+                <Col span={4} style={{width:'251px'}}>
+                  <FormItem {...formChooseOneLayout}  label="预产期" >
                     {getFieldDecorator('time', {rules: [{ required: false }],
                     })(
                       <MonthPicker
@@ -345,8 +362,8 @@ class ActivityDetailIndex extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col span={8}>
-                  <FormItem  {...formChooseLayout} label="生产医院" >
+                <Col span={4} style={{width:'251px'}}>
+                  <FormItem  {...formChooseOneLayout} label="生产医院" >
                     {getFieldDecorator('hospital', {rules: [{ required: false }],
                     })(
                       <Select >
@@ -357,8 +374,8 @@ class ActivityDetailIndex extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col span={8}>
-                  <FormItem  {...formChooseLayout} label="会员身份" >
+                <Col span={4} style={{width:'251px'}} >
+                  <FormItem  {...formChooseOneLayout} label="会员身份" >
                     {getFieldDecorator('customer', {rules: [{ required: false }],
                     })(
                       <Select >
@@ -369,8 +386,8 @@ class ActivityDetailIndex extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col span={8}>
-                  <FormItem  {...formChooseLayout} label="现住址" >
+                <Col span={4} style={{width:'300px'}}>
+                  <FormItem  {...formChooseOneLayout} label="现住址" >
                     {getFieldDecorator('address', {rules: [{ required: false }],
                     })(
                       <Cascader options={ options }/>

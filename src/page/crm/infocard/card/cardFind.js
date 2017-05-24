@@ -34,11 +34,11 @@ class CardFind extends Component {
     const { form } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol:{ span: 8 },
+      labelCol:{ span: 6 },
       wrapperCol:{ span:15 }
     }
     return (
-      <div className="cardFind">
+      <div className="cardFind" style={{ overflow:"hidden" }}>
         <Form>
           <Row>
             <Col span={ 16 } style={{ marginRight:'16px' }}>
@@ -53,8 +53,9 @@ class CardFind extends Component {
               <Link to={{ pathname: '/crm/cardInfo' }} href="#"><Button type="primary" style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button></Link>
             </Col>
           </Row>
-          <Row>
-            <Col span= { 7 }>
+
+          <Row style={{clear:'both' }}>
+            <Col span= { 7 } style={{width:'290px'}}>
               <FormItem  {...formItemLayout} label="折扣权限">
                 {getFieldDecorator('salesDiscount')(
                   <Select
@@ -73,7 +74,7 @@ class CardFind extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={ 7 }>
+            <Col span={ 7 } style={{width:'290px'}}>
               <FormItem {...formItemLayout} label="卡种类型">
                 {getFieldDecorator('cardType')(
                   <Select

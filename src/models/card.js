@@ -5,7 +5,14 @@ import { routerRedux } from 'dva/router';
 export default {
   namespace: 'card',
   state: {
-    postValues: {}
+    postValues: {},
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      pageSize:10,
+      total: null,
+    },
   },
   reducers: {
     getCardInfo(state, { payload: { data: cardInfo, total } }) {
@@ -122,8 +129,8 @@ export default {
           dispatch({
             type: 'getCard',
             payload: {
-              "page": 1,
-              "size": 2,
+              "page":1,
+              "size":10,
               "sortField": "string",
               "sortOrder": "string"
             }
