@@ -10,6 +10,7 @@ export default (app) => [
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/organization'));
+          registerModel(app, require('models/etc'));
           cb(null, require('page/system/organization/Organization.jsx'))
         })
       }

@@ -10,7 +10,8 @@ import { Link} from 'react-router'
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
 import {local, session} from 'common/util/storage.js'
-import Disabled from './Disabled.jsx'
+import Disabled from './Disabled.jsx';
+import DictionarySelect from 'common/dictionary_select';
 
 
 const roleId = local.get("rolSelectData")
@@ -225,7 +226,12 @@ class Organization extends React.Component {
              return <Option value={item.id+""} key={item.id}>{item.name}</Option>
           })
         }
-        const traversalRoleIdData = traversalRoleId(roleId)
+        const traversalRoleIdData = traversalRoleId(roleId);
+        const selectParams = {
+          id: 3,
+          type: 1,
+          softDelete: 0
+        }
         return (
         <div className="organizationConnet">
             <main className="yt-admin-framework-Customer-a">
@@ -236,9 +242,10 @@ class Organization extends React.Component {
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                 {/*<Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
                       { traversalRoleIdData }
-                  </Select>
+                  </Select>*/}
+                  <DictionarySelect  selectName="ROLE" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />
               </div>
               <div className="status">账户状态
                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
