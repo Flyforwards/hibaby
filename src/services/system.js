@@ -65,7 +65,7 @@ export function delpermissionSave(values) {
   })
 }
 export function customer(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
+  return request('/crm/api/v1/customer/getCustomerPageList', {
     method: 'POST',
     body: JSON.stringify(values),
   })
