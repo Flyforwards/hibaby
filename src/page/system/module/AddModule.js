@@ -40,7 +40,7 @@ class AddModule extends Component {
             let payload={
               description:values.name,
               name: values.name,
-              icon:"copyright",
+              icon:values.icon,
               orderBy:Number(values.orderBy),
               path:values.path,
               permissionId:Number(values.permissionId),
@@ -135,6 +135,12 @@ class AddModule extends Component {
               </FormItem>
               <FormItem className = "PathBox" label="路径" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
                   {getFieldDecorator('path', {rules: [{ required: false, message: '路径为必填项！' }],
+                  })(
+                      <Input className="input"/>
+                  )}
+              </FormItem>
+              <FormItem className = "ICON" label="图标" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+                  {getFieldDecorator('icon', {rules: [{ required: false, message: '图标为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}

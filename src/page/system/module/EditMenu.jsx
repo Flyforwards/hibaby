@@ -9,7 +9,7 @@ import {local, session} from 'common/util/storage.js'
 const Option = Select.Option;
 class SelectListed extends Component {
      state = {
-      value: undefined
+      value: local.get('parentValue')
     }
    onChange = (value) => {
     this.setState({ value });
