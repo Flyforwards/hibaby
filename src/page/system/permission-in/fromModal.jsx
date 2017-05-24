@@ -98,7 +98,7 @@ class FromModaled extends Component {
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{
             return (
-                <Option value={item.id} key={index} >{item.name}</Option>
+                <Option key={item.id}  >{item.name}</Option>
             )})
         }
 
