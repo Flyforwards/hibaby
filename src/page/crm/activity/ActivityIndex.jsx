@@ -1,4 +1,3 @@
-"use strict"
 
 import React from 'react'
 import { connect } from 'dva'
@@ -9,6 +8,7 @@ import { Link } from 'react-router'
 import AppointmentModalFrom from './appointmentModalFrom'
 import AppointmentMemberFrom from './appointmentMemberFrom'
 import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
+import moment from 'moment'
 import Current from '../../Current'
 import AlertModalFrom from 'common/AlertModalFrom'
 class ActivityIndex extends React.Component {
@@ -42,7 +42,9 @@ class ActivityIndex extends React.Component {
     }, {
       title: '活动时间',
       dataIndex: 'activityTime',
-      key: 'modifyTime'
+      render: (record) => {
+        return moment(record).format("YYYY-MM-DD HH:mm:ss")
+      }
     },{
       title: '签到/人数',
       render: (record) => {

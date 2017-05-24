@@ -4,6 +4,7 @@ import { connect } from 'dva'
 import { Card, Input, DatePicker, InputNumber, Button, Form,Table, Select,Cascader, Row, Col, Modal } from 'antd'
 import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
+import './activityIndex.scss'
 import AlertModalFrom from 'common/AlertModalFrom'
 import moment from 'moment'
 import AppointmentModalFrom from './appointmentModalFrom'
@@ -223,15 +224,14 @@ class ActivityDetailIndex extends Component {
       }],
     }];
     const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
+      labelCol:{ span: 2 },
+      wrapperCol:{ span:22 }
+    }
+
+    const formChooseLayout = {
+      labelCol:{ span: 10 },
+      wrapperCol:{ span: 14 }
+    }
 
 
     let itemName = "";
@@ -266,11 +266,13 @@ class ActivityDetailIndex extends Component {
       },
     }
 
-
     return (
-        <div>
+        <div className="activity-cent">
+          <div className="add-activity">
           <Card>
-            <div>活动信息:</div>
+            <div className="card-title">
+              <h3>活动信息:</h3>
+            </div>
             <Form >
               <FormItem  {...formItemLayout} label="活动名称" >
                 <Input disabled={ true } value={ itemName }/>
@@ -282,26 +284,26 @@ class ActivityDetailIndex extends Component {
                 <Input  disabled={ true } value={ address }/>
               </FormItem>
               <FormItem {...formItemLayout} label={"活动内容"}>
-                <Input  disabled={ true } value={ content }/>
+                <Input  type="textarea" rows={6} disabled={ true } value={ content }/>
               </FormItem>
             </Form>
           </Card>
+          </div>
+          <div className="add-activity">
           <Card>
+            <div className="card-title">
+              <h3>预约客户:</h3>
+            </div>
             <Row>
-              <Col span={6}><div>预约客户:</div>
-              </Col>
-              <Col span={6}><div>预约人数{appointments}人</div>
-              </Col>
-              <Col span={6}><div>签到人数{signeds}人</div>
-              </Col>
-              <Col span={6}><div>成单率{orders}%</div>
-              </Col>
+              <Col offset={ 6 } span={6}>预约人数{appointments}人 </Col>
+              <Col span={6}>签到人数{signeds}人 </Col>
+              <Col span={6}>成单率{orders}% </Col>
             </Row>
             <Form>
             <div>
               <Row>
                 <Col span={20}>
-                  <FormItem {...formItemLayout}  label="客户名称" >
+                  <FormItem {...formChooseLayout}  label="客户名称" >
                     {getFieldDecorator('sear', {rules: [{ required: false }],
                     })(
                       <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
@@ -314,21 +316,27 @@ class ActivityDetailIndex extends Component {
             </div>
               <Row>
                 <Col span={8}>
-                  <FormItem {...formItemLayout}  label="年龄" >
-                    {getFieldDecorator('age1', {rules: [{ required: false }],
-                    })(
-                      <InputNumber min={1} max={100}  />
-                    )}
-                  </FormItem>
-                  <FormItem {...formItemLayout} >
-                    {getFieldDecorator('age2', {rules: [{ required: false }],
-                    })(
-                      <InputNumber min={1} max={100} />
-                    )}
-                  </FormItem>
+                  <Row>
+                  <Col span={14}>
+                    <FormItem {...formChooseLayout}  label="年龄" >
+                      {getFieldDecorator('age1', {rules: [{ required: false }],
+                      })(
+                        <InputNumber min={1} max={100}  />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={10}>
+                    <FormItem {...formChooseLayout} >
+                      {getFieldDecorator('age2', {rules: [{ required: false }],
+                      })(
+                        <InputNumber min={1} max={100} />
+                      )}
+                    </FormItem>
+                  </Col>
+                  </Row>
                 </Col>
                 <Col span={8}>
-                  <FormItem {...formItemLayout}  label="预产期" >
+                  <FormItem {...formChooseLayout}  label="预产期" >
                     {getFieldDecorator('time', {rules: [{ required: false }],
                     })(
                       <MonthPicker
@@ -338,7 +346,7 @@ class ActivityDetailIndex extends Component {
                   </FormItem>
                 </Col>
                 <Col span={8}>
-                  <FormItem  {...formItemLayout} label="生产医院" >
+                  <FormItem  {...formChooseLayout} label="生产医院" >
                     {getFieldDecorator('hospital', {rules: [{ required: false }],
                     })(
                       <Select >
@@ -349,10 +357,8 @@ class ActivityDetailIndex extends Component {
                     )}
                   </FormItem>
                 </Col>
-              </Row>
-              <Row>
                 <Col span={8}>
-                  <FormItem  {...formItemLayout} label="会员身份" >
+                  <FormItem  {...formChooseLayout} label="会员身份" >
                     {getFieldDecorator('customer', {rules: [{ required: false }],
                     })(
                       <Select >
@@ -364,7 +370,7 @@ class ActivityDetailIndex extends Component {
                   </FormItem>
                 </Col>
                 <Col span={8}>
-                  <FormItem  {...formItemLayout} label="现住址" >
+                  <FormItem  {...formChooseLayout} label="现住址" >
                     {getFieldDecorator('address', {rules: [{ required: false }],
                     })(
                       <Cascader options={ options }/>
@@ -373,20 +379,20 @@ class ActivityDetailIndex extends Component {
                 </Col>
               </Row>
             </Form>
-              <div>李磊磊
-              </div>
-            <Table {...tableProps} rowKey = { record=>record.id } columns={ this.columns }/>
+            <Table {...tableProps} bordered size="small" rowKey = { record=>record.id } columns={ this.columns }/>
+            <Row>
+              <Col offset={8} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
+              <Col span={4}><Button onClick={ this.appointment.bind(this) }  >预约</Button></Col>
+              <Col span={4}><Button onClick={ this.deleteActivity.bind(this) }>删除</Button></Col>
+              <Col span={4}><Button  onClick={ this.edit.bind(this) }>编辑</Button></Col>
+            </Row>
           </Card>
-          <Row>
-            <Col offset={8} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
-            <Col span={4}><Button onClick={ this.appointment.bind(this) }  >预约</Button></Col>
-            <Col span={4}><Button onClick={ this.deleteActivity.bind(this) }>删除</Button></Col>
-            <Col span={4}><Button  onClick={ this.edit.bind(this) }>编辑</Button></Col>
-          </Row>
+
           <AppointmentModalFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.appointmentVisible } selectRecord={ item } onChoose={ this.onChoose.bind(this)}/>
           <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ item } from={ false}/>
           <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ item }  from={ false}/>
           <AlertModalFrom  onCancel={ this.onCancel.bind(this) } modalTitle="是否确定删除此活动"  visible={ this.state.alertModalVisible } onOk={ this.onOk.bind(this, item) }/>
+          </div>
         </div>
     )
   }

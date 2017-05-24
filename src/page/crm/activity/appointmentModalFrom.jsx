@@ -32,7 +32,7 @@ class appointmentModalFrom extends Component {
         onOk = { this.handleOk.bind(this) }
         width = { 300 }
         footer={null}
-        wrapClassName = { "appoint-vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal" }
       >
         <div>
           <Button key="1" onClick={ this.onClick.bind(this,true) }> 会员预约 </Button>
