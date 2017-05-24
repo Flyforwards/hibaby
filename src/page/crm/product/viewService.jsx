@@ -110,17 +110,15 @@ class AddServiceed extends Component {
             selectedRows,
             onChange: this.onSelectChange,
         };
-        console.log("q",this.props.selectData)
         if(this.props.getDictionary != null && this.props.findById != null){
           this.props.getDictionary.map((item)=>{
-            if(item.id == this.props.findById.id){
+            if(item.id == this.props.findById.type){
               type = item.name
             }
           })
         }
         if(this.props.selectData != null && this.props.findById != null){
           this.props.selectData.map((item)=>{
-            console.log(this.props.findById)
             if(item.id == this.props.findById.suiteId){
               suiteId = item.name
             }

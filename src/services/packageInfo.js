@@ -102,3 +102,45 @@ export function roomEdit(values) {
     body: JSON.stringify(values),
   })
 }
+//获取商品分页列表信息
+export function commodityListByPage(values) {
+  return request('/crm/api/v1/commodity/listByPage', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//汉字转拼音首字符
+export function chineseToPinyin(values) {
+  return request('/crm/api/v1/chineseToPinyin', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//新增商品
+export function commodityAdd(values) {
+  return request('/crm/api/v1/commodity/add', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//删除商品
+export function commodityDel(values) {
+  return request('/crm/api/v1/commodity/del', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//根据ID查询商品信息
+export function commodityFindById(values) {
+  return request('/crm/api/v1/commodity/findById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//修改商品的信息
+export function commodityFindEdit(values) {
+  return request('/crm/api/v1/commodity/edit', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

@@ -92,7 +92,7 @@ class AddUsered extends React.Component {
     let endemic  = session.get("endemic")
     message.config({
         top: 100,
-        duration: 0.1
+        duration: 1
     });
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
@@ -142,7 +142,6 @@ class AddUsered extends React.Component {
                                         "img":this.state.NewuserImg
                                       }
                                     })
-                                    history.go(-1)
                                 }else{
                                   message.warning('请上传头像')
                                 }
@@ -258,8 +257,8 @@ class AddUsered extends React.Component {
               {getFieldDecorator('gender', {
               })(
                 <RadioGroup>
-                <Radio value={0}>男</Radio>
-                <Radio value={1}>女</Radio>
+                <Radio value={1}>男</Radio>
+                <Radio value={0}>女</Radio>
               </RadioGroup>
               )}
             </FormItem>

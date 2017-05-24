@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
+import { Icon, Card, Button,Table, Input,Select,Form,message} from 'antd'
 import { Link} from 'react-router'
 import './addSuite.scss'
 import Current from '../../Current'
@@ -84,39 +84,38 @@ class AddSuiteed extends Component {
     handleAdd(){
       const fields = this.props.form.getFieldsValue();
       let roomIdList = []
-      roomId.map((item)=>{
-        if(item){
-         roomIdList.push(item)
-        }
+      $(".roomColorA").each(function(){
+        console.log($(this).attr("value"))
+        roomIdList.push($(this).attr("value"))
       })
-      console.log("fields",roomIdList)
-      this.props.dispatch({
-        type: 'packageInfo/roomAdd',
-        payload: {
-          "description": fields.introduction,
-          "price": fields.price,
-          "name":fields.name,
-          "roomIdList": roomIdList,
+      if(fields.name){
+        if(fields.price){
+          if(fields.introduction){
+            this.props.dispatch({
+              type: 'packageInfo/roomAdd',
+              payload: {
+                "description": fields.introduction,
+                "price": fields.price,
+                "name":fields.name,
+                "roomIdList": roomIdList,
+              }
+            });
+          }else{
+            message.warning('请输入套房简介')
+          }
+        }else{
+          message.warning('请输入套房价格')
         }
-      });
-     this.props.dispatch({
-        type: 'packageInfo/suiteListByPage',
-        payload: {
-          "page":1,
-          "size":10
-        }
-      });
-      history.go(-1)
+      }else{
+        message.warning('请输入套房名称')
+      }    
     }
     roomClick(data,e){
       if(e.target.className == "roomColor"){
         e.target.className = "roomColorA"
-        roomId[data] = data
       }else{
         e.target.className = "roomColor"
-        roomId[data] = null
       }
-      console.log(roomId)
     }
     render() {
         let loadingName = true
@@ -129,7 +128,7 @@ class AddSuiteed extends Component {
         
         if(this.props.roomData != null){
           this.props.roomData.map((item)=>{
-            roomInformation.push(<span key= {item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColor">{item.roomNo}</span>)
+            roomInformation.push(<span key= {item.id} value={item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColor">{item.roomNo}</span>)
           })
         }
         if(this.props.selectData != null){

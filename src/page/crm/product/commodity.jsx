@@ -2,55 +2,45 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table } from 'antd'
+import {Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message} from 'antd'
 import { Link} from 'react-router'
-import './serviceinfo.scss'
-import Current from '../../Current'
-import Delete from './DeleteSuite.jsx'
+import {routerRedux} from 'dva/router';
+import './commodity.scss'
+import Delete from './DeleteCommodity.jsx'
 
 
-class Suiteed extends Component {
+class Commodityed extends Component {
 
     constructor(props) {
         super(props)
         this.columns = [{
-          title: '套房名称',
+          title: '商品名称',
           dataIndex: 'name',
           key:'name',
+          width:'15%'
         }, {
-          title: '房间',
-          dataIndex: 'roomNoList',
-          key:'roomNoList',
-          render:(text,record,index) => {
-            let roomNoList = []
-            record.roomNoList.map((item,index)=>{
-              if(roomNoList.length+1 == record.roomNoList.length){
-                roomNoList.push(item)
-              }else{
-                roomNoList.push(item+"; ")
-              }
-            })
-            return (
-                roomNoList
-            )
-          }
+          title: '首字母',
+          dataIndex: 'nameLetter',
+          key:'nameLetter',
+          width:'10%'
         }, {
-          title: '套房简介',
-          dataIndex: 'description',
-          key:'description',
+          title: '商品备注',
+          dataIndex: 'remark',
+          key:'remark',
         }, {
-          title: '套房价格',
+          title: '商品单价',
           dataIndex: 'price',
           key: 'price',
+          width:'10%'
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
-          width: '10%',
+          width: '20%',
           render: (text, record, index) => {
             return (
                 <span>
-                  <Link to={{ pathname: '/crm/serviceinfo/viewSuite', query: { suite:record.id } }}>查看</Link>
+                  <Link to={{ pathname: '/crm/commodity/viewCommodity', query: { commodity:record.id } }} className="twoB">查看</Link>
                   <a href="#" className="twoA" onClick={this.delete.bind(this,record)}>删除</a>
                 </span>
             );
@@ -73,24 +63,17 @@ class Suiteed extends Component {
     }
     handleDeleteCancel(){
       this.setState({
-          DeleteVisible: false,
+        DeleteVisible: false,
       })
     }
     componentDidMount() {
-        this.props.dispatch({
-            type: 'packageInfo/suiteListByPage',
-            payload: { 
-              "page":1,
-              "size":10
-            }
-        });
     }
     render() {
-        const { suiteListByPage, loading, pagination, dispatch } = this.props;
+        const { commodityListByPage, loading, pagination, dispatch } = this.props;
         const columns = this.columns;
         const tableProps = {
-          loading: loading.effects['packageInfo/suiteListByPage'],
-          dataSource : suiteListByPage ,
+          loading: loading.effects['packageInfo/commodityListByPage'],
+          dataSource : commodityListByPage ,
           pagination,
           onChange (page) {
             const { pathname } = location
@@ -104,10 +87,10 @@ class Suiteed extends Component {
           },
         }
         return (
-            <div className="serviceinfo">
-                <div className="serviceinfoButton"><Link to="/crm/serviceinfo/addSuite"><Button type="primary">添加</Button></Link></div>
-                <div className="serviceinfoTabal">
-                    <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ suiteListByPage } columns={ columns } />
+            <div className="commodity">
+                <div className="commodityButton"><Link to="/crm/commodity/addcommodity"><Button type="primary">添加</Button></Link></div>
+                <div className="commodityTabal">
+                  <Table {...tableProps} rowKey = { record=>record.id } bordered columns={ columns } />
                 </div>
                 <Delete 
                    visible={ this.state.DeleteVisible }
@@ -118,16 +101,15 @@ class Suiteed extends Component {
         )
     }
 }
-
 function mapStateToProps(state) {
   const {
-    suiteListByPage,
+    commodityListByPage,
     pagination
   } = state.packageInfo;
   return {
     loading: state.loading,
-    suiteListByPage,
+    commodityListByPage,
     pagination
     };
 }
-export default connect(mapStateToProps)(Suiteed)
+export default connect(mapStateToProps)(Commodityed)

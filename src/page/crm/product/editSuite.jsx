@@ -5,81 +5,25 @@ import { connect } from 'dva'
 import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
 import { Link} from 'react-router'
 import './viewSuite.scss'
-import Current from '../../Current'
  import {local, session} from 'common/util/storage.js'
  import Delete from './DeleteSuite.jsx'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-let roomId = []
 
-class ViewSuiteed extends Component {
+class EditSuiteed extends Component {
 
     constructor(props) {
         super(props)
-        this.columns = [{
-          title: '服务项目名称',
-          dataIndex: 'name',
-          key:'name',
-          width: "20%",
-        }, {
-          title: '服务项价格',
-          dataIndex: 'price',
-          key:'price',
-          width: "20%",
-        }, {
-          title: '服务项目内容',
-          dataIndex: 'contents',
-          key:'contents',
-          width: "40%",
-        },{
-          title: '使用次数',
-          dataIndex: 'usageCount',
-          key: 'usageCount',
-          width: "20%",
-          render: (text, record, index) => {
-            return (
-                <span className="span">
-                  <Input defaultValue ={1} onChange={(event)=>{
-                    record.usageCount = event.target.value
-                  }}/>
-                </span> 
-            );
-          },
-        }];
-        this.state = {
-          selectedRows: [],
-          loading: false
-        };
     }
     componentWillMount() {
     }
-     onSelectChange = (selectedRowKeys,selectedRows) => {
-        this.setState({ selectedRows });
-      }
     componentDidMount() {
         let ID = window.location.search.split("=")[1]
-        this.props.dispatch({
-            type: 'packageInfo/serviceListByPage',
-            payload: { }
-        });
-        this.props.dispatch({
-            type: 'packageInfo/getDictionary',
-            payload: {
-              "id":5 ,
-              "softDelete": 0,
-              "type": 2
-            }
-        });
-        this.props.dispatch({
-            type: 'packageInfo/selectData',
-            payload: { }
-        });
         this.props.dispatch({
             type: 'packageInfo/roomList',
             payload: { }
         });
-        console.log("ID",ID)
          this.props.dispatch({
             type: 'packageInfo/roomFindById',
             payload: { 
@@ -94,22 +38,31 @@ class ViewSuiteed extends Component {
       let ID = window.location.search.split("=")[1]
       const fields = this.props.form.getFieldsValue();
       let roomIdList = []
-      roomId.map((item)=>{
-        if(item){
-         roomIdList.push(item)
-        }
+     $(".roomColorA").each(function(){
+        roomIdList.push($(this).attr("value"))
       })
-      console.log("fields",roomIdList)
-      this.props.dispatch({
-        type: 'packageInfo/roomEdit',
-        payload: {
-          "id":ID,
-          "description": fields.introduction,
-          "price": fields.price,
-          "name":fields.name,
-          "roomIdList": roomIdList,
+       if(fields.name){
+        if(fields.price){
+          if(fields.introduction){
+            this.props.dispatch({
+              type: 'packageInfo/roomEdit',
+              payload: {
+                "id":ID,
+                "description": fields.introduction,
+                "price": fields.price,
+                "name":fields.name,
+                "roomIdList": roomIdList,
+              }
+            });
+          }else{
+            message.warning('请输入套房简介')
+          }
+        }else{
+          message.warning('请输入套房价格')
         }
-      });
+      }else{
+        message.warning('请输入套房名称')
+      }    
      this.props.dispatch({
         type: 'packageInfo/suiteListByPage',
         payload: {
@@ -117,74 +70,30 @@ class ViewSuiteed extends Component {
           "size":10
         }
       });
-      history.go(-1)
     }
     roomClick(data,e){
       if(e.target.className == "roomColor"){
         e.target.className = "roomColorA"
-        roomId[data] = data
       }else{
         e.target.className = "roomColor"
-        roomId[data] = null
       }
-      console.log(roomId)
-    }
-    delete() {
-      let ID = window.location.search.split("=")[1]
-      this.setState({
-        DeleteVisible:true,
-        ID:ID
-      })
-    }
-     handleDeleteCancel(){
-      this.setState({
-          DeleteVisible: false,
-      })
-      window.location.reload( true )
     }
     render() {
-        let loadingName = true
         let roomInformation = []
         const { getFieldDecorator } = this.props.form;
-        const columns = this.columns;
-        let ListLnformation = []
         let roomList = []
-        let selectData = []
-        
         if(this.props.roomData != null){
           this.props.roomData.map((item)=>{
-            roomInformation.push(<span key= {item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColor">{item.roomNo}</span>)
+            roomInformation.push(<span key= {item.id} value={item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColor">{item.roomNo}</span>)
           })
         }
-        if(this.props.selectData != null){
-          selectData = this.props.selectData.map((item)=>{
-             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
+        if(this.props.roomFindById){
+          this.props.roomFindById.roomList.map((item)=>{
+            roomInformation.push(<span  key={item.id} value={item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColorA">{item.roomNo}</span>)
           })
         }
-        if(this.props.serviceListByPage != null){
-            ListLnformation = this.props.serviceListByPage;
-              ListLnformation.map((record)=>{
-                record.key = record.id;
-            });
-            loadingName = false
-        }
-        if(this.props.selectData != null){
-          selectData = this.props.selectData.map((item)=>{
-            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
-          })
-        }
-        if(this.props.getDictionary != null){
-          roomList = this.props.getDictionary.map((item)=>{
-            return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
-          })
-        }
-        const { loading, selectedRows } = this.state;
-        const rowSelection = {
-            selectedRows,
-            onChange: this.onSelectChange,
-        };
         return (
-            <div className="viewSuite">
+            <div className="editSuite">
                 <div className="viewSuiteList">
                 <p>套房信息:</p>
                 <Form layout="inline">
@@ -233,39 +142,21 @@ class ViewSuiteed extends Component {
                 </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
-                <Delete 
-                  visible={ this.state.DeleteVisible }
-                  onCancel ={ this.handleDeleteCancel.bind(this) }
-                  ID = { this.state.ID }
-                  serviceInfoList = { this.props.findById}
-                />
             </div>
         )
     }
 }
-function ViewSuite({
+function EditSuite({
   dispatch,
-  serviceListByPage,
   roomData,
-  selectData,
-  getDictionary,
   roomFindById
 }) {
   return ( < div >
-    <ViewSuiteed dispatch = {
+    <EditSuiteed dispatch = {
       dispatch
-    }
-    selectData = {
-      selectData
-    }
-    serviceListByPage = {
-      serviceListByPage
     }
     roomData = {
       roomData
-    }
-    getDictionary = {
-      getDictionary
     }
     roomFindById = {
       roomFindById
@@ -275,20 +166,14 @@ function ViewSuite({
 }
 function mapStateToProps(state) {
   const {
-    serviceListByPage,
     roomData,
-    selectData,
-    getDictionary,
     roomFindById
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
-    serviceListByPage,
     roomData,
-    selectData,
-    getDictionary,
     roomFindById
     };
 }
-const viewSuite = Form.create()(ViewSuiteed);
-export default connect(mapStateToProps)(viewSuite)
+const editSuite = Form.create()(EditSuiteed);
+export default connect(mapStateToProps)(editSuite)
