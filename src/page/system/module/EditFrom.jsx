@@ -9,13 +9,10 @@ import {local, session} from 'common/util/storage.js'
 const Option = Select.Option;
 class SelectListed extends Component {
      state = {
-      value:local.get("value")
+      value: undefined
     }
    onChange = (value) => {
     this.setState({ value });
-  }
-  onSelect = (value,node, extra) => {
-    local.set("projectId",value)
   }
     render() {
         console.log("权限>>>>",this.props.permission)
