@@ -47,7 +47,7 @@ class FindTop extends Component {
       let postInfo = {
         ...values,
         'page': 1,
-        'size': 4,
+        'size': 10,
         'sortField': "string",
         'sortOrder': "string"
       }
@@ -85,7 +85,7 @@ class FindTop extends Component {
       }
     };
     return (
-      <div>
+      <div className="Position">
         <Form layout="inline" className="find" onSubmit={this.handleSubmit}>
           <span className="findTxt">部门</span>
           <FormItem className="findInput">
@@ -95,10 +95,10 @@ class FindTop extends Component {
               )}
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit">查询</Button>
+            <Button className="checkBtn" htmlType="submit">查询</Button>
           </FormItem>
         </Form>
-        <Table rowKey='id' style={{ 'marginLeft': '20px' }} columns={this.columns} dataSource={data} pagination={ pagination} />
+        <Table rowKey='id' bordered style={{ 'marginLeft': '20px' }} columns={this.columns} dataSource={data} pagination={ pagination} />
       </div>
     )
   }

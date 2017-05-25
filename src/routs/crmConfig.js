@@ -12,17 +12,27 @@ export default (app) => [
         })
       }
     },
-    //客户列表
-    {
-      path: '/crm/customer/AddCustomerInfo',
-      getComponent: (location, cb) => {
-        require.ensure([], (require) => {
-         registerModel(app, require('models/addCustomer'));
-          cb(null, require('page/crm/customer/addCustomer.jsx'))
-        })
-     }
+  //客户列表
+  {
+    path: '/crm/customer/Add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/crm/customer/addCustomer.jsx'))
+      })
+    }
+  },
+//客户详情
+  {
+    path: '/crm/customer/customerDetails',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/crm/customer/customerDetails.jsx'))
+      })
+    }
+  },
 
-    },
     // 套餐
     {
       path: '/crm/serviceinfo',

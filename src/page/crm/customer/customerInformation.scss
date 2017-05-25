@@ -1,20 +1,33 @@
 .customerContent {
+  background-color:white;
   .contentDiv{
     margin-top: 10px;
     padding: 10px 10px 0px 10px;
     border:1px solid #999999;
+    p{
+      line-height: 50px;
+    }
     .antCli{
       width: 100%;
     }
+    .leftTitle{
+      text-align: right;
+    }
+    .rowHeight{
+      height: 50px;
+    }
   }
 
+  .headImageTitle{
+    text-align: right;
+  }
 
     margin: 0 10px;
 
 
     .avatar {
-      width: 100px;
-      height: 200px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
     }
     .avatar-uploader {
@@ -22,10 +35,12 @@
       border: 1px dashed #d9d9d9;
       border-radius: 6px;
       cursor: pointer;
+      width: 150px;
+      height: 200px;
     }
     .avatar-uploader-trigger {
       width: 100%;
-      height: 100%;
+      margin-top: 86px;
       display: block;
       font-size: 28px;
       color: #999;
@@ -38,8 +53,11 @@
   .savaDiv{
     text-align: right;
     margin-top:10px;
+    height: 60px;
     .backBtn{
       width: 150px;
+      height: 30px;
+      margin-top:10px;
       margin-right: 10px;
     }
   }

@@ -27,7 +27,7 @@ var webpackConfig = {
         },
         proxy: {
 
-            // //开发环境
+            //开发环境
               '/crm/api/*': {
                   target: 'http://dev.hbbcare.com:8087/crm/api',
                   pathRewrite: {
@@ -43,7 +43,7 @@ var webpackConfig = {
             //   },
             //   changeOrigin: true
             // },
-            // 田春阳
+            // // 田春阳
             // '/crm/api/*': {
             //   target: 'http://192.168.199.124:8087/crm/api',
             //   pathRewrite: {

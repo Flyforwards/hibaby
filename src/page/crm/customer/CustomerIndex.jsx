@@ -128,7 +128,7 @@ class CustomerIndex extends React.Component {
           render: (text, record, index) => {
             return (
               <div>
-                <Link > 查看 </Link>
+                <Link onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
                 <Link onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
               </div>
             );
@@ -151,6 +151,15 @@ class CustomerIndex extends React.Component {
             count: 2,
             createModalVisible: false
         }
+    }
+
+    onLook(record){
+      const dispatch = this.props.dispatch;
+      dispatch({
+        type: 'addCustomer/setDataDetailId',
+        payload: { dataId:record.id }
+      })
+      dispatch(routerRedux.push('/crm/customer/customerDetails'))
     }
 
     onDelete(record) {
@@ -234,7 +243,7 @@ class CustomerIndex extends React.Component {
                <input placeholder='请输入客户编号、客户姓名、联系方式、合同编号....' />
                 <span className="search"><Button type="primary">搜索</Button></span>
                 <span className="screening"><Button type="primary" onClick={this.showCreateModal.bind(this)}>筛选项</Button></span>
-                <span className="customer"><Link to="/crm/customer/AddCustomerInfo"><Button type="primary">新增客户</Button></Link> </span>
+                <span className="customer"><Link to="/crm/customer/Add"><Button type="primary">新增客户</Button></Link> </span>
             </div>
             <div className="Customer-navigation">
                 <div className="age">年龄<input type="number" min="1"/>至<input type="number" min="1"/></div>

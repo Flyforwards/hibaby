@@ -223,11 +223,7 @@ class EditUsered extends React.Component {
                display = 'block'
             }
             roles = entryContent.roles.map((item)=>{
-              return SelectData.map((key)=>{
-                if(key.id == item.roleId){
-                    return key.name
-                }
-              })
+              return item.roleId
             })
             if(this.props.dataEndemicId != null){
                 traversalEndemicId = this.props.dataEndemicId.map((item,index)=>{
@@ -457,14 +453,14 @@ class EditUsered extends React.Component {
            treeData = { this.props.LeagerData }
            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
-          <DeleteEnery 
+          <DeleteEnery
            visible={ this.state.DeleteVisible }
            onCancel ={ this.handleDeleteEneryCancel.bind(this) }
            DeleteIndex = { this.state.DeleteIndex }
            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
            <Button type="primary" className="saveButton" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
-           <Button type="primary" className="returnButton" onClick={ this.headelReturn }>返回</Button>
+           <Button className="returnButton" onClick={ this.headelReturn }>返回</Button>
         </div>
       )
   }
