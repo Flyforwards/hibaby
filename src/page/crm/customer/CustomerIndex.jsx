@@ -128,7 +128,7 @@ class CustomerIndex extends React.Component {
           render: (text, record, index) => {
             return (
               <div>
-                <Link > 查看 </Link>
+                <Link onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
                 <Link onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
               </div>
             );
@@ -151,6 +151,15 @@ class CustomerIndex extends React.Component {
             count: 2,
             createModalVisible: false
         }
+    }
+
+    onLook(record){
+      const dispatch = this.props.dispatch;
+      dispatch({
+        type: 'addCustomer/setDataDetailId',
+        payload: { dataId:record.id }
+      })
+      dispatch(routerRedux.push('/crm/customer/customerDetails'))
     }
 
     onDelete(record) {

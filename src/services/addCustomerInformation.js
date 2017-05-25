@@ -64,3 +64,29 @@ export function getMainCustomerPackageById(values) {
   })
 };
 
+//获取基本信息
+export function getCustomerById(values) {
+  return request('/crm/api/v1/customer/getCustomerById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+//获取扩展信息
+export function getCustomerExtendById(values) {
+  return request('/crm/api/v1/customer/getCustomerExtendById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+// 获取备注信息
+export function getCustomerRemarkById(values) {
+  return request('/crm/api/v1/customer/getCustomerRemarkById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+
+

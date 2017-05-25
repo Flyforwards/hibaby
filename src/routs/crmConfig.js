@@ -22,6 +22,17 @@ export default (app) => [
       })
     }
   },
+//客户详情
+  {
+    path: '/crm/customer/customerDetails',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/crm/customer/customerDetails.jsx'))
+      })
+    }
+  },
+
     // 套餐
     {
       path: '/crm/serviceinfo',

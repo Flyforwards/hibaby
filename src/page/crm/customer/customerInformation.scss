@@ -1,10 +1,20 @@
 .customerContent {
+  background-color:white;
   .contentDiv{
     margin-top: 10px;
     padding: 10px 10px 0px 10px;
     border:1px solid #999999;
+    p{
+      line-height: 50px;
+    }
     .antCli{
       width: 100%;
+    }
+    .leftTitle{
+      text-align: right;
+    }
+    .rowHeight{
+      height: 50px;
     }
   }
 
@@ -43,8 +53,11 @@
   .savaDiv{
     text-align: right;
     margin-top:10px;
+    height: 60px;
     .backBtn{
       width: 150px;
+      height: 30px;
+      margin-top:10px;
       margin-right: 10px;
     }
   }

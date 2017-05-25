@@ -5,6 +5,13 @@ import { routerRedux } from 'dva/router';
 export default {
   namespace: 'addCustomer',
   state: {
+
+    dataDetailId:83,
+    baseData:[],
+    expandData:[],
+    remarkData:[],
+
+
     remarkList:[],
     provinceData:[],
     cityData:[],
@@ -33,17 +40,17 @@ export default {
 
     remarkListColumns : [{
       title: '备注内容',
-      dataIndex: 'remark',
+      dataIndex: 'remarkInfo',
       key: 'name',
       width:'70%',
     }, {
       title: '备注时间',
-      dataIndex: 'remarkDate',
+      dataIndex: 'createTime',
       key: 'remarkDate',
       width:'15%',
     }, {
       title: '备注人',
-      dataIndex: 'remarkMan',
+      dataIndex: 'operator',
       key: 'remarkMan',
       width:'15%',
     }]
@@ -54,7 +61,7 @@ export default {
 
       const date = new Date();
 
-      const dict = {remark:todo,remarkDate:date.toLocaleString(),remarkMan:state.operator};
+      const dict = {remarkInfo:todo,createTime:date.toLocaleString(),operator:state.operator};
 
       const tempDict = [...remarkList,dict];
 
@@ -157,7 +164,22 @@ export default {
       return {...state};
     },
 
+    setDataDetailId(state, { payload: todo }){
+      return {...state,dataDetailId:todo.dataId};
+    },
 
+    setBaseData(state, { payload: todo }){
+      return {...state,baseData:todo.data};
+    },
+
+    setExpandData(state, { payload: todo }){
+
+      return {...state,expandData:todo.data};
+    },
+
+    setRemarkData(state, { payload: todo }){
+      return {...state,remarkData:todo.data};
+    },
 
   },
   effects: {
@@ -371,6 +393,7 @@ export default {
       for (let i = 0;i<remarkList.length;i++)
       {
         const remark = remarkList[i];
+
         inputs.push({"customerId": values.id,"remarkInfo": remark.remark})
       }
 
@@ -385,7 +408,46 @@ export default {
         message(err)
       }
     },
+    *getCustomerById({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
 
+      const dataDetailId = state.dataDetailId;
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerById,{dataId:dataDetailId});
+
+      if (code == 0) {
+        yield put({type:'setBaseData',payload:{
+          data
+        }} );
+      }
+    },
+
+    *getCustomerExtendById({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
+
+      const dataDetailId = state.dataDetailId;
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
+      if (code == 0) {
+        yield put({type:'setExpandData',payload:{
+          data
+        }} );
+      }
+    },
+
+    *getCustomerRemarkById({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
+
+      const dataDetailId =state.dataDetailId;
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
+      if (code == 0) {
+
+        yield put({type:'setRemarkData',payload:{
+          data
+        }} );
+      }
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -457,8 +519,22 @@ export default {
           dispatch({
             type: 'getMainCustomerPackageById',
           });
+        };
+        if (pathname === '/crm/customer/customerDetails'){
+
+          dispatch({
+            type: 'getCustomerById',
+
+          });
+          dispatch({
+            type: 'getCustomerExtendById',
+
+          });
+          dispatch({
+            type: 'getCustomerRemarkById',
+
+          });
         }
-        ;
       })
     }
   },
