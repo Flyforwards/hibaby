@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
-import styles from './healthyhome.css';
+import styles from './healthyhome.scss';
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
@@ -127,7 +127,7 @@ function Healthyhome(props) {
   }
 
   return(
-    <div>
+    <div className="healthContentDiv">
       <Button className="topButton">医疗健康档案</Button>
       <Button className="topButton">营养部健康档案</Button>
       <Button className="topButton">美研中心孕期健康档案</Button>

@@ -390,7 +390,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/crm/customer/AddCustomerInfo') {
+        if (pathname === '/crm/customer/Add') {
           dispatch({
             type: 'getProvinceData',
             payload: {
