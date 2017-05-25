@@ -1,7 +1,7 @@
 import React from 'react'
-import './Customer.scss'
+import './CustomerIndex.scss'
 import {connect} from 'dva'
-import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Cascader} from 'antd'
+import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Cascader, Modal} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
@@ -10,6 +10,9 @@ import Current from '../../Current'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
+const confirm = Modal.confirm;
+
+
 //这是级联选择地址
 const options = [{
   value: '北京',
@@ -27,7 +30,7 @@ const options = [{
   }],
 }];
 //这是表单的数据操作
-class EditableCell extends React.Component {
+class Customer extends React.Component {
   state = {
     value: this.props.value,
     editable: false,
@@ -77,58 +80,57 @@ class EditableCell extends React.Component {
     );
   }
 }
-class Customered extends React.Component {
+class CustomerIndex extends React.Component {
     constructor(props) {
         super(props)
         this.columns = [{
           title: '客户姓名',
           dataIndex: 'name',
-          width: '90px',
-        }, {
+          key: 'name'
+        },{
           title: '年龄',
           dataIndex: 'age',
-          width: '90px',
+          key: 'age'
         }, {
           title: '预产期',
-          dataIndex: 'period',
-          width: '90px',
+          dataIndex: 'dueDate',
+          render: (record) => {
+            return moment(record).format("YYYY-MM-DD")
+          }
         }, {
           title: '怀孕周期',
-          dataIndex: 'Pregnancy',
-          width: '90px',
-        },{
+          dataIndex: 'gestationalWeeks',
+          key: 'gestationalWeeks'
+
+        }, {
           title: '第几胎',
-          dataIndex: 'tires',
-          width: '90px',
+          dataIndex: 'fetus',
+          key: 'fetus'
         },{
           title: '联系方式',
-          dataIndex: 'information',
-          width: '90px',
+          dataIndex: 'contact',
+          key: 'contact'
         },{
           title: '购买套餐',
-          dataIndex: 'package',
-          width: '90px',
+          dataIndex: 'purchasePackage',
+          key: 'purchasePackage'
         },{
           title: '合同编号',
-          dataIndex: 'contract',
-          width: '90px',
+          dataIndex: 'contractNumber',
+          key: 'contractNumber'
         },{
           title: '添加人',
-          dataIndex: 'people',
-          width: '90px',
+          dataIndex: 'operator1',
+          key: 'operator1'
         },{
           title: '操作',
           dataIndex: 'operating',
-          width: '90px',
           render: (text, record, index) => {
             return (
-              this.state.dataSource.length >= 1 ?
-              (
-                <Popconfirm title="是否要删除该数据?" onConfirm={() => this.onDelete(index)}>
-                 <a href="#">查看</a>
-                  <a href="#">删除</a>
-                </Popconfirm>
-              ) : null
+              <div>
+                <Link > 查看 </Link>
+                <Link onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+              </div>
             );
           },
         }];
@@ -150,6 +152,23 @@ class Customered extends React.Component {
             createModalVisible: false
         }
     }
+
+    onDelete(record) {
+      const dispatch = this.props.dispatch;
+      confirm({
+        title: '提示',
+        content: '是否确定删除此用户',
+        onOk() {
+          dispatch({
+            type: 'customer/deleteCustomer',
+            payload: { dataId: record.id }
+          })
+        },
+        onCancel() {
+        },
+      });
+    }
+
     handleCreateModalCancel() {
         this.setState({
             createModalVisible: false
@@ -167,11 +186,7 @@ class Customered extends React.Component {
           this.setState({ dataSource });
         };
       }
-      onDelete = (index) => {
-        const dataSource = [...this.state.dataSource];
-        dataSource.splice(index, 1);
-        this.setState({ dataSource });
-      }
+
       handleAdd = () => {
         const { count, dataSource } = this.state;
         const newData = {
@@ -193,22 +208,24 @@ class Customered extends React.Component {
         });
       }
     render() {
-        const { dataSource } = this.state;
         const columns = this.columns;
-        const pagination = {
-        total: this.props.total, //数据总条数
-        showQuickJumper: true,
-        onChange: (current) => {
-          this.props.dispatch(routerRedux.push({
-            pathname: '/Customer',
-            query: {
-              "page": current,
-              "results": 3,
-              "type": 1
-            },
-          }));
-        },
-      };
+        const { list, loading, pagination, dispatch } = this.props;
+        const tableProps = {
+          loading: loading.effects['customer/getCustomerPage'],
+          dataSource : list ,
+          pagination,
+          columns,
+          onChange (page) {
+            const { pathname } = location
+            dispatch(routerRedux.push({
+              pathname,
+              query: {
+                page: page.current,
+                size: page.pageSize,
+              },
+            }))
+          },
+        }
         return (
         <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
@@ -217,7 +234,7 @@ class Customered extends React.Component {
                <input placeholder='请输入客户编号、客户姓名、联系方式、合同编号....' />
                 <span className="search"><Button type="primary">搜索</Button></span>
                 <span className="screening"><Button type="primary" onClick={this.showCreateModal.bind(this)}>筛选项</Button></span>
-                <span className="customer"><Button type="primary">新增客户</Button></span>
+                <span className="customer"><Link to="/crm/customer/AddCustomerInfo"><Button type="primary">新增客户</Button></Link> </span>
             </div>
             <div className="Customer-navigation">
                 <div className="age">年龄<input type="number" min="1"/>至<input type="number" min="1"/></div>
@@ -252,25 +269,7 @@ class Customered extends React.Component {
             </div>
             </div>
             <div className="CreateModaList-a">
-              {this.props.list?
-                <Table bordered dataSource = {this.props.list} columns={columns} pagination = {pagination} className="CreateModaList-b" rowKey = "id"/>
-              :null}
-              < Current page = {
-                this.props.page
-              }
-              totalpage = {
-                this.props.totalpage
-              }
-              total = {
-                this.props.total
-              }
-              results = {
-                this.props.results
-              }
-              range = {
-                this.props.range
-              }
-              />
+              <Table bordered {...tableProps} rowKey={ record=>record.id}/>
             </div>
             <CreateModal
                 handleOk={this.state.handleOk}
@@ -282,54 +281,18 @@ class Customered extends React.Component {
         )
     }
 }
-function Customer({
-  dispatch,
-  loading,
-  data: list,
-  total,
-  page,
-  results,
-  range,
-  code
-}) {
-  return ( < div >
-    < Customered dispatch = {
-      dispatch
-    }
-    list = {
-      list
-    }
-    loading = {
-      loading
-    }
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    /> </div>
-  )
 
-}
+
 function mapStateToProps(state) {
   const {
-    data,
-    total,
-    page,
-    results,
-    range,
-    code
-  } = state.system;
+    list,
+    pagination
+  } = state.customer;
 
   return {
-    loading: state.loading.models.system,
-    data,
-    total,
-    page,
-    results,
-    range,
-    code
+    loading: state.loading,
+    list,
+    pagination
   };
 }
-export default connect(mapStateToProps)(Customer)
+export default connect(mapStateToProps)(CustomerIndex)

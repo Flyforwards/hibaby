@@ -5,7 +5,7 @@ import { local, session } from 'common/util/storage.js'
 import Layout from './framework/layout/Layout.jsx'
 import Home from './page/home'
 import './framework/app/base.css'
-import './framework/app/common.css'
+import './framework/app/common.scss'
 import registerModel from './routs/register'
 import systemConfig from './routs/systemConfig'
 import crmConfig from './routs/crmConfig'
@@ -61,7 +61,7 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/login/Login.js'))
+                cb(null, require('./page/login/LoginIndex.js'))
             })
         }
     },
@@ -70,7 +70,7 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/login/LoginFind.js'))
+                cb(null, require('./page/login/FindPassword.js'))
             })
         }
     },
@@ -79,7 +79,7 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/login/LoginClub.js'))
+                cb(null, require('./page/login/ClubSelect.js'))
             })
         }
     },

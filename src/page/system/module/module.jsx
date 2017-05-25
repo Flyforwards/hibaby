@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva'
 import './module.scss';
 import {routerRedux} from 'dva/router'
-import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messageMenu,Select,message} from 'antd';
+import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messageMenu,Select,TreeSelect,message} from 'antd';
 import request from '../../../common/request/request.js';
 import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
@@ -24,9 +24,7 @@ class Module extends Component {
         alertModalVisible:false,
         modifyModalVisible:false,
         EditModuleModal:false,
-        name:null,
-        path:null,
-        projectName:null,
+        value: undefined,
     }
     this.columns = [{
       title: '主模块',
@@ -59,6 +57,11 @@ class Module extends Component {
       key:'permissionName',
       width: '150px',
     },{
+      title: '图标',
+      dataIndex: 'icon',
+      key:'icon',
+      width: '150px',
+    },{
       title: '模块编号',
       dataIndex: 'orderBy',
       key:'orderBy',
@@ -88,8 +91,6 @@ class Module extends Component {
     e.preventDefault();
     const data=[];
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
-      console.log(err);
       if(!err){
           this.props.dispatch({
             type: 'module/MenuData',
@@ -110,8 +111,8 @@ class Module extends Component {
     this.props.dispatch({
       type: 'module/MenuData',
       payload: {
-            name: null,
-            path:null,
+            name:'',
+            path:'',
             page:0,
             size:10,
             projectId:null
@@ -158,7 +159,10 @@ class Module extends Component {
         EditModuleModal:false
       })
   }
-
+  //权限改变
+  onChange = (value) => {
+   this.setState({ value });
+ }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const formItemLayout = {
@@ -172,17 +176,11 @@ class Module extends Component {
       showQuickJumper: true,
       pageSize:10,
       onChange: (current) => {
-        this.current = current
         this.props.dispatch({
           type: 'module/MenuData',
           payload: {
-              "name": this.state.userName,
-              "nodeid": this.state.nodeid,
-              "roleId": this.state.character,
-              "status": this.state.status,
               "page": current,
               "size": 10,
-              "tissueProperty": this.state.tissueProperty
           },
         });
       },
@@ -206,7 +204,7 @@ class Module extends Component {
                 <h4 className="projectName">主模块：</h4>
                 {getFieldDecorator('projectId', {rules: [{ required: false, message: '字段名称为必填项！' }],
                 })(
-                <Select className="SelectMenu" style={{ width: 180 }} placeholder="请选择">
+                <Select className="SelectMenu" style={{ width:180 }} placeholder="请选择">
                     {children}
                 </Select>)}
             </div>
@@ -266,20 +264,25 @@ class Module extends Component {
   }
 }
 
-function Module({ dispatch, data, page, size,edit, total,list,permission,menu}) {
+function Module({ dispatch, data, page, size,edit, total,list,permission,menu,results,
+range}) {
   return (
     <Module dispatch={dispatch} data={data} id={id} list={list} permission={permission}
-    menu={menu} page={page} size={size} edit={edit} total={total}/>
+    menu={menu} page={page} size={size} edit={edit} total={total} range={range} results={results} />
   )
 }
 function mapStateToProps(state) {
-  const { item:data,size,total,page,edit,permission,list,menu} = state.module;
+  console.log("菜单>>>",state.module.item)
+  const { item:data,size,total,page,edit,permission,results,range,list,menu} = state.module;
   return {
     loading: state.loading.models.module,
     data,
     permission,
     list,
     menu,
+    results,
+    range,
+    total,
     edit
   };
 }

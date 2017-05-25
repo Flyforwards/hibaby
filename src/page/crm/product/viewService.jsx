@@ -22,13 +22,13 @@ class AddServiceed extends Component {
           width: "20%",
         }, {
           title: '服务项价格',
-          dataIndex: 'price',
-          key:'price',
+          dataIndex: 'serviceInfoPrice',
+          key:'serviceInfoPrice',
           width: "20%",
         }, {
           title: '服务项目内容',
-          dataIndex: 'contents',
-          key:'contents',
+          dataIndex: 'serviceInfoContents',
+          key:'serviceInfoContents',
           width: "40%",
         },{
           title: '使用次数',
@@ -42,9 +42,10 @@ class AddServiceed extends Component {
         };
     }
     delete() {
+      let ID = window.location.search.split("=")[1]
       this.setState({
         DeleteVisible:true,
-        ID:2
+        ID:ID
       })
     }
     handleDeleteCancel(){
@@ -62,22 +63,34 @@ class AddServiceed extends Component {
       this.setState({
         ID:ID
       })
-      console.log("ID",ID)
-        this.props.dispatch({
-            type: 'packageInfo/findById',
-            payload: {
-               "dataId":1
-            }
-        });
+      this.props.dispatch({
+          type: 'packageInfo/findById',
+          payload: {
+             "dataId":ID
+          }
+      });
+     this.props.dispatch({
+        type: 'packageInfo/selectData',
+        payload: { }
+      });
+      this.props.dispatch({
+        type: 'packageInfo/getDictionary',
+        payload: {
+          "id":5 ,
+          "softDelete": 1,
+          "type": 2
+        }
+      });
     }
     handleSubmit = ()=>{
       history.go(-1)
     }
     render() {
-        console.log("findById",this.props.findById)
         let roomList = []
         let ListLnformation = []
         let loadingName = true
+        let type = ''
+        let suiteId = ''
         const columns = this.columns;
         const { getFieldDecorator } = this.props.form;
         if(this.props.findById != null){
@@ -97,6 +110,20 @@ class AddServiceed extends Component {
             selectedRows,
             onChange: this.onSelectChange,
         };
+        if(this.props.getDictionary != null && this.props.findById != null){
+          this.props.getDictionary.map((item)=>{
+            if(item.id == this.props.findById.type){
+              type = item.name
+            }
+          })
+        }
+        if(this.props.selectData != null && this.props.findById != null){
+          this.props.selectData.map((item)=>{
+            if(item.id == this.props.findById.suiteId){
+              suiteId = item.name
+            }
+          })
+        }
         return (
             <div className="viewServiceinfo">
                 <div className="viewServiceinfoList">
@@ -131,13 +158,11 @@ class AddServiceed extends Component {
                    label="套餐类型"
                    >
                     {getFieldDecorator('type', {
-                      initialValue:this.props.findById?this.props.findById.name:null,
+                      initialValue:type,
                       rules: [],
                     })(
                     <Select disabled={true}
                     >
-                      <Option value="0">主套餐</Option>
-                      <Option value="1">次套餐</Option>
                     </Select>
                     )}
                   </FormItem>
@@ -159,13 +184,11 @@ class AddServiceed extends Component {
                    className="room"
                   >
                     {getFieldDecorator('room', {
-                       initialValue:this.props.findById?this.props.findById.suiteId:null,
+                       initialValue:suiteId,
                        rules: [],
                     })(
                       <Select disabled={true}
                     >
-                      <Option value="0">主套餐</Option>
-                      <Option value="1">次套餐</Option>
                     </Select>
                     )}
                   </FormItem>
@@ -175,17 +198,20 @@ class AddServiceed extends Component {
                 <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
                 <Link to={{ pathname: '/crm/serviceinfo/editservice', query: { data:this.state.ID } }}><Button type="primary">编辑</Button></Link>
                 <Delete 
-                   visible={ this.state.DeleteVisible }
-                   onCancel ={ this.handleDeleteCancel.bind(this) }
-                   ID = { this.state.ID }
-                  />
+                  visible={ this.state.DeleteVisible }
+                  onCancel ={ this.handleDeleteCancel.bind(this) }
+                  ID = { this.state.ID }
+                  serviceInfoList = { this.props.findById}
+                />
             </div>
         )
     }
 }
 function AddService({
   dispatch,
-  findById
+  findById,
+  getDictionary,
+  selectData
 }) {
   return ( < div >
     <AddServiceed dispatch = {
@@ -194,16 +220,26 @@ function AddService({
     findById = {
       findById
     }
+    getDictionary = {
+      getDictionary
+    }
+    selectData = {
+      selectData
+    }
     /></div>
   )
 }
 function mapStateToProps(state) {
   const {
-    findById
+    findById,
+    getDictionary,
+    selectData
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
-    findById
+    findById,
+    getDictionary,
+    selectData
     };
 }
 const addService = Form.create()(AddServiceed);

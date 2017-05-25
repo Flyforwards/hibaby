@@ -1,242 +1,422 @@
 import React from 'react';
 import './customerInformation.scss';
 import { connect } from 'dva';
-import {Upload, Icon,message, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button} from 'antd';
-const InputGroup = Input.Group;
+import FileUpload from './fileUpload'
+import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-function customerInformation(props) {
+function jsGetAge(strBirthday){
+  var returnAge;
+  var strBirthdayArr=strBirthday.split("-");
+  var birthYear = strBirthdayArr[0];
+  var birthMonth = strBirthdayArr[1];
+  var birthDay = strBirthdayArr[2];
 
-  const {modal,tempRemark} = props.users;
+  let d = new Date();
+  var nowYear = d.getFullYear();
+  var nowMonth = d.getMonth() + 1;
+  var nowDay = d.getDate();
+
+  if(nowYear == birthYear){
+    returnAge = 0;//同年 则为0岁
+  }
+  else{
+    var ageDiff = nowYear - birthYear ; //年之差
+    if(ageDiff > 0){
+      if(nowMonth == birthMonth) {
+        var dayDiff = nowDay - birthDay;//日之差
+        if(dayDiff < 0)
+        {
+          returnAge = ageDiff - 1;
+        }
+        else
+        {
+          returnAge = ageDiff ;
+        }
+      }
+      else
+      {
+        var monthDiff = nowMonth - birthMonth;//月之差
+        if(monthDiff < 0)
+        {
+          returnAge = ageDiff - 1;
+        }
+        else
+        {
+          returnAge = ageDiff ;
+        }
+      }
+    }
+    else
+    {
+      returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天
+    }
+  }
+
+  return returnAge;//返回周岁年龄
+
+}
+
+
+function cusComponent(dict) {
+  let tempDiv = (<Input/>);
+
+  switch (dict.component) {
+    case 'Input':
+      if(dict.disabled === true)
+      {
+        tempDiv = (<Input disabled={true}/>);
+      }
+      else {
+        tempDiv = (<Input/>);
+      }
+      break;
+    case 'Select':
+      if (dict.fun)
+      {
+        tempDiv = (<Select onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
+      }
+      else {
+        tempDiv = (<Select placeholder='请选择'>{dict.children}</Select>);
+      }
+      break;
+    case 'DatePicker':
+      if (dict.fun)
+      {
+        tempDiv = (<DatePicker onChange={dict.fun} placeholder='请选择'>{dict.children}</DatePicker>);
+      }
+      else {
+        tempDiv = (<DatePicker placeholder='请选择'>{dict.children}</DatePicker>);
+      }
+      break;
+    case 'InputNumber':
+      if (dict.disabled === true)
+      {
+        tempDiv = (<InputNumber className="antCli" disabled={true}/>);
+      }
+      else {
+        tempDiv = (<InputNumber className="antCli"/>);
+      }
+      break;
+    case 'UploadButton':
+    {
+      if(dict.submitStr === 'contractAppendices')
+      {
+        tempDiv = <FileUpload fun={dict.fun}>
+          <Button><Icon type="upload" /> 上传附件</Button>
+        </FileUpload>
+      }
+      else if(dict.submitStr === 'idcardScan'){
+        tempDiv = <FileUpload  fun={dict.fun}>
+          <Button><Icon type="upload" /> 上传附件</Button>
+        </FileUpload>
+      }
+    }
+      break;
+    default:
+  }
+
+  return (
+    tempDiv
+
+  );
+}
+
+const formItemLayout = {
+  labelCol: { span: 7 },
+  wrapperCol: { span: 17 },
+};
+
+function BaseInfo(props) {
+
+  const {operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
+    provinceData,cityData,nationalData} = props.users;
   const {dispatch} = props;
 
-  const formItemLayout = {
-      labelCol: { span: 7 },
-      wrapperCol: { span: 17 },
-    };
+  const { getFieldDecorator } = props.form;
 
-  const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
 
-//客资来源
-  const  guestInformationSourceAry = ['百度搜索','和美','朋友推荐','hibaby微博微信',
-  '宝宝树','爱败网','SSBS','360搜索','谷歌','搜狗搜索','神马','摇篮网','宣传资料',
-  '其他机构或个人微博微信','辣妈帮','妈妈帮','其他网络广告','杂志','其他'];
 
   const guestInformationSource = [];
 
   for (let i = 0; i < guestInformationSourceAry.length ; i++) {
-    guestInformationSource.push(<Option key={guestInformationSourceAry[i]}>{guestInformationSourceAry[i]}</Option>);
+    guestInformationSource.push(<Option key={guestInformationSourceAry[i].id}>{guestInformationSourceAry[i].name}</Option>);
   }
-  //关注点
-  const  concernsAry = ['和美专业的医疗背景','24小时专属护理“一对一”贴身服务','拥有专业医护团队',
-  '服务口碑好','地理位置方便','内外环境好','专业自制月子餐','拥有产后修复服务','家属服务等增值服务多']
+
 
   const concerns = [];
 
   for (let i = 0; i < concernsAry.length ; i++) {
-    concerns.push(<Option key={concernsAry[i]}>{concernsAry[i]}</Option>);
+    concerns.push(<Option key={concernsAry[i].id}>{concernsAry[i].name}</Option>);
   }
 
-  //网络搜索词
-  const  networkSearchWordsAry = ['无','母婴中心','月子中心','月子会所','孕产护理','月子服务']
+
+  const intentionPackages = [];
+
+  for (let i = 0; i < intentionPackageAry.length ; i++) {
+    intentionPackages.push(<Option key={intentionPackageAry[i].id}>{intentionPackageAry[i].name}</Option>);
+  }
 
   const networkSearchWords = [];
 
   for (let i = 0; i < networkSearchWordsAry.length ; i++) {
-    networkSearchWords.push(<Option key={networkSearchWordsAry[i]}>{networkSearchWordsAry[i]}</Option>);
+    networkSearchWords.push(<Option key={networkSearchWordsAry[i].id}>{networkSearchWordsAry[i].name}</Option>);
   }
 
+  const fetusChi = [];
+
+  for (let i = 0; i < fetusAry.length ; i++) {
+    fetusChi.push(<Option key={fetusAry[i].id}>{fetusAry[i].name}</Option>);
+  }
+
+  const hospitals = [];
+
+  for (let i = 0; i < hospitalAry.length ; i++) {
+    hospitals.push(<Option key={hospitalAry[i].id}>{hospitalAry[i].name}</Option>);
+  }
+
+  const provinceDataChis = [];
+
+  for (let i = 0; i < provinceData.length ; i++) {
+    provinceDataChis.push(<Option key={provinceData[i].id}>{provinceData[i].description}</Option>);
+  }
+
+  const cityDataChis = [];
+
+  for (let i = 0; i < cityData.length ; i++) {
+    cityDataChis.push(<Option key={cityData[i].id}>{cityData[i].description}</Option>);
+  }
+
+  const nationalDataChis = [];
+  for (let i = 0; i < nationalData.length ; i++) {
+    nationalDataChis.push(<Option key={nationalData[i].id}>{nationalData[i].nation}</Option>);
+  }
 
   const baseInfo = [
-    {title:'客户姓名',component:'Input',children:null},
-    {title:'联系电话',component:'Input',children:null},
-    {title:'出生日期',component:'DatePicker',children:null},
-    {title:'年龄',component:'Input',children:null},
-    {title:'预产期',component:'DatePicker',children:null},
-    {title:'孕周',component:'Input',children:null},
-    {title:'分娩医院',component:'Input',children:null},
-    {title:'孕次/产次',component:'Input',children:null},
-    {title:'客资来源',component:'Select',children:guestInformationSource},
-    {title:'关注点',component:'Select',children:concerns},
-    {title:'意向套餐',component:'Select',children:[]},
-    {title:'网络搜索词',component:'Select',children:networkSearchWords},
+    {title:'客户姓名',component:'Input',submitStr:'name',children:null},
+    {title:'联系电话',component:'Input',submitStr:'contact',children:null},
+    {title:'出生日期',component:'DatePicker',submitStr:'birthTime',children:null,fun:onChange},
+    {title:'年龄',component:'InputNumber',submitStr:'age',children:null,disabled:true},
+    {title:'预产期',component:'DatePicker',submitStr:'dueDate',children:null},
+    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',children:null},
+    {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
+    {title:'孕次/产次',component:'Select',submitStr:'fetus',children:fetusChi},
+    {title:'客资来源',component:'Select',submitStr:'resourceCustomer',children:guestInformationSource},
+    {title:'关注点',component:'Select',submitStr:'focus',children:concerns},
+    {title:'意向套餐',component:'Select',submitStr:'intentionPackage',children:intentionPackages},
+    {title:'网络搜索词',component:'Select',submitStr:'webSearchTerm',children:networkSearchWords},
   ];
-
-  const expandInfo = [
-    {title:'身份证',component:'Input',children:null},
-    {title:'籍贯',component:'Input',children:null},
-    {title:'民族',component:'Select',children:null},
-    {title:'购买套餐',component:'Input',children:null},
-    {title:'保险情况',component:'Input',children:null},
-    {title:'联系人电话',component:'Input',children:null},
-    {title:'会员身份',component:'Select',children:null},
-    {title:'特殊身份',component:'Select',children:null},
-    {title:'宝宝生产日期',component:'Input',children:null},
-    {title:'合同编号',component:'Input',children:null},
-    {title:'关联客房',component:'Input',children:null},
-    {title:'身份证扫描',component:'Input',children:null},
-    {title:'合同附件',component:'Input',children:null},
-    {title:'会员编号',component:'Input',children:null},
-    {title:'操作者',component:'Input',children:null},
-  ];
-
-  const imageUrl = null;
 
   const baseInfoDiv = [];
 
   for (let i = 0; i < baseInfo.length; i++) {
-      let dict = baseInfo[i];
+    let dict = baseInfo[i];
 
-      let tempDiv = cusComponent(dict);
+    let tempDiv = cusComponent(dict);
 
-      baseInfoDiv.push(
-        <Col span={6} key={i}>
-          <FormItem {...formItemLayout} label={dict.title}>
-            {getFieldDecorator(`field-${dict.title}`)(
-              tempDiv
-            )}
-          </FormItem>
-        </Col>
-      );
+    baseInfoDiv.push(
+      <Col span={6} key={i}>
+        <FormItem {...formItemLayout} label={dict.title}>
+          {getFieldDecorator(dict.submitStr,{ rules: [{ required: true, message: `请输入${dict.title}!`}],})
+          (
+            tempDiv
+          )}
+        </FormItem>
+      </Col>
+    );
   }
+
+
+  function onChange(date, dateString) {
+
+    const age = jsGetAge(dateString);
+
+    props.form.setFieldsValue({
+      age: age,
+    });
+  }
+
+  function provinceSelect(e) {
+    dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:false,dataId:e}})
+  }
+
+
+  return(
+    <Form>
+      <div className='contentDiv'>
+        <h3>基本信息</h3>
+
+        <Row>
+          {baseInfoDiv}
+        </Row>
+
+        <Row gutter={15}>
+
+          <Col span={6}>
+
+            <FormItem {...formItemLayout} label={'现住址'}>
+              {getFieldDecorator('province')(
+                <Select  onChange={provinceSelect}  placeholder="请选择">
+                  {provinceDataChis}
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <Row gutter={15}>
+              <Col span={8}>
+                <FormItem>
+                  {getFieldDecorator('city')(
+                    <Select placeholder="请选择">
+                      {cityDataChis}
+                    </Select>
+                  )}
+                </FormItem>
+              </Col>
+
+              <Col span={16}>
+                <FormItem>
+                  {getFieldDecorator('detailed')(
+                    <Input/>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+          </Col>
+          <Col span={6}>
+            <FormItem {...formItemLayout} label={'操作者1'}>
+              {getFieldDecorator('operator',{initialValue:operator})(
+                <Input disabled={true}/>
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+      </div>
+    </Form>
+  )
+}
+
+
+
+function ExtensionInfo(props) {
+
+  const {operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
+    headIconUrl,provinceData,cityData,permanentCityData,nationalData} = props.users;
+  const {dispatch} = props;
+
+
+
+  const { getFieldDecorator } = props.form;
+
+  const memberChis = [];
+
+  for (let i = 0; i < memberAry.length ; i++) {
+    memberChis.push(<Option key={memberAry[i].id}>{memberAry[i].name}</Option>);
+  }
+
+  const specialIdentityChis = [];
+
+  for (let i = 0; i < specialIdentityAry.length ; i++) {
+    specialIdentityChis.push(<Option key={specialIdentityAry[i].id}>{specialIdentityAry[i].name}</Option>);
+  }
+
+  const provinceDataChis = [];
+
+  for (let i = 0; i < provinceData.length ; i++) {
+    provinceDataChis.push(<Option key={provinceData[i].id}>{provinceData[i].description}</Option>);
+  }
+
+  const cityDataChis = [];
+
+  for (let i = 0; i < cityData.length ; i++) {
+    cityDataChis.push(<Option key={cityData[i].id}>{cityData[i].description}</Option>);
+  }
+
+  const permanentCityDataChis = [];
+
+  for (let i = 0; i < permanentCityData.length ; i++) {
+    permanentCityDataChis.push(<Option key={permanentCityData[i].id}>{permanentCityData[i].description}</Option>);
+  }
+
+  const nationalDataChis = [];
+  for (let i = 0; i < nationalData.length ; i++) {
+    nationalDataChis.push(<Option key={nationalData[i].id}>{nationalData[i].nation}</Option>);
+  }
+
+  const expandInfo = [
+    {title:'身份证',component:'Input',submitStr:'idcard',children:null},
+    {title:'籍贯',component:'Input',submitStr:'placeOrigin',children:null},
+    {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
+    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',children:null,disabled:true,initValue:purchasePackageValue.packageName},
+    {title:'保险情况',component:'Input',submitStr:'insuranceSituation',children:null},
+    {title:'联系人电话',component:'Input',submitStr:'excontact',children:null},
+    {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange},
+    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange},
+    {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate',children:null},
+    {title:'合同编号',component:'Input',submitStr:'contractNumber',children:null},
+    {title:'关联客房',component:'Input',submitStr:'associatedRooms',children:null},
+    {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',children:null,fun:uploadIdcardFileProps},
+    {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',children:null,fun:uploadContractAppendicesFileProps},
+    {title:'会员编号',component:'Input',submitStr:'memberNumber',children:null,disabled:true,initValue:memberNumberValue},
+    {title:'操作者2',component:'Input',submitStr:'operator',children:null,disabled:true,initValue:operator},
+  ];
+
 
   const expandInfoDiv = [];
 
   for (let i = 0; i < expandInfo.length; i++) {
-      let dict = expandInfo[i];
+    let dict = expandInfo[i];
 
-      let tempDiv = cusComponent(dict);
+    let tempDiv = cusComponent(dict);
 
-      expandInfoDiv.push(
-        <Col span={8} key={i}>
-          <FormItem {...formItemLayout} label={dict.title}>
-            {getFieldDecorator(`field-${dict.title}`)(
-              tempDiv
-            )}
-          </FormItem>
-        </Col>
-      );
-  }
-
-  function handleSubmit(e) {
-
-  }
-
-  function onChange(date, dateString) {
-  }
-
-  function showModal() {
-    dispatch({type:'addCustomer/hideOrShowModal',payload:true})
-  }
-
-  function handleOk(e)  {
-
-    dispatch({type:'addCustomer/hideOrShowModal',payload:false})
-  };
-
-  function handleCancel()  {
-    dispatch({type:'addCustomer/hideOrShowModal',payload:false})
-
-  }
-
-  function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  }
-
-  function handleChange(info) {
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
-    }
-  }
-
-  function beforeUpload(file) {
-    const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
-    if (!isJPG) {
-      message.error('You can only upload JPG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJPG && isLt2M;
-  }
-
-  function cusComponent(dict) {
-    let tempDiv = (<Input/>);
-
-    switch (dict.component) {
-      case 'Input':
-        tempDiv = (<Input defaultValue=''/>);
-        break;
-      case 'Select':
-        tempDiv = (<Select defaultValue='请选择'>{dict.children}</Select>);
-        break;
-      case 'DatePicker':
-        tempDiv = (<DatePicker onChange={onChange} />);
-        break;
-      case 'InputNumber':
-        tempDiv = (<Input defaultValue=''/>);
-        break;
-      default:
-    }
-
-      return (
-        tempDiv
-
+    expandInfoDiv.push(
+      <Col span={8} key={i}>
+        <FormItem {...formItemLayout} label={dict.title}>
+          {getFieldDecorator(dict.submitStr,{rules: [{ required: true, message: `请输入${dict.title}!`}],initialValue:dict.initValue})(
+            tempDiv
+          )}
+        </FormItem>
+      </Col>
     );
   }
 
-{/* <p>{dict.title}</p> */}
+
+  function memberOnChange(value) {
+
+    props.form.setFieldsValue({
+      specialIdentity: '',
+    });
+  }
+
+
+  function specialIdentityOnChange(value) {
+
+    props.form.setFieldsValue({
+      member: null,
+    });
+
+  }
+  function PermanentProvinceSelect(e) {
+    dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:true,dataId:e}})
+  }
+
+
+  function uploadHeadelImg(NewuserImg){
+    dispatch({type:'addCustomer/addHeadIcon',payload:NewuserImg})
+  }
+
+  function uploadIdcardFileProps(values) {
+    dispatch({type:'addCustomer/addContractDLC',payload:values})
+  }
+
+  function uploadContractAppendicesFileProps(values) {
+    dispatch({type:'addCustomer/addCardIDDLC',payload:values})
+  }
 
   return(
-    <div className='customerContent'>
-      <Form onSubmit={handleSubmit}>
-
-        <div className='contentDiv'>
-          <h3>基本信息</h3>
-          {baseInfoDiv}
-          <Row gutter={15}>
-
-            <Col span={6}>
-              <FormItem {...formItemLayout} label={'现住址'}>
-                {getFieldDecorator(`field-${'现住址'}`)(
-                  <Select defaultValue="请选择"/>
-                )}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <Row gutter={15}>
-                <Col span={8}>
-                  <FormItem>
-                    {getFieldDecorator(`field-${'现住址'}`)(
-                      <Select defaultValue="请选择"/>
-                    )}
-                  </FormItem>
-                </Col>
-
-                <Col span={16}>
-                  <FormItem>
-                    {getFieldDecorator(`field-${'现住址'}`)(
-                      <Input/>
-                    )}
-                  </FormItem>
-                </Col>
-                </Row>
-            </Col>
-            <Col span={6}>
-              <FormItem {...formItemLayout} label={'操作者'}>
-                {getFieldDecorator(`field-${'操作者'}`)(
-                  <Input/>
-                )}
-              </FormItem>
-            </Col>
-          </Row>
-        </div>
-
+    <div>
+      <Form>
         <div className='contentDiv'>
           <h3>扩展信息</h3>
           <Row>
@@ -247,26 +427,13 @@ function customerInformation(props) {
                     <p>客户照片</p>
                   </Col>
                   <Col span={17}>
-                    <FormItem>
-                      {getFieldDecorator('userName', {
-
-                      })(
-                        <Upload
-                          className="avatar-uploader"
-                          name="avatar"
-                          showUploadList={false}
-                          action="//jsonplaceholder.typicode.com/posts/"
-                          beforeUpload={beforeUpload}
-                          onChange={handleChange}
-                          >
-                          {
-                            imageUrl ?
-                              <img src={imageUrl} alt="" className="avatar" /> :
-                              <Icon type="plus" className="avatar-uploader-trigger" />
-                          }
-                        </Upload>
-                        )}
-                    </FormItem>
+                    <FileUpload fun={uploadHeadelImg} isHead={true} className="avatar-uploader">
+                      {
+                        headIconUrl ?
+                          <img src={headIconUrl} alt="" className="avatar" /> :
+                          <Icon type="plus" className="avatar-uploader-trigger" />
+                      }
+                    </FileUpload>
                   </Col>
                 </Row>
               </div>
@@ -276,57 +443,141 @@ function customerInformation(props) {
               <div>{expandInfoDiv}</div>
             </Col>
           </Row>
-            <Row gutter={15}>
-              <Col span={6}>
-                <FormItem {...formItemLayout} label={'户籍地址'}>
-                  {getFieldDecorator(`field-${'现住址'}`)(
-                    <Select defaultValue="请选择"/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={18}>
-                <Row gutter={15}>
-                  <Col span={6}>
-                    <FormItem>
-                      {getFieldDecorator(`field-${'现住址'}`)(
-                        <Select defaultValue="请选择"/>
-                      )}
-                    </FormItem>
-                  </Col>
+          <Row gutter={15}>
+            <Col span={6}>
+              <FormItem {...formItemLayout} label={'户籍地址'}>
+                {getFieldDecorator('provincePermanent')(
+                  <Select onChange={PermanentProvinceSelect} placeholder="请选择">
+                    {provinceDataChis}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={18}>
+              <Row gutter={15}>
+                <Col span={6}>
+                  <FormItem>
+                    {getFieldDecorator('cityPermanent')(
+                      <Select placeholder="请选择">
+                        {permanentCityDataChis}
+                      </Select>
+                    )}
+                  </FormItem>
+                </Col>
 
-                  <Col span={18}>
-                    <FormItem>
-                      {getFieldDecorator(`field-${'现住址'}`)(
-                        <Input/>
-                      )}
-                    </FormItem>
-                  </Col>
-                  </Row>
-              </Col>
-            </Row>
+                <Col span={18}>
+                  <FormItem>
+                    {getFieldDecorator('detailedPermanent')(
+                      <Input/>
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </div>
 
-
-        <div className='contentDiv'>
-          <h3>客户备注</h3>
-          <Button type="primary" onClick={showModal}>添加备注</Button>
-          <Modal title="添加备注" visible={modal}
-            onOk={handleOk} onCancel={handleCancel}
-          >
-              <Input ref='remarkRef'  type="textarea" rows={10} />
-          </Modal>
-        </div>
-
-        <FormItem
-            wrapperCol={{ span: 12, offset: 6 }}
-          >
-            <Button type="primary" htmlType="submit">保存</Button>
-          </FormItem>
       </Form>
     </div>
   )
 }
 
+function Remark(props) {
+  const {modal,remarkListColumns,remarkList} = props.users;
+  const {dispatch} = props;
+
+
+  function showModal() {
+    dispatch({type:'addCustomer/hideOrShowModal',payload:true})
+  }
+
+  function handleOk(e)  {
+    dispatch({type:'addCustomer/addRemark',payload:(props.form.getFieldValue('tempRemark'))})
+  }
+
+  function handleCancel()  {
+    dispatch({type:'addCustomer/hideOrShowModal',payload:false})
+
+  }
+  return(
+    <div className='contentDiv'>
+      <Row>
+        <Col span={18}> <h3>客户备注</h3></Col>
+        <Col span={6} className='addRemark'>  <Button type="primary" onClick={showModal}>添加备注</Button> </Col>
+      </Row>
+      <Table texta dataSource={remarkList} columns={remarkListColumns} />
+
+      <Modal title="添加备注" visible={modal}
+             onOk={handleOk} onCancel={handleCancel}
+      >
+        <Input type="textarea" rows={10} />
+      </Modal>
+    </div>
+  )
+
+}
+
+const BaseForm = Form.create()(BaseInfo);
+const ExtensionForm = Form.create()(ExtensionInfo);
+
+class customerInformation extends React.Component{
+
+  constructor(props) {
+    super(props);
+  }
+
+
+  handleSubmitBase() {
+
+    const tt = this.refs.extensionForm.getFieldsValue()
+
+    let num = 0;
+
+    Object.values(tt).map((item) => {
+      if (item){
+        num ++;
+      }
+     })
+
+    if (num > 3)
+    {
+      this.refs.extensionForm.validateFields((err, values) => {
+        if (!err) {
+          this.baseFormRule(values);
+        }
+      });
+    }
+    else {
+      this.baseFormRule();
+    }
+
+  }
+
+  baseFormRule(dict){
+    this.refs.baseForm.validateFields((err, values) => {
+      if (!err) {
+        this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:values,exDict:dict}})
+      }
+    });
+  }
+
+  render() {
+
+    return (
+      <div className="customerContent">
+        <BaseForm ref="baseForm" {...this.props}/>
+        <ExtensionForm ref="extensionForm" {...this.props}/>
+        <Remark  {...this.props}/>
+        <div className='savaDiv'>
+          <Button className='backBtn'>返回</Button>
+          <Button className='backBtn' type="primary" onClick={this.handleSubmitBase.bind(this)}>保存</Button>
+        </div>
+      </div>
+    )
+  }
+
+
+}
 
 function mapStateToProps(state) {
   return {
@@ -334,5 +585,5 @@ function mapStateToProps(state) {
   };
 }
 
-const WrappedHorizontalLoginForm = Form.create()(customerInformation);
-export default connect(mapStateToProps)(WrappedHorizontalLoginForm) ;
+export default connect(mapStateToProps)(customerInformation) ;
+

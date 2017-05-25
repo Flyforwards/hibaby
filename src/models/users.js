@@ -29,15 +29,6 @@ export default {
   },
   effects: {
 
-    *findSubmit({ payload: values }, { call, put }) {
-      const  {data: {data, code}}  = yield call(usersService.findSubmit, values);
-
-      // yield put({ type: 'submitSave', payload: { data, code } });
-      if(code == 0) {
-
-       yield put(routerRedux.push('/login'));
-      }
-    },
     *findValue({ payload: values }, { call, put }) {
       const  {data: {data, code}}  = yield call(usersService.findValue, values);
 

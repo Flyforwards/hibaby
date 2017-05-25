@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
-import './fromModal.scss'
+import './module.scss'
 import {local, session} from 'common/util/storage.js'
 
 
@@ -18,47 +18,47 @@ class SelectListed extends Component {
     local.set("projectId",value)
   }
     render() {
+        console.log("权限>>>>",this.props.permission)
         return (
             <div className="SelectList">
-              <span>上级权限
               <TreeSelect
-                style={{ width: 150 }}
-                key={this.props.list.id}
+                style={{ width: 310 }}
+                key={this.props.permission.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={this.props.list}
+                treeData={this.props.permission}
                 placeholder="请选择"
                 treeDefaultExpandAll
                 onSelect={this.onSelect.bind(this)}
                 onChange={this.onChange.bind(this)}
               />
-              </span>
             </div>
         )
     }
 }
 function SelectList({
     dispatch,
-    list,
+    permission,
     code
 }) {
   return ( <div>
     <SelectListed dispatch = {
       dispatch
     }
-    data = { data }
+    permission = {permission}
     /> </div>
   )
 
 }
 function mapStateToProps(state) {
+console.log("permission添加>>>",state.module.permission)
   const {
-    item:data,
+    permission,
     code
   } = state.module;
   return {
     loading: state.loading.models.module,
-    data
+    permission
   };
 }
 export default connect(mapStateToProps)(SelectList)

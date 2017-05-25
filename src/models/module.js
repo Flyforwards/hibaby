@@ -19,10 +19,6 @@ export default {
 	},
 	reducers: {
 		//菜单列表
-		groupCharSave(state, { payload: { list, pagination }}) {
-			return {...state, list, pagination: {  ...state.pagination,...pagination }};
-		},
-
 		MainMenuList(state, {
 			payload: {data:item,size,page,total}
 		}) {
@@ -34,6 +30,7 @@ export default {
 				end: page == 1 ? item.length : (page - 1) * 3 + item.length,
 				totalpage:Math.ceil(total/size),
 			}
+			local.set("MainMenuList",item)
 			return {...menulist,range };
 		},
 		//删除服务项目
@@ -59,6 +56,7 @@ export default {
 		},
 		//主模块下拉
 		MainModuleSelect(state,{payload:{data:list,code}}){
+			local.set("Dictionary",list)
 				return{
 					...state,
 					list,
@@ -66,19 +64,30 @@ export default {
 				}
 		},
 		//菜单权限下拉
-		MenuPermissionSelect(state,{payload:{data:permission,code}}){
-				return{
-					...state,
-					permission,
-					code
-				}
+		MenuPermissionSelect(state,{payload:{data:permission,projectId}}){
+			let permissiondata={
+				...state,
+				permission,
+				projectId,
+			}
+			  local.set("index",permissiondata.data)
+				console.log("菜单下拉>>>",permission)
+				return permissiondata;
 		},
+
 		//上级菜单下拉
-		ParentNodeSelect(state,{payload:{data:menu,code}}){
-				return{
+		ParentNodeSelect(state,{payload:{data:menu,dataId,code}}){
+				let menudata={
 					...state,
 					menu,
-					code
+					dataId,
+				}
+				local.set("index",menudata.data)
+				console.log("上级下拉",menu)
+				return {
+					...state,
+					menu,
+					dataId,
 				}
 		},
 	},
@@ -86,7 +95,7 @@ export default {
 
 		//菜单列表页数据
 		*MenuData({payload: values}, { call, put }) {
-			const {data: { data,size,total,page=1,code} } = yield call(moduleService.MainMenuList, values);
+			const {data: { data,size,total,page,code} } = yield call(moduleService.MainMenuList, values);
 			if (code == 0) {
 				yield put({
 						type:'MainMenuList',
@@ -151,9 +160,7 @@ export default {
 					code
 				}
 			} = yield call(moduleService.MainModuleSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("菜单下拉选项")
 				yield put({
 						type:'MainModuleSelect',
 						payload:{
@@ -165,15 +172,15 @@ export default {
 		},
 		//菜单权限下拉选项
 		*MenuPermissionData({payload: values}, {call,put}) {
+
 			const {
 				data: {
 					data,
+					projectId,
 					code
 				}
 			} = yield call(moduleService.	MenuPermissionSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("权限下拉选项")
 				yield put({
 						type:'MenuPermissionSelect',
 						payload:{
@@ -188,12 +195,11 @@ export default {
 			const {
 				data: {
 					data,
+					dataId:projectId,
 					code
 				}
 			} = yield call(moduleService.	ParentNodeSelect, values);
-			console.log("effects>>>",data)
 			if (code == 0) {
-				message.success("权限下拉选项")
 				yield put({
 						type:'ParentNodeSelect',
 						payload:{

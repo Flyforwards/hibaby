@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
+import { Icon, Card, Button,Table, Input,Select,Form,message } from 'antd'
 import { Link} from 'react-router'
 import './serviceinfo.scss'
 import Current from '../../Current'
@@ -35,9 +35,14 @@ class AddServiceed extends Component {
           key: 'usageCount',
           width: "20%",
           render: (text, record, index) => {
+            let count = 1
+            if(record.usageCount){
+              count = record.usageCount
+              check
+            }
             return (
                 <span className="span">
-                  <Input defaultValue ={1} onChange={(event)=>{
+                  <Input defaultValue ={ count } onChange={(event)=>{
                     record.usageCount = event.target.value
                   }}/>
                 </span> 
@@ -45,87 +50,116 @@ class AddServiceed extends Component {
           },
         }];
         this.state = {
-          selectedRows: [],
-          selectedRowKeys:[],
           loading: false,
+          selectedRowKeys:[],
+          selectedRows: []
         };
     }
-    checkPrice = (rule, value, callback) => {
-      if (value.number > 0) {
-        callback();
-        return;
+    shouldComponentUpdate (nextProps) {
+      if(nextProps.findById){
+        let selectedRowKeys = []
+        nextProps.findById.serviceInfoList.map((item)=>{
+            selectedRowKeys.push(item.serviceInfoId)
+        })
+        this.setState({
+          selectedRowKeys: selectedRowKeys
+        })
       }
-      callback('Price must greater than zero!');
-    }
-    componentWillMount() {
+       return true 
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
+      console.log(selectedRows)
       this.setState({ selectedRows,selectedRowKeys });
     }
     componentDidMount() {
       let ID = window.location.search.split("=")[1]
-      console.log("ID",ID)
         this.props.dispatch({
             type: 'packageInfo/findById',
             payload: {
-              "dataId":1
+              "dataId":ID
             }
         });
         this.props.dispatch({
             type: 'packageInfo/serviceListByPage',
-            payload: {
-               "page": 1,
-               "size": 100
-            }
+            payload: { }
         });
         this.props.dispatch({
-            type: 'packageInfo/roomList',
+            type: 'packageInfo/selectData',
             payload: { }
+        });
+        this.props.dispatch({
+            type: 'packageInfo/getDictionary',
+            payload: {
+              "id":5 ,
+              "softDelete": 0,
+              "type": 2
+            }
         });
     }
     handleSubmit = ()=>{
       history.go(-1)
     }
-    handleAdd(){
-      const fields = this.props.form.getFieldsValue();
-      console.log("fields",this.state.selectedRows)
+    handleAdd(data){
       let serviceInfoList =[]
+      let ID = window.location.search.split("=")[1]
+      const fields = this.props.form.getFieldsValue();
       if(this.state.selectedRows.length>=1){
         this.state.selectedRows.map((item)=>{
           if(item.usageCount){
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":Number(item.usageCount)})
+            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
           }else{
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1})
+            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
           }
         })
-        console.log(serviceInfoList)
-        this.props.dispatch({
-          type: 'packageInfo/edit',
-          payload: {
-            "name": fields.name,
-            "price": fields.price,
-            "serviceInfoList":serviceInfoList,
-            "suiteId": fields.room,
-            "type": fields.type
+      }else{
+          data.serviceInfoList.map((item)=>{
+            if(item.usageCount){
+             serviceInfoList.push({"serviceInfoId":item.serviceInfoId,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
+            }else{
+              serviceInfoList.push({"serviceInfoId":item.serviceInfoId,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
+            }
+          })
+      }
+      console.log("目",serviceInfoList)
+      if(fields.name){
+        if(fields.price){
+          if(fields.type){
+            if(serviceInfoList.length>=1){
+              this.props.dispatch({
+                type: 'packageInfo/edit',
+                payload: {
+                  "id":ID,
+                  "name": fields.name,
+                  "price": fields.price,
+                  "serviceInfoList":serviceInfoList,
+                  "suiteId": fields.room,
+                  "type": fields.type
+                }
+              });
+            }else{
+              message.warning("请选择服务项目");
+            }
+          }else{
+            message.warning("请选择套餐的类型");
           }
-      });
-       this.props.dispatch({
-          type: 'packageInfo/serviceListByPage',
-          payload: { }
-      });
-      history.go(-1)
-    }else{
-      message.success("请选择服务项目");
-    }
-     
+        }else{
+          message.warning("请输入套餐的价格");
+        }
+      }else{
+        message.warning("请输入套餐的名称");
+      }
     }
     render() {
         let loadingName = true
         let rowSelection = {}
         const { getFieldDecorator } = this.props.form;
+        const { loading, selectedRows,selectedRowKeys} = this.state;
         const columns = this.columns;
         let ListLnformation = []
+        let selectData = []
         let roomList = []
+        let type = ''
+        let suiteId = ''
         if(this.props.serviceListByPage != null){
             ListLnformation = this.props.serviceListByPage;
               ListLnformation.map((record)=>{
@@ -133,12 +167,22 @@ class AddServiceed extends Component {
             });
             loadingName = false
         }
-        if(this.props.roomData != null){
-          roomList = this.props.roomData.map((item)=>{
-            return (<Option value={item.id+""} key={item.roomNo}>{item.roomNo}</Option>)
+        if(this.props.selectData != null && this.props.findById){
+          selectData = this.props.selectData.map((item)=>{
+            if(item.id == this.props.findById.suiteId){
+              suiteId = item.id
+            }
+            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
         }
-        const { loading, selectedRows } = this.state;
+        if(this.props.getDictionary != null &&　this.props.findById != null){
+          roomList = this.props.getDictionary.map((item)=>{
+            if(item.id == this.props.findById.type){
+              type = item.id
+            }
+            return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
+          })
+        }
         if(this.props.findById){
           let data = [];
           this.props.findById.serviceInfoList.map((record)=>{
@@ -146,6 +190,7 @@ class AddServiceed extends Component {
           });
           rowSelection = {
               selectedRows,
+              selectedRowKeys,
               onChange: this.onSelectChange,
           };
         }
@@ -182,13 +227,14 @@ class AddServiceed extends Component {
                    label="套餐类型"
                    >
                     {getFieldDecorator('type', {
-                      initialValue:this.props.findById?this.props.findById.name:null,
+                      initialValue:type,
                       rules: [],
                     })(
                     <Select
                     >
-                      <Option value="0">主套餐</Option>
-                      <Option value="1">次套餐</Option>
+                      {
+                        roomList
+                      }
                     </Select>
                     )}
                   </FormItem>
@@ -201,7 +247,8 @@ class AddServiceed extends Component {
                     dataSource={ListLnformation}
                     pagination = { false }
                     scroll={{ y: 500 }}
-                    loading = { loadingName }         
+                    loading = { loadingName } 
+                    defaultExpandedRowKeys = {ListLnformation}      
                     />
                 </div>  
                 <div className="addServiceinfoSuite">
@@ -212,20 +259,21 @@ class AddServiceed extends Component {
                    className="room"
                   >
                     {getFieldDecorator('room', {
-                      initialValue:this.props.findById?this.props.findById.suiteId:null,
+                      initialValue:suiteId,
                        rules: [],
                     })(
-                      <Select
+                      <Select 
                     >
-                      <Option value="0">主套餐</Option>
-                      <Option value="1">次套餐</Option>
+                     {
+                      selectData
+                     }
                     </Select>
                     )}
                   </FormItem>
                 </Form>
                 </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+                <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
             </div>
         )
     }
@@ -233,8 +281,9 @@ class AddServiceed extends Component {
 function AddService({
   dispatch,
   serviceListByPage,
-  roomData,
-  findById
+  selectData,
+  findById,
+  getDictionary
 }) {
   return ( < div >
     <AddServiceed dispatch = {
@@ -243,11 +292,14 @@ function AddService({
     serviceListByPage = {
       serviceListByPage
     }
-    roomData = {
-      roomData
+    selectData = {
+      selectData
     }
     findById = {
       findById
+    }
+    getDictionary = {
+      getDictionary
     }
     /></div>
   )
@@ -255,14 +307,16 @@ function AddService({
 function mapStateToProps(state) {
   const {
     serviceListByPage,
-    roomData,
-    findById
+    selectData,
+    findById,
+    getDictionary
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
     serviceListByPage,
-    roomData,
-    findById
+    selectData,
+    findById,
+    getDictionary
     };
 }
 const addService = Form.create()(AddServiceed);

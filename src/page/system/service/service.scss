@@ -227,19 +227,20 @@
 						margin-left: 900px;
 					}
 					.SaveBtn{
-							display:block;
-							height:40px;
-							width:100px;
-							float:left;
-							margin-left:10px;
-							border-radius:4px;
-							.ant-btn{
-									background:#108ee9 ;
-									font-size:18px;
-									height:40px;
-									width:100px;
-									color:#fff;
-							}
+						display:block;
+						height:40px;
+						width:100px;
+						float:left;
+						margin-left:10px;
+						border-radius:4px;
+						font:18px "微软雅黑";
+						background:#108ee9 ;
+						color:#fff;
+						.ant-btn{
+								height:40px;
+								font-size:18px;
+								width:100px;
+						}
 					}
 					.DelBtn{
 							display:block;

@@ -95,8 +95,8 @@ export default {
 				code,
 			};
 			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? list.length : (page - 1) * 3 + list.length,
+				start: page == 1 ? 1 : (page - 1) * 10 + 1,
+				end: page == 1 ? list.length : (page - 1) * 10 + list.length,
 				totalpage:Math.ceil(total/size),
 			}
 			return {...organizationdata,range};
@@ -289,6 +289,7 @@ export default {
 			{
 			case 1:
 			  message.success("添加用户信息成功");
+			  yield put(routerRedux.push("/system/organization"));
 			  break;
 			case 2:
 			  message.success("该手机号已被注册");
@@ -375,7 +376,7 @@ export default {
 						type: 'getDepartmentNodes',
 						payload: query
 					});
-		         	
+
 		        }
 		        if(pathname === '/system/organization/addUser') {
 		        	dispatch({

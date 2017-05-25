@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
-import './fromModal.scss'
+import './module.scss'
 import {local, session} from 'common/util/storage.js'
 
 
@@ -14,51 +14,48 @@ class SelectListed extends Component {
    onChange = (value) => {
     this.setState({ value });
   }
-  onSelect = (value,node, extra) => {
-    local.set("projectId",value)
-  }
     render() {
+        console.log("权限>>>>",this.props.permission)
         return (
             <div className="SelectList">
-              <span>
               <TreeSelect
-                style={{ width: 150 }}
-                key={this.props.list.id}
+                style={{ width: 310 }}
+                key={this.props.permission.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={this.props.list}
+                treeData={this.props.permission}
                 placeholder="请选择"
                 treeDefaultExpandAll
                 onSelect={this.onSelect.bind(this)}
                 onChange={this.onChange.bind(this)}
               />
-              </span>
             </div>
         )
     }
 }
 function SelectList({
     dispatch,
-    list,
+    permission,
     code
 }) {
   return ( <div>
     <SelectListed dispatch = {
       dispatch
     }
-    list = { list }
+    permission = {permission}
     /> </div>
   )
 
 }
 function mapStateToProps(state) {
+console.log("permission添加>>>",state.module.permission)
   const {
-    list,
+    permission,
     code
-  } = state.system;
+  } = state.module;
   return {
-    loading: state.loading.models.system,
-    list
+    loading: state.loading.models.module,
+    permission
   };
 }
 export default connect(mapStateToProps)(SelectList)

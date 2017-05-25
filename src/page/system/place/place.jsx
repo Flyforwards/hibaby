@@ -44,18 +44,16 @@ class localCharIndex extends React.Component {
     }
 
     render() {
-
       const { list, loading, pagination, dispatch } = this.props;
       const tableProps = {
         loading: loading.effects['localData/localChar'],
         dataSource : list ,
         pagination,
         onChange (page) {
-          const { query, pathname } = location
+          const { pathname } = location
           dispatch(routerRedux.push({
             pathname,
             query: {
-              ...query,
               page: page.current,
               size: page.pageSize,
               type: 2,
@@ -82,8 +80,23 @@ class localCharIndex extends React.Component {
     );
   }
 }
+function getLocalTime(nS) {
+  var now = new Date(parseInt(nS));
+  var year=now.getFullYear();
+  var month=now.getMonth()+1;
+  var date=now.getDate();
+  if(month<10){
+    month = "0"+month
+  }
+  if(date<10){
+    date = "0"+date
+  }
+  return `${year}-${month}-${date}`
+}
+/*time = getLocalTime(USER.gmt_entry)*/
 
 function mapStateToProps(state) {
+
   const {
     list,
     pagination

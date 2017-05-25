@@ -73,50 +73,28 @@ class Serviceinfoed extends Component {
         });
     }
     render() {
-        let ListLnformation = []
-        const pagination = {
-          total:this.props.total,
-          showQuickJumper: true,
-          defaultPageSize:10,
-          onChange: (current) => {
-            this.current = current
-            this.props.dispatch({
-              type: 'packageInfo/listByPage',
-              payload: {
-                  "page":current,
-                  "size":10
-              },
-            });
-          },
-        };
+        const { list, loading, pagination, dispatch } = this.props;
         const columns = this.columns;
-        if(this.props.list != null){
-            ListLnformation = this.props.list;
-              ListLnformation.map((record)=>{
-                record.key = record.id;
-            });
+        const tableProps = {
+          loading: loading.effects['packageInfo/listByPage'],
+          dataSource : list ,
+          pagination,
+          onChange (page) {
+            const { pathname } = location
+            dispatch(routerRedux.push({
+              pathname,
+              query: {
+                page: page.current,
+                size: page.pageSize,
+              },
+            }))
+          },
         }
         return (
             <div className="serviceinfo">
                 <div className="serviceinfoButton"><Link to="/crm/serviceinfo/addservice"><Button type="primary">添加</Button></Link></div>
                 <div className="serviceinfoTabal">
-                    <Table bordered dataSource={ListLnformation} columns={ columns } pagination = {pagination} />
-                    < Current page = {
-                          this.props.page
-                        }
-                        totalpage = {
-                          this.props.totalpage
-                        }
-                        total = {
-                          this.props.total
-                        }
-                        results = {
-                          this.props.results
-                        }
-                        range = {
-                          this.props.range
-                        }
-                    />
+                    <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ columns } pagination = {pagination} />
                 </div>
                 <Delete 
                    visible={ this.state.DeleteVisible }
@@ -127,45 +105,16 @@ class Serviceinfoed extends Component {
         )
     }
 }
-function Serviceinfo({
-  dispatch,
-  list,
-  total,
-  page,
-  results,
-  range
-}) {
-  return ( < div >
-    <Serviceinfoed dispatch = {
-      dispatch
-    }
-    list = {
-        list
-    }
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     list,
-    total,
-    page,
-    results,
-    range
+    pagination
   } = state.packageInfo;
   return {
-    loading: state.loading.models.packageInfo,
+    loading: state.loading,
     list,
-    total,
-    page,
-    results,
-    range
+    pagination
     };
 }
 export default connect(mapStateToProps)(Serviceinfoed)

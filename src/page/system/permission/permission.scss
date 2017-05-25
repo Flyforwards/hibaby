@@ -25,6 +25,8 @@
     float: right;
     margin-bottom: 2px;
     margin-top: 2px;
+    background-color: #0e77ca;
+    color: #ecf6fd;
   }
   .divs {
     overflow: hidden;
@@ -276,25 +278,25 @@
 
 }
 
-.add-vertical-center-modal {
-  text-align: center;
-  white-space: nowrap;
-  .ant-modal {
-    display: inline-block;
-    vertical-align: middle;
-    top: 0;
-    text-align: center;
-  }
-}
-
-.add-vertical-center-modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
-}
-
+//.add-vertical-center-modal {
+//  text-align: center;
+//  white-space: nowrap;
+//  .ant-modal {
+//    display: inline-block;
+//    vertical-align: middle;
+//    top: 0;
+//    text-align: center;
+//  }
+//}
+//
+//.add-vertical-center-modal:before {
+//  content: '';
+//  display: inline-block;
+//  height: 100%;
+//  vertical-align: middle;
+//  width: 0;
+//}
+//
 
 
 

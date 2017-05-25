@@ -101,7 +101,7 @@ class AddRoleFrom extends Component {
         onOk = {this.handleOk.bind(this)}
         closable = { false }
         width = { 300 }
-        wrapClassName = { "add-vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal" }
       >
       <div className="fromCreateList">
         {
@@ -123,4 +123,5 @@ function mapStateToProps(state) {
     data
   };
 }
+
 export default connect(mapStateToProps)(AddRoleFrom)

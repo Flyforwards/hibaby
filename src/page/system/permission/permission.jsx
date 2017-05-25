@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message } from 'antd';
 import { connect } from 'dva';
+import {Link} from 'react-router';
 import  './permission.scss';
 import AddRoleFrom from './AddRoleFrom';
 import SettingPermissionFrom from './SettingpermissionFrom'
@@ -39,10 +40,10 @@ class permission extends Component {
             const roleD =  manager.array_contain(this.props.permissionAlias,'roleD')
             return (
               <div key = { index }>
-                <a disabled={ !roleU } className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</a>
-                <a disabled={ !roleConfig } className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</a>
-                <a disabled={ !users } className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</a>
-                <a disabled={ !roleD } className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
+                <Link className="firstA" onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
+                <Link className="firstA" onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
+                <Link className="firstA" onClick={ this.showMemberList.bind(this,record) }>成员列表</Link>
+                <Link className="firstB" onClick={ this.delete.bind(this,record )}>删除</Link>
               </div>
             );
           },
@@ -123,22 +124,21 @@ class permission extends Component {
           dataSource : data ,
           pagination,
           onChange (page) {
-            const { query, pathname } = location
+            const { pathname } = location
             dispatch(routerRedux.push({
               pathname,
               query: {
-                ...query,
                 page: page.current,
                 size: page.pageSize,
               },
             }))
           },
         }
-
+        // disabled={ manager.array_contain(permissionAlias,"roleC") }
         return (
            <div className="permission-cent">
              <div className="divs">
-               <Button disabled={ manager.array_contain(permissionAlias,"roleC") } className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
+               <Button className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
                 <Table {...tableProps} columns={ this.columns } bordered rowKey={record => record.id}/>

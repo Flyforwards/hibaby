@@ -1,5 +1,6 @@
 .card{
 padding: 20px;
+  background: #FFFFFF;
 }
 .cardTable{
 
@@ -12,4 +13,11 @@ padding: 20px;
     font-size: 14px;
     color: #000000;
   }
+}
+.ant-table-bordered .ant-table-thead > tr > th{
+  background: #666666;
+  text-align: center;
+}
+.ant-table-bordered .ant-table-tbody > tr > td{
+  text-align: center;
 }

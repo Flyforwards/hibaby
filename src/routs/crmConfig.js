@@ -7,8 +7,8 @@ export default (app) => [
       path: '/crm/customer',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          registerModel(app, require('models/system'));
-          cb(null, require('page/crm/customer/Customer.jsx'))
+          registerModel(app, require('models/customer'));
+          cb(null, require('page/crm/customer/CustomerIndex.jsx'))
         })
       }
     },
@@ -42,6 +42,26 @@ export default (app) => [
         })
       }
     },
+     // 添加套房
+    {
+      path: '/crm/serviceinfo/addsuite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/addSuite.jsx'))
+        })
+      }
+    },
+    //查看套房
+    {
+      path: '/crm/serviceinfo/viewsuite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/viewSuite.jsx'))
+        })
+      }
+    },
     //查看套餐
     {
       path: '/crm/serviceinfo/viewservice',
@@ -62,12 +82,23 @@ export default (app) => [
         })
       }
     },
+    //编辑套房
+    {
+      path: '/crm/serviceinfo/editsuite',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/editSuite.jsx'))
+        })
+      }
+    },
     //套房
     {
       path: '/crm/suite',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('page/crm/product/InfoCard.jsx'))
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/suite.jsx'))
         })
       }
     },
@@ -76,7 +107,38 @@ export default (app) => [
       path: '/crm/commodity',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('page/crm/product/InfoCard.jsx'))
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/commodity.jsx'))
+        })
+      }
+    },
+    // 添加商品
+    {
+      path: '/crm/commodity/addcommodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/addCommodity.jsx'))
+        })
+      }
+    },
+    // 查看商品详情
+    {
+      path: '/crm/commodity/viewcommodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/viewCommodity.jsx'))
+        })
+      }
+    },
+     // 编辑商品
+    {
+      path: '/crm/commodity/editcommodity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/editCommodity.jsx'))
         })
       }
     },
@@ -109,5 +171,44 @@ export default (app) => [
         })
       }
     },
-
+    //活动列表
+    {
+      path: '/crm/activity',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityIndex.jsx'))
+        })
+      }
+    },
+    //活动添加
+    {
+      path: '/crm/activity/add',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityAddIndex.jsx'))
+        })
+      }
+    },
+    //活动详情
+    {
+      path: '/crm/activity/detail',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityDetailIndex.jsx'))
+        })
+      }
+    },
+    //活动编辑
+    {
+      path: '/crm/activity/edit',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/activity'));
+          cb(null, require('page/crm/activity/ActivityDetailEditIndex.jsx'))
+        })
+      }
+    },
 ]

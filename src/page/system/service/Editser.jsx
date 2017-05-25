@@ -116,7 +116,7 @@ class EditService extends Component {
                   <Link className="BackBtn AddBack" to='/system/service-item'>
                       <Button>返回</Button>
                   </Link>
-                  <Button onClick={ this.handleSave.bind(this) } >保存</Button>
+                  <Button className="SaveBtn" onClick={ this.handleSave.bind(this) } >保存</Button>
                 </div>
             </div>
           );
