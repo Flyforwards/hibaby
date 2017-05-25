@@ -23,11 +23,7 @@ function ClubSelect({ dispatch, clubs}){
       <div className = "selectForm" >
        <div className = "login-index">
          <div className = "select">
-<<<<<<< HEAD:src/page/login/clubSelect.js
-           <img className = "findimg" src ={ logo } />
-=======
            <img className = "find-img" src ={ logo } />
->>>>>>> e8fcd00c90842e2562c185d21453f277a572877a:src/page/login/ClubSelect.js
            {
              buttonNodes
            }

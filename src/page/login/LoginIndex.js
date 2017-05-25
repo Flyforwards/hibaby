@@ -40,11 +40,7 @@ class LoginIndex extends React.Component {
   render() {
       const { getFieldDecorator } = this.props.form;
       return (
-<<<<<<< HEAD:src/page/login/loginIndex.js
-        <div className="loginForm login">
-=======
         <div className="login-form-cent login">
->>>>>>> e8fcd00c90842e2562c185d21453f277a572877a:src/page/login/LoginIndex.js
         <div className ="login-index" >
           <Form onSubmit = { this.handleSubmit } className = "login-form" >
             <img src = {logo}/>
