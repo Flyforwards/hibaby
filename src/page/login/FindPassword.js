@@ -23,31 +23,19 @@ class FindPassword extends React.Component {
         };
     }
 
-    setModal1Visible(modal1Visible) {
-        this.setState({
-            modal1Visible
-        });
-    }
-    setModal2Visible(modal2Visible) {
-        this.setState({
-            modal2Visible
-        });
-    }
-
-
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                if (newpass.value != queren.value) {
-                      this.setModal2Visible(true);
+                if (values.password != values.password2) {
+                      message.error("两次输入密码不一致， 请重新输入！");
                 } else {
                     this.props.dispatch({
                         type: 'login/findSubmit',
                         payload: {
-                            "mobile": phone.value,
-                            "password": newpass.value,
-                            "verCode": testword.value
+                            "mobile": values.mobile,
+                            "password": values.password,
+                            "verCode": values.verCode
                         }
                     });
                 }
@@ -58,8 +46,8 @@ class FindPassword extends React.Component {
 
     handle = (e) => {
         e.preventDefault();
-        console.log(phone.value)
-        if (!(/^1[34578]\d{9}$/.test(phone.value))) {
+        console.log(mobile.value)
+        if (!(/^[1][34578][0-9]{9}$/.test(mobile.value))) {
           message.error("请输入正确的手机号")
         } else {
           if (this.state.allowClick) {
@@ -85,7 +73,7 @@ class FindPassword extends React.Component {
             this.props.dispatch({
               type: 'login/getVerCode',
               payload: {
-                'mobile': phone.value
+                'mobile': mobile.value
               }
             });
           }
@@ -101,50 +89,55 @@ class FindPassword extends React.Component {
     }
 
     render() {
-        let getCode = this.first ?(<div> 获取验证码 </div>):(<div> 重新获取 </div>)
+        const title = this.first ? " 获取验证码 ":" 重新获取 "
+        let getCode = (<span className="span-border" onClick = { this.handle.bind(this)}>{ title }</span>);
         if (!this.state.allowClick) {
-          getCode = (<div className="red">{this.state.count}秒后重发</div> )
+          getCode = (<span  className="red">{this.state.count}秒后重发</span> )
         }
         const { getFieldDecorator } = this.props.form;
         return (
-          <div className = "loginForm find">
+          <div className = "login-form-cent find">
           <div className = "login-index">
             <Form onSubmit = { this.handleSubmit } className = "login-form">
-              <img className = "findimg" src = {logo} />
+              <img className = "find-img" src = {logo} />
               <Link className = "return" to="/login" > &larr; 返回登录 </Link>
               <FormItem> {
-                getFieldDecorator('phone', {
+                getFieldDecorator('mobile', {
                   rules: [{
+                      type: "string",
+                      pattern: /^[1][34578][0-9]{9}$/,
                       required: true,
-                      message: '请输入手机号!'
+                      message: '请正确的输入手机号!'
                   }], })( <Input prefix = { <span> </span>}  placeholder="请输入手机号" /> )}
               </FormItem>
               <FormItem> {
-                getFieldDecorator('testword', {
+                getFieldDecorator('verCode', {
                     rules: [{
                         required: true,
                         message: '请输入验证码!'
                     }],
-                })( <Input type = "password"
-                    placeholder = "请输入验证码"
-                prefix = { <span className = "testNum" onClick = { this.handle.bind(this) } > { getCode } </span>}/> )}
+                })( <Input placeholder = "请输入验证码" prefix = { getCode }/>)}
               </FormItem>
               <div>
                 <FormItem> {
-                  getFieldDecorator('newpass', {
+                  getFieldDecorator('password', {
                       rules: [{
+                          type: "string",
+                          pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/,
                           required: true,
-                          message: '请输入新密码!'
+                          message: '8-20位同时包含数字与字母!'
                       }],
-                  })( <Input prefix = { <span> </span> }  placeholder="请输入新密码"/> )}
+                  })( <Input type="password" prefix = { <span> </span> }  placeholder="请输入新密码"/> )}
                 </FormItem>
                 <FormItem > {
-                  getFieldDecorator('queren', {
+                  getFieldDecorator('password2', {
                       rules: [{
+                          type: "string",
+                          pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/,
                           required: true,
-                          message: '请确认新密码!'
+                          message: '8-20位同时包含数字与字母!'
                       }],
-                  })( <Input prefix = { < span >
+                  })( <Input type="password" prefix = { < span >
                           </span>}  placeholder="再次输入新密码" /> )
                   }
                 </FormItem>
@@ -154,32 +147,6 @@ class FindPassword extends React.Component {
                   htmlType = "submit"
                   className = "login-form-button" >提交
                 </Button>
-                <Modal visible = { this.state.modal1Visible }
-                  title = "弹窗"
-                  onOk = {
-                      () => this.setModal1Visible(false)
-                  }
-                  footer = {[
-                            <Button key = "confirm"
-                              type = "primary"
-                              size = "large"
-                              onClick = { () => this.setModal1Visible(false) } > 确认
-                            </Button>,
-                      ]}>
-                  <p> 请输入正确的手机号！ </p>
-                </Modal>
-                <Modal visible = { this.state.modal2Visible }
-                  title = "弹窗"
-                  onOk = { () => this.setModal2Visible(false) }
-                  footer = {[
-                          <Button key = "confirm"
-                          type = "primary"
-                          size = "large"
-                          onClick = { () => this.setModal2Visible(false) } > 确认
-                          </Button>,
-                      ]}>
-                  <p> 再次输入密码不一致， 请重新输入！ </p>
-                </Modal>
               </FormItem >
             </Form>
           </div>

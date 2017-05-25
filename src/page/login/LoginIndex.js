@@ -15,19 +15,23 @@ class LoginIndex extends React.Component {
   constructor(props) {
       super(props);
       this.state = {  visible: false,  };
+      this.phone = session.get("userPhone")
   }
 
   handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
+        console.log(values);
           if (!err) {
-              this.props.dispatch({
-                  type: 'login/login',
-                  payload: {
-                      "mobile": userName.value,
-                      "password": password.value
-                  }
-              });
+            if (values.remember) {
+              session.set("userPhone", values.mobile)
+            } else {
+              session.remove("userPhone");
+            }
+            this.props.dispatch({
+                type: 'login/login',
+                payload: values
+            });
 
           }
       });
@@ -36,16 +40,19 @@ class LoginIndex extends React.Component {
   render() {
       const { getFieldDecorator } = this.props.form;
       return (
-        <div className="loginForm login">
+        <div className="login-form-cent login">
         <div className ="login-index" >
           <Form onSubmit = { this.handleSubmit } className = "login-form" >
             <img src = {logo}/>
             <FormItem> {
-                getFieldDecorator('userName', {
+                getFieldDecorator('mobile', {
                     rules: [{
+                        type: "string",
+                        pattern: /^[1][34578][0-9]{9}$/,
                         required: true,
-                        message: '请输入手机号!'
+                        message: '请正确的输入手机号!'
                     }],
+                    initialValue: this.phone,
                 })( <Input className = "test"
                     prefix = { <spa > 手机号 </spa>} placeholder="请输入您的手机号" /> )
                 }
@@ -53,8 +60,10 @@ class LoginIndex extends React.Component {
             <FormItem> {
                 getFieldDecorator('password', {
                     rules: [{
+                        type: "string",
+                        pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/,
                         required: true,
-                        message: '请输入密码!'
+                        message: '8-20位同时包含数字与字母!'
                     }],
                 })( <Input prefix = { <span> 密码 </span>} type="password" placeholder="请输入您的密码" /> )
                 }
