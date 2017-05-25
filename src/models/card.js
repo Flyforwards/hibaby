@@ -15,6 +15,11 @@ export default {
     },
   },
   reducers: {
+    //分页
+    getCardPageSave(state, { payload: { list, pagination }}) {
+      return {...state, list, pagination: {  ...state.pagination,...pagination }};
+    },
+
     getCardInfo(state, { payload: { data: cardInfo, total } }) {
       let getCardInfo = { ...state, cardInfo, total }
       return getCardInfo;
@@ -33,11 +38,16 @@ export default {
       let zheKouInfo = { ...state, zheKou }
       return zheKouInfo;
     },
-    //会员卡级别
+    //卡种类型
+    cardType(state , {payload: {data : typeValues }}){
+      let cardType ={ ...state, typeValues}
+      return cardType;
+    },
 
+    //会员卡级别
     levelInfo(state, { payload: { data: level } }){
       let levelInfo = { ...state, level }
-      return level;
+      return levelInfo;
     }
   },
   effects: {
@@ -65,10 +75,21 @@ export default {
         });
       }
     },
-
+    //获取卡种类型
+    *getCardType({ payload:values }, { call,put }){
+      const { data: { code, data } } = yield call(cardService.getCardType, values);
+      if ( code == 0) {
+        yield put({
+          type:'cardType',
+          payload: {
+            data
+          }
+        });
+      }
+    },
     //获取卡种分页列表
     *getCard({ payload: values }, { call, put }) {
-      const { data: { code, data, total } } = yield call(cardService.getMembershipcardPageList, values);
+      const { data: { code, data, total,page ,size} } = yield call(cardService.getMembershipcardPageList, values);
       if (code == 0) {
         yield put({
           type: 'getCardInfo',
@@ -77,6 +98,17 @@ export default {
             total
           }
         });
+        yield put({
+          type: 'getCardPageSave',
+          payload: {
+            list: data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
       }
     },
 
@@ -109,6 +141,25 @@ export default {
       }
     },
 
+  //刪除卡種信息
+    *deleteCardById({ payload: values},{ call, put,select}){
+      const { data: { code ,data }} = yield call(cardService.deleteCardById,values);
+      if( code == 0) {
+        message.success('删除成功');
+        const page = yield select(state => state.card.pagination);
+        console.log('ss',page.current)
+        yield put(routerRedux.push({
+          pathname: '/crm/card',
+        }))
+        yield put({
+          type:'getCard',
+          payload:{
+            "page":page.current,
+            "size":page.pageSize,
+          }
+        })
+      }
+    },
 
     *getPostInfo({ payload: values }, { put }){
       yield put({
@@ -135,8 +186,21 @@ export default {
               "sortOrder": "string"
             }
           });
-        }
-        ;
+          dispatch({
+            type:'getCardType',
+          });
+          dispatch({
+            type: 'getZhekouInfo',
+          });
+         dispatch({
+            type:'getLevelInfo',
+            payload:{
+              id:7,
+              softDelete:0,
+              type:1,
+            }
+          });
+        };
       })
     }
   }

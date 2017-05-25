@@ -172,6 +172,26 @@ export default (app) => [
         })
       }
     },
+    //查看卡种详情
+    {
+      path: '/crm/cardDetail',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/card'));
+          cb(null, require('page/crm/infocard/card/cardDetail.js'))
+        })
+      }
+    },
+    //编辑卡种信息
+    {
+      path: '/crm/cardEdit',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/card'));
+          cb(null, require('page/crm/infocard/card/cardEdit.js'))
+        })
+      }
+    },
     //活动列表
     {
       path: '/crm/activity',
