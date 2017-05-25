@@ -1,0 +1,80 @@
+.firstItem {
+  background-color:#fff;
+  margin:10px;
+  border:1px solid #ccc;
+}
+
+.itemTitle {
+  width: 20px;
+  text-align: center;
+  font-size: larger;
+  margin: 0 auto;
+}
+
+/*table 上方功能栏*/
+.topButton {
+  width: 160px;
+  height: 35px;
+  margin-left: 10px;
+}
+
+.topItembg {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  height: 55px;
+}
+
+.bottomItemBg {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  height: 55px;
+}
+
+.rightItemBg {
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  height: 55px;
+}
+
+.leftRightItemBg {
+  height: 55px;
+  border-bottom: 1px solid #ccc;
+}
+
+.allNoneBg {
+  height: 55px;
+}
+
+.bottomRightItemBg {
+  border-left: 1px solid #ccc;
+  height: 55px;
+}
+
+.ant-form-item-label{
+  line-height: 55px;
+}
+
+.ant-form-item-control {
+  line-height: 55px;
+}
+
+.uploadOptions {
+  margin-top: 13px;
+  text-align: right;
+  line-height: 30px;
+  margin-right: 10px;
+}
+
+.uploadOptionsButton {
+  margin-top: 13px;
+  height: 30px;
+  width: 120px;
+}
+
+.score-line {
+  margin-top: 13px;
+  text-align: center;
+  line-height: 30px;
+  color: #ddd;
+}

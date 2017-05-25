@@ -13,7 +13,7 @@ export default (app) => [
       }
     },
   //客户列表
-    {
+  {
     path: '/crm/customer/Add',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
@@ -21,6 +21,7 @@ export default (app) => [
         cb(null, require('page/crm/customer/addCustomer.jsx'))
       })
     }
+  },
     // 套餐
     {
       path: '/crm/serviceinfo',
