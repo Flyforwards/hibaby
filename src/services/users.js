@@ -22,19 +22,7 @@ export function customer(values) {
   })
 }
 
-export function test(values) {
-  return request('/crm/api/v1/getVerCode', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
 
-export function findSubmit(values) {
-  return request('/crm/api/v1/resetPassword', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
 export function findValue(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainAndSide', {
     method: 'GET',

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'dva';
-import './loginIndex.scss';
+import './LoginIndex.scss';
 
 import logo from './images/logo.png'
 
@@ -20,17 +20,29 @@ function ClubSelect({ dispatch, clubs}){
   })
 
   return (
-     <div className = "container">
-       <div className = "select">
-         <img className = "findimg" src ={ logo } />
-         {
-           buttonNodes
-         }
+      <div className = "selectForm" >
+       <div className = "login-index">
+         <div className = "select">
+           <img className = "findimg" src ={ logo } />
+           {
+             buttonNodes
+           }
+         </div>
        </div>
-     </div>
+      </div>
   )
+}
+
+function mapStateToProps(state) {
+  const {
+    clubs,
+  } = state.layout;
+  return {
+    loading: state.loading,
+    clubs
+  };
 }
 
 
 
-export default connect()(ClubSelect);
+export default connect(mapStateToProps)(ClubSelect);
