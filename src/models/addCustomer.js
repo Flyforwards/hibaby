@@ -285,6 +285,7 @@ export default {
           });
         }
         else {
+          message.success("新增客户成功");
           yield put(routerRedux.push('/crm/customer'));
           yield put({type:'savaExtensionInfo',} );
         }
@@ -350,6 +351,7 @@ export default {
           });
         }
         else {
+          message.success("新增客户成功");
           yield put(routerRedux.push('/crm/customer'));
           yield put({type: 'savaExtensionInfo',});
         }
@@ -374,6 +376,7 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
       if (code == 0) {
+        message.success("新增客户成功");
         yield put(routerRedux.push('/crm/customer'));
         yield put({type:'savaExtensionInfo',} );
 
