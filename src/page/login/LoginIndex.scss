@@ -1,3 +1,7 @@
+<<<<<<< HEAD:src/page/login/loginIndex.scss
+=======
+
+>>>>>>> e8fcd00c90842e2562c185d21453f277a572877a:src/page/login/LoginIndex.scss
 .login-index {
     height: 100%;
     width: 100%;
@@ -98,7 +102,11 @@
 
 }
 
+<<<<<<< HEAD:src/page/login/loginIndex.scss
 .loginForm{
+=======
+.login-form-cent{
+>>>>>>> e8fcd00c90842e2562c185d21453f277a572877a:src/page/login/LoginIndex.scss
      .ant-checkbox-checked .ant-checkbox-inner,
     .ant-checkbox-indeterminate .ant-checkbox-inner {
         background-color: #cb7525;
@@ -177,14 +185,9 @@
 }
 
 
-
-
-
-
-
 /*find.css*/
 .find{
-  .findimg{
+  .find-img{
        margin-left:25%;
      margin-bottom: 18px;
   }
@@ -204,8 +207,26 @@
 
   }
 
+  .span-border {
+    padding: 6px 8px;
+    font-size: 14px;
+    line-height: 1;
+    color: rgba(0,0,0,.65);
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+
+  }
+
   .red{
-      color:red;
+    color:red;
+    padding: 6px 8px;
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+    border: 1px solid red;
+    border-radius: 4px;
   }
  /*findpass.css*/
 

@@ -6,6 +6,8 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import './userHealthInformation.scss'
 import NutritionHealthInformation from './NutritionHealthInformation'
+import HospitalHealthy from '../healthy/healthyhome.jsx';
+
 const TabPane = Tabs.TabPane;
 
 class userHealthInformation extends React.Component {
@@ -151,6 +153,7 @@ class userHealthInformation extends React.Component {
       <div className = "user-health-cent">
         <Tabs className="tabsContent" defaultActiveKey="1" type="card">
           <TabPane tab="医疗健康档案" key="1">
+            <HospitalHealthy />
           </TabPane>
           <TabPane tab="营养部健康档案" key="2">
             <NutritionHealthInformation />

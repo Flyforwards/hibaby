@@ -59,6 +59,7 @@ class Header extends React.Component {
         payload: { moduleList: item.moduleList, selectIndex: index, }
       });
     }
+
     // 切换地方中心
     changeClub(record){
       const selectEndemic = session.get("endemic")
@@ -77,9 +78,10 @@ class Header extends React.Component {
         if (this.props.userInfo != null) {
           userName = this.props.userInfo.name;
           const entrys = this.props.userInfo.entrys;
-          if ( entrys !=null && entrys.length > 0) {
+          if ( entrys != null && entrys.length > 0) {
             const entry = entrys[0];
-            userPosition = positionDict[entry.positionId];
+            // userPosition = positionDict[entry.positionId];
+            userPosition="开发";
           }
         }
         const endemicMenu = session.get("clubs");
@@ -133,7 +135,7 @@ class Header extends React.Component {
             isSelect : null,
             name  : "系统管理",
             orderBy : 2,
-            path : "/system/groupchar",
+            path : "/system/group-char",
           }];
         }
 
@@ -163,7 +165,6 @@ class Header extends React.Component {
                       }
                     </div>
                     <ul className="nav-ul">
-                        { this.state.list }
                     </ul>
                 </h1>
                 <ul className="yt-admin-framework-header-menu clearfix">
@@ -173,7 +174,7 @@ class Header extends React.Component {
                 </ul>
                 <Dropdown overlay={ this.userMenu } placement="bottomCenter" trigger={ ['click'] }>
                   <div className="header-menu-name">
-                    <img src={UserImg}/>
+                    <img src={ UserImg }/>
                     <p className="user-info-p">
                       <span className="user-name">{ userName }</span>
                       <span className="user-pro">{ userPosition }</span>

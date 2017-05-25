@@ -2,7 +2,7 @@ import React from 'react';
 import {Upload,message} from 'antd';
 
 //上传
-export default function FileUpload({children,fun,isHead=false}) {
+export default function FileUpload({children,fun,deleteFun,isHead=false}) {
 
   function getBase64(img, callback) {
     const reader = new FileReader();
@@ -33,9 +33,13 @@ export default function FileUpload({children,fun,isHead=false}) {
     beforeUpload:beforeUpload,
     showUploadList : !isHead,
     action: isHead ?  '/crm/api/v1/uploadImg' : '/crm/api/v1/uploadEnclosure',
+    onRemove(info){
+      deleteFun(info.response.data.fileKey);
+    },
     onChange(info) {
+
       if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
+
       }
       if (info.file.status === 'done') {
         if (info.file.response.code === 0)

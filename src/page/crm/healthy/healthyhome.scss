@@ -1,0 +1,91 @@
+.healthContentDiv {
+  .firstItem {
+    background-color: #fff;
+    margin: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .itemTitle {
+    width: 20px;
+    height: 100%;
+    text-align: center;
+    font-size: larger;
+    vertical-align: middle;
+    display: table-cell;
+    margin: 0 auto;
+  }
+
+  .topItembg {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    height: 55px;
+  }
+
+  .bottomItemBg {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    height: 55px;
+  }
+
+  .rightItemBg {
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    height: 55px;
+  }
+
+  .leftRightItemBg {
+    height: 55px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .allNoneBg {
+    height: 55px;
+  }
+
+  .bottomRightItemBg {
+    border-left: 1px solid #ccc;
+    height: 55px;
+  }
+
+  .ant-form-item-label {
+    line-height: 55px;
+  }
+
+  .ant-form-item-control {
+    line-height: 55px;
+  }
+
+  .uploadOptions {
+    margin-top: 13px;
+    text-align: right;
+    line-height: 30px;
+    margin-right: 10px;
+  }
+
+  .uploadOptionsButton {
+    margin-top: 13px;
+    height: 30px;
+    width: 120px;
+  }
+
+  .score-line {
+    margin-top: 13px;
+    text-align: center;
+    line-height: 30px;
+    color: #ddd;
+  }
+
+  .bottomButton {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .commitButton {
+    width: 150px;
+    height: 35px;
+    margin-right: 10px;
+  }
+
+}
