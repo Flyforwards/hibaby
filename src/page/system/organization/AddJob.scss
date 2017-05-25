@@ -6,6 +6,10 @@
 	label{
 		font-size:14px;
 	}
+	label:before{
+		content:'';
+		display: block;
+	}
 	.AddChildNode{
 
 	.ant-modal-content{
@@ -14,7 +18,7 @@
 	.ant-calendar-picker-icon:after{
 		font-size:24px;
 		margin-left:-14px;
-		margin-top: -6px; 
+		margin-top: -6px;
 	}
 	.entryInformation,.contactInformation{
 		width:97%;
@@ -31,7 +35,7 @@
 		margin-left: 30px;
 		background-color: #fff;
 		.ant-form-item-label{
-			margin-right:10px; 
+			margin-right:10px;
 		}
 		.localCenter{
 			margin-top: 20px;
@@ -45,9 +49,8 @@
 				width:310px;
 			}
 		}
-		.directLeadership{ 
+		.directLeadership{
 			margin-top: 20px;
-			margin-left:9px;
 			input{
 				width:230px;
 			}
@@ -55,13 +58,13 @@
 		.button{
 			.ant-form-item-control-wrapper{
 				margin-left:10px;
-				margin-top: 20px; 
+				margin-top: 20px;
 			}
 		}
 		.position{
 			margin-left:24px;
 			margin-top: 20px;
-			margin-bottom: 20px; 
+			margin-bottom: 20px;
 			.ant-select-selection--single{
 				width:310px;
 			}
@@ -83,9 +86,9 @@
 		width:97%;
 		margin-left: 30px;
 		background-color: #fff;
-		margin-bottom: 20px; 
+		margin-bottom: 20px;
 		.ant-form-item-label{
-			margin-right:10px; 
+			margin-right:10px;
 		}
 		.password,.information,.companyEmail,.internalExtension{
 			margin-top: 20px;
@@ -107,7 +110,7 @@
 		}
 		.internalExtension{
 			margin-bottom: 20px;
-			margin-left: 18px;
+			margin-left: 14px;
 		}
 	}
 	.returnButton,.saveButton{

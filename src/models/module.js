@@ -23,14 +23,13 @@ export default {
 			payload: {data:item,size,page,total}
 		}) {
 			let menulist={
-				...state,item ,size,page,total
+				...state,item ,size,page,total,
 			}
 			let range = {
 				start: page == 1 ? 1 : (page - 1) * 3 + 1,
 				end: page == 1 ? item.length : (page - 1) * 3 + item.length,
 				totalpage:Math.ceil(total/size),
 			}
-			local.set("MainMenuList",item)
 			return {...menulist,range };
 		},
 		//删除服务项目
@@ -95,7 +94,9 @@ export default {
 
 		//菜单列表页数据
 		*MenuData({payload: values}, { call, put }) {
+
 			const {data: { data,size,total,page,code} } = yield call(moduleService.MainMenuList, values);
+
 			if (code == 0) {
 				yield put({
 						type:'MainMenuList',
@@ -108,7 +109,9 @@ export default {
 						}
 				});
 			}
+
 		},
+
 		//删除菜单数据
 		*deleteService({ payload: values }, {call,put }) {
       const { page, pageSize, dataId} = values
@@ -265,7 +268,6 @@ export default {
 					dispatch({
 						type: 'ParentNodeData',
 						payload:{...query,
-
 							}
 					});
 				}

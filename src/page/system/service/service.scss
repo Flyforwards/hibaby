@@ -1,4 +1,6 @@
 .ServiceBox{
+	 width: 98%;
+	 margin: 0 1%;
 	.name{
 		margin:10px 0px 10px 84%;
 		font-family: '微软雅黑 Regular', '微软雅黑';
@@ -48,15 +50,16 @@
 	    font-size: 14px;
 		div{
 			width:100%;
+			color:#ca9b71;
 			.firstA{
 				display: inline-block;
-				color: #0066FF;
+				color:#ca9b71;
 				text-decoration: none;
 				margin:0 30px;
 				float:left;
 			}
 			.firstB{
-				color: #FF0000;
+				color: #ca9b71;
 				float:left;
 				text-decoration: none;
 			}
@@ -198,7 +201,7 @@
 				}
 			}
 			.content{
-				width:1000px;
+				width:450%;
 				height:45px;
 			}
 			.ant-input[disabled] {
@@ -210,28 +213,29 @@
 			.btn{
 					height:40px;
 					margin:10px;
+					width: 100%;
 					.BackBtn{
 							display:block;
 							height:40px;
-							width:100px;
+							width:9%;
 							float:left;
-							margin-left:800px;
+							margin-left:68%;
 							border-radius:4px;
 							.ant-btn{
 									font-size:18px;
 									height:40px;
-									width:100px;
+									width:100%;
 							}
 					}
 					.AddBack{
-						margin-left: 900px;
+						margin-left: 76%;
 					}
 					.SaveBtn{
 						display:block;
 						height:40px;
-						width:100px;
+						width:9%;
 						float:left;
-						margin-left:10px;
+						margin-left:1%;
 						border-radius:4px;
 						font:18px "微软雅黑";
 						background:#108ee9 ;
@@ -239,36 +243,36 @@
 						.ant-btn{
 								height:40px;
 								font-size:18px;
-								width:100px;
+								width:100%;
 						}
 					}
 					.DelBtn{
 							display:block;
 							height:40px;
-							width:100px;
+							width:9%;
 							float:left;
-							margin-left:10px;
+							margin-left:1%;
 							border-radius:4px;
 							.ant-btn{
 									background:#108ee9 ;
 									height:40px;
 									font-size:18px;
-									width:100px;
+									width:100%;
 									color:#fff;
 							}
 					}
 					.EditBtn{
 							display:block;
 							height:40px;
-							width:100px;
+							width:9%;
 							float:left;
-							margin-left:10px;
+							margin-left:1%;
 							border-radius:4px;
 							.ant-btn{
 									background:#108ee9 ;
 									height:40px;
 									font-size:18px;
-									width:100px;
+									width:100%;
 									color:#fff;
 							}
 					}

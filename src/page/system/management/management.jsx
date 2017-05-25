@@ -38,7 +38,7 @@ class GroupCharIndex extends React.Component {
         dataIndex: 'operation',
         render: (text, record, index) => {
           return (
-            <Link to = {`/system/group-char/detail?dataId=${record.id}`} > 查看 </Link>)
+            <Link className="firstA" to = {`/system/group-char/detail?dataId=${record.id}` }  > 查看 </Link>)
           },
         }];
     }

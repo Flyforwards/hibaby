@@ -116,7 +116,7 @@ class FromCreateModal extends Component {
                 <FormItem
                   label="主模块"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                  {getFieldDecorator('mainName', {
                   rules: []
@@ -131,7 +131,7 @@ class FromCreateModal extends Component {
                 <FormItem
                   label="英文描述"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                 {getFieldDecorator('alias', {
                   initialValue: list.name,
@@ -143,7 +143,7 @@ class FromCreateModal extends Component {
                 <FormItem
                   label="上级权限"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                 {getFieldDecorator('authority', {
                   rules: []
@@ -154,7 +154,7 @@ class FromCreateModal extends Component {
                 <FormItem
                   label="名称"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span:18 }}
                 >
                 {getFieldDecorator('name', {
                   initialValue: list.name,
@@ -166,7 +166,7 @@ class FromCreateModal extends Component {
                 <FormItem
                   label="路径"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span:18 }}
                 >
                 {getFieldDecorator('actionPath', {
                   initialValue: list.actionPath,
@@ -178,7 +178,7 @@ class FromCreateModal extends Component {
                 <FormItem
                   label="排序"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                 {getFieldDecorator('orderBy', {
                   initialValue: list.orderBy,

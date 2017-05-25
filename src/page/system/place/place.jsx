@@ -61,12 +61,6 @@ class localCharIndex extends React.Component {
           }))
         },
       }
-      // <Current page = { this.props.page }
-      //         totalpage = { this.props.totalpage }
-      //         total = { this.props.total }
-      //         results = { this.props.results }
-      //         range = { this.props.range }
-      // />
       return (
         <div className = "PlaceProject">
           <div className = "buttonwrapper">
@@ -75,7 +69,6 @@ class localCharIndex extends React.Component {
               </Link>
           </div>
           <Table {...tableProps} rowKey = { record=>record.id } bordered columns = { this.columns } />
-
         </div>
     );
   }
@@ -93,10 +86,8 @@ function getLocalTime(nS) {
   }
   return `${year}-${month}-${date}`
 }
-/*time = getLocalTime(USER.gmt_entry)*/
 
 function mapStateToProps(state) {
-
   const {
     list,
     pagination
