@@ -2,6 +2,8 @@ import React from 'react';
 import './customerInformation.scss';
 import { connect } from 'dva';
 import FileUpload from './fileUpload'
+import moment from 'moment';
+
 import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -64,13 +66,7 @@ function cusComponent(dict) {
 
   switch (dict.component) {
     case 'Input':
-      if(dict.disabled === true)
-      {
-        tempDiv = (<Input disabled={true}/>);
-      }
-      else {
-        tempDiv = (<Input/>);
-      }
+        tempDiv = (<Input disabled={dict.disabled}/>);
       break;
     case 'Select':
       if (dict.fun)
@@ -84,34 +80,20 @@ function cusComponent(dict) {
     case 'DatePicker':
       if (dict.fun)
       {
-        tempDiv = (<DatePicker onChange={dict.fun} placeholder='请选择'>{dict.children}</DatePicker>);
+        tempDiv = (<DatePicker onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
       }
       else {
         tempDiv = (<DatePicker placeholder='请选择'>{dict.children}</DatePicker>);
       }
       break;
     case 'InputNumber':
-      if (dict.disabled === true)
-      {
-        tempDiv = (<InputNumber className="antCli" disabled={true}/>);
-      }
-      else {
-        tempDiv = (<InputNumber className="antCli"/>);
-      }
+        tempDiv = (<InputNumber className="antCli" disabled={dict.disabled} min={1} max={dict.max}/>);
       break;
     case 'UploadButton':
     {
-      if(dict.submitStr === 'contractAppendices')
-      {
-        tempDiv = <FileUpload fun={dict.fun}>
-          <Button><Icon type="upload" /> 上传附件</Button>
-        </FileUpload>
-      }
-      else if(dict.submitStr === 'idcardScan'){
-        tempDiv = <FileUpload  fun={dict.fun}>
-          <Button><Icon type="upload" /> 上传附件</Button>
-        </FileUpload>
-      }
+      tempDiv = <FileUpload deleteFun={dict.deleteFun} fun={dict.fun}>
+        <Button><Icon type="upload" /> 上传附件</Button>
+      </FileUpload>
     }
       break;
     default:
@@ -196,10 +178,12 @@ function BaseInfo(props) {
   const baseInfo = [
     {title:'客户姓名',component:'Input',submitStr:'name',children:null},
     {title:'联系电话',component:'Input',submitStr:'contact',children:null},
-    {title:'出生日期',component:'DatePicker',submitStr:'birthTime',children:null,fun:onChange},
-    {title:'年龄',component:'InputNumber',submitStr:'age',children:null,disabled:true},
+    {title:'出生日期',component:'DatePicker',submitStr:'birthTime',children:null,fun:onChange,
+      ranges:{range:[moment().subtract(10, 'years').calendar(),moment().subtract(100, 'years').calendar()]}},
+
+    {title:'年龄',component:'InputNumber',submitStr:'age',children:null,disabled:true,max:100},
     {title:'预产期',component:'DatePicker',submitStr:'dueDate',children:null},
-    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',children:null},
+    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',children:null,max:40},
     {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
     {title:'孕次/产次',component:'Select',submitStr:'fetus',children:fetusChi},
     {title:'客资来源',component:'Select',submitStr:'resourceCustomer',children:guestInformationSource},
@@ -215,10 +199,17 @@ function BaseInfo(props) {
 
     let tempDiv = cusComponent(dict);
 
+    let rules = { rules: [{ required: true,  message: `请输入${dict.title}!`}],};
+
+    if (dict.submitStr === 'contact')
+    {
+      rules = { rules: [{ required: true, pattern:/^1[34578]{1}\d{9}$/, message: `请输入正确的${dict.title}!`}]};
+    }
+
     baseInfoDiv.push(
       <Col span={6} key={i}>
         <FormItem {...formItemLayout} label={dict.title}>
-          {getFieldDecorator(dict.submitStr,{ rules: [{ required: true, message: `请输入${dict.title}!`}],})
+          {getFieldDecorator(dict.submitStr,rules)
           (
             tempDiv
           )}
@@ -251,23 +242,23 @@ function BaseInfo(props) {
           {baseInfoDiv}
         </Row>
 
-        <Row gutter={15}>
+        <Row gutter={1}>
 
           <Col span={6}>
 
             <FormItem {...formItemLayout} label={'现住址'}>
-              {getFieldDecorator('province')(
+              {getFieldDecorator('province',{ rules: [{ required: true, message: '请输入省!'}],})(
                 <Select  onChange={provinceSelect}  placeholder="请选择">
                   {provinceDataChis}
                 </Select>
               )}
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col offset={1} span={11}>
             <Row gutter={15}>
               <Col span={8}>
                 <FormItem>
-                  {getFieldDecorator('city')(
+                  {getFieldDecorator('city',{ rules: [{ required: true, message: '请输入市!'}],})(
                     <Select placeholder="请选择">
                       {cityDataChis}
                     </Select>
@@ -277,7 +268,7 @@ function BaseInfo(props) {
 
               <Col span={16}>
                 <FormItem>
-                  {getFieldDecorator('detailed')(
+                  {getFieldDecorator('detailed',{ rules: [{ required: true, message: '请输入详细住址!'}],})(
                     <Input/>
                   )}
                 </FormItem>
@@ -348,17 +339,17 @@ function ExtensionInfo(props) {
     {title:'身份证',component:'Input',submitStr:'idcard',children:null},
     {title:'籍贯',component:'Input',submitStr:'placeOrigin',children:null},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
-    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',children:null,disabled:true,initValue:purchasePackageValue.packageName},
+    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',children:null,disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
     {title:'保险情况',component:'Input',submitStr:'insuranceSituation',children:null},
     {title:'联系人电话',component:'Input',submitStr:'excontact',children:null},
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange},
-    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange},
+    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,noRequired:"1"},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate',children:null},
     {title:'合同编号',component:'Input',submitStr:'contractNumber',children:null},
     {title:'关联客房',component:'Input',submitStr:'associatedRooms',children:null},
-    {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',children:null,fun:uploadIdcardFileProps},
-    {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',children:null,fun:uploadContractAppendicesFileProps},
-    {title:'会员编号',component:'Input',submitStr:'memberNumber',children:null,disabled:true,initValue:memberNumberValue},
+    {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',children:null,fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps},
+    {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',children:null,fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps},
+    {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,children:null,initValue:memberNumberValue},
     {title:'操作者2',component:'Input',submitStr:'operator',children:null,disabled:true,initValue:operator},
   ];
 
@@ -368,12 +359,24 @@ function ExtensionInfo(props) {
   for (let i = 0; i < expandInfo.length; i++) {
     let dict = expandInfo[i];
 
+    let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title}!`}],};
+
+    if (dict.submitStr === 'contact')
+    {
+      rules = { rules: [{ required: true, pattern:/^1[34578]{1}\d{9}$/, message: `请输入正确的${dict.title}!`}]};
+    }
+
+    if (dict.submitStr === 'idcard')
+    {
+      rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
+    }
+
     let tempDiv = cusComponent(dict);
 
     expandInfoDiv.push(
       <Col span={8} key={i}>
         <FormItem {...formItemLayout} label={dict.title}>
-          {getFieldDecorator(dict.submitStr,{rules: [{ required: true, message: `请输入${dict.title}!`}],initialValue:dict.initValue})(
+          {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
             tempDiv
           )}
         </FormItem>
@@ -414,6 +417,14 @@ function ExtensionInfo(props) {
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
   }
 
+  function deleteIdcardFileProps(values) {
+    dispatch({type:'addCustomer/deleteContractDLC',payload:values})
+  }
+
+  function deleteContractAppendicesFileProps(values) {
+    dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
+  }
+
   return(
     <div>
       <Form>
@@ -423,18 +434,19 @@ function ExtensionInfo(props) {
             <Col span={6}>
               <div>
                 <Row>
-                  <Col span={7}>
-                    <p>客户照片</p>
-                  </Col>
-                  <Col span={17}>
-                    <FileUpload fun={uploadHeadelImg} isHead={true} className="avatar-uploader">
-                      {
-                        headIconUrl ?
-                          <img src={headIconUrl} alt="" className="avatar" /> :
-                          <Icon type="plus" className="avatar-uploader-trigger" />
-                      }
-                    </FileUpload>
-                  </Col>
+                  <FormItem {...formItemLayout} label={'客户照片'}>
+                    {getFieldDecorator('headicon',{ rules: [{ required: true, message: '请选择照片!'}],})(
+                      <FileUpload fun={uploadHeadelImg} isHead={true} >
+                        <div className="avatar-uploader">
+                          {
+                            headIconUrl ?
+                              <img src={headIconUrl} alt="" className="avatar" /> :
+                              <Icon type="plus" className="avatar-uploader-trigger" />
+                          }
+                        </div>
+                      </FileUpload>
+                    )}
+                  </FormItem>
                 </Row>
               </div>
             </Col>
@@ -443,21 +455,21 @@ function ExtensionInfo(props) {
               <div>{expandInfoDiv}</div>
             </Col>
           </Row>
-          <Row gutter={15}>
+          <Row>
             <Col span={6}>
               <FormItem {...formItemLayout} label={'户籍地址'}>
-                {getFieldDecorator('provincePermanent')(
+                {getFieldDecorator('provincePermanent',{ rules: [{ required: true, message: '请输入省!'}],})(
                   <Select onChange={PermanentProvinceSelect} placeholder="请选择">
                     {provinceDataChis}
                   </Select>
                 )}
               </FormItem>
             </Col>
-            <Col span={18}>
+            <Col offset={1} span={17}>
               <Row gutter={15}>
                 <Col span={6}>
                   <FormItem>
-                    {getFieldDecorator('cityPermanent')(
+                    {getFieldDecorator('cityPermanent',{ rules: [{ required: true, message: '请输入市!'}],})(
                       <Select placeholder="请选择">
                         {permanentCityDataChis}
                       </Select>
@@ -467,7 +479,7 @@ function ExtensionInfo(props) {
 
                 <Col span={18}>
                   <FormItem>
-                    {getFieldDecorator('detailedPermanent')(
+                    {getFieldDecorator('detailedPermanent',{ rules: [{ required: true, message: '请输入详细地址!'}],})(
                       <Input/>
                     )}
                   </FormItem>
@@ -486,6 +498,7 @@ function Remark(props) {
   const {modal,remarkListColumns,remarkList} = props.users;
   const {dispatch} = props;
 
+  const { getFieldDecorator } = props.form;
 
   function showModal() {
     dispatch({type:'addCustomer/hideOrShowModal',payload:true})
@@ -497,21 +510,26 @@ function Remark(props) {
 
   function handleCancel()  {
     dispatch({type:'addCustomer/hideOrShowModal',payload:false})
-
   }
   return(
     <div className='contentDiv'>
-      <Row>
-        <Col span={18}> <h3>客户备注</h3></Col>
-        <Col span={6} className='addRemark'>  <Button type="primary" onClick={showModal}>添加备注</Button> </Col>
-      </Row>
-      <Table texta dataSource={remarkList} columns={remarkListColumns} />
+      <Form>
+        <Row>
+          <Col span={18}> <h3>客户备注</h3></Col>
+          <Col span={6} className='addRemark'>  <Button type="primary" onClick={showModal}>添加备注</Button> </Col>
+        </Row>
+        <Table texta dataSource={remarkList} columns={remarkListColumns} />
 
-      <Modal title="添加备注" visible={modal}
-             onOk={handleOk} onCancel={handleCancel}
-      >
-        <Input type="textarea" rows={10} />
-      </Modal>
+        <Modal title="添加备注" visible={modal}
+               onOk={handleOk} onCancel={handleCancel}
+        >
+          <FormItem>
+            {getFieldDecorator('tempRemark')(
+              <Input type="textarea" rows={10} />
+            )}
+          </FormItem>
+        </Modal>
+      </Form>
     </div>
   )
 
@@ -519,6 +537,7 @@ function Remark(props) {
 
 const BaseForm = Form.create()(BaseInfo);
 const ExtensionForm = Form.create()(ExtensionInfo);
+const RemarkForm = Form.create()(Remark);
 
 class customerInformation extends React.Component{
 
@@ -567,7 +586,7 @@ class customerInformation extends React.Component{
       <div className="customerContent">
         <BaseForm ref="baseForm" {...this.props}/>
         <ExtensionForm ref="extensionForm" {...this.props}/>
-        <Remark  {...this.props}/>
+        <RemarkForm  {...this.props}/>
         <div className='savaDiv'>
           <Button className='backBtn'>返回</Button>
           <Button className='backBtn' type="primary" onClick={this.handleSubmitBase.bind(this)}>保存</Button>
