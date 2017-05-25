@@ -80,7 +80,8 @@ class Header extends React.Component {
           const entrys = this.props.userInfo.entrys;
           if ( entrys != null && entrys.length > 0) {
             const entry = entrys[0];
-            userPosition = positionDict[entry.positionId];
+            // userPosition = positionDict[entry.positionId];
+            userPosition="开发";
           }
         }
         const endemicMenu = session.get("clubs");
