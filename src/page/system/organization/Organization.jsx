@@ -64,17 +64,10 @@ class Organization extends React.Component {
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
-            let Disabled = false
-            if(record.status == 1){
-              Disabled = true
-            }
             return (
                 <span>
                  <Link to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                 {Disabled?
-                  <a href="#" className="twoB">禁用</a>:
-                  <a href="#" className="twoA" disabled={ false } onClick={this.Disabled.bind(this,record)}>禁用</a>
-                 }
+                 <a href="#" className="twoA" onClick={this.Disabled.bind(this,record)}>禁用</a>
                 </span>
             );
           },
@@ -92,7 +85,6 @@ class Organization extends React.Component {
             nodeid:endemic.id,
             tissueProperty:endemic.tissueProperty
         }
-        this.current = 1
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -127,6 +119,7 @@ class Organization extends React.Component {
   }
     //禁止
     Disabled(record) {
+      console.log()
       this.setState({
         toViewVisible:true,
         ID:record.id
@@ -137,7 +130,6 @@ class Organization extends React.Component {
       this.setState({
         userName:$(".userName").val()
       })
-
        this.props.dispatch({
         type: 'organization/organizationList',
         payload: {
@@ -145,7 +137,7 @@ class Organization extends React.Component {
             "nodeid": this.state.nodeid,
             "roleId": this.state.character,
             "status": this.state.status,
-            "page": this.current,
+            "page": 1,
             "size": 10,
             "tissueProperty":this.state.tissueProperty
         },
@@ -172,18 +164,6 @@ class Organization extends React.Component {
         this.setState({
             toViewVisible: false
         })
-      this.props.dispatch({
-        type: 'organization/organizationList',
-        payload: {
-            "name": this.state.userName,
-            "nodeid": this.state.nodeid,
-            "roleId": this.state.character,
-            "status": this.state.status,
-            "page": this.current,
-            "size": 10,
-            "tissueProperty": this.state.tissueProperty
-        },
-      });
     }
     ObtainOrganization(nodeid,tissueProperty){
       this.setState({
@@ -203,9 +183,8 @@ class Organization extends React.Component {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
-          pageSize:10,
+          defaultPageSize:10,
           onChange: (current) => {
-            this.current = current
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
@@ -236,21 +215,21 @@ class Organization extends React.Component {
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select defaultValue="请选择" style={{ width:220 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
                       { traversalRoleIdData }
                   </Select>
               </div>
               <div className="status">账户状态
-                <Select defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
+                <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
               </div>
-              {this.state.tissueProperty == 3?
+              {this.state.tissueProperty == 3? 
                 <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
                 <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
               }
-
+             
               <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
             </div>
             {this.props.list?

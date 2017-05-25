@@ -1,21 +1,41 @@
-.find {
-  width: 100%;
-  line-height: 80px;
-  padding-left: 20px;
-  .findTxt{
-    display: inline-block;
-    padding: 6px 7px;
-    line-height: 74px;
-    font-size: 18px;
-    margin-right: 20px;
+.Position{
+  .find {
+    width: 98%;
+    line-height: 80px;
+    padding-left: 20px;
+    background:#fff;
+    margin:10px 1%;
+    .findTxt{
+      display: inline-block;
+      padding: 6px 7px;
+      line-height: 74px;
+      font-size: 18px;
+      margin-right: 20px;
+    }
+    input{
+      height: 40px;
+      font-size: 18px;
+    }
+    button{
+      width: 140px;
+      font: 20px "微软雅黑";
+      height: 38px;
+      background:#ff6600;
+      color:#fff;
+    }
   }
-  input{
-    height: 40px;
-    font-size: 18px;
+  .ant-table-thead > tr > th {
+      background-color: dimgray;
+      transition: background .3s ease;
+      font:100 16px "微软雅黑";
+      text-align: center;
+      color: rgba(255, 255, 255, 0.85);
   }
-  button{
-    width: 140px;
-    font-size: 20px;
-    height: 38px;
+  .ant-table-tbody > tr > td {
+      transition: background .3s ease;
+      text-align: center;
+      font:100 14px "微软雅黑";
+      color: rgba(0, 0, 0, 0.7);
+      background:#fff;
   }
 }

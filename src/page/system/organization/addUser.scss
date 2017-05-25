@@ -6,6 +6,7 @@
     	font-weight: bold;
     	font-size: 18px;
 	}
+	min-width: 1100px;
 	label{
 		font-size:14px;
 	}
@@ -125,7 +126,7 @@
 			}
 		}
 		.directLeadership{
-			margin-left:70px;
+			margin-left:61px;
 			margin-top: 20px;
 			input{
 				width:230px;
@@ -185,7 +186,6 @@
 		}
 		.internalExtension{
 			margin-bottom: 20px;
-			margin-left: 113px
 		}
 	}
 	.returnButton,.saveButton{
@@ -299,20 +299,24 @@
 		.Numbering{
 			margin-left:56px;
 		}
+
 	}
 	.ant-btn{
 		float:right;
 		margin: 0 20px;
-		width:140px;
-		height:40;
+		width:150px;
+		height:30px;
 		margin-bottom: 20px;
+		font:16px
 	}
 	.disabledButton{
+		height:30px;
 		background-color: rgba(255, 74, 74, 1);
 		color:#fff;
 		border: 0;
 	}
 	.addButton{
+		  height:30px;
    		background-color: rgba(255, 153, 0, 1);
    		border: 0;
    		color:#fff;

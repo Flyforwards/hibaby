@@ -1,26 +1,23 @@
+
 import React from 'react';
-import {
-    Form,
-    Icon,
-    Input,
-    Button,
-    Checkbox,
-    Modal
-} from 'antd';
-
-import  './loginIndex.scss';
+import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
+import  './LoginIndex.scss';
 import logo from './images/logo.png'
+import { connect } from 'dva';
+import { Link } from 'react-router';
+import { message } from 'antd'
 const FormItem = Form.Item;
+const createForm = Form.create
 
-
-class NormalLoginForm extends React.Component {
+@createForm()
+class FindPassword extends React.Component {
 
     constructor(props) {
         super(props);
-
+        this.first = true;
         this.state = {
+            allowClick: true,
             count: 60,
-            liked: true,
             modal1Visible: false,
             modal2Visible: false,
         };
@@ -43,11 +40,10 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 if (newpass.value != queren.value) {
-                    this.setModal2Visible(true);
+                      this.setModal2Visible(true);
                 } else {
-                    console.log(this.props.dispatch)
                     this.props.dispatch({
-                        type: 'users/findSubmit',
+                        type: 'login/findSubmit',
                         payload: {
                             "mobile": phone.value,
                             "password": newpass.value,
@@ -55,59 +51,67 @@ class NormalLoginForm extends React.Component {
                         }
                     });
                 }
-
             }
         });
 
     }
 
-    handleTest = (e) => {
+    handle = (e) => {
         e.preventDefault();
         console.log(phone.value)
         if (!(/^1[34578]\d{9}$/.test(phone.value))) {
-            this.setModal1Visible(true);
-            return false;
+          message.error("请输入正确的手机号")
         } else {
-            if (this.state.liked) {
-                this.timer = setInterval(function() {
-                    var count = this.state.count;
-                    this.state.liked = false;
-                    count -= 1;
-                    if (count < 1) {
-                        this.setState({
-                            liked: true
-                        });
-                        clearInterval(this.timer);
-                        count = 60;
-                    }
-                    this.setState({
-                        count: count
-                    });
-                }.bind(this), 1000);
-                this.props.dispatch({
-                    type: 'users/test',
-                    payload: {
-                        'mobile': phone.value
-                    }
+          if (this.state.allowClick) {
+            this.setState({
+              allowClick: false
+            })
+            this.timer = setInterval(
+              ()=> {
+                var count = this.state.count;
+                count --;
+                if (count < 0) {
+                  this.setState({
+                    allowClick:true
+                  })
+                  clearInterval(this.timer);
+                  this.timer = undefined;
+                  count = 60;
+                }
+                this.setState({
+                  count: count
                 });
-            }
+              }, 1000);
+            this.props.dispatch({
+              type: 'login/getVerCode',
+              payload: {
+                'mobile': phone.value
+              }
+            });
+          }
         }
     }
-    componentDidMount() {
-        clearInterval(this.timer);
-    }
+
+
     componentWillUnmount() {
-        this.timer && clearInterval(this.timer);
-        this.timer = false;
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = undefined;
+      }
     }
+
     render() {
-        var text = this.state.liked ? ( <div> 获取验证码 </div>): (<div className="red">{this.state.count}秒后重发</div> );
+        let getCode = this.first ?(<div> 获取验证码 </div>):(<div> 重新获取 </div>)
+        if (!this.state.allowClick) {
+          getCode = (<div className="red">{this.state.count}秒后重发</div> )
+        }
         const { getFieldDecorator } = this.props.form;
         return (
-          <div className = "container">
+          <div className = "loginForm find">
+          <div className = "login-index">
             <Form onSubmit = { this.handleSubmit } className = "login-form">
               <img className = "findimg" src = {logo} />
-              <a className = "return" href = "/login" > &larr; 返回登录 </a>
+              <Link className = "return" to="/login" > &larr; 返回登录 </Link>
               <FormItem> {
                 getFieldDecorator('phone', {
                   rules: [{
@@ -121,12 +125,9 @@ class NormalLoginForm extends React.Component {
                         required: true,
                         message: '请输入验证码!'
                     }],
-                })( < Input type = "password"
+                })( <Input type = "password"
                     placeholder = "请输入验证码"
-                prefix = { < span className = "testNum"
-                    onClick = {
-                        this.handleTest
-                    } > { text } </span>}/> )}
+                prefix = { <span className = "testNum" onClick = { this.handle.bind(this) } > { getCode } </span>}/> )}
               </FormItem>
               <div>
                 <FormItem> {
@@ -135,7 +136,7 @@ class NormalLoginForm extends React.Component {
                           required: true,
                           message: '请输入新密码!'
                       }],
-                  })( <Input prefix = { < span > </span> }  placeholder="请输入新密码"/> )}
+                  })( <Input prefix = { <span> </span> }  placeholder="请输入新密码"/> )}
                 </FormItem>
                 <FormItem > {
                   getFieldDecorator('queren', {
@@ -181,11 +182,11 @@ class NormalLoginForm extends React.Component {
                 </Modal>
               </FormItem >
             </Form>
-          </div >
+          </div>
+          </div>
         );
     }
 }
 
-const findPass = Form.create()(NormalLoginForm);
 
-export default findPass;
+export default connect()(FindPassword);

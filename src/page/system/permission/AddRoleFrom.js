@@ -123,4 +123,5 @@ function mapStateToProps(state) {
     data
   };
 }
+
 export default connect(mapStateToProps)(AddRoleFrom)
