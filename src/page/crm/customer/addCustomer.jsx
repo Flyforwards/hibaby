@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import './customerInformation.scss';
 import { Tabs} from 'antd';
 import CustomerInformation from './CustomerInformation';
-import CustomerHealthy from '../healthy/healthyhome.jsx';
 import UserHealthInformation from './userHealthInformation'
 const TabPane = Tabs.TabPane;
 
@@ -20,7 +19,7 @@ function addCustomer() {
           <CustomerInformation/>
         </TabPane>
         <TabPane tab="健康档案" key="2">
-          <CustomerHealthy/>
+          <UserHealthInformation/>
         </TabPane>
         <TabPane tab="套餐" key="3">
           Content of Tab Pane 3

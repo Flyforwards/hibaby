@@ -6,16 +6,12 @@
 
 .itemTitle {
   width: 20px;
+  height: 100%;
   text-align: center;
   font-size: larger;
+  vertical-align: middle;
+  display: table-cell;
   margin: 0 auto;
-}
-
-/*table 上方功能栏*/
-.topButton {
-  width: 160px;
-  height: 35px;
-  margin-left: 10px;
 }
 
 .topItembg {
@@ -77,4 +73,16 @@
   text-align: center;
   line-height: 30px;
   color: #ddd;
+}
+
+.bottomButton {
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.commitButton{
+  width: 150px;
+  height: 35px;
+  margin-right: 10px;
 }
