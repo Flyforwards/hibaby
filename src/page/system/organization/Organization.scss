@@ -18,7 +18,7 @@ overflow:hidden;
 height:100%;
 overflow: hidden;
 .Organization-right{
-	width:84%;
+	width:80%;
 	float:left;
 	margin-left:1%;
 }
@@ -309,13 +309,13 @@ overflow: hidden;
 	width:100%;
 }
 .Organization-left .ant-tree .plus{
-		position:absolute;
+		position:relative;
 		color:#a3a3a3;
     font-size: 16px;
     height: 16px;
     line-height: 16px;
     font-weight: 900;
-    right:-10%;
+    left:24px;
 }
 .Organization-left .ant-tree li ul li a:hover {
     width: 400px;
