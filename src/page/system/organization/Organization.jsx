@@ -121,7 +121,7 @@ class Organization extends React.Component {
         "status":null,
         "page": 1,
         "size": 10,
-       "tissueProperty":endemic.tissueProperty
+        "tissueProperty":endemic.tissueProperty
       }
     });
   }
@@ -153,6 +153,7 @@ class Organization extends React.Component {
     }
     //获取系统角色的id
     onSelectCharacter(value){
+      console.log("value",value)
      this.setState({
         character:value
      })
@@ -236,12 +237,12 @@ class Organization extends React.Component {
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select defaultValue="请选择" style={{ width:220 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                 <Select placeholder="请选择" style={{ width:220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
                       { traversalRoleIdData }
                   </Select>
               </div>
               <div className="status">账户状态
-                <Select defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
+                <Select placeholder="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
@@ -277,11 +278,11 @@ class Organization extends React.Component {
                 visible={ this.state.createModalVisible }
             />
              <Disabled
-                    visible={ this.state.toViewVisible }
-                    handleOk={this.state.handleOk}
-                    onCancel={ this.handleCreateModalCancel.bind(this) }
-                    ID = {this.state.ID}
-                />
+                  visible={ this.state.toViewVisible }
+                  handleOk={this.state.handleOk}
+                  onCancel={ this.handleCreateModalCancel.bind(this) }
+                  ID = {this.state.ID}
+              />
             </div>
             </main>
           </div>

@@ -38,12 +38,15 @@ class SeeDtailed extends Component {
     ReturnLeader(){
       this.props.onCancel()
     }
-    handleAfterClose() {
+    handleAfterClose(id) {
+      this.props.dispatch({
+        type: 'organization/getDepartmentNodes',
+        payload: { }
+      })
         this.props.form.resetFields()
     }
     componentDidMount() {
-        this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
-        console.log(this.props.ID)
+      this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
     delet(id){
       this.props.dispatch({
@@ -54,15 +57,22 @@ class SeeDtailed extends Component {
       })
       this.props.onCancel()
     }
-    EditNode(){
+    EditNode(node){
       this.setState({
-          NodeEditVisible: true
-        })
+        NodeEditVisible: true
+      })
+
     }
-    handleNodeEditCancel(){
+    handleNodeEditCancel(id){
       this.setState({
           NodeEditVisible: false
         })
+      this.props.dispatch({
+        type: 'organization/getDepartment',
+          payload: {
+            "dataId":id
+          }
+      })
     }
 
      handleCreateModalCancel() {
@@ -103,8 +113,8 @@ class SeeDtailed extends Component {
             }
           })
       }
-      if(this.props.getDepartmentNode!=null){
-        Nodesdata = this.props.getDepartmentNode
+      if(this.props.Nodesdata!=null){
+        Nodesdata = this.props.Nodesdata
       }
         if(this.props.ID == 1 || this.props.ID == 3){
             display = "none"
@@ -128,7 +138,7 @@ class SeeDtailed extends Component {
                 wrapClassName="SeeChildNode"
                 closable={false}
                 confirmLoading={confirmLoading}
-                afterClose={this.handleAfterClose.bind(this)}
+                afterClose={this.handleAfterClose.bind(this,this.props.ID)}
                 onCancel={this.handleCancel.bind(this)}
                 onOk={this.handleOk.bind(this)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
@@ -210,7 +220,7 @@ class SeeDtailed extends Component {
                 <NodeEdit
                     visible={ this.state.NodeEditVisible }
                     handleOk={this.state.handleOk}
-                    onCancel={ this.handleNodeEditCancel.bind(this) }
+                    onCancel={ this.handleNodeEditCancel.bind(this,this.props.ID) }
                     ID = {this.props.ID}
                     parentId ={this.props.parentId}
                     Nodesdata = {Nodesdata}

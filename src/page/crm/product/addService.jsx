@@ -197,7 +197,7 @@ class AddServiceed extends Component {
                     {getFieldDecorator('type', {
                       rules: [],
                     })(
-                    <Select dropdownStyle= {{height:`${len*32}px`,overflow:"auto"}}
+                    <Select dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}}
                     >
                      {
                       roomList

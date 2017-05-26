@@ -4,10 +4,10 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Icon, Card, Button,Table } from 'antd'
 import { Link} from 'react-router'
+import {routerRedux} from 'dva/router';
 import './serviceinfo.scss'
 import Current from '../../Current'
-import Delete from './DeleteService.jsx'
-
+import AlertModalFrom from 'common/AlertModalFrom'
 
 class Serviceinfoed extends Component {
 
@@ -21,6 +21,19 @@ class Serviceinfoed extends Component {
           title: '服务项',
           dataIndex: 'serviceInfoNameList',
           key:'serviceInfoNameList',
+          render:(text,record,index) => {
+            let serviceInfoNameList = []
+            record.serviceInfoNameList.map((item,index)=>{
+              if(serviceInfoNameList.length+1 == record.serviceInfoNameList.length){
+                serviceInfoNameList.push(item)
+              }else{
+                serviceInfoNameList.push(item+"; ")
+              }
+            })
+            return (
+              serviceInfoNameList
+            )
+          }
         }, {
           title: '套房',
           dataIndex: 'suiteId',
@@ -49,31 +62,35 @@ class Serviceinfoed extends Component {
         }
     }
     //删除
-    delete(record) {
+  delete(record) {
+    this.record = record;
       this.setState({
-        DeleteVisible:true,
-        ID:record.id
+        DeleteVisible:true
       })
-    }
+  }
     componentWillMount() {
     }
-    handleDeleteCancel(){
+    handleCreateModalCancel(){
       this.setState({
           DeleteVisible: false,
       })
-     window.location.reload( true )
+    }
+    //确定删除
+    handleAlertModalOk(record) {
+        this.props.dispatch({
+          type: 'packageInfo/del',
+          payload: {
+            "dataId": record.id,
+          }
+        })
+      this.handleCreateModalCancel();
     }
     componentDidMount() {
-        this.props.dispatch({
-            type: 'packageInfo/listByPage',
-            payload: { 
-              "page":1,
-              "size":10
-            }
-        });
+        
     }
     render() {
         const { list, loading, pagination, dispatch } = this.props;
+        console.log("list",list)
         const columns = this.columns;
         const tableProps = {
           loading: loading.effects['packageInfo/listByPage'],
@@ -96,11 +113,12 @@ class Serviceinfoed extends Component {
                 <div className="serviceinfoTabal">
                     <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ columns } pagination = {pagination} />
                 </div>
-                <Delete 
-                   visible={ this.state.DeleteVisible }
-                   onCancel ={ this.handleDeleteCancel.bind(this) }
-                   ID = { this.state.ID }
-                  />
+              <AlertModalFrom
+                visible ={ this.state.DeleteVisible }
+                onCancel ={ this.handleCreateModalCancel.bind(this) }
+                onOk = { this.handleAlertModalOk.bind(this, this.record) }
+                message = { "是否确定删除此套餐?" }
+              />
             </div>
         )
     }

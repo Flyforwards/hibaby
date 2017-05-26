@@ -10,12 +10,14 @@ import Current from '../../Current'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-let str = null
 
 class AddCommodityed extends Component {
 
     constructor(props) {
       super(props)
+      this.state = {
+        str:false
+      }
     }
     componentWillMount() {
     }
@@ -23,11 +25,24 @@ class AddCommodityed extends Component {
         this.setState({ selectedRows });
       }
     componentDidMount() {
-      if(str != null){
-        str = null
-      }
+    }
+    chkvalue(e){
+      if(e.target.value){
+          this.props.dispatch({
+            type: 'packageInfo/chineseToPinyin',
+            payload: {
+              "str": e.target.value
+            }
+          });
+          this.setState({
+            str:true
+          })
+        }
     }
     handleSubmit = ()=>{
+      this.setState({
+        str:false
+      })
       history.go(-1)
     }
     handleAdd(){
@@ -35,7 +50,15 @@ class AddCommodityed extends Component {
       if(fields.name){
         if(fields.price){
           if(fields.nameLetter){
-
+              this.props.dispatch({
+                type: 'packageInfo/commodityAdd',
+                payload: {
+                  "remark": fields.introduction,
+                  "price": fields.price,
+                  "name":fields.name,
+                  "nameLetter":fields.nameLetter,
+                }
+              });
           }else{
               message.warning("请输入首字母缩写");
           }
@@ -47,17 +70,6 @@ class AddCommodityed extends Component {
       }else{
         message.warning("请输入商品名称");
       }
-
-
-      this.props.dispatch({
-        type: 'packageInfo/commodityAdd',
-        payload: {
-          "remark": fields.introduction,
-          "price": fields.price,
-          "name":fields.name,
-          "nameLetter":fields.nameLetter,
-        }
-      });
     }
     chineseToPinyin(){
       const fields = this.props.form.getFieldsValue();
@@ -76,6 +88,7 @@ class AddCommodityed extends Component {
       }
     }
     render() {
+        let str = null
         let loadingName = true
         let roomInformation = []
         const { getFieldDecorator } = this.props.form;
@@ -84,7 +97,7 @@ class AddCommodityed extends Component {
         let roomList = []
         let selectData = []
         if(this.props.chineseToPinyin != null){
-          str = this.props.chineseToPinyin
+            str = this.props.chineseToPinyin
         }
         return (
             <div className="addCommodity">
@@ -98,7 +111,7 @@ class AddCommodityed extends Component {
                     {getFieldDecorator('name', {
                        rules: [],
                     })(
-                      <Input/>
+                      <Input className="inputName" onBlur={this.chkvalue.bind(this)}/>
                     )}
                   </FormItem>
                   <FormItem
@@ -129,7 +142,7 @@ class AddCommodityed extends Component {
                      className="nameLetter"
                   >
                   {getFieldDecorator('nameLetter', {
-                    rules: [],
+                    initialValue:this.state.str?str:null,
                     })(
                     <Input 
                     disabled = {true}
