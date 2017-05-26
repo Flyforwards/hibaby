@@ -93,8 +93,8 @@ const FormItem = Form.Item;
         break;
       case 'UploadButton':
       {
-        tempDiv = <FileUpload deleteFun={dict.deleteFun} fun={dict.fun}>
-          <Button><Icon type="upload" /> 上传附件</Button>
+        tempDiv = <FileUpload  deleteFun={dict.deleteFun} fun={dict.fun}>
+          <Button className="upload"><Icon type="upload" /> 上传附件</Button>
         </FileUpload>
       }
         break;
@@ -611,4 +611,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(customerInformation) ;
-
