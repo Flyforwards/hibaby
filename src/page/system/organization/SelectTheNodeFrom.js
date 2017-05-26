@@ -95,7 +95,7 @@ class SelectTheNodeFrom extends Component {
         this.props.headelReturnTabal(selectedRows)
       },
       getCheckboxProps: record => ({
-        disabled: record.name === 'Disabled User', 
+        disabled: record.name === 'Disabled User',    // Column configuration not to be checked
       }),
     };
     const nodesIteration = (nodes, itemKey) => {

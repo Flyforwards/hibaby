@@ -1,4 +1,3 @@
-"use strict"
 
 import React from 'react'
 import {connect} from 'dva'
@@ -6,6 +5,7 @@ import './system.scss'
 import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
+import moment from 'moment'
 import Current from '../../Current'
 
 class GroupCharIndex extends React.Component {
@@ -32,13 +32,15 @@ class GroupCharIndex extends React.Component {
       }, {
         title: '最后编辑时间',
         dataIndex: 'modifyTime',
-        key: 'modifyTime'
+        render: (record) => {
+          return moment(record).format("YYYY-MM-DD HH:mm:ss")
+        }
       }, {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record, index) => {
           return (
-            <Link to = {`/system/group-char/detail?dataId=${record.id}`} > 查看 </Link>)
+            <Link className="firstA" to = {`/system/group-char/detail?dataId=${record.id}` }  > 查看 </Link>)
           },
         }];
     }

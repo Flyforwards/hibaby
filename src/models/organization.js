@@ -19,8 +19,18 @@ export default {
 		getDepartmentNode:null,
 		TissueProperty:null,
 		AllTissueProperty:null,
+		getPosition:null,
+		getDeptList:null,
 	},
 	reducers: {
+		getDeptListSave(state,{payload:{ data:getDeptList,code }}){
+	      let getDeptListSavedata = {...state,getDeptList,code};
+	      return getDeptListSavedata
+	    },
+	    getPositionSave(state,{payload:{ data:getPosition,code }}){
+	      let getPositionSavedata = {...state,getPosition,code};
+	      return getPositionSavedata
+	    },
 		getUserPageListByDeptId(state,{payload:{ data,code }}){
 	      let getUserPageListByDeptIddata = {...state,data,code};
 	      return getUserPageListByDeptIddata
@@ -122,6 +132,33 @@ export default {
 			if (code == 0) {
 				yield put({
 					type: 'getTissuePropertyList',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//获取所有的职位信息
+		*getPosition({payload: values}, { call, put }) {
+			const {data: {data,code}} =  yield call(organizationService.getPosition, values);
+			if (code == 0) {
+				yield put({
+					type: 'getPositionSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//获取所有的部门信息
+		*getDeptList({payload: values}, { call, put }) {
+			const {data: {data,code}} =  yield call(organizationService.getDeptList, values);
+			console.log("sdsssssssssssssss",code)
+			if (code == 0) {
+				yield put({
+					type: 'getDeptListSave',
 					payload: {
 						data,
 						code

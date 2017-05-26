@@ -18,7 +18,7 @@ overflow:hidden;
 height:100%;
 overflow: hidden;
 .Organization-right{
-	width:79%;
+	width:84%;
 	float:left;
 	margin-left:1%;
 }
@@ -30,17 +30,18 @@ overflow: hidden;
 }
 .Organization-nav{
 	background-color:#fff;
-	height:110px;
-	font-size:14px;
+	height:100px;
+	font-size:12px;
 	margin-top:10px;
-	margin-bottom:20px;
-	padding-top:20px;
+	margin-bottom:10px;
+	padding-top:10px;
 	.name{
 		float:left;
-    width:27%;
-		margin-left:40px;
+		margin-left:7%;
+    height:30px;
+    font:12px "微软雅黑";
 		input{
-			width:86%;
+			width:183px;
 			height:30px;
 			font-size:14px;
 			padding-left:5px;
@@ -49,65 +50,71 @@ overflow: hidden;
 	}
 	.SystemRoles{
 		float:left;
-		margin-left:20px;
+		margin-left:7%;
 		background-color:#fff;
-		font-size:14px;
-    width:30%;
+		font-size:12px;
+    height:30px;
+    line-height:30px;
 		.ant-select-selection--single {
-		  width:100%;
+		    width:183px;
 			height:30px;
-			font-size:14px;
+			font-size:12px;
 			line-height:30px;
 			vertical-align:middle;
 		}
 		.ant-select-selection__rendered {
-		    line-height: 28px;
+		    line-height: 30px;
 		}
 		.OrganizationType{
 			margin-left:20px;
-			width:100%;
+			width:183px;
 		}
 	}
 	.status{
 		float:left;
-		margin-left:20px;
+		margin-left:7%;
 		background-color:#fff;
-		font-size:14px;
-    width:30%;
+		font-size:12px;
+    height:30px;
+    line-height:30px;
 		.ant-select-selection--single {
-		    width:100%;
+		  width:183px;
 			height:30px;
-			font-size:14px;
+			font-size:12px;
 			line-height:30px;
 			vertical-align:middle;
 		}
 		.ant-select-selection__rendered {
-		    line-height: 28px;
+		    line-height: 30px;
 		}
 		.OrganizationType{
 			margin-left:20px;
-			width:100%;
+			width:183px;
 		}
 	}
+  :root .ant-select-arrow {
+    font-size: 16px;
+  }
 	.Organization-Inquire{
 		float:right;
 		font-size: 14px;
 		color: #b67233;
 		cursor: pointer;
-		margin-right:60px;
-		margin-top:20px;
+		margin-right:12%;
+		margin-top:15px;
 		display: inline-block;
 		border:1px solid #b67233;
 		border-radius: 3px;
 		line-height: 30px;
 		text-align:center;
-		width: 150px;
+		width: 15%;
 	    height: 30px;
 	    background: inherit;
-	    background-color:#f1f1f1;
+	    background-color:#f7f2e9;
 	    a{
 	    	width:100%;
 	    	height:100%;
+        color: #b57332;
 	    	display:block;
 	    }
 	}
@@ -116,16 +123,16 @@ overflow: hidden;
 		font-size: 14px;
 		color: #FFFFFF;
 		cursor: pointer;
-		margin-right:20px;
-		margin-top:20px;
+		margin-right:2%;
+		margin-top:15px;
 		display: inline-block;
 		border-radius: 3px;
 		line-height: 30px;
 		text-align:center;
-		width: 150px;
+		width: 15%;
 	    height: 30px;
 	    background: inherit;
-	    background-color:#b67233;
+	    background-color:#b57332;
 	}
 }
 @media (max-width: 767px) {
@@ -195,21 +202,16 @@ overflow: hidden;
 			color: #0066FF;
 			text-decoration: none;
 		}
-		.twoA{
-			border:none;
-			background-color: #fff;
+		a{
 			margin-right:9px;
-			margin-left:10px;
-			color:#f75555;
-			text-decoration: none;
+			margin-left:5px;
+			color:#b87638;
 		}
-		.twoB{
-			border:none;
-			background-color: #fff;
+		.twoA{
 			margin-right:9px;
-			margin-left:10px;
-			color:#666;
-			text-decoration: none;
+			margin-left:5px;
+			color:#b87638;
+			pointer-events: none;
 		}
 	}
 }
@@ -289,10 +291,10 @@ overflow: hidden;
     line-height:30px;
 }
 .Organization-left .ant-tree {
-    margin-left: 9px;
+    margin-left:0;
 }
 .Organization-left .ant-tree li ul {
-    margin-left: -7px;
+    width:100%;
     li{
     	a{
     		width:400px;
@@ -306,21 +308,16 @@ overflow: hidden;
 }
 .Organization-left .ant-tree li{
 	position: relative;
-	width:217px;
+	width:100%;
 }
 .Organization-left .ant-tree .plus{
-		margin-right:10px;
 		position:absolute;
-		right:0px;
-		color:red;
-}
-.ant-tree-child-tree{
-	.plus{
-		margin-right:10px;
-		position:absolute;
-		right:-10px;
-		color:red;
-	}
+		color:#a3a3a3;
+    font-size: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-weight: 900;
+    right:-10%;
 }
 .Organization-left .ant-tree li ul li a:hover {
     width: 400px;
@@ -335,30 +332,19 @@ overflow: hidden;
 		}
 	width:400px;
 	background-color: #fff;
-	margin-left:-16px;
-
-	.ant-tree-child-tree .ant-tree-child-tree-open{
-		li{
-			a{
-				margin-left:-10px;
-			}
-		}
-	}
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
-    font-size: 24px;
+    font-size: 16px;
     font-size: 7px\9;
     content: "\E606";
     font-weight: 700;
-    margin-top:5px;
     margin-left:10px;
 }
 .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
-	font-size: 24px;
+	font-size: 16px;
     font-size: 7px\9;
     content: "\E606";
     font-weight: 700;
-    margin-top:5px;
     margin-left: 10px;
 }
 :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
@@ -374,10 +360,11 @@ overflow: hidden;
     width: calc(100% - 18px);
 }
 .nameList{
-	width:80px;
+	width:45%;
 	background-color: #ccc;
 	position:absolute;
-	left:144px;
+	left:55%;
+  z-index:10000;
 	.li{
 		padding-left:10px;
 		height:30px;

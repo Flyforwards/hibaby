@@ -14,14 +14,15 @@ export function logout() {
   })
 }
 
-export function test(values) {
-  return request('/crm/api/v1/getVerCode', {
+export function getVerCode(values) {
+  return request('/crm/api/v1/user/getVerCode', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
 export function findSubmit(values) {
-  return request('/crm/api/v1/resetPassword', {
+  return request('/crm/api/v1/user/resetPassword', {
     method: 'POST',
     body: JSON.stringify(values),
   })

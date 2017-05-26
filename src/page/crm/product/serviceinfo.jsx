@@ -27,7 +27,7 @@ class Serviceinfoed extends Component {
               if(serviceInfoNameList.length+1 == record.serviceInfoNameList.length){
                 serviceInfoNameList.push(item)
               }else{
-                serviceInfoNameList.push(item+"; ")
+                serviceInfoNameList.push(item+"  ;  ")
               }
             })
             return (
@@ -38,10 +38,29 @@ class Serviceinfoed extends Component {
           title: '套房',
           dataIndex: 'suiteId',
           key:'suiteId',
+          render:(text,record,index) => {
+            let suiteId = ""
+            if(this.props.selectData != null){
+              this.props.selectData.map((item)=>{
+                if(item.id === record.suiteId){
+                  suiteId = item.name
+                }
+              })
+            }
+            return (
+             suiteId
+            )
+          }
         }, {
           title: '套餐价格',
           dataIndex: 'price',
           key: 'price',
+          render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -86,11 +105,13 @@ class Serviceinfoed extends Component {
       this.handleCreateModalCancel();
     }
     componentDidMount() {
-        
+      this.props.dispatch({
+         type: 'packageInfo/selectData',
+          payload: { }
+      })
     }
     render() {
         const { list, loading, pagination, dispatch } = this.props;
-        console.log("list",list)
         const columns = this.columns;
         const tableProps = {
           loading: loading.effects['packageInfo/listByPage'],
@@ -127,12 +148,14 @@ class Serviceinfoed extends Component {
 function mapStateToProps(state) {
   const {
     list,
-    pagination
+    pagination,
+    selectData
   } = state.packageInfo;
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
+    selectData
     };
 }
 export default connect(mapStateToProps)(Serviceinfoed)

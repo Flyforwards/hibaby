@@ -59,27 +59,26 @@ class AddRoleFrom extends Component {
     };
     let roleName = "";
 
-    let node = null;
     let modalTitle = "";
     if (this.props.add) {
       modalTitle = "添加角色";
+      roleName = "";
+
     } else {
       modalTitle = "编辑角色";
       roleName = record ? record.roleName:"";
     }
-    node = (
+    const node = (
       <Form>
-        <FormItem
-          {...( formItemLayout) }
-          label = {'角色名称'}
-          required={ false}
+        <FormItem {...( formItemLayout) } label = {'角色名称'}
         >
           {getFieldDecorator('name', {
             validateTrigger: ['onChange', 'onBlur'],
             rules: [{
               required: true,
               whitespace: true,
-              message: "请填写角色名称",
+              max: 10,
+              message: "请填写角色名称(限10个字)",
             }],
             initialValue: roleName
           })(
@@ -92,6 +91,7 @@ class AddRoleFrom extends Component {
 
     return (
       <Modal
+        key = { visible }
         visible = { visible }
         title = { modalTitle }
         okText =  "保存"
@@ -123,4 +123,5 @@ function mapStateToProps(state) {
     data
   };
 }
+
 export default connect(mapStateToProps)(AddRoleFrom)

@@ -25,6 +25,12 @@ class AddServiceed extends Component {
           dataIndex: 'price',
           key:'price',
           width: "20%",
+          render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         }, {
           title: '服务项目内容',
           dataIndex: 'contents',

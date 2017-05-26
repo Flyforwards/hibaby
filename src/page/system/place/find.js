@@ -39,7 +39,7 @@ class FindPlaceData extends React.Component {
       let {name='', description='', arr=[]} = item;
       const formItemLayout = {
         labelCol: { span: 2 },
-        wrapperCol: { span: 22 },
+        wrapperCol: { span: 20 },
       };
       const editid=GetQueryString("dataId");
       let fields=[];
@@ -62,7 +62,7 @@ class FindPlaceData extends React.Component {
         return (
             <div className="xuanxiang PlaceProject">
                 <Card title = "字段信息:" >
-                  <FormItem {...formItemLayout} label='字段名称'>
+                  <FormItem {...formItemLayout}  label='字段名称'>
                     {getFieldDecorator('name',{
                       initialValue: name ? name : '',
                     })(

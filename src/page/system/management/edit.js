@@ -8,7 +8,7 @@ const createForm = Form.create
 import manager from 'common/util'
 
 @createForm()
-class editData extends React.Component {
+class editGroupData extends React.Component {
 
     constructor(props) {
         super(props);
@@ -24,32 +24,18 @@ class editData extends React.Component {
       if (keys.length === 1) {
         return;
       }
-
-      // can use data-binding to set
-      form.setFieldsValue({
-        keys: keys.filter(key => key !== k),
-      });
-    }
-    delete(e){
-        var lists=this.state.lists;
-        lists.splice(index,1);
-        this.setState({lists:lists})
-    }
-     handleReturn = () =>{
-      browserhistory.go(-1)
       // can use data-binding to set
       form.setFieldsValue({
         keys: keys.filter(key => key !== k),
       });
     }
 
-    add = () => {
+    add () {
       const { form } = this.props;
       if (this.editItem!== null && this.editItem.dictionarySideDOs.length>0) {
         // can use data-binding to get
         const keys = form.getFieldValue('keys');
-        const side = this.editItem.dictionarySideDOs[this.editItem.dictionarySideDOs.length -1];
-        const newKey = side.serialNumber > keys[keys.length -1] ? side.serialNumber+1:keys[keys.length -1]+1;
+        const newKey = keys[keys.length -1]+1;
 
         const nextKeys = keys.concat(newKey);
         // can use data-binding to set
@@ -71,24 +57,25 @@ class editData extends React.Component {
             if (key.indexOf("names-") == 0) {
               const strs = key.split('-');
               if ( strs.length >= 2 ) {
-                const serialNumber = parseInt(strs[1])
-                names.push({ name: values[key], serialNumber })
+                const inx = parseInt(strs[1])
+                names.push({ name: values[key], inx })
               }
             }
           });
           // 冒泡排序
-          names = manager.bubbleSort(names);
+          names = manager.bubbleSortByKey(names, "inx");
           // 对数据进行整合
           names.map((record, index)=>{
             let name = record;
+            const index1= index;
             // 编辑旧选项更改附带Id
-            this.editItem.dictionarySideDOs.map((record)=>{
+            this.editItem.dictionarySideDOs.map((record,index)=>{
+              const index2= index;
               let side = record;
-              if (name.serialNumber === side.serialNumber) {
+              if (index1 === index2) {
                 name.id = side.id;
               }}
             )
-            name.serialNumber = index+1;
           })
 
           let ids = this.editItem.dictionarySideDOs.map((record)=>record.id);
@@ -112,17 +99,19 @@ class editData extends React.Component {
 
     render() {
 
-      const { data } = this.props;
+      const { editData } = this.props;
 
-      if (this.editItem === null && data !== null) {
-        this.editItem = data;
+      if ( editData !== null) {
+        this.editItem = editData;
       }
 
       const formItemLayout = {
         labelCol: { span: 2 },
-        wrapperCol: { span: 22 },
+        wrapperCol: { span: 20},
       };
 
+
+      let rangeArray = (start, end) => Array(end - start + 1).fill(0).map((v, i) => i + start)
       let name="";
       let description="";
       let arr = [];
@@ -131,20 +120,22 @@ class editData extends React.Component {
         arr = this.editItem.dictionarySideDOs;
         name = this.editItem.name;
         description = this.editItem.description;
-        initKeys = arr.map((record)=>record.serialNumber)
-}
+        initKeys = rangeArray(1,arr.length)
+      }
 
       const { getFieldDecorator, getFieldValue } = this.props.form;
       getFieldDecorator('keys', { initialValue: initKeys });
+
       const keys = getFieldValue('keys');
-      const formItems = keys.map((k, index) => {
+      console.log(initKeys);
+      console.log(keys);
+      const formItems = keys.map((k,index) => {
         const initValue = arr[k-1] ? arr[k-1].name : ""
         return (
           <FormItem
-            className = ""
             key={ k }
           >
-            <p className = "label" >{ `选项${String(index+1)}` }</p>
+            <h4 className = "label" >{ `选项${String(index+1)}` }</h4>
             <div className="posi childCen " style={{position:'relative',overflow:'hidden'}}>
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
@@ -166,14 +157,14 @@ class editData extends React.Component {
         <div className="xuanxiang container2">
           <Card title = "字段信息:" >
               <Form layout={ 'horizontal' }>
-              <FormItem {...formItemLayout} className="childCen" label="字段名称">
+              <FormItem {...formItemLayout} className="parentCen" label="字段名称">
               {getFieldDecorator('name', {
                 initialValue:`${name}`,
                     rules: [{ required: true, message: '字段名称为必填项！' }],
                 })(  <Input disabled={true} className="input" placeholder="input placeholder" />
                   )}
                 </FormItem>
-                  <FormItem {...formItemLayout} className = "div childCen" label="字段描述">
+                  <FormItem {...formItemLayout} className = "div parentCen" label="字段描述">
                   {getFieldDecorator('description', {
                     initialValue:`${description}`,
                     rules: [{ required: true, message: '字段描述为必填项！' }],
@@ -183,7 +174,7 @@ class editData extends React.Component {
                   </FormItem>
               </Form>
           </Card>
-          <Card title = "下拉选项:" >
+          <Card title = "下拉选项:">
           <Form>
                { formItems }
                <Button className = "editable-add-btn add" onClick = { this.add.bind(this) }> 添加 </Button>
@@ -208,10 +199,10 @@ function GetQueryString(name){
 
 function mapStateToProps(state) {
 
-  const { editData : data } = state.save;
+  const { editData } = state.save;
   return {
     loading: state.loading.models.save,
-    data,
+    editData,
   };
 }
-export default connect(mapStateToProps)(editData);
+export default connect(mapStateToProps)(editGroupData);

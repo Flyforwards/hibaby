@@ -1,5 +1,7 @@
 
 .CustomerConent{
+  width:98%;
+  margin: 10px 1%;
 .mini .yt-admin-framework-content {
     transition: all .3s;
     margin-left: 60px;
@@ -16,11 +18,13 @@
 	position:relative;
 }
 .Customer-nav{
-	min-width:1100px;
 	input{
 		width:400px;
 		height:30px;
 		font-size:14px;
+    border:none;
+    border:1px solid #999;
+    border-radius:4px;
 		padding-left:5px;
 	}
 }
@@ -35,7 +39,7 @@
 	    color: #fff;
 	    background-color: #b67233;
 	    margin:20px;
-	    border-radius:0;
+	    border-radius:4px;
 	    width:150px;
 	    height:30px;
 	}
@@ -49,7 +53,7 @@
 	    background-color: #f89d2d;
 	    margin-top:20px;
 	    margin-right:20px;
-	    border-radius:0;
+	    border-radius:4px;
 	    width:150px;
 	    height:30px;
 	}
@@ -63,7 +67,7 @@
 	    color: #fff;
 	    background-color: #693d20;
 	    margin-top:10px;
-	    border-radius:0;
+	    border-radius:4px;
 	    width:150px;
 	    height:30px;
 	}
@@ -77,27 +81,26 @@
 	min-width:1100px;
 	height:auto;
 	background-color: #eeeeee;
-	div{
-		float:left;
-		color:#666;
-		font-size:14px;
-		input{
-			margin-left:10px;
-			margin-right:10px;
-		}
-	}
-	.listDiv{
-		float:left;
-		margin: 20px;
-	}
-	#data{
-		margin-left:38px;
-	}
+	 .Customer-first{
+     width:100%;
+     height:50px;
+     overflow: hidden;
+   }
+   .Customer-second{
+     width:100%;
+     height: 50px;
+     float:left;
+   }
 	.age{
 		margin-left:40px;
+    margin-top:10px;
+    float:left;
 		input{
 			width:60px;
 			height:30px;
+      margin:0 5px;
+      border:none;
+      border: 1px solid #d2e1e4;
 			text-align: center;
 			outline:none;
 			border:0;
@@ -110,12 +113,12 @@
 	.Membership{
 		height:30px;
 		width:218px;
-		line-height:30px;
-		margin:0px 90px;
-
-		div{
-			float:right;
-		}
+		margin:10px 90px;
+    float:left;
+    line-height:30px;
+    .ant-select{
+      float:right;
+    }
 		.ant-select-selection--single{
 			width:150px;
 			float:right;
@@ -127,45 +130,38 @@
 	.hospitals{
 		height:30px;
 		width:218px;
-		line-height:30px;
-		margin-right:100px;
-		div{
-			float:right;
-		}
+    margin-top:10px;
+    float:left;
+    line-height:30px;
+    .ant-select{
+      float:right;
+    }
 		.ant-select-selection--single{
 			width:150px;
 			float:right;
-			div{
-				float:left;
-			}
 		}
 	}
 	.period{
-		margin-top:20px;
-		margin-left:25px;
+		margin-top:10px;
 		height:30px;
 		line-height:30px;
-		margin-right:10px;
-		div{
-			float:right;
-			margin-right:10px;
-		}
+    width:30%;
 		.ant-select-selection--single{
 			width:150px;
 			float:right;
 			margin-right:-6px;
-			div{
-				float:left;
-			}
 		}
 	}
+  .listDiv{
+    float:left;
+    width:30%;
+  }
 	.current{
 		height:30px;
 		width:218px;
 		line-height:30px;
 		margin-top: 20px;
-		float: right;
-		margin-right:241px;
+		float: left;
 		.ant-cascader-picker {
 			width:150px;
 			float:right;

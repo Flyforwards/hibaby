@@ -38,11 +38,37 @@ class Organization extends React.Component {
           dataIndex: 'positionId',
           key:'positionId',
           width: '10%',
+          render: (text, record, index) => {
+            let position = ''
+            if(this.props.getPosition != null){
+              this.props.getPosition.map((item)=>{
+                if(item.id == record.positionId){
+                  position = item.name
+                }
+              })
+            }
+            return(
+              position
+            )
+          }
         }, {
           title: '隶属部门',
           dataIndex: 'deptId',
           key: 'deptId',
           width: '10%',
+          render: (text, record, index) => {
+            let deptId = ''
+            if(this.props.getDeptList != null){
+              this.props.getDeptList.map((item)=>{
+                if(item.id == record.deptId){
+                  deptId = item.name
+                }
+              })
+            }
+            return(
+              deptId
+            )
+          }
         },{
           title: '地方中心',
           dataIndex: 'endemicId',
@@ -58,23 +84,30 @@ class Organization extends React.Component {
           dataIndex: 'status',
           key: 'status',
           width: '10%',
+          render: (text, record, index) => {
+            if(record.status == 0){
+                status = "正常"
+            }else if(record.status == 1){
+                status = "禁用"
+            }
+            return(
+             status
+            )
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
-            let Disabled = false
+            let Disablesd = ""
             if(record.status == 1){
-              Disabled = true
+              Disablesd = "twoA"
             }
             return (
                 <span>
                  <Link to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                 {Disabled?
-                  <a href="#" className="twoB">禁用</a>:
-                  <a href="#" className="twoA" disabled={ false } onClick={this.Disabled.bind(this,record)}>禁用</a>
-                 }
+                 <a href="#" className={Disablesd} onClick={this.Disabled.bind(this,record)} >禁用</a>
                 </span>
             );
           },
@@ -92,7 +125,6 @@ class Organization extends React.Component {
             nodeid:endemic.id,
             tissueProperty:endemic.tissueProperty
         }
-        this.current = 1
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -124,74 +156,69 @@ class Organization extends React.Component {
         "tissueProperty":endemic.tissueProperty
       }
     });
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
+    });
   }
-    //禁止
-    Disabled(record) {
-      this.setState({
-        toViewVisible:true,
-        ID:record.id
-      })
-    }
-    //按条件查询用户
-    OrganizationInquire() {
-      this.setState({
-        userName:$(".userName").val()
-      })
+//禁止
+Disabled(record) {
+    this.setState({
+       toViewVisible:true,
+      ID:record.id
+    })
+}
+//按条件查询用户
+OrganizationInquire() {
+this.setState({
+  userName:$(".userName").val()
+})
+ this.props.dispatch({
+  type: 'organization/organizationList',
+  payload: {
+      "name": $(".userName").val(),
+      "nodeid": this.state.nodeid,
+      "roleId": this.state.character,
+      "status": this.state.status,
+      "page": 1,
+      "size": 10,
+      "tissueProperty":this.state.tissueProperty
+  },
+});
+}
+//获取系统角色的id
+onSelectCharacter(value){
 
-       this.props.dispatch({
-        type: 'organization/organizationList',
-        payload: {
-            "name": $(".userName").val(),
-            "nodeid": this.state.nodeid,
-            "roleId": this.state.character,
-            "status": this.state.status,
-            "page": this.current,
-            "size": 10,
-            "tissueProperty":this.state.tissueProperty
-        },
-      });
-    }
-    //获取系统角色的id
-    onSelectCharacter(value){
-      console.log("value",value)
-     this.setState({
-        character:value
-     })
-    }
-    //获取账户状态的id
-    onSelectStatus(value){
-     this.setState({
-        status:value
-     })
-    }
-    showCreateModal() {
-        this.setState({
-            createModalVisible: true
-        })
-    }
-    handleCreateModalCancel() {
-        this.setState({
-            toViewVisible: false
-        })
-      this.props.dispatch({
-        type: 'organization/organizationList',
-        payload: {
-            "name": this.state.userName,
-            "nodeid": this.state.nodeid,
-            "roleId": this.state.character,
-            "status": this.state.status,
-            "page": this.current,
-            "size": 10,
-            "tissueProperty": this.state.tissueProperty
-        },
-      });
-    }
-    ObtainOrganization(nodeid,tissueProperty){
-      this.setState({
-          nodeid:nodeid,
-          tissueProperty:tissueProperty
-      })
-    }
+ this.setState({
+    character:value
+ })
+}
+//获取账户状态的id
+onSelectStatus(value){
+ this.setState({
+    status:value
+ })
+}
+showCreateModal() {
+    this.setState({
+        createModalVisible: true
+    })
+}
+handleCreateModalCancel() {
+    this.setState({
+        toViewVisible: false
+    })
+}
+ObtainOrganization(nodeid,tissueProperty){
+  this.setState({
+      nodeid:nodeid,
+      tissueProperty:tissueProperty
+  })
+}
     render() {
         let ListLnformation = []
         if(this.props.list != null){
@@ -204,9 +231,8 @@ class Organization extends React.Component {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
-          pageSize:10,
+          defaultPageSize:10,
           onChange: (current) => {
-            this.current = current
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
@@ -247,11 +273,11 @@ class Organization extends React.Component {
                     <Option value="1">禁用</Option>
                   </Select>
               </div>
-              {this.state.tissueProperty == 3?
+              {this.state.tissueProperty == 3? 
                 <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
                 <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
               }
-
+             
               <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
             </div>
             {this.props.list?
@@ -293,6 +319,8 @@ function Organization({
   dispatch,
   loading,
   list,
+  getPosition,
+  getDeptList,
   total,
   page,
   results,
@@ -305,6 +333,12 @@ function Organization({
     }
     list = {
       list
+    }
+    getPosition = {
+      getPosition
+    }
+    getDeptList = {
+      getDeptList
     }
     loading = {
       loading
@@ -322,6 +356,8 @@ function mapStateToProps(state) {
   const {
     list,
     total,
+    getPosition,
+    getDeptList,
     page,
     results,
     range,
@@ -330,6 +366,8 @@ function mapStateToProps(state) {
   return {
     loading: state.loading.models.organization,
     list,
+    getPosition,
+    getDeptList,
     total,
     page,
     results,
