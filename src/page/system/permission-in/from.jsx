@@ -23,7 +23,7 @@ class SelectListed extends Component {
             <div className="SelectList">
               <span>
               <TreeSelect
-                style={{ width: 150 }}
+                style={{ width: 370 }}
                 key={this.props.list.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}

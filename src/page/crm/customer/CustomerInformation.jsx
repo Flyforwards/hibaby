@@ -3,124 +3,126 @@ import './customerInformation.scss';
 import { connect } from 'dva';
 import FileUpload from './fileUpload'
 import moment from 'moment';
+import { routerRedux } from 'dva/router';
+
 
 import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-function jsGetAge(strBirthday){
-  var returnAge;
-  var strBirthdayArr=strBirthday.split("-");
-  var birthYear = strBirthdayArr[0];
-  var birthMonth = strBirthdayArr[1];
-  var birthDay = strBirthdayArr[2];
+  function jsGetAge(strBirthday){
+    var returnAge;
+    var strBirthdayArr=strBirthday.split("-");
+    var birthYear = strBirthdayArr[0];
+    var birthMonth = strBirthdayArr[1];
+    var birthDay = strBirthdayArr[2];
 
-  let d = new Date();
-  var nowYear = d.getFullYear();
-  var nowMonth = d.getMonth() + 1;
-  var nowDay = d.getDate();
+    let d = new Date();
+    var nowYear = d.getFullYear();
+    var nowMonth = d.getMonth() + 1;
+    var nowDay = d.getDate();
 
-  if(nowYear == birthYear){
-    returnAge = 0;//同年 则为0岁
-  }
-  else{
-    var ageDiff = nowYear - birthYear ; //年之差
-    if(ageDiff > 0){
-      if(nowMonth == birthMonth) {
-        var dayDiff = nowDay - birthDay;//日之差
-        if(dayDiff < 0)
-        {
-          returnAge = ageDiff - 1;
+    if(nowYear == birthYear){
+      returnAge = 0;//同年 则为0岁
+    }
+    else{
+      var ageDiff = nowYear - birthYear ; //年之差
+      if(ageDiff > 0){
+        if(nowMonth == birthMonth) {
+          var dayDiff = nowDay - birthDay;//日之差
+          if(dayDiff < 0)
+          {
+            returnAge = ageDiff - 1;
+          }
+          else
+          {
+            returnAge = ageDiff ;
+          }
         }
         else
         {
-          returnAge = ageDiff ;
+          var monthDiff = nowMonth - birthMonth;//月之差
+          if(monthDiff < 0)
+          {
+            returnAge = ageDiff - 1;
+          }
+          else
+          {
+            returnAge = ageDiff ;
+          }
         }
       }
       else
       {
-        var monthDiff = nowMonth - birthMonth;//月之差
-        if(monthDiff < 0)
-        {
-          returnAge = ageDiff - 1;
-        }
-        else
-        {
-          returnAge = ageDiff ;
-        }
+        returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天
       }
     }
-    else
-    {
-      returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天
-    }
+
+    return returnAge;//返回周岁年龄
+
   }
 
-  return returnAge;//返回周岁年龄
 
-}
+  function cusComponent(dict) {
+    let tempDiv = (<Input/>);
 
-
-function cusComponent(dict) {
-  let tempDiv = (<Input/>);
-
-  switch (dict.component) {
-    case 'Input':
+    switch (dict.component) {
+      case 'Input':
         tempDiv = (<Input disabled={dict.disabled}/>);
-      break;
-    case 'Select':
-      if (dict.fun)
-      {
-        tempDiv = (<Select onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
-      }
-      else {
-        tempDiv = (<Select placeholder='请选择'>{dict.children}</Select>);
-      }
-      break;
-    case 'DatePicker':
-      if (dict.fun)
-      {
-        tempDiv = (<DatePicker onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
-      }
-      else {
-        tempDiv = (<DatePicker placeholder='请选择'>{dict.children}</DatePicker>);
-      }
-      break;
-    case 'InputNumber':
+        break;
+      case 'Select':
+        if (dict.fun)
+        {
+          tempDiv = (<Select onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
+        }
+        else {
+          tempDiv = (<Select placeholder='请选择'>{dict.children}</Select>);
+        }
+        break;
+      case 'DatePicker':
+        if (dict.fun)
+        {
+          tempDiv = (<DatePicker onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
+        }
+        else {
+          tempDiv = (<DatePicker placeholder='请选择'>{dict.children}</DatePicker>);
+        }
+        break;
+      case 'InputNumber':
         tempDiv = (<InputNumber className="antCli" disabled={dict.disabled} min={1} max={dict.max}/>);
-      break;
-    case 'UploadButton':
-    {
-      tempDiv = <FileUpload deleteFun={dict.deleteFun} fun={dict.fun}>
-        <Button><Icon type="upload" /> 上传附件</Button>
-      </FileUpload>
+        break;
+      case 'UploadButton':
+      {
+        tempDiv = <FileUpload deleteFun={dict.deleteFun} fun={dict.fun}>
+          <Button><Icon type="upload" /> 上传附件</Button>
+        </FileUpload>
+      }
+        break;
+      default:
     }
-      break;
-    default:
+
+    return (
+      tempDiv
+
+    );
   }
 
-  return (
-    tempDiv
+  const formItemLayout = {
+    labelCol: { span: 7 },
+    wrapperCol: { span: 17 },
+  };
 
-  );
-}
+  function BaseInfo(props) {
 
-const formItemLayout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 17 },
-};
+    const {operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
+      provinceData,cityData,nationalData} = props.users;
+    const {dispatch} = props;
 
-function BaseInfo(props) {
-
-  const {operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
-    provinceData,cityData,nationalData} = props.users;
-  const {dispatch} = props;
-
-  const { getFieldDecorator } = props.form;
+    const { getFieldDecorator } = props.form;
 
 
 
-  const guestInformationSource = [];
+    const guestInformationSource = [];
 
   for (let i = 0; i < guestInformationSourceAry.length ; i++) {
     guestInformationSource.push(<Option key={guestInformationSourceAry[i].id}>{guestInformationSourceAry[i].name}</Option>);
@@ -242,7 +244,7 @@ function BaseInfo(props) {
           {baseInfoDiv}
         </Row>
 
-        <Row gutter={1}>
+        <Row>
 
           <Col span={6}>
 
@@ -572,6 +574,10 @@ class customerInformation extends React.Component{
 
   }
 
+   backBtnClick(props){
+     this.props.dispatch(routerRedux.push('/crm/customer'))
+  }
+
   baseFormRule(dict){
     this.refs.baseForm.validateFields((err, values) => {
       if (!err) {
@@ -588,7 +594,7 @@ class customerInformation extends React.Component{
         <ExtensionForm ref="extensionForm" {...this.props}/>
         <RemarkForm  {...this.props}/>
         <div className='savaDiv'>
-          <Button className='backBtn'>返回</Button>
+          <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
           <Button className='backBtn' type="primary" onClick={this.handleSubmitBase.bind(this)}>保存</Button>
         </div>
       </div>

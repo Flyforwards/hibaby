@@ -108,7 +108,7 @@ class AddFromCreateModal extends Component {
                 <FormItem
                   label="主模块"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                {getFieldDecorator('mainName', {
                   rules: [],
@@ -123,7 +123,7 @@ class AddFromCreateModal extends Component {
                 <FormItem
                   label="英文描述"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span:18}}
                 >
                 {getFieldDecorator('alias', {
                   rules: [],
@@ -134,7 +134,7 @@ class AddFromCreateModal extends Component {
                 <FormItem
                   label="上级菜单"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                {getFieldDecorator('authority', {
                   rules: [],
@@ -146,7 +146,7 @@ class AddFromCreateModal extends Component {
                 <FormItem
                   label="名称"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                 {getFieldDecorator('name', {
                   rules: [],
@@ -157,7 +157,7 @@ class AddFromCreateModal extends Component {
                 <FormItem
                   label="路径"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                 {getFieldDecorator('actionPath', {
                   rules: [],
@@ -168,7 +168,7 @@ class AddFromCreateModal extends Component {
                 <FormItem
                   label="排序"
                   labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
+                  wrapperCol={{ span: 18 }}
                 >
                 {getFieldDecorator('orderBy', {
                   rules: [],

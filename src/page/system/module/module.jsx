@@ -273,7 +273,7 @@ range}) {
 }
 function mapStateToProps(state) {
   console.log("菜单>>>",state.module.item)
-  const { item:data,size,total,page,edit,permission,results,range,list,menu} = state.module;
+  const {item:data,size,total,page,edit,permission,results,range,list,menu} = state.module;
   return {
     loading: state.loading.models.module,
     data,

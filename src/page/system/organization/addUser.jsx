@@ -33,15 +33,6 @@ class AddUsered extends React.Component {
   }
   componentDidMount(){
       let endemic = session.get("endemic")
-      let NODEID = window.location.search.split("=")[1];
-      if(NODEID){
-        this.props.dispatch({
-          type: 'organization/position',
-          payload: {
-            dataId: NODEID
-          }
-        })
-      }
       this.props.dispatch({
             type: 'organization/getDeptListByEndemicId',
             payload: {
@@ -90,16 +81,12 @@ class AddUsered extends React.Component {
   //保存按键
   headelSave = ()=>{
     let endemic  = session.get("endemic")
-    message.config({
-        top: 100,
-        duration: 1
-    });
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const values = {
           ...fieldsValue,
           'entryTime': fieldsValue['entryTime']
-        }
+        } 
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
         if(fields.systemRole){
@@ -142,6 +129,7 @@ class AddUsered extends React.Component {
                                         "img":this.state.NewuserImg
                                       }
                                     })
+                                    history.go(-1)
                                 }else{
                                   message.warning('请上传头像')
                                 }
@@ -162,7 +150,7 @@ class AddUsered extends React.Component {
                     }
               }else{
                 message.warning('请选择隶属部门')
-              }
+              }  
             }else{
               message.warning('请选择入职日期')
             }
@@ -184,7 +172,7 @@ class AddUsered extends React.Component {
       NewuserImg:NewuserImg
     })
   }
-    render() {
+    render() {  
       let traversalEndemicId = []
       let selectDataList = []
       let endemic = session.get("endemic")
@@ -257,8 +245,8 @@ class AddUsered extends React.Component {
               {getFieldDecorator('gender', {
               })(
                 <RadioGroup>
-                <Radio value={1}>男</Radio>
-                <Radio value={0}>女</Radio>
+                <Radio value={0}>男</Radio>
+                <Radio value={1}>女</Radio>
               </RadioGroup>
               )}
             </FormItem>

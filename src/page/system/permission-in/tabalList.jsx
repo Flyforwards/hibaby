@@ -45,8 +45,8 @@ class TabalListed extends Component {
           render: (text, record, index) => {
             return (
                 <div>
-                  <a onClick={this.delete.bind(this,record)}>删除</a>
-                  <a onClick={this.modify.bind(this,index)}>修改</a>
+                  <a className="firstA" onClick={this.delete.bind(this,record)}>删除</a>
+                  <a className="firstB" onClick={this.modify.bind(this,index)}>修改</a>
                 </div>
             );
           },

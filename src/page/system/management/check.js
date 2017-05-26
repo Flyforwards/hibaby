@@ -38,8 +38,8 @@ class CheckData extends React.Component {
       const item = this.props.data ? this.props.data : {};
       let {name='', description='', arr=[]} = item;
       const formItemLayout = {
-        labelCol: { span: 2 },
-        wrapperCol: { span: 22 },
+        labelCol: { span: 3 },
+        wrapperCol: { span: 18 },
       };
       const editid = GetQueryString("dataId");
       let fields=[];
