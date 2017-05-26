@@ -28,7 +28,7 @@ class EditableCell extends Component {
   edit = () => {
     this.setState({ editable: true });
   }
-  
+
   render() {
     const { editable } = this.state;
     const { name } = this.props;
@@ -103,19 +103,19 @@ class EditableTable extends Component {
         );
       }
     }];
-    
+
     this.state = {
       key: 0
     };
   }
-  
+
   onCellChange = (index, key) => {
     return (value) => {
       const { positionInfo } = this.props;
       positionInfo[index][key] = value;
     };
   }
-  
+
   onDelete = (index) => {
     const { positionInfo } = this.props;
     const tmp = positionInfo.splice(index, 1);
@@ -133,7 +133,7 @@ class EditableTable extends Component {
     })
     this.setState({ key: this.state.key + 1 })
   }
-  
+
   handleAdd = () => {
     const { positionInfo, record } = this.props;
     const deptId = record.id
@@ -149,7 +149,7 @@ class EditableTable extends Component {
       }
       return b+1;
     }
-    
+
     const count = getCount();
     const newData = {
       rank: count,
@@ -162,15 +162,15 @@ class EditableTable extends Component {
         positionInfo
       }
     })
-    
+
   }
-  
+
   render() {
     const columns = this.columns;
     const { positionInfo } = this.props;
-    
+
     return (
-      <div>
+      <div className="editPosition">
         <Button className="editable-add-btn" onClick={this.handleAdd} type="primary">添加</Button>
         <Table rowKey='rank' bordered dataSource={positionInfo} columns={columns} pagination={false}/>
       </div>
@@ -188,7 +188,7 @@ class LocalizedModal extends Component {
       name: ''
     }
   }
-  
+
   handlePageChange(id) {
     this.props.dispatch({
       type: 'position/getPositionInfo',
@@ -197,14 +197,14 @@ class LocalizedModal extends Component {
       }
     })
   }
-  
+
   showModal = (id) => {
     this.setState({
       visible: true
     });
     this.handlePageChange(id)
   }
-  
+
   handleOk = () => {
     const { positionInfo, dispatch } = this.props;
     dispatch({
@@ -215,15 +215,15 @@ class LocalizedModal extends Component {
       visible: false
     });
   }
-  
-  
+
+
   handleCancel = () => {
     this.setState({
       visible: false,
       newKey: ''
     });
   }
-  
+
   render() {
     const { positionInfo, record, dispatch } = this.props;
     const endemic = session.get("endemic")

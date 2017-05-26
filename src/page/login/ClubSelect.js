@@ -23,7 +23,7 @@ function ClubSelect({ dispatch, clubs}){
       <div className = "selectForm" >
        <div className = "login-index">
          <div className = "select">
-           <img className = "findimg" src ={ logo } />
+           <img className = "find-img" src ={ logo } />
            {
              buttonNodes
            }

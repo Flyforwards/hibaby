@@ -22,16 +22,15 @@ export default {
 		MainMenuList(state, {
 			payload: {data:item,size,page,total}
 		}) {
-			let menulist={
-				...state,item ,size,page,total
+			let mldata={
+				...state,item ,size,page,total,
 			}
 			let range = {
 				start: page == 1 ? 1 : (page - 1) * 3 + 1,
 				end: page == 1 ? item.length : (page - 1) * 3 + item.length,
 				totalpage:Math.ceil(total/size),
 			}
-			local.set("MainMenuList",item)
-			return {...menulist,range };
+			return {...mldata,range };
 		},
 		//删除服务项目
 		deleteServiceSave(state, { payload: { record }}) {
@@ -77,12 +76,12 @@ export default {
 
 		//上级菜单下拉
 		ParentNodeSelect(state,{payload:{data:menu,dataId,code}}){
-				let menudata={
+				let menuseldata={
 					...state,
 					menu,
 					dataId,
 				}
-				local.set("index",menudata.data)
+				local.set("index",menuseldata.data)
 				console.log("上级下拉",menu)
 				return {
 					...state,
@@ -95,7 +94,9 @@ export default {
 
 		//菜单列表页数据
 		*MenuData({payload: values}, { call, put }) {
+
 			const {data: { data,size,total,page,code} } = yield call(moduleService.MainMenuList, values);
+
 			if (code == 0) {
 				yield put({
 						type:'MainMenuList',
@@ -108,7 +109,9 @@ export default {
 						}
 				});
 			}
+
 		},
+
 		//删除菜单数据
 		*deleteService({ payload: values }, {call,put }) {
       const { page, pageSize, dataId} = values
@@ -236,7 +239,8 @@ export default {
 				if (pathname === '/system/module') {
 					dispatch({
 						type: 'MenuData',
-						payload:{...query,
+						payload:{
+							"page":1,
 							"size":10,
 							}
 					});
@@ -265,7 +269,6 @@ export default {
 					dispatch({
 						type: 'ParentNodeData',
 						payload:{...query,
-
 							}
 					});
 				}

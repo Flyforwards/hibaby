@@ -47,7 +47,6 @@ class AddModule extends Component {
               projectId:Number(values.projectId),
               parentId:Number(values.parentId)
             }
-            console.log("保存>>>",payload)
           this.props.onCancel()
         }
       });
@@ -65,7 +64,6 @@ class AddModule extends Component {
  // }
  //传入权限主模块id
  onSelect = (value,key) => {
-   console.log("主模块>>>",value)
    this.props.dispatch({
        type: 'module/ParentNodeData',
        payload: {
@@ -81,7 +79,6 @@ class AddModule extends Component {
  }
   render() {
     const { visible, record ,data,list,permission,menu } = this.props;
-    console.log('addMenu:render:menu>>',permission);
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let modalTitle = "菜单模块：";
     const formItemLayout = {

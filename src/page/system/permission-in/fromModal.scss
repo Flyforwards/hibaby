@@ -1,18 +1,21 @@
 .fromList{
 	height:auto;
+	width:98%;
+	margin:10px 1%;
 	.ant-table-body {
 	    margin-top: 20px;
 	}
 	.fromhead{
-		height:40px;
+		height:60px;
 		width:100%;
 		background:#fff;
 		margin-top:10px;
+		border-radius:4px;
 		.ant-form{
 			height:30px;
-			width:80%;
+			width:76%;
 			float:left;
-			margin-top:5px;
+			margin-top:15px;
 			margin-left:10px;
 			.ant-row {
 				height:30px;
@@ -21,13 +24,13 @@
 				.ant-form-item-label{
 					height:30px;
 					width:60px;
-					font-size:14px;
+					font:14px "微软雅黑";
 					color:#333;
 					float:left;
 					label{
 						height:30px;
 						width:60px;
-						font-size:14px;
+						font:14px "微软雅黑";
 						color:#333;
 						line-height:30px;
 						text-align:center;
@@ -57,13 +60,13 @@
 				.ant-form-item-label{
 					height:30px;
 					width:80px;
-					font-size:14px;
+					font:14px "微软雅黑";
 					color:#333;
 					float:left;
 					label{
 						height:30px;
 						width:80px;
-						font-size:14px;
+						font:14px "微软雅黑";
 						color:#333;
 						line-height:30px;
 						text-align:center;
@@ -74,14 +77,14 @@
 	}
 	.Button{
 			height:auto;
-			width:230px;
+			width:20%;
 			float:left;
-			margin-top:5px;
+			margin-top:15px;
 		.btn{
 			width:60px;
 			height:30px;
 			float:left;
-			background-color:blue;
+			background-color:#169bd5;
 			margin-left:10px;
 			color:#fff;
 			text-align: center;
@@ -115,17 +118,17 @@
 		font-size: 14px;
 		div{
 			width:100%;
+			text-align: center;
 			.firstA{
 				display: inline-block;
-				color: #0066FF;
+				color: #b87636;
 				text-decoration: none;
-				margin:0 22px;
-				float:left;
+				text-align:center;
 			}
 			.firstB{
-				color: #FF0000;
-				float:left;
+				color:#b87636;
 				text-decoration: none;
+				text-align:center;
 			}
 		}
 	}

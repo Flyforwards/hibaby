@@ -13,18 +13,18 @@
 	.ant-calendar-picker-icon:after{
 		font-size:24px;
 		margin-left:-14px;
-		margin-top: -6px;
+		margin-top: -6px; 
 	}
 	.basicInformationForm{
 		width:100%;
 		background-color: #fff;
 		margin-left:10px;
-		margin-top:-10px;
+		margin-top:-10px; 
 		.ant-form-item-label{
-			margin-right:10px;
+			margin-right:10px; 
 		}
 		.img{
-			margin:20px 40px 20px 20px;
+			margin:20px 40px 20px 20px; 
 			border:none;
 			width: 100px;
    			height: 100px;
@@ -51,18 +51,18 @@
 			}
 		}
 		.Numbering{
-			margin-left:65px;
-			margin-top: 20px;
+			margin-left:65px; 
+			margin-top: 20px; 
 			input{
 				width:310px;
-			}
+			} 
 		}
 		.userName{
-			margin-left:60px;
+			margin-left:60px; 
 			margin-top: 20px;
 			input{
 				width:310px;
-			}
+			} 
 		}
 		.gender{
 			margin-left: 227px;
@@ -101,32 +101,32 @@
 		text-indent:20px;
 		background-color: rgba(102, 102, 102, 1);
 	}
-
+	
 	.entryInformationForm{
 		width:100%;
 		background-color: #fff;
 		margin-left:10px;
 		margin-top: -10px;
-		padding-left: 60px;
+		padding-left: 60px; 
 		.ant-form-item-label{
-			margin-right:10px;
+			margin-right:10px; 
 		}
 		.localCenter{
-			margin-left:60px;
+			margin-left:60px; 
 			margin-top: 20px;
 			input{
 				width:310px;
 			}
 		}
 		.affiliatedDepartment{
-			margin-left:60px;
+			margin-left:60px; 
 			margin-top: 20px;
 			.ant-select-selection--single{
 				width:310px;
 			}
 		}
 		.directLeadership{
-			margin-left:70px;
+			margin-left:61px; 
 			margin-top: 20px;
 			input{
 				width:230px;
@@ -135,13 +135,13 @@
 		.button{
 			.ant-form-item-control-wrapper{
 				margin-left:10px;
-				margin-top: 20px;
+				margin-top: 20px; 
 			}
 		}
 		.position{
 			margin-left:82px;
 			margin-top: 20px;
-			margin-bottom: 20px;
+			margin-bottom: 20px; 
 			.ant-select-selection--single{
 				width:310px;
 			}
@@ -165,20 +165,20 @@
 		width:100%;
 		background-color: #fff;
 		margin-left:10px;
-		margin-bottom: 20px;
-		margin-top:-10px;
+		margin-bottom: 20px; 
+		margin-top:-10px; 
 		.ant-form-item-label{
-			margin-right:10px;
+			margin-right:10px; 
 		}
 		.password,.information,.companyEmail,.internalExtension{
-			margin-left:104px;
+			margin-left:104px; 
 			margin-top: 20px;
 			input{
 				width:310px;
 			}
 		}
 		.phoneNumber{
-			margin-left:91px;
+			margin-left:91px; 
 			margin-top: 20px;
 			input{
 				width:310px;
@@ -186,7 +186,6 @@
 		}
 		.internalExtension{
 			margin-bottom: 20px;
-			margin-left: 115px;
 		}
 	}
 	.returnButton,.saveButton{
@@ -217,11 +216,11 @@
 			width:30%;
 			float:left;
 			margin-left: 120px;
-			margin-top:30px;
+			margin-top:30px; 
 			font-weight: 400;
 		    font-style: normal;
 		    font-size: 14px;
-		    color: #999999;
+		    color: #999999; 
 			span{
 				display: inline-block;
 			}
@@ -241,11 +240,11 @@
 			width:18%;
 			float:left;
 			margin-left: 18%;
-			margin-top:20px;
+			margin-top:20px; 
 			font-weight: 400;
 		    font-style: normal;
 		    font-size: 14px;
-		    color: #999999;
+		    color: #999999; 
 			span{
 				display: inline-block;
 			}
@@ -254,7 +253,7 @@
 			}
 		}
 		.position{
-			margin-left:21%;
+			margin-left:21%; 
 		}
 	}
 	.basicInformationContent{
@@ -264,7 +263,7 @@
 			height:100px;
 			float:left;
 			border-radius: 50%;
-			margin:30px 40px 30px 100px;
+			margin:30px 40px 30px 100px; 
 			border:none;
 		}
 		.gender,.entryTime,.Numbering,.userName{
@@ -272,11 +271,11 @@
 			float:left;
 			margin-left:30px;
 			margin-top:30px;
-			margin-bottom:20px;
+			margin-bottom:20px; 
 			font-weight: 400;
 		    font-style: normal;
 		    font-size: 14px;
-		    color: #999999;
+		    color: #999999; 
 			span{
 				display: inline-block;
 			}
@@ -285,7 +284,7 @@
 			}
 		}
 		.Numbering{
-			margin-left:56px;
+			margin-left:56px; 
 		}
 
 	}
