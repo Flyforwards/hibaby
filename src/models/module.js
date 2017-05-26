@@ -22,7 +22,7 @@ export default {
 		MainMenuList(state, {
 			payload: {data:item,size,page,total}
 		}) {
-			let menulist={
+			let mldata={
 				...state,item ,size,page,total,
 			}
 			let range = {
@@ -30,7 +30,7 @@ export default {
 				end: page == 1 ? item.length : (page - 1) * 3 + item.length,
 				totalpage:Math.ceil(total/size),
 			}
-			return {...menulist,range };
+			return {...mldata,range };
 		},
 		//删除服务项目
 		deleteServiceSave(state, { payload: { record }}) {
@@ -76,12 +76,12 @@ export default {
 
 		//上级菜单下拉
 		ParentNodeSelect(state,{payload:{data:menu,dataId,code}}){
-				let menudata={
+				let menuseldata={
 					...state,
 					menu,
 					dataId,
 				}
-				local.set("index",menudata.data)
+				local.set("index",menuseldata.data)
 				console.log("上级下拉",menu)
 				return {
 					...state,
@@ -239,7 +239,8 @@ export default {
 				if (pathname === '/system/module') {
 					dispatch({
 						type: 'MenuData',
-						payload:{...query,
+						payload:{
+							"page":1,
 							"size":10,
 							}
 					});

@@ -47,6 +47,13 @@ export function saveMembershipcard(values) {
     body: JSON.stringify(values),
   })
 };
+//更新卡种信息
+export function modifyMembershipcard(values) {
+  return request('/crm/api/v1/membershipcard/modifyMembershipcard', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
 
 //删除卡种信息
 
