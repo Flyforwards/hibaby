@@ -22,7 +22,7 @@ export default (app) => [
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/position'));
-          cb(null, require('page/system/position/position.jsx'))
+          cb(null, require('page/system/position/PositionIndex.jsx'))
         })
       }
     },

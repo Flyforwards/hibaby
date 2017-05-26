@@ -30,7 +30,6 @@ class EditModule extends Component {
             payload= {
               description:values.name,
               name: values.name,
-              icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
               permissionId:local.get("projectId"),
@@ -43,7 +42,6 @@ class EditModule extends Component {
             payload= {
               description:values.name,
               name: values.name,
-              icon:"copyright",
               orderBy:Number(values.orderBy),
               path:values.path,
               permissionId:local.get("projectId"),
@@ -75,7 +73,7 @@ class EditModule extends Component {
         }
     });
     this.props.dispatch({
-        type: 'module/MenuPermissionData',
+        type: 'module/menuPermissionData',
         payload: {
             "projectId":value,
         }

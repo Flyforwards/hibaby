@@ -53,16 +53,12 @@ class PlaceAdd extends React.Component {
             if (key.indexOf("names-") == 0) {
               const strs = key.split('-');
               if ( strs.length >= 2 ) {
-                const serialNumber = parseInt(strs[1])
-                names.push({ name: values[key], serialNumber })
+                const inx = parseInt(strs[1])
+                names.push({ name: values[key], inx })
               }
             }
           });
-          names = manager.bubbleSort(names);
-          // 对数据进行整合
-          names.map((record, index)=>{
-            record.serialNumber = index+1;
-          })
+          names = manager.bubbleSortByKey(names, "inx");
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'localData/AddPlaceData',
