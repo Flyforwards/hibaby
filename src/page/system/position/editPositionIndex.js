@@ -6,6 +6,7 @@ import { local, session } from 'common/util/storage.js'
 import { Link } from 'react-router';
 const FormItem = Form.Item
 const createForm = Form.create
+import manager from 'common/util'
 
 class EditableCell extends Component {
   state = {
@@ -220,14 +221,10 @@ class LocalizedModal extends Component {
   constructor(props) {
     super(props);
     this.positionInfo = [];
-  }
-  state = {
-    visible: false,
-    addPosition: {
-      deptId: '',
-      id: '',
-      name: ''
+    this.state = {
+      visible: false,
     }
+
   }
 
   handlePageChange(id) {
@@ -240,10 +237,11 @@ class LocalizedModal extends Component {
   }
 
   showModal (id) {
+    this.handlePageChange(id)
+    this.deptId = id;
     this.setState({
       visible: true
     });
-    this.handlePageChange(id)
   }
 
   handleOk  () {
@@ -298,7 +296,7 @@ class LocalizedModal extends Component {
 
         this.props.dispatch({
           type: 'position/saveOrModifyPosition',
-          payload: { delPositionDOs:[], positionDOs:[]  }
+          payload: { delPositionDOs:delIds,deptId:this.deptId, positionDOs:names  }
         })
       }
     })

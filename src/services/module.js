@@ -1,12 +1,9 @@
 
 import request from '../utils/request';
 
-const headers={
-  "Content-Type":"application/json"
-}
 
 //菜单列表
-export function MainMenuList(values) {
+export function mainMenuList(values) {
   return request('/crm/api/v1/module/listByPage', {
     method: 'POST',
     body: JSON.stringify(values),
