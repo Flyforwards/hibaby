@@ -80,7 +80,7 @@ class CardDetail extends Component {
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
-      options.push(<Option key={elem.serialNumber}>{elem.name}</Option>)
+      options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return (
       <div  style={{ 'padding': '20px' }}>
