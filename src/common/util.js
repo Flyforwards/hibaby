@@ -77,6 +77,23 @@ const manager = {
     }
     return array;
   },
+
+  bubbleSortByKey: function (array,key) {
+    var i = 0,
+      len = array.length,
+      j, d;
+    for (; i < len; i++) {
+      for (j = 0; j < len; j++) {
+        if (array[i][key] < array[j][key]) {
+          d = array[j];
+          array[j] = array[i];
+          array[i] = d;
+        }
+      }
+    }
+    return array;
+  },
+
   array_contain: function(array, obj){
     for (var i = 0; i < array.length; i++){
       if (array[i] == obj)//如果要求数据类型也一致，这里可使用恒等号===

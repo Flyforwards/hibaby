@@ -21,6 +21,7 @@ class AddModule extends Component {
   handleCancel() {
     this.props.onCancel()
   }
+
   handleOk() {
       this.props.form.validateFields((err, values) => {
         if (!err) {
@@ -47,7 +48,6 @@ class AddModule extends Component {
               projectId:Number(values.projectId),
               parentId:Number(values.parentId)
             }
-            console.log("保存>>>",payload)
           this.props.onCancel()
         }
       });
@@ -63,35 +63,35 @@ class AddModule extends Component {
  // onSelect = (value,node, extra) => {
  //   local.set("projectId",value)
  // }
- //传入权限主模块id
- onSelect = (value,key) => {
-   console.log("主模块>>>",value)
-   this.props.dispatch({
-       type: 'module/ParentNodeData',
-       payload: {
-           "dataId":value,
-       }
-   });
-   this.props.dispatch({
-       type: 'module/MenuPermissionData',
-       payload: {
-           "projectId":value,
-       }
-   });
- }
+
+  //传入权限主模块id
+   onSelect(value,key) {
+     this.props.dispatch({
+         type: 'module/ParentNodeData',
+         payload: {
+             "dataId":value,
+         }
+     });
+     this.props.dispatch({
+         type: 'module/menuPermissionData',
+         payload: {
+             "projectId":value,
+         }
+     });
+   }
   render() {
-    const { visible, record ,data,list,permission,menu } = this.props;
-    console.log('addMenu:render:menu>>',permission);
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { visible, record ,data,projectList,permission,menu,permissionList } = this.props;
+    const { getFieldDecorator } = this.props.form;
     let modalTitle = "菜单模块：";
     const formItemLayout = {
         labelCol: {span: 6},
         wrapperCol: {span: 14},
     };
-    const children = [];
-    list.map((res,index)=>{
-          children.push(<Option value={res.id} key={res.id}>{res.name}</Option>)
+
+    const children = projectList.map((res,index)=>{
+      return (<Option value={ String(res.id)} key={res.id}>{res.name}</Option>)
     });
+
     return (
       <Modal
         visible = { visible }
@@ -109,7 +109,7 @@ class AddModule extends Component {
           <Form>
               <FormItem label="主模块" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
                   {getFieldDecorator('projectId', {required: false,rules: [],
-                })(<Select className="SelectMenu" onSelect={this.onSelect}
+                })(<Select className="SelectMenu" onSelect={this.onSelect.bind(this)}
                     style={{ width:300 }}
                     placeholder="请选择"
                   >
@@ -163,10 +163,13 @@ function mapStateToProps(state) {
     permission,
     list,
     menu,
-    code
+    permissionList,
+    projectList
   } = state.module;
   return {
     loading: state.loading.models.module,
+    permissionList,
+    projectList,
     data,
     permission,
     list,

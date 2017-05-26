@@ -103,6 +103,7 @@ class FromCreateModal extends Component {
             <Modal
                 visible={visible}
                 key={visible}
+                title="权限管理"
                 okText="确定"
                 onCancel={this.handleCancel.bind(this)}
                 confirmLoading={confirmLoading}

@@ -1,25 +1,25 @@
 .Position{
   .find {
     width: 98%;
-    line-height: 80px;
-    padding-left: 20px;
+    line-height: 40px;
+    padding-left: 3%;
     background:#fff;
-    margin:10px 1%;
+    margin:10px 1.6%;
     .findTxt{
       display: inline-block;
       padding: 6px 7px;
-      line-height: 74px;
-      font-size: 18px;
+      line-height: 40px;
+      font: 14px "微软雅黑";
       margin-right: 20px;
     }
     input{
-      height: 40px;
-      font-size: 18px;
+      height: 30px;
+      font: 14px "微软雅黑";
     }
     button{
-      width: 140px;
-      font: 20px "微软雅黑";
-      height: 38px;
+      width: 150px;
+      font: 14px "微软雅黑";
+      height: 30px;
       background:#ff6600;
       color:#fff;
     }

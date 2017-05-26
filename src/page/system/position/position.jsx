@@ -35,7 +35,7 @@ class FindTop extends Component {
       width: '20%',
       render: function (text, record) {
         return (<div>
-          <EditPosition record={record}/>
+          <EditPosition record={ record }/>
         </div>)
       }
     }];
@@ -48,8 +48,6 @@ class FindTop extends Component {
         ...values,
         'page': 1,
         'size': 10,
-        'sortField': "string",
-        'sortOrder': "string"
       }
       this.handlePageChange(postInfo);
 

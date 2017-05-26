@@ -1,7 +1,8 @@
-"use strict"
+
+
 import React, {Component} from 'react'
 import {connect} from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
+import {Modal, Form, Input, Radio, Select, Checkbox, Icon,Cascader, TreeSelect,Table,Popconfirm} from 'antd'
 import './module.scss'
 import {local, session} from 'common/util/storage.js'
 
@@ -18,17 +19,19 @@ class SelectListed extends Component {
     local.set("projectId",value)
   }
     render() {
-        console.log("权限>>>>",this.props.permission)
+       const { permissionList }= this.props;
+       console.log(permissionList);
+      permissionList.map((record)=>{
+        record.children.map((record)=>{
+          // record.children=child
+        })
+      })
         return (
             <div className="SelectList">
-              <TreeSelect
+              <Cascader
                 style={{ width: 310 }}
-                key={this.props.permission.id}
-                value={this.state.value}
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                treeData={this.props.permission}
+                options={ permissionList }
                 placeholder="请选择"
-                treeDefaultExpandAll
                 onSelect={this.onSelect.bind(this)}
                 onChange={this.onChange.bind(this)}
               />
@@ -36,29 +39,14 @@ class SelectListed extends Component {
         )
     }
 }
-function SelectList({
-    dispatch,
-    permission,
-    code
-}) {
-  return ( <div>
-    <SelectListed dispatch = {
-      dispatch
-    }
-    permission = {permission}
-    /> </div>
-  )
 
-}
 function mapStateToProps(state) {
-console.log("permission添加>>>",state.module.permission)
   const {
-    permission,
-    code
+    permissionList
   } = state.module;
   return {
     loading: state.loading.models.module,
-    permission
+    permissionList
   };
 }
-export default connect(mapStateToProps)(SelectList)
+export default connect(mapStateToProps)(SelectListed)

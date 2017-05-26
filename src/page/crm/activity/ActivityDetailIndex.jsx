@@ -227,6 +227,10 @@ class ActivityDetailIndex extends Component {
       labelCol:{ span: 2 },
       wrapperCol:{ span:22 }
     }
+    const formTimeLayout = {
+      labelCol:{ span: 2 },
+      wrapperCol:{ span:4 }
+    }
     const formItemsLayout = {
       labelCol:{ span: 7 },
       wrapperCol:{ span:15 }
@@ -244,13 +248,13 @@ class ActivityDetailIndex extends Component {
     let itemName = "";
     let address = "";
     let content = "";
-    let activityTime = moment("")
+    let activityTime = moment().format("YYYY-MM-DD HH:mm:ss")
     let appointments = 0;
     let signeds = 0;
     let orders = 0;
     if (item != null) {
       itemName = item.name;
-      activityTime = moment(item.activityTime);
+      activityTime = moment(item.activityTime).format("YYYY-MM-DD HH:mm:ss");
       address = item.address;
       content = item.content;
       appointments = item.appointments;
@@ -282,16 +286,16 @@ class ActivityDetailIndex extends Component {
             </div>
             <Form >
               <FormItem  {...formItemLayout} label="活动名称" >
-                <Input disabled={ true } value={ itemName }/>
+                <Input readOnly value={ itemName }/>
               </FormItem>
-              <FormItem {...formItemLayout} label="活动时间" >
-                <DatePicker disabled={ true } showTime value= { activityTime } format="YYYY-MM-DD HH:mm:ss" />
+              <FormItem {...formTimeLayout} label="活动时间" >
+                <Input readOnly value={ activityTime }/>
               </FormItem>
               <FormItem {...formItemLayout} label= "活动地点">
-                <Input  disabled={ true } value={ address }/>
+                <Input   readOnly value={ address }/>
               </FormItem>
               <FormItem {...formItemLayout} label={"活动内容"}>
-                <Input  type="textarea" rows={6} disabled={ true } value={ content }/>
+                <Input  type="textarea" rows={6} readOnly value={ content }/>
               </FormItem>
             </Form>
           </Card>
