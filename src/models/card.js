@@ -141,6 +141,16 @@ export default {
       }
     },
 
+    //更新卡种信息
+    *modifyCardMsg({ payload: values }, { call , put }) {
+      const { data: { code, data } } = yield call(cardService.modifyMembershipcard, values);
+      if (code == 0) {
+        message.success('保存成功！');
+        yield put(routerRedux.push("/crm/card"));
+      }
+    },
+
+
   //刪除卡種信息
     *deleteCardById({ payload: values},{ call, put,select}){
       const { data: { code ,data }} = yield call(cardService.deleteCardById,values);
