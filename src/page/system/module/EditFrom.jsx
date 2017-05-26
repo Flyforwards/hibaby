@@ -14,8 +14,10 @@ class SelectListed extends Component {
    onChange = (value) => {
     this.setState({ value });
   }
+  onSelect = (value,node, extra) => {
+    local.set("dataId",value)
+  }
     render() {
-        console.log("权限>>>>",this.props.permission)
         return (
             <div className="SelectList">
               <TreeSelect
@@ -48,7 +50,6 @@ function SelectList({
 
 }
 function mapStateToProps(state) {
-console.log("permission添加>>>",state.module.permission)
   const {
     permission,
     code

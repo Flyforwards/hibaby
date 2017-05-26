@@ -25,9 +25,7 @@ class EditModule extends Component {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           let payload={}
-          console.log("values>>>>",values)
           const record=this.props.record?this.props.record:{}
-          console.log("record>>>",record)
           if(values.projectId==record.projectName || values.parentId==record.parentName || values.permissionId==record.permissionName){
             payload= {
               description:values.name,
@@ -60,7 +58,6 @@ class EditModule extends Component {
             payload:payload,
           })
             this.props.onCancel()
-            console.log("payload",payload)
         }
 
       });
@@ -71,7 +68,6 @@ class EditModule extends Component {
 
   }
   onSelect = (value,key) => {
-    console.log("主模块>>>",value)
     this.props.dispatch({
         type: 'module/ParentNodeData',
         payload: {
@@ -88,6 +84,7 @@ class EditModule extends Component {
 
   render() {
     const { visible, record ,data,list,permission,menu } = this.props
+    local.set("editrecord",record)
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let modalTitle = "菜单模块：";
     const formItemLayout = {

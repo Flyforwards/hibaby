@@ -246,6 +246,7 @@ class CustomerIndex extends React.Component {
                 <span className="customer"><Link to="/crm/customer/Add"><Button type="primary">新增客户</Button></Link> </span>
             </div>
             <div className="Customer-navigation">
+              <div className="Customer-first">
                 <div className="age">年龄<input type="number" min="1"/>至<input type="number" min="1"/></div>
                 <div className="Membership">会员身份
                     <Select defaultValue="请选择" style={{ width: 150 }}>
@@ -263,17 +264,20 @@ class CustomerIndex extends React.Component {
                       <Option value="Yiminghe">yiminghe</Option>
                     </Select>
                 </div>
+                </div>
+                <div className="Customer-second">
                 <div className="period">预产期
                    <MonthPicker placeholder="请选择" />
-                </div>
-                <div className="current">现住址
-                    <Cascader size="large" options={options} placeholder="请输入地址"/>
                 </div>
                 <div className="listDiv" id="data">宝宝生产日期
                     <DatePicker
                       showTime
                       format="YYYY-MM-DD"
                     />
+                </div>
+                <div className="current">现住址
+                    <Cascader size="large" options={options} placeholder="请输入地址"/>
+                </div>
                 </div>
             </div>
             </div>
