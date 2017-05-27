@@ -1,7 +1,6 @@
 import React from 'react';
 import './customerInformation.scss';
 import { connect } from 'dva';
-import FileUpload from './fileUpload'
 import {Upload, Icon,message, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
 const InputGroup = Input.Group;
 const Option = Select.Option;

@@ -88,5 +88,13 @@ export function getCustomerRemarkById(values) {
   })
 };
 
+// 获取附件信息
+export function getFileURL(values) {
+  return request('/crm/api/v1/getFileURL', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
 
 
