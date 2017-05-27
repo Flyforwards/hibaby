@@ -10,12 +10,14 @@ import moment from 'moment'
 import AppointmentModalFrom from './appointmentModalFrom'
 import AppointmentMemberFrom from './appointmentMemberFrom'
 import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
+import DictionarySelect from 'common/dictionary_select';
 import util from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const { MonthPicker } = DatePicker;
+
 
 @createForm()
 class ActivityDetailIndex extends Component {
@@ -240,8 +242,8 @@ class ActivityDetailIndex extends Component {
       wrapperCol:{ span: 14 }
     }
     const formChooseOneLayout = {
-      labelCol:{ span: 6 },
-      wrapperCol:{ span: 14 }
+      labelCol:{ span: 8 },
+      wrapperCol:{ span: 10 }
     }
 
 
@@ -313,10 +315,10 @@ class ActivityDetailIndex extends Component {
                 </FormItem>
               </Col>
               <Col span={6}>
-                <FormItem {...formItemsLayout}  style={{ width:'249px'}} label= "签到人数">
+                <FormItem {...formItemsLayout} style={{ width:'249px'}} label= "签到人数">
                   <Input value={ signeds } addonAfter="人" readOnly/>
                 </FormItem>
-               </Col>
+              </Col>
               <Col span={6}>
                 <FormItem {...formItemsLayout} style={{ width:'249px'}} label= "成单率">
                   <Input value={ orders } addonAfter="人" readOnly/>
@@ -334,24 +336,32 @@ class ActivityDetailIndex extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col span={4} style={{ float:'left'}}><span><Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>搜索</Button></span>
+                <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
+                  </span>
+                </Col>
+                <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                  </span>
                 </Col>
               </Row>
             </div>
               <Row>
-                <Col span={4} style={{width:'160px',marginRight:'10px'}}>
+                <Col span={4} style={{width:'140px'}}>
                     <FormItem {...formChooseOneLayout}  label="年龄" >
                       {getFieldDecorator('age1', {rules: [{ required: false }],
                       })(
-                        <InputNumber min={1} max={100}  />
+                        <InputNumber style={{width: "80px"}} min={1} max={100}  />
                       )}
                     </FormItem>
                 </Col>
-                <Col span={3}  style={{width:'160px'}}>
+                <Col span={3}  style={{width:'140px'}}>
                     <FormItem {...formChooseLayout} style={{width:'100%'}}>
                       {getFieldDecorator('age2', {rules: [{ required: false }],
                       })(
-                        <InputNumber min={1} max={100} style={{width:'100% !important'}} />
+                        <InputNumber min={1} max={100} style={{width: "80px"}} />
                       )}
                     </FormItem>
 
@@ -367,34 +377,30 @@ class ActivityDetailIndex extends Component {
                   </FormItem>
                 </Col>
                 <Col span={4} style={{width:'251px'}}>
-                  <FormItem  {...formChooseOneLayout} label="生产医院" >
-                    {getFieldDecorator('hospital', {rules: [{ required: false }],
+                  <FormItem  {...formChooseOneLayout} label="第几胎" >
+                    {getFieldDecorator('fetus', {rules: [{ required: false }],
                     })(
-                      <Select >
-                        <Option value="beijing">北京医院</Option>
-                        <Option value="xiehe">协和医院</Option>
-                        <Option value="renming">人民医院</Option>
-                      </Select>
+                      <DictionarySelect selectName="FETUS" />
                     )}
                   </FormItem>
                 </Col>
                 <Col span={4} style={{width:'251px'}} >
                   <FormItem  {...formChooseOneLayout} label="会员身份" >
-                    {getFieldDecorator('customer', {rules: [{ required: false }],
+                    {getFieldDecorator('member', {rules: [{ required: false }],
                     })(
-                      <Select >
-                        <Option value="v1">vip1</Option>
-                        <Option value="v2">vip2</Option>
-                        <Option value="v3">vip3</Option>
-                      </Select>
+                      <DictionarySelect  selectName="MEMBER" />
                     )}
                   </FormItem>
                 </Col>
-                <Col span={4} style={{width:'300px'}}>
-                  <FormItem  {...formChooseOneLayout} label="现住址" >
-                    {getFieldDecorator('address', {rules: [{ required: false }],
+                <Col span={4} style={{width:'180px'}}>
+                  <FormItem  {...formChooseOneLayout} label="操作者" >
+                    {getFieldDecorator('operator2', {rules: [{ required: false }],
                     })(
-                      <Cascader options={ options }/>
+                      <Select style={{width:'160px'}}>
+                        <Option value="v1">业务员1</Option>
+                        <Option value="v2">业务员2</Option>
+                        <Option value="v3">业务员3</Option>
+                      </Select>
                     )}
                   </FormItem>
                 </Col>
