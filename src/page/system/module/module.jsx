@@ -16,7 +16,7 @@ import { parse } from 'qs'
 
 @createForm()
 
-class Module extends Component {
+class moduleIndex extends Component {
   constructor(props) {
     super(props);
     this.state={
@@ -119,9 +119,23 @@ class Module extends Component {
       alertModalVisible: true,
     })
   }
+
+
   // 编辑
   editMenu(record){
     this.record = record;
+    this.props.dispatch({
+      type: 'module/parentNodeData',
+      payload: {
+        projectId: record.projectId,
+      }
+    });
+    this.props.dispatch({
+      type: 'module/menuPermissionData',
+      payload: {
+        projectId: record.projectId,
+      }
+    });
     this.setState({
       EditModuleModal: true,
     })
@@ -195,7 +209,7 @@ class Module extends Component {
                   {getFieldDecorator('projectId', {rules: [{ required: false, }],
                   })(
                   <Select className="SelectMenu"  placeholder="请选择">
-                      {children}
+                      { children }
                   </Select>)}
                 </FormItem>
                 <FormItem {...formItemLayout} label="名称：">
@@ -223,10 +237,6 @@ class Module extends Component {
         <AddModule
           visible ={ this.state.modifyModalVisible }
           onCancel ={ this.handleCreateModalCancel.bind(this) }
-          record = { this.record }
-          add = { this.state.add }
-          page = { this.page }
-          pageSize = { this.pageSize }
         />
         <AlertModalFrom
           visible ={ this.state.alertModalVisible }
@@ -238,22 +248,13 @@ class Module extends Component {
           visible ={ this.state.EditModuleModal}
           onCancel ={ this.handleCreateModalCancel.bind(this) }
           record = { this.record }
-          add = { this.state.add }
-          page = { this.page }
-          pageSize = { this.pageSize }
         />
       </div>
     )
   }
 }
 
-function Module({ dispatch, data, page, size,edit, total,list,permission,menu,results,
-range}) {
-  return (
-    <Module dispatch={dispatch} data={data} id={id} list={list} permission={permission}
-    menu={menu} page={page} size={size} edit={edit} total={total} range={range} results={results} />
-  )
-}
+
 function mapStateToProps(state) {
   const {item:data,projectList,edit,permission,results,list,menu, pagination} = state.module;
   return {
@@ -269,4 +270,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Module);
+export default connect(mapStateToProps)(moduleIndex);

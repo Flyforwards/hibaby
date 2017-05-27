@@ -17,36 +17,36 @@ export function deleteService(values) {
   })
 }
 //增添菜单列表数据
-export function AddMenuList(values) {
+export function addMenuList(values) {
   return request('/crm/api/v1/module/add', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
 //编辑菜单列表数据
-export function EditMenuListData(values) {
+export function editMenuListData(values) {
   return request('/crm/api/v1/module/update', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
 //菜单主模块下拉
-export function MainModuleSelect(values) {
+export function mainModuleSelect(values) {
   return request('/crm/api/v1/project/list', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
 //菜单上级菜单下拉
-export function ParentNodeSelect(values) {
+export function parentNodeSelect(values) {
   return request('/crm/api/v1/module/selectData', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
 //菜单权限下拉
-export function MenuPermissionSelect(values) {
-  return request('/crm/api/v1/permission/treeByProjectId', {
+export function menuPermissionSelect(values) {
+  return request('/crm/api/v1/permission/fullTreeByProjectId', {
     method: 'POST',
     body: JSON.stringify(values),
   })
