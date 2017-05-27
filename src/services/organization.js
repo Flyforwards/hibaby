@@ -144,3 +144,19 @@ export function getAllTissueProperty(values) {
     body: JSON.stringify(values),
   })
 }
+
+  
+//获取所有组织性质字典
+export function getPosition(values) {
+  return request('/crm/api/v1/position/getPosition', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//获取所有部门信息
+export function getDeptList(values) {
+  return request('/crm/api/v1/department/getDeptList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

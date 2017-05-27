@@ -38,11 +38,37 @@ class Organization extends React.Component {
           dataIndex: 'positionId',
           key:'positionId',
           width: '10%',
+          render: (text, record, index) => {
+            let position = ''
+            if(this.props.getPosition != null){
+              this.props.getPosition.map((item)=>{
+                if(item.id == record.positionId){
+                  position = item.name
+                }
+              })
+            }
+            return(
+              position
+            )
+          }
         }, {
           title: '隶属部门',
           dataIndex: 'deptId',
           key: 'deptId',
           width: '10%',
+          render: (text, record, index) => {
+            let deptId = ''
+            if(this.props.getDeptList != null){
+              this.props.getDeptList.map((item)=>{
+                if(item.id == record.deptId){
+                  deptId = item.name
+                }
+              })
+            }
+            return(
+              deptId
+            )
+          }
         },{
           title: '地方中心',
           dataIndex: 'endemicId',
@@ -58,16 +84,30 @@ class Organization extends React.Component {
           dataIndex: 'status',
           key: 'status',
           width: '10%',
+          render: (text, record, index) => {
+            if(record.status == 0){
+                status = "正常"
+            }else if(record.status == 1){
+                status = "禁用"
+            }
+            return(
+             status
+            )
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
+            let Disablesd = ""
+            if(record.status == 1){
+              Disablesd = "twoA"
+            }
             return (
                 <span>
                  <Link to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                 <a href="#" className="twoA" onClick={this.Disabled.bind(this,record)}>禁用</a>
+                 <a href="#" className={Disablesd} onClick={this.Disabled.bind(this,record)} >禁用</a>
                 </span>
             );
           },
@@ -113,64 +153,72 @@ class Organization extends React.Component {
         "status":null,
         "page": 1,
         "size": 10,
-       "tissueProperty":endemic.tissueProperty
+        "tissueProperty":endemic.tissueProperty
       }
     });
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
+    });
   }
-    //禁止
-    Disabled(record) {
-      console.log()
-      this.setState({
-        toViewVisible:true,
-        ID:record.id
-      })
-    }
-    //按条件查询用户
-    OrganizationInquire() {
-      this.setState({
-        userName:$(".userName").val()
-      })
-       this.props.dispatch({
-        type: 'organization/organizationList',
-        payload: {
-            "name": $(".userName").val(),
-            "nodeid": this.state.nodeid,
-            "roleId": this.state.character,
-            "status": this.state.status,
-            "page": 1,
-            "size": 10,
-            "tissueProperty":this.state.tissueProperty
-        },
-      });
-    }
-    //获取系统角色的id
-    onSelectCharacter(value){
-     this.setState({
-        character:value
-     })
-    }
-    //获取账户状态的id
-    onSelectStatus(value){
-     this.setState({
-        status:value
-     })
-    }
-    showCreateModal() {
-        this.setState({
-            createModalVisible: true
-        })
-    }
-    handleCreateModalCancel() {
-        this.setState({
-            toViewVisible: false
-        })
-    }
-    ObtainOrganization(nodeid,tissueProperty){
-      this.setState({
-          nodeid:nodeid,
-          tissueProperty:tissueProperty
-      })
-    }
+//禁止
+Disabled(record) {
+    this.setState({
+       toViewVisible:true,
+      ID:record.id
+    })
+}
+//按条件查询用户
+OrganizationInquire() {
+this.setState({
+  userName:$(".userName").val()
+})
+ this.props.dispatch({
+  type: 'organization/organizationList',
+  payload: {
+      "name": $(".userName").val(),
+      "nodeid": this.state.nodeid,
+      "roleId": this.state.character,
+      "status": this.state.status,
+      "page": 1,
+      "size": 10,
+      "tissueProperty":this.state.tissueProperty
+  },
+});
+}
+//获取系统角色的id
+onSelectCharacter(value){
+
+ this.setState({
+    character:value
+ })
+}
+//获取账户状态的id
+onSelectStatus(value){
+ this.setState({
+    status:value
+ })
+}
+showCreateModal() {
+    this.setState({
+        createModalVisible: true
+    })
+}
+handleCreateModalCancel() {
+    this.setState({
+        toViewVisible: false
+    })
+}
+ObtainOrganization(nodeid,tissueProperty){
+  this.setState({
+      nodeid:nodeid,
+      tissueProperty:tissueProperty
+  })
+}
     render() {
         let ListLnformation = []
         if(this.props.list != null){
@@ -215,12 +263,12 @@ class Organization extends React.Component {
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                 <Select placeholder="请选择" style={{ width:220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
                       { traversalRoleIdData }
                   </Select>
               </div>
               <div className="status">账户状态
-                <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
+                <Select placeholder="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
@@ -256,11 +304,11 @@ class Organization extends React.Component {
                 visible={ this.state.createModalVisible }
             />
              <Disabled
-                    visible={ this.state.toViewVisible }
-                    handleOk={this.state.handleOk}
-                    onCancel={ this.handleCreateModalCancel.bind(this) }
-                    ID = {this.state.ID}
-                />
+                  visible={ this.state.toViewVisible }
+                  handleOk={this.state.handleOk}
+                  onCancel={ this.handleCreateModalCancel.bind(this) }
+                  ID = {this.state.ID}
+              />
             </div>
             </main>
           </div>
@@ -271,6 +319,8 @@ function Organization({
   dispatch,
   loading,
   list,
+  getPosition,
+  getDeptList,
   total,
   page,
   results,
@@ -283,6 +333,12 @@ function Organization({
     }
     list = {
       list
+    }
+    getPosition = {
+      getPosition
+    }
+    getDeptList = {
+      getDeptList
     }
     loading = {
       loading
@@ -300,6 +356,8 @@ function mapStateToProps(state) {
   const {
     list,
     total,
+    getPosition,
+    getDeptList,
     page,
     results,
     range,
@@ -308,6 +366,8 @@ function mapStateToProps(state) {
   return {
     loading: state.loading.models.organization,
     list,
+    getPosition,
+    getDeptList,
     total,
     page,
     results,

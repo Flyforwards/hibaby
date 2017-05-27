@@ -1,8 +1,9 @@
 .activity-cent{
+  width:98%;
+  margin:0 1%;
   .add-activity{
     padding: 10px 10px 0 10px;
   }
-
   .card-title {
     h3{
       font-size: 14px;
@@ -86,7 +87,7 @@
     font-family: '微软雅黑 Regular', '微软雅黑';
     font-weight: 400;
     font-size: 14px;
-    span{
+    div{
       width:100%;
       .firstA{
         color: #0066FF;
@@ -99,7 +100,7 @@
       a{
         margin-right:9px;
         margin-left:5px;
-        color:rgba(0, 0, 0, 0.85);
+        color:#b67231;
       }
     }
   }

@@ -4,10 +4,10 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Icon, Card, Button,Table } from 'antd'
 import { Link} from 'react-router'
+import {routerRedux} from 'dva/router';
 import './serviceinfo.scss'
 import Current from '../../Current'
-import Delete from './DeleteService.jsx'
-
+import AlertModalFrom from 'common/AlertModalFrom'
 
 class Serviceinfoed extends Component {
 
@@ -21,14 +21,46 @@ class Serviceinfoed extends Component {
           title: '服务项',
           dataIndex: 'serviceInfoNameList',
           key:'serviceInfoNameList',
+          render:(text,record,index) => {
+            let serviceInfoNameList = []
+            record.serviceInfoNameList.map((item,index)=>{
+              if(serviceInfoNameList.length+1 == record.serviceInfoNameList.length){
+                serviceInfoNameList.push(item)
+              }else{
+                serviceInfoNameList.push(item+"  ;  ")
+              }
+            })
+            return (
+              serviceInfoNameList
+            )
+          }
         }, {
           title: '套房',
           dataIndex: 'suiteId',
           key:'suiteId',
+          render:(text,record,index) => {
+            let suiteId = ""
+            if(this.props.selectData != null){
+              this.props.selectData.map((item)=>{
+                if(item.id === record.suiteId){
+                  suiteId = item.name
+                }
+              })
+            }
+            return (
+             suiteId
+            )
+          }
         }, {
           title: '套餐价格',
           dataIndex: 'price',
           key: 'price',
+          render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -49,28 +81,34 @@ class Serviceinfoed extends Component {
         }
     }
     //删除
-    delete(record) {
+  delete(record) {
+    this.record = record;
       this.setState({
-        DeleteVisible:true,
-        ID:record.id
+        DeleteVisible:true
       })
-    }
+  }
     componentWillMount() {
     }
-    handleDeleteCancel(){
+    handleCreateModalCancel(){
       this.setState({
           DeleteVisible: false,
       })
-     window.location.reload( true )
+    }
+    //确定删除
+    handleAlertModalOk(record) {
+        this.props.dispatch({
+          type: 'packageInfo/del',
+          payload: {
+            "dataId": record.id,
+          }
+        })
+      this.handleCreateModalCancel();
     }
     componentDidMount() {
-        this.props.dispatch({
-            type: 'packageInfo/listByPage',
-            payload: { 
-              "page":1,
-              "size":10
-            }
-        });
+      this.props.dispatch({
+         type: 'packageInfo/selectData',
+          payload: { }
+      })
     }
     render() {
         const { list, loading, pagination, dispatch } = this.props;
@@ -96,11 +134,12 @@ class Serviceinfoed extends Component {
                 <div className="serviceinfoTabal">
                     <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ columns } pagination = {pagination} />
                 </div>
-                <Delete 
-                   visible={ this.state.DeleteVisible }
-                   onCancel ={ this.handleDeleteCancel.bind(this) }
-                   ID = { this.state.ID }
-                  />
+              <AlertModalFrom
+                visible ={ this.state.DeleteVisible }
+                onCancel ={ this.handleCreateModalCancel.bind(this) }
+                onOk = { this.handleAlertModalOk.bind(this, this.record) }
+                message = { "是否确定删除此套餐?" }
+              />
             </div>
         )
     }
@@ -109,12 +148,14 @@ class Serviceinfoed extends Component {
 function mapStateToProps(state) {
   const {
     list,
-    pagination
+    pagination,
+    selectData
   } = state.packageInfo;
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
+    selectData
     };
 }
 export default connect(mapStateToProps)(Serviceinfoed)

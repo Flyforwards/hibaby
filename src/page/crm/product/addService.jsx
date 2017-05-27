@@ -25,6 +25,12 @@ class AddServiceed extends Component {
           dataIndex: 'price',
           key:'price',
           width: "20%",
+          render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         }, {
           title: '服务项目内容',
           dataIndex: 'contents',
@@ -197,7 +203,7 @@ class AddServiceed extends Component {
                     {getFieldDecorator('type', {
                       rules: [],
                     })(
-                    <Select dropdownStyle= {{height:`${len*32}px`,overflow:"auto"}}
+                    <Select dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}}
                     >
                      {
                       roomList
