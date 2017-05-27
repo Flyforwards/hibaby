@@ -3,25 +3,34 @@ import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
 import './fromModal.scss'
+import {local, session} from 'common/util/storage.js'
+
+
 const Option = Select.Option;
-class Charactered extends Component {
+class SelectListed extends Component {
      state = {
       value: undefined
     }
    onChange = (value) => {
     this.setState({ value });
   }
+  onSelect = (value,node, extra) => {
+    //console.log(value)
+    local.set("projectId",value)
+  }
     render() {
         return (
             <div className="SelectList">
-              <span>上级权限
+              <span>
               <TreeSelect
-                style={{ width: 150 }}
+                style={{ width: 370 }}
+                key={this.props.list.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 treeData={this.props.list}
                 placeholder="请选择"
                 treeDefaultExpandAll
+                onSelect={this.onSelect.bind(this)}
                 onChange={this.onChange.bind(this)}
               />
               </span>
@@ -29,19 +38,17 @@ class Charactered extends Component {
         )
     }
 }
-function Character({
+function SelectList({
     dispatch,
     list,
     code
 }) {
-  return ( < div >
-    < Charactered dispatch = {
+  return ( <div>
+    <SelectListed dispatch = {
       dispatch
     }
-    list = {
-        list
-    }
-    /> </div >
+    list = { list }
+    /> </div>
   )
 
 }
@@ -55,4 +62,4 @@ function mapStateToProps(state) {
     list
   };
 }
-export default connect(mapStateToProps)(Character)
+export default connect(mapStateToProps)(SelectList)

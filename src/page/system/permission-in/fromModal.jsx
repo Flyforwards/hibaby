@@ -28,7 +28,6 @@ class permissionInside extends Component {
         value: undefined
     }
     onChange = (value) => {
-        console.log(arguments);
         this.setState({ value });
     }
     handleCancel() {
@@ -71,6 +70,7 @@ class permissionInside extends Component {
         const { permissions, form } = this.props;
         const { getFieldDecorator } = form;
         let mainName = local.get("Dictionary");
+
         let nodes = [];
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{

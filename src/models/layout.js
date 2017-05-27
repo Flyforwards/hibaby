@@ -83,7 +83,6 @@ export default {
           session.remove("isLogin");
           if (location.pathname !== '/login') {
             let from = location.pathname
-            console.log(from)
             if (location.pathname === '/') {
               from = '/'
             }

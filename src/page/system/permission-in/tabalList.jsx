@@ -108,7 +108,6 @@ class TabalListed extends Component {
       })
     }
     render() {
-
         const { list, loading, pagination, dispatch,form } = this.props;
         const tableProps = {
           loading: loading.effects['myPermission/listByPage'],

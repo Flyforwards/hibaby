@@ -136,7 +136,7 @@ class OrganizationLefted extends React.Component {
       })
       const userInfo  = session.get("userInfo")
       $(document).on('click', '.plus', function(e) {
-        console.log("dd",e.pageY-e.offsetY-11)
+      //  console.log("dd",e.pageY-e.offsetY-11)
             if(this.state.upblock == 'none'){
               this.setState({
                 ulTop:e.pageY-e.offsetY-31,
@@ -152,7 +152,7 @@ class OrganizationLefted extends React.Component {
               return
             }
         }.bind(this));
-      
+
         $(".Organization-left").click(function(e){
              if(this.state.upblock == 'block'){
               this.setState({
@@ -175,7 +175,7 @@ class OrganizationLefted extends React.Component {
       $(".Organization-left li").find(".ant-tree-title").after("<span class='plus'>+</span>");
         if(userInfo.categoryId != 0){
           $("li").find(".plus").eq(0).css('display','none');
-        }  
+        }
     }
     //添加子节点
     AddChildNode(){
@@ -199,8 +199,8 @@ class OrganizationLefted extends React.Component {
           let nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
          loops=[<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={this.props.leftList.parentId}>{loops}</TreeNode>]
-        } 
-        return (  
+        }
+        return (
             <div className="Organization-left">
                 <Tree
                   className="draggable-tree"
@@ -273,7 +273,7 @@ function OrganizationLeft({
     }
     getDepartmentNode = {
       getDepartmentNode
-    } 
+    }
     AllTissueProperty = {
       AllTissueProperty
     }

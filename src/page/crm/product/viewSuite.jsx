@@ -30,7 +30,7 @@ class ViewSuiteed extends Component {
         });
          this.props.dispatch({
             type: 'packageInfo/roomFindById',
-            payload: { 
+            payload: {
               "dataId":ID
             }
         });
@@ -89,7 +89,7 @@ class ViewSuiteed extends Component {
                     initialValue:this.props.roomFindById?this.props.roomFindById.price:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                       disabled = { true }
                     />
@@ -117,7 +117,7 @@ class ViewSuiteed extends Component {
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
                 <Link to={{ pathname: '/crm/serviceinfo/editsuite', query:{ suite:ID } }}><Button type="primary">编辑</Button></Link>
-                <Delete 
+                <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
                   ID = { this.state.ID }

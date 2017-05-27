@@ -47,7 +47,7 @@ class AddFromCreateModal extends Component {
     }
 
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {

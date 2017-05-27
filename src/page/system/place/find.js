@@ -31,7 +31,7 @@ class FindPlaceData extends React.Component {
          this.setState({
             name:""
          })
-         console.log(value)
+      //   console.log(value)
      }
     render() {
       const { getFieldDecorator } = this.props.form;

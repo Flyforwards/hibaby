@@ -1,4 +1,6 @@
 .card{
+  min-width: 1030px;
+  margin:10px 0 0 10px;
 padding: 20px;
   background: #FFFFFF;
 }
@@ -14,12 +16,25 @@ padding: 20px;
     color: #000000;
   }
 }
+.ant-form-item-required:before {
+  content: '';
+  display: none;
+}
 .ant-table-bordered .ant-table-thead > tr > th{
   background: #666666;
   text-align: center;
+  font:14px "微软雅黑";
+  color: #fff;
 }
 .ant-table-bordered .ant-table-tbody > tr > td{
   text-align: center;
+  font:14px "微软雅黑";
+  .firstA{
+    color:#b87636;
+  }
+  .firstB{
+    color:#b87636;
+  }
 }
 .vertical-center-modal {
   text-align: center;

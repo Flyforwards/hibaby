@@ -157,7 +157,6 @@ export default {
       if( code == 0) {
         message.success('删除成功');
         const page = yield select(state => state.card.pagination);
-        console.log('ss',page.current)
         yield put(routerRedux.push({
           pathname: '/crm/card',
         }))
@@ -215,5 +214,3 @@ export default {
     }
   }
 }
-
-

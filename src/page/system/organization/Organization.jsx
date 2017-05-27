@@ -248,12 +248,14 @@ class Organization extends React.Component {
                     <Option value="1">禁用</Option>
                   </Select>
               </div>
-              {this.state.tissueProperty == 3?
-                <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
-                <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
-              }
+              <div className="btn">
+                {this.state.tissueProperty == 3?
+                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
+                  <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
+                }
 
-              <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
+                <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
+              </div>
             </div>
             {this.props.list?
             <div className="CreateModaList">

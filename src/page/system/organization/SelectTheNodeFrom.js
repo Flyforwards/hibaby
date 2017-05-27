@@ -70,7 +70,7 @@ class SelectTheNodeFrom extends Component {
   }
   onSelect(selectedKeys, e) {
     const  { selectedNodes } = e;
-    console.log(selectedNodes[0])
+  //  console.log(selectedNodes[0])
     if(selectedNodes[0]){
       const node = selectedNodes[0];
       this.nodeId = node.props.nodeId;
@@ -91,7 +91,7 @@ class SelectTheNodeFrom extends Component {
     const rowSelection = {
       type: "radio",
       onChange: (selectedRowKeys, selectedRows) => {
-        console.log('selectedRows: ', selectedRows);
+      //console.log('selectedRows: ', selectedRows);
         this.props.headelReturnTabal(selectedRows)
       },
       getCheckboxProps: record => ({
@@ -120,7 +120,7 @@ class SelectTheNodeFrom extends Component {
          let tissueProperty = this.tissueProperty
         this.props.dispatch({
           type: "organization/organizationList",
-          payload: { 
+          payload: {
             nodeid:nodeId,
             tissueProperty:tissueProperty,
             page:page,

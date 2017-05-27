@@ -150,7 +150,6 @@ export default {
 		*menuPermissionData({payload: values}, {call,put}) {
 
 			const { data: { data, code } } = yield call(moduleService.menuPermissionSelect, values);
-			console.log(data);
 			if (code == 0) {
 				yield put({
 						type:'menuPermissionSelectSave',

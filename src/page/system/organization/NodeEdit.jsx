@@ -1,4 +1,4 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
@@ -24,10 +24,10 @@ class NodeEdited extends Component {
     }
     handleOk(NodesdataEdit) {
         const fields = this.props.form.getFieldsValue();
-        console.log("组织性质",this.props.TissuePropertyID) 
-        console.log("parentId",NodesdataEdit) 
+      /*  console.log("组织性质",this.props.TissuePropertyID)
+        console.log("parentId",NodesdataEdit)
         console.log("ssd",fields)
-        console.log("dsdsd",this.state.TableData)
+        console.log("dsdsd",this.state.TableData)*/
         this.props.dispatch({
             type: 'organization/modifyDepartment',
             payload: {
@@ -71,7 +71,7 @@ class NodeEdited extends Component {
       this.setState({
         visible:true
       })
-      console.log("endemic.id",endemic.id)
+    //  console.log("endemic.id",endemic.id)
       this.props.dispatch({
         type: 'organization/getLeagerDepartmentNodes',
         payload: {
@@ -82,7 +82,7 @@ class NodeEdited extends Component {
     }
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -251,4 +251,3 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(NodeEdited)
-

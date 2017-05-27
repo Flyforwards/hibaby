@@ -19,7 +19,7 @@ class SelectListed extends Component {
     }
     render() {
        const { permissionList }= this.props;
-       console.log(permissionList);
+      // console.log(permissionList);
 
         return (
             <div className="SelectList">

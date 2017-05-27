@@ -29,7 +29,6 @@ export default {
 				data,
 				code
 			};
-			console.log(testdata)
 			return testdata;
 		}
 		},
@@ -43,7 +42,6 @@ export default {
 				data,
 				code
 			};
-			console.log(submitdata)
 			return submitdata;
 		},
 		effects: {
