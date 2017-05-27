@@ -212,7 +212,7 @@ export default (app) => [
       path: '/system/permission-inside',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
-          registerModel(app, require('models/system'));
+          registerModel(app, require('models/myPermission'));
           cb(null, require('page/system/permission-in/fromModal.jsx'))
         })
       }

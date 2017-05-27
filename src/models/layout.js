@@ -175,6 +175,7 @@ export default {
             });
           }
         }
+        session.set("projectAndModuleTree", data);
         // 选择头部主模块
         yield put({
           type: 'updateSelectProject',

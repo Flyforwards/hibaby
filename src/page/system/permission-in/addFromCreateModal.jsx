@@ -2,18 +2,16 @@
 
 import React, {Component} from 'react'
 import {connect} from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
+import {Modal, Form, Input, Radio, Select, Icon, TreeSelect} from 'antd'
 import './fromModal.scss'
 import {local, session} from 'common/util/storage.js'
-import SelectList from './from.jsx'
 
 const createForm = Form.create
 const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 
-const fromList = local.get("fromList")
 import _ from 'lodash'
+
 @createForm()
 class AddFromCreateModal extends Component {
     constructor(props) {
@@ -26,34 +24,28 @@ class AddFromCreateModal extends Component {
     handleOk() {
         this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
+          console.log(values);
           this.props.dispatch({
-            type: 'system/permissionAdd',
-            payload: {
-                actionPath:values.actionPath,
-                alias: values.alias,
-                description: values.authority,
-                name: values.name,
-                orderBy:Number(values.orderBy),
-                parentId:local.get("projectId"),//上级
-                projectId: Number(values.mainName)//主模块
-            }
-        });
+            type: 'myPermission/permissionAdd',
+            payload: values,
+          });
         }
       });
         this.props.onCancel()
     }
-    checkbox(index) {
-        console.log("index",index)
-    }
+
     handleCancel(){
         this.props.onCancel()
     }
+
     handleAfterClose() {
         this.props.form.resetFields()
     }
+
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
+
     asyncValidator(rule, value, callback) {
         console.log(Date.now())
         setTimeout(() => {
@@ -65,29 +57,30 @@ class AddFromCreateModal extends Component {
             }
         }, 1000)
     }
+
     onSelect = (value,key) => {
       var projectId = value
-      console.log("上级选择其Id",projectId)
       this.props.dispatch({
-          type: 'system/SelectList',
+          type: 'myPermission/SelectList',
           payload: {
               "projectId":value
           }
       });
     }
     render() {
-        const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
+        const {visible, confirmLoading,permissions} = this.props
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
         }
+
         let nodes = [];
         const mainName = local.get("Dictionary");
         if (mainName !=null) {
           nodes = mainName.map((item,index)=>{
             return (
-                <Option key={item.id + ''}  >{item.name}</Option>
+                <Option value={String(item.id)} key={item.id}  >{item.name}</Option>
             )
           })
         }
@@ -105,14 +98,14 @@ class AddFromCreateModal extends Component {
                 maskClosable={!confirmLoading}
             >
             <div className="fromCreateList">
-                <Form onSubmit={this.handleSubmit}>
+                <Form>
                 <FormItem
                   label="主模块"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 18 }}
                 >
-               {getFieldDecorator('mainName', {
-                  rules: [],
+               {getFieldDecorator('projectId', {
+                  rules: [{required: true}],
                 })(
                   <Select placeholder="请选择" onSelect={this.onSelect}>
                     {
@@ -121,27 +114,22 @@ class AddFromCreateModal extends Component {
                   </Select>
                 )}
               </FormItem>
-                <FormItem
-                  label="英文描述"
-                  labelCol={{ span: 4 }}
-                  wrapperCol={{ span:18}}
-                >
-                {getFieldDecorator('alias', {
-                  rules: [],
-                })(
-                   <Input/>
-                )}
-                </FormItem>
+
                 <FormItem
                   label="上级菜单"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 18 }}
                 >
-               {getFieldDecorator('authority', {
+               {getFieldDecorator('parentId', {
                   rules: [],
-                  onChange: this.handleSelectChange,
                 })(
-                  <SelectList />
+                 <TreeSelect
+                   style={{ width: 370 }}
+                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                   treeData={permissions}
+                   placeholder="请选择"
+                   treeDefaultExpandAll
+                 />
                 )}
               </FormItem>
                 <FormItem
@@ -150,21 +138,32 @@ class AddFromCreateModal extends Component {
                   wrapperCol={{ span: 18 }}
                 >
                 {getFieldDecorator('name', {
-                  rules: [],
+                  rules: [{ required: true, message: '名称必须填写！' }],
                 })(
                    <Input/>
                 )}
                 </FormItem>
                 <FormItem
-                  label="路径"
+                  label="别名"
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 18 }}
                 >
-                {getFieldDecorator('actionPath', {
-                  rules: [],
-                })(
-                   <Input/>
-                )}
+                  {getFieldDecorator('alias', {
+                    rules: [],
+                  })(
+                    <Input/>
+                  )}
+                </FormItem>
+                <FormItem
+                  label="描述"
+                  labelCol={{ span: 4 }}
+                  wrapperCol={{ span:18}}
+                >
+                  {getFieldDecorator('description', {
+                    rules: [],
+                  })(
+                    <Input/>
+                  )}
                 </FormItem>
                 <FormItem
                   label="排序"
@@ -183,26 +182,16 @@ class AddFromCreateModal extends Component {
         )
     }
 }
-function AddFromCreateModal({
-    dispatch,
-    data,
-    code
-}) {
-  return ( < div >
-    < AddFromCreateModal dispatch = {
-      dispatch
-    }
-    /> </div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     data,
-    code
-  } = state.system;
+    permissions,
+  } = state.myPermission;
   return {
-    loading: state.loading.models.system,
-    data
+    loading: state.loading,
+    data,
+    permissions
   };
 }
 export default connect(mapStateToProps)(AddFromCreateModal)
