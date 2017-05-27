@@ -50,7 +50,6 @@ class AddChildNodeed extends Component {
           TableData:"",
           NodeDisplay:"block"
         })
-        window.location.reload( true )
         this.props.onCancel()
     }
     checkbox() {
@@ -208,7 +207,7 @@ class AddChildNodeed extends Component {
                       className="nodeLeaderIput"
                     >
                       {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:this.state.TableData?this.state.TableData.name:""
+                        initialValue:this.state.TableData?this.state.TableData.name:null
                       })(
                         <Input style={{display:this.state.NodeDisplay}} disabled = {true}/>
                       )}

@@ -32,10 +32,11 @@ class OrganizationLefted extends React.Component {
         this.addDisplay="block"
         this.nodes = null
     }
-    expandHandler = () => {
-      setTimeout(() => {
-        $("li").find("li .ant-tree-title").after("<span class='plus'>+</span>")
-      }, 50)
+    expandHandler = (expandedKeys,node) => {
+        console.log("sd",node)
+        setTimeout(() => {
+          $("li").find(" li .ant-tree-title").after("<span class='plus'>+</span>")
+        },50)
     }
     onSelect(value,node){
       this.addDisplay="block"
@@ -136,7 +137,6 @@ class OrganizationLefted extends React.Component {
       })
       const userInfo  = session.get("userInfo")
       $(document).on('click', '.plus', function(e) {
-        console.log("dd",e.pageY-e.offsetY-11)
             if(this.state.upblock == 'none'){
               this.setState({
                 ulTop:e.pageY-e.offsetY-31,
@@ -152,7 +152,6 @@ class OrganizationLefted extends React.Component {
               return
             }
         }.bind(this));
-      
         $(".Organization-left").click(function(e){
              if(this.state.upblock == 'block'){
               this.setState({

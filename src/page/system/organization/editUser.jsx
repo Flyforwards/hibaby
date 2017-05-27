@@ -43,6 +43,7 @@ class EditUsered extends React.Component {
       dataIndex:null
     }
     this.dataIndex = null
+    console.log("a",this.props.userID)
   }
   componentDidMount(){
     let ID = window.location.search.split("=")[1]
@@ -58,12 +59,24 @@ class EditUsered extends React.Component {
         payload: {
           dataId: endemic.id
         }
-      })
+    })
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getEndemic',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
+    });
   }
   handleCreateModalCancel() {
-        this.setState({
-          visible: false,
-        })
+      this.setState({
+        visible: false,
+      })
     }
   handleDeleteEneryCancel(){
     this.setState({
@@ -73,7 +86,7 @@ class EditUsered extends React.Component {
     this.props.dispatch({
       type: 'organization/getUserListById',
       payload: {
-       dataId:ID
+        dataId:ID
       }
     })
   }
@@ -135,8 +148,10 @@ class EditUsered extends React.Component {
               roleIdData.push({"roleId":item,"userID":ID})
             })
           }
-          console.log("roleIdData",roleIdData)
+          fields[`affiliatedDepartment${i}`] = fields[`affiliatedDepartment${i}`][0] || fields[`affiliatedDepartment${i}`][0]
+          console.log(fields[`affiliatedDepartment${i}`])
           if(entrys[i].type == 0){
+            console.log(fields[`affiliatedDepartment${i}`])
             entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
@@ -161,7 +176,7 @@ class EditUsered extends React.Component {
           })
         }
       }      
-      if(entrysData.roles.length>=1){
+      if(entrysData[0].roles.length>=1){
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
@@ -178,7 +193,6 @@ class EditUsered extends React.Component {
         })
       }else{
         message.warning('请选择系统角色')
-
       }
       }
     })
@@ -215,11 +229,23 @@ class EditUsered extends React.Component {
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
+         entrys = USER.entrys
          SEX = USER.sex == 1?"男":"女"
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
             let headelDepartment = this.affiliatedDepartment
             let entryContent = USER.entrys[i]
+            let deptName = null
+            let positionName = null
+          if(this.props.getPosition){
+            console.log("entrys[i]",entrys)
+            this.props.getPosition.map((item)=>{
+              if(entrys[i].positionId == item.id){
+                positionName = item.id
+              }
+            })
+           }
+            deptName=String(entryContent.deptId)
             let roles = []
             if(USER.entrys[i].type == 0){
                display = 'none'
@@ -270,7 +296,7 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 2 }
                   >
                   { getFieldDecorator(`affiliatedDepartment${i}`,{
-                    initialValue: entryContent.deptId
+                    initialValue: deptName
                   })(
                     <Select placeholder="请选择" onSelect = {this.affiliatedDepartment.bind(this)}>
                       { traversalEndemicId }
@@ -300,7 +326,7 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 5 }
                   >
                   { getFieldDecorator(`position${i}`,{
-                    initialValue:entryContent.positionId
+                    initialValue: positionName
                   })(
                     <Select placeholder="请选择">
                       { traversalDataId }
@@ -479,12 +505,20 @@ function EditUser({
     dataEndemicId,
     dataId,
     LeagerData,
+    getPosition,
+    getEndemic,
     userID,
     code
 }) {
   return ( <div>
     <EditUsered dispatch = {
       dispatch
+    }
+    getEndemic = {
+      getEndemic
+    }
+    getPosition = {
+      getPosition
     }
     data = {
       data
@@ -510,6 +544,8 @@ function mapStateToProps(state) {
     dataEndemicId,
     dataId,
     userID,
+    getPosition,
+    getEndemic,
     LeagerData,
     code
   } = state.organization;
@@ -519,6 +555,8 @@ function mapStateToProps(state) {
     data,
     userID,
     dataId,
+    getPosition,
+    getEndemic,
     LeagerData,
     dataEndemicId,
     code

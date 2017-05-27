@@ -74,11 +74,45 @@ class Organization extends React.Component {
           dataIndex: 'endemicId',
           key: 'endemicId',
           width: '10%',
+          render: (text, record, index) => {
+            let endemicId = ''
+            if(this.props.getEndemic != null){
+              this.props.getEndemic.map((item)=>{
+                if(item.id == record.endemicId){
+                  endemicId = item.name
+                }
+              })
+            }
+            return(
+              endemicId
+            )
+          }
         },{
           title: '系统角色',
           dataIndex: 'roleId',
           key: 'roleId',
-          width: '10%',
+          width: '30%',
+          render: (text, record, index) => {
+            let roleId = record.roleId.split(",")
+            let list = []
+            let len = roleId.length-1
+            if(local.get("rolSelectData")){
+              roleId.map((data,index)=>{
+                local.get("rolSelectData").map((item)=>{
+                  if(item.id == Number(data)){
+                    if(len == index){
+                      list.push(item.name) 
+                    }else{
+                      list.push(item.name+" ; ")
+                    } 
+                  }
+                })
+              })
+            }
+            return(
+              list
+            )
+          }
         },{
           title: '账户状态',
           dataIndex: 'status',
@@ -161,6 +195,10 @@ class Organization extends React.Component {
       payload: { }
     });
     this.props.dispatch({
+      type: 'organization/getEndemic',
+      payload: { }
+    });
+    this.props.dispatch({
       type: 'organization/getDeptList',
       payload: { }
     });
@@ -168,7 +206,7 @@ class Organization extends React.Component {
 //禁止
 Disabled(record) {
     this.setState({
-       toViewVisible:true,
+      toViewVisible:true,
       ID:record.id
     })
 }
@@ -321,6 +359,7 @@ function Organization({
   list,
   getPosition,
   getDeptList,
+  getEndemic,
   total,
   page,
   results,
@@ -333,6 +372,9 @@ function Organization({
     }
     list = {
       list
+    }
+    getEndemic = {
+      getEndemic
     }
     getPosition = {
       getPosition
@@ -358,6 +400,7 @@ function mapStateToProps(state) {
     total,
     getPosition,
     getDeptList,
+    getEndemic,
     page,
     results,
     range,
@@ -368,6 +411,7 @@ function mapStateToProps(state) {
     list,
     getPosition,
     getDeptList,
+    getEndemic,
     total,
     page,
     results,

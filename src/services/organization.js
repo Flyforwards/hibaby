@@ -160,3 +160,10 @@ export function getDeptList(values) {
     body: JSON.stringify(values),
   })
 }
+//获取所有地方中心信息
+export function getEndemic(values) {
+  return request('/crm/api/v1/department/getEndemic', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

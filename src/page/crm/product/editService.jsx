@@ -42,9 +42,12 @@ class AddServiceed extends Component {
           width: "20%",
           render: (text, record, index) => {
             let count = 1
-            if(record.usageCount){
-              count = record.usageCount
-              check
+            if(this,props.findById != null){
+              this.props.findById.serviceInfoList.map((item)=>{
+                if(item.serviceInfoId == record.id){
+                    count = item.usageCount
+                }
+              })
             }
             return (
                 <span className="span">
@@ -109,6 +112,7 @@ class AddServiceed extends Component {
       let serviceInfoList =[]
       let ID = window.location.search.split("=")[1]
       const fields = this.props.form.getFieldsValue();
+      console.log(fields)
       if(this.state.selectedRows.length>=1){
         this.state.selectedRows.map((item)=>{
           if(item.usageCount){
@@ -126,7 +130,6 @@ class AddServiceed extends Component {
             }
           })
       }
-      console.log("目",serviceInfoList)
       if(fields.name){
         if(fields.price){
           if(fields.type){
@@ -165,7 +168,7 @@ class AddServiceed extends Component {
         let selectData = []
         let roomList = []
         let type = []
-        let suiteId = []
+        let suiteId = null
         if(this.props.serviceListByPage != null){
             ListLnformation = this.props.serviceListByPage;
               ListLnformation.map((record)=>{
@@ -176,15 +179,16 @@ class AddServiceed extends Component {
         if(this.props.selectData != null && this.props.findById){
           selectData = this.props.selectData.map((item)=>{
             if(item.id == this.props.findById.suiteId){
-              suiteId.push(String(item.id))
+              suiteId = String(item.id)
             }
             return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
         }
+        console.log(suiteId)
         if(this.props.getDictionary != null &&　this.props.findById != null){
           roomList = this.props.getDictionary.map((item)=>{
             if(item.id == this.props.findById.type){
-              type.push(String(item.id))
+              type = String(item.id)
             }
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
           })

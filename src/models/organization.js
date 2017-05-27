@@ -21,11 +21,16 @@ export default {
 		AllTissueProperty:null,
 		getPosition:null,
 		getDeptList:null,
+		getEndemic:null,
 	},
 	reducers: {
 		getDeptListSave(state,{payload:{ data:getDeptList,code }}){
 	      let getDeptListSavedata = {...state,getDeptList,code};
 	      return getDeptListSavedata
+	    },
+	    getEndemicSave(state,{payload:{ data:getEndemic,code }}){
+	      let getEndemicSavedata = {...state,getEndemic,code};
+	      return getEndemicSavedata
 	    },
 	    getPositionSave(state,{payload:{ data:getPosition,code }}){
 	      let getPositionSavedata = {...state,getPosition,code};
@@ -155,10 +160,22 @@ export default {
 		//获取所有的部门信息
 		*getDeptList({payload: values}, { call, put }) {
 			const {data: {data,code}} =  yield call(organizationService.getDeptList, values);
-			console.log("sdsssssssssssssss",code)
 			if (code == 0) {
 				yield put({
 					type: 'getDeptListSave',
+					payload: {
+						data,
+						code
+					}
+				});
+			}
+		},
+		//获取所有的地方中心
+		*getEndemic({payload: values}, { call, put }) {
+			const {data: {data,code}} =  yield call(organizationService.getEndemic, values);
+			if (code == 0) {
+				yield put({
+					type: 'getEndemicSave',
 					payload: {
 						data,
 						code
@@ -229,7 +246,6 @@ export default {
 		//根据节点id加载负责人组织架构列表
 		*getLeagerDepartmentNodes({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getLeagerDepartmentNodes, values);
-			console.log("根据节点id加载负责人组织架构列表",data)
 			if (code == 0) {
 				yield put({
 					type: 'getLeagerDepartmentNodesSave',
@@ -243,7 +259,6 @@ export default {
 		//修改用户信息
 		*modifyUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.modifyUser, values);
-			    console.log("dsds",values)
 			if (code == 0) {
 				message.success("修改用户信息成功");
 				// yield put(routerRedux.push(`/system/organization/ViewTheInformation?data=${values.id}`));
@@ -266,15 +281,9 @@ export default {
 		//根据用户id禁用用户
 		*forbiddenUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.forbiddenUser, values);
-			message.success("用户信息已被禁用");
 			if (code == 0) {
-				yield put({
-					type: 'forbiddenUserSave',
-					payload: {
-						data,
-						code
-					}
-				});
+			message.success("用户信息已被禁用");
+			yield put(routerRedux.push("/system/organization"));
 			}
 		},
 		//根据入职信息id删除入职信息

@@ -276,6 +276,9 @@ class AddJobed extends Component {
              className="internalExtension"
             >
               {getFieldDecorator('internalExtension', {
+                rules: [{
+                  pattern:/^[0-9\-]{0,20}$/, message: '请正确输入内部分机'
+                }],
               })(
                 <Input />
               )}
