@@ -48,9 +48,9 @@ class DictionarySelect extends Component {
       options = this.selectData.map((item) => {
         return (<Option key={item.id}> {item.name} </Option>)
       });
-    } else if(this.props.selectData && this.props.selectData.length > 0) {
-       session.set(this.name, this.props.selectData);
-       options = this.props.selectData.map((item) => {
+    } else if(this.props.selectData[this.name] && this.props.selectData[this.name].length > 0) {
+       session.set(this.name, this.props.selectData[this.name]);
+       options = this.props.selectData[this.name].map((item) => {
         return (<Option key={item.id}> {item.name} </Option>)
       });
     }

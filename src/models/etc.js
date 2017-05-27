@@ -6,7 +6,7 @@ import * as etcService from '../services/etc';
 export default {
   namespace: 'etc',
   state: {
-    selectData:[]
+    selectData:{}
   },
   reducers: {
     putDicData(state, {payload : {selectData}}) {
@@ -17,13 +17,14 @@ export default {
     *getDicData({ payload: params }, { call, put }) {
         // console.log('etc:models1>>', selectData);
         const { name:selectName } = params;
-        // let selectData = [];
-        const {data: {data: selectData}} = yield call(etcService.getRawData, params);
+        let selectDataGroup = {};
+        const {data: {data: selectDataItem}} = yield call(etcService.getRawData, params);
         // console.log('etc:models>>', selectData);
+        selectDataGroup[selectName] = selectDataItem;
         yield put({
           type: 'putDicData',
           payload: {
-            selectData
+            selectData: selectDataGroup
           }
         })
     }
