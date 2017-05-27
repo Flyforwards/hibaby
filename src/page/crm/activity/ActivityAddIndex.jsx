@@ -22,7 +22,7 @@ class AddGroupChar extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
+        //console.log(values);
         this.props.dispatch({
           type: 'activity/saveActivity',
           payload: values

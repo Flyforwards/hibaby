@@ -130,12 +130,12 @@ class EditUsered extends React.Component {
         for (var i=0;i<entrys.length;i++){
           let roleIdData = []
           if(fields[`systemRole${i}`]){
-            console.log("roleId",fields[`systemRole${i}`])
+          //  console.log("roleId",fields[`systemRole${i}`])
             fields[`systemRole${i}`].map((item)=>{
               roleIdData.push({"roleId":item,"userID":ID})
             })
           }
-          console.log("roleIdData",roleIdData)
+        //  console.log("roleIdData",roleIdData)
           if(entrys[i].type == 0){
             entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
@@ -160,7 +160,7 @@ class EditUsered extends React.Component {
               "roles": roleIdData
           })
         }
-      }      
+      }
       if(entrysData.roles.length>=1){
         this.props.dispatch({
           type: 'organization/modifyUser',

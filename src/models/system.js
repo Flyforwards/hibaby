@@ -21,7 +21,6 @@ export default {
 	    },
 		DictionarySave(state,{payload:{data:dictionary,code}}){
 	      let Dictionarydata= {...state, dictionary, code};
-	      console.log("Dictionary",dictionary)
 	      return Dictionarydata
 	    },
 		listByPageSave(state,{payload:{data:arr,total,page,size,code}}) {
@@ -144,8 +143,6 @@ export default {
 				projectId
 			};
 			local.set("index",SelectListdata.data)
-			console.log("5.5",list)
-
 			return SelectListdata;
 		},
 		addField(state, payload) {

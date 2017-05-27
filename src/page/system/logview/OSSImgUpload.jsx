@@ -102,7 +102,6 @@ class OSSImgUpload extends Component {
             wrapperDisplay: 'block',
             accept: _this.props.accept,
             chooseFile(files) {
-                console.log(files)
                 if (!files.length) {
                     return
                 }
@@ -110,7 +109,6 @@ class OSSImgUpload extends Component {
                 _this.upload()
             },
             uploadSuccess(res){
-                console.log(res, 'upload success')
                 _this.props.onChange(res.data)
                 _this.setState({
                     isLoading: false,
@@ -122,7 +120,7 @@ class OSSImgUpload extends Component {
 
             },
             doUpload(){
-                console.log('正在上传')
+                //console.log('正在上传')
             },
             fileFieldName(file){
                 return 'file'

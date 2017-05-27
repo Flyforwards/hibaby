@@ -18,12 +18,10 @@ export default {
     },
     testSave(state, {payload: {data, code}}) {
       let testdata= {...state, data, code};
-      console.log(testdata)
       return testdata;
     },
     submitSave(state, {payload: {data, code}}) {
       let submitdata= {...state, data, code};
-      console.log(submitdata)
       return submitdata;
     },
   },
@@ -34,7 +32,6 @@ export default {
 
       // yield put({ type: 'submitSave', payload: { data, code } });
       if(code == 0) {
-      console.log('save findValue!')
       //yield put(routerRedux.push('/login'));
       }
     },
@@ -53,5 +50,3 @@ export default {
   	}
   },
 };
-
-

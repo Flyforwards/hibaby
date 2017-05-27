@@ -1,4 +1,4 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
@@ -27,13 +27,13 @@ class SeeDtailed extends Component {
         this.props.onCancel()
     }
     handleOk() {
-        console.log("ok",this.props.ID)
+      //  console.log("ok",this.props.ID)
         const fields = this.props.form.getFieldsValue();
-        console.log("fields",fields)
+      //  console.log("fields",fields)
         this.props.onCancel()
     }
     checkbox() {
-        console.log("checkbox")
+      //  console.log("checkbox")
     }
     ReturnLeader(){
       this.props.onCancel()
@@ -88,7 +88,7 @@ class SeeDtailed extends Component {
 
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -130,7 +130,7 @@ class SeeDtailed extends Component {
             xs: { span: 24 },
             sm: { span: 14 },
           },
-        }; 
+        };
         return (
             <Modal
                 visible={visible}

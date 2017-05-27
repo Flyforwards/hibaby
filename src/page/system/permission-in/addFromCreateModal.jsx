@@ -43,7 +43,7 @@ class AddFromCreateModal extends Component {
         this.props.onCancel()
     }
     checkbox(index) {
-        console.log("index",index)
+      //  console.log("index",index)
     }
     handleCancel(){
         this.props.onCancel()
@@ -55,7 +55,7 @@ class AddFromCreateModal extends Component {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -67,7 +67,7 @@ class AddFromCreateModal extends Component {
     }
     onSelect = (value,key) => {
       var projectId = value
-      console.log("上级选择其Id",projectId)
+    //  console.log("上级选择其Id",projectId)
       this.props.dispatch({
           type: 'system/SelectList',
           payload: {

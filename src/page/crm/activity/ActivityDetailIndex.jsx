@@ -188,7 +188,7 @@ class ActivityDetailIndex extends Component {
           values.year = values.time.get('year');
           values.month = values.time.get('month')+1;
         }
-        console.log(values);
+      //  console.log(values);
 
         this.props.dispatch({
           type: "activity/getActivityCustomerPageList",

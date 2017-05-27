@@ -155,7 +155,6 @@ export default {
 		//获取所有的部门信息
 		*getDeptList({payload: values}, { call, put }) {
 			const {data: {data,code}} =  yield call(organizationService.getDeptList, values);
-			console.log("sdsssssssssssssss",code)
 			if (code == 0) {
 				yield put({
 					type: 'getDeptListSave',
@@ -229,7 +228,7 @@ export default {
 		//根据节点id加载负责人组织架构列表
 		*getLeagerDepartmentNodes({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.getLeagerDepartmentNodes, values);
-			console.log("根据节点id加载负责人组织架构列表",data)
+			//console.log("根据节点id加载负责人组织架构列表",data)
 			if (code == 0) {
 				yield put({
 					type: 'getLeagerDepartmentNodesSave',
@@ -243,7 +242,6 @@ export default {
 		//修改用户信息
 		*modifyUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.modifyUser, values);
-			    console.log("dsds",values)
 			if (code == 0) {
 				message.success("修改用户信息成功");
 				// yield put(routerRedux.push(`/system/organization/ViewTheInformation?data=${values.id}`));
@@ -300,7 +298,6 @@ export default {
 		//保存组织架构节点信息
 		*saveDepartment({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.saveDepartment, values);
-			console.log("values",values)
 			if (code == 0) {
 				message.success("保存组织架构节点信息成功");
 				yield put({

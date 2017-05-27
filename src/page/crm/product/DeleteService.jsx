@@ -1,4 +1,4 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
@@ -19,7 +19,6 @@ class DeleteService extends Component {
         this.props.onCancel()
     }
     handleOk() {
-        console.log("ok",this.props.ID)
         this.props.dispatch({
             type: 'packageInfo/del',
             payload: {
@@ -95,4 +94,3 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(DeleteService)
-

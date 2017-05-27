@@ -42,9 +42,9 @@ class Card extends Component {
       key: 'action',
       render: (text, record) => (
         <span style={{ cursor: 'pointer'}}>
-          <Link to={{ pathname: '/crm/cardDetail', query: { data:record.id } }} href="#" style={{ marginRight:'20px' }}>查看</Link>
+          <Link className="firstA" to={{ pathname: '/crm/cardDetail', query: { data:record.id } }} href="#" style={{ marginRight:'20px' }}>查看</Link>
           <Popconfirm  title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>
-             <span>删除</span>
+             <span className="firstB">删除</span>
           </Popconfirm>
 
         </span>

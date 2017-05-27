@@ -15,7 +15,7 @@ class SelectListed extends Component {
     this.setState({ value });
   }
   onSelect = (value,node, extra) => {
-    console.log(value)
+    //console.log(value)
     local.set("projectId",value)
   }
     render() {

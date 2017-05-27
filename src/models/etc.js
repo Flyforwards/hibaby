@@ -19,7 +19,7 @@ export default {
         const { name:selectName } = params;
         let {selectData} = yield select(state => state.etc)
         const {data: {data: selectDataItem}} = yield call(etcService.getRawData, params);
-        console.log('etc:models>>', selectData);
+      //  console.log('etc:models>>', selectData);
         selectData[selectName] = selectDataItem;
         yield put({
           type: 'putDicData',

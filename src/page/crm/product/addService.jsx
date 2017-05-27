@@ -47,7 +47,7 @@ class AddServiceed extends Component {
                   <Input defaultValue ={1} onChange={(event)=>{
                     record.usageCount = event.target.value
                   }}/>
-                </span> 
+                </span>
             );
           },
         }];
@@ -88,7 +88,6 @@ class AddServiceed extends Component {
     }
     handleAdd(){
       const fields = this.props.form.getFieldsValue();
-      console.log("fields",this.state.selectedRows)
       let serviceInfoList =[]
       if(this.state.selectedRows.length>=1){
         this.state.selectedRows.map((item)=>{
@@ -192,7 +191,7 @@ class AddServiceed extends Component {
                   {getFieldDecorator('price', {
                       rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                     />
                     )}
@@ -214,15 +213,15 @@ class AddServiceed extends Component {
                 </Form>
                 </div>
                 <div className="addServiceinfoTable">
-                  <Table bordered 
-                    rowSelection={rowSelection} 
-                    columns={ columns } 
+                  <Table bordered
+                    rowSelection={rowSelection}
+                    columns={ columns }
                     dataSource={ListLnformation}
                     pagination = { false }
                     scroll={{ y: 470 }}
                     loading = { loadingName }
                   />
-                </div>  
+                </div>
                 <div className="addServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">

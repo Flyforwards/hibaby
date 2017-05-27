@@ -107,7 +107,7 @@ class LogViewed extends Component {
     componentDidMount() {
     }
     Inquire(){
-        console.log("Inquire")
+        //console.log("Inquire")
     }
     render() {
         const { dataSource } = this.state;
@@ -207,7 +207,6 @@ function LogView({
 
 }
 function mapStateToProps(state) {
-  console.log("modelss",state.system)
   const {
     data,
     total,

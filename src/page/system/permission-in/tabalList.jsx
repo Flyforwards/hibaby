@@ -108,7 +108,7 @@ class TabalListed extends Component {
     }
     render() {
       var mainName = []
-      console.log("current",this.props.arr)
+    //  console.log("current",this.props.arr)
         {
           if(this.props.arr){
             mainName = DataConversion(list,"parentId",this.props.arr,"parentId")
@@ -169,7 +169,7 @@ function TabalList({
 
 }
 function mapStateToProps(state) {
-  console.log("权限列表>>>>",state.system.arr)
+//  console.log("权限列表>>>>",state.system.arr)
   const {
     arr,
     total,

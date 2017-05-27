@@ -127,8 +127,8 @@ class editGroupData extends React.Component {
       getFieldDecorator('keys', { initialValue: initKeys });
 
       const keys = getFieldValue('keys');
-      console.log(initKeys);
-      console.log(keys);
+    //  console.log(initKeys);
+    //  console.log(keys);
       const formItems = keys.map((k,index) => {
         const initValue = arr[k-1] ? arr[k-1].name : ""
         return (

@@ -1,7 +1,7 @@
 .commodity{
 	height:100%;
-	width:98%;
-	margin:0 1%;
+	min-width: 1030px;
+	margin-left: 10px;
 	.commodityButton{
 		width:100%;
 		height:60px;
@@ -9,9 +9,10 @@
 		button{
 			position: absolute;
 			width: 140px;
-    		height: 40px;
-    		right:2%;
-    		top:30%;
+  		height: 40px;
+  		right:2%;
+  		top:30%;
+			font:14px "微软雅黑";
 		}
 		margin-bottom:20px;
 	}
@@ -22,7 +23,7 @@
 		.twoA{
 			border:none;
 			background-color: #fff;
-			margin-left:70px;
+			margin-left:20px;
 			color:#f75555;
 			text-decoration: none;
 		}
@@ -63,7 +64,7 @@
 }
 .addCommodity{
 	height:100%;
-	width:97%;
+	min-width:1040px;
 	.addSuiteList{
 		width:100%;
 		background-color:#fff;
@@ -76,7 +77,7 @@
 		    font-weight: 700;
 		    font-style: normal;
 		    font-size: 14px;
-		    margin-bottom: 10px
+		    margin: 10px 0 10px 20px;
 		}
 		.name{
 			margin-left: 50px;
@@ -185,7 +186,7 @@
 		}
 	}
 	.ant-btn {
-		margin-left:70%;
+		margin-left:706px;
 		width:140px;
 		height:40px;
 	}
@@ -197,9 +198,9 @@
 }
 .viewCommodity{
 	height:100%;
-	width:97%;
+	min-width:1040px;
 	.viewCommodityList{
-		width:100%;
+		min-width: 1030px;
 		background-color:#fff;
 		height:20%;
 		margin:10px;
@@ -331,27 +332,30 @@
 		}
 	}
 	.ant-btn {
-		margin-left:55%;
+		margin-left:548px;
 		width:140px;
 		height:40px;
+		font:14px "微软雅黑";
 	}
 	.ant-btn-primary{
     	margin-left:30px;
     	width:140px;
     	height:40px;
+			font:14px "微软雅黑";
 	}
 	.delet{
 		background-color: rgba(255, 74, 74, 1);
 		margin-left:30px;
 		color:#fff;
+		font:14px "微软雅黑";
 		border:none;
 	}
 }
 .editCommodity{
 	height:100%;
-	width:97%;
+	min-width:1030px;
 	.editCommodityList{
-		width:100%;
+		min-width:1030px;
 		background-color:#fff;
 		height:20%;
 		margin:10px;
@@ -483,13 +487,19 @@
 		}
 	}
 	.ant-btn {
-		margin-left:70%;
+		margin-left:706px;
 		width:140px;
 		height:40px;
+		span{
+			font:14px "微软雅黑";
+		}
 	}
 	.ant-btn-primary{
     	margin-left:30px;
     	width:140px;
     	height:40px;
+			span{
+				font:14px "微软雅黑";
+			}
 	}
 }

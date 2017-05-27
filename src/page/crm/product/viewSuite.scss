@@ -1,7 +1,7 @@
 
 .viewSuite{
 	height:100%;
-	width:97%;
+	min-width:1040px;
 	.viewSuiteList{
 		width:100%;
 		background-color:#fff;
@@ -110,7 +110,7 @@
 		}
 	}
 	.ant-btn {
-		margin-left:55%;
+		margin-left:528px;
 		width:140px;
 		height:40px;
 	}
@@ -128,9 +128,9 @@
 }
 .editSuite{
 	height:100%;
-	width:97%;
+	min-width: 1030px;
 	.viewSuiteList{
-		width:100%;
+		min-width: 1030px;
 		background-color:#fff;
 		height:20%;
 		margin:10px;
