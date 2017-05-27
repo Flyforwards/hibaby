@@ -132,7 +132,7 @@ class LogViewed extends Component {
                     <span className="firstInput" >操作内容<Input/></span>
                     <span className="twoInput" >操作人<Input /></span>
                     <span className="threeInput">日志类型
-                    <Select labelInValue style={{ width: 300 }} className="LogViewType">
+                    <Select labelInValue style={{ width: 210 }} className="LogViewType">
                         <Option value="jack">Jack</Option>
                         <Option value="lucy">Lucy</Option>
                     </Select>
