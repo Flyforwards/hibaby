@@ -87,7 +87,6 @@ class moduleIndex extends Component {
     const data=[];
     this.props.form.validateFields((err, values) => {
       if(!err){
-        console.log(values);
         const { pathname } = location
         this.props.dispatch(routerRedux.push({
           pathname,
@@ -173,8 +172,8 @@ class moduleIndex extends Component {
     const { getFieldDecorator  } = this.props.form;
     const { pagination, list, dispatch, loading, projectList } = this.props;
     const formItemLayout = {
-     labelCol: { span: 5 },
-     wrapperCol: { span: 19 },
+     labelCol: { span: 3 },
+     wrapperCol: { span:6 },
     };
 
     const children = projectList.map((res,index)=>{
@@ -204,30 +203,30 @@ class moduleIndex extends Component {
     return (
       <div className="MenuInside">
         <div className="menuHeard">
-        <Form className="ant-advanced-search-form">
-                <FormItem {...formItemLayout} label="主模块：">
+        <Form className="ant-advanced-search-form ">
+                <FormItem label="主模块：">
                   {getFieldDecorator('projectId', {rules: [{ required: false, }],
                   })(
                   <Select className="SelectMenu"  placeholder="请选择">
                       { children }
                   </Select>)}
                 </FormItem>
-                <FormItem {...formItemLayout} label="名称：">
+                <FormItem label="名称：">
                   {getFieldDecorator('name', {rules: [{ required: false, }],
                   })(
                       <Input className="input"/>
                   )}
                 </FormItem>
-                <FormItem {...formItemLayout} label="路径：">
+                <FormItem label="路径：">
                   {getFieldDecorator('path', {rules: [{ required: false, }],
                   })(
                       <Input className="input"/>
                   )}
                 </FormItem>
                 <div className="btn">
-                    <Button className="Select" onClick={this.handleSearch.bind(this)}>查询</Button>
-                    <Button className="Select" onClick={this.handleReset.bind(this)}>清空</Button>
-                    <Button className="Select" onClick={this.addMenuList.bind(this)}>新增</Button>
+                    <Button className="SelBtn" onClick={this.handleSearch.bind(this)}>查询</Button>
+                    <Button className="ClearBtn" onClick={this.handleReset.bind(this)}>清空</Button>
+                    <Button className="AddBtn" onClick={this.addMenuList.bind(this)}>新增</Button>
                 </div>
             </Form>
         </div>

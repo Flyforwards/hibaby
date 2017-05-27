@@ -25,7 +25,6 @@ class AddModule extends Component {
   handleOk() {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values);
           if (values.permissionId && values.permissionId.length > 0) {
             values.permissionList = `${values.permissionId}`;
             values.permissionId = values.permissionId[values.permissionId.length-1];
@@ -102,7 +101,7 @@ class AddModule extends Component {
                     <SelectMenu/>
                   )}
               </FormItem>
-              <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+              <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                   {getFieldDecorator('permissionId', {rules: [{required: true, message: '权限绑定为必填项！'}],
                     })(
                       <Cascader

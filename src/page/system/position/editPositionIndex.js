@@ -279,7 +279,7 @@ class LocalizedModal extends Component {
 
 
     return (
-      <div>
+      <div className="editPositionIndex">
         <Link onClick={() => {
           this.showModal(record.id);
         }}>查看</Link>

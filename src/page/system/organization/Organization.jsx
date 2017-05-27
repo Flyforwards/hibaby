@@ -263,21 +263,21 @@ ObtainOrganization(nodeid,tissueProperty){
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select placeholder="请选择" style={{ width:220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
+                 <Select placeholder="请选择" style={{ width:180 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
                       { traversalRoleIdData }
                   </Select>
               </div>
               <div className="status">账户状态
-                <Select placeholder="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
+                <Select placeholder="请选择" style={{ width: 180 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
               </div>
-              {this.state.tissueProperty == 3? 
+              {this.state.tissueProperty == 3?
                 <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
                 <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
               }
-             
+
               <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
             </div>
             {this.props.list?

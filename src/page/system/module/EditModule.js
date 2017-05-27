@@ -24,7 +24,6 @@ class EditModule extends Component {
   handleOk() {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values);
           if (values.permissionId && values.permissionId.length > 0) {
             values.permissionList = `${values.permissionId}`;
             values.permissionId = values.permissionId[values.permissionId.length-1];
@@ -108,7 +107,7 @@ class EditModule extends Component {
                       </Select>
                     )}
               </FormItem>
-              <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+              <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                   {getFieldDecorator('parentId', {initialValue: item.parentId ==0?null:[String(item.parentId)] ,rules: [{required: false,onChange: this.handleSelectChange}],
                   })(
                     <Select  placeholder="请选择">
@@ -118,7 +117,7 @@ class EditModule extends Component {
                     </Select>
                   )}
               </FormItem>
-              <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+              <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                   {getFieldDecorator('permissionId', {initialValue: permissions,rules: [{type: 'array',required: false,onChange: this.handleSelectChange}],
                     })(
                       <Cascader

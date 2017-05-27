@@ -1,6 +1,6 @@
 .viewServiceinfo{
 	height:100%;
-	width:97%;
+	min-width: 1040px;
 	.viewServiceinfoList{
 		width:100%;
 		background-color:#fff;
@@ -35,10 +35,15 @@
 			margin-left: 40px;
 			margin-bottom: 10px;
 			label{
-				font:12px "微软雅黑";
+				font:14px "微软雅黑";
 			}
 		}
-
+		.ant-form-item{
+				margin:0 0 10px 40px;
+				label{
+					font:14px "微软雅黑";
+				}
+		}
 		.ant-input-lg{
 			width:270px;
 			height:40px;
