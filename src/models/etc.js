@@ -16,6 +16,8 @@ export default {
   effects: {
     *getDicData({ payload: params }, { call, put }) {
         // console.log('etc:models1>>', selectData);
+        const { name:selectName } = params;
+        // let selectData = [];
         const {data: {data: selectData}} = yield call(etcService.getRawData, params);
         // console.log('etc:models>>', selectData);
         yield put({

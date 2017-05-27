@@ -37,7 +37,7 @@ class DictionarySelect extends Component {
   getData(params) {
     this.dispatch({
       type: 'etc/getDicData',
-      payload: params,
+      payload: {...params, name: this.name},
     })
   }
 
@@ -48,7 +48,7 @@ class DictionarySelect extends Component {
       options = this.selectData.map((item) => {
         return (<Option key={item.id}> {item.name} </Option>)
       });
-    } else if(this.props.selectData.length > 0) {
+    } else if(this.props.selectData && this.props.selectData.length > 0) {
        session.set(this.name, this.props.selectData);
        options = this.props.selectData.map((item) => {
         return (<Option key={item.id}> {item.name} </Option>)

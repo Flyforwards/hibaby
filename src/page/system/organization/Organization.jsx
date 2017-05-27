@@ -246,6 +246,10 @@ class Organization extends React.Component {
                       { traversalRoleIdData }
                   </Select>*/}
                   <DictionarySelect  selectName="ROLE" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />
+                  {/*<DictionarySelect  selectName="ROLE1" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
+                  {/*<DictionarySelect  selectName="ROLE2" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
+                  {/*<DictionarySelect  selectName="ROLE3" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
+                  {/*<DictionarySelect  selectName="ROLE4" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
               </div>
               <div className="status">账户状态
                 <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
