@@ -25,7 +25,9 @@ class NodeEdited extends Component {
     handleOk(NodesdataEdit) {
         const fields = this.props.form.getFieldsValue();
         console.log("组织性质",this.props.TissuePropertyID) 
-        console.log("parentId",this.props.ID) 
+        console.log("parentId",NodesdataEdit) 
+        console.log("ssd",fields)
+        console.log("dsdsd",this.state.TableData)
         this.props.dispatch({
             type: 'organization/modifyDepartment',
             payload: {
@@ -34,18 +36,20 @@ class NodeEdited extends Component {
               "leaderId": this.state.TableData?this.state.TableData.id:NodesdataEdit.leaderId,
               "leaderName": this.state.TableData?this.state.TableData.name:NodesdataEdit.leaderName,
               "name": fields.fullName,
-              "parentId":this.props.ID,
-              "tissueProperty":fields.localCenter?fields.localCenter:this.props.TissueProperty.id,
-              "id":NodesdataEdit.id
+              "parentId":NodesdataEdit.parentId,
+              "tissueProperty":this.props.TissuePropertyID,
+              "id":this.props.ID
             }
         })
-        this.props.onCancel()
-    }
-    checkbox() {
-        console.log("checkbox")
-
+        this.setState({
+          TableData:null
+        })
+       // this.props.onCancel()
     }
     handleAfterClose() {
+      this.setState({
+        TableData:null
+      })
         this.props.form.resetFields()
     }
     componentDidMount() {
@@ -89,12 +93,8 @@ class NodeEdited extends Component {
         }, 1000)
     }
     render() {
-      let NodesdataEdit ={}
       let localCenterData = []
-        const {visible, form, confirmLoading, Nodesdata} = this.props
-        if( Nodesdata != null){
-          NodesdataEdit = Nodesdata
-        }
+      const {visible, form, confirmLoading, Nodesdata} = this.props
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
           labelCol: {
@@ -125,7 +125,7 @@ class NodeEdited extends Component {
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
                 onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this,NodesdataEdit,this.props.ID)}
+                onOk={this.handleOk.bind(this,Nodesdata,this.props.ID)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
                 width={ 700 }
@@ -159,7 +159,7 @@ class NodeEdited extends Component {
                       label="全称"
                     >
                       {getFieldDecorator('fullName', {
-                        initialValue:NodesdataEdit.name,
+                        initialValue:Nodesdata.name,
                         rules: [{
                           max: 100, message: '输入内容过长'
                         }],
@@ -172,7 +172,7 @@ class NodeEdited extends Component {
                       label="简称"
                     >
                       {getFieldDecorator('referredTo', {
-                        initialValue:NodesdataEdit.abbreviation,
+                        initialValue:Nodesdata.abbreviation,
                        rules: [{
                           max: 100, message: '输入内容过长'
                         }],
@@ -185,7 +185,7 @@ class NodeEdited extends Component {
                       label="英文名称"
                     >
                       {getFieldDecorator('englishName', {
-                        initialValue:NodesdataEdit.englishName,
+                        initialValue:Nodesdata.englishName,
                         rules: [{
                           max: 100, message: '输入内容过长'
                         }],
@@ -199,7 +199,7 @@ class NodeEdited extends Component {
                       className="nodeLeaderIput"
                     >
                       {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:this.state.TableData?this.state.TableData.name:NodesdataEdit.leaderName
+                        initialValue:this.state.TableData?this.state.TableData.name:Nodesdata.leaderName
                       })(
                         <Input/>
                       )}

@@ -111,6 +111,7 @@ const FormItem = Form.Item;
             }
           </div>
         </PicturesWall>
+
       }
         break;
       default:
@@ -615,4 +616,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(customerInformation) ;
-

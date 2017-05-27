@@ -3,34 +3,28 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import {local, session} from 'common/util/storage.js';
 import {PAGE_SIZE} from 'common/constants.js'
+import { parse } from 'qs'
 
 export default {
 	namespace: 'module',
 	state: {
 		data: null,
-		total: null,
 		list:[],
-		leftList:null,
-		dictionarySideDOs:null,
-		item: [],
-		permission:[],
+    projectList: [],
+    permissionList: [],
 		menu:[],
 		edit:[],
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
 	},
 	reducers: {
 		//菜单列表
-		MainMenuList(state, {
-			payload: {data:item,size,page,total}
-		}) {
-			let menulist={
-				...state,item ,size,page,total,
-			}
-			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? item.length : (page - 1) * 3 + item.length,
-				totalpage:Math.ceil(total/size),
-			}
-			return {...menulist,range };
+    mainMenuListSave(state, { payload: { list ,pagination} }) {
+      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 		},
 		//删除服务项目
 		deleteServiceSave(state, { payload: { record }}) {
@@ -54,61 +48,45 @@ export default {
 				}
 		},
 		//主模块下拉
-		MainModuleSelect(state,{payload:{data:list,code}}){
-			local.set("Dictionary",list)
-				return{
-					...state,
-					list,
-					code
-				}
+    mainModuleSelectSave(state,{payload:{ projectList }}){
+				return{ ...state, projectList,	}
 		},
+
 		//菜单权限下拉
-		MenuPermissionSelect(state,{payload:{data:permission,projectId}}){
-			let permissiondata={
-				...state,
-				permission,
-				projectId,
-			}
-			  local.set("index",permissiondata.data)
-				console.log("菜单下拉>>>",permission)
-				return permissiondata;
+		menuPermissionSelectSave(state,{ payload:{ permissionList }}){
+      return { ...state, permissionList};
 		},
 
 		//上级菜单下拉
-		ParentNodeSelect(state,{payload:{data:menu,dataId,code}}){
-				let menudata={
-					...state,
-					menu,
-					dataId,
-				}
-				local.set("index",menudata.data)
-				console.log("上级下拉",menu)
-				return {
-					...state,
-					menu,
-					dataId,
-				}
+    ParentNodeSelectSave(state,{payload:{ data:menu }}){
+				return { ...state, menu }
 		},
 	},
 	effects: {
 
 		//菜单列表页数据
-		*MenuData({payload: values}, { call, put }) {
-
-			const {data: { data,size,total,page,code} } = yield call(moduleService.MainMenuList, values);
-
-			if (code == 0) {
-				yield put({
-						type:'MainMenuList',
-						payload:{
-							data,
-							size,
-							total,
-							page,
-							code
-						}
-				});
-			}
+		*getMenuData({payload: values}, { call, put }) {
+      values = parse(location.search.substr(1))
+      if (values.page === undefined) {
+        values.page = 1;
+      }
+      if (values.size === undefined) {
+        values.size = 10;
+      }
+			const {data: { data,size,total,page,code} } = yield call(moduleService.mainMenuList, values);
+      if (code == 0) {
+        yield put({
+          type: 'mainMenuListSave',
+          payload: {
+            list: data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
+      }
 
 		},
 
@@ -119,7 +97,7 @@ export default {
       if (code == 0) {
         message.success('删除成功');
         yield put({
-          type : 'MenuData',
+          type : 'getMenuData',
           payload : { page : page || 0 , size : pageSize || 10 }
         }
 			);
@@ -127,9 +105,10 @@ export default {
         throw err || "请求出错";
       }
     },
+
 		//增加菜单数据列表
 		*AddMenuData({payload: values}, { call, put }) {
-			const {data: { data,code} } = yield call(moduleService.AddMenuList, values);
+			const {data: { data,code} } = yield call(moduleService.addMenuList, values);
 			if (code == 0) {
 				message.success("菜单数据保存成功")
 				yield put({
@@ -143,7 +122,7 @@ export default {
 		},
 		//编辑菜单数据列表
 		*EditMenuData({payload: values}, { call, put }) {
-			const {data: { data,code} } = yield call(moduleService.EditMenuListData, values);
+			const {data: { data,code} } = yield call(moduleService.editMenuListData, values);
 			if (code == 0) {
 				message.success("菜单数据更新成功")
 				yield put({
@@ -157,121 +136,60 @@ export default {
 		},
 		//菜单主模块下拉选项
 		*MainModuleSelectData({payload: values}, {call,put}) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(moduleService.MainModuleSelect, values);
+			const { data: { data, code } } = yield call(moduleService.mainModuleSelect, values);
 			if (code == 0) {
 				yield put({
-						type:'MainModuleSelect',
+						type:'mainModuleSelectSave',
 						payload:{
-							data,
-							code
+							projectList: data,
 						}
 				});
 			}
 		},
-		//菜单权限下拉选项
-		*MenuPermissionData({payload: values}, {call,put}) {
+		// 菜单权限下拉选项
+		*menuPermissionData({payload: values}, {call,put}) {
 
-			const {
-				data: {
-					data,
-					projectId,
-					code
-				}
-			} = yield call(moduleService.	MenuPermissionSelect, values);
+			const { data: { data, code } } = yield call(moduleService.menuPermissionSelect, values);
+			console.log(data);
 			if (code == 0) {
 				yield put({
-						type:'MenuPermissionSelect',
+						type:'menuPermissionSelectSave',
 						payload:{
-							data,
-							code
+							permissionList: data,
 						}
 				});
 			}
 		},
 		//上级菜单下拉
-		*ParentNodeData({payload: values}, {call,put}) {
-			const {
-				data: {
-					data,
-					dataId:projectId,
-					code
-				}
-			} = yield call(moduleService.	ParentNodeSelect, values);
+		*parentNodeData({payload: values}, {call,put}) {
+			const { data: { data, code } } = yield call(moduleService.parentNodeSelect, values);
 			if (code == 0) {
 				yield put({
-						type:'ParentNodeSelect',
+						type:'ParentNodeSelectSave',
 						payload:{
 							data,
-							code
 						}
 				});
 			}
 		},
-		//获取集团列表所需数据
-		// *getEditData({payload}, {put, select}) {
-		// 	const data = yield select((state) => state.save.data)
-		// 	console.log(dictionarySideDOs)
-		// 	console.log('model:save:getedit>>', data);
-		// 	yield put({
-		// 		type: 'editDataSave',
-		// 		payload: {
-		// 			data,
-		// 		}
-		// 	})
-		// }
 	},
 	subscriptions: {
-		setup({
-			dispatch,
-			history
-		}) {
-			return history.listen(({
-				pathname,
-				query
-			}) => {
+		setup({ dispatch, history }) {
+      return history.listen(({pathname, query}) => {
 
-				//菜单列表数据
-				if (pathname === '/system/module') {
-					dispatch({
-						type: 'MenuData',
-						payload:{...query,
-							"size":10,
-							}
-					});
-				}
-				//菜单添加保存数据列表
-				//菜单主模块下拉
-				if (pathname === '/system/module') {
-					dispatch({
-						type: 'MainModuleSelectData',
-						payload:{...query,
+        //菜单列表数据
+        if (pathname === '/system/module') {
+          dispatch({
+            type: 'getMenuData',
+            payload: query
+          });
+          dispatch({
+            type: 'MainModuleSelectData',
+            payload: {}
+          });
+        }
 
-							}
-					});
-				}
-				//菜单权限下拉数据
-				if (pathname === '/system/module') {
-					dispatch({
-						type: 'MenuPermissionData',
-						payload:{...query,
-
-							}
-					});
-				}
-				//菜单上级下拉
-				if (pathname === '/system/module') {
-					dispatch({
-						type: 'ParentNodeData',
-						payload:{...query,
-							}
-					});
-				}
-			})
-		}
+      })
+    }
 	},
 };

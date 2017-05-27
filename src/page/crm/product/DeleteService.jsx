@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
 import '../../system/organization/AddChildNode.scss'
+import AlertModalFrom from 'common/AlertModalFrom'
 
 
 const createForm = Form.create
@@ -25,6 +26,7 @@ class DeleteService extends Component {
                 "dataId":this.props.ID
             }
         })
+        this.props.onCancel()
     }
     checkbox() {
         console.log("checkbox")

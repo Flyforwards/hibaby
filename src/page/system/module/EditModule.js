@@ -2,14 +2,14 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon} from 'antd'
+import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon, Cascader} from 'antd'
 import './AddModule.scss'
 import {local, session} from 'common/util/storage.js'
 import SelectList from './EditFrom.jsx'
 import SelectMenu from './EditMenu.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
-
+const Option = Select.Option;
 
 @createForm()
 class EditModule extends Component {
@@ -24,43 +24,17 @@ class EditModule extends Component {
   handleOk() {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          let payload={}
-          console.log("values>>>>",values)
-          const record=this.props.record?this.props.record:{}
-          console.log("record>>>",record)
-          if(values.projectId==record.projectName || values.parentId==record.parentName || values.permissionId==record.permissionName){
-            payload= {
-              description:values.name,
-              name: values.name,
-              icon:"copyright",
-              orderBy:Number(values.orderBy),
-              path:values.path,
-              permissionId:local.get("projectId"),
-              parentId:local.get("dataId"),
-              icon:values.icon,
-              projectId:this.props.record.projectId,
-              id:this.props.record.id,
-            }
-          }else{
-            payload= {
-              description:values.name,
-              name: values.name,
-              icon:"copyright",
-              orderBy:Number(values.orderBy),
-              path:values.path,
-              permissionId:local.get("projectId"),
-              parentId:local.get("dataId"),
-              icon:values.icon,
-              projectId:Number(values.projectId),
-              id:this.props.record.id,
-            }
+          console.log(values);
+          if (values.permissionId && values.permissionId.length > 0) {
+            values.permissionList = `${values.permissionId}`;
+            values.permissionId = values.permissionId[values.permissionId.length-1];
           }
+          values.id = this.props.record.id;
           this.props.dispatch({
             type: 'module/EditMenuData',
-            payload:payload,
+            payload:values,
           })
             this.props.onCancel()
-            console.log("payload",payload)
         }
 
       });
@@ -71,15 +45,14 @@ class EditModule extends Component {
 
   }
   onSelect = (value,key) => {
-    console.log("主模块>>>",value)
     this.props.dispatch({
-        type: 'module/ParentNodeData',
+        type: 'module/parentNodeData',
         payload: {
             projectId:value,
         }
     });
     this.props.dispatch({
-        type: 'module/MenuPermissionData',
+        type: 'module/menuPermissionData',
         payload: {
             "projectId":value,
         }
@@ -87,8 +60,8 @@ class EditModule extends Component {
   }
 
   render() {
-    const { visible, record ,data,list,permission,menu } = this.props
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { visible, record , permissionList, projectList, menu } = this.props
+    const { getFieldDecorator } = this.props.form;
     let modalTitle = "菜单模块：";
     const formItemLayout = {
       wrapperCol: {
@@ -96,16 +69,23 @@ class EditModule extends Component {
         sm: { span: 25 },
       },
     };
-    const children = [];
-    const perdata=[];
-    const menudata=[];
-    list.map((res,index)=>{
-          children.push(<Option key={res.id}>{res.name}</Option>)
+    const children = projectList.map((res,index)=>{
+      return (<Option key={res.id}>{res.name}</Option>)
     });
-    let item={};
-    item=record?record:{};
-    local.set("value",item.permissionName)
-    local.set("parentValue",item.parentName)
+
+    const menuOption = menu.map((res,index)=>{
+      return (<Option key={res.id}>{res.name}</Option>)
+    });
+    let item = record?record:{};
+    const permission = item.permissionList || "";
+    let permissions = []
+    if (item.permissionList) {
+      permissions = (permission.split(','))
+      permissions = permissions.map((record)=>{
+        return Number(record);
+      });
+    }
+
     return (
       <Modal
         visible = { visible }
@@ -122,42 +102,52 @@ class EditModule extends Component {
       <div className="AddModuleList">
           <Form>
               <FormItem label="主模块" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                  {getFieldDecorator('projectId', {initialValue: `${item.projectName}`,rules: [{ required: false,message: '名称为必填项！'}],
+                  {getFieldDecorator('projectId', { initialValue: String(item.projectId),rules: [{ required: false,message: '名称为必填项！'}],
                     })(<Select className="SelectMenu" onSelect={this.onSelect} placeholder="请选择">
-                          {children}
+                          { children }
                       </Select>
                     )}
               </FormItem>
               <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                  {getFieldDecorator('parentId', {initialValue: `${item.parentName}`,rules: [{required: false,onChange: this.handleSelectChange}],
+                  {getFieldDecorator('parentId', {initialValue: item.parentId ==0?null:[String(item.parentId)] ,rules: [{required: false,onChange: this.handleSelectChange}],
                   })(
-                    <SelectMenu/>
+                    <Select  placeholder="请选择">
+                      {
+                        menuOption
+                      }
+                    </Select>
                   )}
               </FormItem>
               <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                  {getFieldDecorator('permissionId', {initialValue: `${item.permissionName}`,rules: [{required: false,onChange: this.handleSelectChange}],
-                    })(<SelectList/>)}
+                  {getFieldDecorator('permissionId', {initialValue: permissions,rules: [{type: 'array',required: false,onChange: this.handleSelectChange}],
+                    })(
+                      <Cascader
+                        options={ permissionList }
+                        placeholder="请选择"
+                      />
+                  )}
               </FormItem>
               <FormItem className = "NameBox" label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('name', {initialValue: `${item.name}`,rules: [{ required: false,message: '名称为必填项！'}],
+                {getFieldDecorator('name', {initialValue: item.name,rules: [{ required: false,message: '名称为必填项！'}],
                 })(
                     <Input className="input"/>
                 )}
               </FormItem>
               <FormItem className = "PathBox" label="路径" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('path', {initialValue: `${item.path}`,rules: [{ required:false,}],
+                {getFieldDecorator('path', {initialValue: item.path,rules: [{ required:false,}],
                 })(
                     <Input className="input"/>
                 )}
               </FormItem>
               <FormItem className = "ICON" label="图标" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('icon', {initialValue: `${item.icon}`,rules: [{ required:false, }],
+                {getFieldDecorator('icon', {initialValue: item.icon,rules: [{ required:false, }],
                 })(
                     <Input className="input"/>
                 )}
               </FormItem>
               <FormItem className = "orderByBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('orderBy', {initialValue: `${item.orderBy}`,rules: [{ required:false, message: '字段名称为必填项！' }],
+                {getFieldDecorator('orderBy', {
+                  initialValue: item.orderBy,rules: [{ required:false, message: '字段名称为必填项！' }],
                 })(
                     <Input className="input"/>
                 )}
@@ -170,17 +160,14 @@ class EditModule extends Component {
 }
 function mapStateToProps(state) {
   const {
-    data,
-    permission,
-    list,
-    menu,
-    code
+    permissionList,
+    projectList,
+    menu
   } = state.module;
   return {
     loading: state.loading.models.module,
-    data,
-    permission,
-    list,
+    permissionList,
+    projectList,
     menu
   };
 }

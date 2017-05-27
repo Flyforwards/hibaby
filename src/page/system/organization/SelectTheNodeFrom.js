@@ -152,8 +152,7 @@ class SelectTheNodeFrom extends Component {
                 className="draggable-tree"
                 onExpand={ this.expandHandler.bind(this) }
                 onSelect={ this.onSelect.bind(this,) }
-                defaultExpandedKeys = { ["0"] }
-                defaultSelectedKeys = { ["10"] }
+                defaultSelectedKeys = { ["7"] }
               >
               {
                 loops

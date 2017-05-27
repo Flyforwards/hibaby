@@ -9,13 +9,28 @@ function getBase64(img, callback) {
 }
 
 function beforeUpload(file) {
-  const isLt2M = file.size / 1024 / 1024 < 5;
-  if (!isLt2M) {
-    message.error('Image must smaller than 5MB!');
-  }
-  return isJPG && isLt2M;
-}
+  message.config({
+    top: 100,
+    duration: 3,
+  });
+  const isJPG = file.type === 'image/jpeg';
+  const isBMP = file.type === 'image/bmp';
+  const isPNG = file.type === 'image/png';
+  const isEMF = file.type === 'image/emf';
+  const isTAG = file.type === 'image/tag';
+  const isTIF = file.type === 'image/tif';
 
+  if (!(isJPG || isPNG || isBMP || isEMF || isTIF || isTAG)) {
+    message.error('你上传的图片格式不正确');
+    return isJPG || isPNG
+  }else{
+    const isLt2M = file.size / 1024 / 1024 < 15;
+    if (!isLt2M) {
+      message.error('图片已经超过图片限定大小15MB!');
+    }
+    return isLt2M ;
+  }
+}
 class Avatar extends React.Component {
    constructor(props) {
     super(props);
@@ -29,16 +44,16 @@ class Avatar extends React.Component {
   handleChange = (info) => {
     const status = info.file.status;
         if (status !== 'uploading') {
-
+          console.log(info.file, info.fileList);
         }
         if (status === 'done') {
           getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl,error: false }));
           const len = info.fileList.length;
           const fileKey = info.fileList[len-1].response.data.fileKey
           this.props.headelUserImg(fileKey)
-          message.success(`${info.file.name} file uploaded successfully.`);
+          message.success(`${info.file.name} 上传成功.`);
         } else if (status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
+          message.error(`${info.file.name} 图片上传失败`);
         }
 
   }
@@ -70,6 +85,7 @@ class Avatar extends React.Component {
     return (
       <Upload
         {...props}
+        beforeUpload={beforeUpload}
         onChange = { this.handleChange.bind(this) }
       >  
         {

@@ -4,10 +4,13 @@
 	float:left;
 	background-color:#fff;
 	height:100%;
+	margin-top:10px;
+	position: relative;
 	min-height: 800px;
 	overflow: hidden;
 	position:relative;
 	margin-top:10px;
+	min-width:178px;
 	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {
 		font-size: 14px;
 		display:inline-block;
@@ -36,10 +39,20 @@
 		display:inline-block;
 		margin-left:-0px;
 	}
+	.ant-tree-node-content-wrapper{
+		width:100%;
+		.plus {
+		font-size:18px;
+	     position: absolute;
+	     left:64%;
+	     margin-top:4px; 
+	     color: red;
+	 	}
 	.ant-tree li{
 		margin-left:-11px;
 	}
 	.ant-tree {
 		margin-left:22px;
 	}
+}
 }

@@ -42,6 +42,12 @@ class Suiteed extends Component {
           title: '套房价格',
           dataIndex: 'price',
           key: 'price',
+          render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         },{
           title: '操作',
           dataIndex: 'operating',

@@ -1,4 +1,4 @@
-"use strict"
+
 import React, {Component} from 'react';
 import {connect} from 'dva'
 import './module.scss';
@@ -9,15 +9,14 @@ import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
 import AddModule from './AddModule'
 import EditModule from './EditModule'
-
 const Option = Select.Option;
 const FormItem = Form.Item;
 const createForm = Form.create
-
+import { parse } from 'qs'
 
 @createForm()
 
-class Module extends Component {
+class moduleIndex extends Component {
   constructor(props) {
     super(props);
     this.state={
@@ -82,29 +81,21 @@ class Module extends Component {
     }];
   }
 
-  componentWillMount() {
-
-  }
-
 
   handleSearch = (e) => {
     e.preventDefault();
     const data=[];
     this.props.form.validateFields((err, values) => {
       if(!err){
-          this.props.dispatch({
-            type: 'module/MenuData',
-            payload: {
-                  name: values.name,
-                  path:values.path,
-                  page:this.state.page,
-                  size:10,
-                  projectId: values.projectId
-                }
-              });
-            }
-          })
-        }
+        console.log(values);
+        const { pathname } = location
+        this.props.dispatch(routerRedux.push({
+          pathname,
+          query: values,
+        }))
+      }
+    })
+  }
 
   handleReset = () => {
     this.props.form.resetFields();
@@ -128,9 +119,23 @@ class Module extends Component {
       alertModalVisible: true,
     })
   }
+
+
   // 编辑
   editMenu(record){
     this.record = record;
+    this.props.dispatch({
+      type: 'module/parentNodeData',
+      payload: {
+        projectId: record.projectId,
+      }
+    });
+    this.props.dispatch({
+      type: 'module/menuPermissionData',
+      payload: {
+        projectId: record.projectId,
+      }
+    });
     this.setState({
       EditModuleModal: true,
     })
@@ -163,88 +168,76 @@ class Module extends Component {
   onChange = (value) => {
    this.setState({ value });
  }
+
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator  } = this.props.form;
+    const { pagination, list, dispatch, loading, projectList } = this.props;
     const formItemLayout = {
      labelCol: { span: 5 },
      wrapperCol: { span: 19 },
-   };
-    const data=this.props.data?this.props.data:null;
+    };
+
+    const children = projectList.map((res,index)=>{
+      return (<Option value={ String(res.id)} key={res.id}>{res.name}</Option>)
+    });
+
     const columns = this.columns;
-    const pagination = {
-      total:this.props.total,
-      showQuickJumper: true,
-      pageSize:10,
-      onChange: (current) => {
-        this.props.dispatch({
-          type: 'module/MenuData',
-          payload: {
-              "page": current,
-              "size": 10,
+    const tableProps = {
+      loading: loading.effects['module/getMenuData'],
+      dataSource : list ,
+      pagination,
+      columns,
+      rowKey:"id",
+      onChange (page) {
+        const { pathname } = location
+        const values = parse(location.search.substr(1))
+        dispatch(routerRedux.push({
+          pathname,
+          query: {...values,
+            page: page.current,
+            size: page.pageSize,
           },
-        });
+        }))
       },
     }
-    const list=this.props.list;
-    const children = [];
-    list.map((res,index)=>{
-          children.push(<Option key={res.id}>{res.name}</Option>)
-    });
-    if (this.props.data !== null) {
-      this.props.data.map((record)=>{
-        record.key = record.id;
-      })
 
-    }
     return (
       <div className="MenuInside">
         <div className="menuHeard">
         <Form className="ant-advanced-search-form">
-            <div className="MainModule">
-                <h4 className="projectName">主模块：</h4>
-                {getFieldDecorator('projectId', {rules: [{ required: false, message: '字段名称为必填项！' }],
-                })(
-                <Select className="SelectMenu" style={{ width:180 }} placeholder="请选择">
-                    {children}
-                </Select>)}
-            </div>
-
-                <div className="MeunName">
-                  <h4 className="Name">名称：</h4>
-                  <FormItem className = "NameBox">
-                    {getFieldDecorator('name', {rules: [{ required: false, message: '字段名称为必填项！' }],
-                    })(
-                        <Input className="input"/>
-                    )}
-                  </FormItem>
-                </div>
-                <div className="MeunPath">
-                  <h4 className="Route">路径：</h4>
-                  <FormItem {...formItemLayout} className = "PathBox">
-                    {getFieldDecorator('path', {rules: [{ required: false, message: '字段名称为必填项！' }],
-                    })(
-                        <Input className="input"/>
-                    )}
-                  </FormItem>
-                </div>
+                <FormItem {...formItemLayout} label="主模块：">
+                  {getFieldDecorator('projectId', {rules: [{ required: false, }],
+                  })(
+                  <Select className="SelectMenu"  placeholder="请选择">
+                      { children }
+                  </Select>)}
+                </FormItem>
+                <FormItem {...formItemLayout} label="名称：">
+                  {getFieldDecorator('name', {rules: [{ required: false, }],
+                  })(
+                      <Input className="input"/>
+                  )}
+                </FormItem>
+                <FormItem {...formItemLayout} label="路径：">
+                  {getFieldDecorator('path', {rules: [{ required: false, }],
+                  })(
+                      <Input className="input"/>
+                  )}
+                </FormItem>
                 <div className="btn">
                     <Button className="Select" onClick={this.handleSearch.bind(this)}>查询</Button>
                     <Button className="Select" onClick={this.handleReset.bind(this)}>清空</Button>
                     <Button className="Select" onClick={this.addMenuList.bind(this)}>新增</Button>
-                    <AddModule
-                      visible ={ this.state.modifyModalVisible }
-                      onCancel ={ this.handleCreateModalCancel.bind(this) }
-                      record = { this.record }
-                      add = { this.state.add }
-                      page = { this.page }
-                      pageSize = { this.pageSize }
-                    />
                 </div>
             </Form>
         </div>
         <div className="CreateModaList">
-          <Table className="search-result-list" bordered dataSource={data} columns={columns} pagination = {pagination} rowKey="name"/>
+          <Table {...tableProps} className="search-result-list" bordered />
         </div>
+        <AddModule
+          visible ={ this.state.modifyModalVisible }
+          onCancel ={ this.handleCreateModalCancel.bind(this) }
+        />
         <AlertModalFrom
           visible ={ this.state.alertModalVisible }
           onCancel ={ this.handleCreateModalCancel.bind(this) }
@@ -255,36 +248,26 @@ class Module extends Component {
           visible ={ this.state.EditModuleModal}
           onCancel ={ this.handleCreateModalCancel.bind(this) }
           record = { this.record }
-          add = { this.state.add }
-          page = { this.page }
-          pageSize = { this.pageSize }
         />
       </div>
     )
   }
 }
 
-function Module({ dispatch, data, page, size,edit, total,list,permission,menu,results,
-range}) {
-  return (
-    <Module dispatch={dispatch} data={data} id={id} list={list} permission={permission}
-    menu={menu} page={page} size={size} edit={edit} total={total} range={range} results={results} />
-  )
-}
+
 function mapStateToProps(state) {
-  console.log("菜单>>>",state.module.item)
-  const {item:data,size,total,page,edit,permission,results,range,list,menu} = state.module;
+  const {item:data,projectList,edit,permission,results,list,menu, pagination} = state.module;
   return {
-    loading: state.loading.models.module,
+    loading: state.loading,
+    pagination,
+    projectList,
     data,
     permission,
     list,
     menu,
     results,
-    range,
-    total,
     edit
   };
 }
 
-export default connect(mapStateToProps)(Module);
+export default connect(mapStateToProps)(moduleIndex);

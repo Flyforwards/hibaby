@@ -31,7 +31,13 @@ class Commodityed extends Component {
           title: '商品单价',
           dataIndex: 'price',
           key: 'price',
-          width:'10%'
+          width:'10%',
+           render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -53,7 +59,6 @@ class Commodityed extends Component {
     }
     //删除
     delete(record) {
-      console.log("record",record.id)
       this.setState({
         DeleteVisible:true,
         ID:record.id

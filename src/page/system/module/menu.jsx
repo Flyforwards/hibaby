@@ -50,7 +50,6 @@ function SelectMenu({
 
 }
 function mapStateToProps(state) {
-  console.log("上级>>>>",state.module.menu)
   const {
     menu,
     code

@@ -111,7 +111,7 @@ class CardDetail extends Component {
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
-      options.push(<Option key={elem.serialNumber}>{elem.name}</Option>)
+      options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return (
       <div  style={{ 'padding': '20px' }}>
@@ -224,6 +224,7 @@ class CardDetail extends Component {
           okText="确定"
           cancelText="取消"
           width={300}
+          maskClosable={ false }
           onCancel={this.hideModel.bind(this)}
         >
           <p>是否确定删除此卡种?</p>

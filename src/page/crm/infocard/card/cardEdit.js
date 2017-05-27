@@ -26,13 +26,15 @@ class CardDetail extends Component {
 
   //保存
   onSave (e) {
-    e.preventDefault();
+    e.stopPropagation();
     const { cardKind, form, dispatch } = this.props;
+    const dataId = location.search.substr(1).split('=')[1];
     const { validateFields } = form;
     form.validateFields((err, values) => {
+      values.id = dataId;
       if (!err) {
         dispatch({
-          type: 'card/saveCard',
+          type: 'card/modifyCardMsg',
           payload:{  ...values }
         })
       }
@@ -78,7 +80,7 @@ class CardDetail extends Component {
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
-      options.push(<Option key={elem.serialNumber}>{elem.name}</Option>)
+      options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return (
       <div  style={{ 'padding': '20px' }}>
