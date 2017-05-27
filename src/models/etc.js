@@ -14,17 +14,17 @@ export default {
     }
   },
   effects: {
-    *getDicData({ payload: params }, { call, put }) {
+    *getDicData({ payload: params }, { call, put, select }) {
         // console.log('etc:models1>>', selectData);
         const { name:selectName } = params;
-        let selectDataGroup = {};
+        let {selectData} = yield select(state => state.etc)
         const {data: {data: selectDataItem}} = yield call(etcService.getRawData, params);
-        // console.log('etc:models>>', selectData);
-        selectDataGroup[selectName] = selectDataItem;
+        console.log('etc:models>>', selectData);
+        selectData[selectName] = selectDataItem;
         yield put({
           type: 'putDicData',
           payload: {
-            selectData: selectDataGroup
+            selectData
           }
         })
     }

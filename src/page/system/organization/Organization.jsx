@@ -122,8 +122,16 @@ class Organization extends React.Component {
         "status":null,
         "page": 1,
         "size": 10,
-       "tissueProperty":endemic.tissueProperty
+        "tissueProperty":endemic.tissueProperty
       }
+    });
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
     });
   }
     //禁止
@@ -146,7 +154,7 @@ class Organization extends React.Component {
             "nodeid": this.state.nodeid,
             "roleId": this.state.character,
             "status": this.state.status,
-            "page": this.current,
+      "page": 1,
             "size": 10,
             "tissueProperty":this.state.tissueProperty
         },
@@ -173,18 +181,6 @@ class Organization extends React.Component {
         this.setState({
             toViewVisible: false
         })
-      this.props.dispatch({
-        type: 'organization/organizationList',
-        payload: {
-            "name": this.state.userName,
-            "nodeid": this.state.nodeid,
-            "roleId": this.state.character,
-            "status": this.state.status,
-            "page": this.current,
-            "size": 10,
-            "tissueProperty": this.state.tissueProperty
-        },
-      });
     }
     ObtainOrganization(nodeid,tissueProperty){
       this.setState({
@@ -206,7 +202,6 @@ class Organization extends React.Component {
           showQuickJumper: true,
           defaultPageSize:10,
           onChange: (current) => {
-            this.current = current
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
@@ -242,17 +237,13 @@ class Organization extends React.Component {
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 {/*<Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                {/*<Select placeholder="请选择" style={{ width:220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
                       { traversalRoleIdData }
                   </Select>*/}
-                  <DictionarySelect  selectName="ROLE" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />
-                  {/*<DictionarySelect  selectName="ROLE1" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
-                  {/*<DictionarySelect  selectName="ROLE2" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
-                  {/*<DictionarySelect  selectName="ROLE3" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
-                  {/*<DictionarySelect  selectName="ROLE4" params={selectParams} force="true" onSelect={this.onSelectCharacter.bind(this)} defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" />*/}
+                  <DictionarySelect  selectName="ROLE"  defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true} />
               </div>
               <div className="status">账户状态
-                <Select defaultValue="请选择" style={{ width: 183 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
+                <Select placeholder="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
@@ -288,11 +279,11 @@ class Organization extends React.Component {
                 visible={ this.state.createModalVisible }
             />
              <Disabled
-                    visible={ this.state.toViewVisible }
-                    handleOk={this.state.handleOk}
-                    onCancel={ this.handleCreateModalCancel.bind(this) }
-                    ID = {this.state.ID}
-                />
+                  visible={ this.state.toViewVisible }
+                  handleOk={this.state.handleOk}
+                  onCancel={ this.handleCreateModalCancel.bind(this) }
+                  ID = {this.state.ID}
+              />
             </div>
             </main>
           </div>
@@ -303,6 +294,8 @@ function Organization({
   dispatch,
   loading,
   list,
+  getPosition,
+  getDeptList,
   total,
   page,
   results,
@@ -315,6 +308,12 @@ function Organization({
     }
     list = {
       list
+    }
+    getPosition = {
+      getPosition
+    }
+    getDeptList = {
+      getDeptList
     }
     loading = {
       loading
@@ -332,6 +331,8 @@ function mapStateToProps(state) {
   const {
     list,
     total,
+    getPosition,
+    getDeptList,
     page,
     results,
     range,
@@ -340,6 +341,8 @@ function mapStateToProps(state) {
   return {
     loading: state.loading.models.organization,
     list,
+    getPosition,
+    getDeptList,
     total,
     page,
     results,
