@@ -10,7 +10,8 @@ import { Link} from 'react-router'
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
 import {local, session} from 'common/util/storage.js'
-import Disabled from './Disabled.jsx'
+import Disabled from './Disabled.jsx';
+import DictionarySelect from 'common/dictionary_select';
 
 
 const roleId = local.get("rolSelectData")
@@ -38,37 +39,11 @@ class Organization extends React.Component {
           dataIndex: 'positionId',
           key:'positionId',
           width: '10%',
-          render: (text, record, index) => {
-            let position = ''
-            if(this.props.getPosition != null){
-              this.props.getPosition.map((item)=>{
-                if(item.id == record.positionId){
-                  position = item.name
-                }
-              })
-            }
-            return(
-              position
-            )
-          }
         }, {
           title: '隶属部门',
           dataIndex: 'deptId',
           key: 'deptId',
           width: '10%',
-          render: (text, record, index) => {
-            let deptId = ''
-            if(this.props.getDeptList != null){
-              this.props.getDeptList.map((item)=>{
-                if(item.id == record.deptId){
-                  deptId = item.name
-                }
-              })
-            }
-            return(
-              deptId
-            )
-          }
         },{
           title: '地方中心',
           dataIndex: 'endemicId',
@@ -84,30 +59,23 @@ class Organization extends React.Component {
           dataIndex: 'status',
           key: 'status',
           width: '10%',
-          render: (text, record, index) => {
-            if(record.status == 0){
-                status = "正常"
-            }else if(record.status == 1){
-                status = "禁用"
-            }
-            return(
-             status
-            )
-          }
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
-            let Disablesd = ""
+            let Disabled = false
             if(record.status == 1){
-              Disablesd = "twoA"
+              Disabled = true
             }
             return (
                 <span>
                  <Link to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                 <a href="#" className={Disablesd} onClick={this.Disabled.bind(this,record)} >禁用</a>
+                 {Disabled?
+                  <a href="#" className="twoB">禁用</a>:
+                  <a href="#" className="twoA" disabled={ false } onClick={this.Disabled.bind(this,record)}>禁用</a>
+                 }
                 </span>
             );
           },
@@ -125,6 +93,7 @@ class Organization extends React.Component {
             nodeid:endemic.id,
             tissueProperty:endemic.tissueProperty
         }
+        this.current = 1
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -165,60 +134,60 @@ class Organization extends React.Component {
       payload: { }
     });
   }
-//禁止
-Disabled(record) {
-    this.setState({
-       toViewVisible:true,
-      ID:record.id
-    })
-}
-//按条件查询用户
-OrganizationInquire() {
-this.setState({
-  userName:$(".userName").val()
-})
- this.props.dispatch({
-  type: 'organization/organizationList',
-  payload: {
-      "name": $(".userName").val(),
-      "nodeid": this.state.nodeid,
-      "roleId": this.state.character,
-      "status": this.state.status,
-      "page": 1,
-      "size": 10,
-      "tissueProperty":this.state.tissueProperty
-  },
-});
-}
-//获取系统角色的id
-onSelectCharacter(value){
+    //禁止
+    Disabled(record) {
+      this.setState({
+        toViewVisible:true,
+        ID:record.id
+      })
+    }
+    //按条件查询用户
+    OrganizationInquire() {
+      this.setState({
+        userName:$(".userName").val()
+      })
 
- this.setState({
-    character:value
- })
-}
-//获取账户状态的id
-onSelectStatus(value){
- this.setState({
-    status:value
- })
-}
-showCreateModal() {
-    this.setState({
-        createModalVisible: true
-    })
-}
-handleCreateModalCancel() {
-    this.setState({
-        toViewVisible: false
-    })
-}
-ObtainOrganization(nodeid,tissueProperty){
-  this.setState({
-      nodeid:nodeid,
-      tissueProperty:tissueProperty
-  })
-}
+       this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": $(".userName").val(),
+            "nodeid": this.state.nodeid,
+            "roleId": this.state.character,
+            "status": this.state.status,
+      "page": 1,
+            "size": 10,
+            "tissueProperty":this.state.tissueProperty
+        },
+      });
+    }
+    //获取系统角色的id
+    onSelectCharacter(value){
+     this.setState({
+        character:value
+     })
+    }
+    //获取账户状态的id
+    onSelectStatus(value){
+     this.setState({
+        status:value
+     })
+    }
+    showCreateModal() {
+        this.setState({
+            createModalVisible: true
+        })
+    }
+    handleCreateModalCancel() {
+        this.setState({
+            toViewVisible: false
+        })
+    }
+    ObtainOrganization(nodeid,tissueProperty){
+      this.setState({
+          nodeid:nodeid,
+          tissueProperty:tissueProperty
+      })
+    }
     render() {
         let ListLnformation = []
         if(this.props.list != null){
@@ -252,7 +221,12 @@ ObtainOrganization(nodeid,tissueProperty){
              return <Option value={item.id+""} key={item.id}>{item.name}</Option>
           })
         }
-        const traversalRoleIdData = traversalRoleId(roleId)
+        const traversalRoleIdData = traversalRoleId(roleId);
+        const selectParams = {
+          id: 3,
+          type: 1,
+          softDelete: 0
+        }
         return (
         <div className="organizationConnet">
             <main className="yt-admin-framework-Customer-a">
@@ -263,9 +237,10 @@ ObtainOrganization(nodeid,tissueProperty){
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select placeholder="请选择" style={{ width:180 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
+                {/*<Select placeholder="请选择" style={{ width:180 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
                       { traversalRoleIdData }
-                  </Select>
+                  </Select>*/}
+                  <DictionarySelect  selectName="ROLE"  defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true} />
               </div>
               <div className="status">账户状态
                 <Select placeholder="请选择" style={{ width: 180 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>

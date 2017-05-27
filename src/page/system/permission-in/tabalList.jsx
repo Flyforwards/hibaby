@@ -18,7 +18,7 @@ class TabalListed extends Component {
   constructor(props) {
         super(props)
         this.columns = [{
-          title: '主模块',
+          title: 'id',
           dataIndex: 'id',
           key: 'id',
           width: '90px',
