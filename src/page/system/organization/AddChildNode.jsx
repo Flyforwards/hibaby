@@ -28,8 +28,6 @@ class AddChildNodeed extends Component {
       this.props.onCancel()
     }
     handleOk() {
-        console.log("ok",this.props.ID)
-        console.log("ok",this.state.TableData)
         const fields = this.props.form.getFieldsValue();
         console.log("fields",fields)
           this.props.dispatch({

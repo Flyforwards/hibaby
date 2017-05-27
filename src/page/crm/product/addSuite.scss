@@ -14,15 +14,21 @@
 		    font-weight: 700;
 		    font-style: normal;
 		    font-size: 14px;
-		    margin-bottom: 10px
+		    margin: 10px 0 10px 20px;
 		}
 		.name{
 			margin-left: 50px;
 			margin-bottom: 10px;
 			width:42%;
+			label{
+				font:14px "微软雅黑";
+			}
 		}
 		.price{
 			margin-left: 10px;
+			label{
+				font:14px "微软雅黑";
+			}
 		}
 		.input{
 			width: 400px;
@@ -32,16 +38,19 @@
 			margin-left:50px;
 			margin-bottom: 20px;
 			margin-top: 10px;
+			label{
+				font:14px "微软雅黑";
+			}
 			.ant-input-lg{
 				width:880px;
 				height:40px;
-				font-size:20px;
+				font-size:12px "微软雅黑";
 			}
 		}
 		.ant-input-lg{
 			width:145%;
 			height:40px;
-			font-size:20px;
+			font-size:12px "微软雅黑";
 		}
 		.ant-select-lg{
 			width:270px;
@@ -72,7 +81,7 @@
 		    font-weight: 700;
 		    font-style: normal;
 		    font-size: 14px;
-		    margin-bottom: 10px
+		    margin: 10px 0 10px 20px;
 		}
 		.roomColor{
 			display: inline-block;
@@ -83,7 +92,7 @@
 			text-align: center;
 			line-height: 40px;
 			font-size:20px;
-			margin:10px 26px;
+			margin:10px 26px 10px 40px;
 			border-radius: 4px;
 			cursor: pointer;
 		}
@@ -103,12 +112,12 @@
 		}
 	}
 	.ant-btn {
-		margin-left:70%; 
+		margin-left:70%;
 		width:140px;
 		height:40px;
 	}
 	.ant-btn-primary{
-    	margin-left:30px; 
+    	margin-left:30px;
     	width:140px;
     	height:40px;
 	}

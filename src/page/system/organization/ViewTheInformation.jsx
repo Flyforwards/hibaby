@@ -67,7 +67,6 @@ class ViewTheInformationed extends React.Component {
        dataId:dataID
       }
     })
-    window.location.reload( true )
   }
    onError() {
     this.setState({
@@ -82,7 +81,7 @@ class ViewTheInformationed extends React.Component {
       })
   }
   headelReturn = ()=>{
-     this.props.history.go(-1)
+    window.history.back(-1); 
   }
     render() {
       let USER = []
@@ -163,7 +162,7 @@ class ViewTheInformationed extends React.Component {
           <Button  className="disabledButton" onClick={this.headelDisabled}>禁用</Button>
           <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID } }}><Button  type="primary" className="editButton">编辑</Button></Link>
           <Button className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>
-          <Link><Button className="returnButton" onClick={this.headelReturn}>返回</Button></Link>
+          <Link><Button className="returnButton" onClick={this.headelReturn.bind(this)}>返回</Button></Link>
            <Disabled
               visible={ this.state.toViewVisible }
               handleOk={this.state.handleOk}

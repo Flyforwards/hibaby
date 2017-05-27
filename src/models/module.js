@@ -12,10 +12,6 @@ export default {
 		list:[],
     projectList: [],
     permissionList: [],
-		leftList:null,
-		dictionarySideDOs:null,
-		item: [],
-		permission:[],
 		menu:[],
 		edit:[],
     pagination: {
@@ -62,19 +58,8 @@ export default {
 		},
 
 		//上级菜单下拉
-		ParentNodeSelect(state,{payload:{data:menu,dataId,code}}){
-				let menuseldata={
-					...state,
-					menu,
-					dataId,
-				}
-				local.set("index",menuseldata.data)
-				console.log("上级下拉",menu)
-				return {
-					...state,
-					menu,
-					dataId,
-				}
+    ParentNodeSelectSave(state,{payload:{ data:menu }}){
+				return { ...state, menu }
 		},
 	},
 	effects: {
@@ -123,7 +108,7 @@ export default {
 
 		//增加菜单数据列表
 		*AddMenuData({payload: values}, { call, put }) {
-			const {data: { data,code} } = yield call(moduleService.AddMenuList, values);
+			const {data: { data,code} } = yield call(moduleService.addMenuList, values);
 			if (code == 0) {
 				message.success("菜单数据保存成功")
 				yield put({
@@ -137,7 +122,7 @@ export default {
 		},
 		//编辑菜单数据列表
 		*EditMenuData({payload: values}, { call, put }) {
-			const {data: { data,code} } = yield call(moduleService.EditMenuListData, values);
+			const {data: { data,code} } = yield call(moduleService.editMenuListData, values);
 			if (code == 0) {
 				message.success("菜单数据更新成功")
 				yield put({
@@ -151,7 +136,7 @@ export default {
 		},
 		//菜单主模块下拉选项
 		*MainModuleSelectData({payload: values}, {call,put}) {
-			const { data: { data, code } } = yield call(moduleService.MainModuleSelect, values);
+			const { data: { data, code } } = yield call(moduleService.mainModuleSelect, values);
 			if (code == 0) {
 				yield put({
 						type:'mainModuleSelectSave',
@@ -164,7 +149,7 @@ export default {
 		// 菜单权限下拉选项
 		*menuPermissionData({payload: values}, {call,put}) {
 
-			const { data: { data, code } } = yield call(moduleService.MenuPermissionSelect, values);
+			const { data: { data, code } } = yield call(moduleService.menuPermissionSelect, values);
 			console.log(data);
 			if (code == 0) {
 				yield put({
@@ -176,20 +161,13 @@ export default {
 			}
 		},
 		//上级菜单下拉
-		*ParentNodeData({payload: values}, {call,put}) {
-			const {
-				data: {
-					data,
-					dataId:projectId,
-					code
-				}
-			} = yield call(moduleService.	ParentNodeSelect, values);
+		*parentNodeData({payload: values}, {call,put}) {
+			const { data: { data, code } } = yield call(moduleService.parentNodeSelect, values);
 			if (code == 0) {
 				yield put({
-						type:'ParentNodeSelect',
+						type:'ParentNodeSelectSave',
 						payload:{
 							data,
-							code
 						}
 				});
 			}
@@ -209,14 +187,6 @@ export default {
             type: 'MainModuleSelectData',
             payload: {}
           });
-          // dispatch({
-          //   type: 'menuPermissionData',
-          //   payload:{}
-          // });
-          // dispatch({
-          //   type: 'ParentNodeData',
-          //   payload:{}
-          // });
         }
 
       })

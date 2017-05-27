@@ -70,7 +70,7 @@ class AddUsered extends React.Component {
   }
   //隶属部门被选中时调用的函数
   affiliatedDepartment = (value,node, extra) => {
-    traversalDataId = []
+    this.props.form.resetFields(['position']);
      this.props.dispatch({
         type: 'organization/position',
         payload: {
@@ -103,7 +103,6 @@ class AddUsered extends React.Component {
                           if(fields.phoneNumber){
                             if(fields.information){
                               if(fields.companyEmail){
-                                console.log("this.state.NewuserImg",this.state.NewuserImg)
                                 if(this.state.NewuserImg){
                                     this.props.dispatch({
                                       type: 'organization/addUser',
@@ -159,10 +158,6 @@ class AddUsered extends React.Component {
           }
         }else{
           message.warning('请输入姓名')
-          message.config({
-            top: 100,
-            duration: 0
-          });
         }
       }
     })
@@ -308,8 +303,9 @@ class AddUsered extends React.Component {
              required
             >
             { getFieldDecorator("position",{
+
             })(
-              <Select placeholder="请选择">
+              <Select placeholder="请选择" className="po">
                 { traversalDataId }
               </Select>
             )}
@@ -388,7 +384,7 @@ class AddUsered extends React.Component {
             >
               {getFieldDecorator('internalExtension', {
                   rules: [{
-                    max: 10, message: '请按要求输入'
+                    pattern:/^[0-9\-]{0,20}$/, message: '请正确输入内部分机'
                   }],
               })(
                 <Input />
