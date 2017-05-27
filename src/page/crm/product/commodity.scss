@@ -1,6 +1,7 @@
 .commodity{
 	height:100%;
-	width:100%;
+	min-width: 1030px;
+	margin-left: 10px;
 	.commodityButton{
 		width:100%;
 		height:60px;
@@ -8,20 +9,21 @@
 		button{
 			position: absolute;
 			width: 140px;
-    		height: 40px;
-    		right:2%;
-    		top:30%;
+  		height: 40px;
+  		right:2%;
+  		top:30%;
+			font:14px "微软雅黑";
 		}
 		margin-bottom:20px;
 	}
 		.firstA{
-			
+
 			text-decoration: none;
 		}
 		.twoA{
 			border:none;
 			background-color: #fff;
-			margin-left:70px;
+			margin-left:20px;
 			color:#f75555;
 			text-decoration: none;
 		}
@@ -52,8 +54,8 @@
 		    font-size: 14px;
 			span{
 				width:100%;
-				.firstA{
-					color: #0066FF;
+				a{
+					color: #b67231;
 					text-decoration: none;
 				}
 			}
@@ -62,7 +64,7 @@
 }
 .addCommodity{
 	height:100%;
-	width:97%;
+	min-width:1040px;
 	.addSuiteList{
 		width:100%;
 		background-color:#fff;
@@ -75,7 +77,7 @@
 		    font-weight: 700;
 		    font-style: normal;
 		    font-size: 14px;
-		    margin-bottom: 10px
+		    margin: 10px 0 10px 20px;
 		}
 		.name{
 			margin-left: 50px;
@@ -122,7 +124,7 @@
 		}
 	}
 	.nameLetter{
-		margin-left:61px; 
+		margin-left:61px;
 		margin-bottom: 20px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
     	font-weight: 400;
@@ -138,7 +140,7 @@
     	line-height: 40px;
     	color:#fff;
     	font-size:14px;
-    	margin-left:20px; 
+    	margin-left:20px;
     	cursor: pointer;
 	}
 	.roomName{
@@ -184,21 +186,21 @@
 		}
 	}
 	.ant-btn {
-		margin-left:70%; 
+		margin-left:706px;
 		width:140px;
 		height:40px;
 	}
 	.ant-btn-primary{
-    	margin-left:30px; 
+    	margin-left:30px;
     	width:140px;
     	height:40px;
 	}
 }
 .viewCommodity{
 	height:100%;
-	width:97%;
+	min-width:1040px;
 	.viewCommodityList{
-		width:100%;
+		min-width: 1030px;
 		background-color:#fff;
 		height:20%;
 		margin:10px;
@@ -209,15 +211,21 @@
 		    font-weight: 700;
 		    font-style: normal;
 		    font-size: 14px;
-		    margin-bottom: 10px
+		    margin: 10px 0 10px 20px;
 		}
 		.name{
 			margin-left: 50px;
 			margin-bottom: 10px;
 			width:42%;
+			label{
+				font:14px "微软雅黑";
+			}
 		}
 		.price{
 			margin-left: 10px;
+			label{
+				font:14px "微软雅黑";
+			}
 		}
 		.input{
 			width: 400px;
@@ -227,16 +235,19 @@
 			margin-left:50px;
 			margin-bottom: 20px;
 			margin-top: 10px;
+			label{
+				font:14px "微软雅黑";
+			}
 			.ant-input-lg{
 				width:880px;
 				height:40px;
-				font-size:20px;
+				font-size:12px "微软雅黑";
 			}
 		}
 		.ant-input-lg{
 			width:356px;
 			height:40px;
-			font-size:20px;
+			font-size:12px "微软雅黑";
 		}
 		.ant-select-lg{
 			width:270px;
@@ -256,11 +267,14 @@
 		}
 	}
 	.nameLetter{
-		margin-left:61px; 
-		margin-bottom: 20px;
-		font-family: '微软雅黑 Regular', '微软雅黑';
+			margin-left:61px;
+			margin-bottom: 20px;
+			font-family: '微软雅黑 Regular', '微软雅黑';
     	font-weight: 400;
    		font-style: normal;
+			label{
+				font:14px "微软雅黑";
+			}
 	}
 	.button{
 		display: inline-block;
@@ -272,7 +286,7 @@
     	line-height: 40px;
     	color:#fff;
     	font-size:14px;
-    	margin-left:20px; 
+    	margin-left:20px;
     	cursor: pointer;
 	}
 	.roomName{
@@ -318,27 +332,30 @@
 		}
 	}
 	.ant-btn {
-		margin-left:55%; 
+		margin-left:548px;
 		width:140px;
 		height:40px;
+		font:14px "微软雅黑";
 	}
 	.ant-btn-primary{
-    	margin-left:30px; 
+    	margin-left:30px;
     	width:140px;
     	height:40px;
+			font:14px "微软雅黑";
 	}
 	.delet{
 		background-color: rgba(255, 74, 74, 1);
-		margin-left:30px; 
+		margin-left:30px;
 		color:#fff;
+		font:14px "微软雅黑";
 		border:none;
 	}
 }
 .editCommodity{
 	height:100%;
-	width:97%;
+	min-width:1030px;
 	.editCommodityList{
-		width:100%;
+		min-width:1030px;
 		background-color:#fff;
 		height:20%;
 		margin:10px;
@@ -349,15 +366,21 @@
 		    font-weight: 700;
 		    font-style: normal;
 		    font-size: 14px;
-		    margin-bottom: 10px
+		    margin: 10px 0 10px 20px;
 		}
 		.name{
 			margin-left: 50px;
 			margin-bottom: 10px;
 			width:42%;
+			label{
+				font:14px "微软雅黑";
+			}
 		}
 		.price{
 			margin-left: 10px;
+			label{
+				font:14px "微软雅黑";
+			}
 		}
 		.input{
 			width: 400px;
@@ -367,16 +390,19 @@
 			margin-left:50px;
 			margin-bottom: 20px;
 			margin-top: 10px;
+			label{
+				font:14px "微软雅黑";
+			}
 			.ant-input-lg{
 				width:880px;
 				height:40px;
-				font-size:20px;
+				font-size:12px "微软雅黑";
 			}
 		}
 		.ant-input-lg{
 			width:356px;
 			height:40px;
-			font-size:20px;
+			font-size:12px "微软雅黑";
 		}
 		.ant-select-lg{
 			width:270px;
@@ -396,11 +422,14 @@
 		}
 	}
 	.nameLetter{
-		margin-left:61px; 
+		margin-left:61px;
 		margin-bottom: 20px;
 		font-family: '微软雅黑 Regular', '微软雅黑';
     	font-weight: 400;
    		font-style: normal;
+			label{
+				font:14px "微软雅黑";
+			}
 	}
 	.button{
 		display: inline-block;
@@ -412,7 +441,7 @@
     	line-height: 40px;
     	color:#fff;
     	font-size:14px;
-    	margin-left:20px; 
+    	margin-left:20px;
     	cursor: pointer;
 	}
 	.roomName{
@@ -458,13 +487,19 @@
 		}
 	}
 	.ant-btn {
-		margin-left:70%; 
+		margin-left:706px;
 		width:140px;
 		height:40px;
+		span{
+			font:14px "微软雅黑";
+		}
 	}
 	.ant-btn-primary{
-    	margin-left:30px; 
+    	margin-left:30px;
     	width:140px;
     	height:40px;
+			span{
+				font:14px "微软雅黑";
+			}
 	}
 }

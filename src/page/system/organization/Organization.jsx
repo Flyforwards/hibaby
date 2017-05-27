@@ -10,7 +10,8 @@ import { Link} from 'react-router'
 import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
 import {local, session} from 'common/util/storage.js'
-import Disabled from './Disabled.jsx'
+import Disabled from './Disabled.jsx';
+import DictionarySelect from 'common/dictionary_select';
 
 
 const roleId = local.get("rolSelectData")
@@ -121,8 +122,16 @@ class Organization extends React.Component {
         "status":null,
         "page": 1,
         "size": 10,
-       "tissueProperty":endemic.tissueProperty
+        "tissueProperty":endemic.tissueProperty
       }
+    });
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
     });
   }
     //禁止
@@ -145,7 +154,7 @@ class Organization extends React.Component {
             "nodeid": this.state.nodeid,
             "roleId": this.state.character,
             "status": this.state.status,
-            "page": this.current,
+      "page": 1,
             "size": 10,
             "tissueProperty":this.state.tissueProperty
         },
@@ -172,18 +181,6 @@ class Organization extends React.Component {
         this.setState({
             toViewVisible: false
         })
-      this.props.dispatch({
-        type: 'organization/organizationList',
-        payload: {
-            "name": this.state.userName,
-            "nodeid": this.state.nodeid,
-            "roleId": this.state.character,
-            "status": this.state.status,
-            "page": this.current,
-            "size": 10,
-            "tissueProperty": this.state.tissueProperty
-        },
-      });
     }
     ObtainOrganization(nodeid,tissueProperty){
       this.setState({
@@ -203,9 +200,8 @@ class Organization extends React.Component {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
-          pageSize:10,
+          defaultPageSize:10,
           onChange: (current) => {
-            this.current = current
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
@@ -225,7 +221,12 @@ class Organization extends React.Component {
              return <Option value={item.id+""} key={item.id}>{item.name}</Option>
           })
         }
-        const traversalRoleIdData = traversalRoleId(roleId)
+        const traversalRoleIdData = traversalRoleId(roleId);
+        const selectParams = {
+          id: 3,
+          type: 1,
+          softDelete: 0
+        }
         return (
         <div className="organizationConnet">
             <main className="yt-admin-framework-Customer-a">
@@ -236,22 +237,25 @@ class Organization extends React.Component {
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                 <Select defaultValue="请选择" style={{ width:220 }} className="OrganizationType" onSelect={this.onSelectCharacter.bind(this)}>
+                {/*<Select placeholder="请选择" style={{ width:180 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
                       { traversalRoleIdData }
-                  </Select>
+                  </Select>*/}
+                  <DictionarySelect  selectName="ROLE"  defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true} />
               </div>
               <div className="status">账户状态
-                <Select defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onSelect={this.onSelectStatus.bind(this)}>
+                <Select placeholder="请选择" style={{ width: 180 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
               </div>
-              {this.state.tissueProperty == 3?
-                <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
-                <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
-              }
+              <div className="btn">
+                {this.state.tissueProperty == 3?
+                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
+                  <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
+                }
 
-              <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
+                <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
+              </div>
             </div>
             {this.props.list?
             <div className="CreateModaList">
@@ -277,11 +281,11 @@ class Organization extends React.Component {
                 visible={ this.state.createModalVisible }
             />
              <Disabled
-                    visible={ this.state.toViewVisible }
-                    handleOk={this.state.handleOk}
-                    onCancel={ this.handleCreateModalCancel.bind(this) }
-                    ID = {this.state.ID}
-                />
+                  visible={ this.state.toViewVisible }
+                  handleOk={this.state.handleOk}
+                  onCancel={ this.handleCreateModalCancel.bind(this) }
+                  ID = {this.state.ID}
+              />
             </div>
             </main>
           </div>
@@ -292,6 +296,8 @@ function Organization({
   dispatch,
   loading,
   list,
+  getPosition,
+  getDeptList,
   total,
   page,
   results,
@@ -304,6 +310,12 @@ function Organization({
     }
     list = {
       list
+    }
+    getPosition = {
+      getPosition
+    }
+    getDeptList = {
+      getDeptList
     }
     loading = {
       loading
@@ -321,6 +333,8 @@ function mapStateToProps(state) {
   const {
     list,
     total,
+    getPosition,
+    getDeptList,
     page,
     results,
     range,
@@ -329,6 +343,8 @@ function mapStateToProps(state) {
   return {
     loading: state.loading.models.organization,
     list,
+    getPosition,
+    getDeptList,
     total,
     page,
     results,

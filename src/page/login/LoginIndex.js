@@ -21,7 +21,6 @@ class LoginIndex extends React.Component {
   handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
-        console.log(values);
           if (!err) {
             if (values.remember) {
               session.set("userPhone", values.mobile)

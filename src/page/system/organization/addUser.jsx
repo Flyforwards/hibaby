@@ -33,15 +33,6 @@ class AddUsered extends React.Component {
   }
   componentDidMount(){
       let endemic = session.get("endemic")
-      let NODEID = window.location.search.split("=")[1];
-      if(NODEID){
-        this.props.dispatch({
-          type: 'organization/position',
-          payload: {
-            dataId: NODEID
-          }
-        })
-      }
       this.props.dispatch({
             type: 'organization/getDeptListByEndemicId',
             payload: {
@@ -79,7 +70,7 @@ class AddUsered extends React.Component {
   }
   //隶属部门被选中时调用的函数
   affiliatedDepartment = (value,node, extra) => {
-    traversalDataId = []
+    this.props.form.resetFields(['position']);
      this.props.dispatch({
         type: 'organization/position',
         payload: {
@@ -90,16 +81,12 @@ class AddUsered extends React.Component {
   //保存按键
   headelSave = ()=>{
     let endemic  = session.get("endemic")
-    message.config({
-        top: 100,
-        duration: 1
-    });
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const values = {
           ...fieldsValue,
           'entryTime': fieldsValue['entryTime']
-        }
+        } 
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
         if(fields.systemRole){
@@ -116,7 +103,6 @@ class AddUsered extends React.Component {
                           if(fields.phoneNumber){
                             if(fields.information){
                               if(fields.companyEmail){
-                                console.log("this.state.NewuserImg",this.state.NewuserImg)
                                 if(this.state.NewuserImg){
                                     this.props.dispatch({
                                       type: 'organization/addUser',
@@ -142,6 +128,7 @@ class AddUsered extends React.Component {
                                         "img":this.state.NewuserImg
                                       }
                                     })
+                                    history.go(-1)
                                 }else{
                                   message.warning('请上传头像')
                                 }
@@ -162,7 +149,7 @@ class AddUsered extends React.Component {
                     }
               }else{
                 message.warning('请选择隶属部门')
-              }
+              }  
             }else{
               message.warning('请选择入职日期')
             }
@@ -171,10 +158,6 @@ class AddUsered extends React.Component {
           }
         }else{
           message.warning('请输入姓名')
-          message.config({
-            top: 100,
-            duration: 0
-          });
         }
       }
     })
@@ -184,7 +167,7 @@ class AddUsered extends React.Component {
       NewuserImg:NewuserImg
     })
   }
-    render() {
+    render() {  
       let traversalEndemicId = []
       let selectDataList = []
       let endemic = session.get("endemic")
@@ -257,8 +240,8 @@ class AddUsered extends React.Component {
               {getFieldDecorator('gender', {
               })(
                 <RadioGroup>
-                <Radio value={1}>男</Radio>
-                <Radio value={0}>女</Radio>
+                <Radio value={0}>男</Radio>
+                <Radio value={1}>女</Radio>
               </RadioGroup>
               )}
             </FormItem>
@@ -320,8 +303,9 @@ class AddUsered extends React.Component {
              required
             >
             { getFieldDecorator("position",{
+
             })(
-              <Select placeholder="请选择">
+              <Select placeholder="请选择" className="po">
                 { traversalDataId }
               </Select>
             )}
@@ -400,7 +384,7 @@ class AddUsered extends React.Component {
             >
               {getFieldDecorator('internalExtension', {
                   rules: [{
-                    max: 10, message: '请按要求输入'
+                    pattern:/^[0-9\-]{0,20}$/, message: '请正确输入内部分机'
                   }],
               })(
                 <Input />

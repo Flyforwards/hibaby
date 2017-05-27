@@ -1,12 +1,11 @@
 
-"use strict"
+import moment from 'moment'
 import React from 'react';
-
 import {connect} from 'dva';
 import './place.scss';
-import {Table,Input,Icon,Button,Popconfirm,Pagination} from 'antd';
-import {routerRedux} from 'dva/router';
-import {Link} from 'react-router';
+import { Table,Input,Icon,Button,Popconfirm,Pagination } from 'antd';
+import { routerRedux } from 'dva/router';
+import { Link } from 'react-router';
 import Current from '../../Current'
 
 class localCharIndex extends React.Component {
@@ -32,7 +31,9 @@ class localCharIndex extends React.Component {
       }, {
         title: '最后编辑时间',
         dataIndex: 'modifyTime',
-        key: 'modifyTime'
+        render: (record) => {
+          return moment(record).format("YYYY-MM-DD HH:mm:ss")
+        }
       }, {
         title: '操作',
         dataIndex: 'operation',
@@ -61,12 +62,6 @@ class localCharIndex extends React.Component {
           }))
         },
       }
-      // <Current page = { this.props.page }
-      //         totalpage = { this.props.totalpage }
-      //         total = { this.props.total }
-      //         results = { this.props.results }
-      //         range = { this.props.range }
-      // />
       return (
         <div className = "PlaceProject">
           <div className = "buttonwrapper">
@@ -75,7 +70,6 @@ class localCharIndex extends React.Component {
               </Link>
           </div>
           <Table {...tableProps} rowKey = { record=>record.id } bordered columns = { this.columns } />
-
         </div>
     );
   }
@@ -93,10 +87,8 @@ function getLocalTime(nS) {
   }
   return `${year}-${month}-${date}`
 }
-/*time = getLocalTime(USER.gmt_entry)*/
 
 function mapStateToProps(state) {
-
   const {
     list,
     pagination

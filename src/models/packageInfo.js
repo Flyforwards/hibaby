@@ -37,6 +37,11 @@ export default {
 	    commodityFindById:null,
 	},
 	reducers: {
+		delSave(state, { payload: { record }}) {
+			state.selectedRows.remove(record);
+			state.selectedRowKeys.remove(record.key);
+			return {...state, };
+		},
 	    listByPageSave(state,{payload:{list,pagination}}){
 	      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 	    },
@@ -91,7 +96,7 @@ export default {
 	    },
 	},
 	effects: {
-		//获取分页的列表
+		//获取套餐分页的列表
 		*listByPage({payload: values}, { call, put }) {
 			values = parse(location.search.substr(1))
 		      if (values.page === undefined) {
@@ -120,13 +125,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.add, values);
 			if (code == 0) {
 				message.success("添加套餐成功");
 				yield put(routerRedux.push("/crm/serviceinfo"));
-			}else if(code == 404){
-				message.success("该套餐已存在");
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//修改套房信息
@@ -134,13 +140,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.roomEdit, values);
 			if (code == 0) {
 				message.success("修改套房信息成功");
 				history.go(-1)
-			}else if(code == 404){
-				message.success("该套放已存在");
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//删除套房
@@ -148,11 +155,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.roomDel, values);
 			if (code == 0) {
 				message.success("删除套房成功");
 				yield put(routerRedux.push("/crm/suite"));
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//添加套房
@@ -160,13 +170,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.roomAdd, values);
 			if (code == 0) {
 				message.success("添加套房成功");
 				yield put(routerRedux.push("/crm/suite"));
-			}else if(code == 403){
-				message.success("套房名称重复");
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//修改商品信息
@@ -174,10 +185,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.commodityFindEdit, values);
 			if (code == 0) {
 				message.success("修改商品信息成功");
+				history.go(-1)
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//删除商品
@@ -185,11 +200,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.commodityDel, values);
 			if (code == 0) {
 				message.success("删除商品成功");
 				yield put(routerRedux.push("/crm/commodity"));
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//添加商品
@@ -197,13 +215,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.commodityAdd, values);
 			if (code == 0) {
 				message.success("添加商品成功");
-				yield put(routerRedux.push("crm/commodity"));
-			}else if(code == 404){
-				message.success("该商品已存在");
+				yield put(routerRedux.push("/crm/commodity"));
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//套房列表信息
@@ -291,11 +310,14 @@ export default {
 			const {
 				data: {
 		      		data,
-		      		code
+		      		code,
+		      		err
 	      }} = yield call(packageInfoService.edit, values);
 			if (code == 0) {
 				message.success("修改套餐成功");
 				history.go(-1)
+			}else{
+				throw err || "请求出错";
 			}
 		},
 		//获取套房下拉数据
@@ -401,11 +423,15 @@ export default {
 				});
 			}
 		},
+		//删除套餐信息
 		*del({payload: values}, { call, put }) {
-			const {data: {data,code}} = yield call(packageInfoService.del, values);
+			const { page, pageSize, dataId } = values
+			const { data: { data, code, err }} = yield call(packageInfoService.del, values);
 			if (code == 0) {
 				message.success("删除成功");
 				yield put(routerRedux.push("/crm/serviceinfo"));
+			}else{
+				throw err || "请求出错";
 			}
 		},
 	},
@@ -423,6 +449,12 @@ export default {
 	            type: 'suiteListByPage',
 	            payload: query
 	          });
+	        }
+	        if (pathname === '/crm/serviceinfo') {
+		         dispatch({
+		            type: 'listByPage',
+		            payload: query
+		        });
 	        }
 	      })
 	    }

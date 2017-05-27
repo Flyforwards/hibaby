@@ -67,7 +67,6 @@ class AddMemberLeader extends Component {
 
   }
   render() {
-    console.log(list)
     const { visible, treeData, list, total } = this.props
     let loops = []
     const nodesIteration = (nodes, itemKey) => {
@@ -90,7 +89,7 @@ class AddMemberLeader extends Component {
          let tissueProperty = this.tissueProperty
         this.props.dispatch({
           type: "organization/organizationList",
-          payload: { 
+          payload: {
             nodeid:nodeId,
             tissueProperty:tissueProperty,
             page:page,

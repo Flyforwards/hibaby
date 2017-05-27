@@ -9,7 +9,6 @@ class Charactered extends Component {
       value: undefined
     }
    onChange = (value) => {
-    console.log(arguments);
     this.setState({ value });
   }
     render() {
@@ -57,4 +56,3 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps)(Character)
-

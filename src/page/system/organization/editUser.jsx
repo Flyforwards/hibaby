@@ -111,7 +111,7 @@ class EditUsered extends React.Component {
   }
   //隶属部门被选中时调用的函数
   affiliatedDepartment = (value,node, extra) => {
-     traversalDataId = []
+    this.props.form.resetFields(['position']);
      this.props.dispatch({
         type: 'organization/position',
         payload: {
@@ -130,10 +130,12 @@ class EditUsered extends React.Component {
         for (var i=0;i<entrys.length;i++){
           let roleIdData = []
           if(fields[`systemRole${i}`]){
+          //  console.log("roleId",fields[`systemRole${i}`])
             fields[`systemRole${i}`].map((item)=>{
-              roleIdData.push({"roleId":item})
+              roleIdData.push({"roleId":item,"userID":ID})
             })
           }
+        //  console.log("roleIdData",roleIdData)
           if(entrys[i].type == 0){
             entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
@@ -159,7 +161,8 @@ class EditUsered extends React.Component {
           })
         }
       }
-      this.props.dispatch({
+      if(entrysData.roles.length>=1){
+        this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
             "categoryId": endemic.id,
@@ -167,14 +170,16 @@ class EditUsered extends React.Component {
             "gmt_entry": gmt_entry,
             "mobile": fields.phoneNumber,
             "name": fields.userName,
-            "password": fields.password =="*********"?null:fields.password,
+            "password": fields.password?fields.password:null,
             "id":ID,
             "sex":USER.sex,
             "img":this.state.NewuserImg?this.state.NewuserImg:USER.img
           }
         })
-      history.go(-1)
-      window.location.reload( true )
+      }else{
+        message.warning('请选择系统角色')
+
+      }
       }
     })
   }
@@ -222,12 +227,8 @@ class EditUsered extends React.Component {
             }else{
                display = 'block'
             }
-            roles = entryContent.roles.map((item)=>{
-              return SelectData.map((key)=>{
-                if(key.id == item.roleId){
-                    return key.name
-                }
-              })
+            entryContent.roles.map((item)=>{
+              roles.push(String(item.roleId))
             })
             if(this.props.dataEndemicId != null){
                 traversalEndemicId = this.props.dataEndemicId.map((item,index)=>{
@@ -313,9 +314,9 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 6 }
                   >
                   { getFieldDecorator(`systemRole${i}`,{
-                    initialValue:roles
+                    initialValue: roles
                   })(
-                    <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
+                    <Select placeholder="请选择" dropdownMatchSelectWidth mode="tags">
                       { selectDataList }
                     </Select>
                   )}
@@ -344,9 +345,11 @@ class EditUsered extends React.Component {
                    key = { i * 100 + 2 }
                   >
                     {getFieldDecorator('password', {
-                      initialValue:"*********",
+                      rules: [{
+                          pattern:/^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{8,20}$/, message: '由8到20位数字字母组成'
+                      }],
                     })(
-                      <Input/>
+                      <Input placeholder="********"/>
                     )}
                   </FormItem>:null}
                   <br/>
@@ -457,14 +460,14 @@ class EditUsered extends React.Component {
            treeData = { this.props.LeagerData }
            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
-          <DeleteEnery 
+          <DeleteEnery
            visible={ this.state.DeleteVisible }
            onCancel ={ this.handleDeleteEneryCancel.bind(this) }
            DeleteIndex = { this.state.DeleteIndex }
            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
            <Button type="primary" className="saveButton" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
-           <Button type="primary" className="returnButton" onClick={ this.headelReturn }>返回</Button>
+           <Button className="returnButton" onClick={ this.headelReturn }>返回</Button>
         </div>
       )
   }

@@ -1,4 +1,4 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
@@ -27,23 +27,26 @@ class SeeDtailed extends Component {
         this.props.onCancel()
     }
     handleOk() {
-        console.log("ok",this.props.ID)
+      //  console.log("ok",this.props.ID)
         const fields = this.props.form.getFieldsValue();
-        console.log("fields",fields)
+      //  console.log("fields",fields)
         this.props.onCancel()
     }
     checkbox() {
-        console.log("checkbox")
+      //  console.log("checkbox")
     }
     ReturnLeader(){
       this.props.onCancel()
     }
-    handleAfterClose() {
+    handleAfterClose(id) {
+      this.props.dispatch({
+        type: 'organization/getDepartmentNodes',
+        payload: { }
+      })
         this.props.form.resetFields()
     }
     componentDidMount() {
-        this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
-        console.log(this.props.ID)
+      this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
     delet(id){
       this.props.dispatch({
@@ -54,15 +57,22 @@ class SeeDtailed extends Component {
       })
       this.props.onCancel()
     }
-    EditNode(){
+    EditNode(node){
       this.setState({
-          NodeEditVisible: true
-        })
+        NodeEditVisible: true
+      })
+
     }
-    handleNodeEditCancel(){
+    handleNodeEditCancel(id){
       this.setState({
           NodeEditVisible: false
         })
+      this.props.dispatch({
+        type: 'organization/getDepartment',
+          payload: {
+            "dataId":id
+          }
+      })
     }
 
      handleCreateModalCancel() {
@@ -78,7 +88,7 @@ class SeeDtailed extends Component {
 
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -103,8 +113,8 @@ class SeeDtailed extends Component {
             }
           })
       }
-      if(this.props.getDepartmentNode!=null){
-        Nodesdata = this.props.getDepartmentNode
+      if(this.props.Nodesdata!=null){
+        Nodesdata = this.props.Nodesdata
       }
         if(this.props.ID == 1 || this.props.ID == 3){
             display = "none"
@@ -120,7 +130,7 @@ class SeeDtailed extends Component {
             xs: { span: 24 },
             sm: { span: 14 },
           },
-        }; 
+        };
         return (
             <Modal
                 visible={visible}
@@ -128,7 +138,7 @@ class SeeDtailed extends Component {
                 wrapClassName="SeeChildNode"
                 closable={false}
                 confirmLoading={confirmLoading}
-                afterClose={this.handleAfterClose.bind(this)}
+                afterClose={this.handleAfterClose.bind(this,this.props.ID)}
                 onCancel={this.handleCancel.bind(this)}
                 onOk={this.handleOk.bind(this)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
@@ -210,7 +220,7 @@ class SeeDtailed extends Component {
                 <NodeEdit
                     visible={ this.state.NodeEditVisible }
                     handleOk={this.state.handleOk}
-                    onCancel={ this.handleNodeEditCancel.bind(this) }
+                    onCancel={ this.handleNodeEditCancel.bind(this,this.props.ID) }
                     ID = {this.props.ID}
                     parentId ={this.props.parentId}
                     Nodesdata = {Nodesdata}

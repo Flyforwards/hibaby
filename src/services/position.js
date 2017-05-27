@@ -24,7 +24,7 @@ export function delPosition(values) {
 };
 
 //保存或修改职位信息
-export function addPosition(values) {
+export function saveOrModifyPosition(values) {
   return request('/crm/api/v1/position/saveOrModifyPosition', {
     method: 'POST',
     body: JSON.stringify(values),

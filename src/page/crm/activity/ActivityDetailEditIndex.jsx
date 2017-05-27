@@ -32,7 +32,7 @@ class ActivityDetailIndex extends Component {
   saveEdit() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
+      //  console.log(values)
         this.props.dispatch({
           type: 'activity/updateActivity',
           payload: values

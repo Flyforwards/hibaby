@@ -22,6 +22,17 @@ export default (app) => [
       })
     }
   },
+//客户详情
+  {
+    path: '/crm/customer/customerDetails',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/crm/customer/customerDetails.jsx'))
+      })
+    }
+  },
+
     // 套餐
     {
       path: '/crm/serviceinfo',
@@ -168,6 +179,26 @@ export default (app) => [
         require.ensure([], (require) => {
           registerModel(app, require('models/card'));
           cb(null, require('page/crm/infocard/card/cardInfo.js'))
+        })
+      }
+    },
+    //查看卡种详情
+    {
+      path: '/crm/cardDetail',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/card'));
+          cb(null, require('page/crm/infocard/card/cardDetail.js'))
+        })
+      }
+    },
+    //编辑卡种信息
+    {
+      path: '/crm/cardEdit',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/card'));
+          cb(null, require('page/crm/infocard/card/cardEdit.js'))
         })
       }
     },

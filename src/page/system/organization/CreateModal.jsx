@@ -1,4 +1,4 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
 const createForm = Form.create
@@ -14,10 +14,10 @@ class CreateModal extends Component {
         this.props.onCancel()
     }
     handleOk() {
-        console.log("ok")
+      //  console.log("ok")
     }
     checkbox() {
-        console.log("checkbox")
+      //  console.log("checkbox")
 
     }
     handleAfterClose() {
@@ -28,7 +28,7 @@ class CreateModal extends Component {
     }
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {

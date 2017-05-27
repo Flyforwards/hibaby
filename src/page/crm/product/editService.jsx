@@ -24,6 +24,12 @@ class AddServiceed extends Component {
           dataIndex: 'price',
           key:'price',
           width: "20%",
+          render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         }, {
           title: '服务项目内容',
           dataIndex: 'contents',
@@ -45,7 +51,7 @@ class AddServiceed extends Component {
                   <Input defaultValue ={ count } onChange={(event)=>{
                     record.usageCount = event.target.value
                   }}/>
-                </span> 
+                </span>
             );
           },
         }];
@@ -65,10 +71,10 @@ class AddServiceed extends Component {
           selectedRowKeys: selectedRowKeys
         })
       }
-       return true 
+       return true
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
-      console.log(selectedRows)
+      //console.log(selectedRows)
       this.setState({ selectedRows,selectedRowKeys });
     }
     componentDidMount() {
@@ -120,7 +126,7 @@ class AddServiceed extends Component {
             }
           })
       }
-      console.log("目",serviceInfoList)
+      //console.log("目",serviceInfoList)
       if(fields.name){
         if(fields.price){
           if(fields.type){
@@ -158,8 +164,8 @@ class AddServiceed extends Component {
         let ListLnformation = []
         let selectData = []
         let roomList = []
-        let type = ''
-        let suiteId = ''
+        let type = []
+        let suiteId = []
         if(this.props.serviceListByPage != null){
             ListLnformation = this.props.serviceListByPage;
               ListLnformation.map((record)=>{
@@ -170,7 +176,7 @@ class AddServiceed extends Component {
         if(this.props.selectData != null && this.props.findById){
           selectData = this.props.selectData.map((item)=>{
             if(item.id == this.props.findById.suiteId){
-              suiteId = item.id
+              suiteId.push(String(item.id))
             }
             return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
@@ -178,7 +184,7 @@ class AddServiceed extends Component {
         if(this.props.getDictionary != null &&　this.props.findById != null){
           roomList = this.props.getDictionary.map((item)=>{
             if(item.id == this.props.findById.type){
-              type = item.id
+              type.push(String(item.id))
             }
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
           })
@@ -218,7 +224,7 @@ class AddServiceed extends Component {
                     initialValue:this.props.findById?this.props.findById.price:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                     />
                     )}
@@ -241,16 +247,16 @@ class AddServiceed extends Component {
                 </Form>
                 </div>
                 <div className="addServiceinfoTable">
-                  <Table bordered 
-                    rowSelection={rowSelection} 
-                    columns={ columns } 
+                  <Table bordered
+                    rowSelection={rowSelection}
+                    columns={ columns }
                     dataSource={ListLnformation}
                     pagination = { false }
                     scroll={{ y: 500 }}
-                    loading = { loadingName } 
-                    defaultExpandedRowKeys = {ListLnformation}      
+                    loading = { loadingName }
+                    defaultExpandedRowKeys = {ListLnformation}
                     />
-                </div>  
+                </div>
                 <div className="addServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
@@ -262,7 +268,7 @@ class AddServiceed extends Component {
                       initialValue:suiteId,
                        rules: [],
                     })(
-                      <Select 
+                      <Select
                     >
                      {
                       selectData

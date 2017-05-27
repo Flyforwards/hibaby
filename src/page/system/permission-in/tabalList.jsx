@@ -18,7 +18,7 @@ class TabalListed extends Component {
   constructor(props) {
         super(props)
         this.columns = [{
-          title: '主模块',
+          title: 'id',
           dataIndex: 'id',
           key: 'id',
           width: '90px',
@@ -45,8 +45,8 @@ class TabalListed extends Component {
           render: (text, record, index) => {
             return (
                 <div>
-                  <a onClick={this.delete.bind(this,record)}>删除</a>
-                  <a onClick={this.modify.bind(this,index)}>修改</a>
+                  <a className="firstA" onClick={this.delete.bind(this,record)}>删除</a>
+                  <a className="firstB" onClick={this.modify.bind(this,index)}>修改</a>
                 </div>
             );
           },
@@ -108,7 +108,7 @@ class TabalListed extends Component {
     }
     render() {
       var mainName = []
-      console.log("current",this.props.arr)
+    //  console.log("current",this.props.arr)
         {
           if(this.props.arr){
             mainName = DataConversion(list,"parentId",this.props.arr,"parentId")
@@ -169,7 +169,7 @@ function TabalList({
 
 }
 function mapStateToProps(state) {
-  console.log("权限列表>>>>",state.system.arr)
+//  console.log("权限列表>>>>",state.system.arr)
   const {
     arr,
     total,

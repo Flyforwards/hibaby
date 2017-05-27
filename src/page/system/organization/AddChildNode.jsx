@@ -1,4 +1,4 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,message} from 'antd'
@@ -28,10 +28,8 @@ class AddChildNodeed extends Component {
       this.props.onCancel()
     }
     handleOk() {
-        console.log("ok",this.props.ID)
-        console.log("ok",this.state.TableData)
         const fields = this.props.form.getFieldsValue();
-        console.log("fields",fields)
+      //  console.log("fields",fields)
           this.props.dispatch({
             type: 'organization/saveDepartment',
             payload: {
@@ -52,11 +50,11 @@ class AddChildNodeed extends Component {
           TableData:"",
           NodeDisplay:"block"
         })
-        // window.location.reload( true )
+        window.location.reload( true )
         this.props.onCancel()
     }
     checkbox() {
-        console.log("checkbox")
+        //console.log("checkbox")
 
     }
     handleAfterClose() {
@@ -82,7 +80,7 @@ class AddChildNodeed extends Component {
         visible:true,
         NodeDisplay:"block"
       })
-      console.log("endemic",endemic.tissueProperty)
+    //  console.log("endemic",endemic.tissueProperty)
       this.props.dispatch({
         type: 'organization/getLeagerDepartmentNodes',
         payload: {
@@ -93,7 +91,7 @@ class AddChildNodeed extends Component {
     }
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -262,4 +260,3 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(AddChildNodeed)
-

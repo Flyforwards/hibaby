@@ -3,8 +3,6 @@
   "scripts": {
     "start": "roadhog server",
     "build": "roadhog build",
-    "lint": "eslint --ext .js src test",
-    "precommit": "npm run lint",
     "clean": "rimraf ./dist",
     "dev": "webpack-dev-server --progress --config ./webpack.dev.config.js",
     "build-dev": "npm run clean && BUILD_ENV=dev webpack -p --progress --config ./webpack.build.config.js",
@@ -15,7 +13,7 @@
     "install-node": "6.9.2"
   },
   "dependencies": {
-    "antd": "^2.9.1",
+    "antd": "^2.10.2",
     "babel-runtime": "^6.9.2",
     "dva": "^1.2.1",
     "dva-loading": "^0.2.1",

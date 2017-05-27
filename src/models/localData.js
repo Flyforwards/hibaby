@@ -44,9 +44,7 @@ export default {
 		//添加地方列表数据
 		*AddPlaceData({payload: values}, { call, put }) {
 			const {data: {data,id,code}} = yield call(placeService.AddPlaceData, values);
-			console.log(data)
 			if (code == 0) {
-				console.log(data)
 				message.success("添加用户信息成功");
 				yield put(routerRedux.push('/system/local-char'));
 			}
@@ -98,7 +96,6 @@ export default {
       }
       const { data: { data, total, page, size, code } } = yield call(placeService.localCharList, values);
       if (code == 0) {
-        console.log(total,page,size)
         yield put({
           type: 'localCharSave',
           payload: {

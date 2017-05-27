@@ -1,4 +1,4 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
@@ -19,7 +19,7 @@ class DeleteEnery extends Component {
     }
     handleOk(index) {
         let ID = window.location.search.split("=")[1]
-        console.log("Id",ID)
+      //  console.log("Id",ID)
         this.props.dispatch({
            type: 'organization/deleteUserEntry',
             payload: {
@@ -36,7 +36,7 @@ class DeleteEnery extends Component {
         this.props.onCancel()
     }
     checkbox() {
-        console.log("checkbox")
+      //  console.log("checkbox")
 
     }
     handleAfterClose() {
@@ -47,7 +47,7 @@ class DeleteEnery extends Component {
     }
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+        //console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -103,4 +103,3 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(DeleteEnery)
-

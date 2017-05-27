@@ -42,6 +42,12 @@ class Suiteed extends Component {
           title: '套房价格',
           dataIndex: 'price',
           key: 'price',
+          render:(text,record,index) => {
+            let price = "￥"+record.price
+            return (
+              price
+            )
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -63,7 +69,7 @@ class Suiteed extends Component {
     }
     //删除
     delete(record) {
-      console.log("record",record.id)
+    //  console.log("record",record.id)
       this.setState({
         DeleteVisible:true,
         ID:record.id
@@ -79,7 +85,7 @@ class Suiteed extends Component {
     componentDidMount() {
         this.props.dispatch({
             type: 'packageInfo/suiteListByPage',
-            payload: { 
+            payload: {
               "page":1,
               "size":10
             }
@@ -109,7 +115,7 @@ class Suiteed extends Component {
                 <div className="serviceinfoTabal">
                     <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ suiteListByPage } columns={ columns } />
                 </div>
-                <Delete 
+                <Delete
                    visible={ this.state.DeleteVisible }
                    onCancel ={ this.handleDeleteCancel.bind(this) }
                    ID = { this.state.ID }

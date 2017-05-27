@@ -1,3 +1,8 @@
+/*
+* updated by Flyforwards 2015/5/25
+*
+* */
+
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'dva'
@@ -6,37 +11,69 @@ import { Button, Icon, Form, Input, Select, Row, Col } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 class CardFind extends Component {
-  handleSubmit = (e) => {
-    const { dispatch, form } = this.props;
+
+  //点击搜索
+  onSearch() {
+    const { dispatch, form ,pagination} = this.props;
     const { validateFields } = form;
-    e.preventDefault();
-    validateFields((err, values) => {
+    form.validateFields((err, values) => {
       const postData = {
         ...values,
-        "page": 1,
-        "size": 2,
-        "sortField": "string",
-        "sortOrder": "string"
       };
-      dispatch({
-        type: 'card/getPostInfo',
-        payload: postData
-      });
       dispatch({
         type: 'card/getCard',
         payload: postData
       })
 
     });
+ }
+ //select 改变 权限
+  onSelectChange = (value) => {
+    let postDatas = null;
+    this.props.form.validateFields((err, values) => {
+      postDatas = {
+        ...values,
+      };
+    });
+    postDatas.salesDiscount=value;
+    this.props.dispatch({
+      type: 'card/getCard',
+      payload: postDatas,
+    })
+  }
+  //select 改变 卡种
+  onSelectChangeCard(value) {
+    let postDatas = null;
+    this.props.form.validateFields((err, values) => {
+      postDatas = {
+        ...values,
+      };
+    });
+    postDatas.cardType=value;
+    this.props.dispatch({
+      type: 'card/getCard',
+      payload: postDatas,
+    })
   }
 
   render() {
-    const { form } = this.props;
+    const { form ,typeValues, zheKou } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 6 },
       wrapperCol:{ span:15 }
     }
+
+    //卡种类型
+    let cardTypeOptions=[];
+    typeValues ? typeValues.map(function(elem,index){
+      cardTypeOptions.push(<Option key={elem.id}>{elem.name}</Option>)
+    }): null;
+    //折扣權限
+    let limitOptions = [];
+    zheKou ? zheKou.map(function(elem,index){
+      limitOptions.push(<Option key={elem.id}>{elem.name}</Option>)
+    }) : null;
     return (
       <div className="cardFind" style={{ overflow:"hidden" }}>
         <Form>
@@ -48,8 +85,8 @@ class CardFind extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={ 6 }>
-              <Button type="primary" size="large" style={{width:'120px',height:'40px',lineHeight:'38px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
+            <Col span={ 7 }>
+              <Button type="primary" onClick={this.onSearch.bind(this)} size="large" style={{width:'120px',height:'40px',lineHeight:'38px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
               <Link to={{ pathname: '/crm/cardInfo' }} href="#"><Button type="primary" style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button></Link>
             </Col>
           </Row>
@@ -61,15 +98,13 @@ class CardFind extends Component {
                   <Select
                     showSearch
                     allowClear
+
                     placeholder="请选择"
                     optionFilterProp="children"
                     filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    onChange={ this.onSelectChange.bind(this)}
                   >
-                    <Option value="100">100</Option>
-                    <Option value="90">90</Option>
-                    <Option value="80">80</Option>
-                    <Option value="70">70</Option>
-                    <Option value="60">60</Option>
+                    { limitOptions }
                   </Select>
                 )}
               </FormItem>
@@ -83,9 +118,9 @@ class CardFind extends Component {
                     placeholder="请选择"
                     optionFilterProp="children"
                     filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    onChange={ this.onSelectChangeCard.bind(this)}
                   >
-                    <Option value="1">模板卡种</Option>
-                    <Option value="2">自定义卡种</Option>
+                    { cardTypeOptions }
                   </Select>
                 )}
               </FormItem>
@@ -99,17 +134,20 @@ class CardFind extends Component {
 
 const CardKindForm = Form.create()(CardFind);
 
-function CardFindCom({ dispatch }) {
+function CardFindCom({ dispatch , typeValues ,zheKou, pagination}) {
 
   return (
-    <CardKindForm dispatch={dispatch}/>
+    <CardKindForm dispatch={dispatch} typeValues={typeValues} zheKou={ zheKou } pagination={ pagination }/>
   )
 }
 function mapStateToProps(state) {
-  const { cardInfo } = state.card;
+  const { cardInfo,typeValues, zheKou,pagination ,} = state.card;
   return {
     loading: state.loading.models.card,
-    cardInfo
+    cardInfo,
+    typeValues,
+    zheKou,
+    pagination,
   };
 }
 export default connect(mapStateToProps)(CardFindCom)

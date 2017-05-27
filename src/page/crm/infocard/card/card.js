@@ -1,8 +1,11 @@
+/*
+* updataed by Flyforwards 2015/5/25
+* */
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import './card.scss'
 import {Link} from 'react-router'
-import { Table, Icon, Modal } from 'antd';
+import { Table, Icon, Modal,Popconfirm } from 'antd';
 import CardFind from './cardFind'
 import CardModal from './cardInfo'
 
@@ -26,37 +29,63 @@ class Card extends Component {
     }, {
       title: '卡种类型',
       dataIndex: 'cardType',
-      key: 'cardType'
+      key: 'cardType',
+      render:(text,record,index) => {
+        if(text == 1){
+          return "模板卡种"
+        }else if(text == 2){
+          return "自定义卡种"
+        }
+      }
     }, {
       title: '操作',
       key: 'action',
       render: (text, record) => (
-        <span>
-          <Link to={{ pathname: '/crm/cardInfo', query: { data:record.id } }} href="#" style={{ marginRight:'20px' }}>查看</Link>
-          <span>删除</span>
+        <span style={{ cursor: 'pointer'}}>
+          <Link className="firstA" to={{ pathname: '/crm/cardDetail', query: { data:record.id } }} href="#" style={{ marginRight:'20px' }}>查看</Link>
+          <Popconfirm  title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>
+             <span className="firstB">删除</span>
+          </Popconfirm>
+
         </span>
       )
     }];
 
   }
 
+  //刪除卡種信息
+  onDelete(dataId){
+    this.props.dispatch({
+      type:'card/deleteCardById',
+      payload:{
+        dataId:dataId,
+      }
+    })
+  }
+  componentDidMount(){
+    // this.props.dispatch({
+    //   type:'card/getCardType',
+    // })
+    // this.props.dispatch({
+    //   type: 'card/getZhekouInfo',
+    // })
+  }
   render() {
-    const { cardInfo, dispatch, total, postValues } = this.props;
+    const { cardInfo, dispatch, total, postValues, typeValues,loading,pagination } = this.props;
     const { sear, salesDiscount, cardType } = postValues;
-    const pagination = {
-      total: total, //数据总条数
-      showQuickJumper: true,
-      pageSize: 10,
-      onChange: (current) => {
-        console.log(current,'当前的页数')
+    const tableProps = {
+      loading:loading,
+      pagination:pagination,
+      dataSource:cardInfo,
+      onChange: (page) => {
         dispatch({
           type: 'card/getCard',
           payload: {
             sear,
             salesDiscount,
             cardType,
-            'page': current,
-            'size': 10,
+            'page': page.current,
+            'size': page.pageSize,
             'sortField': "string",
             'sortOrder': "string"
           }
@@ -67,7 +96,7 @@ class Card extends Component {
       <div className="card">
         <CardFind style={{ clear:'both'}}/>
 
-        <Table class="cardTable" columns={this.columns} bordered rowKey="id" dataSource={cardInfo} pagination={ pagination}/>
+        <Table class="cardTable" columns={this.columns} bordered rowKey="id" { ...tableProps }/>
       </div>
 
     )
@@ -75,19 +104,20 @@ class Card extends Component {
 }
 
 
-function CardCom({ dispatch, cardInfo, total, postValues }) {
-
+function CardCom({ dispatch, loading,cardInfo, total, postValues, typeValues, pagination }) {
   return (
-    <Card dispatch={dispatch} cardInfo={cardInfo} total={total} postValues={postValues}/>
+    <Card dispatch={dispatch} cardInfo={cardInfo} total={total} postValues={postValues} typeValues={typeValues} loading={loading} pagination={pagination}/>
   )
 }
 function mapStateToProps(state) {
-  const { cardInfo, total, postValues } = state.card;
+  const { cardInfo, total, postValues, typeValues ,pagination} = state.card;
   return {
     loading: state.loading.models.card,
     cardInfo,
     total,
-    postValues
+    postValues,
+    typeValues,
+    pagination,
   };
 }
 export default connect(mapStateToProps)(CardCom)

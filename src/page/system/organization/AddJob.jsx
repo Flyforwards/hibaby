@@ -34,10 +34,6 @@ class AddJobed extends Component {
         let ID = window.location.search.split("=")[1]
         const fields = this.props.form.getFieldsValue();
         let roles = []
-        message.config({
-            top: 100,
-            duration: 0.1
-        });
         if(fields.affiliatedDepartment){
           if(fields.position){
             if(fields.systemRole){
@@ -84,7 +80,7 @@ class AddJobed extends Component {
         }
     }
     checkbox() {
-        console.log("checkbox")
+        //console.log("checkbox")
 
     }
   //隶属部门被选中时调用的函数
@@ -114,7 +110,7 @@ class AddJobed extends Component {
       })
     }
     headelReturnTabal(data){
-      console.log("data",data)
+    //  console.log("data",data)
       this.setState({
         TableData:data[0]
       })
@@ -129,7 +125,7 @@ class AddJobed extends Component {
     }
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -344,4 +340,3 @@ function mapStateToProps(state) {
   }
 }
 export default connect(mapStateToProps)(AddJobed)
-

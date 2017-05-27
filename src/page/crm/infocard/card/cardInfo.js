@@ -1,3 +1,7 @@
+/*
+* updated by Flyforwards 2017/5/25
+*
+* */
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col } from 'antd';
@@ -16,6 +20,17 @@ class CardModal extends Component {
       payload: { dataId }
     })
 
+
+  }
+  componentDidMount() {
+    this.props.dispatch({
+      type:'card/getLevelInfo',
+      payload:{
+        id:7,
+        softDelete:0,
+        type:1,
+      }
+    })
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +38,6 @@ class CardModal extends Component {
     const { validateFields } = form;
     form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         dispatch({
           type: 'card/saveCard',
           payload:{  ...values }
@@ -31,9 +45,27 @@ class CardModal extends Component {
       }
     })
   }
+  //验证表单
 
+  checkPrice = (rule, value, callback) => {
+    if(!value){
+      callback('不能为空');
+      return;
+    }
+    if(/^\d*$/g.test(value)){
+      callback();
+      return;
+    }else{
+      callback('只能输入整数')
+    }
+    if (value > 0||value ==0) {
+      callback();
+      return;
+    }
+    callback('不能为负数');
+  }
   render() {
-    const { cardKind, form } = this.props;
+    const { cardKind, form, level} = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 8 },
@@ -47,6 +79,11 @@ class CardModal extends Component {
       labelCol:{ span:5},
       wrapperCol:{ span:17 }
     }
+    //卡种级别渲染
+    let options = [];
+    level? level.map(function(elem,index){
+      options.push(<Option key={elem.id}>{elem.name}</Option>)
+    }):null;
     return (
       <div  style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
@@ -66,9 +103,9 @@ class CardModal extends Component {
                 <FormItem label="储值金额" {...formItemLayout}>
                   {getFieldDecorator('storedValue', {
                     initialValue: cardKind && cardKind.storedValue ,
-                    rules: [{ required: true, message: '请输入储值金额' }],
+                    rules: [{validator:this.checkPrice, required: true, }],
                   })(
-                    <Input placeholder="请输入储值金额" addonAfter="元"/>
+                    <Input placeholder="请输入储值金额" addonAfter="元" type="number" min={0} />
                   )}
                 </FormItem>
               </Col>
@@ -76,9 +113,9 @@ class CardModal extends Component {
                 <FormItem label="折扣权限" {...formItemLayout}>
                   {getFieldDecorator('salesDiscount', {
                     initialValue: cardKind && cardKind.salesDiscount ,
-                    rules: [{ required: true, message: '请输入折扣权限!' }],
+                    rules: [{validator:this.checkPrice, required: true,}],
                   })(
-                    <Input placeholder="请输入折扣权限" addonAfter="%"/>
+                    <Input placeholder="请输入折扣权限" addonAfter="%"  type="number" min={0}/>
                   )}
                 </FormItem>
               </Col>
@@ -97,11 +134,7 @@ class CardModal extends Component {
                       optionFilterProp="children"
                       filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
-                      <Option value="100">一级</Option>
-                      <Option value="80">二级</Option>
-                      <Option value="70">三级</Option>
-                      <Option value="60">四级</Option>
-                      <Option value="50">五级</Option>
+                      { options }
                     </Select>
                   )}
                 </FormItem>
@@ -110,8 +143,9 @@ class CardModal extends Component {
             <Row>
               <Col span={ 24 } style={{width:'400px'}}>
                 <FormItem {...formTextItemLayout} label="备注">
-                  {getFieldDecorator('remarks', { initialValue: cardKind && cardKind.remarks }, {
-                    //rules: [{ required: true, message: 'Please input your username!' }],
+                  {getFieldDecorator('remarks', {
+                    initialValue: cardKind && cardKind.remarks ,
+                    rules: [{ required: true, message: '请填写备注' }],
                   })(
                     <Input type="textarea" rows={6}/>
                   )}

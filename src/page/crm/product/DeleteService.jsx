@@ -1,8 +1,9 @@
-"use strict" 
+"use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
 import '../../system/organization/AddChildNode.scss'
+import AlertModalFrom from 'common/AlertModalFrom'
 
 
 const createForm = Form.create
@@ -18,13 +19,13 @@ class DeleteService extends Component {
         this.props.onCancel()
     }
     handleOk() {
-        console.log("ok",this.props.ID)
         this.props.dispatch({
             type: 'packageInfo/del',
             payload: {
                 "dataId":this.props.ID
             }
         })
+        this.props.onCancel()
     }
     checkbox() {
         console.log("checkbox")
@@ -93,4 +94,3 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(DeleteService)
-

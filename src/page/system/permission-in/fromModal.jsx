@@ -33,7 +33,6 @@ class FromModaled extends Component {
         value: undefined
     }
     onChange = (value) => {
-        console.log(arguments);
         this.setState({ value });
     }
     handleCancel() {
@@ -50,11 +49,11 @@ class FromModaled extends Component {
         })
       }
     checkbox(index) {
-        console.log("index",index)
+    //    console.log("index",index)
     }
     Inquire(){
         this.props.form.validateFieldsAndScroll((err, values) => {
-        console.log("上级权限>>>>",values)
+    //    console.log("上级权限>>>>",values)
         if (!err) {
           this.props.dispatch({
             type: 'system/listByPage',
@@ -89,7 +88,7 @@ class FromModaled extends Component {
        const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
         const { getFieldDecorator } = this.props.form;
         let mainName = local.get("Dictionary");
-        console.log(mainName)
+      //  console.log(mainName)
         let nodes = [];
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{
@@ -127,8 +126,8 @@ class FromModaled extends Component {
                   </Form>
                   <div className="Button">
                     <Button className="btn" onClick={this.Inquire.bind(this)}>查询</Button>
-                    <Button className="btn" onClick={this.emptied.bind(this)}>清空</Button>
-                    <Button className="btn" onClick={this.addList.bind(this)}>新增</Button>
+                    <Button className="btn ClearBtn" onClick={this.emptied.bind(this)}>清空</Button>
+                    <Button className="btn AddBtn" onClick={this.addList.bind(this)}>新增</Button>
                   </div>
               </div>
               <TabalList />

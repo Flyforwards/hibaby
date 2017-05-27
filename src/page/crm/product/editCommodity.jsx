@@ -48,7 +48,7 @@ class EditCommodityed extends Component {
         e.target.className = "roomColor"
         roomId[data] = null
       }
-      console.log(roomId)
+    //  console.log(roomId)
     }
     delete() {
       let ID = window.location.search.split("=")[1]
@@ -61,7 +61,6 @@ class EditCommodityed extends Component {
       this.setState({
           DeleteVisible: false,
       })
-      window.location.reload( true )
     }
     handleAdd(data){
       let ID = window.location.search.split("=")[1]
@@ -76,11 +75,23 @@ class EditCommodityed extends Component {
           "nameLetter":fields.nameLetter,
         }
       });
-       history.go(-1)
+    }
+    chkvalue(e){
+      if(e.target.value){
+          this.props.dispatch({
+            type: 'packageInfo/chineseToPinyin',
+            payload: {
+              "str": e.target.value
+            }
+          });
+          this.setState({
+            str:true
+          })
+        }
     }
     chineseToPinyin(){
       const fields = this.props.form.getFieldsValue();
-      console.log(fields.name)
+      //console.log(fields.name)
       if(fields.name){
         this.props.dispatch({
           type: 'packageInfo/chineseToPinyin',
@@ -99,7 +110,11 @@ class EditCommodityed extends Component {
         const { getFieldDecorator } = this.props.form;
         let ID = window.location.search.split("=")[1]
        if(this.props.chineseToPinyin != null){
-          str = this.props.chineseToPinyin
+        if(str == this.props.chineseToPinyin){
+            str = null
+          }else{
+            str = this.props.chineseToPinyin
+          }
         }
         return (
             <div className="editCommodity">
@@ -114,7 +129,7 @@ class EditCommodityed extends Component {
                       initialValue:this.props.commodityFindById?this.props.commodityFindById.name:null,
                       rules: [],
                     })(
-                      <Input />
+                      <Input className="inputName" onBlur={this.chkvalue.bind(this)}/>
                     )}
                   </FormItem>
                   <FormItem
@@ -125,7 +140,7 @@ class EditCommodityed extends Component {
                     initialValue:this.props.commodityFindById?this.props.commodityFindById.price:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                       addonAfter='元'
                     />
@@ -150,7 +165,7 @@ class EditCommodityed extends Component {
                     initialValue:this.props.chineseToPinyin?this.props.chineseToPinyin:this.props.commodityFindById?this.props.commodityFindById.nameLetter:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                     disabled = { true }
                     />
                     )}
@@ -167,7 +182,7 @@ class EditCommodityed extends Component {
                 </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this,this.props.code)}>保存</Button>
-                <Delete 
+                <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
                   ID = { this.state.ID }

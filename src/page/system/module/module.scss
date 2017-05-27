@@ -1,6 +1,7 @@
 .MenuInside{
   margin: 10px;
   overflow: hidden;
+  min-width: 860px;
     .menuHeard{
       width: 100%;
       height:auto;
@@ -8,87 +9,43 @@
       background:#fff;
       border-radius:5px;
       overflow:hidden;
-      .MainModule{
-        height:30px;
-        width:23%;
-        float:left;
-        margin:10px 0 10px 10px;
-        .projectName{
-          height:30px;
-          width:28%;
-          float:left;
-          line-height: 30px;
-          text-align: center;
-          font-size:14px;
-          color:#333;
-        }
-        .SelectMenu{
-          height:30px;
-          width:66%;
-          float:left;
-          .ant-select-selection--single{
-            height:30px;
-          }
-        }
-      }
-      .MeunName{
-        height:30px;
-        width:20%;
-        float:left;
-        margin-top:10px;
-        .Name{
-          height:30px;
-          width:26%;
-          float:left;
-          line-height: 30px;
-          text-align: center;
-          font-size:14px;
-          color:#333;
-        }
-        .NameBox{
-          height:28px;
-          width:74%;
-          float:left;
-          .ant-form-item-control {
-            height:28px;
-            .input{
-              height:28px;
+    .ant-advanced-search-form .ant-form-item {
+          margin-bottom: 16px;
+          width: 220px;
+          float: left;
+          margin-left:10px;
+          margin-top:10px;
+          .ant-form-item-label{
+            width:60px;
+            float:left;
+            label{
+              font:14px "微软雅黑";
             }
           }
-        }
-      }
-      .MeunPath{
-        height:30px;
-        width:30%;
-        float:left;
-        margin:10px 0 0 10px;
-        .Route{
-          height:30px;
-          width:17%;
-          float:left;
-          line-height: 30px;
-          text-align: center;
-          font-size:14px;
-          color:#333;
-        }
-        .PathBox{
-          height:28px;
-          width:66%;
-          float:left;
-          .ant-form-item-control {
-            height:28px;
-            .input{
-              height:28px;
+          .ant-form-item-control-wrapper{
+            width:150px;
+            float:right;
+            .ant-input{
+              height:32px;
             }
           }
-        }
+
       }
       .btn{
         width: 24%;
         float:left;
         margin:10px 0 0 10px;
+        .ClearBtn{
+          background:#ff4a4a;
+          color:#fff;
+        }
+        .AddBtn{
+          background:#169bd5;
+          color:#fff;
+        }
         .ant-btn{
           margin-left:10px;
+          height:32px;
         }
       }
     }
@@ -117,15 +74,17 @@
         width:100%;
         .firstA{
           display: inline-block;
-          color: #0066FF;
+          color: #b67231;
           text-decoration: none;
-          margin:0 22px;
+          margin:0 10px;
+          font:14px "微软雅黑";
           float:left;
         }
         .firstB{
-          color: #FF0000;
+          color: #b67231;
           float:left;
           text-decoration: none;
+          font:14px "微软雅黑";
         }
       }
     }

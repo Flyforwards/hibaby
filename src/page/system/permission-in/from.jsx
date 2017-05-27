@@ -15,7 +15,7 @@ class SelectListed extends Component {
     this.setState({ value });
   }
   onSelect = (value,node, extra) => {
-    console.log(value)
+    //console.log(value)
     local.set("projectId",value)
   }
     render() {
@@ -23,7 +23,7 @@ class SelectListed extends Component {
             <div className="SelectList">
               <span>
               <TreeSelect
-                style={{ width: 150 }}
+                style={{ width: 370 }}
                 key={this.props.list.id}
                 value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}

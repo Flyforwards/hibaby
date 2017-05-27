@@ -2,9 +2,22 @@ import * as addCustomerInformation from '../services/addCustomerInformation';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js'
 import { routerRedux } from 'dva/router';
+
 export default {
   namespace: 'addCustomer',
   state: {
+
+    dataDetailId:90,
+    baseData:[],
+    expandData:[],
+    remarkData:[],
+
+    bigImageHidden:false,
+    bigImageData:[],
+    lookCardIDDLC:[],
+    lookContractDLC:[],
+
+
     remarkList:[],
     provinceData:[],
     cityData:[],
@@ -17,6 +30,8 @@ export default {
     headIconUrl:'',
 
     operator:'',
+
+    editCustomer:false,
 
     memberNumberValue:'',
     purchasePackageValue:'',
@@ -33,17 +48,17 @@ export default {
 
     remarkListColumns : [{
       title: '备注内容',
-      dataIndex: 'remark',
+      dataIndex: 'remarkInfo',
       key: 'name',
       width:'70%',
     }, {
       title: '备注时间',
-      dataIndex: 'remarkDate',
+      dataIndex: 'createTime',
       key: 'remarkDate',
       width:'15%',
     }, {
       title: '备注人',
-      dataIndex: 'remarkMan',
+      dataIndex: 'operator',
       key: 'remarkMan',
       width:'15%',
     }]
@@ -54,11 +69,30 @@ export default {
 
       const date = new Date();
 
-      const dict = {remark:todo,remarkDate:date.toLocaleString(),remarkMan:state.operator};
+      const dict = {remarkInfo:todo,createTime:date.toLocaleString(),operator:state.operator};
 
       const tempDict = [...remarkList,dict];
 
       return {...state,remarkList:tempDict,modal:false};
+    },
+
+    addRemarkAry(state, { payload: todo }){
+      return {...state,remarkList:todo};
+    },
+
+    editCustomer(state, { payload: todo }){
+      return {...state,editCustomer:todo.data};
+    },
+    lookDlc(state, { payload: todo }){
+      const lookCardIDDLC = state.lookCardIDDLC;
+      const lookContractDLC = state.lookContractDLC;
+      return {...state,bigImageHidden:true,bigImageData:(todo.isCardid ? lookCardIDDLC
+        :lookContractDLC)};
+
+    },
+
+    hideDlc(state, { payload: todo }){
+      return {...state,bigImageHidden:false};
     },
     hideOrShowModal(state, { payload: todo }){
       return {...state,modal:todo};
@@ -107,6 +141,15 @@ export default {
       }
       return {...state,cardIDDLC:arr};
     },
+
+    setLookCardIDDLC(state, { payload: todo }){
+      return {...state,lookCardIDDLC:todo.data};
+    },
+
+    setLookContractDLC(state, { payload: todo }){
+      return {...state,lookContractDLC:todo.data};
+    },
+
 
     addHeadIcon(state, { payload: todo }){
       return {...state,headIcon:todo.key,headIconUrl:todo.url};
@@ -157,19 +200,39 @@ export default {
       return {...state};
     },
 
+    setDataDetailId(state, { payload: todo }){
+      return {...state,dataDetailId:todo.dataId};
+    },
 
+    setBaseData(state, { payload: todo }){
+      return {...state,baseData:todo.data};
+    },
+
+    setExpandData(state, { payload: todo }){
+
+      return {...state,expandData:todo.data};
+    },
+
+    setRemarkData(state, { payload: todo }){
+      return {...state,remarkData:todo.data};
+    },
 
   },
   effects: {
-    *getProvinceData({ payload: values }, { call, put }) {
+    *getProvinceData({ payload: values }, { call, put,select }) {
+
+      const state = yield select(state => state.addCustomer);
+
       const { data: { code, data } } = yield call(addCustomerInformation.getCityData, values);
       if (code == 0) {
-        yield put({
-          type: 'addProvinceData',
-          payload: {
-            data,
+        yield put({type: 'addProvinceData',payload:{data}});
+        if (state.editCustomer){
+          yield put({type: 'getCityData',payload:{isHouseholdRegistration:false,dataId:state.baseData.province}});
+          if(state.expandData){
+            yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:state.expandData.provincePermanent}});
           }
-        });
+        };
+
       }
     },
 
@@ -307,18 +370,21 @@ export default {
       for (let i = 0; i < state.contractDLC.length;i++){
         contractStr += state.contractDLC[i];
         contractStr += ',';
-
       }
+
 
       for (let i = 0; i < state.cardIDDLC.length;i++){
         caridStr += state.cardIDDLC[i];
         caridStr += ',';
       }
 
+      if (caridStr.length > 0){caridStr = caridStr.substr(0,caridStr.length - 1) }
+      if (contractStr.length > 0){contractStr = contractStr.substr(0,contractStr.length - 1) }
+
       const dict = {
         "associatedRooms": values.associatedRooms,
         "cityPermanent": values.cityPermanent,
-        "contact": values.excontact,
+        "contact": values.contact,
         "contractAppendices": contractStr,
         "contractNumber": values.contractNumber,
         "customerId": values.id,
@@ -371,7 +437,8 @@ export default {
       for (let i = 0;i<remarkList.length;i++)
       {
         const remark = remarkList[i];
-        inputs.push({"customerId": values.id,"remarkInfo": remark.remark})
+
+        inputs.push({"customerId": values.id,"remarkInfo": remark.remarkInfo})
       }
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
@@ -383,6 +450,72 @@ export default {
       }
       else {
         message(err)
+      }
+    },
+    *getCustomerById({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
+
+      const dataDetailId = state.dataDetailId;
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerById,{dataId:dataDetailId});
+
+      if (code == 0) {
+        yield put({type:'setBaseData',payload:{
+          data
+        }} );
+      }
+    },
+
+    *getCustomerExtendById({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
+
+      const dataDetailId = state.dataDetailId;
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
+      if (code == 0) {
+        yield put({type:'setExpandData',payload:{ data }} );
+        yield put({type:'getDlcData'} );
+      }
+    },
+
+    *getCustomerRemarkById({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
+
+      const dataDetailId =state.dataDetailId;
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
+      if (code == 0) {
+
+        yield put({type:'setRemarkData',payload:{
+          data
+        }} );
+      }
+    },
+
+    *getDlcData({ payload: values },{ call, put ,select}) {
+      const state = yield select(state => state.addCustomer);
+
+      const  expandData=state.expandData;
+      if (expandData.idcardScan){
+        const { data: { code, data ,err} } = yield call(addCustomerInformation.getFileURL,{fileKey:expandData.idcardScan});
+
+        if (code == 0) {
+          yield put({type:'setLookCardIDDLC',payload:{
+            data:data.fileUrlList
+          }} );
+        }
+      }
+
+      if (expandData.contractAppendices) {
+        const {data: {code, data, err}} = yield call(addCustomerInformation.getFileURL, {fileKey: expandData.contractAppendices});
+        if (code == 0) {
+
+          yield put({
+            type: 'setLookContractDLC', payload: {
+              data:data.fileUrlList
+            }
+          });
+        }
       }
     },
 
@@ -457,8 +590,21 @@ export default {
           dispatch({
             type: 'getMainCustomerPackageById',
           });
+        };
+        if (pathname === '/crm/customer/customerDetails'){
+
+          dispatch({
+            type: 'getCustomerById',
+
+          });
+          dispatch({
+            type: 'getCustomerExtendById',
+
+          });
+          dispatch({
+            type: 'getCustomerRemarkById',
+          });
         }
-        ;
       })
     }
   },
