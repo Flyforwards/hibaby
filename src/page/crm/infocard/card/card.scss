@@ -12,9 +12,22 @@ padding: 20px;
     height: 40px;
   }
   label{
-    font-size: 14px;
-    color: #000000;
+    font: 14px "微软雅黑";
+    color: #333;
   }
+}
+.cardDetail{
+  .delbtn{
+    background: #ff4a4a;
+    border:#ff4a4a;
+    color:#fff;
+    font:12px "微软雅黑";
+  }
+}
+.ant-btn{
+  width:150px;
+  height:30px;
+  font:12px "微软雅黑";
 }
 .ant-form-item-required:before {
   content: '';

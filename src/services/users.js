@@ -146,7 +146,7 @@ export function getProjectAndModuleTree(values) {
   })
 }
 
-// 获取主模块树
+// 所有按钮权限别名列表
 export function currentUserPermissionAliasList(values) {
   return request('/crm/api/v1/permission/currentUserPermissionAliasList', {
     method: 'POST',

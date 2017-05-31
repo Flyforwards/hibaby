@@ -1,4 +1,5 @@
 import request from './request';
+import {session} from 'common/util/storage'
 
 // 连字符转驼峰
 String.prototype.hyphenToHump = function () {
@@ -148,12 +149,27 @@ Array.prototype.bubbleSortByKey = function (key) {
   }
 }
 
-console.log('我被引用啦，救命啊！！！');
+
+const keyToText = (dataSource, keyField, valueField, name='SYSTEM') => {
+  let TEXT_ARRAY = session.get('TEXT_ARRAY') ? session.get('TEXT_ARRAY') : {};
+  let tmp = {};
+  // console.log('keyToText:data>>', dataSource);
+  dataSource.map((item) => {
+    const key = item[keyField];
+    const value = item[valueField];
+    tmp[key] = value;
+  })
+  // console.log('keyToText:data:tmp>>', tmp);
+  TEXT_ARRAY[name] = tmp;
+  session.set('TEXT_ARRAY', TEXT_ARRAY);
+}
+
 
 module.exports = {
   queryURL,
   queryArray,
   arrayToTree,
-  request
+  request,
+  keyToText
 }
 

@@ -3,12 +3,15 @@
 import React, { Component } from 'react'
 import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
 import styles from './healthyhome.scss';
+import PicturesWall from '../customer/fileUpload';
 import { connect } from 'dva';
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
-
+/**
+ * 客户信息》健康档案》医疗健康档案
+ */
 function Healthyhome(props) {
 
   const formItemLayout = {
@@ -91,15 +94,12 @@ function Healthyhome(props) {
           <div className="uploadOptions">附件:</div>
         </Col>
         <Col span="18">
-          <Button key={key} type="primary" className="uploadOptionsButton" onClick={uploadOptionsFromLocal}>上传附件</Button>
+          <PicturesWall>
+            <Button key={key} type="primary" className="uploadOptionsButton">上传附件</Button>
+          </PicturesWall>
         </Col>
       </div>
     )
-  }
-
-  //上传本地附件
-  function uploadOptionsFromLocal () {
-    //TODO:点击上传附件
   }
 
   //评分选择器

@@ -65,5 +65,5 @@ class DictionarySelect extends Component {
 
 }
 
-export default connect(({etc:{selectData}}) => ({ selectData }))(DictionarySelect);
+export default connect(({etc:{selectData, trigger}}) => ({ selectData, trigger }))(DictionarySelect);
 
