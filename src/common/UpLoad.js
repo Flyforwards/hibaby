@@ -44,7 +44,7 @@ class Avatar extends React.Component {
   handleChange = (info) => {
     const status = info.file.status;
         if (status !== 'uploading') {
-          console.log(info.file, info.fileList);
+        //  console.log(info.file, info.fileList);
         }
         if (status === 'done') {
           getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl,error: false }));
@@ -78,7 +78,7 @@ class Avatar extends React.Component {
     }else if(this.props.urlList){
       imageUrl = this.props.urlList
     }
-    console.log("this.state.error",this.state.error)
+    //console.log("this.state.error",this.state.error)
     if ( this.state.error ) {
       imageUrl = IMG;
     }
@@ -87,7 +87,7 @@ class Avatar extends React.Component {
         {...props}
         beforeUpload={beforeUpload}
         onChange = { this.handleChange.bind(this) }
-      >  
+      >
         {
           imageUrl ?
             <img src={ imageUrl } alt="头像" className="avatar" onError={ this.onError.bind(this) }/> :<Icon type="plus" className="avatar-uploader-trigger" />
