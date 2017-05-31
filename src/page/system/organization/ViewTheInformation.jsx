@@ -81,7 +81,7 @@ class ViewTheInformationed extends React.Component {
       })
   }
   headelReturn = ()=>{
-    window.history.back(-1); 
+    window.history.back(-1);
   }
     render() {
       let USER = []
@@ -118,12 +118,12 @@ class ViewTheInformationed extends React.Component {
                   <p className="systemRole"><span>系统角色:</span><span className="Two">{temp}</span></p>
                 </div>
               <div className="contactInformation">联系方式</div>
-              <div className="contactInformationContent">
-                  <p className="localCenter"><span>登陆手机号:</span><span className="Two">{USER.mobile}</span></p>
-                  <p className="affiliatedDepartment"><span>联系方式:</span><span className="Two">{entrys[i].contact}</span></p>
-                  <p className="directLeadership"><span>公司邮箱:</span><span className="Two">{entrys[i].emaill}</span></p>
-                  <p className="position"><span>内部分机:</span><span className="Two">{entrys[i].extension}</span></p>
-              </div>
+                <div className="contactInformationContent">
+                    <p className="localCenter"><span>登陆手机号:</span><span className="Two">{USER.mobile}</span></p>
+                    <p className="affiliatedDepartment"><span>联系方式:</span><span className="Two">{entrys[i].contact}</span></p>
+                    <p className="directLeadership"><span>公司邮箱:</span><span className="Two">{entrys[i].emaill}</span></p>
+                    <p className="position"><span>内部分机:</span><span className="Two">{entrys[i].extension}</span></p>
+                </div>
               </div>)
          }
           function getLocalTime(nS) {
@@ -146,7 +146,7 @@ class ViewTheInformationed extends React.Component {
       let dataID = window.location.search.split("=")[1];
       if ( this.state.error ) {
         imageUrl = IMG;
-      } 
+      }
       return(
         <div className="viewTheInformation">
           <div className="basicInformation">基本信息</div>
@@ -160,7 +160,9 @@ class ViewTheInformationed extends React.Component {
             { JobInformation }
 
           <Button  className="disabledButton" onClick={this.headelDisabled}>禁用</Button>
-          <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID } }}><Button  type="primary" className="editButton">编辑</Button></Link>
+          <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID } }}>
+              <Button  type="primary" className="editButton">编辑</Button>
+          </Link>
           <Button className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>
           <Link><Button className="returnButton" onClick={this.headelReturn.bind(this)}>返回</Button></Link>
            <Disabled

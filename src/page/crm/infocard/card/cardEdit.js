@@ -83,7 +83,7 @@ class CardDetail extends Component {
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return (
-      <div  style={{ 'padding': '20px' }}>
+      <div className="cardEdit" style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
             <Row>
@@ -169,12 +169,12 @@ class CardDetail extends Component {
              此处放列表组件
              */}
             <Row>
-              <Col span = { 20 }>
+              <Col span = { 16 }>
               </Col>
-              <Col span = { 2 }>
+              <Col span = { 4 }>
                 <Link to="/crm/cardDetail"><Button type="default">返回</Button></Link>
               </Col>
-              <Col span = { 2 }>
+              <Col span = { 4 }>
                 <Button type="primary"  onClick={this.onSave.bind(this)}>保存</Button>
               </Col>
             </Row>

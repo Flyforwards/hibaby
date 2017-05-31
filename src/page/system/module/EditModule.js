@@ -26,7 +26,7 @@ class EditModule extends Component {
         if (!err) {
           if (values.permissionId && values.permissionId.length > 0) {
             values.permissionList = `${values.permissionId}`;
-            values.permissionId = values.permissionId[values.permissionId.length-1];
+            values.permissionId = values.permissionId[values.permissionId.length - 1];
           }
           values.id = this.props.record.id;
           this.props.dispatch({
