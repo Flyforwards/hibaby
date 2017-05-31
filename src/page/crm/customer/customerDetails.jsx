@@ -79,14 +79,18 @@ function ExtensionInfo(props) {
     {title:'合同编号',value:netData.contractNumber},
     {title:'关联客房',value:netData.associatedRooms},
     {title:'身份证扫描',value:netData.idcardScan,isDLC:true,onClick:{onClickForCardid}},
-    {title:'合同附件',value:netData.contractAppendices,isDLC:true,onClick:{onClickForCardid}},
+    {title:'合同附件',value:netData.contractAppendices,isDLC:true,onClick:{onClickForContractAppendices}},
     {title:'会员编号',value:netData.memberNumber},
     {title:'操作者2',value:netData.operator},
   ];
 
 
-  function onClickForCardid(isCardid){
-    dispatch({type:'addCustomer/lookDlc',payload:{isCardid:isCardid}})
+  function onClickForCardid(){
+    dispatch({type:'addCustomer/lookDlc',payload:{isCardid:true}})
+  }
+
+  function onClickForContractAppendices(){
+    dispatch({type:'addCustomer/lookDlc',payload:{isCardid:false}})
   }
 
   const expandInfoDiv = [];

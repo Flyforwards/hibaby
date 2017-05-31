@@ -24,6 +24,8 @@ export default {
     permanentCityData:[],
     nationalData:[],
     modal:false,
+    cardIDDLC:[],
+    contractDLC:[],
     headIcon:'',
     headIconUrl:'',
 
@@ -35,6 +37,12 @@ export default {
     purchasePackageValue:'',
 
     //下拉框所需数据
+    guestInformationSourceAry:[],
+    concernsAry:[],
+    networkSearchWordsAry:[],
+    fetusAry:[],
+    hospitalAry:[],
+    intentionPackageAry:[],
     memberAry:[],
     specialIdentityAry:[],
 
@@ -76,11 +84,10 @@ export default {
       return {...state,editCustomer:todo.data};
     },
     lookDlc(state, { payload: todo }){
-      // const lookCardIDDLC = state.lookCardIDDLC;
-      // const lookContractDLC = state.lookContractDLC;
-      // return {...state,bigImageHidden:true,bigImageData:(todo.isCardid ? lookCardIDDLC
-      //   :lookContractDLC)};
-      return state;
+      const lookCardIDDLC = state.lookCardIDDLC;
+      const lookContractDLC = state.lookContractDLC;
+      return {...state,bigImageHidden:true,bigImageData:(todo.isCardid ? lookCardIDDLC
+        :lookContractDLC)};
 
     },
 
@@ -103,20 +110,16 @@ export default {
       return {...state,nationalData:todo.data};
     },
     addCardIDDLC(state, { payload: todo }){
-      const ary = state.lookCardIDDLC;
-      ary.push(todo)
-      return {...state,lookCardIDDLC:ary};
+      return {...state,cardIDDLC:todo};
     },
     addContractDLC(state, { payload: todo }){
-      const ary = state.lookContractDLC;
-      ary.push(todo)
-      return {...state,lookContractDLC:ary};
+      return {...state,contractDLC:todo};
     },
     reductionState(state, { payload: todo }){
       return {...state,remarkList:[],cardIDDLC:[],contractDLC:[],headIcon:'',headIconUrl:'',};
     },
     deleteContractDLC(state, { payload: todo }){
-      let arr = state.lookContractDLC;
+      let arr = state.contractDLC;
       for(var i=0; i<arr.length; i++) {
         if(arr[i] == todo) {
           arr.splice(i, 1);
@@ -125,48 +128,31 @@ export default {
       }
 
 
-      return {...state,lookContractDLC:arr};
+      return {...state,contractDLC:arr};
     },
     deleteCardIDDLC(state, { payload: todo }){
 
-      let arr = state.lookCardIDDLC;
+      let arr = state.cardIDDLC;
       for(var i=0; i<arr.length; i++) {
         if(arr[i] == todo) {
           arr.splice(i, 1);
           break;
         }
       }
-      return {...state,lookCardIDDLC:arr};
+      return {...state,cardIDDLC:arr};
     },
 
     setLookCardIDDLC(state, { payload: todo }){
-      const ary = state.expandData.idcardScan.split(",");
-
-      let dict = [];
-      for (let i = 0 ; i < ary.length ; i++ ){
-        const name = ary[i];
-        const url = todo.data[i];
-        dict.push({name:name,url:url,uid:i});
-      }
-
-      return {...state,lookCardIDDLC:dict};
+      return {...state,lookCardIDDLC:todo.data};
     },
 
     setLookContractDLC(state, { payload: todo }){
-      const ary = state.expandData.contractAppendices.split(",");
-      let dict = [];
-      for (let i = 0 ; i < ary.length ; i++ ){
-        const name = ary[i];
-        const url = todo.data[i];
-        dict.push({name:name,url:url,uid:i});
-      }
-
-      return {...state,lookContractDLC:dict};
+      return {...state,lookContractDLC:todo.data};
     },
 
 
     addHeadIcon(state, { payload: todo }){
-      return {...state,headIcon:todo.name,headIconUrl:todo.url};
+      return {...state,headIcon:todo.key,headIconUrl:todo.url};
     },
 
     setMemberNumberValue(state, { payload: todo }){
@@ -182,7 +168,7 @@ export default {
 
     addMutDictData(state, { payload: todo }){
 
-      if(todo.id === 8){
+      if(todo.id === 1){
 
         return {...state,fetusAry:todo.data};
       }
@@ -287,7 +273,7 @@ export default {
       const parameter ={
         id: value.id,
         softDelete: 0,
-        type:value.type || 2,
+        type: 2,
       };
 
 
@@ -364,6 +350,7 @@ export default {
         else {
           message.success("新增客户成功");
           yield put(routerRedux.push('/crm/customer'));
+          yield put({type:'savaExtensionInfo',} );
         }
       }
       else {
@@ -380,17 +367,15 @@ export default {
       let caridStr = '';
       let contractStr = '';
 
-      for (let i = 0; i < state.lookCardIDDLC.length;i++){
-        const dict = state.lookCardIDDLC[i];
-        caridStr += dict.name;
-        caridStr += ',';
+      for (let i = 0; i < state.contractDLC.length;i++){
+        contractStr += state.contractDLC[i];
+        contractStr += ',';
       }
 
 
-      for (let i = 0; i < state.lookContractDLC.length;i++){
-        const dict = state.lookContractDLC[i];
-        contractStr += dict.name;
-        contractStr += ',';
+      for (let i = 0; i < state.cardIDDLC.length;i++){
+        caridStr += state.cardIDDLC[i];
+        caridStr += ',';
       }
 
       if (caridStr.length > 0){caridStr = caridStr.substr(0,caridStr.length - 1) }
@@ -552,6 +537,42 @@ export default {
             type:'getOperator'
           });
           dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 1,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 2,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 3,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 4,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 5,
+            }
+          });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "id": 6,
+            }
+          });
+          dispatch({
             type: 'getMembershipcardByType',
             payload:{
               "dataId": 1,
@@ -588,3 +609,4 @@ export default {
     }
   },
 };
+
