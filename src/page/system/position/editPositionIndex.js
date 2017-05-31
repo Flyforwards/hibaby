@@ -6,7 +6,6 @@ import { local, session } from 'common/util/storage.js'
 import { Link } from 'react-router';
 const FormItem = Form.Item
 const createForm = Form.create
-import manager from 'common/util'
 
 class EditableCell extends Component {
   state = {
@@ -141,7 +140,7 @@ class LocalizedModal extends Component {
           }
         });
         // 冒泡排序
-        names = manager.bubbleSortByKey(names, "inx");
+        names.bubbleSortByKey("inx");
         // 对数据进行整合
         names.map((record, index)=>{
           let name = record;
@@ -263,7 +262,7 @@ class LocalizedModal extends Component {
             <div >
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
-                rules: [{ required: true, message: '选项不能为空' }],
+                rules: [{ required: true, message: '不为空且长度最多20！', max: 20 }],
                 initialValue: initValue,
               })(
                 <Input />

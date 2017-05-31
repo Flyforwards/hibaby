@@ -1,7 +1,6 @@
 
 import * as systemService from '../services/system';
 import * as usersService from '../services/users';
-import manager from 'common/util'
 import { message } from 'antd';
 import  { session } from 'common/util/storage.js';
 import { parse } from 'qs'

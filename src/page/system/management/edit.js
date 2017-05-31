@@ -5,7 +5,6 @@ import { Card,Input,Button,Form } from 'antd';
 import { Link } from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
-import manager from 'common/util'
 
 @createForm()
 class editGroupData extends React.Component {
@@ -63,7 +62,7 @@ class editGroupData extends React.Component {
             }
           });
           // 冒泡排序
-          names = manager.bubbleSortByKey(names, "inx");
+          names.bubbleSortByKey( "inx");
           // 对数据进行整合
           names.map((record, index)=>{
             let name = record;

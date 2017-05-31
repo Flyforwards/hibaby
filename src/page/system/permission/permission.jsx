@@ -8,7 +8,6 @@ import AddRoleFrom from './AddRoleFrom';
 import SettingPermissionFrom from './SettingpermissionFrom'
 import ShowMemberListFrom from './ShowMemberListFrom'
 import AlertModalFrom from 'common/AlertModalFrom'
-import manager from 'common/util'
 import { routerRedux } from 'dva/router';
 import Page from 'framework/page'
 
@@ -34,10 +33,10 @@ class permission extends Component {
           key: 'operating',
           width: '500px',
           render: (text, record, index) => {
-            const roleConfig = !manager.array_contain(this.props.permissionAlias,'roleConfig');
-            const users = !manager.array_contain(this.props.permissionAlias,'roleUsers');
-            const roleU = !manager.array_contain(this.props.permissionAlias,'roleU')
-            const roleD =  !manager.array_contain(this.props.permissionAlias,'roleD')
+            const roleConfig = !this.props.permissionAlias.contains('rolePermissionC');
+            const users = !this.props.permissionAlias.contains('roleUsers');
+            const roleU = !this.props.permissionAlias.contains('roleU')
+            const roleD =  !this.props.permissionAlias.contains('roleD')
             return (
               <div key = { index }>
                 <Link className="firstA" disabled={roleU} onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
@@ -138,7 +137,7 @@ class permission extends Component {
         return (
            <div className="permission-cent">
              <div className="divs">
-               <Button disabled={ !manager.array_contain(permissionAlias,"roleC") } className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
+               <Button disabled={ !permissionAlias.contains("roleC") }  className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
                 <Table {...tableProps} columns={ this.columns } bordered rowKey={record => record.id}/>
