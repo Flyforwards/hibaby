@@ -22,7 +22,7 @@ export default {
        const {data: {data: selectDataItem}} = yield call(etcService.getRawData, params);
        let {selectData, trigger} = yield select(state => state.etc)
       //  console.log('etc:models>>', selectData);
-       keyToText(selectDataItem, 'id', 'name', selectName);
+        keyToText(selectDataItem, 'id', 'name', selectName);
         selectData[selectName] = selectDataItem;
         yield put({
           type: 'putDicData',

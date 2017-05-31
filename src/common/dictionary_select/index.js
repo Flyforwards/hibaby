@@ -29,7 +29,7 @@ class DictionarySelect extends Component {
 
     if (this.params || this.force) {
       this.getData(this.params)
-    } else if (this.selectData == null || this.selectData.length == 0 || true) {
+    } else if (this.selectData == null || this.selectData.length == 0) {
       this.getData(this.defaultParams)
     }
   }
