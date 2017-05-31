@@ -1,13 +1,11 @@
 import React from 'react';
-import { Modal, Button ,Carousel} from 'antd';
+import { Modal ,Carousel} from 'antd';
 import './customerInformation.scss';
 
 export default function BigImageModal (props) {
-
   const imageAry = [];
-
   for (let i = 0;i<props.bigImageData.length;i++){
-    imageAry.push(<div ><img className="bigImage" src={props.bigImageData[i]} alt="" /></div> )
+    imageAry.push(<div key={i}  className="bigDiv"> <img className="bigImage" src={props.bigImageData[i].url} alt="" /></div>)
   }
 
 

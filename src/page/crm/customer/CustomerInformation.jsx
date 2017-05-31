@@ -73,7 +73,7 @@ const FormItem = Form.Item;
         break;
       case 'Select':
         if (dict.selectName){
-          tempDiv = (<DictionarySelect  selectName={dict.selectName}  placeholder="请选择" style={{ width: '100%' }}/>);
+          tempDiv = (<DictionarySelect  selectName={dict.selectName}  placeholder="请选择" style={{ width: 220 }}/>);
         }
         else {
           if (dict.fun)
@@ -170,7 +170,6 @@ const FormItem = Form.Item;
         const array = selectArray[dict.submitStr];
         if (array)
         {
-          console.log(array);
           for(let i = 0;i<array.length;i++){
             const subDict = array[i];
             if (subDict.id == id){
@@ -222,15 +221,14 @@ const FormItem = Form.Item;
     {title:'关注点',component:'Select',submitStr:'focus',selectName:'Focus'},
     {title:'意向套餐',component:'Select',submitStr:'intentionPackage',selectName:'IntentionPackage'},
     {title:'网络搜索词',component:'Select',submitStr:'webSearchTerm',selectName:'WebSearchTerm'},
-    {title:'现住址',component:'Select',submitStr:'province',fun:provinceSelect,children:provinceDataChis,span:6},
+    {title:'现住址',component:'Select',submitStr:'province',children:provinceDataChis,span:6},
     {component:'Select',submitStr:'city',children:cityDataChis,span:8},
     {component:'Input',submitStr:'detailed',span:16},
     {title:'操作者1',component:'Input',submitStr:'operator',disabled:true,initValue:operator,span:6},
   ];
 
   if (props.users.editCustomer){
-    const selectArray = {province:provinceData,city:cityData};
-    if (props.users.baseData,selectArray){
+    if (props.users.baseData){
       datacompare(baseInfo,props.users.baseData);
     }
   }
@@ -341,7 +339,7 @@ function ExtensionInfo(props) {
   }
 
   const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
-    headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
+    headIconUrl,provinceData,cityData,permanentCityData,nationalData} = props.users;
   const {dispatch} = props;
 
 
@@ -364,6 +362,12 @@ function ExtensionInfo(props) {
 
   for (let i = 0; i < provinceData.length ; i++) {
     provinceDataChis.push(<Option key={provinceData[i].id}>{provinceData[i].description}</Option>);
+  }
+
+  const cityDataChis = [];
+
+  for (let i = 0; i < cityData.length ; i++) {
+    cityDataChis.push(<Option key={cityData[i].id}>{cityData[i].description}</Option>);
   }
 
   const permanentCityDataChis = [];
@@ -395,16 +399,16 @@ function ExtensionInfo(props) {
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,initValue:memberNumberValue},
     {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},
-    {title:'户籍地址',component:'Select',submitStr:'provincePermanent',fun:PermanentProvinceSelect,children:provinceDataChis,span:6},
+    {title:'户籍地址',component:'Select',submitStr:'provincePermanent',children:provinceDataChis,span:6},
     {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
     {component:'Input',submitStr:'detailedPermanent',span:18},
 
-    {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl},
+    {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg},
   ];
 
   if (props.users.editCustomer){
-    const selectArray = {nation:nationalData,member:memberAry,specialIdentity:specialIdentityAry,provincePermanent:provinceData,cityPermanent:permanentCityData};
-    if (props.users.expandData,selectArray){
+
+    if (props.users.expandData){
       datacompare(expandInfo,props.users.expandData);
     }
   }
@@ -529,7 +533,7 @@ class customerInformation extends React.Component{
       }
      })
 
-    if (num > 4)
+    if (num > 3)
     {
       this.refs.extensionForm.validateFields((err, values) => {
         if (!err) {
