@@ -7,7 +7,7 @@ export default {
   namespace: 'addCustomer',
   state: {
 
-    dataDetailId:90,
+    dataDetailId:101,
     baseData:[],
     expandData:[],
     remarkData:[],
@@ -24,8 +24,6 @@ export default {
     permanentCityData:[],
     nationalData:[],
     modal:false,
-    cardIDDLC:[],
-    contractDLC:[],
     headIcon:'',
     headIconUrl:'',
 
@@ -110,16 +108,20 @@ export default {
       return {...state,nationalData:todo.data};
     },
     addCardIDDLC(state, { payload: todo }){
-      return {...state,cardIDDLC:todo};
+      const ary = state.lookCardIDDLC;
+      ary.push(todo)
+      return {...state,lookCardIDDLC:ary};
     },
     addContractDLC(state, { payload: todo }){
-      return {...state,contractDLC:todo};
+      const ary = state.lookContractDLC;
+      ary.push(todo)
+      return {...state,lookContractDLC:ary};
     },
     reductionState(state, { payload: todo }){
-      return {...state,remarkList:[],cardIDDLC:[],contractDLC:[],headIcon:'',headIconUrl:'',};
+      return {...state,remarkList:[],headIcon:'',headIconUrl:'',};
     },
     deleteContractDLC(state, { payload: todo }){
-      let arr = state.contractDLC;
+      let arr = state.lookContractDLC;
       for(var i=0; i<arr.length; i++) {
         if(arr[i] == todo) {
           arr.splice(i, 1);
@@ -128,31 +130,48 @@ export default {
       }
 
 
-      return {...state,contractDLC:arr};
+      return {...state,lookContractDLC:arr};
     },
     deleteCardIDDLC(state, { payload: todo }){
 
-      let arr = state.cardIDDLC;
+      let arr = state.lookCardIDDLC;
       for(var i=0; i<arr.length; i++) {
         if(arr[i] == todo) {
           arr.splice(i, 1);
           break;
         }
       }
-      return {...state,cardIDDLC:arr};
+      return {...state,lookCardIDDLC:arr};
     },
 
     setLookCardIDDLC(state, { payload: todo }){
-      return {...state,lookCardIDDLC:todo.data};
+      const ary = state.expandData.idcardScan.split(",");
+
+      let dict = [];
+      for (let i = 0 ; i < ary.length ; i++ ){
+        const name = ary[i];
+        const url = todo.data[i];
+        dict.push({name:name,url:url,uid:i});
+      }
+
+      return {...state,lookCardIDDLC:dict};
     },
 
     setLookContractDLC(state, { payload: todo }){
-      return {...state,lookContractDLC:todo.data};
+      const ary = state.expandData.contractAppendices.split(",");
+      let dict = [];
+      for (let i = 0 ; i < ary.length ; i++ ){
+        const name = ary[i];
+        const url = todo.data[i];
+        dict.push({name:name,url:url,uid:i});
+      }
+
+      return {...state,lookContractDLC:dict};
     },
 
 
     addHeadIcon(state, { payload: todo }){
-      return {...state,headIcon:todo.key,headIconUrl:todo.url};
+      return {...state,headIcon:todo.name,headIconUrl:todo.url};
     },
 
     setMemberNumberValue(state, { payload: todo }){
@@ -168,7 +187,7 @@ export default {
 
     addMutDictData(state, { payload: todo }){
 
-      if(todo.id === 1){
+      if(todo.id === 8){
 
         return {...state,fetusAry:todo.data};
       }
@@ -273,7 +292,7 @@ export default {
       const parameter ={
         id: value.id,
         softDelete: 0,
-        type: 2,
+        type:value.type || 2,
       };
 
 
@@ -333,24 +352,33 @@ export default {
     },
 
 
-    *savaBaseInfo({ payload: values },{ call, put ,select}) {
+    *savaBaseInfo({ payload: values},{ call, put ,select}) {
 
       const {baseDict,exDict} = values;
 
-      const { data: { code, data,err } } = yield call(addCustomerInformation.saveCustomer,baseDict);
+      const state = yield select(state => state.addCustomer);
+
+      let dict = {...baseDict,
+        hospital:baseDict.hospital.key, fetus:baseDict.fetus.key, focus:baseDict.focus.key, resourceCustomer:baseDict.resourceCustomer.key,
+        intentionPackage:baseDict.intentionPackage.key, webSearchTerm:baseDict.webSearchTerm.key, province:baseDict.province.key, city:baseDict.city.key};
+
+      if (state.editCustomer ){
+        dict.id = state.baseData.id;
+      }
+
+      const { data: { code, data,err } } = yield call((state.editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
       if (code == 0) {
         if (exDict){
           yield put({
             type:'savaExtensionInfo',
             payload:{
-              ...exDict,id:data
+              ...exDict,id:state.editCustomer ? state.baseData.id : data
             }
           });
         }
         else {
           message.success("新增客户成功");
           yield put(routerRedux.push('/crm/customer'));
-          yield put({type:'savaExtensionInfo',} );
         }
       }
       else {
@@ -367,23 +395,28 @@ export default {
       let caridStr = '';
       let contractStr = '';
 
-      for (let i = 0; i < state.contractDLC.length;i++){
-        contractStr += state.contractDLC[i];
-        contractStr += ',';
+      for (let i = 0; i < state.lookCardIDDLC.length;i++){
+        const dict = state.lookCardIDDLC[i];
+        caridStr += dict.name;
+        caridStr += ',';
       }
 
 
-      for (let i = 0; i < state.cardIDDLC.length;i++){
-        caridStr += state.cardIDDLC[i];
-        caridStr += ',';
+      for (let i = 0; i < state.lookContractDLC.length;i++){
+        const dict = state.lookContractDLC[i];
+        contractStr += dict.name;
+        contractStr += ',';
       }
 
       if (caridStr.length > 0){caridStr = caridStr.substr(0,caridStr.length - 1) }
       if (contractStr.length > 0){contractStr = contractStr.substr(0,contractStr.length - 1) }
 
+
+
+
       const dict = {
         "associatedRooms": values.associatedRooms,
-        "cityPermanent": values.cityPermanent,
+        "cityPermanent": values.cityPermanent.key,
         "contact": values.contact,
         "contractAppendices": contractStr,
         "contractNumber": values.contractNumber,
@@ -392,21 +425,24 @@ export default {
         "detailedPermanent": values.detailedPermanent,
         "idcard": values.idcard,
         "idcardScan": caridStr,
-        "imgURL": state.headIconUrl,
+        "imgURL": values.imgURL ,
         "insuranceSituation": values.insuranceSituation,
-        "member": values.member,
+        "member":  (typeof values.member === 'object')  ? values.member.key : '',
         "memberNumber": state.memberNumberValue,
-        "nation": values.nation,
+        "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format(),
-        "provincePermanent": values.provincePermanent,
+        "provincePermanent": values.provincePermanent.key,
         "purchasePackage": '0',
-        "specialIdentity": values.specialIdentity
+        "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
+      if (state.editCustomer ){
+        dict.id = state.expandData.id;
+      }
 
-      const { data: { code, data ,err} } = yield call(addCustomerInformation.savaExtensionInfo,dict);
+      const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
       if (code == 0) {
         if (remarkList.length > 0){
           yield put({
@@ -419,7 +455,6 @@ export default {
         else {
           message.success("新增客户成功");
           yield put(routerRedux.push('/crm/customer'));
-          yield put({type: 'savaExtensionInfo',});
         }
       }
       else {
@@ -445,7 +480,6 @@ export default {
       if (code == 0) {
         message.success("新增客户成功");
         yield put(routerRedux.push('/crm/customer'));
-        yield put({type:'savaExtensionInfo',} );
 
       }
       else {
@@ -472,8 +506,11 @@ export default {
       const dataDetailId = state.dataDetailId;
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
+      console.log(data);
       if (code == 0) {
+
         yield put({type:'setExpandData',payload:{ data }} );
+        yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
         yield put({type:'getDlcData'} );
       }
     },
@@ -485,7 +522,7 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
       if (code == 0) {
-
+        console.log(data);
         yield put({type:'setRemarkData',payload:{
           data
         }} );
@@ -496,27 +533,30 @@ export default {
       const state = yield select(state => state.addCustomer);
 
       const  expandData=state.expandData;
-      if (expandData.idcardScan){
-        const { data: { code, data ,err} } = yield call(addCustomerInformation.getFileURL,{fileKey:expandData.idcardScan});
+      if (expandData){
+        if (expandData.idcardScan){
+          const { data: { code, data ,err} } = yield call(addCustomerInformation.getFileURL,{fileKey:expandData.idcardScan});
 
-        if (code == 0) {
-          yield put({type:'setLookCardIDDLC',payload:{
-            data:data.fileUrlList
-          }} );
-        }
-      }
-
-      if (expandData.contractAppendices) {
-        const {data: {code, data, err}} = yield call(addCustomerInformation.getFileURL, {fileKey: expandData.contractAppendices});
-        if (code == 0) {
-
-          yield put({
-            type: 'setLookContractDLC', payload: {
+          if (code == 0) {
+            yield put({type:'setLookCardIDDLC',payload:{
               data:data.fileUrlList
-            }
-          });
+            }} );
+          }
+        }
+
+        if (expandData.contractAppendices) {
+          const {data: {code, data, err}} = yield call(addCustomerInformation.getFileURL, {fileKey: expandData.contractAppendices});
+          if (code == 0) {
+
+            yield put({
+              type: 'setLookContractDLC', payload: {
+                data:data.fileUrlList
+              }
+            });
+          }
         }
       }
+
     },
 
   },
@@ -539,7 +579,8 @@ export default {
           dispatch({
             type: 'getDataDict',
             payload:{
-              "id": 1,
+              "id": 8,
+              'type':1,
             }
           });
           dispatch({

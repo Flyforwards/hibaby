@@ -22,12 +22,28 @@ export function saveCustomer(values) {
   })
 };
 
+export function updateCustomer(values) {
+  return request('/crm/api/v1/customer/updateCustomer', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+
 export function savaExtensionInfo(values) {
   return request('/crm/api/v1/customer/saveCustomerExtend', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 };
+
+export function updateCustomerExtend(values) {
+  return request('/crm/api/v1/customer/updateCustomerExtend', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
 
 export function savaRemark(values) {
   return request('/crm/api/v1/customer/saveCustomerRemark', {
