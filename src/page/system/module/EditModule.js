@@ -148,6 +148,12 @@ class EditModule extends Component {
                     <Input className="input"/>
                 )}
               </FormItem>
+              <FormItem label="描述" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+                {getFieldDecorator('description', {initialValue: item.description,rules: [{ required: false, }],
+                })(
+                  <Input className="input"/>
+                )}
+              </FormItem>
               <FormItem className = "orderByBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('orderBy', {
                   initialValue: item.orderBy,rules: [{ required:false, message: '字段名称为必填项！' }],
