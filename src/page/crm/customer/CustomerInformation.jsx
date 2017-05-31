@@ -4,9 +4,10 @@ import { connect } from 'dva';
 import FileUpload from './fileUpload'
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
-import PicturesWall from './fileUpload'
+import DictionarySelect from 'common/dictionary_select';
 
-import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
+
+import {Icon,Select, Modal,Input,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -71,12 +72,18 @@ const FormItem = Form.Item;
         tempDiv = (<Input disabled={dict.disabled}/>);
         break;
       case 'Select':
-        if (dict.fun)
-        {
-          tempDiv = (<Select onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
+        if (dict.selectName){
+          tempDiv = (<DictionarySelect  selectName={dict.selectName}  placeholder="请选择" style={{ width: '100%' }}/>);
         }
         else {
-          tempDiv = (<Select placeholder='请选择'>{dict.children}</Select>);
+          if (dict.fun)
+          {
+
+            tempDiv = (<Select onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
+          }
+          else {
+            tempDiv = (<Select placeholder='请选择'>{dict.children}</Select>);
+          }
         }
         break;
       case 'DatePicker':
@@ -94,15 +101,15 @@ const FormItem = Form.Item;
       case 'UploadButton':
       {
         tempDiv =
-          <PicturesWall>
-            <Button><Icon type="upload" /> 上传附件</Button>
-         </PicturesWall>
+          <FileUpload fun={dict.fun} deleteFun={dict.deleteFun}>
+            <Button><Icon type="upload"/> 上传附件</Button>
+         </FileUpload>
       }
         break;
       case 'headUpload':
       {
         tempDiv =
-          <PicturesWall fun={dict.fun} isHead={true} >
+          <FileUpload fun={dict.fun} isHead={true} >
           <div className="avatar-uploader">
             {
               dict.initValue ?
@@ -110,7 +117,7 @@ const FormItem = Form.Item;
                 <Icon type="plus" className="avatar-uploader-trigger" />
             }
           </div>
-        </PicturesWall>
+        </FileUpload>
 
       }
         break;
@@ -163,6 +170,7 @@ const FormItem = Form.Item;
         const array = selectArray[dict.submitStr];
         if (array)
         {
+          console.log(array);
           for(let i = 0;i<array.length;i++){
             const subDict = array[i];
             if (subDict.id == id){
@@ -173,57 +181,21 @@ const FormItem = Form.Item;
         }
       }
       else {
-        dict.initValue = compareArray[dict.submitStr];
+        if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices')
+        {}
+        else {
+          dict.initValue = compareArray[dict.submitStr];
+        }
       }
     }
   }
 
   function BaseInfo(props) {
 
-    const {operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
-      provinceData,cityData} = props.users;
+    const {operator,provinceData,cityData} = props.users;
     const {dispatch} = props;
 
     const { getFieldDecorator } = props.form;
-
-
-    const guestInformationSource = [];
-
-  for (let i = 0; i < guestInformationSourceAry.length ; i++) {
-    guestInformationSource.push(<Option key={guestInformationSourceAry[i].id}>{guestInformationSourceAry[i].name}</Option>);
-  }
-
-
-  const concerns = [];
-
-  for (let i = 0; i < concernsAry.length ; i++) {
-    concerns.push(<Option key={concernsAry[i].id}>{concernsAry[i].name}</Option>);
-  }
-
-
-  const intentionPackages = [];
-
-  for (let i = 0; i < intentionPackageAry.length ; i++) {
-    intentionPackages.push(<Option key={intentionPackageAry[i].id}>{intentionPackageAry[i].name}</Option>);
-  }
-
-  const networkSearchWords = [];
-
-  for (let i = 0; i < networkSearchWordsAry.length ; i++) {
-    networkSearchWords.push(<Option key={networkSearchWordsAry[i].id}>{networkSearchWordsAry[i].name}</Option>);
-  }
-
-  const fetusChi = [];
-
-  for (let i = 0; i < fetusAry.length ; i++) {
-    fetusChi.push(<Option key={fetusAry[i].id}>{fetusAry[i].name}</Option>);
-  }
-
-  const hospitals = [];
-
-  for (let i = 0; i < hospitalAry.length ; i++) {
-    hospitals.push(<Option key={hospitalAry[i].id}>{hospitalAry[i].name}</Option>);
-  }
 
   const provinceDataChis = [];
 
@@ -238,29 +210,28 @@ const FormItem = Form.Item;
   }
 
   const baseInfo = [
-    {title:'客户姓名',component:'Input',submitStr:'name',children:null},
-    {title:'联系电话',component:'Input',submitStr:'contact',children:null},
-    {title:'出生日期',component:'DatePicker',submitStr:'birthTime',children:null,fun:onChange},
-    {title:'年龄',component:'InputNumber',submitStr:'age',children:null,disabled:true,max:100},
-    {title:'预产期',component:'DatePicker',submitStr:'dueDate',children:null},
-    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',children:null,max:40},
-    {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
-    {title:'孕次/产次',component:'Select',submitStr:'fetus',children:fetusChi},
-    {title:'客资来源',component:'Select',submitStr:'resourceCustomer',children:guestInformationSource},
-    {title:'关注点',component:'Select',submitStr:'focus',children:concerns},
-    {title:'意向套餐',component:'Select',submitStr:'intentionPackage',children:intentionPackages},
-    {title:'网络搜索词',component:'Select',submitStr:'webSearchTerm',children:networkSearchWords},
-    {title:'现住址',component:'Select',submitStr:'province',children:provinceDataChis,span:6},
+    {title:'客户姓名',component:'Input',submitStr:'name'},
+    {title:'联系电话',component:'Input',submitStr:'contact'},
+    {title:'出生日期',component:'DatePicker',submitStr:'birthTime',fun:onChange},
+    {title:'年龄',component:'InputNumber',submitStr:'age',disabled:true,max:100},
+    {title:'预产期',component:'DatePicker',submitStr:'dueDate'},
+    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',max:40},
+    {title:'分娩医院',component:'Select',submitStr:'hospital',selectName:'Hospital'},
+    {title:'孕次/产次',component:'Select',submitStr:'fetus',selectName:'FETUS'},
+    {title:'客资来源',component:'Select',submitStr:'resourceCustomer',selectName:'ResourceCustomer'},
+    {title:'关注点',component:'Select',submitStr:'focus',selectName:'Focus'},
+    {title:'意向套餐',component:'Select',submitStr:'intentionPackage',selectName:'IntentionPackage'},
+    {title:'网络搜索词',component:'Select',submitStr:'webSearchTerm',selectName:'WebSearchTerm'},
+    {title:'现住址',component:'Select',submitStr:'province',fun:provinceSelect,children:provinceDataChis,span:6},
     {component:'Select',submitStr:'city',children:cityDataChis,span:8},
     {component:'Input',submitStr:'detailed',span:16},
     {title:'操作者1',component:'Input',submitStr:'operator',disabled:true,initValue:operator,span:6},
   ];
 
   if (props.users.editCustomer){
-    if (props.users.baseData){
-      const selectArray = { fetus:fetusAry,hospital:hospitalAry,intentionPackage:intentionPackageAry,resourceCustomer:guestInformationSourceAry,
-        focus:concernsAry,webSearchTerm:networkSearchWordsAry,province:provinceData,city:cityData}
-      datacompare(baseInfo,props.users.baseData,selectArray);
+    const selectArray = {province:provinceData,city:cityData};
+    if (props.users.baseData,selectArray){
+      datacompare(baseInfo,props.users.baseData);
     }
   }
 
@@ -354,11 +325,11 @@ function ExtensionInfo(props) {
   }
 
   function uploadIdcardFileProps(values) {
-    dispatch({type:'addCustomer/addContractDLC',payload:values})
+    dispatch({type:'addCustomer/addCardIDDLC',payload:values})
   }
 
   function uploadContractAppendicesFileProps(values) {
-    dispatch({type:'addCustomer/addCardIDDLC',payload:values})
+    dispatch({type:'addCustomer/addContractDLC',payload:values})
   }
 
   function deleteIdcardFileProps(values) {
@@ -369,8 +340,8 @@ function ExtensionInfo(props) {
     dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
   }
 
-  const {operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
-    headIconUrl,provinceData,cityData,permanentCityData,nationalData} = props.users;
+  const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
+    headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
   const {dispatch} = props;
 
 
@@ -395,12 +366,6 @@ function ExtensionInfo(props) {
     provinceDataChis.push(<Option key={provinceData[i].id}>{provinceData[i].description}</Option>);
   }
 
-  const cityDataChis = [];
-
-  for (let i = 0; i < cityData.length ; i++) {
-    cityDataChis.push(<Option key={cityData[i].id}>{cityData[i].description}</Option>);
-  }
-
   const permanentCityDataChis = [];
 
   for (let i = 0; i < permanentCityData.length ; i++) {
@@ -415,38 +380,38 @@ function ExtensionInfo(props) {
 
 
   const expandInfo = [
-    {title:'身份证',component:'Input',submitStr:'idcard',children:null},
-    {title:'籍贯',component:'Input',submitStr:'placeOrigin',children:null},
+    {title:'身份证',component:'Input',submitStr:'idcard'},
+    {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
-    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',children:null,disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
-    {title:'保险情况',component:'Input',submitStr:'insuranceSituation',children:null},
-    {title:'联系人电话',component:'Input',submitStr:'contact',children:null},
+    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
+    {title:'保险情况',component:'Input',submitStr:'insuranceSituation'},
+    {title:'联系人电话',component:'Input',submitStr:'contact'},
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange},
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,noRequired:"1"},
-    {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate',children:null},
-    {title:'合同编号',component:'Input',submitStr:'contractNumber',children:null},
-    {title:'关联客房',component:'Input',submitStr:'associatedRooms',children:null},
-    {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',children:null,fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:['']},
-    {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',children:null,fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:['']},
-    {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,children:null,initValue:memberNumberValue},
-    {title:'操作者2',component:'Input',submitStr:'operator',children:null,disabled:true,initValue:operator},
-    {title:'户籍地址',component:'Select',submitStr:'provincePermanent',children:provinceDataChis,span:6},
+    {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
+    {title:'合同编号',component:'Input',submitStr:'contractNumber'},
+    {title:'关联客房',component:'Input',submitStr:'associatedRooms'},
+    {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
+    {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
+    {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,initValue:memberNumberValue},
+    {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},
+    {title:'户籍地址',component:'Select',submitStr:'provincePermanent',fun:PermanentProvinceSelect,children:provinceDataChis,span:6},
     {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
     {component:'Input',submitStr:'detailedPermanent',span:18},
 
-    {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg},
+    {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl},
   ];
 
   if (props.users.editCustomer){
-    if (props.users.expandData){
-      const selectArray = {nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
-      datacompare(expandInfo,props.users.expandData,selectArray);
+    const selectArray = {nation:nationalData,member:memberAry,specialIdentity:specialIdentityAry,provincePermanent:provinceData,cityPermanent:permanentCityData};
+    if (props.users.expandData,selectArray){
+      datacompare(expandInfo,props.users.expandData);
     }
   }
 
   const expandInfoDiv = [];
 
-  for (let i = 0; i < expandInfo.length - 3; i++) {
+  for (let i = 0; i < expandInfo.length - 4; i++) {
     let dict = expandInfo[i];
     expandInfoDiv.push(
       <Col span={8} key={i}>
@@ -564,7 +529,7 @@ class customerInformation extends React.Component{
       }
      })
 
-    if (num > 3)
+    if (num > 4)
     {
       this.refs.extensionForm.validateFields((err, values) => {
         if (!err) {
