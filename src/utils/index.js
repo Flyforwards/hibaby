@@ -104,6 +104,52 @@ Array.prototype.contains = function (obj) {
   return false;
 }
 
+// 根据元素查找下标
+Array.prototype.indexOf = function(val) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == val) return i;
+  }
+  return -1;
+};
+
+// 移除元素
+Array.prototype.remove = function(val) {
+  var index = this.indexOf(val);
+  if (index > -1) {
+    this.splice(index, 1);
+  }
+};
+
+Array.prototype.removeRepeatAttr = function(){
+  var tmp={},a=this.slice();
+  let j = 0;
+  for( let i = 0;i<a.length;i++){
+    if(!tmp[a[i].id]){
+      tmp[a[i].id]=!0;
+      j++;
+    }else{
+      this.splice(j,1);
+    }
+  };
+}
+
+Array.prototype.bubbleSortByKey = function (key) {
+  var i = 0,
+    len = this.length,
+    j, d;
+  for (; i < len; i++) {
+    for (j = 0; j < len; j++) {
+      if (this[i][key] < this[j][key]) {
+        d = this[j];
+        this[j] = this[i];
+        this[i] = d;
+      }
+    }
+  }
+}
+
+console.log('我被引用啦，救命啊！！！');
+
 module.exports = {
   queryURL,
   queryArray,

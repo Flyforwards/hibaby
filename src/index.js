@@ -3,6 +3,7 @@ import './index.css';
 import { browserHistory } from 'dva/router';
 import createLoading from 'dva-loading';
 import { message } from 'antd';
+import "./utils";
 
 
 // 1. Initialize

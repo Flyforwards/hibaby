@@ -6,6 +6,7 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import './userHealthInformation.scss'
 import NutritionHealthInformation from './NutritionHealthInformation'
+import HospitalHealthy from '../healthy/healthyhome';
 
 const TabPane = Tabs.TabPane;
 
