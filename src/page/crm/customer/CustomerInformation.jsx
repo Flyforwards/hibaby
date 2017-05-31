@@ -73,7 +73,7 @@ const FormItem = Form.Item;
         break;
       case 'Select':
         if (dict.selectName){
-          tempDiv = (<DictionarySelect  selectName={dict.selectName}  placeholder="请选择" style={{ width: '100%' }}/>);
+          tempDiv = (<DictionarySelect key={dict.selectName}  selectName={dict.selectName}  placeholder="请选择" style={{ width: '100%' }}/>);
         }
         else {
           if (dict.fun)
@@ -243,7 +243,7 @@ const FormItem = Form.Item;
 
     baseInfoDiv.push(
       <Col span={6} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+        {cusFromItem(getFieldDecorator, dict)}
       </Col>
     );
   }

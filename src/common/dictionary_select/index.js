@@ -29,7 +29,7 @@ class DictionarySelect extends Component {
 
     if (this.params || this.force) {
       this.getData(this.params)
-    } else if (this.selectData == null || this.selectData.length == 0) {
+    } else if (this.selectData == null || this.selectData.length == 0 || true) {
       this.getData(this.defaultParams)
     }
   }
@@ -65,5 +65,5 @@ class DictionarySelect extends Component {
 
 }
 
-export default connect(({etc:{selectData}}) => ({ selectData }))(DictionarySelect);
+export default connect(({etc:{selectData, trigger}}) => ({ selectData, trigger }))(DictionarySelect);
 

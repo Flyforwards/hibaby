@@ -10,7 +10,8 @@ import "./utils";
 const app = dva({
 	history: browserHistory,
  	onError (error) {
-    message.error(error.message)
+    // message.error(error.message)
+    console.log(error)
   },
 });
 
