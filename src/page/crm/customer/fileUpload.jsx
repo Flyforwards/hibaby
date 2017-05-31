@@ -3,7 +3,6 @@ import React from 'react';
 
 class PicturesWall extends React.Component {
   constructor(props) {
-    console.log(props);
     super(props);
   };
 
@@ -59,7 +58,6 @@ class PicturesWall extends React.Component {
           name="file"
           action="/crm/api/v1/uploadImg"
           showUploadList = {!this.props.isHead}
-          isHead
           // fileList={fileList}
           defaultFileList={defaultFileList}
           beforeUpload={this.beforeUpload}
