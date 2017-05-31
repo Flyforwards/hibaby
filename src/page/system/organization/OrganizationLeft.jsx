@@ -9,7 +9,8 @@ import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
 import SeeDtail from './SeeDtail.jsx'
 import DeleteNode from './DeleteNode.jsx'
-import {local, session} from 'common/util/storage.js'
+import {local, session} from 'common/util/storage.js';
+
 
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
@@ -34,7 +35,11 @@ class OrganizationLefted extends React.Component {
     }
     expandHandler = () => {
       setTimeout(() => {
-        $("li").find("li .ant-tree-title").after("<span class='plus'>+</span>")
+        $(".Organization-left li").find(".ant-tree-title").each((index, e) => {
+          if ($(e).siblings(".plus").length == 0) {
+            $(e).after("<span class='plus'>+</span>");
+          }
+        })
       }, 50)
     }
     onSelect(value,node){
@@ -135,8 +140,9 @@ class OrganizationLefted extends React.Component {
         type: 'organization/getAllTissueProperty'
       })
       const userInfo  = session.get("userInfo")
-      $(document).on('click', '.plus', function(e) {
+      $(".Organization-left").on('click', '.plus', function(e) {
       //  console.log("dd",e.pageY-e.offsetY-11)
+            e.stopPropagation();
             if(this.state.upblock == 'none'){
               this.setState({
                 ulTop:e.pageY-e.offsetY-31,
@@ -172,7 +178,12 @@ class OrganizationLefted extends React.Component {
     }
     componentDidUpdate() {
       const userInfo  = session.get("userInfo")
-      $(".Organization-left li").find(".ant-tree-title").after("<span class='plus'>+</span>");
+      $(".Organization-left li").find(".ant-tree-title").each((index, e) => {
+        if ($(e).siblings(".plus").length == 0) {
+            $(e).after("<span class='plus'>+</span>");
+        }
+      })
+      // $(".Organization-left li").find(".ant-tree-title").after("<span class='plus'>+</span>");
         if(userInfo.categoryId != 0){
           $("li").find(".plus").eq(0).css('display','none');
         }
@@ -204,8 +215,8 @@ class OrganizationLefted extends React.Component {
             <div className="Organization-left">
                 <Tree
                   className="draggable-tree"
-                  onExpand={ this.expandHandler.bind(this) }
                   onSelect={ this.onSelect.bind(this) }
+                  onExpand={this.expandHandler.bind(this)}
                   autoExpandParent = { true }
                   defaultExpandedKeys = { ["0"] }
                 >

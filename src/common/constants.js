@@ -1,3 +1,28 @@
+import {session} from 'common/util/storage';
+
+let TEXT_ARRAY = {};
+TEXT_ARRAY = session.get('')
+
+const keyToText = (dataSource, keyField, valueField, name='SYSTEM') => {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const PAGE_SIZE = 6;
 export const positions = ["产品经理","项目经理","总经理","前端工程师"];
 export const departments = ["信息管理部1","信息管理部2","信息管理部3","信息管理部4"];
@@ -20,3 +45,5 @@ export const filterItemList = [
   {id: 9, name: "搜索关键字"},{id: 10, name: "操作者1"},{id: 11, name: "现住址"},{id: 12, name: "籍贯"},
   {id: 13, name: "名族"},{id: 14, name: "购买套餐"},{id: 15, name: "会员身份"},{id: 16, name: "操作者2"},
   {id: 17, name: "宝宝生产日期"}]
+
+
