@@ -81,8 +81,14 @@
 
 
 .bigImageModal{
-  .bigImage{
-    width: '100%';
+  .bigDiv{
+    width: 500px;
+    height: 500px;
     overflow: hidden;
+    background-color: #999999;
+    padding: 10px;
+  }
+  .bigImage{
+
   }
 }

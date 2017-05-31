@@ -26,5 +26,35 @@ export const DictionaryArray = {
     id: 8,
     type: 1,
     softDelete: 0
-  }
+  },
+  // 客资来源
+  'ResourceCustomer': {
+    id: 2,
+    type: 2,
+    softDelete: 0
+  },
+  // 医院
+  'Hospital': {
+    id: 3,
+    type: 2,
+    softDelete: 0
+  },
+  // 关注点
+  'Focus': {
+    id: 4,
+    type: 2,
+    softDelete: 0
+  },
+  // 意向套餐
+  'IntentionPackage': {
+    id: 5,
+    type: 2,
+    softDelete: 0
+  },
+  // 网络搜索词
+  'WebSearchTerm': {
+    id: 6,
+    type: 2,
+    softDelete: 0
+  },
 }

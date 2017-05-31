@@ -1,84 +1,10 @@
 
-function xxx() {
-
-  // 根据元素查找下标
-  Array.prototype.indexOf = function(val) {
-    for (var i = 0; i < this.length; i++) {
-      if (this[i] == val) return i;
-    }
-    return -1;
-  };
-
-  // 移除元素
-  Array.prototype.remove = function(val) {
-    var index = this.indexOf(val);
-    if (index > -1) {
-      this.splice(index, 1);
-    }
-  };
-
-  Array.prototype.removeRepeatAttr = function(){
-    var tmp={},a=this.slice();
-    let j = 0;
-    for( let i = 0;i<a.length;i++){
-      if(!tmp[a[i].id]){
-        tmp[a[i].id]=!0;
-        j++;
-      }else{
-        this.splice(j,1);
-      }
-    };
-  }
-
-// 日期格式化
-  Date.prototype.format = function (format) {
-    const o = {
-      'M+': this.getMonth() + 1,
-      'd+': this.getDate(),
-      'h+': this.getHours(),
-      'H+': this.getHours(),
-      'm+': this.getMinutes(),
-      's+': this.getSeconds(),
-      'q+': Math.floor((this.getMonth() + 3) / 3),
-      S: this.getMilliseconds(),
-    }
-    if (/(y+)/.test(format)) {
-      format = format.replace(RegExp.$1, `${this.getFullYear()}`.substr(4 - RegExp.$1.length))
-    }
-    for (let k in o) {
-      if (new RegExp(`(${k})`).test(format)) {
-        format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : (`00${o[k]}`).substr(`${o[k]}`.length))
-      }
-    }
-    return format
-  }
 
 
-}
-
-xxx()
-
-
-
+/*
 const manager = {
-  // 冒泡排序 // 由小到大
-  bubbleSort: function (array) {
-    var i = 0,
-      len = array.length,
-      j, d;
-    for (; i < len; i++) {
-      for (j = 0; j < len; j++) {
-        if (array[i].serialNumber < array[j].serialNumber) {
-          d = array[j];
-          array[j] = array[i];
-          array[i] = d;
-        }
-      }
-    }
-    return array;
-  },
 
-  bubbleSortByKey: function (array,key) {
+  bubbleSortByKey: function (array, key) {
     var i = 0,
       len = array.length,
       j, d;
@@ -92,19 +18,13 @@ const manager = {
       }
     }
     return array;
-  },
-
-  array_contain: function(array, obj){
-    for (var i = 0; i < array.length; i++){
-      if (array[i] == obj)//如果要求数据类型也一致，这里可使用恒等号===
-        return true;
-    }
-    return false;
   }
+
 }
 
 
 export default manager;
+*/
 
 
 

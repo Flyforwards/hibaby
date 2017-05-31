@@ -61,7 +61,7 @@ class moduleIndex extends Component {
       key:'icon',
       width: '150px',
     },{
-      title: '模块编号',
+      title: '排序',
       dataIndex: 'orderBy',
       key:'orderBy',
       width: '100px',

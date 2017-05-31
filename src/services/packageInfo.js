@@ -1,9 +1,7 @@
 
 import request from '../utils/request';
 import  { PAGE_SIZE　} from 'common/constants';
-const headers={
-  "Content-Type":"application/json"
-}
+
 //获取分页列表
 export function listByPage(values) {
   return request('/crm/api/v1/packageInfo/listByPage', {

@@ -3,13 +3,14 @@ import React from 'react';
 
 class PicturesWall extends React.Component {
   constructor(props) {
+    console.log(props);
     super(props);
   };
 
    beforeUpload(file) {
     const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJPG) {
-      message.error('You can only upload JPG file!');
+      message.error('只支持jpg和png格式!');
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
@@ -22,39 +23,49 @@ class PicturesWall extends React.Component {
   state = {
     previewVisible: false,
     previewImage: '',
+    defaultFileList : (typeof this.props.value === 'object') ? this.props.value : [],
     fileList: [],
-    value:this.props.value || [],
+    value: (typeof this.props.value === 'object') ? this.props.value : [],
   };
 
   handleCancel = () => this.setState({ previewVisible: false })
 
   handlePreview = (file) => {
     this.setState({
-      previewImage: file.response.data.fileUrlList[0] || file.url,
+      previewImage: file.url || file.response.data.fileUrlList[0],
       previewVisible: true,
     });
   }
 
-  onChange = ({ fileList }) => {
+  onRemove = (file) => {
+    this.props.deleteFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]});
+  }
+
+  onChange = ( {file,fileList} ) => {
+    if (file.status === 'done') {
+      this.props.fun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
+    }
     this.setState({
       fileList,
-      value:fileList
     })
   }
 
   render() {
-    const { previewVisible, previewImage, fileList} = this.state;
+    const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
 
     return (
-      <div className="clearfix">
-
+      <div>
         <Upload
           name="file"
           action="/crm/api/v1/uploadImg"
-          fileList={fileList}
+          showUploadList = {!this.props.isHead}
+          isHead
+          // fileList={fileList}
+          defaultFileList={defaultFileList}
           beforeUpload={this.beforeUpload}
           onPreview={this.handlePreview}
           onChange={this.onChange}
+          onRemove={this.onRemove}
         >
           {this.props.children}
         </Upload>
