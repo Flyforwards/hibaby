@@ -84,11 +84,10 @@ export default {
       return {...state,editCustomer:todo.data};
     },
     lookDlc(state, { payload: todo }){
-      // const lookCardIDDLC = state.lookCardIDDLC;
-      // const lookContractDLC = state.lookContractDLC;
-      // return {...state,bigImageHidden:true,bigImageData:(todo.isCardid ? lookCardIDDLC
-      //   :lookContractDLC)};
-      return state;
+      const lookCardIDDLC = state.lookCardIDDLC;
+      const lookContractDLC = state.lookContractDLC;
+      return {...state,bigImageHidden:true,bigImageData:(todo.isCardid ? lookCardIDDLC
+        :lookContractDLC)};
 
     },
 
@@ -144,28 +143,11 @@ export default {
     },
 
     setLookCardIDDLC(state, { payload: todo }){
-      const ary = state.expandData.idcardScan.split(",");
-
-      let dict = [];
-      for (let i = 0 ; i < ary.length ; i++ ){
-        const name = ary[i];
-        const url = todo.data[i];
-        dict.push({name:name,url:url,uid:i});
-      }
-
-      return {...state,lookCardIDDLC:dict};
+      return {...state,lookCardIDDLC:todo.data};
     },
 
     setLookContractDLC(state, { payload: todo }){
-      const ary = state.expandData.contractAppendices.split(",");
-      let dict = [];
-      for (let i = 0 ; i < ary.length ; i++ ){
-        const name = ary[i];
-        const url = todo.data[i];
-        dict.push({name:name,url:url,uid:i});
-      }
-
-      return {...state,lookContractDLC:dict};
+      return {...state,lookContractDLC:todo.data};
     },
 
 
@@ -557,7 +539,7 @@ export default {
           dispatch({
             type: 'getDataDict',
             payload:{
-              "id": ,
+              "id": 1,
             }
           });
           dispatch({
@@ -627,3 +609,4 @@ export default {
     }
   },
 };
+
