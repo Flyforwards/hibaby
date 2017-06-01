@@ -214,8 +214,7 @@ overflow: hidden;
 		.twoA{
 			margin-right:9px;
 			margin-left:5px;
-			color:#b87638;
-			pointer-events: none;
+			color:#666;
 		}
 	}
 }
@@ -315,8 +314,8 @@ overflow: hidden;
 	width:100%;
 }
 .Organization-left .ant-tree .plus{
-		position:absolute;
-		color:#a3a3a3;
+	position:absolute;
+	color:#a3a3a3;
     font-size: 16px;
     height: 16px;
     line-height: 16px;
