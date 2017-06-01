@@ -1,17 +1,18 @@
 import React from 'react'
 import { connect } from 'dva';
 import './customerInformation.scss';
-import { Tabs} from 'antd';
+import { Tabs,message} from 'antd';
 import CustomerInformation from './CustomerInformation';
 import UserHealthInformation from './userHealthInformation'
+import AddCourse from './AddCourse.jsx'
+
 const TabPane = Tabs.TabPane;
 
-function addCustomer() {
+function addCustomer(props) {
 
   function callback(key) {
 
   }
-
   return(
     <div>
       <Tabs  defaultActiveKey="1" onChange={callback} type="card">
@@ -22,11 +23,17 @@ function addCustomer() {
           <UserHealthInformation/>
         </TabPane>
         <TabPane tab="套餐" key="3">
-          Content of Tab Pane 3
+        {!props.users.dataDetailId?
+          '请先填写用户信息':<AddCourse />
+        }
         </TabPane>
       </Tabs>
     </div>
   )
 }
-
-export default addCustomer;
+function mapStateToProps(state) {
+  return {
+    users: state.addCustomer,
+  };
+}
+export default connect(mapStateToProps)(addCustomer)

@@ -55,8 +55,16 @@ class AddServiceed extends Component {
           selectedRows: [],
           loading: false,
         };
+        this.roomVisbled = false
     }
     componentWillMount() {
+    }
+    onSelect(value, option){
+      if(value == 43){
+        this.roomVisbled = true
+      }else{
+        this.roomVisbled = false
+      }
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
       this.setState({ selectedRows });
@@ -203,6 +211,7 @@ class AddServiceed extends Component {
                       rules: [],
                     })(
                     <Select dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}}
+                    onSelect = {this.onSelect.bind(this)}
                     >
                      {
                       roomList
@@ -222,7 +231,8 @@ class AddServiceed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                <div className="addServiceinfoSuite">
+                {
+                  this.roomVisbled?<div className="addServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
                   <FormItem
@@ -241,7 +251,9 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                 </Form>
-                </div>
+                </div>:null
+                }
+                
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
