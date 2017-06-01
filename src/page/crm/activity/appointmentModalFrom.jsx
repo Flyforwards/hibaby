@@ -35,8 +35,12 @@ class appointmentModalFrom extends Component {
         wrapClassName = { "vertical-center-modal" }
       >
         <div>
-          <Button key="1" onClick={ this.onClick.bind(this,true) }> 会员预约 </Button>
-          <Button key="2" onClick={ this.onClick.bind(this,false) }> 非会员预约 </Button>
+          <div>
+            <Button key="1" onClick={ this.onClick.bind(this,true) }> 会员预约 </Button>
+          </div>
+          <div>
+            <Button key="2" onClick={ this.onClick.bind(this,false) }> 非会员预约 </Button>
+          </div>
         </div>
       </Modal>
     )

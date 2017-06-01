@@ -9,6 +9,7 @@ import Current from '../../Current';
 import AlertModalFrom from 'common/AlertModalFrom'
 import AddModule from './AddModule'
 import EditModule from './EditModule'
+import {Link} from 'react-router';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const createForm = Form.create
@@ -73,8 +74,8 @@ class moduleIndex extends Component {
       render: (text, record, index) => {
         return (
               <div className="OperateList" key={ index }>
-                <a href="#" className="firstA" onClick={this.editMenu.bind(this,record)}>编辑</a>
-                <a className="firstB" onClick={this.delete.bind(this,record)}>删除</a>
+                <Link className="firstA" onClick={this.editMenu.bind(this,record)}>编辑</Link>
+                <Link className="firstB" onClick={this.delete.bind(this,record)}>删除</Link>
               </div>
         );
       },
@@ -139,6 +140,7 @@ class moduleIndex extends Component {
       EditModuleModal: true,
     })
   }
+
   addMenuList(){
     this.setState({
       modifyModalVisible: true,

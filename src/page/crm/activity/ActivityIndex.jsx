@@ -25,46 +25,65 @@ class ActivityIndex extends React.Component {
     this.columns = [{
       title: '编号',
       dataIndex: 'id',
-      key: 'id'
+      key: 'id',
+      width: '5%'
     },{
       title: '活动名称',
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
+      width: '15%'
     }, {
       title: '活动内容',
       dataIndex: 'content',
-      key: 'content'
+      key: 'content',
+      width: '40%'
     }, {
       title: '活动地点',
       dataIndex: 'address',
-      key: 'address'
-
+      key: 'address',
+      width: '10%'
     }, {
       title: '活动时间',
       dataIndex: 'activityTime',
+      width: '10%',
       render: (record) => {
         return moment(record).format("YYYY-MM-DD HH:mm:ss")
       }
     },{
       title: '签到/人数',
+      width: '5%',
       render: (record) => {
         return String(record.signeds)+'/'+String(record.appointments);
       },
     },{
       title: '成单率',
       dataIndex: 'orders',
-      key: 'orders'
+      key: 'orders',
+      width: '5%'
     }, {
       title: '操作',
       dataIndex: 'operation',
+      width: '10%',
       render: (text, record, index) => {
-        return (
-          <div key = { index }>
-            <Link onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
-            <Link onClick={ this.appointment.bind(this,record) }> 预约 </Link>
-            <Link onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
-          </div>
-        )
+        const timestamp = new Date().getTime()
+        // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况服务删除活动
+        if (record.activityTime < timestamp || record.appointments > 0 ) {
+          return (
+            <div key = { index }>
+              <Link onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+            </div>
+          )
+        } else {
+          return (
+            <div key = { index }>
+              <Link onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+              <Link onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
+            </div>
+          )
+        }
+
       },
     }];
   }

@@ -4,14 +4,19 @@
 
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col,Popconfirm,Modal } from 'antd';
+import { Select, Button, Form, Input, Icon, Card, Radio, Row, Col, Popconfirm, DatePicker, Modal, InputNumber, Table } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 import { Link } from 'react-router';
+import DictionarySelect from 'common/dictionary_select';
 import './card.scss';
 import {routerRedux} from 'dva/router';
+const createForm = Form.create
 
+const { MonthPicker } = DatePicker
+
+@createForm()
 class CardDetail extends Component {
   constructor(props) {
     super(props)
@@ -30,6 +35,9 @@ class CardDetail extends Component {
 
 
   }
+
+  onSearch() {}
+  reset() {}
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -94,7 +102,7 @@ class CardDetail extends Component {
 
   }
   render() {
-    const { cardKind, form, level,} = this.props;
+    const { cardKind, form, level,loading, userPagination} = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 8 },
@@ -108,6 +116,33 @@ class CardDetail extends Component {
       labelCol:{ span:5},
       wrapperCol:{ span:17 }
     }
+
+    const formChooseOneLayout = {
+      labelCol:{ span: 8 },
+      wrapperCol:{ span: 10 }
+    }
+    const formChooseLayout = {
+      labelCol:{ span: 10 },
+      wrapperCol:{ span: 14 }
+    }
+
+    const tableProps = {
+      loading: loading.effects['localData/localChar'],
+      dataSource : [] ,
+      pagination: userPagination,
+      onChange (page) {
+        const { pathname } = location
+        dispatch(routerRedux.push({
+          pathname,
+          query: {
+            page: page.current,
+            size: page.pageSize,
+            type: 2,
+          },
+        }))
+      },
+    }
+
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
@@ -215,6 +250,93 @@ class CardDetail extends Component {
             </Row>
           </Form>
         </Card>
+        <Card>
+          <div className="card-title">
+            <h3>客户列表:</h3>
+          </div>
+          <Form>
+            <div>
+              <Row style={{width:'1116px'}}>
+                <Col span={10} style={{float:'left'}}>
+                  <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
+                    {getFieldDecorator('sear', {rules: [{ required: false }],
+                    })(
+                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
+                  </span>
+                </Col>
+                <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                  </span>
+                </Col>
+              </Row>
+            </div>
+            <Row>
+              <Col span={4} style={{width:'140px'}}>
+                <FormItem {...formChooseOneLayout}  label="年龄" >
+                  {getFieldDecorator('age1', {rules: [{ required: false }],
+                  })(
+                    <InputNumber style={{width: "80px"}} min={1} max={100}  />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={3}  style={{width:'140px'}}>
+                <FormItem {...formChooseLayout} style={{width:'100%'}}>
+                  {getFieldDecorator('age2', {rules: [{ required: false }],
+                  })(
+                    <InputNumber min={1} max={100} style={{width: "80px"}} />
+                  )}
+                </FormItem>
+
+              </Col>
+              <Col span={4} style={{width:'251px'}}>
+                <FormItem {...formChooseOneLayout}  label="预产期" >
+                  {getFieldDecorator('time', {rules: [{ required: false }],
+                  })(
+                    <MonthPicker
+                      placeholder="请选择"
+                    />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={4} style={{width:'251px'}}>
+                <FormItem  {...formChooseOneLayout} label="第几胎" >
+                  {getFieldDecorator('fetus', {rules: [{ required: false }],
+                  })(
+                    <DictionarySelect  placeholder="请选择" selectName="FETUS" />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={4} style={{width:'251px'}} >
+                <FormItem  {...formChooseOneLayout} label="会员身份" >
+                  {getFieldDecorator('member', {rules: [{ required: false }],
+                  })(
+                    <Select   placeholder="请选择" >
+                      {
+                        options
+                      }
+                    </Select>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={4} style={{width:'180px'}}>
+                <FormItem  {...formChooseOneLayout} label="操作者2" >
+                  {getFieldDecorator('operator2', {rules: [{ required: false }],
+                  })(
+                    <Input max={40}  />
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+          </Form>
+          <Table {...tableProps} bordered size="small" rowKey = { record=>record.id } columns={ this.columns }/>
+        </Card>
 
         <Modal
           title="提示"
@@ -236,21 +358,16 @@ class CardDetail extends Component {
   }
 }
 
-const CardForms = Form.create()(CardDetail);
 
 
-function CardDetailCom({ dispatch, cardKind, zheKou, level }) {
-  return (
-    <CardForms dispatch={dispatch} cardKind={cardKind} zheKou={zheKou} level={level}/>
-  )
-}
 function mapStateToProps(state) {
-  const { cardKind, level, zheKou, } = state.card;
+  const { cardKind, level, zheKou,userPagination } = state.card;
   return {
-    loading: state.loading.models.card,
+    loading: state.loading,
+    userPagination,
     cardKind,
     level,
     zheKou,
   };
 }
-export default connect(mapStateToProps)(CardDetailCom)
+export default connect(mapStateToProps)(CardDetail)

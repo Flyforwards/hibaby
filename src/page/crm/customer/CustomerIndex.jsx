@@ -1,34 +1,20 @@
 import React from 'react'
 import './CustomerIndex.scss'
 import {connect} from 'dva'
-import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Cascader, Modal} from 'antd'
+import { Select, Button, DatePicker, Table, Input,Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
+import DictionarySelect from 'common/dictionary_select';
 import Current from '../../Current'
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const confirm = Modal.confirm;
+const FormItem = Form.Item;
+const createForm = Form.create
 
-
-//这是级联选择地址
-const options = [{
-  value: '北京',
-  label: '北京',
-  children: [{
-    value: '海淀区',
-    label: '海淀区',
-  }],
-}, {
-  value: '河北',
-  label: '河北',
-  children: [{
-    value: '石家庄',
-    label: '石家庄',
-  }],
-}];
 //这是表单的数据操作
 class Customer extends React.Component {
   state = {
@@ -80,6 +66,8 @@ class Customer extends React.Component {
     );
   }
 }
+
+@createForm()
 class CustomerIndex extends React.Component {
     constructor(props) {
         super(props)
@@ -188,6 +176,10 @@ class CustomerIndex extends React.Component {
             createModalVisible: true
         })
     }
+
+    onSearch() {}
+    reset() {}
+
     onCellChange = (index, key) => {
         return (value) => {
           const dataSource = [...this.state.dataSource];
@@ -218,7 +210,8 @@ class CustomerIndex extends React.Component {
       }
     render() {
         const columns = this.columns;
-        const { list, loading, pagination, dispatch } = this.props;
+        const { list, loading, pagination, dispatch, form, shipCards } = this.props;
+        const { getFieldDecorator } = form;
         const tableProps = {
           loading: loading.effects['customer/getCustomerPage'],
           dataSource : list ,
@@ -235,52 +228,103 @@ class CustomerIndex extends React.Component {
             }))
           },
         }
+
+        const options = shipCards.map((record)=>{
+          return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+        });
+
+        const formChooseOneLayout = {
+          labelCol:{ span: 8 },
+          wrapperCol:{ span: 10 }
+        }
+        const formChooseLayout = {
+          labelCol:{ span: 10 },
+          wrapperCol:{ span: 14 }
+        }
         return (
         <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
-            <div className="Customer-title">
-            <div className="Customer-nav">
-               <input placeholder='请输入客户编号、客户姓名、联系方式、合同编号....' />
-                <span className="search"><Button type="primary">搜索</Button></span>
-                <span className="screening"><Button type="primary" onClick={this.showCreateModal.bind(this)}>筛选项</Button></span>
-                <span className="customer"><Link to="/crm/customer/Add"><Button type="primary">新增客户</Button></Link> </span>
-            </div>
-            <div className="Customer-navigation">
-              <div className="Customer-first">
-                <div className="age">年龄<input type="number" min="1"/>至<input type="number" min="1"/></div>
-                <div className="Membership">会员身份
-                    <Select defaultValue="请选择" style={{ width: 150 }}>
-                      <Option value="jack">Jack</Option>
-                      <Option value="时尚">请选择</Option>
-                      <Option value="disabled">Disabled</Option>
-                      <Option value="Yiminghe">yiminghe</Option>
-                    </Select>
+              <Form>
+                <div>
+                  <Row style={{width:'1116px'}}>
+                    <Col span={10} style={{float:'left'}}>
+                      <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
+                        {getFieldDecorator('sear', {rules: [{ required: false }],
+                        })(
+                          <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
+                        )}
+                      </FormItem>
+                    </Col>
+                    <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
+                  </span>
+                    </Col>
+                    <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                  </span>
+                    </Col>
+                  </Row>
                 </div>
-                <div className="hospitals">生产医院
-                    <Select defaultValue="请选择" style={{ width: 150 }}>
-                      <Option value="jack">Jack</Option>
-                      <Option value="时尚">请选择</Option>
-                      <Option value="disabled">Disabled</Option>
-                      <Option value="Yiminghe">yiminghe</Option>
-                    </Select>
-                </div>
-                </div>
-                <div className="Customer-second">
-                <div className="period">预产期
-                   <MonthPicker placeholder="请选择" />
-                </div>
-                <div className="listDiv" id="data">宝宝生产日期
-                    <DatePicker
-                      showTime
-                      format="YYYY-MM-DD"
-                    />
-                </div>
-                <div className="current">现住址
-                    <Cascader size="large" options={options} placeholder="请输入地址"/>
-                </div>
-                </div>
-            </div>
-            </div>
+                <Row>
+                  <Col span={4} style={{width:'140px'}}>
+                    <FormItem {...formChooseOneLayout}  label="年龄" >
+                      {getFieldDecorator('age1', {rules: [{ required: false }],
+                      })(
+                        <InputNumber style={{width: "80px"}} min={1} max={100}  />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={3}  style={{width:'140px'}}>
+                    <FormItem {...formChooseLayout} style={{width:'100%'}}>
+                      {getFieldDecorator('age2', {rules: [{ required: false }],
+                      })(
+                        <InputNumber min={1} max={100} style={{width: "80px"}} />
+                      )}
+                    </FormItem>
+
+                  </Col>
+                  <Col span={4} style={{width:'251px'}}>
+                    <FormItem {...formChooseOneLayout}  label="预产期" >
+                      {getFieldDecorator('time', {rules: [{ required: false }],
+                      })(
+                        <MonthPicker
+                          placeholder="请选择"
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={4} style={{width:'251px'}}>
+                    <FormItem  {...formChooseOneLayout} label="第几胎" >
+                      {getFieldDecorator('fetus', {rules: [{ required: false }],
+                      })(
+                        <DictionarySelect  placeholder="请选择" selectName="FETUS" />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={4} style={{width:'251px'}} >
+                    <FormItem  {...formChooseOneLayout} label="会员身份" >
+                      {getFieldDecorator('member', {rules: [{ required: false }],
+                      })(
+                        <Select   placeholder="请选择" >
+                          {
+                            options
+                          }
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={4} style={{width:'180px'}}>
+                    <FormItem  {...formChooseOneLayout} label="操作者2" >
+                      {getFieldDecorator('operator2', {rules: [{ required: false }],
+                      })(
+                        <Input max={40}  />
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
+              </Form>
             <div className="CreateModaList-a">
               <Table bordered {...tableProps} rowKey={ record=>record.id}/>
             </div>
@@ -290,7 +334,7 @@ class CustomerIndex extends React.Component {
                 onCancel={ this.handleCreateModalCancel.bind(this) }
             />
           </main>
-          </div>
+        </div>
         )
     }
 }
@@ -299,13 +343,15 @@ class CustomerIndex extends React.Component {
 function mapStateToProps(state) {
   const {
     list,
-    pagination
+    pagination,
+    shipCards,
   } = state.customer;
 
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
+    shipCards,
   };
 }
 export default connect(mapStateToProps)(CustomerIndex)

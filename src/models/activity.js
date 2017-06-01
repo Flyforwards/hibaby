@@ -5,6 +5,7 @@ import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
 import { PAGE_SIZE } from 'common/constants.js'
 import { parse } from 'qs'
+import * as systemService from '../services/system';
 
 export default {
   namespace: 'activity',
@@ -15,6 +16,7 @@ export default {
     signUserList: [], // 预约用户列表
     editSignUserList: [], // 编辑
     userList:[], // 会员用户列表
+    shipCards:[], //会员身份下拉信息
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -63,14 +65,30 @@ export default {
     getSignCustomerSaveEdit(state, { payload: { editSignUserList, editSignPagination }}) {
       return {...state, editSignUserList, editSignPagination:{  ...state.editSignPagination,...editSignPagination } };
     },
+    memberShipCardSave(state, { payload: { shipCards }}) {
+      return {...state, shipCards};
+    },
   },
   effects: {
+
+
+    // 获取会员身份下拉选项， 也是卡种列表
+    *getMemberShipCard({payload: values}, { call, put }) {
+        const {data: { data, code} } = yield call(systemService.getMemberShipCard, values);
+        if (code == 0) {
+          yield put({
+            type: 'memberShipCardSave',
+            payload: { shipCards: data}
+          })
+        }
+    },
+
     // //添加活动数据
     *saveActivity({payload: values}, { call, put }) {
       const {data: { data, code} } = yield call(activityService.saveActivity, values);
       if (code == 0) {
         message.success("创建活动成功");
-        yield put(routerRedux.push("/crm/activity"));
+        yield put(routerRedux.push('/crm/activity'));
       }
     },
     // 预约客户签到
@@ -150,7 +168,9 @@ export default {
       if (code == 0) {
         message.success("预约会员用户成功");
         if (values.from ) {
-          yield put(routerRedux.push("/crm/activity"));
+          yield put({
+            type: 'getActivityPage',
+          });
         } else {
           yield put({
             type: 'getActivityById',
@@ -165,7 +185,9 @@ export default {
         if (code == 0) {
           message.success("预约非会员用户成功");
           if (values.from ) {
-            yield put(routerRedux.push("/crm/activity"));
+            yield put({
+              type: 'getActivityPage',
+            });
           } else {
             yield put({
               type: 'getActivityById',
@@ -195,8 +217,9 @@ export default {
       const {data: {data,code}} = yield call(activityService.deleteActivity, values);
       if (code == 0) {
         message.success("删除活动成功");
-        yield put(routerRedux.push("/crm/activity"));
-
+        yield put({
+          type: 'getActivityPage',
+        });
       }
     },
     // 详情
@@ -276,6 +299,10 @@ export default {
             type: 'getActivityCustomerPageList',
             payload: { activityId: query.dataId }
           })
+
+          dispatch({
+            type: 'getMemberShipCard',
+          })
         }
         if (pathname === '/crm/activity/edit') {
           dispatch({
@@ -286,6 +313,10 @@ export default {
           dispatch({
             type: 'getActivityCustomerPageListEdit',
             payload: { activityId: query.dataId }
+          })
+
+          dispatch({
+            type: 'getMemberShipCard',
           })
         }
       })
