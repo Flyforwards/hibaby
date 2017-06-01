@@ -309,7 +309,6 @@ export default {
 		//保存组织架构节点信息
 		*saveDepartment({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.saveDepartment, values);
-			console.log("values",values)
 			if (code == 0) {
 				message.success("保存组织架构节点信息成功");
 				yield put({

@@ -48,7 +48,6 @@ class ViewCommodityed extends Component {
         e.target.className = "roomColor"
         roomId[data] = null
       }
-      console.log(roomId)
     }
     delete() {
       let ID = window.location.search.split("=")[1]
@@ -101,7 +100,7 @@ class ViewCommodityed extends Component {
                     initialValue:this.props.commodityFindById?this.props.commodityFindById.price:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                       addonAfter='元'
                       disabled = { true }
@@ -127,7 +126,7 @@ class ViewCommodityed extends Component {
                     initialValue:this.props.commodityFindById?this.props.commodityFindById.nameLetter:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                     disabled = {true}
                     />
                     )}
@@ -137,7 +136,7 @@ class ViewCommodityed extends Component {
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
                 <Link to={{ pathname: '/crm/commodity/editcommodity', query:{ commodity:ID } }}><Button type="primary">编辑</Button></Link>
-                <Delete 
+                <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
                   ID = { this.state.ID }

@@ -31,7 +31,6 @@ class CheckData extends React.Component {
        this.setState({
           name:""
        })
-       console.log(value)
    }
     render() {
       const { getFieldDecorator } = this.props.form;

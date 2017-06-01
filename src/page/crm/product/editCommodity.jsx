@@ -48,7 +48,7 @@ class EditCommodityed extends Component {
         e.target.className = "roomColor"
         roomId[data] = null
       }
-      console.log(roomId)
+    //  console.log(roomId)
     }
     delete() {
       let ID = window.location.search.split("=")[1]
@@ -91,7 +91,7 @@ class EditCommodityed extends Component {
     }
     chineseToPinyin(){
       const fields = this.props.form.getFieldsValue();
-      console.log(fields.name)
+      //console.log(fields.name)
       if(fields.name){
         this.props.dispatch({
           type: 'packageInfo/chineseToPinyin',
@@ -140,7 +140,7 @@ class EditCommodityed extends Component {
                     initialValue:this.props.commodityFindById?this.props.commodityFindById.price:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                       addonAfter='元'
                     />
@@ -165,7 +165,7 @@ class EditCommodityed extends Component {
                     initialValue:this.props.chineseToPinyin?this.props.chineseToPinyin:this.props.commodityFindById?this.props.commodityFindById.nameLetter:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                     disabled = { true }
                     />
                     )}
@@ -182,7 +182,7 @@ class EditCommodityed extends Component {
                 </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this,this.props.code)}>保存</Button>
-                <Delete 
+                <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
                   ID = { this.state.ID }

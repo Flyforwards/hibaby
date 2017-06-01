@@ -41,7 +41,7 @@ class EditService extends Component {
             };
       }
        handleKeyPress = (ev) => {
-         console.log('handleKeyPress', ev);
+         //console.log('handleKeyPress', ev);
        }
 
        handleSave = (e) => {

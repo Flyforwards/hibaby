@@ -67,120 +67,10 @@ class EditableCell extends Component {
   }
 }
 
-class EditableTable extends Component {
+class DetailTable extends Component {
   constructor(props) {
     super(props);
-    const _this = this;
-    this.columns = [{
-      title: '选项',
-      dataIndex: 'rank',
-      width: '35%',
-      render: function (text, record, index) {
-        return (
-          <span>
-           选项{index+1}
-        </span>)
-      }
-    }, {
-      title: '职位',
-      dataIndex: 'name',
-      width: '35%',
-      render: (text, record, index) => (
-        <EditableCell
-          name={text}
-          record={record}
-          dispatch={_this.props.dispatch}
-          onChange={this.onCellChange(index, 'name')}
-        />
-      )
-    }, {
-      title: '操作',
-      dataIndex: 'operation',
-      render: (text, record, index) => {
-        const { positionInfo } = this.props;
-        return (
-          positionInfo.length >= 1 ?
-            (
-              <Popconfirm title="确定删除吗?" onConfirm={() => this.onDelete(index)}>
-                <a href="#">删除</a>
-              </Popconfirm>
-            ) : null
-        );
-      }
-    }];
-
-    this.state = {
-      key: 0
-    };
   }
-
-  onCellChange = (index, key) => {
-    return (value) => {
-      const { positionInfo } = this.props;
-      positionInfo[index][key] = value;
-    };
-  }
-
-  onDelete = (index) => {
-    const { positionInfo } = this.props;
-    const tmp = positionInfo.splice(index, 1);
-    tmp[0].id ?
-      this.props.dispatch({
-        type: 'position/del',
-        payload: {
-          dataId: tmp[0].id
-        }
-      }) : this.props.dispatch({
-      type: 'position/showPosition',
-      payload: {
-        positionInfo
-      }
-    })
-    this.setState({ key: this.state.key + 1 })
-  }
-
-  handleAdd = () => {
-    const { positionInfo, record } = this.props;
-    const deptId = record.id
-    //console.log(positionInfo,'??')
-    function getCount() {
-      var b = 0;
-      if (positionInfo) {
-        positionInfo.map((v, k) => {
-          if (v.rank > b) {
-            b = v.rank;
-          }
-        });
-      }
-      return b+1;
-    }
-
-    const count = getCount();
-    const newData = {
-      rank: count,
-      deptId: deptId
-    };
-    positionInfo.push(newData);
-    this.props.dispatch({
-      type: 'position/add',
-      payload: {
-        positionInfo
-      }
-    })
-
-  }
-
-  onClick(record, index) {
-
-    if (index==0){
-      //添加
-
-    } else {
-      //删除
-    }
-
-  }
-
 
   render() {
     const { positionInfo } = this.props;
@@ -197,16 +87,10 @@ class EditableTable extends Component {
               <span>{record.name}</span>
             </div>
           </Col>
-          <Col span={5} >
-            <Button onClick={ this.onClick.bind(this,record,index) } className="col-last" type="primary">{ index==0?"添加选项":"删除"}</Button>
-          </Col>
         </Row>)
     });
     return (
       <div>
-        <div className="add-div">
-          <Button className="editable-add-btn" onClick={this.handleAdd} type="primary">添加</Button>
-        </div>
         {
           cell
         }
@@ -224,36 +108,24 @@ class LocalizedModal extends Component {
     this.state = {
       visible: false,
     }
-
   }
 
-  handlePageChange(id) {
+  showModal (id) {
+    // 获取部门职位信息
     this.props.dispatch({
       type: 'position/getPositionInfo',
       payload: {
         dataId: id
       }
     })
-  }
-
-  showModal (id) {
-    this.handlePageChange(id)
     this.deptId = id;
     this.setState({
+      isDetail: true,
       visible: true
     });
   }
 
   handleOk  () {
-    // const { positionInfo, dispatch } = this.props;
-    // dispatch({
-    //   type: 'position/addEditPosition',
-    //   payload: { "positionDOs": positionInfo }
-    // })
-    // this.setState({
-    //   visible: false
-    // });
-
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -298,6 +170,10 @@ class LocalizedModal extends Component {
           type: 'position/saveOrModifyPosition',
           payload: { delPositionDOs:delIds,deptId:this.deptId, positionDOs:names  }
         })
+
+        this.setState({
+          visible: false
+        });
       }
     })
   }
@@ -306,7 +182,6 @@ class LocalizedModal extends Component {
   handleCancel () {
     this.setState({
       visible: false,
-      newKey: ''
     });
   };
 
@@ -344,59 +219,78 @@ class LocalizedModal extends Component {
     });
   }
 
+  edit() {
+    this.setState({
+      isDetail: false,
+    });
+  }
+
+  cancelEdit() {
+    this.setState({
+      isDetail: true,
+    });
+  }
 
 
   render() {
-    const { positionInfo, record, dispatch } = this.props;
+    const { positionInfo, record } = this.props;
     const endemic = session.get("endemic")
     this.positionInfo = positionInfo;
-    const initKeys = this.positionInfo.map((record)=>record.id)
 
-    const { getFieldDecorator, getFieldValue } = this.props.form;
-    getFieldDecorator('keys', { initialValue: initKeys });
-    const keys = getFieldValue('keys');
-    const formItems = keys.map((k, index) => {
-      const initValue = this.positionInfo[index] ? this.positionInfo[index].name : ""
-      let rightItem = (<Button className = "editable-add-btn delBtn" onClick={ this.remove.bind(this,k) } > 删除 </Button>)
-      if (index==0) {
-        rightItem = (<Button  onClick={  this.addItem.bind(this) } > 添加选项 </Button>)
-      }
-      console.log(initValue)
-      return (
-        <FormItem
-          key={ k }
-        >
-          <h4  >{ `选项${String(index+1)}` }</h4>
-          <div >
-            { getFieldDecorator(`names-${k}`, {
-              validateTrigger: ['onChange', 'onBlur'],
-              rules: [{ required: true, message: '选项不能为空' }],
-              initialValue: initValue,
-            })(
-              <Input />
-            )}
-          </div>
-          {
-            rightItem
-          }
-        </FormItem>
-      );
-    });
+    let cancel = this.handleCancel.bind(this);
+    let right = this.edit.bind(this);
+    let formItems = (<DetailTable positionInfo={positionInfo}/>)
+    let rightText = "编辑";
+    if (!this.state.isDetail){
+      const initKeys = this.positionInfo.map((record)=>record.id)
+      const { getFieldDecorator, getFieldValue } = this.props.form;
+      getFieldDecorator('keys', { initialValue: initKeys });
+      const keys = getFieldValue('keys');
+      cancel = this.cancelEdit.bind(this);
+      right = this.handleOk.bind(this);
+      rightText = "保存";
+      formItems = keys.map((k, index) => {
+        const initValue = this.positionInfo[index] ? this.positionInfo[index].name : ""
+        let rightItem = (<Button onClick={ this.remove.bind(this,k) } > 删除 </Button>)
+        if (index==0) {
+          rightItem = (<Button  onClick={  this.addItem.bind(this) } > 添加选项 </Button>)
+        }
+        return (
+          <FormItem
+            key={ k }
+          >
+            <h4  >{ `选项${String(index+1)}` }</h4>
+            <div >
+              { getFieldDecorator(`names-${k}`, {
+                validateTrigger: ['onChange', 'onBlur'],
+                rules: [{ required: true, message: '选项不能为空' }],
+                initialValue: initValue,
+              })(
+                <Input />
+              )}
+            </div>
+            {
+              rightItem
+            }
+          </FormItem>
+        );
+      });
+    }
+
 
     return (
-      <div>
+      <div className="editPositionIndex">
         <Link onClick={() => {
           this.showModal(record.id);
-          this.setState({ newKey: this.state.newKey + 1 })
         }}>查看</Link>
         <Modal width="500px"
                title="职位详情"
-               onCancel={this.handleCancel.bind(this)}
+               onCancel={ cancel }
+               onOk={ right }
                cancelText="取消"
-               okText="保存"
-               key={this.state.newKey}
-               visible={this.state.visible}
-               onOk={this.handleOk.bind(this)}
+               okText= { rightText }
+               key={ this.state.visible }
+               visible={ this.state.visible }
         >
           <p className="position-name"><span>职位所属：</span>{name}</p>
           {

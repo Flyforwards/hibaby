@@ -174,7 +174,7 @@ class OrganizationLefted extends React.Component {
       $(".Organization-left li").find(".ant-tree-title").after("<span class='plus'>+</span>");
         if(userInfo.categoryId != 0){
           $("li").find(".plus").eq(0).css('display','none');
-        }  
+        }
     }
     //添加子节点
     AddChildNode(){
@@ -198,8 +198,8 @@ class OrganizationLefted extends React.Component {
           let nodes  = this.props.leftList.nodes;
           loops = nodesIteration(nodes);
          loops=[<TreeNode key={this.props.leftList.id} title={this.props.leftList.name} dataIndex={this.props.leftList.tissueProperty} parentId={this.props.leftList.parentId}>{loops}</TreeNode>]
-        } 
-        return (  
+        }
+        return (
             <div className="Organization-left">
                 <Tree
                   className="draggable-tree"
@@ -272,7 +272,7 @@ function OrganizationLeft({
     }
     getDepartmentNode = {
       getDepartmentNode
-    } 
+    }
     AllTissueProperty = {
       AllTissueProperty
     }

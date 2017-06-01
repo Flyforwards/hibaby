@@ -48,7 +48,7 @@ class AddSuiteed extends Component {
                   <Input defaultValue ={1} onChange={(event)=>{
                     record.usageCount = event.target.value
                   }}/>
-                </span> 
+                </span>
             );
           },
         }];
@@ -91,7 +91,6 @@ class AddSuiteed extends Component {
       const fields = this.props.form.getFieldsValue();
       let roomIdList = []
       $(".roomColorA").each(function(){
-        console.log($(this).attr("value"))
         roomIdList.push($(this).attr("value"))
       })
       if(fields.name){
@@ -114,7 +113,7 @@ class AddSuiteed extends Component {
         }
       }else{
         message.warning('请输入套房名称')
-      }    
+      }
     }
     roomClick(data,e){
       if(e.target.className == "roomColor"){
@@ -131,7 +130,7 @@ class AddSuiteed extends Component {
         let ListLnformation = []
         let roomList = []
         let selectData = []
-        
+
         if(this.props.roomData != null){
           this.props.roomData.map((item)=>{
             roomInformation.push(<span key= {item.id} value={item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColor">{item.roomNo}</span>)
@@ -186,7 +185,7 @@ class AddSuiteed extends Component {
                   {getFieldDecorator('price', {
                       rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                     />
                     )}
@@ -209,7 +208,7 @@ class AddSuiteed extends Component {
                     roomInformation
                   }
                 </div>
-               
+
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>

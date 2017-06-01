@@ -143,15 +143,13 @@ class EditUsered extends React.Component {
         for (var i=0;i<entrys.length;i++){
           let roleIdData = []
           if(fields[`systemRole${i}`]){
-            console.log("roleId",fields[`systemRole${i}`])
+          //  console.log("roleId",fields[`systemRole${i}`])
             fields[`systemRole${i}`].map((item)=>{
               roleIdData.push({"roleId":item,"userID":ID})
             })
           }
-          fields[`affiliatedDepartment${i}`] = fields[`affiliatedDepartment${i}`][0] || fields[`affiliatedDepartment${i}`][0]
-          console.log(fields[`affiliatedDepartment${i}`])
           if(entrys[i].type == 0){
-            console.log(fields[`affiliatedDepartment${i}`])
+            //console.log(fields[`affiliatedDepartment${i}`])
             entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
@@ -175,8 +173,8 @@ class EditUsered extends React.Component {
               "roles": roleIdData
           })
         }
-      }      
-      if(entrysData[0].roles.length>=1){
+      }
+      if(entrysData.roles.length>=1){
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {

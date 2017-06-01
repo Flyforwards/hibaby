@@ -32,13 +32,20 @@ class AddUsered extends React.Component {
     }
   }
   componentDidMount(){
-      let endemic = session.get("endemic")
-      this.props.dispatch({
-            type: 'organization/getDeptListByEndemicId',
-            payload: {
-              dataId: endemic.id
-            }
-        })
+    let endemic = session.get("endemic")
+    let nodeId = window.location.search.split("=")[1]
+    this.props.dispatch({
+        type: 'organization/getDeptListByEndemicId',
+        payload: {
+          dataId: endemic.id
+        }
+    })
+    this.props.dispatch({
+        type: 'organization/position',
+        payload: {
+          dataId: nodeId
+        }
+    })
   }
   handleCreateModalCancel() {
         this.setState({

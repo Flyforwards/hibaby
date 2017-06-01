@@ -85,7 +85,7 @@ class CardFind extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={ 6 }>
+            <Col span={ 7 }>
               <Button type="primary" onClick={this.onSearch.bind(this)} size="large" style={{width:'120px',height:'40px',lineHeight:'38px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
               <Link to={{ pathname: '/crm/cardInfo' }} href="#"><Button type="primary" style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button></Link>
             </Col>

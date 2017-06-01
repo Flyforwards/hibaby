@@ -35,7 +35,7 @@ class InfoCards extends Component {
                 </InfoCard>
                 <InfoCard
                     onReload={v => {
-                        console.log('reload')
+                      //  console.log('reload')
                     }}
                     error={true}
                     errorMessage="自定义错误信息"
@@ -44,7 +44,7 @@ class InfoCards extends Component {
                 </InfoCard>
                 <InfoCard
                     onReload={v => {
-                        console.log('reload')
+                      //  console.log('reload')
                     }}
                     error={true}
                     title="账号信息">
@@ -52,7 +52,7 @@ class InfoCards extends Component {
                 </InfoCard>
                 <InfoCard
                     onReload={v => {
-                        console.log('reload')
+                        //console.log('reload')
                     }}
                     error={true}
                     loading={true}

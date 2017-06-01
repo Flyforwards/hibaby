@@ -18,11 +18,11 @@ class CreateModal extends Component {
         this.props.onCancel()
     }
     handleOk(visible) {
-        console.log("ok")
+        //console.log("ok")
         this.props.onCancel()
     }
     onChange(index) {
-        console.log("index",index)
+      //  console.log("index",index)
 
     }
     handleAfterClose() {
@@ -33,7 +33,7 @@ class CreateModal extends Component {
     }
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-        console.log(Date.now())
+      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {

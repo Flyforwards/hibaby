@@ -1,6 +1,6 @@
 .viewServiceinfo{
 	height:100%;
-	width:97%;
+	min-width: 1040px;
 	.viewServiceinfoList{
 		width:100%;
 		background-color:#fff;
@@ -35,13 +35,19 @@
 			margin-left: 40px;
 			margin-bottom: 10px;
 			label{
-				font:12px "微软雅黑";
+				font:14px "微软雅黑";
 			}
 		}
-
+		.ant-form-item{
+				margin:0 0 10px 40px;
+				label{
+					font:14px "微软雅黑";
+				}
+		}
 		.ant-input-lg{
 			width:270px;
 			height:40px;
+			font:14px "微软雅黑";
 		}
 		.ant-select-lg{
 			width:270px;
@@ -49,6 +55,7 @@
 		.ant-select-lg .ant-select-selection--single {
 		    height: 40px;
 		    line-height: 40px;
+				font:14px "微软雅黑";
 		}
 
 	}
@@ -76,6 +83,7 @@
 				width:50%;
 				height:40px;
 				text-align: center;
+				font:14px "微软雅黑";
 			}
 		}
 		.ant-table-tbody > tr > td {
@@ -105,7 +113,7 @@
 			margin-left: 40px;
 			margin-bottom:10px;
 			label{
-				font: 12px "微软雅黑";
+				font: 14px "微软雅黑";
 			}
 		}
 		.ant-select{
@@ -118,6 +126,7 @@
 		.ant-select-selection--single {
 		    height: 40px;
 		    line-height: 40px;
+				font:14px "微软雅黑";
 		}
 		.ant-select-arrow:before{
 			font-size: 20px;
@@ -127,16 +136,19 @@
 		margin-left:55%;
 		width:140px;
 		height:40px;
+		font:14px "微软雅黑";
 	}
 	.ant-btn-primary{
-    	margin-left:30px;
+    	margin-left:20px;
     	width:140px;
     	height:40px;
+			font:14px "微软雅黑";
 	}
 	.delet{
 		background-color: rgba(255, 74, 74, 1);
-		margin-left:30px;
+		margin-left:20px;
 		color:#fff;
+		font:14px "微软雅黑";
 		border:none;
 	}
 }
