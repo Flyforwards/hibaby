@@ -28,7 +28,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
-        cb(null, require('page/crm/customer/customerDetails.jsx'))
+        cb(null, require('page/crm/customer/customerDetailsSuper.jsx'))
       })
     }
   },

@@ -5,7 +5,7 @@ import './customerInformation.scss';
 export default function BigImageModal (props) {
   const imageAry = [];
   for (let i = 0;i<props.bigImageData.length;i++){
-    imageAry.push(<div key={i}  className="bigDiv"> <img className="bigImage" src={props.bigImageData[i].url} alt="" /></div>)
+    imageAry.push(<div key={i}  className="bigDiv"> <img src={props.bigImageData[i].url} alt="" /></div>)
   }
 
 
@@ -14,11 +14,11 @@ export default function BigImageModal (props) {
   }
 
   return (
-    <div className="bigImageModal">
       <Modal
         visible={props.visible}
         onCancel={props.handleCancel}
         footer={null}
+        className="bigImageModal"
       >
 
         <Carousel afterChange={onChange}>
@@ -26,6 +26,5 @@ export default function BigImageModal (props) {
         </Carousel>
 
       </Modal>
-    </div>
   )
 }
