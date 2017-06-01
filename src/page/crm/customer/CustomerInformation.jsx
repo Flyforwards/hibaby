@@ -133,6 +133,15 @@ const NoTitleformItemLayout = {labelCol: { span: 0 },wrapperCol: { span: 24 }}
 
 
 function cusFromItem(getFieldDecorator,dict) {
+
+  function fileRule(rule, value, callback) {
+    if (value.length > 0) {
+      callback();
+      return;
+    }
+    callback('请上传文件');
+  }
+
   let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || dict.submitStr}!`}],};
 
   if (dict.submitStr === 'contact')
@@ -145,9 +154,14 @@ function cusFromItem(getFieldDecorator,dict) {
     rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
   }
 
+  if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices' || dict.submitStr === 'imgURL')
+  {
+    rules = {rules: [{validator:fileRule}]};
+  }
+
   return(
   dict.title ?
-    <FormItem {...formItemLayout} label={dict.title}>
+    <FormItem  {...formItemLayout} label={dict.title}>
       {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
         cusComponent(dict)
       )}
@@ -361,22 +375,27 @@ function ExtensionInfo(props) {
 
   function uploadHeadelImg(NewuserImg){
     dispatch({type:'addCustomer/addHeadIcon',payload:NewuserImg})
+    props.form.validateFields(['imgURL'], { force: true });
   }
 
   function uploadIdcardFileProps(values) {
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
+    props.form.validateFields(['idcardScan'], { force: true });
   }
 
   function uploadContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/addContractDLC',payload:values})
+    props.form.validateFields(['contractAppendices'], { force: true });
   }
 
   function deleteIdcardFileProps(values) {
     dispatch({type:'addCustomer/deleteContractDLC',payload:values})
+    props.form.validateFields(['idcardScan'], { force: true });
   }
 
   function deleteContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
+    props.form.validateFields(['contractAppendices'], { force: true });
   }
 
   const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
@@ -571,6 +590,7 @@ class customerInformation extends React.Component{
     if (num > 4)
     {
       this.refs.extensionForm.validateFieldsAndScroll((err, values) => {
+
         if (!err) {
           this.baseFormRule(values);
         }
