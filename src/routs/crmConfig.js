@@ -35,6 +35,7 @@ export default (app) => [
   },
 //客户详情
   {
+    path: '/crm/customer/customerDetails',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
