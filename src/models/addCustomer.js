@@ -8,6 +8,8 @@ export default {
   namespace: 'addCustomer',
   state: {
     dataDetailId:101,
+    addCustomerTab:'1',
+
     baseData:[],
     expandData:[],
     remarkData:[],
@@ -61,6 +63,9 @@ export default {
       width:'15%',
     }]},
   reducers: {
+    setAddCustomerTab(state, { payload: todo }){
+      return {...state,addCustomerTab:todo.data};
+    },
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
 
@@ -622,8 +627,24 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/crm/customer/Add') {
+        if (pathname === '/crm/customer/Add/CustomerInformation') {
+          dispatch({
+            type: 'setAddCustomerTab',
+            payload:{data:'1'}
+          });
           defDis(dispatch)
+        };
+        if (pathname === '/crm/customer/Add/HealthRecords') {
+          dispatch({
+            type: 'setAddCustomerTab',
+            payload:{data:'2'}
+          });
+        };
+        if (pathname === '/crm/customer/Add/Package') {
+          dispatch({
+            type: 'setAddCustomerTab',
+            payload:{data:'3'}
+          });
         };
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
