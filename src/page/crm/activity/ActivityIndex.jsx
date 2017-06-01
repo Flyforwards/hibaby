@@ -60,9 +60,9 @@ class ActivityIndex extends React.Component {
       render: (text, record, index) => {
         return (
           <div key = { index }>
-            <Link onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
-            <Link onClick={ this.appointment.bind(this,record) }> 预约 </Link>
-            <Link onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
+            <Link className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+            <Link className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+            <Link className="firstB" onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
           </div>
         )
       },

@@ -179,13 +179,19 @@
 			width:100%;
       .firstA{
         display: inline-block;
-        color: #0066FF;
+        color: #b67231;
         width:25%;
+      }
+      .firstA:hover{
+        color:#0066ff;
       }
       .firstB{
         display: inline-block;
-        color: #FF0000;
+        color: #b67231;
         width:25%;
+      }
+      .firstB:hover{
+        color:#ff0000;
       }
       .firstC{
         display: inline-block;
@@ -228,8 +234,3 @@
   }
 
 }
-
-
-
-
-
