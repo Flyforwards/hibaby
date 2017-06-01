@@ -4,7 +4,6 @@ import {connect} from 'dva';
 import './system.scss';
 import {Card,Input,Button,Form} from 'antd';
 import {Link} from 'react-router';
-import {routerReducer} from 'react-router-redux';
 const FormItem = Form.Item;
 const createForm = Form.create
 

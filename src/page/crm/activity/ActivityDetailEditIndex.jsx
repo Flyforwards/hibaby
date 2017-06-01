@@ -50,6 +50,7 @@ class ActivityDetailIndex extends Component {
       wrapperCol:{ span:22 }
     }
 
+
     getFieldDecorator('id', { initialValue: editItem?editItem.id:0 });
     let activityInfo = (<Card></Card>)
     let itemName = "";
@@ -125,11 +126,11 @@ class ActivityDetailIndex extends Component {
         }
         </div>
         <div className="add-activity">
-          <ReservedUserComponent tableProps={ tableProps }/>
-          <Row>
-            <Col offset={16} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
-            <Col span={4}><Button onClick={ this.saveEdit.bind(this) }  >保存</Button></Col>
-          </Row>
+          <ReservedUserComponent editItem={ editItem } tableProps={ tableProps }/>
+          <div className="button-wrapper">
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.saveEdit.bind(this) } >保存</Button>
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)} >返回</Button>
+          </div>
         </div>
       </div>
     )

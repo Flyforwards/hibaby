@@ -75,7 +75,6 @@ export default {
         message.success('创建角色成功');
         yield put({
           type : 'getRolesByPage',
-          payload : {page : 1 , size : 10}
         });
       } else {
         throw err || "请求出错";
