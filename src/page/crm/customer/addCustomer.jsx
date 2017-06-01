@@ -9,7 +9,7 @@ const TabPane = Tabs.TabPane;
 function addCustomer(props) {
 
   const editCustomer = props.users.editCustomer;
-
+  const addCustomerTab = props.users.addCustomerTab;
   function callback(key) {
 
   }
@@ -32,7 +32,7 @@ function addCustomer(props) {
 
   return(
     <div>
-      <Tabs  defaultActiveKey="1" onChange={callback} type="card">
+      <Tabs  defaultActiveKey={addCustomerTab} onChange={callback} type="card">
         {TabPaneAry}
       </Tabs>
     </div>
