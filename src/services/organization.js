@@ -1,9 +1,7 @@
 
 import request from '../utils/request';
 import  { PAGE_SIZE　} from 'common/constants';
-const headers={
-  "Content-Type":"application/json"
-}
+
 //获取组织架构列表
 export function getDepartmentNodes(values) {
   return request('/crm/api/v1/department/getDepartmentNodes', {
@@ -145,7 +143,7 @@ export function getAllTissueProperty(values) {
   })
 }
 
-  
+
 //获取所有组织性质字典
 export function getPosition(values) {
   return request('/crm/api/v1/position/getPosition', {
@@ -160,6 +158,7 @@ export function getDeptList(values) {
     body: JSON.stringify(values),
   })
 }
+
 //获取所有地方中心信息
 export function getEndemic(values) {
   return request('/crm/api/v1/department/getEndemic', {
@@ -167,3 +166,4 @@ export function getEndemic(values) {
     body: JSON.stringify(values),
   })
 }
+

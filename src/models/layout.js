@@ -40,14 +40,6 @@ export default {
             })
           }
 
-          // 获取当前用户当前选择地方中心的权限别名列表
-          const { data: { data: permissionAlias, code: code5, err: err5}} = yield call(usersService.currentUserPermissionAliasList)
-          if (code5 ===0 && err5 === null) {
-            yield put({
-              type: 'permissionAliasSave',
-              payload: { permissionAlias }
-            })
-          }
           yield put({
             type: 'querySuccess',
             payload: { clubs } ,
@@ -56,6 +48,10 @@ export default {
           const { data: { data: selEndemic, code: code3, err: err3}} = yield call(usersService.getCurrentUserSelectEndemic);
           // 判断当前用户是否选择了地方中心
           if (code3 === 0 && err3 === null) {
+            // 获取按钮权限
+            yield put({
+              type: "currentUserPermissionAliasList"
+            })
             session.set("endemic", selEndemic)
             if (location.pathname === '/login') {
               yield put(routerRedux.push('/'))
@@ -67,6 +63,10 @@ export default {
               const { data: { code: code4, err: err4}} = yield call(usersService.setEndemic, { endemicId: endemic.id });
               if (code4 === 0 && err4 === null) {
                 session.set("endemic", endemic)
+                // 获取按钮权限
+                yield put({
+                  type: "currentUserPermissionAliasList"
+                })
                 yield put(routerRedux.push('/'));
               } else {
                 yield put(routerRedux.push('/club'));
@@ -74,7 +74,6 @@ export default {
             } else {
               yield put(routerRedux.push('/club'));
             }
-
           }
 
         } else {
@@ -101,6 +100,17 @@ export default {
         throw err;
       }
     },
+    // 获取当前用户当前选择地方中心的权限别名列表
+    *currentUserPermissionAliasList({ payload }, {call, put}){
+      const { data: { data: permissionAlias, code: code5, err: err5}} = yield call(usersService.currentUserPermissionAliasList)
+      if (code5 ===0 && err5 === null) {
+        yield put({
+          type: 'permissionAliasSave',
+          payload: { permissionAlias }
+        })
+      }
+    },
+
     // 获取主模块信息
     *getProjectList({ payload }, {call, put}) {
       const { data: { data, code, err}} = yield call(usersService.getProjectList)
@@ -130,6 +140,7 @@ export default {
       }
     },
 
+    // 设置地方中心
     *setEndemic({ payload: { selClub } }, { call, put }) {
       const value = { endemicId : selClub.id };
       const { data: { data, code , err } }  = yield call(usersService.setEndemic, value);
@@ -141,6 +152,10 @@ export default {
         yield put({
           type : 'getProjectAndModuleTree',
         });
+        // 获取地方中心权限别名列表 即按钮权限
+        yield put({
+          type: "currentUserPermissionAliasList"
+        })
       } else {
         throw err || "请求出错";
       }
@@ -174,6 +189,7 @@ export default {
             });
           }
         }
+        session.set("projectAndModuleTree", data);
         // 选择头部主模块
         yield put({
           type: 'updateSelectProject',

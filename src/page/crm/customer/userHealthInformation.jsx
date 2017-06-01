@@ -5,7 +5,8 @@ import { Table ,Input, Icon, Button, Popconfirm, Pagination, Tabs } from 'antd'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import './userHealthInformation.scss'
-import NutritionHealthInformation from './NutritionHealthInformation'
+import NutritionHealthInformation from '../healthy/NutritionHealthInformation'
+import HospitalHealthy from '../healthy/healthyhome';
 
 const TabPane = Tabs.TabPane;
 

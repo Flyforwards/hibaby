@@ -25,9 +25,14 @@ class AddModule extends Component {
   handleOk() {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          if (values.permissionId && values.permissionId.length > 0) {
-            values.permissionList = `${values.permissionId}`;
-            values.permissionId = values.permissionId[values.permissionId.length-1];
+          if (values.permissionId && values.permissionId.length >= 0) {
+            if (values.permissionId.length==0) {
+              values.permissionId = undefined;
+            } else {
+              values.permissionList = `${values.permissionId}`;
+              values.permissionId = values.permissionId[values.permissionId.length-1];
+            }
+
           }
             this.props.dispatch({
               type: 'module/AddMenuData',
@@ -102,7 +107,7 @@ class AddModule extends Component {
                   )}
               </FormItem>
               <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                  {getFieldDecorator('permissionId', {rules: [{required: true, message: '权限绑定为必填项！'}],
+                  {getFieldDecorator('permissionId', {rules: [{required: false}],
                     })(
                       <Cascader
                         options={ permissionList }
@@ -111,7 +116,7 @@ class AddModule extends Component {
                   }
               </FormItem>
               <FormItem className="MeunName" label="名称" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
-                  {getFieldDecorator('name', {initialValue: name,rules: [{ required: true, message: '名称为必填项！' }],
+                  {getFieldDecorator('name', {rules: [{ required: true, message: '名称为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
@@ -123,10 +128,16 @@ class AddModule extends Component {
                   )}
               </FormItem>
               <FormItem className = "ICON" label="图标" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
-                  {getFieldDecorator('icon', {rules: [{ required: true, message: '图标为必填项！' }],
+                  {getFieldDecorator('icon', {rules: [{ required: true, message: 'icon为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
+              </FormItem>
+              <FormItem label="描述" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+                {getFieldDecorator('description', {rules: [{ required: false, }],
+                })(
+                  <Input className="input"/>
+                )}
               </FormItem>
               <FormItem className = "PathBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
                 {getFieldDecorator('orderBy', {rules: [{ required: false, }],

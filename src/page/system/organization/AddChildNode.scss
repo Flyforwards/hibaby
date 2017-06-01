@@ -43,8 +43,8 @@
 	}
 	.ant-btn-primary{
 		float:right;
-		margin-right:30px; 
-		margin-top:10px; 
+		margin-right:30px;
+		margin-top:10px;
 	}
 }
 .Disabled{
@@ -63,5 +63,26 @@
 		margin-right: 92px;
 	    float: right;
 	    margin-top: -55px;
+	}
+	.vertical-center-modal {
+	  text-align: center;
+	  white-space: nowrap;
+	  .ant-modal {
+	    display: inline-block;
+	    vertical-align: middle;
+	    top: 0;
+	    text-align: center;
+	    .ant-modal-body {
+	      text-align: left;
+	    }
+	  }
+	}
+
+	.vertical-center-modal:before {
+	  content: '';
+	  display: inline-block;
+	  height: 100%;
+	  vertical-align: middle;
+	  width: 0;
 	}
 }

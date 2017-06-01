@@ -24,9 +24,13 @@ class EditModule extends Component {
   handleOk() {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          if (values.permissionId && values.permissionId.length > 0) {
-            values.permissionList = `${values.permissionId}`;
-            values.permissionId = values.permissionId[values.permissionId.length-1];
+          if (values.permissionId && values.permissionId.length >= 0) {
+            if (values.permissionId.length == 0) {
+              values.permissionId = undefined;
+            } else {
+              values.permissionList = `${values.permissionId}`;
+              values.permissionId = values.permissionId[values.permissionId.length - 1];
+            }
           }
           values.id = this.props.record.id;
           this.props.dispatch({
@@ -108,7 +112,7 @@ class EditModule extends Component {
                     )}
               </FormItem>
               <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                  {getFieldDecorator('parentId', {initialValue: item.parentId ==0?null:[String(item.parentId)] ,rules: [{required: false,onChange: this.handleSelectChange}],
+                  {getFieldDecorator('parentId', {initialValue: item.parentId ==0?null:String(item.parentId) ,rules: [{required: false,onChange: this.handleSelectChange}],
                   })(
                     <Select  placeholder="请选择">
                       {
@@ -142,6 +146,12 @@ class EditModule extends Component {
                 {getFieldDecorator('icon', {initialValue: item.icon,rules: [{ required:false, }],
                 })(
                     <Input className="input"/>
+                )}
+              </FormItem>
+              <FormItem label="描述" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+                {getFieldDecorator('description', {initialValue: item.description,rules: [{ required: false, }],
+                })(
+                  <Input className="input"/>
                 )}
               </FormItem>
               <FormItem className = "orderByBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>

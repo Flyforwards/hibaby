@@ -198,33 +198,16 @@ class ActivityDetailIndex extends Component {
     })
   }
 
+  reset() {
+    this.props.form.resetFields();
+  }
+
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { item, signUserList,loading, signPagination, dispatch } = this.props;
-    const options = [{
-      value: 'zhejiang',
-      label: 'Zhejiang',
-      children: [{
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [{
-          value: 'xihu',
-          label: 'West Lake',
-        }],
-      }],
-    }, {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [{
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [{
-          value: 'zhonghuamen',
-          label: 'Zhong Hua Men',
-        }],
-      }],
-    }];
+
+    const { form, item, signUserList,loading, signPagination, dispatch } = this.props;
+    const { getFieldDecorator } = form;
+
     const formItemLayout = {
       labelCol:{ span: 2 },
       wrapperCol:{ span:22 }
@@ -268,13 +251,23 @@ class ActivityDetailIndex extends Component {
       dataSource : signUserList ,
       pagination: signPagination,
       onChange (page) {
-        dispatch({
-          type: 'activity/getActivityCustomerPageList',
-          payload:{
+        form.validateFields((err, values) => {
+          let query = {
             activityId: item.id,
             page: page.current,
             size: page.pageSize,
           }
+          if (!err) {
+            if (values.time != undefined) {
+              values.year = values.time.get('year');
+              values.month = values.time.get('month')+1;
+            }
+            query = {...query,...values}
+          }
+          dispatch({
+            type: "activity/getActivityCustomerPageList",
+            payload: query
+          })
         })
       },
     }
@@ -343,7 +336,7 @@ class ActivityDetailIndex extends Component {
                 </Col>
                 <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
                   </span>
                 </Col>
               </Row>
@@ -393,14 +386,10 @@ class ActivityDetailIndex extends Component {
                   </FormItem>
                 </Col>
                 <Col span={4} style={{width:'180px'}}>
-                  <FormItem  {...formChooseOneLayout} label="操作者" >
+                  <FormItem  {...formChooseOneLayout} label="操作者2" >
                     {getFieldDecorator('operator2', {rules: [{ required: false }],
                     })(
-                      <Select style={{width:'160px'}}>
-                        <Option value="v1">业务员1</Option>
-                        <Option value="v2">业务员2</Option>
-                        <Option value="v3">业务员3</Option>
-                      </Select>
+                      <Input max={40}  />
                     )}
                   </FormItem>
                 </Col>

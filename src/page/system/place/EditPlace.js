@@ -3,7 +3,6 @@ import {connect} from 'dva';
 import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
 import {Link} from 'react-router';
-import manager from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 
@@ -59,7 +58,7 @@ class EditPlaceData extends React.Component {
               }
             }
           });
-          names = manager.bubbleSortByKey(names, "inx");
+          names.bubbleSortByKey( "inx");
           // 对数据进行整合
           names.map((record, index)=>{
             let name = record;

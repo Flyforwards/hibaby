@@ -49,7 +49,7 @@ let routes = [
         },
         onEnter(nextState, replace) {
           // 可以验证是否登录
-          console.info("%c nextState >>>", "color:orange", nextState)
+        //  console.info("%c nextState >>>", "color:orange", nextState)
           if (!session.get('isLogin')) {
             replace('/login')
           }

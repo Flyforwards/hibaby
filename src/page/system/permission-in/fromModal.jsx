@@ -2,30 +2,25 @@
 
 import React, {Component} from 'react'
 import {connect} from 'dva'
-import {Modal, Form, Input, Radio, Select,Button, Checkbox, Icon, TreeSelect,Table,Popconfirm,Row, Col} from 'antd'
+import { Modal, Form, Input, Radio, Select,Button, Icon, TreeSelect,Table,Popconfirm,Row, Col} from 'antd'
 import './fromModal.scss'
-import SelectList from './from.jsx'
+import { routerRedux } from 'dva/router'
 import TabalList from './tabalList.jsx'
 import {local, session} from 'common/util/storage.js'
-import FromCreateModal from './fromCreateModal.jsx'
 import AddFromCreateModal from './addFromCreateModal.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
 const Option = Select.Option
 const Dictionary = local.get("Dictionary")
+import { parse } from 'qs'
+
+
 @createForm()
-class FromModaled extends Component {
+class permissionInside extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            dataSource: [{
-                module: 'crm',
-                authority: '客户档案',
-                name: '客户档案',
-                path: '/xxxx/xxxx/xxx',
-                people:'里方法'
-              }],
-              modifyModalVisible: false
+          modifyModalVisible: false
         }
     }
     state = {
@@ -48,89 +43,89 @@ class FromModaled extends Component {
             modifyModalVisible: false,
         })
       }
-    checkbox(index) {
-    //    console.log("index",index)
-    }
+
     Inquire(){
         this.props.form.validateFieldsAndScroll((err, values) => {
-    //    console.log("上级权限>>>>",values)
         if (!err) {
-          this.props.dispatch({
-            type: 'system/listByPage',
-            payload: {
-                actionPath:values.actionPath,
-                name: values.name,
-                projectId: Number(values.projectId),
-                page: this.state.page,
-                size:10,
-            }
-        });
+          const { pathname } = location;
+          this.props.dispatch(routerRedux.push({
+            pathname,
+            query: values
+        }));
         }
       });
     }
     emptied(){
-        $(".ant-select-selection-selected-value").html("请选择")
-        $(".name").val("")
-        $(".actionPath").val("")
+      const { pathname } = location;
+      this.props.dispatch(routerRedux.push({
+        pathname
+      }))
+      this.props.form.resetFields()
     }
-    onSelect = (value,key) => {
-      this.props.dispatch({
-          type: 'system/SelectList',
-          payload: {
-              "projectId":value
-          }
-      });
-    }
+
     render() {
-      {if(this.props.data){
-        local.set("mainName",this.props.data)
-      }}
-       const {visible, form, confirmLoading,modelsList,ListIndex} = this.props
-        const { getFieldDecorator } = this.props.form;
+        if(this.props.data){
+          local.set("mainName",this.props.data)
+        }
+        const { permissions, form } = this.props;
+        const { getFieldDecorator } = form;
         let mainName = local.get("Dictionary");
-      //  console.log(mainName)
+
         let nodes = [];
         if (mainName != null) {
           nodes = mainName.map((item,index)=>{
             return (
-                <Option key={item.id}  >{item.name}</Option>
+                <Option value={String(item.id)} key={item.id}  >{item.name}</Option>
             )})
         }
-
+        const values = parse(location.search.substr(1))
         return (
             <div className="fromList">
               <div className="fromhead">
-                  <Form onSubmit={this.handleSubmit} className="ant-advanced-search-form">
+                  <Form className="ant-advanced-search-form">
                     <FormItem  label="主模块">
-                     {getFieldDecorator('projectId', {required: false,rules: [],})(
-                        <Select placeholder="请选择" onSelect={this.onSelect}>
-                          { nodes}
+                     {getFieldDecorator('projectId', {
+                       required: false,
+                       rules: [],
+                       initialValue: values.projectId,
+                     })(
+                        <Select placeholder="请选择" >
+                          { nodes }
                         </Select>
                       )}
                     </FormItem>
                     <FormItem label="上级权限" className="permission">
-                       {getFieldDecorator('authority', {required: false,rules: [],onChange: this.handleSelectChange,})(
-                          <SelectList />
+                       {getFieldDecorator('parentId', {
+                         required: false,
+                         rules: [],
+                         initialValue: values.parentId?Number(values.parentId):undefined,
+                       })(
+                         <TreeSelect
+                           style={{ width: 370 }}
+                           dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                           treeData={ permissions }
+                           placeholder="请选择"
+                           treeDefaultExpandAll
+                         />
                         )}
                     </FormItem>
                     <FormItem label="名称">
-                       {getFieldDecorator('name', {required: false,rules: [],})(
+                       {getFieldDecorator('name', {
+                         required: false,
+                         initialValue: values.name,
+                         rules: [],
+                       })(
                            <Input className="name"/>
                         )}
                     </FormItem>
-                    <FormItem label="路径" >
-                         {getFieldDecorator('actionPath', {required: false,rules: [],})(
-                            <Input className="actionPath"/>
-                          )}
-                    </FormItem>
                   </Form>
                   <div className="Button">
-                    <Button className="btn" onClick={this.Inquire.bind(this)}>查询</Button>
-                    <Button className="btn ClearBtn" onClick={this.emptied.bind(this)}>清空</Button>
-                    <Button className="btn AddBtn" onClick={this.addList.bind(this)}>新增</Button>
+                    <Button className="btn" onClick={ this.Inquire.bind(this) }>查询</Button>
+                    <Button className="btn ClearBtn" onClick={ this.emptied.bind(this) }>重置</Button>
+                    <Button className="btn AddBtn" onClick={ this.addList.bind(this) }>新增</Button>
                   </div>
               </div>
-              <TabalList />
+              <TabalList form={form} />
               <AddFromCreateModal
                 visible={ this.state.modifyModalVisible}
                 onCancel={ this.handleCreateModalCancel.bind(this) }
@@ -139,20 +134,17 @@ class FromModaled extends Component {
         )
     }
 }
-function FromModal({dispatch,list,code}){
-      return (<div>
-                  <FromModaled dispatch = {dispatch} list = {list}/>
-              </div>)
-        }
+
 function mapStateToProps(state) {
   const {
     data,
-    code
-  } = state.system;
+    permissions
+  } = state.myPermission;
   return {
-    loading: state.loading.models.system,
-    data
+    loading: state.loading,
+    data,
+    permissions
   };
 }
 
-export default connect(mapStateToProps)(FromModal)
+export default connect(mapStateToProps)(permissionInside)

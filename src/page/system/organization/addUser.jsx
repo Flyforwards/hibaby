@@ -110,6 +110,7 @@ class AddUsered extends React.Component {
                           if(fields.phoneNumber){
                             if(fields.information){
                               if(fields.companyEmail){
+                                console.log(this.state.NewuserImg)
                                 if(this.state.NewuserImg){
                                     this.props.dispatch({
                                       type: 'organization/addUser',
@@ -135,7 +136,6 @@ class AddUsered extends React.Component {
                                         "img":this.state.NewuserImg
                                       }
                                     })
-                                    history.go(-1)
                                 }else{
                                   message.warning('请上传头像')
                                 }

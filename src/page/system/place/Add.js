@@ -4,7 +4,6 @@ import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
 import {Link} from 'react-router';
 import {routerReducer} from 'react-router-redux'
-import manager from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 @createForm()
@@ -58,7 +57,7 @@ class PlaceAdd extends React.Component {
               }
             }
           });
-          names = manager.bubbleSortByKey(names, "inx");
+          names.bubbleSortByKey( "inx");
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'localData/AddPlaceData',

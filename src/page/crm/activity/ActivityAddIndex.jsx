@@ -6,7 +6,6 @@ import { Card, Input, Button, Form, DatePicker, Row, Col } from 'antd';
 import { Link } from 'react-router';
 import { routerReducer } from 'react-router-redux';
 
-import manager from 'common/util'
 const FormItem = Form.Item;
 const createForm = Form.create
 

@@ -94,12 +94,17 @@ overflow: hidden;
   :root .ant-select-arrow {
     font-size: 16px;
   }
+  .btn{
+    width:100%;
+    height:30px;
+    margin-top:30px;
+  }
 	.Organization-Inquire{
 		float:right;
 		font-size: 14px;
 		color: #b67233;
 		cursor: pointer;
-		margin-right:5%;
+		margin-right:50px;
 		margin-top:15px;
 		display: inline-block;
 		border:1px solid #b67233;
@@ -315,9 +320,8 @@ overflow: hidden;
     height: 16px;
     line-height: 16px;
     font-weight: 900;
-  	left:74%;
-	margin-top:4px; 
-
+    left:116px;
+    top:3px;
 }
 .Organization-left .ant-tree li ul li a:hover {
     width: 400px;
