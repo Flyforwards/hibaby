@@ -390,12 +390,12 @@ function ExtensionInfo(props) {
 
   function deleteIdcardFileProps(values) {
     dispatch({type:'addCustomer/deleteContractDLC',payload:values})
-    props.form.validateFields(['idcardScan'], { force: true });
+    props.form.validateFields(['idcardScan'], { force: false });
   }
 
   function deleteContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
-    props.form.validateFields(['contractAppendices'], { force: true });
+    props.form.validateFields(['contractAppendices'], { force: false });
   }
 
   const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,

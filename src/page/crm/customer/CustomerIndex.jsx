@@ -244,6 +244,7 @@ class CustomerIndex extends React.Component {
         return (
         <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
+
               <Form>
                 <div>
                   <Row style={{width:'1116px'}}>
