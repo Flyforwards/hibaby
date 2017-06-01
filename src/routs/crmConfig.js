@@ -52,6 +52,7 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/addCourse'));
+        registerModel(app, require('models/healthInformation'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
       })
     }
