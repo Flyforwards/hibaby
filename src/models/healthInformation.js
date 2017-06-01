@@ -12,7 +12,9 @@ export default {
 
   namespace: 'healthInformation',
 
-  state: {},
+  state: {
+
+  },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -24,10 +26,12 @@ export default {
       yield put({ type: 'save' });
     },
     *saveHealthInformation({payload: values}, { call, put }) {
-      const {data: { data, code} } = yield call(healthInformationService.saveHealthInformation, values);
+      const {data: { data, code,err} } = yield call(healthInformationService.saveHealthInformation, values);
       if (code == 0) {
         message.success("创建健康档案成功");
         yield put(routerRedux.push("/crm/activity"));
+      }else{
+        message.error(err);
       }
     },
   },

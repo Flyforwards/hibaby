@@ -4,7 +4,7 @@
  */
 import React from 'react'
 import { connect } from 'dva'
-import { Form,Row,Col,Radio,Input,Button } from 'antd';
+import { Form,Row,Col,Radio,Input,Button,message } from 'antd';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const createForm = Form.create
@@ -68,9 +68,9 @@ class SkinHealthInformation extends React.Component {
     const {dispatch} = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const healthInfo = values.toString();
+        const healthInfo = JSON.stringify(values);
         dispatch({
-          type: '/healthInformation/saveHealthInformation',
+          type: 'healthInformation/saveHealthInformation',
           payload: {
             healthInfo : healthInfo,
             type : type,
@@ -329,13 +329,21 @@ class SkinHealthInformation extends React.Component {
 const SkinHealthInformationForm = Form.create()(SkinHealthInformation);
 
 
-function SkinHealthInformationFormTab({ dispatch, cardKind, zheKou, level }) {
+function SkinHealthInformationFormTab({ dispatch }) {
   return (
     <SkinHealthInformationForm dispatch={dispatch} />
   )
 }
 
-export default connect()(SkinHealthInformationFormTab)
+
+function mapStateToProps(state) {
+  return {
+    healthInformation: state.healthInformation
+  };
+}
+
+
+export default connect(mapStateToProps)(SkinHealthInformationFormTab)
 
 
 
