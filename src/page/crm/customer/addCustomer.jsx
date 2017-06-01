@@ -6,27 +6,43 @@ import CustomerInformation from './CustomerInformation';
 import UserHealthInformation from './userHealthInformation'
 const TabPane = Tabs.TabPane;
 
-function addCustomer() {
+function addCustomer(props) {
 
+  const editCustomer = props.users.editCustomer;
+  const addCustomerTab = props.users.addCustomerTab;
   function callback(key) {
 
   }
 
+  let TabPaneAry = [ <TabPane className='tabsContent' tab="客户信息" key="1">
+    <CustomerInformation/>
+    </TabPane>,
+  <TabPane tab="健康档案" key="2">
+    <UserHealthInformation/>
+    </TabPane>,
+    <TabPane tab="套餐" key="3">
+    Content of Tab Pane 3
+  </TabPane>];
+
+  if(editCustomer){
+    TabPaneAry.push(<TabPane tab="会员卡" key="4">
+      Content of Tab Pane 3
+    </TabPane>)
+  }
+
   return(
     <div>
-      <Tabs  defaultActiveKey="1" onChange={callback} type="card">
-        <TabPane className='tabsContent' tab="客户信息" key="1">
-          <CustomerInformation/>
-        </TabPane>
-        <TabPane tab="健康档案" key="2">
-          <UserHealthInformation/>
-        </TabPane>
-        <TabPane tab="套餐" key="3">
-          Content of Tab Pane 3
-        </TabPane>
+      <Tabs  defaultActiveKey={addCustomerTab} onChange={callback} type="card">
+        {TabPaneAry}
       </Tabs>
     </div>
   )
 }
 
-export default addCustomer;
+function mapStateToProps(state) {
+  return {
+    users: state.addCustomer,
+  };
+}
+
+export default connect(mapStateToProps)(addCustomer) ;

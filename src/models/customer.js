@@ -6,7 +6,7 @@ import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
 import { PAGE_SIZE } from 'common/constants.js'
 import { parse } from 'qs'
-
+import * as systemService from '../services/system';
 export default {
   namespace: 'customer',
   state: {
@@ -16,6 +16,7 @@ export default {
     signUserList: [], // 预约用户列表
     editSignUserList: [], // 编辑
     userList:[], // 会员用户列表
+    shipCards:[],
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -29,6 +30,10 @@ export default {
 
     getCustomerPageSave(state, { payload: { list, pagination }}) {
       return {...state, list, pagination: {  ...state.pagination,...pagination }};
+    },
+
+    memberShipCardSave(state, { payload: { shipCards }}) {
+      return {...state, shipCards};
     },
     // getDetailSuccess(state, { payload: { item }}) {
     //   return {...state, item};
@@ -208,12 +213,25 @@ export default {
     //   }
     // },
 
+    // 获取会员身份下拉选项， 也是卡种列表
+    *getMemberShipCard({payload: values}, { call, put }) {
+      const {data: { data, code} } = yield call(systemService.getMemberShipCard, values);
+      if (code == 0) {
+        yield put({
+          type: 'memberShipCardSave',
+          payload: { shipCards: data }
+        })
+      }
+    },
+
     // 删除客户
     *deleteCustomer ({ payload: values}, { call, put }) {
       const {data: {data,code}} = yield call(customerService.deleteCustomer, values);
       if (code == 0) {
-        message.success("删除活动成功");
-        yield put(routerRedux.push("/crm/customer"));
+        message.success("删除客户成功");
+        yield put({
+          type: 'getCustomerPage',
+        });
       }
     },
     // 获取用户列表
@@ -250,6 +268,9 @@ export default {
           dispatch({
             type: 'getCustomerPage',
             payload: query
+          });
+          dispatch({
+            type: 'getMemberShipCard',
           });
         }
         // if (pathname === '/crm/customer/detail') {

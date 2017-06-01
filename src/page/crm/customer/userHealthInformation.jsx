@@ -7,6 +7,7 @@ import { Link } from 'react-router'
 import './userHealthInformation.scss'
 import NutritionHealthInformation from '../healthy/NutritionHealthInformation'
 import HospitalHealthy from '../healthy/healthyhome';
+import SkinHealthInformation from '../healthy/SkinHealthInformation';
 
 const TabPane = Tabs.TabPane;
 
@@ -149,17 +150,24 @@ class userHealthInformation extends React.Component {
         }))
       },
     }
+    const editCustomer = this.props.users.editCustomer;
+
     return (
       <div className = "user-health-cent">
         <Tabs className="tabsContent" defaultActiveKey="1" type="card">
           <TabPane tab="医疗健康档案" key="1">
-            <HospitalHealthy />
+            if(editCustomer){
+
+            }else{
+              <HospitalHealthy />
+            }
+
           </TabPane>
           <TabPane tab="营养部健康档案" key="2">
             <NutritionHealthInformation/>
           </TabPane>
           <TabPane tab="美研中心孕期健康档案" key="3">
-            Content of Tab Pane 3
+            <SkinHealthInformation />
           </TabPane>
           <TabPane tab="出院小结" key="4">
             Content of Tab Pane 3
@@ -171,7 +179,9 @@ class userHealthInformation extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return state;
+  return {
+    users: state.addCustomer,
+  };
 }
 
 export default connect(mapStateToProps)(userHealthInformation);

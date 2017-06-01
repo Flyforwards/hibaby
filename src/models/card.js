@@ -13,6 +13,13 @@ export default {
       pageSize:10,
       total: null,
     },
+    userPagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      pageSize:10,
+      total: null,
+    },
   },
   reducers: {
     //分页
@@ -191,8 +198,6 @@ export default {
             payload: {
               "page":1,
               "size":10,
-              "sortField": "string",
-              "sortOrder": "string"
             }
           });
           dispatch({

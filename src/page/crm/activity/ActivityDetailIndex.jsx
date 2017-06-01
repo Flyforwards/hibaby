@@ -11,7 +11,7 @@ import AppointmentModalFrom from './appointmentModalFrom'
 import AppointmentMemberFrom from './appointmentMemberFrom'
 import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
 import DictionarySelect from 'common/dictionary_select';
-import util from 'common/util'
+import { parse } from 'qs'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option;
@@ -66,8 +66,8 @@ class ActivityDetailIndex extends Component {
       key: 'contractNumber'
     },{
       title: '添加人',
-      dataIndex: 'operator1',
-      key: 'operator1'
+      dataIndex: 'operator2',
+      key: 'operator2'
     },{
       title: '客户状态',
       dataIndex: 'customerStatus',
@@ -76,19 +76,33 @@ class ActivityDetailIndex extends Component {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
-        if (record.signed) {
-          return (
-            <div key = { index }>
-              <span> 已签到 </span>
-            </div>
-          )
-        } else {
-          return (
-            <div key = { index }>
-              <Link onClick={ this.sign.bind(this,record)} > 签到 </Link>
-            </div>
-          )
+        if (this.props.item) {
+          const timestamp = new Date().getTime();
+          // 活动未开始无法签到
+          if (this.props.item.activityTime > timestamp) {
+            return (
+              <div key = { index }>
+                <span> 活动未开始 </span>
+              </div>
+            )
+          } else {
+            if (record.signed) {
+              return (
+                <div key = { index }>
+                  <span> 已签到 </span>
+                </div>
+              )
+            } else {
+              return (
+                <div key = { index }>
+                  <Link onClick={ this.sign.bind(this,record)} > 签到 </Link>
+                </div>
+              )
+            }
+          }
         }
+
+
       },
     }];
   }
@@ -199,15 +213,20 @@ class ActivityDetailIndex extends Component {
   }
 
   reset() {
-    this.props.form.resetFields();
+    const { pathname } = location;
+    const query = parse(location.search.substr(1))
+    this.props.dispatch(routerRedux.push({
+      pathname,
+      query
+    }))
+    this.props.form.resetFields()
   }
 
 
   render() {
 
-    const { form, item, signUserList,loading, signPagination, dispatch } = this.props;
+    const { form, item, signUserList,loading, signPagination, dispatch, shipCards } = this.props;
     const { getFieldDecorator } = form;
-
     const formItemLayout = {
       labelCol:{ span: 2 },
       wrapperCol:{ span:22 }
@@ -237,6 +256,12 @@ class ActivityDetailIndex extends Component {
     let appointments = 0;
     let signeds = 0;
     let orders = 0;
+    let buttons = (
+      <div className="button-wrapper">
+        <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
+        <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
+        <Button style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+      </div>)
     if (item != null) {
       itemName = item.name;
       activityTime = moment(item.activityTime).format("YYYY-MM-DD HH:mm:ss");
@@ -245,6 +270,31 @@ class ActivityDetailIndex extends Component {
       appointments = item.appointments;
       signeds = item.signeds;
       orders = item.orders;
+      const timestamp = new Date().getTime()
+      // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况无法删除活动
+      if (item.activityTime < timestamp ) {
+        buttons = (
+          <div className="button-wrapper">
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+          </div>)
+      } else {
+        if ( item.appointments > 0 ) {
+          buttons = (<div className="button-wrapper">
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+          </div>)
+        } else {
+          buttons = (<div className="button-wrapper">
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.deleteActivity.bind(this) }>删除</Button>
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
+            <Button style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+          </div>)
+        }
+      }
+
     }
     const tableProps = {
       loading: loading.effects['activity/getActivityCustomerPageList'],
@@ -271,6 +321,11 @@ class ActivityDetailIndex extends Component {
         })
       },
     }
+
+    const options = shipCards.map((record)=>{
+      return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+    });
+
 
     return (
         <div className="activity-cent">
@@ -373,7 +428,7 @@ class ActivityDetailIndex extends Component {
                   <FormItem  {...formChooseOneLayout} label="第几胎" >
                     {getFieldDecorator('fetus', {rules: [{ required: false }],
                     })(
-                      <DictionarySelect selectName="FETUS" />
+                      <DictionarySelect  placeholder="请选择" selectName="FETUS" />
                     )}
                   </FormItem>
                 </Col>
@@ -381,7 +436,11 @@ class ActivityDetailIndex extends Component {
                   <FormItem  {...formChooseOneLayout} label="会员身份" >
                     {getFieldDecorator('member', {rules: [{ required: false }],
                     })(
-                      <DictionarySelect  selectName="MEMBER" />
+                      <Select   placeholder="请选择" >
+                      {
+                        options
+                      }
+                      </Select>
                     )}
                   </FormItem>
                 </Col>
@@ -396,14 +455,10 @@ class ActivityDetailIndex extends Component {
               </Row>
             </Form>
             <Table {...tableProps} bordered size="small" rowKey = { record=>record.id } columns={ this.columns }/>
-            <Row>
-              <Col offset={8} span={4}><Button onClick={this.back.bind(this)}>返回</Button></Col>
-              <Col span={4}><Button onClick={ this.appointment.bind(this) }  >预约</Button></Col>
-              <Col span={4}><Button onClick={ this.deleteActivity.bind(this) }>删除</Button></Col>
-              <Col span={4}><Button  onClick={ this.edit.bind(this) }>编辑</Button></Col>
-            </Row>
           </Card>
-
+            {
+              buttons
+            }
           <AppointmentModalFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.appointmentVisible } selectRecord={ item } onChoose={ this.onChoose.bind(this)}/>
           <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ item } from={ false}/>
           <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ item }  from={ false}/>
@@ -421,10 +476,12 @@ function mapStateToProps(state) {
     item,
     signUserList,
     signPagination,
+    shipCards
   } = state.activity;
 
   return {
     loading: state.loading,
+    shipCards,
     item,
     signUserList,
     signPagination,

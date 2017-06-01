@@ -3,9 +3,8 @@ import React from 'react';
 import {connect} from 'dva';
 import './activityIndex.scss';
 import { Card, Input, Button, Form, DatePicker, Row, Col } from 'antd';
-import { Link } from 'react-router';
-import { routerReducer } from 'react-router-redux';
 
+import { Link } from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
 

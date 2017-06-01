@@ -5,8 +5,6 @@ import { connect } from 'dva'
 import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon, Cascader} from 'antd'
 import './AddModule.scss'
 import {local, session} from 'common/util/storage.js'
-import SelectList from './from.jsx'
-import SelectMenu from './menu.jsx'
 const createForm = Form.create
 const FormItem = Form.Item
 
@@ -62,8 +60,9 @@ class AddModule extends Component {
          }
      });
    }
+
   render() {
-    const { visible ,projectList, permissionList} = this.props;
+    const { visible ,projectList, permissionList, menu} = this.props;
     const { getFieldDecorator } = this.props.form;
     let modalTitle = "菜单模块：";
     const formItemLayout = {
@@ -73,6 +72,9 @@ class AddModule extends Component {
 
     const children = projectList.map((res,index)=>{
       return (<Option value={ String(res.id)} key={res.id}>{res.name}</Option>)
+    });
+    const menuOption = menu.map((res,index)=>{
+      return (<Option key={res.id}>{res.name}</Option>)
     });
 
     return (
@@ -100,12 +102,17 @@ class AddModule extends Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                  {getFieldDecorator('parentId', {rules: [{required: false,} ],
-                  })(
-                    <SelectMenu/>
-                  )}
-              </FormItem>
+
+            <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+              {getFieldDecorator('parentId',{rules: [{required: false,} ],
+              })(
+                <Select  placeholder="请选择">
+                  {
+                    menuOption
+                  }
+                </Select>
+              )}
+            </FormItem>
               <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                   {getFieldDecorator('permissionId', {rules: [{required: false}],
                     })(
