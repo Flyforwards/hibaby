@@ -97,10 +97,8 @@ export default {
       if (code == 0) {
         message.success('删除成功');
         yield put({
-          type : 'getMenuData',
-          payload : { page : page || 0 , size : pageSize || 10 }
-        }
-			);
+          type: 'getMenuData'
+        })
       } else {
         throw err || "请求出错";
       }
@@ -111,27 +109,20 @@ export default {
 			const {data: { data,code} } = yield call(moduleService.addMenuList, values);
 			if (code == 0) {
 				message.success("菜单数据保存成功")
-				yield put({
-						type:'AddMenuList',
-						payload:{
-							data,
-							code
-						}
-				});
+        yield put({
+          type: 'getMenuData'
+        })
 			}
 		},
+
 		//编辑菜单数据列表
 		*EditMenuData({payload: values}, { call, put }) {
 			const {data: { data,code} } = yield call(moduleService.editMenuListData, values);
 			if (code == 0) {
 				message.success("菜单数据更新成功")
-				yield put({
-						type:'EditMenuListData',
-						payload:{
-							data,
-							code
-						}
-				});
+        yield put({
+          type: 'getMenuData'
+        })
 			}
 		},
 		//菜单主模块下拉选项

@@ -45,7 +45,7 @@ export default {
 		*AddPlaceData({payload: values}, { call, put }) {
 			const {data: {data,id,code}} = yield call(placeService.AddPlaceData, values);
 			if (code == 0) {
-				message.success("添加用户信息成功");
+				message.success("添加地方字段成功");
 				yield put(routerRedux.push('/system/local-char'));
 			}
 		},

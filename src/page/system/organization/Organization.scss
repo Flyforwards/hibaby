@@ -211,10 +211,21 @@ overflow: hidden;
 			margin-left:5px;
 			color:#b87638;
 		}
+    a:hover{
+			margin-right:9px;
+			margin-left:5px;
+			color:#0066ff;
+		}
 		.twoA{
 			margin-right:9px;
 			margin-left:5px;
 			color:#666;
+		}
+    .twoB{
+			margin-right:9px;
+			margin-left:5px;
+			color:#b87638;
+			pointer-events: none;
 		}
 	}
 }

@@ -116,3 +116,11 @@ export function roleDel(values) {
     body: JSON.stringify(values),
   })
 }
+
+// 获取会员身份下拉选项， 也是卡种列表
+export function getMemberShipCard(values) {
+  return request('/crm/api/v1/membershipcard/getMembershipcard', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

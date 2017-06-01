@@ -12,9 +12,42 @@ export default (app) => [
         })
       }
     },
-  //客户列表
+  // 添加客户
   {
-    path: '/crm/customer/Add',
+    path: '/crm/customer/Add/CustomerInformation',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        registerModel(app, require('models/healthInformation'));
+        cb(null, require('page/crm/customer/addCustomer.jsx'))
+      })
+    }
+  },
+  // 添加健康档案
+  {
+    path: '/crm/customer/Add/HealthRecords',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        registerModel(app, require('models/healthInformation'));
+        cb(null, require('page/crm/customer/addCustomer.jsx'))
+      })
+    }
+  },
+  //添加套餐
+  {
+    path: '/crm/customer/Add/Package',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        registerModel(app, require('models/healthInformation'));
+        cb(null, require('page/crm/customer/addCustomer.jsx'))
+      })
+    }
+  },
+  //编辑客户信息
+  {
+    path: '/crm/customer/Edit',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
@@ -38,7 +71,8 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
-        cb(null, require('page/crm/customer/customerDetails.jsx'))
+        registerModel(app, require('models/healthInformation'));
+        cb(null, require('page/crm/customer/customerDetailsSuper.jsx'))
       })
     }
   },

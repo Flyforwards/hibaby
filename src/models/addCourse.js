@@ -109,7 +109,7 @@ export default {
 		      }} = yield call(addCourseService.saveCustomerPackage, values);
 				if (code == 0) {
 					message.success("添加套餐成功");
-					yield put(routerRedux.push("/crm/customer/Add"));
+					yield put(routerRedux.push("/crm/customer/Add/Package"));
 				}else{
 					throw err || "请求出错";
 				}
