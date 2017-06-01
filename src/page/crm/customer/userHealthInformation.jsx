@@ -133,35 +133,13 @@ class userHealthInformation extends React.Component {
 
 
   render() {
-    const { list, loading, pagination, dispatch } = this.props;
-    const tableProps = {
-      loading: loading.effects['activity/getActivityPage'],
-      dataSource : list ,
-      pagination,
-      onChange (page) {
-        const { pathname } = location
-        dispatch(routerRedux.push({
-          pathname,
-          query: {
-            page: page.current,
-            size: page.pageSize,
-            type: 1,
-          },
-        }))
-      },
-    }
     const editCustomer = this.props.users.editCustomer;
-
+    const HospitalHealthyDiv = editCustomer ? '':<HospitalHealthy />;
     return (
       <div className = "user-health-cent">
         <Tabs className="tabsContent" defaultActiveKey="1" type="card">
           <TabPane tab="医疗健康档案" key="1">
-            if(editCustomer){
-
-            }else{
-              <HospitalHealthy />
-            }
-
+            {HospitalHealthyDiv}
           </TabPane>
           <TabPane tab="营养部健康档案" key="2">
             <NutritionHealthInformation/>
