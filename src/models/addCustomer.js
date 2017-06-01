@@ -3,10 +3,10 @@ import { message } from 'antd'
 import { local, session } from 'common/util/storage.js'
 import { routerRedux } from 'dva/router';
 
+
 export default {
   namespace: 'addCustomer',
   state: {
-
     dataDetailId:101,
     baseData:[],
     expandData:[],
@@ -59,8 +59,7 @@ export default {
       dataIndex: 'operator',
       key: 'remarkMan',
       width:'15%',
-    }]
-  },
+    }]},
   reducers: {
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
@@ -78,7 +77,7 @@ export default {
       return {...state,remarkList:todo};
     },
 
-    editCustomer(state, { payload: todo }){
+    editCustomerAct(state, { payload: todo }){
       return {...state,editCustomer:todo.data};
     },
     lookDlc(state, { payload: todo }){
@@ -118,7 +117,59 @@ export default {
       return {...state,lookContractDLC:ary};
     },
     reductionState(state, { payload: todo }){
-      return {...state,remarkList:[],headIcon:'',headIconUrl:'',};
+      return {...state,
+        baseData:[],
+        expandData:[],
+        remarkData:[],
+
+        bigImageHidden:false,
+        bigImageData:[],
+        lookCardIDDLC:[],
+        lookContractDLC:[],
+
+
+        remarkList:[],
+        provinceData:[],
+        cityData:[],
+        permanentCityData:[],
+        nationalData:[],
+        modal:false,
+        headIcon:'',
+        headIconUrl:'',
+
+        operator:'',
+
+        editCustomer:false,
+
+        memberNumberValue:'',
+        purchasePackageValue:'',
+
+        //下拉框所需数据
+        guestInformationSourceAry:[],
+        concernsAry:[],
+        networkSearchWordsAry:[],
+        fetusAry:[],
+        hospitalAry:[],
+        intentionPackageAry:[],
+        memberAry:[],
+        specialIdentityAry:[],
+
+        remarkListColumns : [{
+          title: '备注内容',
+          dataIndex: 'remarkInfo',
+          key: 'name',
+          width:'70%',
+        }, {
+          title: '备注时间',
+          dataIndex: 'createTime',
+          key: 'remarkDate',
+          width:'15%',
+        }, {
+          title: '备注人',
+          dataIndex: 'operator',
+          key: 'remarkMan',
+          width:'15%',
+        }]};
     },
     deleteContractDLC(state, { payload: todo }){
       let arr = state.lookContractDLC;
@@ -368,6 +419,7 @@ export default {
 
       const { data: { code, data,err } } = yield call((state.editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
       if (code == 0) {
+          yield put({type:"setDataDetailId",payload:{dataId:state.editCustomer ? state.baseData.id : data}})
         if (exDict){
           yield put({
             type:'savaExtensionInfo',
@@ -377,8 +429,9 @@ export default {
           });
         }
         else {
-          message.success("新增客户成功");
-          yield put(routerRedux.push('/crm/customer'));
+          message.success('信息保存成功');
+          yield put(routerRedux.push('/crm/customer/customerDetails'));
+
         }
       }
       else {
@@ -453,8 +506,8 @@ export default {
           });
         }
         else {
-          message.success("新增客户成功");
-          yield put(routerRedux.push('/crm/customer'));
+          message.success('信息保存成功');
+          yield put(routerRedux.push('/crm/customer/customerDetails'));
         }
       }
       else {
@@ -472,19 +525,24 @@ export default {
       for (let i = 0;i<remarkList.length;i++)
       {
         const remark = remarkList[i];
-
-        inputs.push({"customerId": values.id,"remarkInfo": remark.remarkInfo})
+        if (!remark.id){
+          inputs.push({"customerId": values.id,"remarkInfo": remark.remarkInfo})
+        }
       }
+      if(inputs.length > 0){
+        const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
+        if (code == 0) {
 
-      const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
-      if (code == 0) {
-        message.success("新增客户成功");
-        yield put(routerRedux.push('/crm/customer'));
-
+        }
+        else {
+          message(err)
+        }
       }
       else {
-        message(err)
+        message.success('信息保存成功');
+        yield put(routerRedux.push('/crm/customer/customerDetails'));
       }
+
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
       const state = yield select(state => state.addCustomer);
@@ -493,10 +551,11 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerById,{dataId:dataDetailId});
 
+
       if (code == 0) {
-        yield put({type:'setBaseData',payload:{
-          data
-        }} );
+        yield put({type:'setBaseData',payload:{data}} );
+
+        yield put({type: 'getCityData',payload:{isHouseholdRegistration:false,dataId:data.province}});
       }
     },
 
@@ -506,9 +565,9 @@ export default {
       const dataDetailId = state.dataDetailId;
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
-      console.log(data);
       if (code == 0) {
 
+        yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:data.provincePermanent}});
         yield put({type:'setExpandData',payload:{ data }} );
         yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
         yield put({type:'getDlcData'} );
@@ -564,76 +623,10 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/crm/customer/Add') {
-          dispatch({
-            type: 'getProvinceData',
-            payload: {
-              dataId:0,
-            }
-          });
-          dispatch({
-            type: 'getNationDictionary'
-          });
-          dispatch({
-            type:'getOperator'
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload:{
-              "id": 8,
-              'type':1,
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload:{
-              "id": 2,
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload:{
-              "id": 3,
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload:{
-              "id": 4,
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload:{
-              "id": 5,
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload:{
-              "id": 6,
-            }
-          });
-          dispatch({
-            type: 'getMembershipcardByType',
-            payload:{
-              "dataId": 1,
-            }
-          });
-          dispatch({
-            type: 'getMembershipcardByType',
-            payload:{
-              "dataId": 2,
-            }
-          });
-          dispatch({
-            type: 'getMemberSerial',
-          });
-          dispatch({
-            type: 'getMainCustomerPackageById',
-          });
+          defDis(dispatch)
         };
         if (pathname === '/crm/customer/customerDetails'){
-
+          defDis(dispatch)
           dispatch({
             type: 'getCustomerById',
 
@@ -651,3 +644,72 @@ export default {
   },
 };
 
+function defDis(dispatch) {
+  dispatch({
+    type: 'getProvinceData',
+    payload: {
+      dataId:0,
+    }
+  });
+  dispatch({
+    type: 'getNationDictionary'
+  });
+  dispatch({
+    type:'getOperator'
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "id": 8,
+      'type':1,
+    }
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "id": 2,
+    }
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "id": 3,
+    }
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "id": 4,
+    }
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "id": 5,
+    }
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "id": 6,
+    }
+  });
+  dispatch({
+    type: 'getMembershipcardByType',
+    payload:{
+      "dataId": 1,
+    }
+  });
+  dispatch({
+    type: 'getMembershipcardByType',
+    payload:{
+      "dataId": 2,
+    }
+  });
+  dispatch({
+    type: 'getMemberSerial',
+  });
+  dispatch({
+    type: 'getMainCustomerPackageById',
+  });
+}

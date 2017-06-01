@@ -89,18 +89,16 @@
     font-size: 14px;
     div{
       width:100%;
-      .firstA{
-        color: #0066FF;
-        text-decoration: none;
-      }
-      .twoA{
-        color: #FF0000;
-        text-decoration: none;
-      }
       a{
         margin-right:9px;
         margin-left:5px;
         color:#b67231;
+      }
+      .firstA:hover{
+        color:#0066ff;
+      }
+      .firstB:hover{
+        color:#ff0000;
       }
     }
   }
