@@ -128,8 +128,8 @@ class CustomerIndex extends React.Component {
           render: (text, record, index) => {
             return (
               <div>
-                <Link onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
-                <Link onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+                <Link className="firstA" onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
+                <Link className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
               </div>
             );
           },

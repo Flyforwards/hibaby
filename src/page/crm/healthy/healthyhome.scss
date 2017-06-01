@@ -4,7 +4,13 @@
     margin: 10px;
     border: 1px solid #ccc;
   }
-
+  label{
+    font-family: "微软雅黑";
+  }
+  label:before{
+    content: '';
+    display: none;
+  }
   .itemTitle {
     width: 20px;
     height: 100%;
