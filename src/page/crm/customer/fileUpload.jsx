@@ -6,17 +6,29 @@ class PicturesWall extends React.Component {
     super(props);
   };
 
-   beforeUpload(file) {
-    const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJPG) {
-      message.error('只支持jpg和png格式!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
+  beforeUpload(file) {
+  message.config({
+    top: 100,
+    duration: 3,
+  });
+  const isJPG = file.type === 'image/jpeg';
+  const isBMP = file.type === 'image/bmp';
+  const isPNG = file.type === 'image/png';
+  const isEMF = file.type === 'image/emf';
+  const isTAG = file.type === 'image/tag';
+  const isTIF = file.type === 'image/tif';
+
+  if (!(isJPG || isPNG || isBMP || isEMF || isTIF || isTAG)) {
+    message.error('你上传的图片格式不正确');
+    return isJPG || isPNG
+  }else{
+    const isLt2M = file.size / 1024 / 1024 < 15;
     if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
+      message.error('图片已经超过图片限定大小15MB!');
     }
-    return isJPG && isLt2M;
-  };
+    return isLt2M ;
+  }
+  }
 
 
   state = {

@@ -337,18 +337,13 @@ function ExtensionInfo(props) {
 
 
   function memberOnChange(value) {
-
-    props.form.setFieldsValue({
-      specialIdentity: '',
-    });
+    props.form.resetFields(['specialIdentity']);
   }
 
 
   function specialIdentityOnChange(value) {
 
-    props.form.setFieldsValue({
-      member: null,
-    });
+    props.form.resetFields(['member']);
 
   }
   function PermanentProvinceSelect(e) {
@@ -588,6 +583,10 @@ class customerInformation extends React.Component{
         this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:values,exDict:dict}})
       }
     });
+  }
+
+  componentWillUnmount(){
+    this.props.dispatch({type:'addCustomer/reductionState'})
   }
 
   render() {

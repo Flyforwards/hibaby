@@ -4,6 +4,8 @@ import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
+import {keyToText} from '../../../utils'
+
 
 import {Icon,Table, Modal,Row, Col,Button} from 'antd';
 const confirm = Modal.confirm;
@@ -18,9 +20,22 @@ function rowDiv(dict) {
 }
 
 
+function textforkey(array,value,valuekey = 'name') {
+  for (let i = 0 ;i<array.length ;i++){
+    let dict = array[i];
+    if(dict['id'] === value){
+      return  dict[valuekey];
+    }
+  }
+}
+
 function BaseInfo(props) {
 
   const netData = props.users.baseData;
+
+  const {fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
+    provinceData,cityData} = props.users;
+
   const baseInfoData = [
     {title:'客户姓名',value:netData.name},
     {title:'联系电话',value:netData.contact},
@@ -28,13 +43,13 @@ function BaseInfo(props) {
     {title:'年龄',value:netData.age},
     {title:'预产期',value:moment(netData.dueDate).format('YYYY-MM-DD')},
     {title:'孕周',value:netData.gestationalWeeks},
-    {title:'分娩医院',value:netData.hospital},
-    {title:'孕次/产次',value:netData.fetus},
-    {title:'客资来源',value:netData.resourceCustomer},
-    {title:'关注点',value:netData.focus},
-    {title:'意向套餐',value:netData.intentionPackage},
-    {title:'网络搜索词',value:netData.webSearchTerm},
-    {title:'现住址',value:`${netData.province} ${netData.city} ${netData.detailed}`},
+    {title:'分娩医院',value:textforkey(hospitalAry, netData.hospital) },
+    {title:'孕次/产次',value:textforkey(fetusAry, netData.fetus)},
+    {title:'客资来源',value:textforkey(guestInformationSourceAry, netData.resourceCustomer)},
+    {title:'关注点',value:textforkey(concernsAry, netData.focus)},
+    {title:'意向套餐',value:textforkey(intentionPackageAry, netData.intentionPackage)},
+    {title:'网络搜索词',value:textforkey(networkSearchWordsAry, netData.webSearchTerm)},
+    {title:'现住址',value:`${textforkey(provinceData, netData.province,'description')} ${textforkey(cityData, netData.city,'description')} ${netData.detailed}`},
     {title:'操作者',value:netData.operator},
   ];
 
@@ -66,14 +81,16 @@ function ExtensionInfo(props) {
 
   const dispatch = props.dispatch;
 
+  const {memberAry,specialIdentityAry,provinceData,permanentCityData,nationalData} = props.users;
+
   const expandInfo = [
     {title:'身份证',value:netData.idcard},
-    {title:'籍贯',value:netData.placeOrigin},
-    {title:'民族',value:netData.nation},
+    {title:'籍贯', value:netData.placeOrigin},
+    {title:'民族',value: textforkey(nationalData, netData.nation,'nation')},
     {title:'购买套餐',value:netData.purchasePackage},
     {title:'保险情况',value:netData.insuranceSituation},
-    {title:'联系人电话',value:netData.excontact},
-    {title:'会员身份',value:netData.member},
+    {title:'联系人电话',value:netData.contact},
+    {title:'会员身份',value:textforkey(memberAry, netData.member,'name')},
     {title:'特殊身份',value:netData.specialIdentity},
     {title:'宝宝生产日期',value:moment(netData.productionDate).format('YYYY-MM-DD')},
     {title:'合同编号',value:netData.contractNumber},
@@ -117,8 +134,8 @@ function ExtensionInfo(props) {
                   用户照片
                 </Col>
                 <Col span={7}>
-                  <div className="avatar-uploader">
-                    <img src={netData.imgURL} alt="" className="avatar" /> :
+                  <div>
+                    <img src={netData.imgURL} alt="" className="avatar" />
                   </div>
                 </Col>
               </Row>
@@ -131,7 +148,7 @@ function ExtensionInfo(props) {
           </Row>
 
           <Row>
-            <p>{rowDiv({title:'户籍地址',value:`${netData.provincePermanent} ${netData.cityPermanent} ${netData.detailedPermanent}`})}</p>
+            <p>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')} ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</p>
           </Row>
         </div>
   )
@@ -153,25 +170,28 @@ function Remark(props) {
 
 
 
-function customerDetails(props) {
+class customerDetails extends React.Component{
+  constructor(props) {
+    super(props);
 
-
-  const {dispatch} = props;
-
-  const netData = props.users.baseData;
-
-  function backBtnClick() {
-    dispatch(routerRedux.push("/crm/customer"))
+    this.dispatch = props.dispatch;
+    this.netData = props.users.baseData;
+    this.editCustomer = false;
   }
 
-  function onDelete(record) {
+
+  backBtnClick() {
+    this.dispatch(routerRedux.push("/crm/customer"))
+  }
+
+  onDelete(record) {
     confirm({
       title: '提示',
       content: '确定删除此用户?',
       onOk() {
-        dispatch({
+        this.dispatch({
           type: 'customer/deleteCustomer',
-          payload: { dataId: netData.id }
+          payload: { dataId: this.netData.id }
         })
       },
       onCancel() {
@@ -179,35 +199,46 @@ function customerDetails(props) {
     });
   }
 
-  function handleCancel() {
+  handleCancel() {
 
-    dispatch({type:'addCustomer/hideDlc'})
+    this.dispatch({type:'addCustomer/hideDlc'})
   }
 
-  function editBtnClick() {
-    dispatch({
-      type: 'addCustomer/editCustomer',
+  editBtnClick() {
+    this.editCustomer = true;
+    this.dispatch({
+      type: 'addCustomer/editCustomerAct',
       payload: { data:true}
     })
-    dispatch(routerRedux.push("/crm/customer/Add"))
+    this.dispatch(routerRedux.push("/crm/customer/Add"))
+  }
+
+  componentWillUnmount(){
+
+    if(!this.editCustomer){
+      this.props.dispatch({type:'addCustomer/reductionState'})
+    }
+  }
+
+  render(){
+    return (
+      <div className="customerContent">
+        <BaseInfo  {...this.props}/>
+        <ExtensionInfo {...this.props}/>
+        <Remark  {...this.props}/>
+        <BigImageModal handleCancel={this.handleCancel} bigImageData={this.props.users.bigImageData} visible={this.props.users.bigImageHidden}/>
+        <div className='savaDiv'>
+          <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
+          <Button className='backBtn' type="danger" onClick={this.onDelete.bind(this)}>删除</Button>
+          <Button className='backBtn' type="primary" onClick={this.editBtnClick.bind(this)}>编辑</Button>
+        </div>
+      </div>
+    )
   }
 
 
-
-  return (
-    <div className="customerContent">
-      <BaseInfo  {...props}/>
-      <ExtensionInfo {...props}/>
-      <Remark  {...props}/>
-      <BigImageModal handleCancel={handleCancel} bigImageData={props.users.bigImageData} visible={props.users.bigImageHidden}/>
-      <div className='savaDiv'>
-        <Button className='backBtn' onClick={backBtnClick}>返回</Button>
-        <Button className='backBtn' type="danger" onClick={onDelete}>删除</Button>
-        <Button className='backBtn' type="primary" onClick={editBtnClick}>编辑</Button>
-      </div>
-    </div>
-  )
 }
+
 
 function mapStateToProps(state) {
   return {
