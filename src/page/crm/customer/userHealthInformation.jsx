@@ -7,6 +7,7 @@ import { Link } from 'react-router'
 import './userHealthInformation.scss'
 import NutritionHealthInformation from '../healthy/NutritionHealthInformation'
 import HospitalHealthy from '../healthy/healthyhome';
+import HospitalHealthyDetail from '../healthy/healthyhomeDetail';
 import SkinHealthInformation from '../healthy/SkinHealthInformation';
 
 const TabPane = Tabs.TabPane;
@@ -134,7 +135,7 @@ class userHealthInformation extends React.Component {
 
   render() {
     const editCustomer = this.props.users.editCustomer;
-    const HospitalHealthyDiv = editCustomer ? '':<HospitalHealthy />;
+    const HospitalHealthyDiv = editCustomer ? <HospitalHealthyDetail/>:<HospitalHealthy />;
     return (
       <div className = "user-health-cent">
         <Tabs className="tabsContent" defaultActiveKey="1" type="card">
