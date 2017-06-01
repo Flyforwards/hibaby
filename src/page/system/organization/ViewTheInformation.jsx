@@ -18,7 +18,6 @@ const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
 const endemic  = session.get("endemic")
-const SelectData = local.get("rolSelectData")
 let traversalDataId = []
 
 class ViewTheInformationed extends React.Component {
@@ -45,6 +44,18 @@ class ViewTheInformationed extends React.Component {
           dataId: endemic.id
         }
     })
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getEndemic',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
+    });
   }
   handleCreateModalCancel() {
     this.setState({
@@ -91,30 +102,60 @@ class ViewTheInformationed extends React.Component {
       let time = null
       let JobInformation = []
       let identifier =null
+      let selectData = local.get("rolSelectData")
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
+          console.log("sssss",this.props.userID)
          SEX = USER.sex == 1?"男":"女"
          entrys = USER.entrys
-         roles = USER.entrys.map((item)=>{
+        USER.entrys.map((item)=>{
           if(item.type == 0){
             identifier = item.identifier
           }
-          return item.roles.map((data)=>{
-            return data.roleId
+          item.roles.map((data)=>{
+            selectData.map((list)=>{
+              if(data.roleId == list.id){
+              roles.push(list.name+"  ")
+              }
+            })
           })
          })
          const set = new Set(roles);
          let temp = [...set]
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
+           let endemicName = null
+           let dept = null
+           let positionName = null
+           if(this.props.getDeptList){
+            this.props.getDeptList.map((item)=>{
+              if(entrys[i].deptId == item.id){
+                dept = item.name
+              }
+            })
+           }
+           if(this.props.getPosition){
+            this.props.getPosition.map((item)=>{
+              if(entrys[i].positionId == item.id){
+                positionName = item.name
+              }
+            })
+           }
+           if(this.props.getEndemic){
+            this.props.getEndemic.map((item)=>{
+              if(entrys[i].endemicId == item.id){
+                  endemicName = item.name
+              }
+            })
+           }
             JobInformation.push(<div key={i.toString()}>
                 <div className="entryInformation">入职信息{i}</div>
                 <div className="entryInformationContent">
-                  <p className="localCenter"><span>地方中心:</span><span className="Two">{entrys[i].endemicId}</span></p>
-                  <p className="affiliatedDepartment"><span>隶属部门:</span><span className="Two">{entrys[i].deptId}</span></p>
-                  <p className="directLeadership"><span>直系领导:</span><span className="Two">{entrys[i].leaderId}</span></p>
-                  <p className="position"><span>职位:</span><span className="Two">{entrys[i].positionId}</span></p>
+                  <p className="localCenter"><span>地方中心:</span><span className="Two">{endemicName}</span></p>
+                  <p className="affiliatedDepartment"><span>隶属部门:</span><span className="Two">{dept}</span></p>
+                  <p className="directLeadership"><span>直系领导:</span><span className="Two">{entrys[i].leaderName}</span></p>
+                  <p className="position"><span>职位:</span><span className="Two">{positionName}</span></p>
                   <p className="systemRole"><span>系统角色:</span><span className="Two">{temp}</span></p>
                 </div>
               <div className="contactInformation">联系方式</div>
@@ -184,7 +225,10 @@ class ViewTheInformationed extends React.Component {
 function ViewTheInformation({
     dispatch,
     data,
-    userID
+    userID,
+    getPosition,
+    getDeptList,
+    getEndemic
 }) {
   return ( <div>
     <ViewTheInformationed dispatch = {
@@ -193,20 +237,35 @@ function ViewTheInformation({
     userID = {
       userID
     }
+    getPosition ={
+      getPosition
+    }
+    getDeptList = {
+      getDeptList
+    }
+    getEndemic ={
+      getEndemic
+    }
     /></div>
   )
 }
 function mapStateToProps(state) {
   const {
     userID,
-    data
+    data,
+    getPosition,
+    getDeptList,
+    getEndemic,
 
   } = state.organization;
 
   return {
     loading: state.loading.models.organization,
     userID,
-    data
+    data,
+    getPosition,
+    getDeptList,
+    getEndemic
   };
 }
 const viewTheInformation = Form.create()(ViewTheInformationed);

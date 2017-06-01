@@ -211,7 +211,17 @@ overflow: hidden;
 			margin-left:5px;
 			color:#b87638;
 		}
+    a:hover{
+			margin-right:9px;
+			margin-left:5px;
+			color:#0066ff;
+		}
 		.twoA{
+			margin-right:9px;
+			margin-left:5px;
+			color:#666;
+		}
+    .twoB{
 			margin-right:9px;
 			margin-left:5px;
 			color:#b87638;
@@ -315,8 +325,8 @@ overflow: hidden;
 	width:100%;
 }
 .Organization-left .ant-tree .plus{
-		position:absolute;
-		color:#a3a3a3;
+	position:absolute;
+	color:#a3a3a3;
     font-size: 16px;
     height: 16px;
     line-height: 16px;
