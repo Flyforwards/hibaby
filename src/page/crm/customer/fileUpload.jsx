@@ -4,13 +4,10 @@ import React from 'react';
 class PicturesWall extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
   };
 
   beforeUpload(file) {
-  message.config({
-    top: 100,
-    duration: 3,
-  });
   const isJPG = file.type === 'image/jpeg';
   const isBMP = file.type === 'image/bmp';
   const isPNG = file.type === 'image/png';
@@ -70,12 +67,11 @@ class PicturesWall extends React.Component {
           name="file"
           action="/crm/api/v1/uploadImg"
           showUploadList = {!this.props.isHead}
-          // fileList={fileList}
           defaultFileList={defaultFileList}
-          beforeUpload={this.beforeUpload}
-          onPreview={this.handlePreview}
-          onChange={this.onChange}
-          onRemove={this.onRemove}
+          beforeUpload={this.beforeUpload.bind(this)}
+          onPreview={this.handlePreview.bind(this)}
+          onChange={this.onChange.bind(this)}
+          onRemove={this.onRemove.bind(this)}
         >
           {this.props.children}
         </Upload>

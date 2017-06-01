@@ -186,7 +186,7 @@ function datacompare(dataArray,compareArray,selectArray) {
       }
     }
     else {
-      if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices')
+      if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices' || dict.submitStr === 'imgURL')
       {}
       else {
         dict.initValue = compareArray[dict.submitStr];

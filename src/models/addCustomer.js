@@ -117,7 +117,7 @@ export default {
       return {...state,lookContractDLC:ary};
     },
     reductionState(state, { payload: todo }){
-      return  {dataDetailId:101,
+      return {...state,
         baseData:[],
         expandData:[],
         remarkData:[],
@@ -419,6 +419,7 @@ export default {
 
       const { data: { code, data,err } } = yield call((state.editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
       if (code == 0) {
+          yield put({type:"setDataDetailId",payload:{dataId:state.editCustomer ? state.baseData.id : data}})
         if (exDict){
           yield put({
             type:'savaExtensionInfo',
@@ -429,7 +430,8 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer'));
+          yield put(routerRedux.push('/crm/customer/customerDetails'));
+
         }
       }
       else {
@@ -505,7 +507,7 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer'));
+          yield put(routerRedux.push('/crm/customer/customerDetails'));
         }
       }
       else {
@@ -523,18 +525,24 @@ export default {
       for (let i = 0;i<remarkList.length;i++)
       {
         const remark = remarkList[i];
-
-        inputs.push({"customerId": values.id,"remarkInfo": remark.remarkInfo})
+        if (!remark.id){
+          inputs.push({"customerId": values.id,"remarkInfo": remark.remarkInfo})
+        }
       }
+      if(inputs.length > 0){
+        const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
+        if (code == 0) {
 
-      const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
-      if (code == 0) {
-        message.success('信息保存成功');
-        yield put(routerRedux.push('/crm/customer'));
+        }
+        else {
+          message(err)
+        }
       }
       else {
-        message(err)
+        message.success('信息保存成功');
+        yield put(routerRedux.push('/crm/customer/customerDetails'));
       }
+
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
       const state = yield select(state => state.addCustomer);

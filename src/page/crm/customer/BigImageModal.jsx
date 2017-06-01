@@ -27,6 +27,13 @@ class BigImageModal extends React.Component {
     });
   }
 
+  onClose(){
+    this.props.onClose();
+    this.setState({
+      currentImage: 0,
+    });
+  }
+
   render() {
     const imageAry = [];
 
@@ -39,7 +46,7 @@ class BigImageModal extends React.Component {
         images={imageAry}
         backdropClosesModal={true}
         isOpen={this.props.isOpen}
-        onClose={this.props.onClose}
+        onClose={this.onClose.bind(this)}
         showThumbnails={imageAry.length>1}
         currentImage={this.state.currentImage}
         onClickThumbnail={this.gotoImage.bind(this)}
