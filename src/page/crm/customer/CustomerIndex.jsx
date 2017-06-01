@@ -268,7 +268,7 @@ class CustomerIndex extends React.Component {
                   </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Link to="/crm/customer/add"><Button style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
+                    <Link to="/crm/customer/Add/CustomerInformation"><Button style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
                   </span>
                     </Col>
                   </Row>
