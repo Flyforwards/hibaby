@@ -4,7 +4,6 @@ import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
-import Lightbox from 'react-images';
 
 
 import {Icon,Table, Modal,Row, Col,Button} from 'antd';
@@ -228,28 +227,16 @@ class customerDetails extends React.Component{
     }
   }
 
-  gotoPrevious(){}
-  gotoNext(){}
   render(){
-    let images = [];
-    for (let i = 0;i<this.props.users.bigImageData.length;i++){
-      let dict = this.props.users.bigImageData[i];
-      images.push({ src: dict.url })
-    }
-
     return (
       <div className="customerContent">
         <BaseInfo  {...this.props}/>
         <ExtensionInfo {...this.props}/>
         <Remark  {...this.props}/>
-        <Lightbox
-          images={images}
-          backdropClosesModal={true}
+        <BigImageModal
+          images={this.props.users.bigImageData}
           isOpen={this.props.users.bigImageHidden}
           onClose={this.handleCancel.bind(this)}
-          showThumbnails={true}
-          onClickPrev={this.gotoPrevious.bind(this)}
-          onClickNext={this.gotoNext.bind(this)}
         />
 
         <div className='savaDiv'>

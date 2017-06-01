@@ -428,7 +428,7 @@ export default {
           });
         }
         else {
-          message.success("新增客户成功");
+          message.success('信息保存成功');
           yield put(routerRedux.push('/crm/customer'));
         }
       }
@@ -504,7 +504,7 @@ export default {
           });
         }
         else {
-          message.success("新增客户成功");
+          message.success('信息保存成功');
           yield put(routerRedux.push('/crm/customer'));
         }
       }
@@ -529,9 +529,8 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
       if (code == 0) {
-        message.success("新增客户成功");
+        message.success('信息保存成功');
         yield put(routerRedux.push('/crm/customer'));
-
       }
       else {
         message(err)
