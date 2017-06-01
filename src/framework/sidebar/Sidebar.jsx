@@ -1,10 +1,12 @@
 import React from 'react'
-import {browserHistory, Link} from 'react-router'
-import {Menu, Icon, Switch} from 'antd';
-const SubMenu = Menu.SubMenu;
+import { Link} from 'react-router'
+import {Menu} from 'antd';
 import FAIcon from '../../component/faicon'
 import './index.scss'
 import {local, session} from 'common/util/storage.js'
+
+const SubMenu = Menu.SubMenu;
+const Item = Menu.Item;
 
 class Sidebar extends React.Component {
     constructor(props) {
@@ -25,9 +27,9 @@ class Sidebar extends React.Component {
 
             } else {
                 return (
-                    <Menu.Item key={key + val.path}>
+                    <Item key={key + val.path}>
                         <Link to={val.path}><FAIcon name={val.icon}/><span>{val.name}</span></Link>
-                    </Menu.Item>
+                    </Item>
                 )
 
             }
@@ -35,10 +37,8 @@ class Sidebar extends React.Component {
     }
 
     getSideBarMenu() {
-
-        let menuData = this.props.menuData
+        let menuData = this.props.menuData;
         return this.convertSidebarMenu(menuData, 'yt_')
-
     }
 
     getMenuPath(menuData, pathName) {

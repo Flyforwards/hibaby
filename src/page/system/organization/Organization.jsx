@@ -76,10 +76,10 @@ class Organization extends React.Component {
                 local.get("rolSelectData").map((item)=>{
                   if(item.id == Number(data)){
                     if(len == index){
-                      list.push(item.name) 
+                      list.push(item.name)
                     }else{
                       list.push(item.name+" ; ")
-                    } 
+                    }
                   }
                 })
               })
@@ -272,10 +272,10 @@ this.setState({
             <div className="Organization-nav">
               <div className="name">姓名<Input className="userName"/></div>
               <div className="SystemRoles">系统角色
-                {/*<Select placeholder="请选择" style={{ width:180 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
+                <Select placeholder="请选择" style={{ width:180 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
                       { traversalRoleIdData }
-                  </Select>*/}
-                  <DictionarySelect  selectName="ROLE"  defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true} />
+                  </Select>
+                  {/*<DictionarySelect  selectName="ROLE"  defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true} />*/}
               </div>
               <div className="status">账户状态
                 <Select placeholder="请选择" style={{ width: 180 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
@@ -307,9 +307,9 @@ this.setState({
                     results = {
                       this.props.results
                     }
-                    range = {
-                      this.props.range
-                    }
+                    // range = {
+                    //   this.props.range
+                    // }
                     />
             </div>:null}
             <CreateModal
