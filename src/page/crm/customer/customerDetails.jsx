@@ -4,17 +4,24 @@ import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
-import {keyToText} from '../../../utils'
+import Lightbox from 'react-images';
 
 
 import {Icon,Table, Modal,Row, Col,Button} from 'antd';
 const confirm = Modal.confirm;
 
 function rowDiv(dict) {
+  let titSpan = 7;
+  let contentSpan = 17;
+  if (dict.title === '现住址' || dict.title === '户籍地址'){
+    titSpan = 2;
+    contentSpan = 22
+  }
+
   return(
     <Row className='rowHeight'>
-      <Col className='leftTitle' span={7}>{`${dict.title}：`}</Col>
-      <Col span={17}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid} type="primary">查看附件</Button>  :dict.value }</Col>
+      <Col className='leftTitle' span={titSpan}>{`${dict.title}：`}</Col>
+      <Col span={contentSpan}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid||dict.onClick.onClickForContractAppendices} type="primary">查看附件</Button>  :dict.value }</Col>
     </Row>
   )
 }
@@ -148,7 +155,8 @@ function ExtensionInfo(props) {
           </Row>
 
           <Row>
-            <p>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')} ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</p>
+            <p>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')}
+            ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</p>
           </Row>
         </div>
   )
@@ -220,13 +228,30 @@ class customerDetails extends React.Component{
     }
   }
 
+  gotoPrevious(){}
+  gotoNext(){}
   render(){
+    let images = [];
+    for (let i = 0;i<this.props.users.bigImageData.length;i++){
+      let dict = this.props.users.bigImageData[i];
+      images.push({ src: dict.url })
+    }
+
     return (
       <div className="customerContent">
         <BaseInfo  {...this.props}/>
         <ExtensionInfo {...this.props}/>
         <Remark  {...this.props}/>
-        <BigImageModal handleCancel={this.handleCancel} bigImageData={this.props.users.bigImageData} visible={this.props.users.bigImageHidden}/>
+        <Lightbox
+          images={images}
+          backdropClosesModal={true}
+          isOpen={this.props.users.bigImageHidden}
+          onClose={this.handleCancel.bind(this)}
+          showThumbnails={true}
+          onClickPrev={this.gotoPrevious.bind(this)}
+          onClickNext={this.gotoNext.bind(this)}
+        />
+
         <div className='savaDiv'>
           <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
           <Button className='backBtn' type="danger" onClick={this.onDelete.bind(this)}>删除</Button>
