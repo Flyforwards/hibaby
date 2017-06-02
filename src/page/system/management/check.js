@@ -35,7 +35,7 @@ class CheckData extends React.Component {
     render() {
       const { getFieldDecorator } = this.props.form;
       const item = this.props.data ? this.props.data : {};
-      let {name='', description='', arr=[]} = item;
+      let {name='', description='',abName='', arr=[]} = item;
       const formItemLayout = {
         labelCol: { span: 3 },
         wrapperCol: { span: 18 },
@@ -51,7 +51,7 @@ class CheckData extends React.Component {
               {getFieldDecorator(`field-${index}`,{
                 initialValue: value.name
               })(
-                <Input disabled={true} />
+                <Input readOnly={true} />
               )}
             </FormItem>
             )
@@ -63,16 +63,23 @@ class CheckData extends React.Component {
                 <Card title = "字段信息:" >
                   <FormItem {...formItemLayout} label='字段名称'>
                     {getFieldDecorator('name',{
-                      initialValue: name ? name : '',
+                      initialValue: name,
                     })(
-                      <Input disabled={true}/>
+                      <Input readOnly={true}/>
                     )}
                   </FormItem>
                   <FormItem {...formItemLayout} label='字段描述'>
                     {getFieldDecorator('description',{
-                      initialValue: description ? description : '',
+                      initialValue: description,
                     })(
-                      <Input disabled={true} />
+                      <Input readOnly={true} />
+                    )}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label='别名'>
+                    {getFieldDecorator('abName',{
+                      initialValue: abName,
+                    })(
+                      <Input readOnly={true} />
                     )}
                   </FormItem>
                 </Card>

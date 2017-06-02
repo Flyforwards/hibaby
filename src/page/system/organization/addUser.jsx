@@ -48,9 +48,9 @@ class AddUsered extends React.Component {
     })
   }
   handleCreateModalCancel() {
-        this.setState({
-          visible: false,
-        })
+      this.setState({
+        visible: false,
+      })
     }
   headelReturnTabal(data){
     this.setState({

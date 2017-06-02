@@ -114,29 +114,17 @@ class CustomerIndex extends React.Component {
           title: '操作',
           dataIndex: 'operating',
           render: (text, record, index) => {
+            const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
+            const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
             return (
               <div>
-                <Link className="firstA" onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
-                <Link className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+                <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
+                <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
               </div>
             );
           },
         }];
         this.state = {
-            dataSource: [{
-                key: '0',
-                name: '李芳芳',
-                age: '32',
-                address: 'sadasd',
-                period:'2017-04-14',
-                Pregnancy:'18周',
-                tires:'一',
-                information:'15733256210',
-                package:'A套餐',
-                contract:'1234567',
-                people:'里方法',
-              }],
-            count: 2,
             createModalVisible: false
         }
     }
@@ -171,43 +159,36 @@ class CustomerIndex extends React.Component {
             createModalVisible: false
         })
     }
+
     showCreateModal() {
         this.setState({
             createModalVisible: true
         })
     }
 
-    onSearch() {}
-    reset() {}
+    onSearch() {
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          if (values.time != undefined) {
+            values.year = values.time.get('year');
+            values.month = values.time.get('month')+1;
+          }
 
-    onCellChange = (index, key) => {
-        return (value) => {
-          const dataSource = [...this.state.dataSource];
-          dataSource[index][key] = value;
-          this.setState({ dataSource });
-        };
-      }
+          this.props.dispatch(routerRedux.push({
+            pathname: "/crm/customer",
+            query: values
+          }))
+        }
+      })
+    }
+    reset() {
+      const { pathname } = location;
+      this.props.dispatch(routerRedux.push({
+        pathname,
+      }))
+      this.props.form.resetFields()
+    }
 
-      handleAdd = () => {
-        const { count, dataSource } = this.state;
-        const newData = {
-          key: count,
-          name: `Edward King ${count}`,
-          age: 32,
-          address: `London, Park Lane no. ${count}`,
-          period:'2017-04-14',
-          Pregnancy:'18周',
-          tires:'一',
-          information:'15733256210',
-          package:'A套餐',
-          contract:1234567,
-          people:'里方法',
-        };
-        this.setState({
-          dataSource: [...dataSource, newData],
-          count: count + 1,
-        });
-      }
     render() {
         const columns = this.columns;
         const { list, loading, pagination, dispatch, form, shipCards } = this.props;
@@ -241,6 +222,8 @@ class CustomerIndex extends React.Component {
           labelCol:{ span: 10 },
           wrapperCol:{ span: 14 }
         }
+
+        const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
         return (
         <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
@@ -258,17 +241,18 @@ class CustomerIndex extends React.Component {
                     </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
+                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px',}}>查询</Button>
                   </span>
                     </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px'}}>重置</Button>
                   </span>
                   </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Link to="/crm/customer/AddCustomerInformation"><Button style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
+                    <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
+
                   </span>
                     </Col>
                   </Row>
@@ -352,12 +336,13 @@ function mapStateToProps(state) {
     pagination,
     shipCards,
   } = state.customer;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     list,
     pagination,
     shipCards,
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(CustomerIndex)

@@ -9,12 +9,10 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 import { Link } from 'react-router';
-import DictionarySelect from 'common/dictionary_select';
+import CustomerByCard from './customerByCard';
 import './card.scss';
-import {routerRedux} from 'dva/router';
 const createForm = Form.create
-
-const { MonthPicker } = DatePicker
+import { parse } from 'qs'
 
 @createForm()
 class CardDetail extends Component {
@@ -23,6 +21,7 @@ class CardDetail extends Component {
     this.state={
       modalVisible:false,
     }
+
   }
 
   componentWillMount() {
@@ -33,11 +32,14 @@ class CardDetail extends Component {
       payload: { dataId }
     })
 
+    dispatch({
+      type: 'card/getCustomerPage',
+      payload: { member: dataId }
+    })
 
   }
 
-  onSearch() {}
-  reset() {}
+
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -98,11 +100,9 @@ class CardDetail extends Component {
       modalVisible:false,
     })
   }
-  onEdit() {
 
-  }
   render() {
-    const { cardKind, form, level,loading, userPagination} = this.props;
+    const { cardKind, form, level,loading, userPagination, list} = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 8 },
@@ -117,31 +117,7 @@ class CardDetail extends Component {
       wrapperCol:{ span:17 }
     }
 
-    const formChooseOneLayout = {
-      labelCol:{ span: 8 },
-      wrapperCol:{ span: 10 }
-    }
-    const formChooseLayout = {
-      labelCol:{ span: 10 },
-      wrapperCol:{ span: 14 }
-    }
-
-    const tableProps = {
-      loading: loading.effects['localData/localChar'],
-      dataSource : [] ,
-      pagination: userPagination,
-      onChange (page) {
-        const { pathname } = location
-        dispatch(routerRedux.push({
-          pathname,
-          query: {
-            page: page.current,
-            size: page.pageSize,
-            type: 2,
-          },
-        }))
-      },
-    }
+    const values = parse(location.search.substr(1))
 
     //卡种级别渲染
     let options = [];
@@ -231,11 +207,6 @@ class CardDetail extends Component {
                   )}
                 </FormItem>
               </Col>
-            </Row>
-            {/*
-              此处放列表组件
-            */}
-            <Row>
               <Col span = { 12}>
               </Col>
               <Col span = { 4}>
@@ -245,99 +216,12 @@ class CardDetail extends Component {
                   <Button className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
               </Col>
               <Col span = { 4 }>
-                <Link to={{ pathname: '/crm/cardEdit', query: { data:location.search.substr(1).split('=')[1] } }} ><Button type="primary" >编辑</Button></Link>
+                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button type="primary" >编辑</Button></Link>
               </Col>
             </Row>
           </Form>
         </Card>
-        <Card>
-          <div className="card-title">
-            <h3>客户列表:</h3>
-          </div>
-          <Form>
-            <div>
-              <Row style={{width:'1116px'}}>
-                <Col span={10} style={{float:'left'}}>
-                  <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
-                    {getFieldDecorator('sear', {rules: [{ required: false }],
-                    })(
-                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={4} style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
-                  </span>
-                </Col>
-                <Col span={4} style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
-                  </span>
-                </Col>
-              </Row>
-            </div>
-            <Row>
-              <Col span={4} style={{width:'140px'}}>
-                <FormItem {...formChooseOneLayout}  label="年龄" >
-                  {getFieldDecorator('age1', {rules: [{ required: false }],
-                  })(
-                    <InputNumber style={{width: "80px"}} min={1} max={100}  />
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={3}  style={{width:'140px'}}>
-                <FormItem {...formChooseLayout} style={{width:'100%'}}>
-                  {getFieldDecorator('age2', {rules: [{ required: false }],
-                  })(
-                    <InputNumber min={1} max={100} style={{width: "80px"}} />
-                  )}
-                </FormItem>
-
-              </Col>
-              <Col span={4} style={{width:'251px'}}>
-                <FormItem {...formChooseOneLayout}  label="预产期" >
-                  {getFieldDecorator('time', {rules: [{ required: false }],
-                  })(
-                    <MonthPicker
-                      placeholder="请选择"
-                    />
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={4} style={{width:'251px'}}>
-                <FormItem  {...formChooseOneLayout} label="第几胎" >
-                  {getFieldDecorator('fetus', {rules: [{ required: false }],
-                  })(
-                    <DictionarySelect  placeholder="请选择" selectName="FETUS" />
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={4} style={{width:'251px'}} >
-                <FormItem  {...formChooseOneLayout} label="会员身份" >
-                  {getFieldDecorator('member', {rules: [{ required: false }],
-                  })(
-                    <Select   placeholder="请选择" >
-                      {
-                        options
-                      }
-                    </Select>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={4} style={{width:'180px'}}>
-                <FormItem  {...formChooseOneLayout} label="操作者2" >
-                  {getFieldDecorator('operator2', {rules: [{ required: false }],
-                  })(
-                    <Input max={40}  />
-                  )}
-                </FormItem>
-              </Col>
-            </Row>
-          </Form>
-          <Table {...tableProps} bordered size="small" rowKey = { record=>record.id } columns={ this.columns }/>
-        </Card>
-
+        <CustomerByCard {...{loading, userPagination, list}} />
         <Modal
           title="提示"
           wrapClassName="vertical-center-modal"
@@ -351,8 +235,6 @@ class CardDetail extends Component {
         >
           <p>是否确定删除此卡种?</p>
         </Modal>
-
-
       </div>
     )
   }
@@ -361,10 +243,11 @@ class CardDetail extends Component {
 
 
 function mapStateToProps(state) {
-  const { cardKind, level, zheKou,userPagination } = state.card;
+  const { cardKind, level, zheKou,userPagination,list } = state.card;
   return {
     loading: state.loading,
     userPagination,
+    list,
     cardKind,
     level,
     zheKou,

@@ -10,6 +10,9 @@ const Option = Select.Option;
  */
 function NutritionHealthInformationDetail(props) {
   let disabled=true;
+
+  const healthInfo = props.healthInformation.nutritionHealthInformation;
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 16 }
@@ -31,13 +34,13 @@ function NutritionHealthInformationDetail(props) {
 
   //文本输入框
   function myInput(inputTitle,inputName,unit,required,message,lastRow) {
-
     return(
         <FormItem
           {...formItemLayout}
           label={inputTitle}
         >
           {getFieldDecorator(`${inputName}`, {
+            initialValue : healthInfo[inputName],
             rules: [{ required: required, message: message }]
           })(
             <Input disabled={disabled}
@@ -65,6 +68,7 @@ function NutritionHealthInformationDetail(props) {
         style={{height: '100%'}}
       >
         {getFieldDecorator(`${radioName}`, {
+          initialValue : healthInfo[radioName],
           rules: [{ required: true, message: '  ' }]
         })(
           <RadioGroup>
@@ -90,6 +94,7 @@ function NutritionHealthInformationDetail(props) {
         {...formItemLayout}
       >
         {getFieldDecorator(`${radioName}`, {
+          initialValue : healthInfo[radioName],
           rules: [{ required: true, message: '  ' }]
         })(
           <RadioGroup>
@@ -126,6 +131,7 @@ function NutritionHealthInformationDetail(props) {
               {...formItemLayout}
               label={inputTitle}>
               {getFieldDecorator(`${inputName}`, {
+                initialValue : healthInfo[inputName],
                 rules: [{ required: false, message: '  ' }]
               })(
                 <Input disabled={disabled}
@@ -257,4 +263,9 @@ function NutritionHealthInformationDetail(props) {
 
 }
 const NutritionHealthInformationDetailForm = Form.create()(NutritionHealthInformationDetail);
-export default connect()(NutritionHealthInformationDetailForm) ;
+function mapStateToProps(state) {
+  return {
+    healthInformation: state.healthInformation
+  };
+}
+export default connect(mapStateToProps)(NutritionHealthInformationDetailForm) ;

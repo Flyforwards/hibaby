@@ -23,9 +23,13 @@ class userHealthInformation extends React.Component {
   }
   render() {
     const isDetail = this.props.users.isDetail;
-    const HospitalHealthyDiv = isDetail ? <HospitalHealthyDetail/>:<HospitalHealthy />;
-    const NutritionHealthInformationDiv = isDetail ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
-    const SkinHealthInformationDiv = isDetail ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
+    const medicalHealthInformation = this.props.healthInformation.medicalHealthInformation;
+    const nutritionHealthInformation = this.props.healthInformation.nutritionHealthInformation;
+    const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
+
+    const HospitalHealthyDiv = isDetail&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
+    const NutritionHealthInformationDiv = isDetail&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
+    const SkinHealthInformationDiv = isDetail&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
 
     return (
       <div className = "user-health-cent">
@@ -51,6 +55,7 @@ class userHealthInformation extends React.Component {
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
+    healthInformation: state.healthInformation
   };
 }
 

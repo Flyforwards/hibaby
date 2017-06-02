@@ -40,15 +40,18 @@ class Card extends Component {
     }, {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
-        <span style={{ cursor: 'pointer'}}>
-          <Link className="firstA" to={{ pathname: '/crm/cardDetail', query: { data:record.id } }} href="#" style={{ marginRight:'20px' }}>查看</Link>
-          <Popconfirm  title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>
-             <span className="firstB">删除</span>
+      render: (text, record) => {
+      const detail = !this.props.permissionAlias.contains('CARD_DETAIL');
+      const del = !this.props.permissionAlias.contains('CARD_DELETE');
+      return (<span style={{cursor: 'pointer'}}>
+          <Link disabled={detail} className="firstA" to={{pathname: '/crm/card/detail', query: {dataId: record.id}}}
+                style={{marginRight: '20px'}}>查看</Link>
+          <Popconfirm title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>
+             <Link disabled={del} className="firstB">删除</Link>
           </Popconfirm>
 
-        </span>
-      )
+        </span>)
+      }
     }];
 
   }
@@ -86,16 +89,13 @@ class Card extends Component {
             cardType,
             'page': page.current,
             'size': page.pageSize,
-            'sortField': "string",
-            'sortOrder': "string"
           }
         })
       }
     };
     return (
       <div className="card">
-        <CardFind style={{ clear:'both'}}/>
-
+        <CardFind permissionAlias style={{ clear:'both'}}/>
         <Table class="cardTable" columns={this.columns} bordered rowKey="id" { ...tableProps }/>
       </div>
 
@@ -103,16 +103,12 @@ class Card extends Component {
   }
 }
 
-
-function CardCom({ dispatch, loading,cardInfo, total, postValues, typeValues, pagination }) {
-  return (
-    <Card dispatch={dispatch} cardInfo={cardInfo} total={total} postValues={postValues} typeValues={typeValues} loading={loading} pagination={pagination}/>
-  )
-}
 function mapStateToProps(state) {
   const { cardInfo, total, postValues, typeValues ,pagination} = state.card;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.card,
+    permissionAlias,
     cardInfo,
     total,
     postValues,
@@ -120,4 +116,4 @@ function mapStateToProps(state) {
     pagination,
   };
 }
-export default connect(mapStateToProps)(CardCom)
+export default connect(mapStateToProps)(Card)

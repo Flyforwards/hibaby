@@ -234,12 +234,12 @@ class EditUsered extends React.Component {
             let headelDepartment = this.affiliatedDepartment
             let entryContent = USER.entrys[i]
             let deptName = null
-            let positionName = null
+            let positionName = []
           if(this.props.getPosition){
-            console.log("entrys[i]",entrys)
+           // console.log("entrys[i]",entrys)
             this.props.getPosition.map((item)=>{
               if(entrys[i].positionId == item.id){
-                positionName = item.id
+                positionName.push(String(item.id))
               }
             })
            }

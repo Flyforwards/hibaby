@@ -65,21 +65,24 @@ class ActivityIndex extends React.Component {
       dataIndex: 'operation',
       width: '10%',
       render: (text, record, index) => {
+        const detail = !this.props.permissionAlias.contains('ACTIVITY_DETAIL');
+        const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
+        const appoint = !this.props.permissionAlias.contains('ACTIVITY_APPOINT');
         const timestamp = new Date().getTime()
         // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况服务删除活动
         if (record.activityTime < timestamp || record.appointments > 0 ) {
           return (
             <div key = { index }>
-              <Link className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
-              <Link className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
             </div>
           )
         } else {
           return (
             <div key = { index }>
-              <Link className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
-              <Link className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
-              <Link className="firstB" onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
+              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+              <Link disabled={del} className="firstB" onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
             </div>
           )
         }
@@ -166,11 +169,12 @@ class ActivityIndex extends React.Component {
         }))
       },
     }
+    const add = !this.props.permissionAlias.contains('ACTIVITY_ADD');
     return (
       <div className = "activity-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/activity/add'>
-            <Button className="button-add"> 添加 </Button>
+            <Button disabled={add} className="button-add"> 添加 </Button>
           </Link >
         </div>
         <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
@@ -188,11 +192,12 @@ function mapStateToProps(state) {
     list,
     pagination
   } = state.activity;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
+    permissionAlias
   };
 }
 

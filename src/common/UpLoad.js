@@ -71,6 +71,7 @@ class Avatar extends React.Component {
       multiple: false,
       showUploadList: false,
       action: '/crm/api/v1/uploadImg',
+      headers:{"USER-TOKEN":session.get("token")},
       className: "avatar-uploader",
     };
     if(this.state.imageUrl){
@@ -78,7 +79,6 @@ class Avatar extends React.Component {
     }else if(this.props.urlList){
       imageUrl = this.props.urlList
     }
-    //console.log("this.state.error",this.state.error)
     if ( this.state.error ) {
       imageUrl = IMG;
     }
