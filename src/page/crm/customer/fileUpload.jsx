@@ -33,7 +33,6 @@ class PicturesWall extends React.Component {
     previewImage: '',
     defaultFileList : (typeof this.props.value === 'object') ? this.props.value : [],
     fileList: [],
-    value: (typeof this.props.value === 'object') ? this.props.value : []
   };
 
   handleCancel = () => this.setState({ previewVisible: false })
@@ -55,7 +54,6 @@ class PicturesWall extends React.Component {
     }
     this.setState({
       fileList,
-      value:fileList
     })
   }
 
