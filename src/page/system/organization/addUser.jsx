@@ -52,7 +52,7 @@ class AddUsered extends React.Component {
         visible: false,
       })
     }
-  headelReturnTabal(data){
+  handelReturnTabal(data){
     this.setState({
       TableData:data[0]
     })
@@ -72,7 +72,7 @@ class AddUsered extends React.Component {
     })
   }
   //返回按键
-  headelReturn = ()=>{
+  handelReturn = ()=>{
    this.props.history.go(-1)
   }
   //隶属部门被选中时调用的函数
@@ -86,14 +86,14 @@ class AddUsered extends React.Component {
       })
   }
   //保存按键
-  headelSave = ()=>{
+  handleSave = ()=>{
     let endemic  = session.get("endemic")
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const values = {
           ...fieldsValue,
           'entryTime': fieldsValue['entryTime']
-        } 
+        }
         const fields = this.props.form.getFieldsValue();
         let roleIdData = []
         if(fields.systemRole){
@@ -122,7 +122,7 @@ class AddUsered extends React.Component {
                                             "deptId":fields.affiliatedDepartment,//fields.affiliatedDepartment,//隶属部门
                                             "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
                                             "extension":fields.internalExtension, //fields.internalExtension,//内部分机
-                                            "leaderId": fields.directLeadership,//直系领导
+                                            "leaderId": this.state.TableData.id,//直系领导
                                             "positionId": fields.position,//职位
                                             "identifier": fields.Numbering,//编号//fields.Numbering
                                             "roles": roleIdData
@@ -156,7 +156,7 @@ class AddUsered extends React.Component {
                     }
               }else{
                 message.warning('请选择隶属部门')
-              }  
+              }
             }else{
               message.warning('请选择入职日期')
             }
@@ -174,7 +174,7 @@ class AddUsered extends React.Component {
       NewuserImg:NewuserImg
     })
   }
-    render() {  
+    render() {
       let traversalEndemicId = []
       let selectDataList = []
       let endemic = session.get("endemic")
@@ -294,7 +294,7 @@ class AddUsered extends React.Component {
              className="directLeadership"
             >
               {getFieldDecorator('directLeadership', {
-                initialValue: this.state.TableData?this.state.TableData.id:"",
+                initialValue: this.state.TableData?this.state.TableData.name:"",
               })(
                 <Input disabled={true}/>
               )}
@@ -398,13 +398,13 @@ class AddUsered extends React.Component {
               )}
             </FormItem>
           </Form>
-           <Button type="primary" className="saveButton" onClick={this.headelSave}>保存</Button>
-           <Button type="primary" className="returnButton" onClick={this.headelReturn}>返回</Button>
+           <Button type="primary" className="saveButton" onClick={this.handleSave}>保存</Button>
+           <Button type="primary" className="returnButton" onClick={this.handelReturn}>返回</Button>
           <SelectTheNodeFrom
            visible={ this.state.visible}
            onCancel ={ this.handleCreateModalCancel.bind(this) }
            treeData = {this.props.LeagerData}
-           headelReturnTabal= {this.headelReturnTabal.bind(this)}
+           headelReturnTabal= {this.handelReturnTabal.bind(this)}
           />
         </div>
       )

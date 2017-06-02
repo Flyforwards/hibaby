@@ -1,4 +1,3 @@
-
 import React from 'react'
 import './Organization.scss'
 import { connect } from 'dva'
@@ -11,7 +10,7 @@ import Current from '../../Current'
 import OrganizationLeft from './OrganizationLeft.jsx'
 import {local, session} from 'common/util/storage.js'
 import Disabled from './Disabled.jsx';
-import DictionarySelect from 'common/dictionary_select';
+import {keyToText} from '../../../utils';
 
 
 const roleId = local.get("rolSelectData")
@@ -19,7 +18,9 @@ const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
-let endemic  = session.get("endemic")
+let endemic  = session.get("endemic");
+let POSITION = [];
+let DEPTEMENT = [];
 
 class Organization extends React.Component {
     constructor(props) {
@@ -39,11 +40,25 @@ class Organization extends React.Component {
           dataIndex: 'positionId',
           key:'positionId',
           width: '10%',
+          render: (text, record, index) => {
+            if (POSITION[text]) {
+              return POSITION[text]
+            } else {
+              return text;
+            }
+          }
         }, {
           title: '隶属部门',
           dataIndex: 'deptId',
           key: 'deptId',
           width: '10%',
+          render: (text, record, index) => {
+            if (DEPTEMENT[text]) {
+              return DEPTEMENT[text]
+            } else {
+              return text;
+            }
+          }
         },{
           title: '地方中心',
           dataIndex: 'endemicId',
@@ -93,6 +108,15 @@ class Organization extends React.Component {
           dataIndex: 'status',
           key: 'status',
           width: '10%',
+          render: (text) => {
+            if (text == 1) {
+              return '禁用'
+            } else if (text == 0) {
+              return '正常'
+            } else {
+              return text;
+            }
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -231,6 +255,10 @@ this.setState({
             record.key = record.id;
           });
         }
+        const {getPosition:positionInfo} = this.props;
+        POSITION = keyToText(positionInfo, "id", "name", "POSITION");
+        const {getDeptList:depInfo} = this.props;
+        DEPTEMENT = keyToText(depInfo, "id", "name", "POSITION");
         const columns = this.columns;
         const pagination = {
           total:this.props.total,
