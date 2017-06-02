@@ -26,10 +26,21 @@ class AddCourseModel extends Component {
     }
     handleClick = (e) => {
         console.log('Clicked: ', e.key);
+        this.props.dispatch({
+            type: 'addCourse/listByType',
+            payload: {
+              "dataId":e.key
+            }
+        });
     }
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
-
+        this.props.dispatch({
+            type: 'addCourse/listByType',
+            payload: {
+              "dataId":43
+            }
+        });
         this.props.dispatch({
             type: 'addCourse/getDictionary',
             payload: {
@@ -53,11 +64,22 @@ class AddCourseModel extends Component {
     }
     render() {
         let leftList = []
+        let rightList = []
         const {visible} = this.props
-        console.log("ssd",this.props.getDictionary)
+        console.log("ssd",this.props.listByType)
         if(this.props.getDictionary != null){
             this.props.getDictionary.map((item)=>{
                 leftList.push(<Menu.Item key={item.id}>{item.name}</Menu.Item>)
+            })
+        }
+        if(this.props.listByType != null){
+            this.props.listByType.map((item)=>{
+                rightList.push(
+                <Link className="rightList" to={{ pathname: '/crm/customer/Add/bindingPackages',query: { dataId:item.id } }}>
+                    <p className="tital">{item.name}</p>
+                    <p className="room">套房:{item.suiteName}</p>
+                    <p className="price">套餐价格:￥{item.price}</p>
+                </Link>)
             })
         }
         return (
@@ -80,14 +102,9 @@ class AddCourseModel extends Component {
                     </Menu>
                 </div>
                 <div className="right">
-                    <Link className="rightList" to={{ pathname: '/crm/customer/Add/bindingPackages', query: { userID:5 } }}>
-                        <p className="tital">豪华套餐</p>
-                        <p className="room">套房:豪华套房</p>
-                        <p className="price">套餐价格:￥100000</p>
-                    </Link>
-                    <a className="rightList"></a>
-                    <a className="rightList"></a>
-                    <a className="rightList"></a>
+                    {
+                        rightList
+                    }
                 </div>
             </div>
             </Modal>
@@ -97,13 +114,13 @@ class AddCourseModel extends Component {
 
 function mapStateToProps(state) {
   const {
-    getDictionary
+    getDictionary,
+    listByType
   } = state.addCourse;
-  const {
-  } = state.addCustomer;
   return {
     loading: state.loading.models.addCourse,
-    getDictionary
+    getDictionary,
+    listByType
     };
 }
 export default connect(mapStateToProps)(AddCourseModel)

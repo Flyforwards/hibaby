@@ -29,3 +29,17 @@ export function getCustomerPackageById(values) {
     body: JSON.stringify(values),
   })
 }
+//根据套餐类型查询 dataID为套餐类型的id
+export function listByType(values) {
+  return request('/crm/api/v1/packageInfo/listByType', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//使用服务项
+export function useServiceInfo(values) {
+  return request('/crm/api/v1/customer/useServiceInfo', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

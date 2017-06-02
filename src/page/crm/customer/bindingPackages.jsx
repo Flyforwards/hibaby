@@ -46,15 +46,14 @@ class BindingPackagesed extends Component {
         };
     }
     handleAdd(data){
-      let userId = window.location.search.split("=")[1]
+      let typeId = window.location.search.split("=")[1]
       this.props.dispatch({
          type:'addCourse/saveCustomerPackage',
           payload: {
-            "customerId":userId,
-            "packageId": data.id
+            "customerId":6,
+            "packageId": typeId
           }
       })
-      console.log(data.id)
     }
     handleDeleteCancel(){
       this.setState({
@@ -68,13 +67,10 @@ class BindingPackagesed extends Component {
       }
     componentDidMount() {
       let ID = window.location.search.split("=")[1]
-      this.setState({
-        ID:ID
-      })
       this.props.dispatch({
           type: 'addCourse/findById',
           payload: {
-             "dataId":9
+             "dataId":ID
           }
       });
      this.props.dispatch({
@@ -98,7 +94,7 @@ class BindingPackagesed extends Component {
         let ListLnformation = []
         let loadingName = true
         let type = ''
-        let suiteId = ''
+        let suiteId = null
         const columns = this.columns;
         const { getFieldDecorator } = this.props.form;
         if(this.props.findById != null){
@@ -125,14 +121,10 @@ class BindingPackagesed extends Component {
             }
           })
         }
-        if(this.props.selectData != null && this.props.findById != null){
-          this.props.selectData.map((item)=>{
-            if(item.id == this.props.findById.suiteId){
-              suiteId = item.name
-            }
-          })
+        if(this.props.findById != null){
+          suiteId=this.props.findById.suiteName
         }
-        console.log(this.props.findById)
+        // console.log("dsdddddddddddddddddd",this.props.users)
         return (
             <div className="viewServiceinfo">
                 <div className="viewServiceinfoList">
@@ -149,7 +141,11 @@ class BindingPackagesed extends Component {
                     pagination = { false }
                     loading = { loadingName }
                   />
-                </div>  
+                </div> 
+                {suiteId?<div>套房 {suiteId}</div>:null
+
+                }
+                
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>确定</Button>      
             </div>

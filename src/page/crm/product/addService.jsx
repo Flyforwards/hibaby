@@ -110,17 +110,33 @@ class AddServiceed extends Component {
         if(fields.price){
           if(fields.type){
             if(serviceInfoList.length>=1){
-              this.props.dispatch({
-                  type: 'packageInfo/add',
-                  payload: {
-                    "name": fields.name,
-                    "price": fields.price,
-                    "serviceInfoList":serviceInfoList,
-                    "suiteId": fields.room,
-                    "type": fields.type
-                  }
-              });
-
+              if(this.roomVisbled){
+                if(fields.room){
+                  this.props.dispatch({
+                      type: 'packageInfo/add',
+                      payload: {
+                        "name": fields.name,
+                        "price": fields.price,
+                        "serviceInfoList":serviceInfoList,
+                        "suiteId": fields.room,
+                        "type": fields.type
+                      }
+                  });
+                }else{
+                  message.warning("请选择套房");
+                }
+              }else{
+                this.props.dispatch({
+                    type: 'packageInfo/add',
+                    payload: {
+                      "name": fields.name,
+                      "price": fields.price,
+                      "serviceInfoList":serviceInfoList,
+                      "suiteId":null,
+                      "type": fields.type
+                    }
+                });
+              }
             }else{
               message.warning("请选择服务项目");
             }
