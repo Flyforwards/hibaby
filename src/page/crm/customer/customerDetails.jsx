@@ -220,13 +220,6 @@ class customerDetails extends React.Component{
     this.dispatch(routerRedux.push('/crm/customer/Add/CustomerInformation'))
   }
 
-  componentWillUnmount(){
-
-    if(!this.editCustomer){
-      this.props.dispatch({type:'addCustomer/reductionState'})
-    }
-  }
-
   render(){
     const ary = [];
     if ( this.props.users.expandData){

@@ -618,9 +618,7 @@ class customerInformation extends React.Component{
     });
   }
 
-  componentWillUnmount(){
-    this.props.dispatch({type:'addCustomer/reductionState'})
-  }
+
 
   render() {
 
