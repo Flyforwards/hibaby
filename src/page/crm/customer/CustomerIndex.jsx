@@ -227,10 +227,8 @@ class CustomerIndex extends React.Component {
         return (
         <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
-
               <Form>
-                <div>
-                  <Row style={{width:'1116px'}}>
+                  <Row style={{width:'1116px', height: '70px'}}>
                     <Col span={10} style={{float:'left'}}>
                       <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
                         {getFieldDecorator('sear', {rules: [{ required: false }],
@@ -240,23 +238,21 @@ class CustomerIndex extends React.Component {
                       </FormItem>
                     </Col>
                     <Col span={4} style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px',}}>查询</Button>
-                  </span>
-                    </Col>
+                      <span>
+                        <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px',}}>查询</Button>
+                        </span>
+                          </Col>
+                          <Col span={4} style={{ float:'left'}}>
+                        <span>
+                        <Button onClick={ this.reset.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px'}}>重置</Button>
+                      </span>
+                     </Col>
                     <Col span={4} style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px'}}>重置</Button>
-                  </span>
-                  </Col>
-                    <Col span={4} style={{ float:'left'}}>
-                  <span>
-                    <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
-
-                  </span>
+                      <span>
+                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
+                      </span>
                     </Col>
                   </Row>
-                </div>
                 <Row>
                   <Col span={4} style={{width:'140px'}}>
                     <FormItem {...formChooseOneLayout}  label="年龄" >
