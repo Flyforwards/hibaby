@@ -4,7 +4,13 @@ import React from 'react';
 class PicturesWall extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
+    this.state = {
+      previewVisible: false,
+      previewImage: '',
+      defaultFileList : (typeof this.props.value === 'object') ? this.props.value : [],
+      fileList: [],
+    };
+
   };
 
   beforeUpload(file) {
@@ -22,18 +28,11 @@ class PicturesWall extends React.Component {
     const isLt2M = file.size / 1024 / 1024 < 15;
     if (!isLt2M) {
       message.error('图片已经超过图片限定大小15MB!');
+      return false;
     }
     return isLt2M ;
   }
   }
-
-
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    defaultFileList : (typeof this.props.value === 'object') ? this.props.value : [],
-    fileList: [],
-  };
 
   handleCancel = () => this.setState({ previewVisible: false })
 
@@ -48,18 +47,19 @@ class PicturesWall extends React.Component {
     this.props.deleteFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]});
   }
 
-  onChange = ( {file,fileList} ) => {
+  handleChange = ( {file, fileList} ) => {
     if (file.status === 'done') {
+
       this.props.fun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
     }
     this.setState({
-      fileList,
+      fileList
     })
+
   }
 
   render() {
     const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
-
     return (
       <div>
         <Upload
@@ -67,15 +67,16 @@ class PicturesWall extends React.Component {
           action="/crm/api/v1/uploadImg"
           showUploadList = {!this.props.isHead}
           defaultFileList={defaultFileList}
+          filelist={fileList}
           beforeUpload={this.beforeUpload.bind(this)}
           onPreview={this.handlePreview.bind(this)}
-          onChange={this.onChange.bind(this)}
+          onChange={this.handleChange.bind(this)}
           onRemove={this.onRemove.bind(this)}
         >
           {this.props.children}
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          <img  style={{ width: '100%' }} src={previewImage} />
         </Modal>
       </div>
     );

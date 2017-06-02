@@ -13,9 +13,9 @@ class GroupCharIndex extends React.Component {
   constructor(props) {
     super(props);
     this.columns = [{
-        title: '序号',
-        dataIndex: 'id',
-        key: 'id'
+        title: '别名',
+        dataIndex: 'abName',
+        key: 'abName'
       },{
         title: '字段名称',
         dataIndex: 'name',

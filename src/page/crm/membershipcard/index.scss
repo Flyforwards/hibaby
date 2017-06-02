@@ -1,0 +1,109 @@
+/**
+ * Created by Flyforwards on 2017/6/1.
+ */
+.card{
+  min-width: 1030px;
+  //margin:10px 0 0 10px;
+  padding: 20px;
+  background: #FFFFFF;
+}
+.cardTable{
+
+}
+.cardFind{
+  input{
+    height: 40px;
+  }
+  label{
+    font: 14px "微软雅黑";
+    color: #333;
+  }
+}
+.cardDetail{
+  .delbtn{
+    background: #ff4a4a;
+    border:#ff4a4a;
+    color:#fff;
+    font:12px "微软雅黑";
+  }
+}
+.ant-btn{
+  width:150px;
+  height:30px;
+  font:12px "微软雅黑";
+}
+.ant-form-item-required:before {
+  content: '';
+  display: none;
+}
+.ant-table-bordered .ant-table-thead > tr > th{
+  background: #666666;
+  text-align: center;
+  font:14px "微软雅黑";
+  color: #fff;
+}
+.ant-table-bordered .ant-table-tbody > tr > td{
+  text-align: center;
+  font:14px "微软雅黑";
+  .firstA{
+    color:#b87636;
+  }
+  .firstB{
+    color:#b87636;
+  }
+}
+.vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+
+.vertical-center-modal .ant-modal {
+  display: inline-block;
+  vertical-align: middle;
+  top: 0;
+  text-align: left;
+}
+.cardBtn{
+  width:140px;
+  height:40px;
+  margin:0px 16px;
+  font-size: 14px;
+  //border:none;
+  //border-radius: 5px;
+  //cursor:pointer;
+  //font-size: 14px;
+  //font-weight: 400;
+  //background-color: rgba(255, 74, 74, 1);
+  //color:#FFFFFF;
+}
+.ant-tabs{
+
+}
+
+.alert-vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+  .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: center;
+  }
+}
+
+.alert-vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+

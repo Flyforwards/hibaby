@@ -1,0 +1,111 @@
+.addCourse{
+  width:100%;
+  height:100%;
+  .addCourseList{
+    width:100%;
+    height:auto;
+    margin-bottom:30px; 
+    border:1px solid #999;
+    border-radius: 4px;
+    .namep,.pricep,.typep{
+      float:left;
+    }
+    .viewServiceinfoTable{
+      position: relative;
+      p{
+        text-align: left;
+        width:100px;
+      }
+      .status{
+        display:block;
+        position: absolute;
+        right:90px;
+        top:-50px;
+        font-size:30px;
+        z-index: 100;
+      }
+      .ant-table-thead > tr > th {
+        background-color: rgba(102, 102, 102, 1);
+        font-weight: 500;
+        transition: background .3s ease;
+        text-align: center;
+        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 14px;
+        color: #FFFFFF;
+      padding: 10px 5px;
+    }
+    .ant-table-tbody > tr > td {
+      padding: 3px 0px;
+        text-align:center;
+        background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+        font-weight: 400;
+        font-size: 14px;
+    }
+    }
+    p{
+      font-family: '微软雅黑 Bold', '微软雅黑';
+      font-weight: 900;
+      font-style: normal;
+      font-size: 14px;
+      margin:10px 0 10px 20px;
+    }
+    .namep{
+      margin-left:50px; 
+    }
+    .pricep{
+      margin-left:200px; 
+    }
+    .typep{
+      margin-left:200px; 
+    }
+  }
+}
+.ant-form .ant-form-horizontal{
+  width:100%;
+  height:100%;
+}
+.AddCourseModel{
+  overflow: hidden;
+  .left{
+    width:20%;
+    height:auto;
+    float: left;
+  }
+  .right{
+    width:80%;
+    height:auto;
+    float: right;
+    overflow: hidden;
+    .rightList{
+      display: inline-block;
+      width:80%;
+      border:1px solid #999;
+      height:60px;
+      line-height:60px;
+      margin:10px 2%; 
+      color:#000;
+      .tital{
+        font-size: 16px;
+        font-weight: blod;
+        float: left;
+        text-indent: 50px;
+      }
+      .room{
+        font-size: 16px;
+        text-indent:50px;
+        float: left;
+      }
+      .price{
+        font-size: 16px;
+        text-indent:50px;
+        float: left;
+      }
+    }
+  }
+}
+.ant-modal-title {
+  text-align: center;
+}

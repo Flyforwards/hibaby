@@ -9,6 +9,7 @@ const Option = Select.Option;
  * 客户信息》健康档案》营养部健康档案
  */
 function NutritionHealthInformation(props) {
+  const type = 2;//营养部健康档案
   const formItemLayout = {
     labelCol: { span: 7 },
     wrapperCol: { span: 16 }
@@ -206,10 +207,19 @@ function NutritionHealthInformation(props) {
   }
   //提交表单
   function handleSubmit (e) {
-    e.preventDefault();
+    console.log("您点击了保存按钮");
+    const {dispatch} = props;
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const healthInfo = JSON.stringify(values);
+        dispatch({
+          type: 'healthInformation/saveHealthInformation',
+          payload: {
+            healthInfo : healthInfo,
+            type : type,
+            customerId : props.customerId
+          }
+        })
       }
     });
   }
@@ -316,4 +326,11 @@ function NutritionHealthInformation(props) {
 
 }
 const NutritionHealthInformationForm = Form.create()(NutritionHealthInformation);
-export default connect()(NutritionHealthInformationForm) ;
+function mapStateToProps(state) {
+  return {
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.customerId
+
+  };
+}
+export default connect(mapStateToProps)(NutritionHealthInformationForm) ;

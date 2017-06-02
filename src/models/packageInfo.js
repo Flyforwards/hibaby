@@ -34,6 +34,18 @@ export default {
 	      current: 1,
 	      total: null,
 	    },
+	    serviceinfopagination: {
+	      showQuickJumper: true,
+	      showTotal: total => `共 ${total} 条`,
+	      current: 1,
+	      total: null,
+	    },
+	    commoditypagination: {
+	      showQuickJumper: true,
+	      showTotal: total => `共 ${total} 条`,
+	      current: 1,
+	      total: null,
+	    },
 	    commodityFindById:null,
 	},
 	reducers: {
@@ -42,8 +54,8 @@ export default {
 			state.selectedRowKeys.remove(record.key);
 			return {...state, };
 		},
-	    listByPageSave(state,{payload:{list,pagination}}){
-	      return {...state, list, pagination: {  ...state.pagination,...pagination }};
+	    listByPageSave(state,{payload:{list,serviceinfopagination}}){
+	      return {...state, list, serviceinfopagination: {  ...state.serviceinfopagination,...serviceinfopagination }};
 	    },
 	    roomListSave(state,{payload:{ data:roomData,code }}){
 	      let roomListSavedata = {...state,roomData,code};
@@ -76,8 +88,8 @@ export default {
 	    suiteListByPageSave(state,{payload:{suiteListByPage,suitepagination}}){
 	      return {...state, suiteListByPage, suitepagination: {  ...state.suitepagination,...suitepagination }};
 	    },
-	    commodityListByPageSave(state,{payload:{ commodityListByPage,pagination }}){
-			return {...state, commodityListByPage, pagination: {  ...state.pagination,...pagination }};
+	    commodityListByPageSave(state,{payload:{ commodityListByPage,commoditypagination }}){
+			return {...state, commodityListByPage, commoditypagination: {  ...state.commoditypagination,...commoditypagination}};
 	    },
 	    serviceListByPageSave(state,{payload:{data:serviceListByPage,total,page,size,code}}){
 	      let serviceListByPagedata = {...state,

@@ -27,7 +27,7 @@ var webpackConfig = {
         },
         proxy: {
 
-            //开发环境
+            // 开发环境
               '/crm/api/*': {
                   target: 'http://dev.hbbcare.com:8087/crm/api',
                   pathRewrite: {

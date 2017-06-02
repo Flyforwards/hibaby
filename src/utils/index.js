@@ -162,6 +162,7 @@ const keyToText = (dataSource, keyField, valueField, name='SYSTEM') => {
   // console.log('keyToText:data:tmp>>', tmp);
   TEXT_ARRAY[name] = tmp;
   session.set('TEXT_ARRAY', TEXT_ARRAY);
+  return tmp;
 }
 
 

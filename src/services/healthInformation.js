@@ -10,3 +10,10 @@ export function saveHealthInformation(values) {
     body: JSON.stringify(values),
   })
 };
+//根据客户id查询客户健康档案信息
+export function getHealthInformationListByCustomerId(values) {
+  return request('/crm/api/v1/customer/getCustomerHealthById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
