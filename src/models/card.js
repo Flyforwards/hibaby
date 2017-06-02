@@ -1,4 +1,6 @@
+
 import * as cardService from '../services/card';
+import * as customerService from '../services/customer';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 
@@ -13,6 +15,7 @@ export default {
       pageSize:10,
       total: null,
     },
+    list:[],
     userPagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -55,7 +58,11 @@ export default {
     levelInfo(state, { payload: { data: level } }){
       let levelInfo = { ...state, level }
       return levelInfo;
-    }
+    },
+
+    getCustomerPageSave(state, { payload: { list, userPagination }}) {
+      return {...state, list, pagination: {  ...state.userPagination,...userPagination }};
+    },
   },
   effects: {
     //获取折扣权限
@@ -184,7 +191,24 @@ export default {
           values
         }
       });
-    }
+    },
+
+    *getCustomerPage({ payload: values }, { call, put }) {
+      const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, values);
+      if (code == 0) {
+        yield put({
+          type: 'getCustomerPageSave',
+          payload: {
+            list: data,
+            userPagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
+      }
+    },
 
 
   },
