@@ -80,8 +80,9 @@ export default {
         }else if(data.type === 4){
           return { ...state, conclusionInformation : healthInfo };
         }
+        return {...state};
       }
-
+      return {...state};
     },
 
   },

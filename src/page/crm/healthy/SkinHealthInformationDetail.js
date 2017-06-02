@@ -21,6 +21,8 @@ class SkinHealthInformationDetail extends React.Component {
     $('#editShinButton').show();
     $('#saveShinButton').hide();
   }
+  healthInfo = {};
+
   formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 }
@@ -39,6 +41,7 @@ class SkinHealthInformationDetail extends React.Component {
         label={inputTitle}
       >
         {getFieldDecorator(`${inputName}`, {
+          initialValue : this.healthInfo[inputName],
           rules: [{ required: required, message: message }]
         })(
           <RadioGroup >
@@ -57,6 +60,7 @@ class SkinHealthInformationDetail extends React.Component {
         label={inputTitle}
       >
         {getFieldDecorator(`${inputName}`, {
+          initialValue : this.healthInfo[inputName],
           rules: [{ required: required, message: message }]
         })(
           <Input disabled={this.state.disabled}
@@ -82,11 +86,11 @@ class SkinHealthInformationDetail extends React.Component {
     const {dispatch} = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const healthInfo = JSON.stringify(values);
+        const healthInfo_ = JSON.stringify(values);
         dispatch({
           type: 'healthInformation/saveHealthInformation',
           payload: {
-            healthInfo : healthInfo,
+            healthInfo : healthInfo_,
             type : type,
             customerId : 101
           }
@@ -96,6 +100,8 @@ class SkinHealthInformationDetail extends React.Component {
   }
 
   render(){
+    this.healthInfo = this.props.healthInformation.skinHealthInformation;
+
     return (
       <div className="skinHealthInformationDiv">
         <Form>
@@ -344,14 +350,6 @@ class SkinHealthInformationDetail extends React.Component {
 
 const SkinHealthInformationDetailForm = Form.create()(SkinHealthInformationDetail);
 
-
-function SkinHealthInformationDetailFormTab({ dispatch }) {
-  return (
-    <SkinHealthInformationDetailForm dispatch={dispatch} />
-  )
-}
-
-
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation
@@ -359,7 +357,7 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(SkinHealthInformationDetailFormTab)
+export default connect(mapStateToProps)(SkinHealthInformationDetailForm)
 
 
 
