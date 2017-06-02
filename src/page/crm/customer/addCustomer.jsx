@@ -15,12 +15,14 @@ class addCustomer extends React.Component{
     super(props);
   }
 
-
+  componentWillUnmount(){
+    this.props.dispatch({type:'addCustomer/reductionState'})
+  }
 
   render(){
 
     const {editCustomer,isDetail}= this.props.users;
-    const {addSuccess}= this.props.addCourse;
+    const {addSuccess}= this.props.course;
 
     let TabPaneAry = [
       <TabPane className='tabsContent' tab="客户信息" key="1">
@@ -57,7 +59,7 @@ class addCustomer extends React.Component{
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
-    addCourse:state.addCourse
+    course:state.addCourse
   };
 }
 export default connect(mapStateToProps)(addCustomer)
