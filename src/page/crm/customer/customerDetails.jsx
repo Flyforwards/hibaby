@@ -228,11 +228,19 @@ class customerDetails extends React.Component{
   }
 
   render(){
+    const ary = [];
+    if ( this.props.users.expandData){
+
+      ary.push(<ExtensionInfo  {...this.props}/>)
+    }
+    if (this.props.users.remarkData.length > 0){
+      ary.push(<Remark  {...this.props}/>)
+    }
+
     return (
       <div className="customerContent">
         <BaseInfo  {...this.props}/>
-        <ExtensionInfo {...this.props}/>
-        <Remark  {...this.props}/>
+        {ary}
         <BigImageModal
           images={this.props.users.bigImageData}
           isOpen={this.props.users.bigImageHidden}
