@@ -113,6 +113,8 @@ export default {
 
 					yield put({type:'setAddCustomerTab',payload:true});
 					yield put(routerRedux.push("/crm/customer/customerDetails"));
+				}else if(code == 210){
+					message.warning('已存在主套餐，只能绑定一个主套餐')
 				}else{
 					throw err || "请求出错";
 				}
