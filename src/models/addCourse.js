@@ -112,7 +112,7 @@ export default {
 					message.success("添加套餐成功");
 
 					yield put({type:'setAddCustomerTab',payload:true});
-					yield put(routerRedux.push("/crm/customer/AddCustomerInformation"));
+					yield put(routerRedux.push("/crm/customer/customerDetails"));
 				}else{
 					throw err || "请求出错";
 				}
