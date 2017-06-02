@@ -271,7 +271,7 @@ function Healthyhome(props) {
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : 104
+            customerId : props.customerId
           }
         })
       }
@@ -592,7 +592,8 @@ function HealthyhomeFromTab({ dispatch }) {
 
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.customerId
   };
 }
 
