@@ -657,12 +657,8 @@ export default {
             type: 'setAddCustomerTab',
             payload:{data:'1'}
           });
-          dispatch({
-            type: 'pageStatus',
-            payload:{data:false}
-          });
-          dispatch({type:'homePageStatus',payload:{data:true}});
 
+          isDetail(dispatch)
           defDis(dispatch)
         };
         if (pathname === '/crm/customer/Add/HealthRecords') {
@@ -670,20 +666,17 @@ export default {
             type: 'setAddCustomerTab',
             payload:{data:'2'}
           });
-          dispatch({
-            type: 'pageStatus',
-            payload:{data:false}
-          });
+          isDetail(dispatch)
+
+
         };
         if (pathname === '/crm/customer/Add/Package') {
           dispatch({
             type: 'setAddCustomerTab',
             payload:{data:'3'}
           });
-          dispatch({
-            type: 'pageStatus',
-            payload:{data:false}
-          });
+          isDetail(dispatch)
+
         };
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
@@ -707,6 +700,14 @@ export default {
     }
   },
 };
+
+function isDetail(dispatch) {
+  dispatch({
+    type: 'pageStatus',
+    payload:{data:false}
+  });
+  dispatch({type:'homePageStatus',payload:{data:false}});
+}
 
 function defDis(dispatch) {
   dispatch({
