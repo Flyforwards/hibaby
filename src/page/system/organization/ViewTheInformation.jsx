@@ -106,7 +106,7 @@ class ViewTheInformationed extends React.Component {
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
-          console.log("sssss",this.props.userID)
+          //console.log("sssss",this.props.userID)
          SEX = USER.sex == 1?"男":"女"
          entrys = USER.entrys
         USER.entrys.map((item)=>{
@@ -188,6 +188,7 @@ class ViewTheInformationed extends React.Component {
       if ( this.state.error ) {
         imageUrl = IMG;
       }
+      console.log()
       return(
         <div className="viewTheInformation">
           <div className="basicInformation">基本信息</div>
@@ -201,7 +202,7 @@ class ViewTheInformationed extends React.Component {
             { JobInformation }
 
           <Button  className="disabledButton" onClick={this.headelDisabled}>禁用</Button>
-          <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID } }}>
+          <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID} }}>
               <Button  type="primary" className="editButton">编辑</Button>
           </Link>
           <Button className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>

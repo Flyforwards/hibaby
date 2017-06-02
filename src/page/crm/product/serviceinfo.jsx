@@ -67,10 +67,12 @@ class Serviceinfoed extends Component {
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
+            const detail = !this.props.permissionAlias.contains('SERVICEINFO_DETAIL');
+            const del = !this.props.permissionAlias.contains('SERVICEINFO_DELETE');
             return (
                 <span>
-                  <Link to={{ pathname: '/crm/serviceinfo/viewservice', query: { data:record.id } }}>查看</Link>
-                  <a href="#" className="twoA" onClick={this.delete.bind(this,record)}>删除</a>
+                  <Link disabled={detail} to={{ pathname: '/crm/serviceinfo/viewservice', query: { data:record.id } }}>查看</Link>
+                  <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
                 </span>
             );
           },
@@ -128,9 +130,10 @@ class Serviceinfoed extends Component {
             }))
           },
         }
+        const add = !this.props.permissionAlias.contains('SERVICEINFO_ADD');
         return (
             <div className="serviceinfo">
-                <div className="serviceinfoButton"><Link to="/crm/serviceinfo/addservice"><Button type="primary">添加</Button></Link></div>
+                <div className="serviceinfoButton"><Link to="/crm/serviceinfo/addservice"><Button disabled={add} type="primary">添加</Button></Link></div>
                 <div className="serviceinfoTabal">
                     <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ columns } pagination = {pagination} />
                 </div>
@@ -151,8 +154,10 @@ function mapStateToProps(state) {
     pagination,
     selectData
   } = state.packageInfo;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
+    permissionAlias,
     list,
     pagination,
     selectData
