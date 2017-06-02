@@ -166,7 +166,6 @@ function HealthyhomeDetail(props) {
 
   //row 左边单选右边输入框
   function radioInputRow (radioName, inputName, dict, inputTitle, lastRow, suffix) {
-    debugger;
     var col1Class='topItembg';
     var col2Class='leftRightItemBg';
     if (lastRow == true){
@@ -205,8 +204,6 @@ function HealthyhomeDetail(props) {
 
   //row 左边单选右边上传附件
   function radioUploadOptionsRow (radioName, dict, key, lastRow) {
-    debugger;
-
     var col1Class='topItembg';
     var col2Class='leftRightItemBg';
     if (lastRow == true){
