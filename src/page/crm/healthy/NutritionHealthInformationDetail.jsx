@@ -6,10 +6,10 @@ const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
 /**
- * 客户信息》健康档案》营养部健康档案
+ * 客户信息》健康档案》营养部健康档案详情页
  */
-function NutritionHealthInformation(props) {
-  const type = 2;//营养部健康档案
+function NutritionHealthInformationDetail(props) {
+  let disabled=true;
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 16 }
@@ -40,7 +40,7 @@ function NutritionHealthInformation(props) {
           {getFieldDecorator(`${inputName}`, {
             rules: [{ required: required, message: message }]
           })(
-            <Input
+            <Input disabled={disabled}
               suffix={unit}
             />
           )}
@@ -54,7 +54,7 @@ function NutritionHealthInformation(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i}>{dict.radioItems[i]}</Radio>
+        <Radio disabled={disabled} key={i} value={i}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -80,7 +80,7 @@ function NutritionHealthInformation(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i}>{dict.radioItems[i]}</Radio>
+        <Radio disabled={disabled} key={i} value={i}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -108,9 +108,7 @@ function NutritionHealthInformation(props) {
           <div className="uploadOptions">附件:</div>
         </Col>
         <Col span="18">
-          <PicturesWall>
-            <Button key={key} type="primary" className="uploadOptionsButton">上传附件</Button>
-          </PicturesWall>
+            <Button key={key} type="primary" className="uploadOptionsButton">查看附件</Button>
         </Col>
       </div>
     )
@@ -130,7 +128,7 @@ function NutritionHealthInformation(props) {
               {getFieldDecorator(`${inputName}`, {
                 rules: [{ required: false, message: '  ' }]
               })(
-                <Input
+                <Input disabled={disabled}
                   suffix={suffix}
                 />
               )}
@@ -186,23 +184,9 @@ function NutritionHealthInformation(props) {
     )
   }
 
-  //提交表单
-  function handleSubmit (e) {
-    console.log("您点击了保存按钮");
-    const {dispatch} = props;
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        const healthInfo = JSON.stringify(values);
-        dispatch({
-          type: 'healthInformation/saveHealthInformation',
-          payload: {
-            healthInfo : healthInfo,
-            type : type,
-            customerId : 101
-          }
-        })
-      }
-    });
+  //编辑
+  function handleEdit (e) {
+    e.preventDefault();
   }
 
 
@@ -266,16 +250,11 @@ function NutritionHealthInformation(props) {
 
       <div className='bottomButton'>
         <Button className='commitButton'>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
+        <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
       </div>
     </div>
   );
 
 }
-const NutritionHealthInformationForm = Form.create()(NutritionHealthInformation);
-function mapStateToProps(state) {
-  return {
-    healthInformation: state.healthInformation
-  };
-}
-export default connect(mapStateToProps)(NutritionHealthInformationForm) ;
+const NutritionHealthInformationDetailForm = Form.create()(NutritionHealthInformationDetail);
+export default connect()(NutritionHealthInformationDetailForm) ;
