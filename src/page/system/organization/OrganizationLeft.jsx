@@ -18,6 +18,8 @@ const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+let plusEnter = false;
+
 class OrganizationLefted extends React.Component {
   constructor(props) {
     super(props)
@@ -30,8 +32,8 @@ class OrganizationLefted extends React.Component {
       node: null,
       DeleteNodeVisible: false
     }
-    this.addDisplay = "block"
-    this.nodes = null
+    this.addDisplay = "block";
+    this.nodes = null;
   }
 
   expandHandler = () => {
@@ -147,10 +149,19 @@ class OrganizationLefted extends React.Component {
     this.props.dispatch({
       type: 'organization/getAllTissueProperty'
     })
-    const userInfo = session.get("userInfo")
-    $(".Organization-left").on('click', '.plus', function (e) {
-      //  console.log("dd",e.pageY-e.offsetY-11)
-      e.stopPropagation();
+
+    $(document).on('mouseenter', '.plus', function (e){
+        plusEnter = true;
+        // console.log('mouseenter>>', plusEnter);
+    });
+    $(document).on('mouseout', '.plus', function (e){
+      plusEnter = false;
+      // console.log('mouseout>>', plusEnter);
+    });
+
+    const userInfo = session.get("userInfo");
+    $(document).on('click', '.plus', function (e) {
+
       if (this.state.upblock == 'none') {
         this.setState({
           ulTop: e.pageY - e.offsetY - 31,
@@ -168,7 +179,7 @@ class OrganizationLefted extends React.Component {
     }.bind(this));
 
     $(".Organization-left").click(function (e) {
-      if (this.state.upblock == 'block') {
+      if (this.state.upblock == 'block' && !plusEnter) {
         this.setState({
           upblock: 'none'
         })

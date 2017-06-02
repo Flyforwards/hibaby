@@ -18,6 +18,8 @@ export default {
     nutritionHealthInformation : null,//营养健康档案
     skinHealthInformation : null,//美妍中心
     conclusionInformation : null,//医院小结
+    saveDone:false,
+    type:null,
   },
   //加载页面
   subscriptions: {
@@ -28,7 +30,7 @@ export default {
             dispatch({
               type: 'getHealthInformationListByCustomerId',
               payload:{
-                customerId : 101,
+                customerId : 102,
                 type : i
               }
             });
@@ -46,7 +48,7 @@ export default {
       const {data: { data, code,err} } = yield call(healthInformationService.saveHealthInformation, values);
       if (code == 0) {
         message.success("创建健康档案成功");
-        yield put(routerRedux.push("/crm/activity"));
+        yield put({type:'setSaveDone',payload:{saveDone:true,type:values.type}} );
       }else{
         message.error(err);
       }
@@ -84,6 +86,9 @@ export default {
       }
       return {...state};
     },
+    setSaveDone(state, { payload: { data }}){
+      return {...state,...data}
+    }
 
   },
 

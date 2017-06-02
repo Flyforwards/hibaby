@@ -103,8 +103,9 @@ class AddCourse extends Component {
       });
     }
   componentWillUnmount(){
-   // console.log("componentWillUnmount")
-    this.props.dispatch({type:'addCourse/setAddCustomerTab',payload:{false}})
+
+    console.log("componentWillUnmount")
+    this.props.dispatch({type:'addCourse/setAddCustomerTab',payload:false})
   }
     render(){
       let dataList = []
@@ -149,13 +150,13 @@ class AddCourse extends Component {
                 <br/>
                 <div className="viewServiceinfoTable" key={dataKey2}>
                   <p>服务项目:</p> <span className="status">{status}</span>
-                  <Table bordered 
-                    columns={ columns } 
+                  <Table bordered
+                    columns={ columns }
                     dataSource={ addCourseList }
                     pagination = { false }
                     loading = { loadingName }
                   />
-                </div>  
+                </div>
             </div>)
           })
         }
