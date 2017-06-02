@@ -92,7 +92,6 @@ function cusComponent(dict) {
       break;
     case 'UploadButton':
     {
-      tempDiv =
         tempDiv =
           <FileUpload fun={dict.fun} deleteFun={dict.deleteFun}>
             <Button><Icon type="upload"/> 上传附件</Button>
@@ -101,7 +100,6 @@ function cusComponent(dict) {
       break;
     case 'headUpload':
     {
-      tempDiv =
         tempDiv =
           <FileUpload fun={dict.fun} isHead={true} >
             <div className="avatar-uploader">

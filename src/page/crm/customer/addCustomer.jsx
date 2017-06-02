@@ -17,7 +17,7 @@ function addCustomer(props) {
 
   let TabPaneAry = [
     <TabPane className='tabsContent' tab="客户信息" key="1">
-      {isDetail||homePageIsDetail ? <CustomerDetails/> : <CustomerInformation/>}
+      <CustomerInformation/>
     </TabPane>,
   <TabPane tab="健康档案" key="2">
     <UserHealthInformation/>
