@@ -19,7 +19,7 @@ class addCustomer extends React.Component{
 
   render(){
 
-    const {editCustomer,addCustomerTab,isDetail,homePageIsDetail}= this.props.users;
+    const {editCustomer,isDetail}= this.props.users;
     const {addSuccess}= this.props.addCourse;
     const {saveDone} = this.props.healthInformation;
 
