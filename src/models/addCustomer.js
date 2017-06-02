@@ -500,7 +500,7 @@ export default {
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format(),
         "provincePermanent": values.provincePermanent.key,
-        "purchasePackage": '0',
+        "purchasePackage": values.purchasePackage ? values.purchasePackage :  '',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
@@ -580,11 +580,12 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
       if (code == 0) {
-
-        yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:data.provincePermanent}});
-        yield put({type:'setExpandData',payload:{ data }} );
-        yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
-        yield put({type:'getDlcData'} );
+        if (data){
+          yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:data.provincePermanent}});
+          yield put({type:'setExpandData',payload:{ data }} );
+          yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
+          yield put({type:'getDlcData'} );
+        }
       }
     },
 
