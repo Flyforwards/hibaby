@@ -2,7 +2,7 @@ import * as addCustomerInformation from '../services/addCustomerInformation';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js'
 import { routerRedux } from 'dva/router';
-
+import moment from 'moment'
 
 export default {
   namespace: 'addCustomer',
@@ -70,21 +70,11 @@ export default {
     pageStatus(state, { payload: todo }){
       return {...state,isDetail:todo.data};
     },
-
-    
-
-    addRemark(state, { payload: todo }){
-      const {remarkList} = state;
-
-      const date = new Date();
-
-      const dict = {remarkInfo:todo,createTime:date.toLocaleString(),operator:state.operator};
-
-      const tempDict = [...remarkList,dict];
-
-      return {...state,remarkList:tempDict,modal:false};
+    resetInput(state, { payload: todo }){
+      let exdata = state.expandData;
+      exdata[todo] = null
+      return {...state,expandData:exdata};
     },
-
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
 
@@ -262,23 +252,23 @@ export default {
 
     addMutDictData(state, { payload: todo }){
 
-      if(todo.id === 8){
+      if(todo.ab_name === 'YCC'){
 
         return {...state,fetusAry:todo.data};
       }
-      else if(todo.id === 2){
+      else if(todo.ab_name === 'KZLY'){
         return {...state,guestInformationSourceAry:todo.data};
       }
-      else if(todo.id === 3){
+      else if(todo.ab_name === 'FMYY'){
         return {...state,hospitalAry:todo.data};
       }
-      else if(todo.id === 4){
+      else if(todo.ab_name === 'GZD'){
         return {...state,concernsAry:todo.data};
       }
-      else if(todo.id === 6){
+      else if(todo.ab_name === 'WLSSC'){
         return {...state,networkSearchWordsAry:todo.data};
       }
-      else if(todo.id === 5){
+      else if(todo.ab_name === 'TCLX'){
         return {...state,intentionPackageAry:todo.data};
       }
 
@@ -365,9 +355,8 @@ export default {
 
     *getDataDict({ payload: value },{ call, put }){
       const parameter ={
-        id: value.id,
+        abName:value.ab_name,
         softDelete: 0,
-        type:value.type || 2,
       };
 
 
@@ -377,7 +366,7 @@ export default {
         yield put({
           type: 'addMutDictData',
           payload: {
-            id:value.id,
+            ab_name:value.ab_name,
             data:data,
           }
         });
@@ -454,7 +443,7 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'));
+          yield put(routerRedux.push('/crm/customer/customerDetails'))
 
         }
       }
@@ -521,20 +510,21 @@ export default {
 
       const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
       if (code == 0) {
-        if (remarkList.length > 0){
+        if (remarkList.length > 0) {
           yield put({
-            type:'savaRemark',
-            payload:{
-              id:values.id
+            type: 'savaRemark',
+            payload: {
+              id: values.id
             }
           });
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'));
+          yield put(routerRedux.push('/crm/customer/customerDetails'))
         }
       }
-      else {
+      else
+      {
         message(err);
       }
     },
@@ -556,7 +546,8 @@ export default {
       if(inputs.length > 0){
         const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
         if (code == 0) {
-
+          message.success('信息保存成功');
+          yield put(routerRedux.push('/crm/customer/customerDetails'))
         }
         else {
           message(err)
@@ -564,9 +555,8 @@ export default {
       }
       else {
         message.success('信息保存成功');
-        yield put(routerRedux.push('/crm/customer/customerDetails'));
+        yield put(routerRedux.push('/crm/customer/customerDetails'))
       }
-
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
       const state = yield select(state => state.addCustomer);
@@ -605,9 +595,19 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
       if (code == 0) {
-        yield put({type:'setRemarkData',payload:{
-          data
-        }} );
+        if (data){
+          const tempData = [];
+          for (let i = 0;i<data.length;i++){
+            let dict = data[i];
+            dict.createTime =  moment(dict.createTime ).format('YYYY-MM-DD')
+            tempData.push(dict)
+          }
+
+
+          yield put({type:'setRemarkData',payload:{
+            data:tempData
+          }} );
+        }
       }
     },
 
@@ -645,15 +645,13 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/crm/customer/Add/CustomerInformation') {
+        if (pathname === '/crm/customer/AddCustomerInformation') {
           dispatch({
             type: 'setAddCustomerTab',
             payload:{data:'1'}
           });
-          dispatch({
-            type: 'pageStatus',
-            payload:{data:false}
-          });
+
+          isDetail(dispatch)
           defDis(dispatch)
         };
         if (pathname === '/crm/customer/Add/HealthRecords') {
@@ -661,20 +659,17 @@ export default {
             type: 'setAddCustomerTab',
             payload:{data:'2'}
           });
-          dispatch({
-            type: 'pageStatus',
-            payload:{data:false}
-          });
+          isDetail(dispatch)
+
+
         };
         if (pathname === '/crm/customer/Add/Package') {
           dispatch({
             type: 'setAddCustomerTab',
             payload:{data:'3'}
           });
-          dispatch({
-            type: 'pageStatus',
-            payload:{data:false}
-          });
+          isDetail(dispatch)
+
         };
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
@@ -699,6 +694,13 @@ export default {
   },
 };
 
+function isDetail(dispatch) {
+  dispatch({
+    type: 'pageStatus',
+    payload:{data:false}
+  });
+}
+
 function defDis(dispatch) {
   dispatch({
     type: 'getProvinceData',
@@ -715,38 +717,37 @@ function defDis(dispatch) {
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 8,
-      'type':1,
+      "ab_name": 'YCC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 2,
+      "ab_name": 'KZLY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 3,
+      "ab_name": 'FMYY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 4,
+      "ab_name": 'GZD',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 5,
+      "ab_name": 'WLSSC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 6,
+      "ab_name": 'TCLX',
     }
   });
   dispatch({
