@@ -92,7 +92,6 @@ function cusComponent(dict) {
       break;
     case 'UploadButton':
     {
-      tempDiv =
         tempDiv =
           <FileUpload fun={dict.fun} deleteFun={dict.deleteFun}>
             <Button><Icon type="upload"/> 上传附件</Button>
@@ -101,7 +100,6 @@ function cusComponent(dict) {
       break;
     case 'headUpload':
     {
-      tempDiv =
         tempDiv =
           <FileUpload fun={dict.fun} isHead={true} >
             <div className="avatar-uploader">
@@ -144,8 +142,6 @@ function cusFromItem(form,dict) {
 
   const { getFieldDecorator } = form;
 
-
-
   function identityRule(rule, value, callback) {
     let tempVlue = ''
     if(rule.field === 'member'){
@@ -154,7 +150,6 @@ function cusFromItem(form,dict) {
     else{
       tempVlue = (form.getFieldValue('member'))
     }
-
 
     if (value || tempVlue) {
       callback();
@@ -384,6 +379,7 @@ function ExtensionInfo(props) {
 
   const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
     headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
+
   const {dispatch} = props;
 
   function memberOnChange(value) {
@@ -410,27 +406,32 @@ function ExtensionInfo(props) {
 
   function uploadHeadelImg(NewuserImg){
     dispatch({type:'addCustomer/addHeadIcon',payload:NewuserImg})
+    props.form.resetFields(['imgURL']);
     props.form.validateFields(['imgURL'], { force: true },tt);
 
   }
 
   function uploadIdcardFileProps(values) {
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
+    props.form.resetFields(['idcardScan']);
     props.form.validateFields(['idcardScan'], { force: true },tt);
   }
 
   function uploadContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/addContractDLC',payload:values})
+    props.form.resetFields(['contractAppendices']);
     props.form.validateFields(['contractAppendices'], { force: true },tt);
   }
 
   function deleteIdcardFileProps(values) {
-    dispatch({type:'addCustomer/deleteContractDLC',payload:values})
+    dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
+    props.form.resetFields(['idcardScan']);
     props.form.validateFields(['idcardScan'], { force: false },tt);
   }
 
   function deleteContractAppendicesFileProps(values) {
-    dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
+    dispatch({type:'addCustomer/deleteContractDLC',payload:values})
+    props.form.resetFields(['contractAppendices']);
     props.form.validateFields(['contractAppendices'], { force: false },tt);
   }
 

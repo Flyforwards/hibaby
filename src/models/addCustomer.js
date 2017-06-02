@@ -188,20 +188,17 @@ export default {
     deleteContractDLC(state, { payload: todo }){
       let arr = state.lookContractDLC;
       for(var i=0; i<arr.length; i++) {
-        if(arr[i] == todo) {
+        if(arr[i].name == todo.name) {
           arr.splice(i, 1);
           break;
         }
       }
-
-
       return {...state,lookContractDLC:arr};
     },
     deleteCardIDDLC(state, { payload: todo }){
-
       let arr = state.lookCardIDDLC;
       for(var i=0; i<arr.length; i++) {
-        if(arr[i] == todo) {
+        if(arr[i].name == todo.name) {
           arr.splice(i, 1);
           break;
         }
@@ -236,7 +233,7 @@ export default {
 
 
     addHeadIcon(state, { payload: todo }){
-      return {...state,headIcon:todo.name,headIconUrl:todo.url};
+      return {...state, headIcon:todo.name, headIconUrl:todo.url};
     },
 
     setMemberNumberValue(state, { payload: todo }){

@@ -3,58 +3,39 @@
  */
 
 export const DictionaryArray = {
-  // 权限字典
-  'ROLE': {
-    id: 2,
-    type: 1,
-    softDelete: 0
-  },
-  // (将不同类型按以上方式加入, 以大写命名)
-  'OTHER': {
-    id: 3,
-    type: 1,
-    softDelete: 0
-  },
-  // 会员身份
+  // 会员卡级别
   'MEMBER': {
-    id: 7,
-    type: 1,
+    ab_name: 'HYKJB',
     softDelete: 0
   },
-  // 胎数
+  // 孕产次
   'FETUS': {
-    id: 8,
-    type: 1,
+    ab_name: 'YCC',
     softDelete: 0
   },
   // 客资来源
   'ResourceCustomer': {
-    id: 2,
-    type: 2,
+    ab_name: 'KZLY',
     softDelete: 0
   },
   // 医院
   'Hospital': {
-    id: 3,
-    type: 2,
+    ab_name: 'FMYY',
     softDelete: 0
   },
   // 关注点
   'Focus': {
-    id: 4,
-    type: 2,
+    ab_name: 'GZD',
     softDelete: 0
   },
-  // 意向套餐
+  // 套餐类型
   'IntentionPackage': {
-    id: 5,
-    type: 2,
+    ab_name: 'TCLX',
     softDelete: 0
   },
   // 网络搜索词
   'WebSearchTerm': {
-    id: 6,
-    type: 2,
+    ab_name: 'WLSSC',
     softDelete: 0
   },
 }

@@ -3,7 +3,7 @@ class Current extends React.Component {
   render() {
     let range = this.props.range;
     return (range ?
-      <div style={{marginTop:'-42px'}}>
+      <div>
       <p> 第 {
         this.props.page
       }
