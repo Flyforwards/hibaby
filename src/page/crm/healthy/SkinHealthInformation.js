@@ -74,9 +74,11 @@ class SkinHealthInformation extends React.Component {
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : 101
+            customerId : props.customerId
           }
-        })
+        });
+
+
       }
     });
   }
@@ -338,7 +340,8 @@ function SkinHealthInformationFormTab({ dispatch }) {
 
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.customerId
   };
 }
 
