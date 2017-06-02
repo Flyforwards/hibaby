@@ -97,7 +97,7 @@ function ExtensionInfo(props) {
     {title:'保险情况',value:netData.insuranceSituation},
     {title:'联系人电话',value:netData.contact},
     {title:'会员身份',value:textforkey(memberAry, netData.member,'name')},
-    {title:'特殊身份',value:netData.specialIdentity},
+    {title:'特殊身份',value:textforkey(specialIdentityAry, netData.specialIdentity,'name')},
     {title:'宝宝生产日期',value:moment(netData.productionDate).format('YYYY-MM-DD')},
     {title:'合同编号',value:netData.contractNumber},
     {title:'关联客房',value:netData.associatedRooms},

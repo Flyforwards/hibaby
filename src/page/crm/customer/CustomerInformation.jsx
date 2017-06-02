@@ -387,14 +387,15 @@ function ExtensionInfo(props) {
   const {dispatch} = props;
 
   function memberOnChange(value) {
-      dispatch({type:'resetInput',payload:{specialIdentity:-10}})
     props.form.resetFields(['specialIdentity']);
+    dispatch({type:'addCustomer/resetInput',payload:'specialIdentity'})
+
   }
 
 
   function specialIdentityOnChange(value) {
-      dispatch({type:'resetInput',payload:{member:-10}})
     props.form.resetFields(['member']);
+    dispatch({type:'addCustomer/resetInput',payload:'member'})
 
   }
   function PermanentProvinceSelect(e) {
@@ -471,8 +472,8 @@ function ExtensionInfo(props) {
     {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
     {title:'保险情况',component:'Input',submitStr:'insuranceSituation'},
     {title:'联系人电话',component:'Input',submitStr:'contact'},
-    {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange},
-    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,noRequired:"1"},
+    {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,},
+    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
     {title:'合同编号',component:'Input',submitStr:'contractNumber'},
     {title:'关联客房',component:'Input',submitStr:'associatedRooms'},
