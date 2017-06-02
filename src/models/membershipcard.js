@@ -302,7 +302,7 @@ export default {
     },
 
     //查看退费记录
-    *getRefundRecord({ payload:values }, { call,put }){
+    *getRefundRecord({ payload:values }, { call, put, select }){
       const customerId = yield select(state=>state.addCustomer.dataDetailId)
       const value = { ...values,customerId}
       const { data: { code, data ,page,size,total} } = yield call(cardService.getRefund, value);

@@ -22,7 +22,6 @@ class userHealthInformation extends React.Component {
     super(props);
   }
   render() {
-    debugger;
     const isDetail = this.props.users.isDetail;
     const {saveDone,type} = this.props.healthInformation;
     const medicalHealthInformation = this.props.healthInformation.medicalHealthInformation;

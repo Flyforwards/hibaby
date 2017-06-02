@@ -5,7 +5,8 @@ import { Tabs,message} from 'antd';
 import CustomerInformation from './CustomerInformation';
 import UserHealthInformation from './userHealthInformation'
 import AddCourse from './AddCourse.jsx'
-import CustomerDetails from './customerDetails'
+import CustomerDetails from './customerDetails';
+import MembershipCard from '../membershipcard/membershipcardIndex'
 
 const TabPane = Tabs.TabPane;
 
@@ -35,9 +36,9 @@ class addCustomer extends React.Component{
         <AddCourse />
       </TabPane>];
 
-    if(editCustomer){
+    if(!editCustomer){
       TabPaneAry.push(<TabPane tab="会员卡" key="4">
-        Content of Tab Pane 4
+        <MembershipCard/>
       </TabPane>)
     }
     let defaultActiveKey = '1';

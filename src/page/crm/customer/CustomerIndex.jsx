@@ -228,7 +228,7 @@ class CustomerIndex extends React.Component {
         <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
               <Form>
-                  <Row style={{width:'1116px', height: '70px'}}>
+                  <Row style={{width:'1116px', height: '85px'}}>
                     <Col span={10} style={{float:'left'}}>
                       <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
                         {getFieldDecorator('sear', {rules: [{ required: false }],
@@ -253,7 +253,7 @@ class CustomerIndex extends React.Component {
                       </span>
                     </Col>
                   </Row>
-                <Row>
+                <Row style={{height: 58}}>
                   <Col span={4} style={{width:'140px'}}>
                     <FormItem {...formChooseOneLayout}  label="年龄" >
                       {getFieldDecorator('age1', {rules: [{ required: false }],
