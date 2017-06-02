@@ -54,10 +54,12 @@ class Suiteed extends Component {
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
+            const detail = !this.props.permissionAlias.contains('SUITE_DETAIL');
+            const del = !this.props.permissionAlias.contains('SUITE_DELETE');
             return (
                 <span>
-                  <Link to={{ pathname: '/crm/serviceinfo/viewSuite', query: { suite:record.id } }}>查看</Link>
-                  <a href="#" className="twoA" onClick={this.delete.bind(this,record)}>删除</a>
+                  <Link disabled={detail} to={{ pathname: '/crm/serviceinfo/viewSuite', query: { suite:record.id } }}>查看</Link>
+                  <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
                 </span>
             );
           },
@@ -109,9 +111,10 @@ class Suiteed extends Component {
             }))
           },
         }
+        const add = !this.props.permissionAlias.contains('SUITE_ADD');
         return (
             <div className="serviceinfo">
-                <div className="serviceinfoButton"><Link to="/crm/serviceinfo/addSuite"><Button type="primary">添加</Button></Link></div>
+                <div className="serviceinfoButton"><Link to="/crm/serviceinfo/addSuite"><Button disabled={add} type="primary">添加</Button></Link></div>
                 <div className="serviceinfoTabal">
                     <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ suiteListByPage } columns={ columns } />
                 </div>
@@ -130,10 +133,12 @@ function mapStateToProps(state) {
     suiteListByPage,
     pagination
   } = state.packageInfo;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     suiteListByPage,
-    pagination
+    pagination,
+    permissionAlias
     };
 }
 export default connect(mapStateToProps)(Suiteed)

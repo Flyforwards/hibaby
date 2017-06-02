@@ -4,20 +4,24 @@
 
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col,Popconfirm,Modal } from 'antd';
+import { Select, Button, Form, Input, Icon, Card, Radio, Row, Col, Popconfirm, DatePicker, Modal, InputNumber, Table } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 import { Link } from 'react-router';
+import CustomerByCard from './customerByCard';
 import './card.scss';
-import {routerRedux} from 'dva/router';
+const createForm = Form.create
+import { parse } from 'qs'
 
+@createForm()
 class CardDetail extends Component {
   constructor(props) {
     super(props)
     this.state={
       modalVisible:false,
     }
+
   }
 
   componentWillMount() {
@@ -28,8 +32,14 @@ class CardDetail extends Component {
       payload: { dataId }
     })
 
+    dispatch({
+      type: 'card/getCustomerPage',
+      payload: { member: dataId }
+    })
 
   }
+
+
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -90,11 +100,9 @@ class CardDetail extends Component {
       modalVisible:false,
     })
   }
-  onEdit() {
 
-  }
   render() {
-    const { cardKind, form, level,} = this.props;
+    const { cardKind, form, level,loading, userPagination, list} = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 8 },
@@ -108,6 +116,9 @@ class CardDetail extends Component {
       labelCol:{ span:5},
       wrapperCol:{ span:17 }
     }
+
+    const values = parse(location.search.substr(1))
+
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
@@ -196,11 +207,6 @@ class CardDetail extends Component {
                   )}
                 </FormItem>
               </Col>
-            </Row>
-            {/*
-              此处放列表组件
-            */}
-            <Row>
               <Col span = { 12}>
               </Col>
               <Col span = { 4}>
@@ -210,12 +216,12 @@ class CardDetail extends Component {
                   <Button className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
               </Col>
               <Col span = { 4 }>
-                <Link to={{ pathname: '/crm/cardEdit', query: { data:location.search.substr(1).split('=')[1] } }} ><Button type="primary" >编辑</Button></Link>
+                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button type="primary" >编辑</Button></Link>
               </Col>
             </Row>
           </Form>
         </Card>
-
+        <CustomerByCard {...{loading, userPagination, list}} />
         <Modal
           title="提示"
           wrapClassName="vertical-center-modal"
@@ -229,28 +235,22 @@ class CardDetail extends Component {
         >
           <p>是否确定删除此卡种?</p>
         </Modal>
-
-
       </div>
     )
   }
 }
 
-const CardForms = Form.create()(CardDetail);
 
 
-function CardDetailCom({ dispatch, cardKind, zheKou, level }) {
-  return (
-    <CardForms dispatch={dispatch} cardKind={cardKind} zheKou={zheKou} level={level}/>
-  )
-}
 function mapStateToProps(state) {
-  const { cardKind, level, zheKou, } = state.card;
+  const { cardKind, level, zheKou,userPagination,list } = state.card;
   return {
-    loading: state.loading.models.card,
+    loading: state.loading,
+    userPagination,
+    list,
     cardKind,
     level,
     zheKou,
   };
 }
-export default connect(mapStateToProps)(CardDetailCom)
+export default connect(mapStateToProps)(CardDetail)

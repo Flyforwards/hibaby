@@ -61,9 +61,10 @@ a[disabled] {
 }
 
 .ant-message-notice-content{
-  padding:10px 30px; 
+  padding:10px 30px;
   font-size:20px;
 }
-.anticon:before {
-  
+
+.ant-input[disabled] {
+  color: rgba(0, 0, 0, 0.68);
 }

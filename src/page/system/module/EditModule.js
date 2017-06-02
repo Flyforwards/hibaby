@@ -4,9 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon, Cascader} from 'antd'
 import './AddModule.scss'
-import {local, session} from 'common/util/storage.js'
-import SelectList from './EditFrom.jsx'
-import SelectMenu from './EditMenu.jsx'
+import { local, session } from 'common/util/storage.js'
 const createForm = Form.create
 const FormItem = Form.Item
 const Option = Select.Option;
@@ -79,6 +77,7 @@ class EditModule extends Component {
     const menuOption = menu.map((res,index)=>{
       return (<Option key={res.id}>{res.name}</Option>)
     });
+
     let item = record?record:{};
     const permission = item.permissionList || "";
     let permissions = []
@@ -93,6 +92,7 @@ class EditModule extends Component {
       <Modal
         visible = { visible }
         title = { modalTitle }
+        key = { visible }
         okText =  "保存"
         cancelText = "取消"
         onCancel = {this.handleCancel.bind(this)}
@@ -112,7 +112,7 @@ class EditModule extends Component {
                     )}
               </FormItem>
               <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                  {getFieldDecorator('parentId', {initialValue: item.parentId ==0?null:String(item.parentId) ,rules: [{required: false,onChange: this.handleSelectChange}],
+                  {getFieldDecorator('parentId', {initialValue: item.parentId ==0?null:String(item.parentId) ,rules: [{required: false}],
                   })(
                     <Select  placeholder="请选择">
                       {
@@ -122,7 +122,7 @@ class EditModule extends Component {
                   )}
               </FormItem>
               <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
-                  {getFieldDecorator('permissionId', {initialValue: permissions,rules: [{type: 'array',required: false,onChange: this.handleSelectChange}],
+                  {getFieldDecorator('permissionId', {initialValue: permissions,rules: [{type: 'array',required: false}],
                     })(
                       <Cascader
                         options={ permissionList }

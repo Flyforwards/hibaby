@@ -2,14 +2,16 @@ import * as addCustomerInformation from '../services/addCustomerInformation';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js'
 import { routerRedux } from 'dva/router';
-
+import moment from 'moment'
 
 export default {
   namespace: 'addCustomer',
   state: {
     dataDetailId:101,
+    isDetail:false,
+
     baseData:[],
-    expandData:[],
+    expandData:'',
     remarkData:[],
 
     bigImageHidden:false,
@@ -61,6 +63,14 @@ export default {
       width:'15%',
     }]},
   reducers: {
+    pageStatus(state, { payload: todo }){
+      return {...state,isDetail:todo.data};
+    },
+    resetInput(state, { payload: todo }){
+      let exdata = state.expandData;
+      exdata[todo] = null
+      return {...state,expandData:exdata};
+    },
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
 
@@ -117,9 +127,9 @@ export default {
       return {...state,lookContractDLC:ary};
     },
     reductionState(state, { payload: todo }){
-      return  {dataDetailId:101,
+      return {...state,
         baseData:[],
-        expandData:[],
+        expandData:'',
         remarkData:[],
 
         bigImageHidden:false,
@@ -174,20 +184,17 @@ export default {
     deleteContractDLC(state, { payload: todo }){
       let arr = state.lookContractDLC;
       for(var i=0; i<arr.length; i++) {
-        if(arr[i] == todo) {
+        if(arr[i].name == todo.name) {
           arr.splice(i, 1);
           break;
         }
       }
-
-
       return {...state,lookContractDLC:arr};
     },
     deleteCardIDDLC(state, { payload: todo }){
-
       let arr = state.lookCardIDDLC;
       for(var i=0; i<arr.length; i++) {
-        if(arr[i] == todo) {
+        if(arr[i].name == todo.name) {
           arr.splice(i, 1);
           break;
         }
@@ -222,7 +229,7 @@ export default {
 
 
     addHeadIcon(state, { payload: todo }){
-      return {...state,headIcon:todo.name,headIconUrl:todo.url};
+      return {...state, headIcon:todo.name, headIconUrl:todo.url};
     },
 
     setMemberNumberValue(state, { payload: todo }){
@@ -238,23 +245,23 @@ export default {
 
     addMutDictData(state, { payload: todo }){
 
-      if(todo.id === 8){
+      if(todo.ab_name === 'YCC'){
 
         return {...state,fetusAry:todo.data};
       }
-      else if(todo.id === 2){
+      else if(todo.ab_name === 'KZLY'){
         return {...state,guestInformationSourceAry:todo.data};
       }
-      else if(todo.id === 3){
+      else if(todo.ab_name === 'FMYY'){
         return {...state,hospitalAry:todo.data};
       }
-      else if(todo.id === 4){
+      else if(todo.ab_name === 'GZD'){
         return {...state,concernsAry:todo.data};
       }
-      else if(todo.id === 6){
+      else if(todo.ab_name === 'WLSSC'){
         return {...state,networkSearchWordsAry:todo.data};
       }
-      else if(todo.id === 5){
+      else if(todo.ab_name === 'TCLX'){
         return {...state,intentionPackageAry:todo.data};
       }
 
@@ -341,9 +348,8 @@ export default {
 
     *getDataDict({ payload: value },{ call, put }){
       const parameter ={
-        id: value.id,
+        abName:value.ab_name,
         softDelete: 0,
-        type:value.type || 2,
       };
 
 
@@ -353,7 +359,7 @@ export default {
         yield put({
           type: 'addMutDictData',
           payload: {
-            id:value.id,
+            ab_name:value.ab_name,
             data:data,
           }
         });
@@ -419,6 +425,7 @@ export default {
 
       const { data: { code, data,err } } = yield call((state.editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
       if (code == 0) {
+          yield put({type:"setDataDetailId",payload:{dataId:state.editCustomer ? state.baseData.id : data}})
         if (exDict){
           yield put({
             type:'savaExtensionInfo',
@@ -428,8 +435,9 @@ export default {
           });
         }
         else {
-          message.success("新增客户成功");
-          yield put(routerRedux.push('/crm/customer'));
+          message.success('信息保存成功');
+          yield put(routerRedux.push('/crm/customer/customerDetails'))
+
         }
       }
       else {
@@ -485,7 +493,7 @@ export default {
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format(),
         "provincePermanent": values.provincePermanent.key,
-        "purchasePackage": '0',
+        "purchasePackage": values.purchasePackage ? values.purchasePackage :  '',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
@@ -495,20 +503,21 @@ export default {
 
       const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
       if (code == 0) {
-        if (remarkList.length > 0){
+        if (remarkList.length > 0) {
           yield put({
-            type:'savaRemark',
-            payload:{
-              id:values.id
+            type: 'savaRemark',
+            payload: {
+              id: values.id
             }
           });
         }
         else {
-          message.success("新增客户成功");
-          yield put(routerRedux.push('/crm/customer'));
+          message.success('信息保存成功');
+          yield put(routerRedux.push('/crm/customer/customerDetails'))
         }
       }
-      else {
+      else
+      {
         message(err);
       }
     },
@@ -523,18 +532,23 @@ export default {
       for (let i = 0;i<remarkList.length;i++)
       {
         const remark = remarkList[i];
-
-        inputs.push({"customerId": values.id,"remarkInfo": remark.remarkInfo})
+        if (!remark.id){
+          inputs.push({"customerId": values.id,"remarkInfo": remark.remarkInfo})
+        }
       }
-
-      const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
-      if (code == 0) {
-        message.success("新增客户成功");
-        yield put(routerRedux.push('/crm/customer'));
-
+      if(inputs.length > 0){
+        const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
+        if (code == 0) {
+          message.success('信息保存成功');
+          yield put(routerRedux.push('/crm/customer/customerDetails'))
+        }
+        else {
+          message(err)
+        }
       }
       else {
-        message(err)
+        message.success('信息保存成功');
+        yield put(routerRedux.push('/crm/customer/customerDetails'))
       }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
@@ -559,11 +573,12 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
       if (code == 0) {
-
-        yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:data.provincePermanent}});
-        yield put({type:'setExpandData',payload:{ data }} );
-        yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
-        yield put({type:'getDlcData'} );
+        if (data){
+          yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:data.provincePermanent}});
+          yield put({type:'setExpandData',payload:{ data }} );
+          yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
+          yield put({type:'getDlcData'} );
+        }
       }
     },
 
@@ -574,10 +589,19 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
       if (code == 0) {
-        console.log(data);
-        yield put({type:'setRemarkData',payload:{
-          data
-        }} );
+        if (data){
+          const tempData = [];
+          for (let i = 0;i<data.length;i++){
+            let dict = data[i];
+            dict.createTime =  moment(dict.createTime ).format('YYYY-MM-DD')
+            tempData.push(dict)
+          }
+
+
+          yield put({type:'setRemarkData',payload:{
+            data:tempData
+          }} );
+        }
       }
     },
 
@@ -615,27 +639,31 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/crm/customer/Add') {
+        if (pathname === '/crm/customer/AddCustomerInformation') {
+          isDetail(dispatch)
           defDis(dispatch)
         };
+
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
-          dispatch({
-            type: 'getCustomerById',
 
-          });
           dispatch({
-            type: 'getCustomerExtendById',
+            type: 'pageStatus',
+            payload:{data:true}
+          });
 
-          });
-          dispatch({
-            type: 'getCustomerRemarkById',
-          });
         }
       })
     }
   },
 };
+
+function isDetail(dispatch) {
+  dispatch({
+    type: 'pageStatus',
+    payload:{data:false}
+  });
+}
 
 function defDis(dispatch) {
   dispatch({
@@ -653,38 +681,37 @@ function defDis(dispatch) {
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 8,
-      'type':1,
+      "ab_name": 'YCC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 2,
+      "ab_name": 'KZLY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 3,
+      "ab_name": 'FMYY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 4,
+      "ab_name": 'GZD',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 5,
+      "ab_name": 'WLSSC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "id": 6,
+      "ab_name": 'TCLX',
     }
   });
   dispatch({

@@ -100,6 +100,3 @@ export function signedActivityCustomer(values) {
 
 
 
-
-
-

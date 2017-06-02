@@ -1,30 +1,61 @@
 import React from 'react';
-import { Modal ,Carousel} from 'antd';
+import Lightbox from 'react-images';
 import './customerInformation.scss';
 
-export default function BigImageModal (props) {
-  const imageAry = [];
-  for (let i = 0;i<props.bigImageData.length;i++){
-    imageAry.push(<div key={i}  className="bigDiv"> <img src={props.bigImageData[i].url} alt="" /></div>)
+class BigImageModal extends React.Component {
+  constructor(props) {
+    super(props);
   }
 
-
-  function onChange() {
-
+  state = {
+    currentImage:0,
   }
 
-  return (
-      <Modal
-        visible={props.visible}
-        onCancel={props.handleCancel}
-        footer={null}
-        className="bigImageModal"
-      >
+  gotoPrevious () {
+    this.setState({
+      currentImage: this.state.currentImage - 1,
+    });
+  }
+  gotoNext () {
+    this.setState({
+      currentImage: this.state.currentImage + 1,
+    });
+  }
+  gotoImage (index) {
+    this.setState({
+      currentImage: index,
+    });
+  }
 
-        <Carousel afterChange={onChange}>
-          {imageAry}
-        </Carousel>
+  onClose(){
+    this.props.onClose();
+    this.setState({
+      currentImage: 0,
+    });
+  }
 
-      </Modal>
-  )
+  render() {
+    const imageAry = [];
+
+    for (let i = 0; i < this.props.images.length; i++) {
+      let dict = this.props.images[i];
+      imageAry.push({src: dict.url})
+    }
+    return (
+      <Lightbox
+        images={imageAry}
+        backdropClosesModal={true}
+        isOpen={this.props.isOpen}
+        onClose={this.onClose.bind(this)}
+        showThumbnails={imageAry.length>1}
+        currentImage={this.state.currentImage}
+        onClickThumbnail={this.gotoImage.bind(this)}
+        onClickPrev={this.gotoPrevious.bind(this)}
+        onClickNext={this.gotoNext.bind(this)}
+      />
+    )
+  }
+
 }
+
+export default BigImageModal

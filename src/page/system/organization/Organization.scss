@@ -211,10 +211,21 @@ overflow: hidden;
 			margin-left:5px;
 			color:#b87638;
 		}
+    a:hover{
+			margin-right:9px;
+			margin-left:5px;
+			color:#0066ff;
+		}
 		.twoA{
 			margin-right:9px;
 			margin-left:5px;
 			color:#666;
+		}
+    .twoB{
+			margin-right:9px;
+			margin-left:5px;
+			color:#b87638;
+			pointer-events: none;
 		}
 	}
 }
@@ -320,7 +331,7 @@ overflow: hidden;
     height: 16px;
     line-height: 16px;
     font-weight: 900;
-    left:116px;
+    //left:116px;
     top:3px;
 }
 .Organization-left .ant-tree li ul li a:hover {
@@ -386,6 +397,11 @@ overflow: hidden;
 		font-size:12px;
 		line-height: 30px;
 	}
+
 }
 }
+}
+
+.ant-tree li .ant-tree-node-content-wrapper{
+  position: relative;
 }

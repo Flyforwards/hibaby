@@ -72,19 +72,19 @@ function cusComponent(dict) {
     case 'Select':
       if (dict.fun)
       {
-        tempDiv = (<Select  labelInValue={true} onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
+        tempDiv = (<Select labelInValue={true}  onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
       }
       else {
-        tempDiv = (<Select labelInValue={true} placeholder='请选择'>{dict.children}</Select>);
+        tempDiv = (<Select labelInValue={true}  placeholder='请选择'>{dict.children}</Select>);
       }
       break;
     case 'DatePicker':
       if (dict.fun)
       {
-        tempDiv = (<DatePicker onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
+        tempDiv = (<DatePicker style={{width: '100%' }} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
       }
       else {
-        tempDiv = (<DatePicker placeholder='请选择'>{dict.children}</DatePicker>);
+        tempDiv = (<DatePicker style={{width: '100%' }} placeholder='请选择'>{dict.children}</DatePicker>);
       }
       break;
     case 'InputNumber':
@@ -92,7 +92,6 @@ function cusComponent(dict) {
       break;
     case 'UploadButton':
     {
-      tempDiv =
         tempDiv =
           <FileUpload fun={dict.fun} deleteFun={dict.deleteFun}>
             <Button><Icon type="upload"/> 上传附件</Button>
@@ -101,7 +100,6 @@ function cusComponent(dict) {
       break;
     case 'headUpload':
     {
-      tempDiv =
         tempDiv =
           <FileUpload fun={dict.fun} isHead={true} >
             <div className="avatar-uploader">
@@ -129,8 +127,38 @@ const formItemLayout = {
   wrapperCol: { span: 17 },
 };
 
-function cusFromItem(getFieldDecorator,dict) {
-  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title}!`}],};
+const NoTitleformItemLayout = {labelCol: { span: 0 },wrapperCol: { span: 24 }}
+
+
+function cusFromItem(form,dict) {
+
+  function fileRule(rule, value, callback) {
+    if (value.length > 0) {
+      callback();
+      return;
+    }
+    callback('请上传文件');
+  }
+
+  const { getFieldDecorator } = form;
+
+  function identityRule(rule, value, callback) {
+    let tempVlue = ''
+    if(rule.field === 'member'){
+      tempVlue = (form.getFieldValue('specialIdentity'))
+    }
+    else{
+      tempVlue = (form.getFieldValue('member'))
+    }
+
+    if (value || tempVlue) {
+      callback();
+      return;
+    }
+    callback('请输入会员身份或特殊身份');
+  }
+
+  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || dict.submitStr}!`}],};
 
   if (dict.submitStr === 'contact')
   {
@@ -142,12 +170,30 @@ function cusFromItem(getFieldDecorator,dict) {
     rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
   }
 
+  if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices' || dict.submitStr === 'imgURL')
+  {
+    rules = {rules: [{validator:fileRule}]};
+  }
+
+  if (dict.submitStr === 'member' || dict.submitStr === 'specialIdentity')
+  {
+    rules = {rules: [{validator:identityRule}]};
+  }
+
+
   return(
-    <FormItem {...formItemLayout} label={dict.title}>
-      {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
-        cusComponent(dict)
-      )}
-    </FormItem>
+    dict.title ?
+      <FormItem  {...formItemLayout} label={dict.title}>
+        {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
+          cusComponent(dict)
+        )}
+      </FormItem>
+      :
+      <FormItem formItemLayout={NoTitleformItemLayout} label={dict.title}>
+        {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
+          cusComponent(dict)
+        )}
+      </FormItem>
   )
 }
 
@@ -166,17 +212,17 @@ function datacompare(dataArray,compareArray,selectArray) {
       if (array)
       {
         for(let i = 0;i<array.length;i++){
-        const subDict = array[i];
-        if (subDict.id == id){
-          let str =  subDict.name || subDict.description || subDict.nation;
-          dict.initValue = {key: id, label: str}
-          break;
+          const subDict = array[i];
+          if (subDict.id == id){
+            let str =  subDict.name || subDict.description || subDict.nation;
+            dict.initValue = {key: id, label: str}
+            break;
+          }
         }
-      }
       }
     }
     else {
-      if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices')
+      if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices' || dict.submitStr === 'imgURL')
       {}
       else {
         dict.initValue = compareArray[dict.submitStr];
@@ -190,8 +236,6 @@ function BaseInfo(props) {
   const {operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
     provinceData,cityData} = props.users;
   const {dispatch} = props;
-
-  const { getFieldDecorator } = props.form;
 
 
   const guestInformationSource = [];
@@ -259,7 +303,7 @@ function BaseInfo(props) {
     {title:'网络搜索词',component:'Select',submitStr:'webSearchTerm',children:networkSearchWords},
     {title:'现住址',component:'Select',submitStr:'province',fun:provinceSelect,children:provinceDataChis,span:6},
     {component:'Select',submitStr:'city',children:cityDataChis,span:8},
-    {component:'Input',submitStr:'detailed',span:16},
+    {component:'Input',submitStr:'detailed',span:15,offset:1},
     {title:'操作者1',component:'Input',submitStr:'operator',disabled:true,initValue:operator,span:6},
   ];
 
@@ -279,7 +323,7 @@ function BaseInfo(props) {
 
     baseInfoDiv.push(
       <Col span={6} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+        {cusFromItem(props.form,dict)}
       </Col>
     );
   }
@@ -289,8 +333,8 @@ function BaseInfo(props) {
   for (let i = baseInfo.length - 4; i < baseInfo.length; i++) {
     let dict = baseInfo[i];
     addressDiv.push(
-      <Col span={dict.span} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+      <Col span={dict.span} offset={dict.offset} key={i}>
+        {cusFromItem(props.form,dict)}
       </Col>
     )
   }
@@ -319,10 +363,8 @@ function BaseInfo(props) {
         <Row>
           {addressDiv[0]}
           <Col offset={1} span={11}>
-            <Row gutter={15}>
-              {addressDiv[1]}
-              {addressDiv[2]}
-            </Row>
+            {addressDiv[1]}
+            {addressDiv[2]}
           </Col>
           {addressDiv[3]}
         </Row>
@@ -335,49 +377,65 @@ function BaseInfo(props) {
 
 function ExtensionInfo(props) {
 
+  const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
+    headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
+
+  const {dispatch} = props;
 
   function memberOnChange(value) {
     props.form.resetFields(['specialIdentity']);
+    if (props.users.expandData){
+      dispatch({type:'addCustomer/resetInput',payload:'specialIdentity'})
+    }
   }
 
 
   function specialIdentityOnChange(value) {
-
     props.form.resetFields(['member']);
-
+    if (props.users.expandData) {
+      dispatch({type: 'addCustomer/resetInput', payload: 'member'})
+    }
   }
   function PermanentProvinceSelect(e) {
     dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:true,dataId:e.key}})
   }
 
+  function tt(err, values) {
+    console.log(err,values)
+  }
 
   function uploadHeadelImg(NewuserImg){
     dispatch({type:'addCustomer/addHeadIcon',payload:NewuserImg})
+    props.form.resetFields(['imgURL']);
+    props.form.validateFields(['imgURL'], { force: true },tt);
+
   }
 
   function uploadIdcardFileProps(values) {
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
+    props.form.resetFields(['idcardScan']);
+    props.form.validateFields(['idcardScan'], { force: true },tt);
   }
 
   function uploadContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/addContractDLC',payload:values})
+    props.form.resetFields(['contractAppendices']);
+    props.form.validateFields(['contractAppendices'], { force: true },tt);
   }
 
   function deleteIdcardFileProps(values) {
-    dispatch({type:'addCustomer/deleteContractDLC',payload:values})
+    dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
+    props.form.resetFields(['idcardScan']);
+    props.form.validateFields(['idcardScan'], { force: false },tt);
   }
 
   function deleteContractAppendicesFileProps(values) {
-    dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
+    dispatch({type:'addCustomer/deleteContractDLC',payload:values})
+    props.form.resetFields(['contractAppendices']);
+    props.form.validateFields(['contractAppendices'], { force: false },tt);
   }
 
-  const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
-    headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
-  const {dispatch} = props;
 
-
-
-  const { getFieldDecorator } = props.form;
 
   const memberChis = [];
 
@@ -417,8 +475,8 @@ function ExtensionInfo(props) {
     {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
     {title:'保险情况',component:'Input',submitStr:'insuranceSituation'},
     {title:'联系人电话',component:'Input',submitStr:'contact'},
-    {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange},
-    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,noRequired:"1"},
+    {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,},
+    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
     {title:'合同编号',component:'Input',submitStr:'contractNumber'},
     {title:'关联客房',component:'Input',submitStr:'associatedRooms'},
@@ -428,7 +486,7 @@ function ExtensionInfo(props) {
     {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},
     {title:'户籍地址',component:'Select',submitStr:'provincePermanent',fun:PermanentProvinceSelect,children:provinceDataChis,span:6},
     {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
-    {component:'Input',submitStr:'detailedPermanent',span:18},
+    {component:'Input',submitStr:'detailedPermanent',span:17,offset:1},
     {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl},
   ];
 
@@ -445,7 +503,7 @@ function ExtensionInfo(props) {
     let dict = expandInfo[i];
     expandInfoDiv.push(
       <Col span={8} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+        {cusFromItem(props.form,dict)}
       </Col>
     );
   }
@@ -456,8 +514,8 @@ function ExtensionInfo(props) {
     let dict = expandInfo[i];
 
     addressDiv.push(
-      <Col span={dict.span} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+      <Col span={dict.span} offset={dict.offset} key={i}>
+        {cusFromItem(props.form,dict)}
       </Col>
     );
   }
@@ -508,6 +566,7 @@ function Remark(props) {
 
   function handleOk(e)  {
     dispatch({type:'addCustomer/addRemark',payload:(props.form.getFieldValue('tempRemark'))})
+    props.form.resetFields(['tempRemark']);
   }
 
   function handleCancel()  {
@@ -562,6 +621,7 @@ class customerInformation extends React.Component{
     if (num > 4)
     {
       this.refs.extensionForm.validateFieldsAndScroll((err, values) => {
+
         if (!err) {
           this.baseFormRule(values);
         }
@@ -585,9 +645,6 @@ class customerInformation extends React.Component{
     });
   }
 
-  componentWillUnmount(){
-    this.props.dispatch({type:'addCustomer/reductionState'})
-  }
 
   render() {
 
@@ -615,4 +672,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(customerInformation) ;
+
 

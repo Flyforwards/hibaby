@@ -25,46 +25,67 @@ class ActivityIndex extends React.Component {
     this.columns = [{
       title: '编号',
       dataIndex: 'id',
-      key: 'id'
+      key: 'id',
+      width: '5%'
     },{
       title: '活动名称',
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
+      width: '15%'
     }, {
       title: '活动内容',
       dataIndex: 'content',
-      key: 'content'
+      key: 'content',
+      width: '40%'
     }, {
       title: '活动地点',
       dataIndex: 'address',
-      key: 'address'
-
+      key: 'address',
+      width: '10%'
     }, {
       title: '活动时间',
       dataIndex: 'activityTime',
+      width: '10%',
       render: (record) => {
         return moment(record).format("YYYY-MM-DD HH:mm:ss")
       }
     },{
       title: '签到/人数',
+      width: '5%',
       render: (record) => {
         return String(record.signeds)+'/'+String(record.appointments);
       },
     },{
       title: '成单率',
       dataIndex: 'orders',
-      key: 'orders'
+      key: 'orders',
+      width: '5%'
     }, {
       title: '操作',
       dataIndex: 'operation',
+      width: '10%',
       render: (text, record, index) => {
-        return (
-          <div key = { index }>
-            <Link onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
-            <Link onClick={ this.appointment.bind(this,record) }> 预约 </Link>
-            <Link onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
-          </div>
-        )
+        const detail = !this.props.permissionAlias.contains('ACTIVITY_DETAIL');
+        const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
+        const appoint = !this.props.permissionAlias.contains('ACTIVITY_APPOINT');
+        const timestamp = new Date().getTime()
+        // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况服务删除活动
+        if (record.activityTime < timestamp || record.appointments > 0 ) {
+          return (
+            <div key = { index }>
+              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+            </div>
+          )
+        } else {
+          return (
+            <div key = { index }>
+              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+              <Link disabled={del} className="firstB" onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
+            </div>
+          )
+        }
       },
     }];
   }
@@ -148,11 +169,12 @@ class ActivityIndex extends React.Component {
         }))
       },
     }
+    const add = !this.props.permissionAlias.contains('ACTIVITY_ADD');
     return (
       <div className = "activity-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/activity/add'>
-            <Button className="button-add"> 添加 </Button>
+            <Button disabled={add} className="button-add"> 添加 </Button>
           </Link >
         </div>
         <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
@@ -170,11 +192,12 @@ function mapStateToProps(state) {
     list,
     pagination
   } = state.activity;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
+    permissionAlias
   };
 }
 

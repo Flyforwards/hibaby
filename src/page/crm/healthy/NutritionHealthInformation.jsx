@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
+import { Button, Col, Form, Input, Row, Radio, Select } from 'antd';
+import "./NutritionHealth.scss"
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
@@ -8,9 +9,10 @@ const Option = Select.Option;
  * 客户信息》健康档案》营养部健康档案
  */
 function NutritionHealthInformation(props) {
+  const type = 2;//营养部健康档案
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 18 }
+    wrapperCol: { span: 16 }
   }
 
   //单选框的名字
@@ -118,10 +120,10 @@ function NutritionHealthInformation(props) {
 
     return (
       <Row  className="firstItem" key={key}>
-        <Col  span="10" style={{height: '110px',display: 'table'}}>
+        <Col  span="10" style={{height: '110px',display: 'table' ,width:'50%'}}>
             {myRadioForm(radioName ,dict)}
         </Col>
-        <Col span="10"  style={{height: '110px',display: 'table'}}>
+        <Col span="10"  style={{height: '110px',display: 'table',width:'50%'}}>
             <FormItem
               {...formItemLayout}
               label={inputTitle}>
@@ -186,10 +188,19 @@ function NutritionHealthInformation(props) {
 
   //提交表单
   function handleSubmit (e) {
-    e.preventDefault();
+    console.log("您点击了保存按钮");
+    const {dispatch} = props;
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const healthInfo = JSON.stringify(values);
+        dispatch({
+          type: 'healthInformation/saveHealthInformation',
+          payload: {
+            healthInfo : healthInfo,
+            type : type,
+            customerId : props.customerId
+          }
+        })
       }
     });
   }
@@ -199,19 +210,19 @@ function NutritionHealthInformation(props) {
     <div className="healthContentDiv">
       <Form>
         <Row className="firstItem" key="1">
-          <Col span="10"  style={{height: '55px',display: 'table'}}>
+          <Col className="ItemLeft" span="10"  style={{height: '55px',display: 'table',width:'50%'}}>
             {myInput('身高',inputNames[1],'cm',true,'请输入身高',false)}
           </Col>
-          <Col span="10" style={{height: '55px',display: 'table'}}>
+          <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
             {myInput('孕前体重',inputNames[2],'kg',true,'请输入孕前体重',false)}
           </Col>
         </Row>
 
         <Row className="firstItem" key="2">
-          <Col span="10" style={{height: '55px',display: 'table'}}>
+          <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('现体重',inputNames[3],'kg',true,'请输入现体重',false)}
           </Col>
-          <Col span="10" style={{height: '55px',display: 'table'}}>
+          <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('宗教信仰',inputNames[4],'',true,'请输入宗教信仰',false)}
           </Col>
         </Row>
@@ -262,4 +273,11 @@ function NutritionHealthInformation(props) {
 
 }
 const NutritionHealthInformationForm = Form.create()(NutritionHealthInformation);
-export default connect()(NutritionHealthInformationForm) ;
+function mapStateToProps(state) {
+  return {
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.customerId
+
+  };
+}
+export default connect(mapStateToProps)(NutritionHealthInformationForm) ;

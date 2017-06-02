@@ -90,7 +90,7 @@ class editGroupData extends React.Component {
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'save/editData',
-            payload: { id: this.editItem.id, name: values.name, type: 1, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds  }
+            payload: { id: this.editItem.id, name: values.name, type: 1, abName:values.abName, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds  }
           })
         }
       })
@@ -114,10 +114,12 @@ class editGroupData extends React.Component {
       let name="";
       let description="";
       let arr = [];
+      let abName =''
       let initKeys  = [];
       if( this.editItem !== null ){
         arr = this.editItem.dictionarySideDOs;
         name = this.editItem.name;
+        abName = this.editItem.abName;
         description = this.editItem.description;
         initKeys = rangeArray(1,arr.length)
       }
@@ -163,14 +165,22 @@ class editGroupData extends React.Component {
                 })(  <Input disabled={true} className="input" placeholder="input placeholder" />
                   )}
                 </FormItem>
-                  <FormItem {...formItemLayout} className = "div parentCen" label="字段描述">
-                  {getFieldDecorator('description', {
-                    initialValue:`${description}`,
+                <FormItem {...formItemLayout} className = "div parentCen" label="字段描述">
+                {getFieldDecorator('description', {
+                  initialValue:`${description}`,
+                  rules: [{ required: true, message: '字段描述为必填项！' }],
+              })(
+                    <Input disabled={true} className="input" />
+                )}
+                </FormItem>
+                <FormItem {...formItemLayout} className = "div parentCen" label="别名">
+                  {getFieldDecorator('abName', {
+                    initialValue:`${abName}`,
                     rules: [{ required: true, message: '字段描述为必填项！' }],
-                })(
-                      <Input disabled={true} className="input" />
+                  })(
+                    <Input disabled={true} className="input" />
                   )}
-                  </FormItem>
+                </FormItem>
               </Form>
           </Card>
           <Card title = "下拉选项:">

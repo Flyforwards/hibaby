@@ -4,17 +4,23 @@ import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
-import {keyToText} from '../../../utils'
 
 
 import {Icon,Table, Modal,Row, Col,Button} from 'antd';
 const confirm = Modal.confirm;
 
 function rowDiv(dict) {
+  let titSpan = 7;
+  let contentSpan = 17;
+  if (dict.title === '现住址' || dict.title === '户籍地址'){
+    titSpan = 2;
+    contentSpan = 22
+  }
+
   return(
     <Row className='rowHeight'>
-      <Col className='leftTitle' span={7}>{`${dict.title}：`}</Col>
-      <Col span={17}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid} type="primary">查看附件</Button>  :dict.value }</Col>
+      <Col className='leftTitle' span={titSpan}>{`${dict.title}：`}</Col>
+      <Col span={contentSpan}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid||dict.onClick.onClickForContractAppendices} type="primary">查看附件</Button>  :dict.value }</Col>
     </Row>
   )
 }
@@ -91,7 +97,7 @@ function ExtensionInfo(props) {
     {title:'保险情况',value:netData.insuranceSituation},
     {title:'联系人电话',value:netData.contact},
     {title:'会员身份',value:textforkey(memberAry, netData.member,'name')},
-    {title:'特殊身份',value:netData.specialIdentity},
+    {title:'特殊身份',value:textforkey(specialIdentityAry, netData.specialIdentity,'name')},
     {title:'宝宝生产日期',value:moment(netData.productionDate).format('YYYY-MM-DD')},
     {title:'合同编号',value:netData.contractNumber},
     {title:'关联客房',value:netData.associatedRooms},
@@ -148,7 +154,8 @@ function ExtensionInfo(props) {
           </Row>
 
           <Row>
-            <p>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')} ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</p>
+            <p>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')}
+            ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</p>
           </Row>
         </div>
   )
@@ -210,23 +217,35 @@ class customerDetails extends React.Component{
       type: 'addCustomer/editCustomerAct',
       payload: { data:true}
     })
-    this.dispatch(routerRedux.push("/crm/customer/Add"))
+    this.dispatch(routerRedux.push('/crm/customer/AddCustomerInformation'))
   }
 
-  componentWillUnmount(){
-
-    if(!this.editCustomer){
-      this.props.dispatch({type:'addCustomer/reductionState'})
-    }
+  componentDidMount(){
+    this.dispatch({type: 'addCustomer/getCustomerById'});
+    this.dispatch({type: 'addCustomer/getCustomerExtendById'});
+    this.dispatch({type: 'addCustomer/getCustomerRemarkById'});
   }
 
   render(){
+    const ary = [];
+    if ( this.props.users.expandData){
+
+      ary.push(<ExtensionInfo  {...this.props}/>)
+    }
+    if (this.props.users.remarkData.length > 0){
+      ary.push(<Remark  {...this.props}/>)
+    }
+
     return (
       <div className="customerContent">
         <BaseInfo  {...this.props}/>
-        <ExtensionInfo {...this.props}/>
-        <Remark  {...this.props}/>
-        <BigImageModal handleCancel={this.handleCancel} bigImageData={this.props.users.bigImageData} visible={this.props.users.bigImageHidden}/>
+        {ary}
+        <BigImageModal
+          images={this.props.users.bigImageData}
+          isOpen={this.props.users.bigImageHidden}
+          onClose={this.handleCancel.bind(this)}
+        />
+
         <div className='savaDiv'>
           <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
           <Button className='backBtn' type="danger" onClick={this.onDelete.bind(this)}>删除</Button>

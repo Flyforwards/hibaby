@@ -9,6 +9,7 @@ import { connect } from 'dva';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
+const type = 1;//医疗健康档案
 /**
  * 客户信息》健康档案》医疗健康档案
  */
@@ -260,10 +261,19 @@ function Healthyhome(props) {
 
   //提交表单
   function handleSubmit (e) {
-    e.preventDefault();
+    console.log("您点击了保存按钮");
+    const {dispatch} = props;
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const healthInfo = JSON.stringify(values);
+        dispatch({
+          type: 'healthInformation/saveHealthInformation',
+          payload: {
+            healthInfo : healthInfo,
+            type : type,
+            customerId : props.customerId
+          }
+        })
       }
     });
   }
@@ -564,7 +574,7 @@ function Healthyhome(props) {
 
       <div className='bottomButton'>
         <Button className='commitButton'>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
+        <Button className='commitButton' type="primary" onClick={handleSubmit.bind()}>保存</Button>
       </div>
 
     </div>
@@ -572,4 +582,20 @@ function Healthyhome(props) {
 }
 
 const HealthyhomeFrom = Form.create()(Healthyhome);
-export default connect()(HealthyhomeFrom) ;
+
+function HealthyhomeFromTab({ dispatch }) {
+  return (
+    <HealthyhomeFrom dispatch={dispatch} />
+  )
+}
+
+
+function mapStateToProps(state) {
+  return {
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.customerId
+  };
+}
+
+
+export default connect(mapStateToProps)(HealthyhomeFromTab)

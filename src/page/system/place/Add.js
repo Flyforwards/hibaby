@@ -3,7 +3,6 @@ import {connect} from 'dva';
 import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
 import {Link} from 'react-router';
-import {routerReducer} from 'react-router-redux'
 const FormItem = Form.Item;
 const createForm = Form.create
 @createForm()
@@ -61,7 +60,7 @@ class PlaceAdd extends React.Component {
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'localData/AddPlaceData',
-            payload: { name: values.name, type: 2, description: values.description, dictionarySideDOs: names }
+            payload: { name: values.name, type: 2, abName:values.abName, description: values.description, dictionarySideDOs: names }
           })
         }
       })
@@ -109,6 +108,14 @@ class PlaceAdd extends React.Component {
                 {getFieldDecorator('description', {rules: [{ required: true, message: '字段描述为必填项！' }],
                 })(<div>
                     <p className = "label"> 字段描述 </p>
+                    <Input className="input"/>
+                  </div>
+                )}
+              </FormItem>
+              <FormItem className = "div">
+                {getFieldDecorator('abName', {rules: [{ required: true, message: '别名为必填项！' }],
+                })(<div>
+                    <p className = "label"> 别名 </p>
                     <Input className="input"/>
                   </div>
                 )}

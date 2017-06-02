@@ -2,11 +2,13 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Modal,Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col } from 'antd'
+import { Modal,Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col,InputNumber } from 'antd'
+import DictionarySelect from 'common/dictionary_select';
 import PropTypes from 'prop-types'
 import './activityIndex.scss'
 const FormItem = Form.Item;
 const createForm = Form.create
+const { MonthPicker } = DatePicker
 const Option = Select.Option;
 
 
@@ -90,35 +92,18 @@ class AppointmentMemberFrom extends Component {
     })
   }
 
+  onSearch(){
 
+  }
+  reset(){ }
 
   render() {
-    let { dispatch,visible, userList, loading, noAppointmentPagination,selectRecord,from } = this.props
-    const { getFieldDecorator } = this.props.form;
+    let { dispatch,visible, userList, loading, noAppointmentPagination,selectRecord, form, shipCards } = this.props
+    const { getFieldDecorator } = form;
 
-    const options = [{
-      value: 'zhejiang',
-      label: 'Zhejiang',
-      children: [{
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [{
-          value: 'xihu',
-          label: 'West Lake',
-        }],
-      }],
-    }, {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [{
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [{
-          value: 'zhonghuamen',
-          label: 'Zhong Hua Men',
-        }],
-      }],
-    }];
+    const options = shipCards.map((record)=>{
+      return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+    });
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -151,6 +136,14 @@ class AppointmentMemberFrom extends Component {
         })
       },
     }
+    const formChooseLayout = {
+      labelCol:{ span: 10 },
+      wrapperCol:{ span: 14 }
+    }
+    const formChooseOneLayout = {
+      labelCol:{ span: 8 },
+      wrapperCol:{ span: 10 }
+    }
 
     return (
       <Modal
@@ -163,65 +156,82 @@ class AppointmentMemberFrom extends Component {
         width ={ 1000 }
       >
         <div className="activity-cent">
-          <div>
-            <Row>
-              <Col span={5}><span>客户名称</span>
-              </Col>
-              <Col span={14}><span><Input /></span>
-              </Col>
-              <Col span={5}><span><Button>搜索</Button></span>
-              </Col>
-            </Row>
-          </div>
           <Form>
+            <div>
+              <Row style={{width:'1116px'}}>
+                <Col span={10} style={{float:'left'}}>
+                  <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
+                    {getFieldDecorator('sear', {rules: [{ required: false }],
+                    })(
+                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
+                  </span>
+                </Col>
+                <Col span={4} style={{ float:'left'}}>
+                  <span>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                  </span>
+                </Col>
+              </Row>
+            </div>
             <Row>
-              <Col span={8}>
-                <FormItem {...formItemLayout}  label="生日" >
-                  {getFieldDecorator('birthday', {rules: [{ required: false }],
+              <Col span={4} style={{width:'140px'}}>
+                <FormItem {...formChooseOneLayout}  label="年龄" >
+                  {getFieldDecorator('age1', {rules: [{ required: false }],
                   })(
-                    <DatePicker format="YYYY-MM-DD" />
+                    <InputNumber style={{width: "80px"}} min={1} max={100}  />
                   )}
                 </FormItem>
               </Col>
-              <Col span={8}>
-                <FormItem  {...formItemLayout} label="生产医院" >
-                  {getFieldDecorator('hospital', {rules: [{ required: false }],
+              <Col span={3}  style={{width:'140px'}}>
+                <FormItem {...formChooseLayout} style={{width:'100%'}}>
+                  {getFieldDecorator('age2', {rules: [{ required: false }],
                   })(
-                    <Select >
-                      <Option value="beijing">北京医院</Option>
-                      <Option value="beijing">协和医院</Option>
-                      <Option value="beijing">人民医院</Option>
+                    <InputNumber min={1} max={100} style={{width: "80px"}} />
+                  )}
+                </FormItem>
+
+              </Col>
+              <Col span={4} style={{width:'251px'}}>
+                <FormItem {...formChooseOneLayout}  label="预产期" >
+                  {getFieldDecorator('time', {rules: [{ required: false }],
+                  })(
+                    <MonthPicker
+                      placeholder="请选择"
+                    />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={4} style={{width:'251px'}}>
+                <FormItem  {...formChooseOneLayout} label="第几胎" >
+                  {getFieldDecorator('fetus', {rules: [{ required: false }],
+                  })(
+                    <DictionarySelect  placeholder="请选择" selectName="FETUS" />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={4} style={{width:'251px'}} >
+                <FormItem  {...formChooseOneLayout} label="会员身份" >
+                  {getFieldDecorator('member', {rules: [{ required: false }],
+                  })(
+                    <Select   placeholder="请选择" >
+                      {
+                        options
+                      }
                     </Select>
                   )}
                 </FormItem>
               </Col>
-              <Col span={8}>
-                <FormItem   {...formItemLayout} label="预产期" >
-                  {getFieldDecorator('time', {rules: [{ required: false, }],
+              <Col span={4} style={{width:'180px'}}>
+                <FormItem  {...formChooseOneLayout} label="操作者2" >
+                  {getFieldDecorator('operator2', {rules: [{ required: false }],
                   })(
-                    <DatePicker />
-                  )}
-                </FormItem>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={8}>
-                <FormItem  {...formItemLayout} label="客户身份" >
-                  {getFieldDecorator('customer', {rules: [{ required: false }],
-                  })(
-                    <Select >
-                      <Option value="v1">vip1</Option>
-                      <Option value="v2">vip2</Option>
-                      <Option value="v3">vip3</Option>
-                    </Select>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={8}>
-                <FormItem  {...formItemLayout} label="现住址" >
-                  {getFieldDecorator('address', {rules: [{ required: false }],
-                  })(
-                    <Cascader options={ options }/>
+                    <Input max={40}  />
                   )}
                 </FormItem>
               </Col>
@@ -254,13 +264,15 @@ AppointmentMemberFrom.propTypes = {
 function mapStateToProps(state) {
   const {
     userList,
-    noAppointmentPagination
+    noAppointmentPagination,
+    shipCards
   } = state.activity;
 
   return {
     loading: state.loading,
     userList,
-    noAppointmentPagination
+    noAppointmentPagination,
+    shipCards
   };
 }
 
