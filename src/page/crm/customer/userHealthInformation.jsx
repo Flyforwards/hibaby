@@ -29,10 +29,13 @@ class userHealthInformation extends React.Component {
     const nutritionHealthInformation = this.props.healthInformation.nutritionHealthInformation;
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
 
-    const HospitalHealthyDiv = isDetail&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
-    const NutritionHealthInformationDiv = isDetail&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
-    const SkinHealthInformationDiv = isDetail&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
-    const defaultActiveKey = type;
+    const HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
+    const NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
+    const SkinHealthInformationDiv = (saveDone || isDetail)&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
+    let defaultActiveKey = '1';
+    if(type){
+      defaultActiveKey = type||'';
+    }
     return (
       <div className = "user-health-cent">
         <Tabs className="tabsContent" defaultActiveKey={defaultActiveKey} type="card">

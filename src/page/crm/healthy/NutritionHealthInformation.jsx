@@ -198,7 +198,7 @@ function NutritionHealthInformation(props) {
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : 101
+            customerId : props.customerId
           }
         })
       }
@@ -275,7 +275,9 @@ function NutritionHealthInformation(props) {
 const NutritionHealthInformationForm = Form.create()(NutritionHealthInformation);
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.customerId
+
   };
 }
 export default connect(mapStateToProps)(NutritionHealthInformationForm) ;
