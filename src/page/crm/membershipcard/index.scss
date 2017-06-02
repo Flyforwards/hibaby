@@ -1,7 +1,10 @@
+/**
+ * Created by Flyforwards on 2017/6/1.
+ */
 .card{
   min-width: 1030px;
-  margin:10px 0 0 10px;
-padding: 10px;
+  //margin:10px 0 0 10px;
+  padding: 20px;
   background: #FFFFFF;
 }
 .cardTable{
@@ -45,14 +48,8 @@ padding: 10px;
   .firstA{
     color:#b87636;
   }
-  .firstA:hover{
-    color:#0066ff;
-  }
   .firstB{
     color:#b87636;
-  }
-  .firstB:hover{
-    color:#ff0000;
   }
 }
 .vertical-center-modal {
@@ -74,3 +71,39 @@ padding: 10px;
   top: 0;
   text-align: left;
 }
+.cardBtn{
+  width:140px;
+  height:40px;
+  margin:0px 16px;
+  font-size: 14px;
+  //border:none;
+  //border-radius: 5px;
+  //cursor:pointer;
+  //font-size: 14px;
+  //font-weight: 400;
+  //background-color: rgba(255, 74, 74, 1);
+  //color:#FFFFFF;
+}
+.ant-tabs{
+
+}
+
+.alert-vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+  .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: center;
+  }
+}
+
+.alert-vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+
