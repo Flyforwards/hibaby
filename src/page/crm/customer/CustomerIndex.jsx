@@ -165,9 +165,6 @@ class CustomerIndex extends React.Component {
             createModalVisible: true
         })
     }
-    add() {
-      this.props.dispatch(routerRedux.push('/crm/customer/add/CustomerInformation'))
-    }
 
     onSearch() {
       this.props.form.validateFields((err, values) => {
@@ -254,7 +251,8 @@ class CustomerIndex extends React.Component {
                   </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.add.bind(this)} disabled={add} style={{width:'136px',height:'40px',lineHeight:'40px'}}>新增客户</Button>
+                    <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
+
                   </span>
                     </Col>
                   </Row>
