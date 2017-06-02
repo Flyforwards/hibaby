@@ -4,21 +4,11 @@ import React from 'react';
 class PicturesWall extends React.Component {
   constructor(props) {
     super(props);
-
-    const value = this.props.value || '';
-    let valueString = '';
-    if (value.length  > 0) {
-      value.map((e) => {
-        valueString = `${valueString ? valueString + ',' : ''}${e.url}`;
-      })
-    }
-
     this.state = {
       previewVisible: false,
       previewImage: '',
       defaultFileList : (typeof this.props.value === 'object') ? this.props.value : [],
       fileList: [],
-      valueString
     };
 
   };
@@ -57,29 +47,15 @@ class PicturesWall extends React.Component {
     this.props.deleteFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]});
   }
 
-  handleChange = ( {file,fileList} ) => {
+  handleChange = ( {file, fileList} ) => {
     if (file.status === 'done') {
-      this.props.fun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
-      let valueString = `${this.state.valueString ? this.state.valueString + ',' : ''}${file.response.data.fileKey}`;
-      this.setState({
-        valueString: valueString
-      })
-      // console.log('upload:valueString>>', valueString);
-    }
 
+      this.props.fun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
+    }
     this.setState({
       fileList
     })
 
-    this.triggerChange({valueString});
-  }
-
-  triggerChange = (changedValue) => {
-    // Should provide an event to pass value to Form.
-    const onChange = this.props.onChange;
-    if (onChange) {
-      onChange(Object.assign({}, this.state.valueString, changedValue));
-    }
   }
 
   render() {
