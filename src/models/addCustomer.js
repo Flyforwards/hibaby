@@ -9,6 +9,7 @@ export default {
   state: {
     dataDetailId:101,
     addCustomerTab:'1',
+    isDetail:false,
 
     baseData:[],
     expandData:'',
@@ -66,6 +67,24 @@ export default {
     setAddCustomerTab(state, { payload: todo }){
       return {...state,addCustomerTab:todo.data};
     },
+    pageStatus(state, { payload: todo }){
+      return {...state,isDetail:todo.data};
+    },
+
+    
+
+    addRemark(state, { payload: todo }){
+      const {remarkList} = state;
+
+      const date = new Date();
+
+      const dict = {remarkInfo:todo,createTime:date.toLocaleString(),operator:state.operator};
+
+      const tempDict = [...remarkList,dict];
+
+      return {...state,remarkList:tempDict,modal:false};
+    },
+
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
 
@@ -631,6 +650,10 @@ export default {
             type: 'setAddCustomerTab',
             payload:{data:'1'}
           });
+          dispatch({
+            type: 'pageStatus',
+            payload:{data:false}
+          });
           defDis(dispatch)
         };
         if (pathname === '/crm/customer/Add/HealthRecords') {
@@ -638,18 +661,30 @@ export default {
             type: 'setAddCustomerTab',
             payload:{data:'2'}
           });
+          dispatch({
+            type: 'pageStatus',
+            payload:{data:false}
+          });
         };
         if (pathname === '/crm/customer/Add/Package') {
           dispatch({
             type: 'setAddCustomerTab',
             payload:{data:'3'}
           });
+          dispatch({
+            type: 'pageStatus',
+            payload:{data:false}
+          });
         };
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
+
+          dispatch({
+            type: 'pageStatus',
+            payload:{data:true}
+          });
           dispatch({
             type: 'getCustomerById',
-
           });
           dispatch({
             type: 'getCustomerExtendById',
