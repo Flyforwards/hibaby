@@ -13,7 +13,7 @@ const Option = Select.Option;
  * 客户信息》健康档案》医疗健康档案详情页面
  */
 function HealthyhomeDetail(props) {
-  const disabled = true;
+  let disabled = true;
 
   const formItemLayout = {
     labelCol: { span: 10 },
@@ -261,12 +261,6 @@ function HealthyhomeDetail(props) {
 
   //提交表单
   function handleEdit (e) {
-    e.preventDefault();
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
   }
 
   return(
