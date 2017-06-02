@@ -28,7 +28,7 @@ export default {
             dispatch({
               type: 'getHealthInformationListByCustomerId',
               payload:{
-                customerId : 101,
+                customerId : 100,
                 type : i
               }
             });
