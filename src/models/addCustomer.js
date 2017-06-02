@@ -72,7 +72,7 @@ export default {
     },
     resetInput(state, { payload: todo }){
       let exdata = state.expandData;
-      exdata = {...exdata,todo}
+      exdata[todo] = null
       return {...state,expandData:exdata};
     },
     addRemark(state, { payload: todo }){
