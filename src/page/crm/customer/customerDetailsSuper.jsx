@@ -4,6 +4,7 @@ import './customerInformation.scss';
 import { Tabs} from 'antd';
 import CustomerDetails from './customerDetails';
 import UserHealthInformation from './userHealthInformation'
+import MembershipCard from './../membershipcard/membershipcardIndex';
 const TabPane = Tabs.TabPane;
 
 function customerDetailsSuper() {
@@ -25,7 +26,7 @@ function customerDetailsSuper() {
           Content of Tab Pane 3
         </TabPane>
         <TabPane tab="会员卡" key="4">
-          Content of Tab Pane 4
+         <MembershipCard />
         </TabPane>
       </Tabs>
     </div>
