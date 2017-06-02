@@ -19,14 +19,12 @@ class UserServiceinfo extends Component {
     }
     handleOk(record) {
         console.log(record)
-        // this.props.dispatch({
-        //   type: 'addCourse/useServiceInfo',
-        //   payload: {
-        //     "customerId":record.customerId,
-        //     "packageId": record.packageId,
-        //     "serviceId": record.serviceId
-        //   }
-        // });
+        this.props.dispatch({
+          type: 'addCourse/useServiceInfo',
+          payload: {
+            "dataId":record.id
+          }
+        });
         // this.props.onCancel()
     }
     checkbox() {

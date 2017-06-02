@@ -76,20 +76,6 @@ class AddCourse extends Component {
         UserServiceinfoVisible: true,
         data:record
       })
-      // this.props.dispatch({
-      //     type: 'addCourse/useServiceInfo',
-      //     payload: {
-      //       "customerId":record.customerId,
-      //       "packageId": record.packageId,
-      //       "serviceId": record.serviceId
-      //     }
-      // });
-      // this.props.dispatch({
-      //     type: 'addCourse/getCustomerPackageById',
-      //     payload: {
-      //        "dataId":6
-      //     }
-      // });
     }
     handleDeleteCancel(){
       this.setState({
@@ -110,14 +96,18 @@ class AddCourse extends Component {
           }
       });
     }
-    render() {
+  componentWillUnmount(){
+    console.log("componentWillUnmount")
+    this.props.dispatch({type:'addCourse/setAddCustomerTab',payload:{false}})
+  }
+    render(){
       let dataList = []
       let loadingName = true
       const columns = this.columns;
       if(this.props.getCustomerPackageById != null){
         if(this.props.getCustomerPackageById.length>=1){
           this.props.getCustomerPackageById.map((item)=>{
-             let status = "使用中"
+            let status = "使用中"
             if(item.status == 1){
               status="已经使用"
             }
@@ -146,7 +136,7 @@ class AddCourse extends Component {
                 <p className="pricep">套餐价格: ￥{addName.price}</p>
                 <p className="typep">套餐类型: {x}</p>
                 <br/>
-                <div className="viewServiceinfoTable">
+                <div className="viewServiceinfoTable" key={addName.id+""}>
                   <p>服务项目:</p> <span className="status">{status}</span>
                   <Table bordered 
                     columns={ columns } 
@@ -156,6 +146,7 @@ class AddCourse extends Component {
                   />
                 </div>  
             </div>)
+            console.log("sdsd",dataList)
           })
         }
       }

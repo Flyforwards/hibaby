@@ -84,20 +84,23 @@
       width:80%;
       border:1px solid #999;
       height:60px;
+      line-height:60px;
       margin:10px 2%; 
+      color:#000;
       .tital{
-        font-size: 24px;
+        font-size: 16px;
         font-weight: blod;
         float: left;
+        text-indent: 50px;
       }
       .room{
+        font-size: 16px;
         text-indent:50px;
-        margin-top:10px;
         float: left;
       }
       .price{
+        font-size: 16px;
         text-indent:50px;
-        margin-top:10px;
         float: left;
       }
     }
