@@ -9,9 +9,12 @@ export default {
   state: {
     dataDetailId:101,
     addCustomerTab:'1',
+    isDetail:false,
+
+    homePageIsDetail:false,
 
     baseData:[],
-    expandData:[],
+    expandData:'',
     remarkData:[],
 
     bigImageHidden:false,
@@ -66,6 +69,27 @@ export default {
     setAddCustomerTab(state, { payload: todo }){
       return {...state,addCustomerTab:todo.data};
     },
+    pageStatus(state, { payload: todo }){
+      return {...state,isDetail:todo.data};
+    },
+    homePageStatus(state, { payload: todo }){
+      return {...state,homePageIsDetail:todo.data};
+    },
+
+
+
+    addRemark(state, { payload: todo }){
+      const {remarkList} = state;
+
+      const date = new Date();
+
+      const dict = {remarkInfo:todo,createTime:date.toLocaleString(),operator:state.operator};
+
+      const tempDict = [...remarkList,dict];
+
+      return {...state,remarkList:tempDict,modal:false};
+    },
+
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
 
@@ -124,7 +148,7 @@ export default {
     reductionState(state, { payload: todo }){
       return {...state,
         baseData:[],
-        expandData:[],
+        expandData:'',
         remarkData:[],
 
         bigImageHidden:false,
@@ -435,7 +459,8 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'));
+
+          yield put({type:'homePageStatus',payload:{data:true}})
 
         }
       }
@@ -502,20 +527,21 @@ export default {
 
       const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
       if (code == 0) {
-        if (remarkList.length > 0){
+        if (remarkList.length > 0) {
           yield put({
-            type:'savaRemark',
-            payload:{
-              id:values.id
+            type: 'savaRemark',
+            payload: {
+              id: values.id
             }
           });
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'));
+          yield put({type: 'homePageStatus', payload: {data: true}})
         }
       }
-      else {
+      else
+      {
         message(err);
       }
     },
@@ -545,9 +571,9 @@ export default {
       }
       else {
         message.success('信息保存成功');
-        yield put(routerRedux.push('/crm/customer/customerDetails'));
-      }
+        yield put({type: 'homePageStatus', payload: {data: true}});
 
+      }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
       const state = yield select(state => state.addCustomer);
@@ -586,7 +612,6 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
       if (code == 0) {
-        console.log(data);
         yield put({type:'setRemarkData',payload:{
           data
         }} );
@@ -632,6 +657,8 @@ export default {
             type: 'setAddCustomerTab',
             payload:{data:'1'}
           });
+
+          isDetail(dispatch)
           defDis(dispatch)
         };
         if (pathname === '/crm/customer/Add/HealthRecords') {
@@ -639,18 +666,27 @@ export default {
             type: 'setAddCustomerTab',
             payload:{data:'2'}
           });
+          isDetail(dispatch)
+
+
         };
         if (pathname === '/crm/customer/Add/Package') {
           dispatch({
             type: 'setAddCustomerTab',
             payload:{data:'3'}
           });
+          isDetail(dispatch)
+
         };
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
+
+          dispatch({
+            type: 'pageStatus',
+            payload:{data:true}
+          });
           dispatch({
             type: 'getCustomerById',
-
           });
           dispatch({
             type: 'getCustomerExtendById',
@@ -664,6 +700,14 @@ export default {
     }
   },
 };
+
+function isDetail(dispatch) {
+  dispatch({
+    type: 'pageStatus',
+    payload:{data:false}
+  });
+  dispatch({type:'homePageStatus',payload:{data:false}});
+}
 
 function defDis(dispatch) {
   dispatch({

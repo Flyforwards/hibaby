@@ -124,7 +124,7 @@ class BindingPackagesed extends Component {
         if(this.props.findById != null){
           suiteId=this.props.findById.suiteName
         }
-        // console.log("dsdddddddddddddddddd",this.props.users)
+        //console.log("dsdddddddddddddddddd",this.props.users)
         return (
             <div className="viewServiceinfo">
                 <div className="viewServiceinfoList">

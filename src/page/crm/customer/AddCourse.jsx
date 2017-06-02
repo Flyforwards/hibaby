@@ -6,6 +6,7 @@ import { Icon, Card, Button,Table, Input,Select,Form ,message} from 'antd'
 import { Link} from 'react-router'
 import './AddCourse.scss';
 import AddCourseModel from './AddCourseModel.jsx'
+import UserServiceinfo from './userServiceinfo.jsx'
 
 class AddCourse extends Component {
     constructor(props) {
@@ -48,27 +49,21 @@ class AddCourse extends Component {
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
-            let addName={}
-            let dataDetailId = ""
             let visible = false
-            if(this.props.getCustomerPackageById != null){
-              if(this.props.getCustomerPackageById.length>=1){
-                addName=this.props.getCustomerPackageById[0].packageInfoDO
-              }
-            }
-            dataDetailId = this.props.users
             if(record.usageCount<=0){
                 visible = true
             }
             return (
                 <span>
-                  <Button type="primary" onClick={this.addNumber.bind(this,record,addName,dataDetailId)} disabled={visible}>使用</Button>
+                  <Button type="primary" onClick={this.addNumber.bind(this,record)} disabled={visible}>使用</Button>
                 </span>
             );
           },
         }];
         this.state = {
-          AddCourseVisible: false
+          AddCourseVisible: false,
+          UserServiceinfoVisible:false,
+          data:{}
         }
     }
     addCourse (){
@@ -76,20 +71,34 @@ class AddCourse extends Component {
         AddCourseVisible: true,
       })
     }
-    addNumber(record,addName,dataDetailId){
-      console.log("使用",dataDetailId)
-      this.props.dispatch({
-          type: 'addCourse/useServiceInfo',
-          payload: {
-            "customerId": 6,
-            "packageId": addName.id,
-            "serviceId": record.customerId
-          }
-      });
+    addNumber(record,dataDetailId){
+      this.setState({
+        UserServiceinfoVisible: true,
+        data:record
+      })
+      // this.props.dispatch({
+      //     type: 'addCourse/useServiceInfo',
+      //     payload: {
+      //       "customerId":record.customerId,
+      //       "packageId": record.packageId,
+      //       "serviceId": record.serviceId
+      //     }
+      // });
+      // this.props.dispatch({
+      //     type: 'addCourse/getCustomerPackageById',
+      //     payload: {
+      //        "dataId":6
+      //     }
+      // });
     }
     handleDeleteCancel(){
       this.setState({
         AddCourseVisible: false,
+      })
+    }
+    handleUserServiceinfoCancel(){
+      this.setState({
+        UserServiceinfoVisible: false,
       })
     }
     componentDidMount() {
@@ -101,27 +110,43 @@ class AddCourse extends Component {
       });
     }
     render() {
-      console.log(this.props.getCustomerPackageById)
       let dataList = []
       let loadingName = true
       const columns = this.columns;
       if(this.props.getCustomerPackageById != null){
         if(this.props.getCustomerPackageById.length>=1){
           this.props.getCustomerPackageById.map((item)=>{
+             let status = "使用中"
+            if(item.status == 1){
+              status="已经使用"
+            }
             let addCourseList=item.serviceInfoDOs
             let addName=item.packageInfoDO
             addCourseList.map((item)=>{
               // item.key=item.customerId
             })
             loadingName = false
+            let x = null
+            switch (addName.type)
+            {
+            case 43:
+              x="月子套餐";
+              break;
+            case 44:
+              x="产后套餐";
+              break;
+            case 45:
+              x="宝宝套餐";
+              break;
+            }
             dataList.push(<div className="addCourseList" key={addName.id}>
                 <p>套餐信息:</p>
                 <p className="namep">套餐名称: {addName.name}</p>
                 <p className="pricep">套餐价格: ￥{addName.price}</p>
-                <p className="typep">套餐类型: {addName.type}</p>
+                <p className="typep">套餐类型: {x}</p>
                 <br/>
                 <div className="viewServiceinfoTable">
-                  <p>服务项目:</p> <span className="status">状态</span>
+                  <p>服务项目:</p> <span className="status">{status}</span>
                   <Table bordered 
                     columns={ columns } 
                     dataSource={ addCourseList }
@@ -131,24 +156,6 @@ class AddCourse extends Component {
                 </div>  
             </div>)
           })
-            
-            // loadingName = false
-            // dataList.push(<div className="addCourseList" key={addName.id}>
-            //     <p>套餐信息:</p>
-            //     <p className="namep">套餐名称: {addName.name}</p>
-            //     <p className="pricep">套餐价格: ￥{addName.price}</p>
-            //     <p className="typep">套餐类型: {addName.type}</p>
-            //     <br/>
-            //     <div className="viewServiceinfoTable">
-            //       <p>服务项目:</p> <span className="status">状态</span>
-            //       <Table bordered 
-            //         columns={ columns } 
-            //         dataSource={ addCourseList }
-            //         pagination = { false }
-            //         loading = { loadingName }
-            //       />
-            //     </div>  
-            //   </div>)
         }
       }
         return (
@@ -161,6 +168,11 @@ class AddCourse extends Component {
                 visible={ this.state.AddCourseVisible}
                 onCancel ={ this.handleDeleteCancel.bind(this)}
               />
+               <UserServiceinfo
+                 visible={ this.state.UserServiceinfoVisible }
+                 onCancel ={ this.handleUserServiceinfoCancel.bind(this) }
+                 record= { this.state.data }
+                />
             </div>
         )
     }

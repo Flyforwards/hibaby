@@ -372,30 +372,34 @@ function ExtensionInfo(props) {
     dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:true,dataId:e.key}})
   }
 
+  function tt(err, values) {
+    console.log(err,values)
+  }
 
   function uploadHeadelImg(NewuserImg){
     dispatch({type:'addCustomer/addHeadIcon',payload:NewuserImg})
-    props.form.validateFields(['imgURL'], { force: true });
+    props.form.validateFields(['imgURL'], { force: true },tt);
+
   }
 
   function uploadIdcardFileProps(values) {
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
-    props.form.validateFields(['idcardScan'], { force: true });
+    props.form.validateFields(['idcardScan'], { force: true },tt);
   }
 
   function uploadContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/addContractDLC',payload:values})
-    props.form.validateFields(['contractAppendices'], { force: true });
+    props.form.validateFields(['contractAppendices'], { force: true },tt);
   }
 
   function deleteIdcardFileProps(values) {
     dispatch({type:'addCustomer/deleteContractDLC',payload:values})
-    props.form.validateFields(['idcardScan'], { force: false });
+    props.form.validateFields(['idcardScan'], { force: false },tt);
   }
 
   function deleteContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
-    props.form.validateFields(['contractAppendices'], { force: false });
+    props.form.validateFields(['contractAppendices'], { force: false },tt);
   }
 
   const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,

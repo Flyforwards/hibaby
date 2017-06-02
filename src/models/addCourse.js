@@ -12,6 +12,7 @@ export default {
 		saveCustomerPackage:null,
 		getCustomerPackageById:null,
 		listByType:null,
+		addSuccess:0,
 	},
 	reducers: {
 			
@@ -110,7 +111,7 @@ export default {
 		      }} = yield call(addCourseService.saveCustomerPackage, values);
 				if (code == 0) {
 					message.success("添加套餐成功");
-					
+					state.addSuccess=1
 					yield put(routerRedux.push("/crm/customer/Add/Package"));
 				}else{
 					throw err || "请求出错";

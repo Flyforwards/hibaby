@@ -5,24 +5,27 @@ import { Tabs,message} from 'antd';
 import CustomerInformation from './CustomerInformation';
 import UserHealthInformation from './userHealthInformation'
 import AddCourse from './AddCourse.jsx'
+import CustomerDetails from './customerDetails'
 
 const TabPane = Tabs.TabPane;
 
 function addCustomer(props) {
 
-  const editCustomer = props.users.editCustomer;
-  const addCustomerTab = props.users.addCustomerTab;
+  const {editCustomer,addCustomerTab,isDetail,homePageIsDetail}= props.users;
+
   function callback(key) {
 
   }
-  let TabPaneAry = [ <TabPane className='tabsContent' tab="客户信息" key="1">
-    <CustomerInformation/>
+
+  let TabPaneAry = [
+    <TabPane className='tabsContent' tab="客户信息" key="1">
+      {isDetail||homePageIsDetail ? <CustomerDetails/> : <CustomerInformation/>}
     </TabPane>,
   <TabPane tab="健康档案" key="2">
     <UserHealthInformation/>
     </TabPane>,
     <TabPane tab="套餐" key="3">
-     {!props.users.dataDetailId?
+     {!props.users.expandData==""?
         '请先填写用户信息':<AddCourse />
       }
   </TabPane>];

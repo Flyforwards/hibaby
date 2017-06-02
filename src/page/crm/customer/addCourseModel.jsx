@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,Menu} from 'antd'
+import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,Menu,Table} from 'antd'
 import './AddCourse.scss';
 import { Link} from 'react-router'
 
@@ -10,6 +10,36 @@ const SubMenu = Menu.SubMenu;
 class AddCourseModel extends Component {
     constructor(props) {
         super(props)
+        this.columns = [{
+          title: 'name',
+          dataIndex: 'name',
+          width: '25%',
+         
+        }, {
+          title: 'age',
+          dataIndex: 'age',
+          width: '15%',
+          render:(text,record,index) => {
+            let suiteName = null
+            if(record.suiteName){
+                suiteName="套房 :"+record.suiteName
+            }
+            
+            return (
+              suiteName
+            )
+          }
+        }, {
+          title: 'address',
+          dataIndex: 'address',
+          width: '40%',
+          render:(text,record,index) => {
+            let price ="套餐价格 :"+record.price
+            return (
+              price
+            )
+          }
+        }]
     }
     handleCancel() {
         this.props.onCancel()
@@ -44,15 +74,13 @@ class AddCourseModel extends Component {
         this.props.dispatch({
             type: 'addCourse/getDictionary',
             payload: {
-              "id":5 ,
-              "softDelete": 0,
-              "type": 2
+              "abName":"TCLX" ,
+              "softDelete": 0
             }
         });
     }
     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-      //  console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -65,21 +93,34 @@ class AddCourseModel extends Component {
     render() {
         let leftList = []
         let rightList = []
+        const columns = this.columns;
         const {visible} = this.props
-        console.log("ssd",this.props.listByType)
         if(this.props.getDictionary != null){
             this.props.getDictionary.map((item)=>{
                 leftList.push(<Menu.Item key={item.id}>{item.name}</Menu.Item>)
             })
         }
         if(this.props.listByType != null){
+            // this.props.listByType.map((item)=>{
+            //    item.key=item.id
+            // })
+            // rightList = this.props.listByType
             this.props.listByType.map((item)=>{
-                rightList.push(
-                <Link className="rightList" to={{ pathname: '/crm/customer/Add/bindingPackages',query: { dataId:item.id } }}>
-                    <p className="tital">{item.name}</p>
-                    <p className="room">套房:{item.suiteName}</p>
-                    <p className="price">套餐价格:￥{item.price}</p>
-                </Link>)
+                if(item.suiteName){
+                 rightList.push(
+                    <Link className="rightList" to={{ pathname: '/crm/customer/Add/bindingPackages',query: { dataId:item.id } }}>
+                        <p className="tital">{item.name}</p>
+                        <p className="room">套房:{item.suiteName}</p>
+                        <p className="price">套餐价格:￥{item.price}</p>
+                    </Link>)
+                }else{
+                    rightList.push(
+                    <Link className="rightList" to={{ pathname: '/crm/customer/Add/bindingPackages',query: { dataId:item.id } }}>
+                        <p className="tital">{item.name}</p>
+                        <p className="price">套餐价格:￥{item.price}</p>
+                    </Link>)
+                }
+               
             })
         }
         return (
@@ -102,9 +143,9 @@ class AddCourseModel extends Component {
                     </Menu>
                 </div>
                 <div className="right">
-                    {
-                        rightList
-                    }
+                   {
+                    rightList
+                   }
                 </div>
             </div>
             </Modal>

@@ -69,39 +69,36 @@
 }
 .AddCourseModel{
   overflow: hidden;
-  .left,.right{
-    border:1px solid #999;
-    border-radius: 4px;
-  }
   .left{
     width:20%;
     height:auto;
     float: left;
   }
   .right{
-    width:78%;
+    width:80%;
     height:auto;
     float: right;
     overflow: hidden;
     .rightList{
       display: inline-block;
-      width:45%;
+      width:80%;
       border:1px solid #999;
-      border-radius: 4px;
-      height:120px;
-      float: left;
+      height:60px;
       margin:10px 2%; 
       .tital{
         font-size: 24px;
         font-weight: blod;
+        float: left;
       }
       .room{
-        text-indent: 50px;
+        text-indent:50px;
         margin-top:10px;
+        float: left;
       }
       .price{
         text-indent:50px;
         margin-top:10px;
+        float: left;
       }
     }
   }

@@ -13,6 +13,7 @@ const Option = Select.Option;
  * 客户信息》健康档案》医疗健康档案详情页面
  */
 function HealthyhomeDetail(props) {
+  let disabled = true;
 
   const formItemLayout = {
     labelCol: { span: 10 },
@@ -24,6 +25,7 @@ function HealthyhomeDetail(props) {
   for(let i = 0; i < 47; i++) {
     radioNames.push('radio_'+i);
   }
+
 
   //输入框的名字
   const inputNames=[];
@@ -39,7 +41,7 @@ function HealthyhomeDetail(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i} readOnly>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={i} disabled={disabled}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -65,7 +67,7 @@ function HealthyhomeDetail(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i} readOnly>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={i} disabled={disabled}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -259,12 +261,6 @@ function HealthyhomeDetail(props) {
 
   //提交表单
   function handleEdit (e) {
-    e.preventDefault();
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
   }
 
   return(
@@ -563,7 +559,7 @@ function HealthyhomeDetail(props) {
 
       <div className='bottomButton'>
         <Button className='commitButton'>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleEdit().bind(this)}>编辑</Button>
+        <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
       </div>
 
     </div>
