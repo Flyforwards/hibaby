@@ -11,7 +11,7 @@ export default {
     addCustomerTab:'1',
 
     baseData:[],
-    expandData:[],
+    expandData:'',
     remarkData:[],
 
     bigImageHidden:false,
@@ -124,7 +124,7 @@ export default {
     reductionState(state, { payload: todo }){
       return {...state,
         baseData:[],
-        expandData:[],
+        expandData:'',
         remarkData:[],
 
         bigImageHidden:false,
@@ -586,7 +586,6 @@ export default {
 
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
       if (code == 0) {
-        console.log(data);
         yield put({type:'setRemarkData',payload:{
           data
         }} );
