@@ -1,11 +1,12 @@
-.healthContentDiv {
+.NutritionHealth {
+  min-width: 1030px;
   .firstItem {
     background-color: #fff;
     margin: 10px;
     border: 1px solid #ccc;
-    .ant-form-item {
-      margin-bottom: 0;
-    }
+  }
+  .ant-form-item{
+    margin-bottom:0;
   }
   label{
     font-family: "微软雅黑";
@@ -14,21 +15,153 @@
     content: '';
     display: none;
   }
+
+  .ant-form-item-label{
+    border-right:1px solid #ccc;
+    line-height: 55px;
+  }
+  .ant-form-item-control{
+    margin-left: 10px;
+    line-height: 55px;
+  }
+
   .ItemLeft{
     border-right: 1px solid #ccc;
-    .ant-form-item-label{
-      border-right:1px solid #ccc;
-    }
-    .ant-form-item-control{
-      margin-left: 10px;
-    }
+    border-bottom: 1px solid #ccc;
   }
   .ItemRight{
-    .ant-form-item-label{
+    border-bottom: 1px solid #ccc;
+  }
+
+  .radioAllRow{
+    border-bottom:1px solid #ccc;
+  }
+  .radioAll{
+    .radioAllRow{
+      .radioAllRowBg{
+        width: 50%;
+      }
+    }
+  }
+  .radioInputRow{
+    border-bottom:1px solid #ccc;
+  }
+  .radioInputRowLeft{
+    border-right: 1px solid #ccc;
+  }
+  .radioWhiteRow{
+    .ant-form-item-control-wrapper{
+      width:74.6%;
+    }
+    border-bottom:1px solid #ccc;
+    .radioWhiteRowLeft{
+      width: 60%;
+      .ant-form-item-label{
+        width: 20.9%;
+      }
+    }
+    .radioWhiteRowRight{
+      width: 40%;
+    }
+  }
+  .dietTaboo{
+    border-bottom: 1px solid #ccc;
+    .itemTitle{
+      height: 100%;
+      line-height: 110px;
+      text-align:right;
+      vertical-align: middle;
+      display: table-cell;
+      border-right: 1px solid #ccc;
+      .dietTitle{
+        margin-right:10px;
+      }
+    }
+    .radioAllRow{
+      width: 100%;
+      .radioAllRowBg{
+        width: 100%;
+        .ant-form-item-control-wrapper{
+          width: 100%;
+        }
+      }
+    }
+    .radioWhiteRow{
+      border-bottom: 0px;
+      .radioWhiteRowLeft{
+        width:8%;
+      }
+    }
+  }
+  .matchItem{
+    border-bottom: 1px solid #ccc;
+    .matchItemLeft{
+      float: left;
+      border-right: 1px solid #ccc;
+    }
+    .matchItemRight{
+      float: left;
+    }
+  }
+  .dateDiet{
+    border-bottom: 1px solid #ccc;
+    .dateDietTitle{
+      line-height:496px;
+      text-align: center;
       border-right:1px solid #ccc;
+      .itemTitle{
+        margin-right:10px;
+      }
     }
-    .ant-form-item-control{
-      margin-left: 10px;
+    .radioAllRow{
+      width: 100%;
+      .radioAllRowBg{
+        width: 100%;
+        .ant-form-item-label{
+          width: 12%;
+        }
+        .ant-form-item-control-wrapper{
+          width: 88%;
+        }
+      }
     }
+    .dietTaboo{
+      .radioAllRow{
+        border-bottom:0;
+      }
+      .radioWhiteRowRight{
+        width:80%;
+        .ant-form-item-control-wrapper{
+          width:90%;
+          .ant-form-item-control {
+            width: 100%;
+          }
+        }
+      }
+    }
+    .lastDiet{
+      .radioAllRow{
+        border-bottom:0;
+      }
+    }
+  }
+  .lastRow{
+    .radioAllRow{
+      border-bottom:0;
+      .radioAllRowBg{
+        width: 50%;
+      }
+    }
+  }
+  .bottomButton {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .commitButton {
+    width: 150px;
+    height: 35px;
+    margin-right: 10px;
   }
 }

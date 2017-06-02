@@ -244,10 +244,9 @@ class CustomerIndex extends React.Component {
         return (
         <div className="CustomerConent">
             <main className="yt-admin-framework-Customer">
-
               <Form>
                 <div>
-                  <Row style={{width:'1116px'}}>
+                  <Row className="topSelect" style={{width:'1116px'}}>
                     <Col span={10} style={{float:'left'}}>
                       <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
                         {getFieldDecorator('sear', {rules: [{ required: false }],
@@ -258,23 +257,23 @@ class CustomerIndex extends React.Component {
                     </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
+                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 87, 0, 1)',height:'40px',lineHeight:'40px',color:'#fff'}}>查询</Button>
                   </span>
                     </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 0, 0, 0.8)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
                   </span>
                   </Col>
                     <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Link to="/crm/customer/add/CustomerInformation"><Button style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
+                    <Link to="/crm/customer/add/CustomerInformation"><Button style={{width:'136px',backgroundColor:'rgba(22, 155, 213, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
                   </span>
                     </Col>
                   </Row>
                 </div>
-                <Row>
-                  <Col span={4} style={{width:'140px'}}>
+                <Row className="topAge">
+                  <Col className="age">
                     <FormItem {...formChooseOneLayout}  label="年龄" >
                       {getFieldDecorator('age1', {rules: [{ required: false }],
                       })(
@@ -282,7 +281,7 @@ class CustomerIndex extends React.Component {
                       )}
                     </FormItem>
                   </Col>
-                  <Col span={3}  style={{width:'140px'}}>
+                  <Col span={2}>
                     <FormItem {...formChooseLayout} style={{width:'100%'}}>
                       {getFieldDecorator('age2', {rules: [{ required: false }],
                       })(
@@ -291,7 +290,7 @@ class CustomerIndex extends React.Component {
                     </FormItem>
 
                   </Col>
-                  <Col span={4} style={{width:'251px'}}>
+                  <Col className="PreData" span={4} style={{width:'210px'}}>
                     <FormItem {...formChooseOneLayout}  label="预产期" >
                       {getFieldDecorator('time', {rules: [{ required: false }],
                       })(
@@ -301,7 +300,7 @@ class CustomerIndex extends React.Component {
                       )}
                     </FormItem>
                   </Col>
-                  <Col span={4} style={{width:'251px'}}>
+                  <Col className="TireNum" span={4} style={{width:'184px'}}>
                     <FormItem  {...formChooseOneLayout} label="第几胎" >
                       {getFieldDecorator('fetus', {rules: [{ required: false }],
                       })(
@@ -309,7 +308,7 @@ class CustomerIndex extends React.Component {
                       )}
                     </FormItem>
                   </Col>
-                  <Col span={4} style={{width:'251px'}} >
+                  <Col className="idCard" span={4} style={{width:'210px'}} >
                     <FormItem  {...formChooseOneLayout} label="会员身份" >
                       {getFieldDecorator('member', {rules: [{ required: false }],
                       })(
@@ -321,7 +320,7 @@ class CustomerIndex extends React.Component {
                       )}
                     </FormItem>
                   </Col>
-                  <Col span={4} style={{width:'180px'}}>
+                  <Col className="Operator" span={4} style={{width:'192px'}}>
                     <FormItem  {...formChooseOneLayout} label="操作者2" >
                       {getFieldDecorator('operator2', {rules: [{ required: false }],
                       })(
