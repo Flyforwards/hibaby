@@ -25,7 +25,7 @@ class UserServiceinfo extends Component {
             "dataId":record.id
           }
         });
-        // this.props.onCancel()
+        this.props.onCancel()
     }
     checkbox() {
         /*console.log("checkbox")*/
