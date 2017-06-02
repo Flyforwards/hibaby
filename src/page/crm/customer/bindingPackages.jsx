@@ -50,7 +50,7 @@ class BindingPackagesed extends Component {
       this.props.dispatch({
          type:'addCourse/saveCustomerPackage',
           payload: {
-            "customerId":6,
+            "customerId":this.props.users.dataDetailId,
             "packageId": typeId
           }
       })
@@ -80,9 +80,8 @@ class BindingPackagesed extends Component {
       this.props.dispatch({
         type: 'addCourse/getDictionary',
         payload: {
-          "id":5 ,
-          "softDelete": 1,
-          "type": 2
+          "abName":"TCLX" ,
+          "softDelete": 0
         }
       });
     }

@@ -217,14 +217,7 @@ class customerDetails extends React.Component{
       type: 'addCustomer/editCustomerAct',
       payload: { data:true}
     })
-    this.dispatch(routerRedux.push('/crm/customer/Add/CustomerInformation'))
-  }
-
-  componentWillUnmount(){
-
-    if(!this.editCustomer){
-      this.props.dispatch({type:'addCustomer/reductionState'})
-    }
+    this.dispatch(routerRedux.push('/crm/customer/AddCustomerInformation'))
   }
 
   render(){

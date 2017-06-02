@@ -102,10 +102,11 @@ class AddCourse extends Component {
       })
     }
     componentDidMount() {
+      console.log(this.props.users.dataDetailId)
       this.props.dispatch({
           type: 'addCourse/getCustomerPackageById',
           payload: {
-             "dataId":6
+             "dataId":this.props.users.dataDetailId
           }
       });
     }

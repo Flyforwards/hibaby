@@ -12,7 +12,7 @@ export default {
 		saveCustomerPackage:null,
 		getCustomerPackageById:null,
 		listByType:null,
-		addSuccess:0,
+		addSuccess:false,
 	},
 	reducers: {
 			
@@ -24,10 +24,9 @@ export default {
 		      let listByTypeSavedata = {...state,listByType,code};
 		      return listByTypeSavedata
 		    },
-		    saveCustomerPackageSave(state,{payload:{ data:saveCustomerPackage,code }}){
-		      let saveCustomerPackageSavedata = {...state,saveCustomerPackage,code};
-		      return saveCustomerPackageSavedata
-		    },
+		     setAddCustomerTab(state, { payload: todo }){
+      			return {...state,addSuccess:todo};
+   			 },
 		    findByIdSave(state,{payload:{ data:findById,code }}){
 		      let findByIdSavedata = {...state,findById,code};
 		      return findByIdSavedata
@@ -111,8 +110,9 @@ export default {
 		      }} = yield call(addCourseService.saveCustomerPackage, values);
 				if (code == 0) {
 					message.success("添加套餐成功");
-					state.addSuccess=1
-					yield put(routerRedux.push("/crm/customer/Add/Package"));
+					
+					yield put({type:'setAddCustomerTab',payload:{true}});
+					yield put(routerRedux.push("/crm/customer/AddCustomerInformation"));
 				}else{
 					throw err || "请求出错";
 				}
@@ -126,7 +126,7 @@ export default {
 		      }} = yield call(addCourseService.useServiceInfo, values);
 				if (code == 0) {
 					message.success("使用服务项成功");
-					yield put(routerRedux.push("/crm/customer/Add/Package"));
+					yield put(routerRedux.push("/crm/customer/AddCustomerInformation"));
 				}else{
 					throw err || "请求出错";
 				}

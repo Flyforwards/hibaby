@@ -4,7 +4,6 @@ import React from 'react';
 class PicturesWall extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
   };
 
   beforeUpload(file) {
