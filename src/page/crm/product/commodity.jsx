@@ -44,10 +44,12 @@ class Commodityed extends Component {
           key: 'operating',
           width: '20%',
           render: (text, record, index) => {
+            const detail = !this.props.permissionAlias.contains('COMMODITY_DETAIL');
+            const del = !this.props.permissionAlias.contains('COMMODITY_DELETE');
             return (
                 <span>
-                  <Link to={{ pathname: '/crm/commodity/viewCommodity', query: { commodity:record.id } }} className="twoB">查看</Link>
-                  <a href="#" className="twoA" onClick={this.delete.bind(this,record)}>删除</a>
+                  <Link disabled={detail} to={{ pathname: '/crm/commodity/viewCommodity', query: { commodity:record.id } }} className="twoB">查看</Link>
+                  <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
                 </span>
             );
           },
@@ -91,13 +93,14 @@ class Commodityed extends Component {
             }))
           },
         }
+        const add = !this.props.permissionAlias.contains('COMMODITY_ADD');
         return (
             <div className="commodity">
-                <div className="commodityButton"><Link to="/crm/commodity/addcommodity"><Button type="primary">添加</Button></Link></div>
+                <div className="commodityButton"><Link to="/crm/commodity/addcommodity"><Button disabled={add} type="primary">添加</Button></Link></div>
                 <div className="commodityTabal">
                   <Table {...tableProps} rowKey = { record=>record.id } bordered columns={ columns } />
                 </div>
-                <Delete 
+                <Delete
                    visible={ this.state.DeleteVisible }
                    onCancel ={ this.handleDeleteCancel.bind(this) }
                    ID = { this.state.ID }
@@ -111,10 +114,12 @@ function mapStateToProps(state) {
     commodityListByPage,
     pagination
   } = state.packageInfo;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     commodityListByPage,
-    pagination
+    pagination,
+    permissionAlias
     };
 }
 export default connect(mapStateToProps)(Commodityed)

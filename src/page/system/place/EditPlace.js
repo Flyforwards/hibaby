@@ -84,7 +84,7 @@ class EditPlaceData extends React.Component {
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'localData/EditPlaceData',
-            payload: { id: this.editItem.id, name: values.name, type: 2, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds }
+            payload: { id: this.editItem.id, name: values.name,abName: values.abName, type: 2, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds }
           })
         }
       })
@@ -105,11 +105,13 @@ class EditPlaceData extends React.Component {
       let name="";
       let description="";
       let arr = [];
+      let abName = '';
       let initKeys  = [];
       if( this.editItem !== null ){
         arr = this.editItem.dictionarySideDOs;
         name = this.editItem.name;
         description = this.editItem.description;
+        abName = this.editItem.abName;
         initKeys = rangeArray(1, arr.length)
       }
 
@@ -150,15 +152,23 @@ class EditPlaceData extends React.Component {
                 {getFieldDecorator('name', {
                   initialValue:`${name}`,
                   rules: [{ required: true, message: '字段名称为必填项！' }],
-                })(  <Input disabled={true} className="input" placeholder="input placeholder" />
+                })(  <Input readOnly={true} className="input" />
                 )}
               </FormItem>
-              <FormItem {...formItemLayout} className = "div parentCen" label="字段描述">
+              <FormItem {...formItemLayout} className = "parentCen" label="字段描述">
                 {getFieldDecorator('description', {
                   initialValue:`${description}`,
                   rules: [{ required: true, message: '字段描述为必填项！' }],
                 })(
-                  <Input disabled={true} className="input"/>
+                  <Input readOnly={true} className="input"/>
+                )}
+              </FormItem>
+              <FormItem {...formItemLayout} className = "parentCen" label="别名">
+                {getFieldDecorator('abName', {
+                  initialValue:`${abName}`,
+                  rules: [{ required: true, message: '别名为必填项！' }],
+                })(
+                  <Input readOnly={true} className="input"/>
                 )}
               </FormItem>
             </Form>

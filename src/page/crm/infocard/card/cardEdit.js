@@ -2,17 +2,26 @@
  * Created by Flyforwards on 2017/5/25.
  */
 
+
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col, } from 'antd';
+import { Select, Button, Form, Input, Icon,DatePicker,Table, Card, InputNumber, Radio,Row,Col, } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 import { Link } from 'react-router';
 import './card.scss';
-import {routerRedux} from 'dva/router';
+import { parse } from 'qs'
+import CustomerByCard from './customerByCard';
 
 class CardDetail extends Component {
+
+  constructor(props) {
+    super(props)
+
+  }
+
+
   componentWillMount() {
     const { dispatch } = this.props;
     const dataId = location.search.substr(1).split('=')[1]
@@ -21,6 +30,10 @@ class CardDetail extends Component {
       payload: { dataId }
     })
 
+    dispatch({
+      type: 'card/getCustomerPage',
+      payload: { member: dataId }
+    })
 
   }
 
@@ -40,7 +53,6 @@ class CardDetail extends Component {
       }
     })
   }
-
 
   //验证表单
 
@@ -63,7 +75,7 @@ class CardDetail extends Component {
   }
 
   render() {
-    const { cardKind, form, level,} = this.props;
+    const { cardKind, form, level,loading,userPagination,list } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 8 },
@@ -77,6 +89,7 @@ class CardDetail extends Component {
       labelCol:{ span:5},
       wrapperCol:{ span:17 }
     }
+    const values = parse(location.search.substr(1))
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
@@ -164,15 +177,10 @@ class CardDetail extends Component {
                   )}
                 </FormItem>
               </Col>
-            </Row>
-            {/*
-             此处放列表组件
-             */}
-            <Row>
               <Col span = { 16 }>
               </Col>
               <Col span = { 4 }>
-                <Link to="/crm/cardDetail"><Button type="default">返回</Button></Link>
+                <Link to={{ pathname:"/crm/card/detail", query: values}}><Button type="default">返回</Button></Link>
               </Col>
               <Col span = { 4 }>
                 <Button type="primary"  onClick={this.onSave.bind(this)}>保存</Button>
@@ -180,6 +188,7 @@ class CardDetail extends Component {
             </Row>
           </Form>
         </Card>
+        <CustomerByCard {...{loading, userPagination, list}} />
       </div>
     )
   }
@@ -188,18 +197,15 @@ class CardDetail extends Component {
 const CardForms = Form.create()(CardDetail);
 
 
-function CardDetailCom({ dispatch, cardKind, zheKou, level }) {
-  return (
-    <CardForms dispatch={dispatch} cardKind={cardKind} zheKou={zheKou} level={level}/>
-  )
-}
 function mapStateToProps(state) {
-  const { cardKind, level, zheKou, } = state.card;
+  const { cardKind, level, zheKou,userPagination, list } = state.card;
   return {
-    loading: state.loading.models.card,
+    loading: state.loading,
     cardKind,
+    userPagination,
+    list,
     level,
     zheKou,
   };
 }
-export default connect(mapStateToProps)(CardDetailCom)
+export default connect(mapStateToProps)(CardForms)

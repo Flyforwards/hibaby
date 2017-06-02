@@ -74,6 +74,7 @@ class CardFind extends Component {
     zheKou ? zheKou.map(function(elem,index){
       limitOptions.push(<Option key={elem.id}>{elem.name}</Option>)
     }) : null;
+    const add = !this.props.permissionAlias.contains('CARD_ADD');
     return (
       <div className="cardFind" style={{ overflow:"hidden" }}>
         <Form>
@@ -87,7 +88,7 @@ class CardFind extends Component {
             </Col>
             <Col span={ 7 }>
               <Button type="primary" onClick={this.onSearch.bind(this)} size="large" style={{width:'120px',height:'40px',lineHeight:'38px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
-              <Link to={{ pathname: '/crm/cardInfo' }} href="#"><Button type="primary" style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button></Link>
+              <Link to={{ pathname: '/crm/card/add' }} ><Button disabled={add} type="primary" style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button></Link>
             </Col>
           </Row>
 
@@ -134,20 +135,16 @@ class CardFind extends Component {
 
 const CardKindForm = Form.create()(CardFind);
 
-function CardFindCom({ dispatch , typeValues ,zheKou, pagination}) {
-
-  return (
-    <CardKindForm dispatch={dispatch} typeValues={typeValues} zheKou={ zheKou } pagination={ pagination }/>
-  )
-}
 function mapStateToProps(state) {
   const { cardInfo,typeValues, zheKou,pagination ,} = state.card;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.card,
+    permissionAlias,
     cardInfo,
     typeValues,
     zheKou,
     pagination,
   };
 }
-export default connect(mapStateToProps)(CardFindCom)
+export default connect(mapStateToProps)(CardKindForm)

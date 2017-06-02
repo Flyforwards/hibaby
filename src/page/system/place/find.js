@@ -36,7 +36,7 @@ class FindPlaceData extends React.Component {
     render() {
       const { getFieldDecorator } = this.props.form;
       const item = this.props.data ? this.props.data : {};
-      let {name='', description='', arr=[]} = item;
+      let {name='', description='',abName=''} = item;
       const formItemLayout = {
         labelCol: { span: 2 },
         wrapperCol: { span: 20 },
@@ -48,11 +48,11 @@ class FindPlaceData extends React.Component {
 
         fields = arr.map((value, index) => {
           return (
-            <FormItem {...formItemLayout} label={`选项 ${NUM_TO_TEXT[index]}`} key={index}>
+            <FormItem {...formItemLayout} label={`选项 ${index+1}`} key={index}>
               {getFieldDecorator(`field-${index}`,{
                 initialValue: value.name
               })(
-                <Input disabled={true} />
+                <Input readOnly={true} />
               )}
             </FormItem>
             )
@@ -64,16 +64,23 @@ class FindPlaceData extends React.Component {
                 <Card title = "字段信息:" >
                   <FormItem {...formItemLayout}  label='字段名称'>
                     {getFieldDecorator('name',{
-                      initialValue: name ? name : '',
+                      initialValue: name,
                     })(
-                      <Input disabled={true} />
+                      <Input readOnly={true} />
                     )}
                   </FormItem>
                   <FormItem {...formItemLayout} label='字段描述'>
                     {getFieldDecorator('description',{
-                      initialValue: description ? description : '',
+                      initialValue: description,
                     })(
-                      <Input disabled={true} />
+                      <Input readOnly={true} />
+                    )}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label='别名'>
+                    {getFieldDecorator('abName',{
+                      initialValue: abName,
+                    })(
+                      <Input readOnly={true} />
                     )}
                   </FormItem>
                 </Card>

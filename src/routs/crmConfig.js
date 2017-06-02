@@ -178,15 +178,6 @@ export default (app) => [
         })
       }
     },
-    // 会员卡管理
-    {
-      path: '/crm/info-card',
-      getComponent: (location, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('page/crm/infocard/InfoCard.jsx'))
-        })
-      }
-    },
     //卡种管理
     {
       path: '/crm/card',
@@ -199,7 +190,7 @@ export default (app) => [
     },
     //卡种信息
     {
-      path: '/crm/cardInfo',
+      path: '/crm/card/add',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/card'));
@@ -209,7 +200,7 @@ export default (app) => [
     },
     //查看卡种详情
     {
-      path: '/crm/cardDetail',
+      path: '/crm/card/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/card'));
@@ -219,7 +210,7 @@ export default (app) => [
     },
     //编辑卡种信息
     {
-      path: '/crm/cardEdit',
+      path: '/crm/card/edit',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/card'));

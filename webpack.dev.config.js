@@ -34,8 +34,9 @@ var webpackConfig = {
                     '^/crm/api': ''
                   },
                   changeOrigin: true
-              }, 
-            // 测试环境
+
+              },
+            // // 测试环境
             // '/crm/api/*': {
             //   target: 'http://test.hbbcare.com:8087/crm/api',
             //     pathRewrite: {
