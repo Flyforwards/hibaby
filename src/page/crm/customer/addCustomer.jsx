@@ -21,7 +21,6 @@ class addCustomer extends React.Component{
 
     const {editCustomer,isDetail}= this.props.users;
     const {addSuccess}= this.props.addCourse;
-    const {saveDone} = this.props.healthInformation;
 
     let TabPaneAry = [
       <TabPane className='tabsContent' tab="客户信息" key="1">
@@ -40,9 +39,6 @@ class addCustomer extends React.Component{
       </TabPane>)
     }
     let defaultActiveKey = '1';
-    if (saveDone){
-      defaultActiveKey = '2';
-    }
     if (addSuccess){
       defaultActiveKey = '3';
     }
@@ -61,9 +57,7 @@ class addCustomer extends React.Component{
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
-    addCourse:state.addCourse,
-    healthInformation: state.healthInformation
-
+    addCourse:state.addCourse
   };
 }
 export default connect(mapStateToProps)(addCustomer)
