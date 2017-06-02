@@ -103,7 +103,6 @@ class AddCourse extends Component {
       });
     }
   componentWillUnmount(){
-
     console.log("componentWillUnmount")
     this.props.dispatch({type:'addCourse/setAddCustomerTab',payload:false})
   }
