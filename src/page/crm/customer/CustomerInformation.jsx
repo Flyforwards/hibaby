@@ -388,15 +388,17 @@ function ExtensionInfo(props) {
 
   function memberOnChange(value) {
     props.form.resetFields(['specialIdentity']);
-    dispatch({type:'addCustomer/resetInput',payload:'specialIdentity'})
-
+    if (props.users.expandData){
+      dispatch({type:'addCustomer/resetInput',payload:'specialIdentity'})
+    }
   }
 
 
   function specialIdentityOnChange(value) {
     props.form.resetFields(['member']);
-    dispatch({type:'addCustomer/resetInput',payload:'member'})
-
+    if (props.users.expandData) {
+      dispatch({type: 'addCustomer/resetInput', payload: 'member'})
+    }
   }
   function PermanentProvinceSelect(e) {
     dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:true,dataId:e.key}})

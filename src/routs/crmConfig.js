@@ -17,6 +17,7 @@ export default (app) => [
     path: '/crm/customer/AddCustomerInformation',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
+         registerModel(app, require('models/addCourse'));
         registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/healthInformation'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
@@ -29,8 +30,19 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
+        registerModel(app, require('models/addCourse'));
         registerModel(app, require('models/healthInformation'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
+      })
+    }
+  },
+  {
+    path: '/crm/customer/Add/bindingPackages',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCourse'));
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/crm/customer/bindingPackages.jsx'))
       })
     }
   },

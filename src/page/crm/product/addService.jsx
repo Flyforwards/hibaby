@@ -55,8 +55,16 @@ class AddServiceed extends Component {
           selectedRows: [],
           loading: false,
         };
+        this.roomVisbled = false
     }
     componentWillMount() {
+    }
+    onSelect(value, option){
+      if(value == 43){
+        this.roomVisbled = true
+      }else{
+        this.roomVisbled = false
+      }
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
       this.setState({ selectedRows });
@@ -69,9 +77,8 @@ class AddServiceed extends Component {
         this.props.dispatch({
             type: 'packageInfo/getDictionary',
             payload: {
-              "id":5 ,
-              "softDelete": 0,
-              "type": 2
+              "abName":"TCLX" ,
+              "softDelete": 0
             }
         });
         this.props.dispatch({
@@ -102,17 +109,33 @@ class AddServiceed extends Component {
         if(fields.price){
           if(fields.type){
             if(serviceInfoList.length>=1){
-              this.props.dispatch({
-                  type: 'packageInfo/add',
-                  payload: {
-                    "name": fields.name,
-                    "price": fields.price,
-                    "serviceInfoList":serviceInfoList,
-                    "suiteId": fields.room,
-                    "type": fields.type
-                  }
-              });
-
+              if(this.roomVisbled){
+                if(fields.room){
+                  this.props.dispatch({
+                      type: 'packageInfo/add',
+                      payload: {
+                        "name": fields.name,
+                        "price": fields.price,
+                        "serviceInfoList":serviceInfoList,
+                        "suiteId": fields.room,
+                        "type": fields.type
+                      }
+                  });
+                }else{
+                  message.warning("请选择套房");
+                }
+              }else{
+                this.props.dispatch({
+                    type: 'packageInfo/add',
+                    payload: {
+                      "name": fields.name,
+                      "price": fields.price,
+                      "serviceInfoList":serviceInfoList,
+                      "suiteId":null,
+                      "type": fields.type
+                    }
+                });
+              }
             }else{
               message.warning("请选择服务项目");
             }
@@ -203,6 +226,7 @@ class AddServiceed extends Component {
                       rules: [],
                     })(
                     <Select dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}}
+                    onSelect = {this.onSelect.bind(this)}
                     >
                      {
                       roomList
@@ -222,7 +246,8 @@ class AddServiceed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                <div className="addServiceinfoSuite">
+                {
+                  this.roomVisbled?<div className="addServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
                   <FormItem
@@ -241,7 +266,9 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                 </Form>
-                </div>
+                </div>:null
+                }
+                
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
