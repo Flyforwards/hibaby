@@ -11,6 +11,8 @@ export default {
     addCustomerTab:'1',
     isDetail:false,
 
+    homePageIsDetail:false,
+
     baseData:[],
     expandData:'',
     remarkData:[],
@@ -70,8 +72,11 @@ export default {
     pageStatus(state, { payload: todo }){
       return {...state,isDetail:todo.data};
     },
+    homePageStatus(state, { payload: todo }){
+      return {...state,homePageIsDetail:todo.data};
+    },
 
-    
+
 
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
@@ -454,7 +459,8 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'));
+
+          yield put({type:'homePageStatus',payload:{data:true}})
 
         }
       }
@@ -521,20 +527,21 @@ export default {
 
       const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
       if (code == 0) {
-        if (remarkList.length > 0){
+        if (remarkList.length > 0) {
           yield put({
-            type:'savaRemark',
-            payload:{
-              id:values.id
+            type: 'savaRemark',
+            payload: {
+              id: values.id
             }
           });
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'));
+          yield put({type: 'homePageStatus', payload: {data: true}})
         }
       }
-      else {
+      else
+      {
         message(err);
       }
     },
@@ -564,9 +571,9 @@ export default {
       }
       else {
         message.success('信息保存成功');
-        yield put(routerRedux.push('/crm/customer/customerDetails'));
-      }
+        yield put({type: 'homePageStatus', payload: {data: true}});
 
+      }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
       const state = yield select(state => state.addCustomer);
@@ -654,6 +661,8 @@ export default {
             type: 'pageStatus',
             payload:{data:false}
           });
+          dispatch({type:'homePageStatus',payload:{data:true}});
+
           defDis(dispatch)
         };
         if (pathname === '/crm/customer/Add/HealthRecords') {
