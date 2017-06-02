@@ -198,7 +198,7 @@ function NutritionHealthInformation(props) {
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : 101
+            customerId : 104
           }
         })
       }

@@ -30,7 +30,7 @@ export default {
             dispatch({
               type: 'getHealthInformationListByCustomerId',
               payload:{
-                customerId : 102,
+                customerId : 104,
                 type : i
               }
             });
@@ -48,7 +48,7 @@ export default {
       const {data: { data, code,err} } = yield call(healthInformationService.saveHealthInformation, values);
       if (code == 0) {
         message.success("创建健康档案成功");
-        yield put({type:'setSaveDone',payload:{saveDone:true,type:values.type}} );
+        yield put({type:'setSaveDone',payload:{data}} );
       }else{
         message.error(err);
       }
@@ -87,7 +87,22 @@ export default {
       return {...state};
     },
     setSaveDone(state, { payload: { data }}){
-      return {...state,...data}
+      if(data){
+        let healthInfo = JSON.parse(data.healthInfo);
+        let saveDone = true;
+        let type = data.type;
+        if(data.type === 1){
+          return {...state,saveDone:saveDone,type:type, medicalHealthInformation : healthInfo}
+        }else if(data.type === 2){
+          return {...state,saveDone:saveDone,type:type, nutritionHealthInformation : healthInfo}
+        }else if(data.type === 3){
+          return {...state,saveDone:saveDone,type:type, skinHealthInformation : healthInfo}
+        }else if(data.type === 4){
+          return {...state,saveDone:saveDone,type:type, conclusionInformation : healthInfo}
+        }
+        return {...state};
+      }
+      return {...state};
     }
 
   },

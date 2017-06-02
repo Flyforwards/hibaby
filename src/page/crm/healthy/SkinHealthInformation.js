@@ -74,7 +74,7 @@ class SkinHealthInformation extends React.Component {
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : 102
+            customerId : 104
           }
         });
 
