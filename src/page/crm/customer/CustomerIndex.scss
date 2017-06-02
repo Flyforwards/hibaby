@@ -1,7 +1,51 @@
 
 .CustomerConent{
   min-width:1000px;
-  margin: 10px 1%;
+  margin: 10px;
+  .topSelect{
+    height:50px;
+    margin-top: 10px;
+    padding-top:10px;
+    .ant-btn{
+      border-radius: 5px;
+      font: 14px "微软雅黑";
+    }
+  }
+  .topAge{
+    height: 50px;
+    margin-top:10px;
+    label{
+      font: 14px "微软雅黑";
+    }
+    .age{
+      width: 130px;
+      height:30px;
+      float:left;
+    }
+    .PreData{
+      .ant-form-item-control {
+        width:128px;
+      }
+    }
+    .TireNum{
+      .ant-form-item-control {
+        width:106px;
+      }
+    }
+    .idCard{
+      .ant-form-item-control {
+        width:110px;
+      }
+    }
+    .Operator{
+      .ant-form-item-control {
+        width:100px;
+      }
+    }
+  }
+  .ant-form-item{
+    margin-bottom:0px;
+  }
 .mini .yt-admin-framework-content {
     transition: all .3s;
     margin-left: 60px;
@@ -245,7 +289,7 @@
 	font-family: '微软雅黑 Regular', '微软雅黑';
 	font-weight: 400;
 	font-style: normal;
-	font-size: 12px;
+	font-size: 14px;
 	div{
 		width:100%;
 		a{

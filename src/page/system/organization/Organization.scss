@@ -207,25 +207,14 @@ overflow: hidden;
 			text-decoration: none;
 		}
 		a{
-			margin-right:9px;
-			margin-left:5px;
+			margin: 0 3px;
 			color:#b87638;
 		}
     a:hover{
-			margin-right:9px;
-			margin-left:5px;
 			color:#0066ff;
 		}
-		.twoA{
-			margin-right:9px;
-			margin-left:5px;
-			color:#666;
-		}
-    .twoB{
-			margin-right:9px;
-			margin-left:5px;
-			color:#b87638;
-			pointer-events: none;
+		.twoA:hover{
+			color:#ff0000;
 		}
 	}
 }
