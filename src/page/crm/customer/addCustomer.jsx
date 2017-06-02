@@ -9,42 +9,48 @@ import CustomerDetails from './customerDetails'
 
 const TabPane = Tabs.TabPane;
 
-function addCustomer(props) {
+class addCustomer extends React.Component{
 
-  const {editCustomer,addCustomerTab,isDetail,homePageIsDetail}= props.users;
-  const {addSuccess}= props.addCourse;
-  function callback(key) {
-
-  }
-  let disabled = false
-  if(!props.users.expandData==""){
-    disabled = true
-  }
-  let TabPaneAry = [
-    <TabPane className='tabsContent' tab="客户信息" key="1">
-      {isDetail||homePageIsDetail ? <CustomerDetails/> : <CustomerInformation/>}
-    </TabPane>,
-  <TabPane tab="健康档案" key="2">
-    <UserHealthInformation/>
-    </TabPane>,
-    <TabPane tab="套餐" key="3" disabled={disabled}>
-     <AddCourse />
-  </TabPane>];
-
-  if(editCustomer){
-    TabPaneAry.push(<TabPane tab="会员卡" key="4">
-      Content of Tab Pane 3
-    </TabPane>)
+  constructor(props) {
+    super(props);
   }
 
-  return(
-    <div>
-      <Tabs  defaultActiveKey={addSuccess?'3':"1"} onChange={callback} type="card">
-        {TabPaneAry}
-      </Tabs>
-    </div>
-  )
+
+
+  render(){
+
+    const {editCustomer,addCustomerTab,isDetail,homePageIsDetail}= this.props.users;
+    const {addSuccess}= this.props.addCourse;
+
+    let TabPaneAry = [
+      <TabPane className='tabsContent' tab="客户信息" key="1">
+        {isDetail ? <CustomerDetails/> : <CustomerInformation/>}
+      </TabPane>,
+      <TabPane tab="健康档案" key="2">
+        <UserHealthInformation/>
+      </TabPane>,
+      <TabPane tab="套餐" key="3" disabled={!this.props.users.expandData}>
+        <AddCourse />
+      </TabPane>];
+
+    if(editCustomer){
+      TabPaneAry.push(<TabPane tab="会员卡" key="4">
+        Content of Tab Pane 4
+      </TabPane>)
+    }
+
+    return(
+      <div>
+        <Tabs  defaultActiveKey={addSuccess?'3':"1"} type="card">
+          {TabPaneAry}
+        </Tabs>
+      </div>
+    )
+
+  }
 }
+
+
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
