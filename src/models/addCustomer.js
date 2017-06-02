@@ -8,7 +8,6 @@ export default {
   namespace: 'addCustomer',
   state: {
     dataDetailId:101,
-    addCustomerTab:'1',
     isDetail:false,
 
     baseData:[],
@@ -64,9 +63,6 @@ export default {
       width:'15%',
     }]},
   reducers: {
-    setAddCustomerTab(state, { payload: todo }){
-      return {...state,addCustomerTab:todo.data};
-    },
     pageStatus(state, { payload: todo }){
       return {...state,isDetail:todo.data};
     },
@@ -644,31 +640,10 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/crm/customer/AddCustomerInformation') {
-          dispatch({
-            type: 'setAddCustomerTab',
-            payload:{data:'1'}
-          });
-
           isDetail(dispatch)
           defDis(dispatch)
         };
-        if (pathname === '/crm/customer/Add/HealthRecords') {
-          dispatch({
-            type: 'setAddCustomerTab',
-            payload:{data:'2'}
-          });
-          isDetail(dispatch)
 
-
-        };
-        if (pathname === '/crm/customer/Add/Package') {
-          dispatch({
-            type: 'setAddCustomerTab',
-            payload:{data:'3'}
-          });
-          isDetail(dispatch)
-
-        };
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
 
@@ -676,16 +651,7 @@ export default {
             type: 'pageStatus',
             payload:{data:true}
           });
-          dispatch({
-            type: 'getCustomerById',
-          });
-          dispatch({
-            type: 'getCustomerExtendById',
 
-          });
-          dispatch({
-            type: 'getCustomerRemarkById',
-          });
         }
       })
     }

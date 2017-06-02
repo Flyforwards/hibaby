@@ -86,9 +86,15 @@ class AddCourse extends Component {
       this.setState({
         UserServiceinfoVisible: false,
       })
+      this.props.dispatch({
+          type: 'addCourse/getCustomerPackageById',
+          payload: {
+             "dataId":this.props.users.dataDetailId
+          }
+      });
     }
     componentDidMount() {
-      console.log(this.props.users.dataDetailId)
+     // console.log(this.props.users.dataDetailId)
       this.props.dispatch({
           type: 'addCourse/getCustomerPackageById',
           payload: {
@@ -97,6 +103,7 @@ class AddCourse extends Component {
       });
     }
   componentWillUnmount(){
+
     console.log("componentWillUnmount")
     this.props.dispatch({type:'addCourse/setAddCustomerTab',payload:false})
   }
@@ -106,6 +113,8 @@ class AddCourse extends Component {
       const columns = this.columns;
       if(this.props.getCustomerPackageById != null){
         if(this.props.getCustomerPackageById.length>=1){
+          let dataKey = 0
+          let dataKey2 = 1000
           this.props.getCustomerPackageById.map((item)=>{
             let status = "使用中"
             if(item.status == 1){
@@ -114,10 +123,12 @@ class AddCourse extends Component {
             let addCourseList=item.serviceInfoDOs
             let addName=item.packageInfoDO
             addCourseList.map((item)=>{
-              // item.key=item.customerId
+              item.key=item.id
             })
             loadingName = false
             let x = null
+             dataKey++
+             dataKey2++
             switch (addName.type)
             {
             case 43:
@@ -130,13 +141,14 @@ class AddCourse extends Component {
               x="宝宝套餐";
               break;
             }
-            dataList.push(<div className="addCourseList" key={addName.id}>
+            console.log(addCourseList)
+            dataList.push(<div className="addCourseList" key={dataKey}>
                 <p>套餐信息:</p>
                 <p className="namep">套餐名称: {addName.name}</p>
                 <p className="pricep">套餐价格: ￥{addName.price}</p>
                 <p className="typep">套餐类型: {x}</p>
                 <br/>
-                <div className="viewServiceinfoTable" key={addName.id+""}>
+                <div className="viewServiceinfoTable" key={dataKey2}>
                   <p>服务项目:</p> <span className="status">{status}</span>
                   <Table bordered
                     columns={ columns }
@@ -146,10 +158,10 @@ class AddCourse extends Component {
                   />
                 </div>
             </div>)
-            console.log("sdsd",dataList)
           })
         }
       }
+        console.log("sdsd",dataList)
         return (
             <div className="addCourse">
               <Button type="primary" onClick={this.addCourse.bind(this)}>添加套餐</Button>
