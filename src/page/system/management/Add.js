@@ -63,7 +63,7 @@ class AddGroupChar extends React.Component {
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'save/saveData',
-            payload: { name: values.name, type: 1, description: values.description, dictionarySideDOs: names }
+            payload: { name: values.name, type: 1, abName: values.abName, description: values.description, dictionarySideDOs: names }
           })
         }
       })
@@ -108,14 +108,22 @@ class AddGroupChar extends React.Component {
                       </div>
                     )}
                   </FormItem>
-                    <FormItem className = "div">
-                    {getFieldDecorator('description', {rules: [{ required: true, message: '字段描述为必填项！' }],
-                  })(<div>
-                        <p className = "label"> 字段描述 </p>
+                  <FormItem className = "div">
+                  {getFieldDecorator('description', {rules: [{ required: true, message: '字段描述为必填项！' }],
+                })(<div>
+                      <p className = "label"> 字段描述 </p>
+                      <Input className="input"/>
+                    </div>
+                  )}
+                  </FormItem>
+                  <FormItem className = "div">
+                    {getFieldDecorator('abName', {rules: [{ required: true, message: '别名为必填项！' }],
+                    })(<div>
+                        <p className = "label"> 别名 </p>
                         <Input className="input"/>
                       </div>
                     )}
-                    </FormItem>
+                  </FormItem>
                 </Form>
             </Card>
             <Card title = "下拉选项:" >

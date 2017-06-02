@@ -150,11 +150,18 @@ class userHealthInformation extends React.Component {
         }))
       },
     }
+    const editCustomer = this.props.users.editCustomer;
+
     return (
       <div className = "user-health-cent">
         <Tabs className="tabsContent" defaultActiveKey="1" type="card">
           <TabPane tab="医疗健康档案" key="1">
-            <HospitalHealthy />
+            if(editCustomer){
+
+            }else{
+              <HospitalHealthy />
+            }
+
           </TabPane>
           <TabPane tab="营养部健康档案" key="2">
             <NutritionHealthInformation/>
@@ -172,7 +179,9 @@ class userHealthInformation extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return state;
+  return {
+    users: state.addCustomer,
+  };
 }
 
 export default connect(mapStateToProps)(userHealthInformation);

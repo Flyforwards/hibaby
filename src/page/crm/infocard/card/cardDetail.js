@@ -23,6 +23,47 @@ class CardDetail extends Component {
     this.state={
       modalVisible:false,
     }
+
+    this.columns = [{
+      title: '客户姓名',
+      dataIndex: 'name',
+      key: 'name'
+    },{
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age'
+    }, {
+      title: '预产期',
+      dataIndex: 'dueDate',
+      render: (record) => {
+        return moment(record).format("YYYY-MM-DD")
+      }
+    }, {
+      title: '怀孕周期',
+      dataIndex: 'gestationalWeeks',
+      key: 'gestationalWeeks'
+
+    }, {
+      title: '第几胎',
+      dataIndex: 'fetus',
+      key: 'fetus'
+    },{
+      title: '联系方式',
+      dataIndex: 'contact',
+      key: 'contact'
+    },{
+      title: '购买套餐',
+      dataIndex: 'purchasePackage',
+      key: 'purchasePackage'
+    },{
+      title: '合同编号',
+      dataIndex: 'contractNumber',
+      key: 'contractNumber'
+    },{
+      title: '添加人',
+      dataIndex: 'operator1',
+      key: 'operator1'
+    }];
   }
 
   componentWillMount() {
@@ -245,7 +286,7 @@ class CardDetail extends Component {
                   <Button className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
               </Col>
               <Col span = { 4 }>
-                <Link to={{ pathname: '/crm/cardEdit', query: { data:location.search.substr(1).split('=')[1] } }} ><Button type="primary" >编辑</Button></Link>
+                <Link to={{ pathname: '/crm/card/edit', query: { data:location.search.substr(1).split('=')[1] } }} ><Button type="primary" >编辑</Button></Link>
               </Col>
             </Row>
           </Form>
@@ -313,18 +354,6 @@ class CardDetail extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={4} style={{width:'251px'}} >
-                <FormItem  {...formChooseOneLayout} label="会员身份" >
-                  {getFieldDecorator('member', {rules: [{ required: false }],
-                  })(
-                    <Select   placeholder="请选择" >
-                      {
-                        options
-                      }
-                    </Select>
-                  )}
-                </FormItem>
-              </Col>
               <Col span={4} style={{width:'180px'}}>
                 <FormItem  {...formChooseOneLayout} label="操作者2" >
                   {getFieldDecorator('operator2', {rules: [{ required: false }],
@@ -337,7 +366,6 @@ class CardDetail extends Component {
           </Form>
           <Table {...tableProps} bordered size="small" rowKey = { record=>record.id } columns={ this.columns }/>
         </Card>
-
         <Modal
           title="提示"
           wrapClassName="vertical-center-modal"

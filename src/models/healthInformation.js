@@ -20,7 +20,7 @@ export default {
     setup({ dispatch, history }) {  // eslint-disable-line
     },
   },
-
+  //异步请求
   effects: {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'save' });
@@ -35,11 +35,18 @@ export default {
       }
     },
   },
-
+  //同步请求
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
     },
+
+    getHealthInformation(state, { payload: { id }}){
+      let healthInformation = { ...state, healthInformationId : id }
+      return healthInformation;
+    }
+
+
   },
 
 };
