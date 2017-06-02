@@ -1,31 +1,31 @@
 @import '../theme/config.scss';
 .mini {
     .yt-admin-framework-sidebar {
-        width: 61px;  
+        width: 61px;
     .ant-menu-root {
-        
+
         width: 60px;
     }
 
     .ant-menu-root > li > div {
-        
+
         padding: 0px 16px 0 24px !important;
         &:after {
             right: 6px;
-            
+
         }
     }
     .ant-menu-root > li > div {
         overflow: hidden;
     }
     .ant-menu-root > li > div > span > span {
-        
+
         opacity: 0;
         width: 0;
     }
 
     .ant-menu-root > li.ant-menu-item {
-        
+
         padding: 0px 16px 0 24px !important;
     }
     .ant-menu-root > li.ant-menu-item > a {
@@ -42,15 +42,15 @@
 .ant-menu-root {
     width: 240px;
     margin-top: 14px;
-    background-color:#eeeeee; 
+    background-color:#eeeeee;
 }
 
 .ant-menu-root > li > div > span > span {
-    
+
 }
 
 .ant-menu-root > li.ant-menu-item > a > span {}
-    
+
 
 .ant-menu-inline .ant-menu-item,
 .ant-menu-vertical .ant-menu-item {
@@ -69,7 +69,7 @@
 .yt-admin-framework-sidebar {
     width: 241px;
     border-right: 1px solid #ddd;
-    background-color:#eeeeee; 
+    background-color:#eeeeee;
     float: left;
     margin-right: -200px;
     background-color: #eeeeee;
@@ -108,10 +108,10 @@
         .yt-admin-framework-sidebar {
             overflow: hidden;
             width: 0;
-            
+
         }
         .ant-menu-root {
-            
+
             width: 0;
         }
         .ant-menu-root > li > div,
@@ -151,22 +151,22 @@
     text-align: left;
     background-color:#e6e6e6;
     margin-top:10px;
-    margin-left:10px;  
+    margin-left:10px;
     position: relative;
     .fa-copyright:before {
         content: "\F1F9";
         top:8px;
-        left:10px; 
+        left:10px;
         position:absolute;
         font-size:26px;
-    } 
+    }
 }
 .ant-menu-dark .ant-menu-submenu-title:hover {
 	color:#666;
 	background-color:#999;
 }
 
-.ant-menu-inline .ant-menu-item, {
+.ant-menu-inline .ant-menu-item {
     font-family: '微软雅黑 Regular', '微软雅黑';
     font-weight: 400;
     font-style: normal;
@@ -177,22 +177,22 @@
 }
 .ant-menu-dark.ant-menu-inline .ant-menu-item{
 	margin-left:10px;
-	background-color:#999; 
-	margin-top:10px; 
+	background-color:#999;
+	margin-top:10px;
 }
 .ant-menu-submenu-inline .ant-menu-submenu-open .ant-menu-submenu-selected .ant-menu-submenu {
 	background-color: #fff;
 }
 .ant-menu-dark .ant-menu-inline.ant-menu-sub {
     background-color:#fff;
-    margin-top:-0px; 
+    margin-top:-0px;
     margin-left: 20px;
     .ant-menu-item{
     	margin-top:-0px;
     }
 }
 #yt_demo-empty$Menu{
-    margin-top:-10px; 
+    margin-top:-10px;
 }
 .ant-menu-dark .ant-menu-inline.ant-menu-sub {
     background-color:#fff;
@@ -218,7 +218,7 @@
     .fa-copyright:before {
         content: "\F1F9";
         top:8px;
-        left:10px; 
+        left:10px;
         position:absolute;
         font-size:26px;
     }
@@ -243,7 +243,7 @@
         .fa-copyright:before {
             content: "\F1F9";
             top:9px;
-            left:20px; 
+            left:20px;
             position:absolute;
             font-size:2px;
         }
