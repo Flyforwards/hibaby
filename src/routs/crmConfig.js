@@ -14,29 +14,7 @@ export default (app) => [
     },
   // 添加客户
   {
-    path: '/crm/customer/Add/CustomerInformation',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/addCustomer'));
-        registerModel(app, require('models/healthInformation'));
-        cb(null, require('page/crm/customer/addCustomer.jsx'))
-      })
-    }
-  },
-  // 添加健康档案
-  {
-    path: '/crm/customer/Add/HealthRecords',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/addCustomer'));
-        registerModel(app, require('models/healthInformation'));
-        cb(null, require('page/crm/customer/addCustomer.jsx'))
-      })
-    }
-  },
-  //添加套餐
-  {
-    path: '/crm/customer/Add/Package',
+    path: '/crm/customer/AddCustomerInformation',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));

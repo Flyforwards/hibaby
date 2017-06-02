@@ -132,7 +132,7 @@ const formItemLayout = {
 const NoTitleformItemLayout = {labelCol: { span: 0 },wrapperCol: { span: 24 }}
 
 
-function cusFromItem(getFieldDecorator,dict) {
+function cusFromItem(form,dict) {
 
   function fileRule(rule, value, callback) {
     if (value.length > 0) {
@@ -140,6 +140,27 @@ function cusFromItem(getFieldDecorator,dict) {
       return;
     }
     callback('请上传文件');
+  }
+
+  const { getFieldDecorator } = form;
+
+
+
+  function identityRule(rule, value, callback) {
+    let tempVlue = ''
+    if(rule.field === 'member'){
+      tempVlue = (form.getFieldValue('specialIdentity'))
+    }
+    else{
+      tempVlue = (form.getFieldValue('member'))
+    }
+
+
+    if (value || tempVlue) {
+      callback();
+      return;
+    }
+    callback('请输入会员身份或特殊身份');
   }
 
   let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || dict.submitStr}!`}],};
@@ -159,19 +180,25 @@ function cusFromItem(getFieldDecorator,dict) {
     rules = {rules: [{validator:fileRule}]};
   }
 
+  if (dict.submitStr === 'member' || dict.submitStr === 'specialIdentity')
+  {
+    rules = {rules: [{validator:identityRule}]};
+  }
+
+
   return(
-  dict.title ?
-    <FormItem  {...formItemLayout} label={dict.title}>
-      {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
-        cusComponent(dict)
-      )}
-    </FormItem>
-    :
-    <FormItem formItemLayout={NoTitleformItemLayout} label={dict.title}>
-      {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
-        cusComponent(dict)
-      )}
-    </FormItem>
+    dict.title ?
+      <FormItem  {...formItemLayout} label={dict.title}>
+        {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
+          cusComponent(dict)
+        )}
+      </FormItem>
+      :
+      <FormItem formItemLayout={NoTitleformItemLayout} label={dict.title}>
+        {getFieldDecorator(dict.submitStr,{...rules,initialValue:dict.initValue})(
+          cusComponent(dict)
+        )}
+      </FormItem>
   )
 }
 
@@ -190,13 +217,13 @@ function datacompare(dataArray,compareArray,selectArray) {
       if (array)
       {
         for(let i = 0;i<array.length;i++){
-        const subDict = array[i];
-        if (subDict.id == id){
-          let str =  subDict.name || subDict.description || subDict.nation;
-          dict.initValue = {key: id, label: str}
-          break;
+          const subDict = array[i];
+          if (subDict.id == id){
+            let str =  subDict.name || subDict.description || subDict.nation;
+            dict.initValue = {key: id, label: str}
+            break;
+          }
         }
-      }
       }
     }
     else {
@@ -214,8 +241,6 @@ function BaseInfo(props) {
   const {operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
     provinceData,cityData} = props.users;
   const {dispatch} = props;
-
-  const { getFieldDecorator } = props.form;
 
 
   const guestInformationSource = [];
@@ -303,7 +328,7 @@ function BaseInfo(props) {
 
     baseInfoDiv.push(
       <Col span={6} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+        {cusFromItem(props.form,dict)}
       </Col>
     );
   }
@@ -314,7 +339,7 @@ function BaseInfo(props) {
     let dict = baseInfo[i];
     addressDiv.push(
       <Col span={dict.span} offset={dict.offset} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+        {cusFromItem(props.form,dict)}
       </Col>
     )
   }
@@ -343,8 +368,8 @@ function BaseInfo(props) {
         <Row>
           {addressDiv[0]}
           <Col offset={1} span={11}>
-              {addressDiv[1]}
-              {addressDiv[2]}
+            {addressDiv[1]}
+            {addressDiv[2]}
           </Col>
           {addressDiv[3]}
         </Row>
@@ -357,14 +382,18 @@ function BaseInfo(props) {
 
 function ExtensionInfo(props) {
 
+  const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
+    headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
+  const {dispatch} = props;
 
   function memberOnChange(value) {
+      dispatch({type:'resetInput',payload:{specialIdentity:-10}})
     props.form.resetFields(['specialIdentity']);
   }
 
 
   function specialIdentityOnChange(value) {
-
+      dispatch({type:'resetInput',payload:{member:-10}})
     props.form.resetFields(['member']);
 
   }
@@ -402,13 +431,7 @@ function ExtensionInfo(props) {
     props.form.validateFields(['contractAppendices'], { force: false },tt);
   }
 
-  const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
-    headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
-  const {dispatch} = props;
 
-
-
-  const { getFieldDecorator } = props.form;
 
   const memberChis = [];
 
@@ -476,7 +499,7 @@ function ExtensionInfo(props) {
     let dict = expandInfo[i];
     expandInfoDiv.push(
       <Col span={8} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+        {cusFromItem(props.form,dict)}
       </Col>
     );
   }
@@ -488,7 +511,7 @@ function ExtensionInfo(props) {
 
     addressDiv.push(
       <Col span={dict.span} offset={dict.offset} key={i}>
-        {cusFromItem(getFieldDecorator,dict)}
+        {cusFromItem(props.form,dict)}
       </Col>
     );
   }
@@ -619,7 +642,6 @@ class customerInformation extends React.Component{
   }
 
 
-
   render() {
 
     return (
@@ -646,4 +668,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(customerInformation) ;
+
 

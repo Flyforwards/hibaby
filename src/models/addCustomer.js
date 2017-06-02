@@ -70,8 +70,11 @@ export default {
     pageStatus(state, { payload: todo }){
       return {...state,isDetail:todo.data};
     },
-
-
+    resetInput(state, { payload: todo }){
+      let exdata = state.expandData;
+      exdata = {...exdata,todo}
+      return {...state,expandData:exdata};
+    },
     addRemark(state, { payload: todo }){
       const {remarkList} = state;
 
@@ -642,7 +645,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/crm/customer/Add/CustomerInformation') {
+        if (pathname === '/crm/customer/AddCustomerInformation') {
           dispatch({
             type: 'setAddCustomerTab',
             payload:{data:'1'}
