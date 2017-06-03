@@ -92,7 +92,6 @@
 			margin:10px 0 10px 10px;
 		}
 		.ant-table-wrapper{
-			width: 1010px;
 			margin: 0 10px;
 		}
 		.ant-table-thead > tr > th {
@@ -133,11 +132,14 @@
 		border:1px solid #999;
 		p{
 			font-family: '微软雅黑 Bold', '微软雅黑';
-		    font-weight: 700;
-		    font-style: normal;
+		    font-weight: 900;
 		    font-size: 14px;
 				margin:10px 0 10px 20px;
 		}
+		.namep{
+      margin-left:50px;
+			font-weight:100;
+    }
 		.room{
 			margin-left: 40px;
 			margin-bottom:10px;

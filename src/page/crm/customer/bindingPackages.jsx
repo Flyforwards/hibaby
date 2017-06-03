@@ -141,8 +141,9 @@ class BindingPackagesed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                {suiteId?<div>套房 {suiteId}</div>:null}
-
+                {suiteId?<div className="viewServiceinfoSuite">
+                <p className="titleName">套房:</p>
+                <p className="namep">  套房：{suiteId}</p></div>:null}
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>确定</Button>
             </div>

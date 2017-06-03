@@ -142,6 +142,7 @@ class AddCourse extends Component {
             }
             console.log(addCourseList)
             dataList.push(<div className="addCourseList" key={dataKey}>
+              <div className="viewServiceinfoBox">
               <div className="viewServiceinfoTitle">
                 <p className="titleName">套餐信息:</p>
                 <p className="namep">套餐名称: {addName.name}</p>
@@ -156,6 +157,7 @@ class AddCourse extends Component {
                     pagination = { false }
                     loading = { loadingName }
                   />
+                </div>
                 </div>
             </div>)
           })
