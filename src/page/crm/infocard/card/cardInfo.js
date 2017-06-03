@@ -2,6 +2,7 @@
 * updated by Flyforwards 2017/5/25
 *
 * */
+
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col } from 'antd';
@@ -9,6 +10,7 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 import { Link } from 'react-router';
+import DictionarySelect from 'common/dictionary_select';
 
 class CardModal extends Component {
   componentWillMount() {
