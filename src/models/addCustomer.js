@@ -26,6 +26,7 @@ export default {
     permanentCityData:[],
     nationalData:[],
     modal:false,
+    loading:false,
     headIcon:'',
     headIconUrl:'',
 
@@ -552,6 +553,7 @@ export default {
       }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
+
       const state = yield select(state => state.addCustomer);
 
       const dataDetailId = state.dataDetailId;
