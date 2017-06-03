@@ -5,37 +5,37 @@
 export const DictionaryArray = {
   // 会员卡级别
   'MEMBER': {
-    ab_name: 'HYKJB',
+    abName: 'HYKJB',
     softDelete: 0
   },
   // 孕产次
   'FETUS': {
-    ab_name: 'YCC',
+    abName: 'YCC',
     softDelete: 0
   },
   // 客资来源
   'ResourceCustomer': {
-    ab_name: 'KZLY',
+    abName: 'KZLY',
     softDelete: 0
   },
   // 医院
   'Hospital': {
-    ab_name: 'FMYY',
+    abName: 'FMYY',
     softDelete: 0
   },
   // 关注点
   'Focus': {
-    ab_name: 'GZD',
+    abName: 'GZD',
     softDelete: 0
   },
   // 套餐类型
   'IntentionPackage': {
-    ab_name: 'TCLX',
+    abName: 'TCLX',
     softDelete: 0
   },
   // 网络搜索词
   'WebSearchTerm': {
-    ab_name: 'WLSSC',
+    abName: 'WLSSC',
     softDelete: 0
   },
 }

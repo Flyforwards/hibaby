@@ -1,7 +1,7 @@
 /**
  * Created by Flyforwards on 2017/5/25.
  */
-
+import DictionarySelect from 'common/dictionary_select';
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon, Card, Radio, Row, Col, Popconfirm, DatePicker, Modal, InputNumber, Table } from 'antd';
