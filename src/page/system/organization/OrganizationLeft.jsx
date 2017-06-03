@@ -164,7 +164,7 @@ class OrganizationLefted extends React.Component {
 
       if (this.state.upblock == 'none') {
         this.setState({
-          ulTop: e.pageY - e.offsetY - 31,
+          ulTop: e.pageY - e.offsetY - 44,
           upblock: 'block'
         })
         return
