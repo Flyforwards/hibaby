@@ -399,7 +399,7 @@ class AddUsered extends React.Component {
             </FormItem>
           </Form>
            <Button type="primary" className="saveButton" onClick={this.handleSave}>保存</Button>
-           <Button type="primary" className="returnButton" onClick={this.handelReturn}>返回</Button>
+           <Button type="default" className="returnButton" onClick={this.handelReturn}>返回</Button>
           <SelectTheNodeFrom
            visible={ this.state.visible}
            onCancel ={ this.handleCreateModalCancel.bind(this) }

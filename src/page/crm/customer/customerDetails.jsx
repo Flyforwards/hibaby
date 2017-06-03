@@ -5,13 +5,13 @@ import { routerRedux } from 'dva/router';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
 
+import {Icon,Table, Modal,Row, Col,Button,Spin} from 'antd';
 
-import {Icon,Table, Modal,Row, Col,Button} from 'antd';
 const confirm = Modal.confirm;
 
 function rowDiv(dict) {
-  let titSpan = 7;
-  let contentSpan = 17;
+  let titSpan = 8;
+  let contentSpan = 16;
   if (dict.title === '现住址' || dict.title === '户籍地址'){
     titSpan = 2;
     contentSpan = 22
@@ -71,7 +71,7 @@ function BaseInfo(props) {
   }
 
   return(
-      <div className='contentDiv'>
+      <div className='contentDiv detail'>
         <h3>基本信息</h3>
           <Row>
             {baseInfoDiv}
@@ -130,7 +130,7 @@ function ExtensionInfo(props) {
 
 
   return(
-        <div className='contentDiv'>
+        <div className='contentDiv detail'>
           <h3>扩展信息</h3>
 
           <Row>
@@ -165,10 +165,8 @@ function Remark(props) {
   const {remarkListColumns} = props.users;
   const remarkList = props.users.remarkData;
   return(
-    <div className='contentDiv'>
-        <Row>
+    <div className='contentDiv detail'>
           <h3>客户备注</h3>
-        </Row>
         <Table texta dataSource={remarkList} columns={remarkListColumns} />
     </div>
   )
@@ -180,7 +178,6 @@ function Remark(props) {
 class customerDetails extends React.Component{
   constructor(props) {
     super(props);
-
     this.dispatch = props.dispatch;
     this.netData = props.users.baseData;
     this.editCustomer = false;
@@ -236,26 +233,28 @@ class customerDetails extends React.Component{
       ary.push(<Remark  {...this.props}/>)
     }
 
+    const {loading} = this.props;
+
     return (
       <div className="customerContent">
-        <BaseInfo  {...this.props}/>
-        {ary}
-        <BigImageModal
-          images={this.props.users.bigImageData}
-          isOpen={this.props.users.bigImageHidden}
-          onClose={this.handleCancel.bind(this)}
-        />
+        <Spin spinning={loading.effects['addCustomer/getCustomerById'] !== undefined ? loading.effects['addCustomer/getCustomerById']:false}>
+          <BaseInfo  {...this.props}/>
+          {ary}
+          <BigImageModal
+            images={this.props.users.bigImageData}
+            isOpen={this.props.users.bigImageHidden}
+            onClose={this.handleCancel.bind(this)}
+          />
 
-        <div className='savaDiv'>
-          <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
-          <Button className='backBtn' type="danger" onClick={this.onDelete.bind(this)}>删除</Button>
-          <Button className='backBtn' type="primary" onClick={this.editBtnClick.bind(this)}>编辑</Button>
-        </div>
+          <div className='savaDiv'>
+            <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
+            <Button className='backBtn' type="danger" onClick={this.onDelete.bind(this)}>删除</Button>
+            <Button className='backBtn' type="primary" onClick={this.editBtnClick.bind(this)}>编辑</Button>
+          </div>
+        </Spin>
       </div>
     )
   }
-
-
 }
 
 
@@ -263,6 +262,7 @@ function mapStateToProps(state) {
   return {
     users: state.addCustomer,
     customer:state.customer,
+    loading:state.loading,
   };
 }
 

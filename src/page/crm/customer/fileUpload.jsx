@@ -1,9 +1,11 @@
-import { Upload, Icon,Button, Modal } from 'antd';
+import { Upload, message, Modal } from 'antd';
 import React from 'react';
+import {local, session} from 'common/util/storage.js'
 
 class PicturesWall extends React.Component {
   constructor(props) {
     super(props);
+    this.loading = false;
     this.state = {
       previewVisible: false,
       previewImage: '',
@@ -44,19 +46,32 @@ class PicturesWall extends React.Component {
   }
 
   onRemove = (file) => {
-    this.props.deleteFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]});
+    this.props.deleteFun({name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
   }
 
   handleChange = ( {file, fileList} ) => {
-    if (file.status === 'done') {
 
+    if(this.props.loadProgress){
+      if (file.status === "uploading")
+      {
+        this.loading = true;
+
+      }else {
+        this.loading = false;
+      }
+      this.props.loadProgress(this.loading);
+    }
+
+    if (file.status === 'done') {
       this.props.fun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
     }
+
     this.setState({
       fileList
     })
-
   }
+
+
 
   render() {
     const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
@@ -65,9 +80,11 @@ class PicturesWall extends React.Component {
         <Upload
           name="file"
           action="/crm/api/v1/uploadImg"
+          headers={{'USER-TOKEN':session.get("token")}}
           showUploadList = {!this.props.isHead}
           defaultFileList={defaultFileList}
           filelist={fileList}
+          multiple={true}
           beforeUpload={this.beforeUpload.bind(this)}
           onPreview={this.handlePreview.bind(this)}
           onChange={this.handleChange.bind(this)}

@@ -26,12 +26,15 @@ export default {
     permanentCityData:[],
     nationalData:[],
     modal:false,
+    loading:false,
     headIcon:'',
     headIconUrl:'',
 
     operator:'',
 
     editCustomer:false,
+
+    headIconSpin:false,
 
     memberNumberValue:'',
     purchasePackageValue:'',
@@ -63,6 +66,10 @@ export default {
       width:'15%',
     }]},
   reducers: {
+
+    updataHeadIconSpin(state, { payload: todo }){
+      return {...state,headIconSpin:todo};
+    },
     pageStatus(state, { payload: todo }){
       return {...state,isDetail:todo.data};
     },
@@ -181,6 +188,7 @@ export default {
           width:'15%',
         }]};
     },
+
     deleteContractDLC(state, { payload: todo }){
       let arr = state.lookContractDLC;
       for(var i=0; i<arr.length; i++) {
@@ -552,6 +560,7 @@ export default {
       }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
+
       const state = yield select(state => state.addCustomer);
 
       const dataDetailId = state.dataDetailId;
