@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal, Button } from 'antd'
 import PropTypes from 'prop-types'
+import './activityIndex.scss'
 
 class appointmentModalFrom extends Component {
   constructor(props) {
@@ -36,10 +37,10 @@ class appointmentModalFrom extends Component {
       >
         <div>
           <div>
-            <Button key="1" onClick={ this.onClick.bind(this,true) }> 会员预约 </Button>
+            <Button className="subscribe" key="1" onClick={ this.onClick.bind(this,true) }> 会员预约 </Button>
           </div>
           <div>
-            <Button key="2" onClick={ this.onClick.bind(this,false) }> 非会员预约 </Button>
+            <Button className="subscribe" key="2" onClick={ this.onClick.bind(this,false) }> 非会员预约 </Button>
           </div>
         </div>
       </Modal>

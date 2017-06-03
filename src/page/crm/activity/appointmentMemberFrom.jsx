@@ -5,7 +5,7 @@ import { connect } from 'dva'
 import { Modal,Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row, Col,InputNumber } from 'antd'
 import DictionarySelect from 'common/dictionary_select';
 import PropTypes from 'prop-types'
-import './activityIndex.scss'
+import './appointmentMemberFrom.scss'
 const FormItem = Form.Item;
 const createForm = Form.create
 const { MonthPicker } = DatePicker
@@ -157,7 +157,7 @@ class AppointmentMemberFrom extends Component {
       >
         <div className="activity-cent">
           <Form>
-            <div>
+            <div className="activityTop">
               <Row style={{width:'1116px'}}>
                 <Col span={10} style={{float:'left'}}>
                   <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
@@ -179,6 +179,7 @@ class AppointmentMemberFrom extends Component {
                 </Col>
               </Row>
             </div>
+            <div className="activityTitle">
             <Row>
               <Col span={4} style={{width:'140px'}}>
                 <FormItem {...formChooseOneLayout}  label="年龄" >
@@ -188,7 +189,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={3}  style={{width:'140px'}}>
+              <Col span={3}  style={{width:'90px'}}>
                 <FormItem {...formChooseLayout} style={{width:'100%'}}>
                   {getFieldDecorator('age2', {rules: [{ required: false }],
                   })(
@@ -197,7 +198,7 @@ class AppointmentMemberFrom extends Component {
                 </FormItem>
 
               </Col>
-              <Col span={4} style={{width:'251px'}}>
+              <Col span={4} style={{width:'180px'}}>
                 <FormItem {...formChooseOneLayout}  label="预产期" >
                   {getFieldDecorator('time', {rules: [{ required: false }],
                   })(
@@ -207,7 +208,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={4} style={{width:'251px'}}>
+              <Col span={4} style={{width:'170px'}}>
                 <FormItem  {...formChooseOneLayout} label="第几胎" >
                   {getFieldDecorator('fetus', {rules: [{ required: false }],
                   })(
@@ -215,7 +216,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={4} style={{width:'251px'}} >
+              <Col span={4} style={{width:'190px'}} >
                 <FormItem  {...formChooseOneLayout} label="会员身份" >
                   {getFieldDecorator('member', {rules: [{ required: false }],
                   })(
@@ -227,7 +228,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={4} style={{width:'180px'}}>
+              <Col span={4} style={{width:'170px'}}>
                 <FormItem  {...formChooseOneLayout} label="操作者2" >
                   {getFieldDecorator('operator2', {rules: [{ required: false }],
                   })(
@@ -236,6 +237,7 @@ class AppointmentMemberFrom extends Component {
                 </FormItem>
               </Col>
             </Row>
+            </div>
           </Form>
           <Card>
             <div className="card-title">
