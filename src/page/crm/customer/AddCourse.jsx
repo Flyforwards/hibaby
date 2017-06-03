@@ -163,7 +163,7 @@ class AddCourse extends Component {
           })
         }
       }
-        console.log("sdsd",dataList)
+
         return (
             <div className="addCourse">
               <Button className="AddBtn" type="primary" onClick={this.addCourse.bind(this)}>添加套餐</Button>

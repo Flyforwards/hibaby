@@ -23,14 +23,6 @@ export function getCardType(values) {
 
 }
 
-//获取会员卡级别
-export function getLevel(values) {
-  return request('/crm/api/v1/dictionary/getDictionary', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-};
-
 
 //根据卡种id获取卡种信息
 export function getMembershipcardById(values) {

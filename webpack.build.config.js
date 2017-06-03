@@ -58,16 +58,16 @@ var webpackConfig = {
                 loader: 'babel',
             }, {
                 test: /\.css$/,
-                // loader: 'style-loader!css-loader!postcss-loader',
-                loader: ExtractTextPlugin.extract(['css', 'postcss'])
+                loader: 'style-loader!css-loader!postcss-loader',
+                // loader: ExtractTextPlugin.extract(['css', 'postcss'])
             }, {
                 test: /\.scss$/,
-                // loader: 'style-loader!css-loader!postcss-loader!sass-loader',
-                loader: ExtractTextPlugin.extract(['css', 'postcss', 'sass'])
+                loader: 'style-loader!css-loader!postcss-loader!sass-loader',
+                // loader: ExtractTextPlugin.extract(['css', 'postcss', 'sass'])
             }, {
                 test: /\.less$/,
-                // loader: 'style-loader!css-loader!postcss-loader!less-loader',
-                loader: ExtractTextPlugin.extract(['css', 'postcss', 'less'])
+                loader: 'style-loader!css-loader!postcss-loader!less-loader',
+                // loader: ExtractTextPlugin.extract(['css', 'postcss', 'less'])
             }, {
                 test: /\.(png|jpg|jpeg|gif)$/i,
                 loader: 'url?name=[hash:8].[ext]&limit=8192',

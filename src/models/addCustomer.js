@@ -258,23 +258,23 @@ export default {
 
     addMutDictData(state, { payload: todo }){
 
-      if(todo.ab_name === 'YCC'){
+      if(todo.abName === 'YCC'){
 
         return {...state,fetusAry:todo.data};
       }
-      else if(todo.ab_name === 'KZLY'){
+      else if(todo.abName === 'KZLY'){
         return {...state,guestInformationSourceAry:todo.data};
       }
-      else if(todo.ab_name === 'FMYY'){
+      else if(todo.abName === 'FMYY'){
         return {...state,hospitalAry:todo.data};
       }
-      else if(todo.ab_name === 'GZD'){
+      else if(todo.abName === 'GZD'){
         return {...state,concernsAry:todo.data};
       }
-      else if(todo.ab_name === 'WLSSC'){
+      else if(todo.abName === 'WLSSC'){
         return {...state,networkSearchWordsAry:todo.data};
       }
-      else if(todo.ab_name === 'TCLX'){
+      else if(todo.abName === 'TCLX'){
         return {...state,intentionPackageAry:todo.data};
       }
 
@@ -361,7 +361,7 @@ export default {
 
     *getDataDict({ payload: value },{ call, put }){
       const parameter ={
-        abName:value.ab_name,
+        abName:value.abName,
         softDelete: 0,
       };
 
@@ -372,7 +372,7 @@ export default {
         yield put({
           type: 'addMutDictData',
           payload: {
-            ab_name:value.ab_name,
+            abName:value.abName,
             data:data,
           }
         });
@@ -716,37 +716,37 @@ function defDis(dispatch) {
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'YCC',
+      "abName": 'YCC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'KZLY',
+      "abName": 'KZLY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'FMYY',
+      "abName": 'FMYY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'GZD',
+      "abName": 'GZD',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'WLSSC',
+      "abName": 'WLSSC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'TCLX',
+      "abName": 'TCLX',
     }
   });
   dispatch({
