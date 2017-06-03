@@ -50,14 +50,17 @@ class PicturesWall extends React.Component {
   }
 
   handleChange = ( {file, fileList} ) => {
-    if (file.status === "uploading")
-    {
-      this.loading = true;
 
-    }else {
-      this.loading = false;
+    if(this.props.loadProgress){
+      if (file.status === "uploading")
+      {
+        this.loading = true;
+
+      }else {
+        this.loading = false;
+      }
+      this.props.loadProgress(this.loading);
     }
-    this.props.loadProgress(this.loading);
 
     if (file.status === 'done') {
       this.props.fun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
