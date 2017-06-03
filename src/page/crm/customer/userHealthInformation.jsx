@@ -11,6 +11,9 @@ import HospitalHealthy from '../healthy/healthyhome';
 import HospitalHealthyDetail from '../healthy/healthyhomeDetail';
 import SkinHealthInformation from '../healthy/SkinHealthInformation';
 import SkinHealthInformationDetail from '../healthy/SkinHealthInformationDetail';
+import ConclusionInformation from '../healthy/ConclusionInformation';
+import ConclusionInformationDetail from '../healthy/ConclusionInformationDetail';
+
 
 
 
@@ -27,10 +30,13 @@ class userHealthInformation extends React.Component {
     const medicalHealthInformation = this.props.healthInformation.medicalHealthInformation;
     const nutritionHealthInformation = this.props.healthInformation.nutritionHealthInformation;
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
+    const conclusionInformation = this.props.healthInformation.conclusionInformation;
 
     const HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
     const NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
     const SkinHealthInformationDiv = (saveDone || isDetail)&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
+    const ConclusionInformationDiv = <ConclusionInformation />;
+
     let defaultActiveKey = '1';
     if(type){
       defaultActiveKey = type||'';
@@ -48,7 +54,7 @@ class userHealthInformation extends React.Component {
             {SkinHealthInformationDiv}
           </TabPane>
           <TabPane tab="出院小结" key="4">
-            Content of Tab Pane 3
+            {ConclusionInformationDiv}
           </TabPane>
         </Tabs>
       </div>
