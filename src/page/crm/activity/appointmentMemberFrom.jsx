@@ -52,7 +52,11 @@ class AppointmentMemberFrom extends Component {
     },{
       title: '添加人',
       dataIndex: 'operator',
-      key: 'operator'
+      render: (record) => {
+        if (record.operator) {
+
+        }
+      }
     }];
     this.state = {
       selectedRowKeys: [],

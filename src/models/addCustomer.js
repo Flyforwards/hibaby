@@ -7,7 +7,7 @@ import moment from 'moment'
 export default {
   namespace: 'addCustomer',
   state: {
-    dataDetailId:101,
+    dataDetailId:0,
     isDetail:false,
 
     baseData:[],

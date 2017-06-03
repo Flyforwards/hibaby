@@ -35,6 +35,64 @@ class MemberShipCard extends Component {
     })
   }
 
+  componentDidMount() {
+  const { dispatch } = this.props;
+  dispatch({
+    type:'membershipcard/getCardInfo',
+    // payload:{
+    //   dataId:101
+    // }
+  })
+  dispatch({
+    type:'membershipcard/getBalanceInfo',
+    // payload:{
+    //   dataId:101
+    // }
+  })
+  //扣费记录
+  dispatch({
+    type:'membershipcard/getFeeDuctionRecord',
+    payload:{
+      // "customerId":101,
+      "page":1,
+      "size":10,
+      "sortField": "deductionTime",
+      "sortOrder": "AESC"
+    }
+  })
+  //续费记录
+  dispatch({
+    type:'membershipcard/getRenewRecord',
+    payload:{
+      // "customerId":101,
+      "page":1,
+      "size":10,
+      "sortField": "renewTime",
+      "sortOrder": "AESC"
+    }
+  })
+  //退费记录
+  dispatch({
+    type:'membershipcard/getRefundRecord',
+    payload:{
+      // "customerId":101,
+      "page":1,
+      "size":10,
+      "sortField": "refundTime ",
+      "sortOrder": "AESC"
+    }
+  })
+  dispatch({
+    type:'membershipcard/getLevelInfo',
+    payload:{
+      id:7,
+      softDelete:0,
+      type:1,
+    }
+  });
+}
+
+
   //销卡点击确定
   handleCancelCard (values){
     console.log(">>>>",values)
@@ -140,10 +198,6 @@ class MemberShipCard extends Component {
           </ChargeBackFeeModal>
 
         </div>
-
-
-
-
 
       </div>
 

@@ -389,59 +389,7 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/crm/customer/customerDetails') {
-          dispatch({
-            type:'getCardInfo',
-            // payload:{
-            //   dataId:101
-            // }
-          })
-          dispatch({
-            type:'getBalanceInfo',
-            // payload:{
-            //   dataId:101
-            // }
-          })
-          //扣费记录
-          dispatch({
-            type:'getFeeDuctionRecord',
-            payload:{
-              // "customerId":101,
-              "page":1,
-              "size":10,
-              "sortField": "deductionTime",
-              "sortOrder": "AESC"
-            }
-          })
-          //续费记录
-          dispatch({
-            type:'getRenewRecord',
-            payload:{
-              // "customerId":101,
-              "page":1,
-              "size":10,
-              "sortField": "renewTime",
-              "sortOrder": "AESC"
-            }
-          })
-          //退费记录
-          dispatch({
-            type:'getRefundRecord',
-            payload:{
-              // "customerId":101,
-              "page":1,
-              "size":10,
-              "sortField": "refundTime ",
-              "sortOrder": "AESC"
-            }
-          })
-          dispatch({
-            type:'getLevelInfo',
-            payload:{
-              id:7,
-              softDelete:0,
-              type:1,
-            }
-          });
+
         };
       })
     }
