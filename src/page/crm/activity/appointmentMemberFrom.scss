@@ -4,12 +4,6 @@
   .add-activity{
     padding: 10px 10px 0 10px;
   }
-  .activityTop{
-
-  }
-  .activityTitle{
-    margin-top:10px;
-  }
   .card-title {
     h3{
       font-size: 14px;
@@ -23,6 +17,9 @@
     }
   }
 
+   .ant-card{
+     margin-top: 10px;
+   }
   .name{
     margin:10px 0px 10px 10px;
     font-family: '微软雅黑 Regular', '微软雅黑';

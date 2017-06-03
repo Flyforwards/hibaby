@@ -614,8 +614,8 @@ class customerInformation extends React.Component{
 
     let num = 0;
 
-    Object.values(tt).map((item) => {
-      if (item){
+    Object.keys(tt).map((item) => {
+      if (tt[item]){
         num ++;
       }
     })

@@ -124,7 +124,8 @@ class AddServiceed extends Component {
                 }else{
                   message.warning("请选择套房");
                 }
-              }else{
+              }
+              else{
                 this.props.dispatch({
                     type: 'packageInfo/add',
                     payload: {
@@ -246,8 +247,7 @@ class AddServiceed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                {
-                  this.roomVisbled?<div className="addServiceinfoSuite">
+                <div className="addServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
                   <FormItem
@@ -266,9 +266,7 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                 </Form>
-                </div>:null
-                }
-                
+                </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
