@@ -9,23 +9,30 @@
     width:100%;
     height:auto;
     margin-top: 20px;
-    border:1px solid #999;
+    border:1px solid #ccc;
     border-radius: 4px;
     .namep,.pricep,.typep{
       float:left;
     }
+    .viewServiceinfoBox{
+      margin: 10px;
+      background: #fff;
+      padding:10px 0;
+      border-radius: 5px;
+    }
     .viewServiceinfoTitle{
       height: 80px;
-      border: 1px solid #ccc;
-      margin: 10px;
       border-radius: 5px;
       background: #fff;
+      .titleName{
+        height: 20px;
+        margin-bottom: 10px;
+        font-weight: 900;
+      }
     }
     .viewServiceinfoTable{
       position: relative;
       height: auto;
-      margin: 0 10px 10px 10px;
-      border: 1px solid #ccc;
       border-radius: 5px;
       background: #fff;
       p{
@@ -36,7 +43,7 @@
         display:block;
         position: absolute;
         right:90px;
-        top:-50px;
+        top:-60px;
         font-size:18px;
         color:#ff6600;
         z-index: 100;
@@ -83,6 +90,7 @@
       margin-top: 10px;
       margin-bottom: 10px;
       font-weight: 900;
+      line-height: 20px;
     }
     .namep{
       margin-left:50px;

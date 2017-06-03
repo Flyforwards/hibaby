@@ -167,16 +167,7 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.level+'':''  ,
                     rules: [{ required: true, message: '请选择会员卡级别' }]
                   })(
-                    <Select
-                      showSearch
-                      allowClear
-                      placeholder="请选择"
-                      optionFilterProp="children"
-                      filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                      disabled={ true }
-                    >
-                      { options }
-                    </Select>
+                    <DictionarySelect  placeholder="请选择" selectName="MEMBER" />
                   )}
                 </FormItem>
               </Col>
