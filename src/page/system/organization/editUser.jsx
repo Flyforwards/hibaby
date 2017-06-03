@@ -143,7 +143,7 @@ class EditUsered extends React.Component {
         for (var i=0;i<entrys.length;i++){
           let roleIdData = []
           if(fields[`systemRole${i}`]){
-          //  console.log("roleId",fields[`systemRole${i}`])
+           console.log("position",fields[`position${i}`])
             fields[`systemRole${i}`].map((item)=>{
               roleIdData.push({"roleId":item,"userID":ID})
             })
@@ -174,7 +174,8 @@ class EditUsered extends React.Component {
           })
         }
       }
-      if(entrysData.roles.length>=1){
+        // console.log('entrysData', entrysData);
+      if(entrysData && entrysData[0].roles.length >= 1){
         this.props.dispatch({
           type: 'organization/modifyUser',
           payload: {
@@ -234,14 +235,15 @@ class EditUsered extends React.Component {
             let headelDepartment = this.affiliatedDepartment
             let entryContent = USER.entrys[i]
             let deptName = null
-            let positionName = []
+            let positionName = '';
           if(this.props.getPosition){
            // console.log("entrys[i]",entrys)
             this.props.getPosition.map((item)=>{
               if(entrys[i].positionId == item.id){
-                positionName.push(String(item.id))
+                positionName = String(item.id);
               }
             })
+
            }
             deptName=String(entryContent.deptId)
             let roles = []
@@ -259,8 +261,8 @@ class EditUsered extends React.Component {
                   return (<Option value={item.id+""} key={ item.id }>{ item.name }</Option>)
               })
             }
-            if(this.props.dataId != null){
-                traversalDataId = this.props.dataId.map((item,index)=>{
+            if(this.props.getPosition != null){
+                traversalDataId = this.props.getPosition.map((item,index)=>{
                   return (<Option value={item.id+""} key={ item.id * 10 }>{ item.name }</Option>)
               })
             }else{
