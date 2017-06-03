@@ -112,5 +112,15 @@ export function getFileURL(values) {
   })
 };
 
+// 获取套餐信息
+export function getCustomerPackageById(values) {
+  return request('/crm/api/v1/customer/getMainCustomerPackageById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+
+
 
 

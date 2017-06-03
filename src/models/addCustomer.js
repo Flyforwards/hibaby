@@ -189,6 +189,11 @@ export default {
         }]};
     },
 
+    setPackageName(state, { payload: todo }){
+      const expandData = state.expandData;
+      expandData.purchasePackage = todo.data;
+      return {...state,expandData:expandData};
+    },
     deleteContractDLC(state, { payload: todo }){
       let arr = state.lookContractDLC;
       for(var i=0; i<arr.length; i++) {
@@ -587,6 +592,13 @@ export default {
           yield put({type:'setExpandData',payload:{ data }} );
           yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
           yield put({type:'getDlcData'} );
+          if(data.purchasePackage){
+
+            yield put({type:'getCustomerPackageById',payload:{
+              dataId:dataDetailId
+            }} );
+          }
+
         }
       }
     },
@@ -599,6 +611,7 @@ export default {
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
       if (code == 0) {
         if (data){
+
           const tempData = [];
           for (let i = 0;i<data.length;i++){
             let dict = data[i];
@@ -606,10 +619,23 @@ export default {
             tempData.push(dict)
           }
 
-
           yield put({type:'setRemarkData',payload:{
             data:tempData
           }} );
+        }
+      }
+    },
+
+    *getCustomerPackageById({ payload: values },{ call, put ,select}) {
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerPackageById,values);
+
+      if (code == 0) {
+        if (data){
+          yield put({type:'setPackageName',payload:{
+            data:data.packageName
+          }} );
+
         }
       }
     },
