@@ -44,7 +44,7 @@ class PicturesWall extends React.Component {
   }
 
   onRemove = (file) => {
-    this.props.deleteFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]});
+    this.props.deleteFun({name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
   }
 
   handleChange = ( {file, fileList} ) => {
@@ -68,6 +68,7 @@ class PicturesWall extends React.Component {
           showUploadList = {!this.props.isHead}
           defaultFileList={defaultFileList}
           filelist={fileList}
+          multiple={true}
           beforeUpload={this.beforeUpload.bind(this)}
           onPreview={this.handlePreview.bind(this)}
           onChange={this.handleChange.bind(this)}
