@@ -131,11 +131,7 @@ class CustomerIndex extends React.Component {
 
     onLook(record){
       const dispatch = this.props.dispatch;
-      dispatch({
-        type: 'addCustomer/setDataDetailId',
-        payload: { dataId:record.id }
-      })
-      dispatch(routerRedux.push('/crm/customer/customerDetails'))
+      dispatch(routerRedux.push(`/crm/customer/customerDetails?dataId=${record.id}`))
     }
 
     onDelete(record) {

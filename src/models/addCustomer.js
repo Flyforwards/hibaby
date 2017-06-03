@@ -449,7 +449,7 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${data}`))
 
         }
       }
@@ -526,7 +526,8 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+
         }
       }
       else
@@ -553,7 +554,7 @@ export default {
         const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
         if (code == 0) {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
         }
         else {
           message(err)
@@ -561,7 +562,7 @@ export default {
       }
       else {
         message.success('信息保存成功');
-        yield put(routerRedux.push('/crm/customer/customerDetails'))
+        yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
       }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
@@ -673,7 +674,7 @@ export default {
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      return history.listen(({ pathname }) => {
+      return history.listen(({ pathname,query }) => {
         if (pathname === '/crm/customer/AddCustomerInformation') {
           isDetail(dispatch)
           defDis(dispatch)
@@ -681,6 +682,11 @@ export default {
 
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
+
+          dispatch({
+            type: 'setDataDetailId',
+            payload:{dataId:query.dataId}
+          })
 
           dispatch({
             type: 'pageStatus',
