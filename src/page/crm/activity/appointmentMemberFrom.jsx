@@ -167,14 +167,14 @@ class AppointmentMemberFrom extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col span={4} style={{ float:'left'}}>
+                <Col className="findBtn" style={{ float:'left'}}>
                   <span>
                     <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
                   </span>
                 </Col>
-                <Col span={4} style={{ float:'left'}}>
+                <Col className="resetBtn" style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 0, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
                   </span>
                 </Col>
               </Row>
@@ -198,7 +198,7 @@ class AppointmentMemberFrom extends Component {
                 </FormItem>
 
               </Col>
-              <Col span={4} style={{width:'180px'}}>
+              <Col className="PreData"  span={4} style={{width:'180px'}}>
                 <FormItem {...formChooseOneLayout}  label="预产期" >
                   {getFieldDecorator('time', {rules: [{ required: false }],
                   })(
@@ -208,7 +208,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={4} style={{width:'170px'}}>
+              <Col className="TireNum" span={4} style={{width:'170px'}}>
                 <FormItem  {...formChooseOneLayout} label="第几胎" >
                   {getFieldDecorator('fetus', {rules: [{ required: false }],
                   })(
@@ -216,7 +216,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={4} style={{width:'190px'}} >
+              <Col className="idCard" span={4} style={{width:'190px'}} >
                 <FormItem  {...formChooseOneLayout} label="会员身份" >
                   {getFieldDecorator('member', {rules: [{ required: false }],
                   })(
@@ -228,7 +228,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={4} style={{width:'170px'}}>
+              <Col className="Operator" span={4} style={{width:'170px'}}>
                 <FormItem  {...formChooseOneLayout} label="操作者2" >
                   {getFieldDecorator('operator2', {rules: [{ required: false }],
                   })(
@@ -242,8 +242,6 @@ class AppointmentMemberFrom extends Component {
           <Card>
             <div className="card-title">
               <h3>预约客户:</h3>
-            </div>
-            <div>李磊磊
             </div>
             <Table {...tableProps}  bordered size="small"  rowSelection={ rowSelection } rowKey = { record=>record.id } columns={this.columns}/>
           </Card>

@@ -36,7 +36,7 @@ class ActivityIndex extends React.Component {
       title: '活动内容',
       dataIndex: 'content',
       key: 'content',
-      width: '40%'
+      width: '35%'
     }, {
       title: '活动地点',
       dataIndex: 'address',
@@ -51,7 +51,7 @@ class ActivityIndex extends React.Component {
       }
     },{
       title: '签到/人数',
-      width: '5%',
+      width: '6%',
       render: (record) => {
         return String(record.signeds)+'/'+String(record.appointments);
       },
@@ -59,11 +59,11 @@ class ActivityIndex extends React.Component {
       title: '成单率',
       dataIndex: 'orders',
       key: 'orders',
-      width: '5%'
+      width: '6%'
     }, {
       title: '操作',
       dataIndex: 'operation',
-      width: '10%',
+      width: '13%',
       render: (text, record, index) => {
         const detail = !this.props.permissionAlias.contains('ACTIVITY_DETAIL');
         const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');

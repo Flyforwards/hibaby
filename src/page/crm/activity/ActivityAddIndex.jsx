@@ -67,12 +67,12 @@ class AddGroupChar extends React.Component {
             </Form>
             <div>
               <Row>
-                <Col offset={20} span={2}>
+                <Col offset={16} span={4}>
                   <Link to='/crm/activity'>
-                    <Button> 返回 </Button>
+                    <Button className="backBtn"> 返回 </Button>
                   </Link>
                 </Col>
-                <Col span={2}>
+                <Col span={4}>
                   <Button type='primary' onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
                 </Col>
               </Row>

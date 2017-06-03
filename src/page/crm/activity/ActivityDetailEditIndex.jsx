@@ -128,7 +128,7 @@ class ActivityDetailIndex extends Component {
         <div className="add-activity">
           <ReservedUserComponent editItem={ editItem } tableProps={ tableProps }/>
           <div className="button-wrapper">
-            <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.saveEdit.bind(this) } >保存</Button>
+            <Button className="saveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.saveEdit.bind(this) } >保存</Button>
             <Button style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)} >返回</Button>
           </div>
         </div>

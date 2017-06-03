@@ -204,7 +204,7 @@ class ReservedUserComponent extends Component {
         </Row>
         <Form>
           <div>
-            <Row style={{width:'1116px'}}>
+            <Row className="topTitleInfo">
               <Col span={10} style={{float:'left'}}>
                 <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
                   {getFieldDecorator('sear', {rules: [{ required: false }],
@@ -220,12 +220,12 @@ class ReservedUserComponent extends Component {
               </Col>
               <Col span={4} style={{ float:'left'}}>
                   <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 0, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
                   </span>
               </Col>
             </Row>
           </div>
-          <Row>
+          <Row className="titleInfo">
             <Col span={4} style={{width:'140px'}}>
               <FormItem {...formChooseOneLayout}  label="年龄" >
                 {getFieldDecorator('age1', {rules: [{ required: false }],
@@ -234,7 +234,7 @@ class ReservedUserComponent extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={3}  style={{width:'140px'}}>
+            <Col span={3}  style={{width:'90px'}}>
               <FormItem {...formChooseLayout} style={{width:'100%'}}>
                 {getFieldDecorator('age2', {rules: [{ required: false }],
                 })(
@@ -243,7 +243,7 @@ class ReservedUserComponent extends Component {
               </FormItem>
 
             </Col>
-            <Col span={4} style={{width:'251px'}}>
+            <Col className="PreData" span={4} style={{width:'170px'}}>
               <FormItem {...formChooseOneLayout}  label="预产期" >
                 {getFieldDecorator('time', {rules: [{ required: false }],
                 })(
@@ -253,7 +253,7 @@ class ReservedUserComponent extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={4} style={{width:'251px'}}>
+            <Col className="TireNum" span={4} style={{width:'180px'}}>
               <FormItem  {...formChooseOneLayout} label="第几胎" >
                 {getFieldDecorator('fetus', {rules: [{ required: false }],
                 })(
@@ -261,7 +261,7 @@ class ReservedUserComponent extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={4} style={{width:'251px'}} >
+            <Col className="idCard" span={4} style={{width:'190px'}} >
               <FormItem  {...formChooseOneLayout} label="会员身份" >
                 {getFieldDecorator('member', {rules: [{ required: false }],
                 })(
@@ -269,7 +269,7 @@ class ReservedUserComponent extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={4} style={{width:'180px'}}>
+            <Col className="Operator" span={4} style={{width:'180px'}}>
               <FormItem  {...formChooseOneLayout} label="操作者2" >
                 {getFieldDecorator('operator2', {rules: [{ required: false }],
                 })(
@@ -288,9 +288,3 @@ class ReservedUserComponent extends Component {
 }
 
 export default connect()(ReservedUserComponent)
-
-
-
-
-
-

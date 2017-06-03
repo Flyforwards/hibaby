@@ -3,9 +3,39 @@
   margin:0 1%;
   .add-activity{
     padding: 10px 10px 0 10px;
+    label{font: 12px "微软雅黑";}
+    label:before{
+      content: '';
+      display: none;
+    }
   }
-  .activityTop{
-
+  .topTitleInfo{
+    .ant-col-10{
+      width: 600px;
+      margin-right: 20px;
+    }
+    .ant-form-item{
+      width: 600px;
+      .ant-form-item-control {
+        width:600px;
+      }
+    }
+    button{
+      font:14px "微软雅黑";
+    }
+  }
+  .titleInfo{
+    label{
+      font: 12px "微软雅黑";
+    }
+    .ant-form-item-control {
+      width: 110px;
+    }
+    .TireNum{
+      .ant-form-item-control {
+        width: 100px;
+      }
+    }
   }
   .activityTitle{
     margin-top:10px;
@@ -96,8 +126,7 @@
     div{
       width:100%;
       a{
-        margin-right:9px;
-        margin-left:5px;
+        margin: 0 2px;
         color:#b67231;
       }
       .firstA:hover{
@@ -139,12 +168,27 @@
   .ant-card-body{
     padding: 10px;
   }
-  .ant-modal-body{
-
     .ant-btn{
+      height: 30px;
       width: 150px;
+      font: 14px "微软雅黑";
     }
-  }
+    .subscribeBtn{
+      background: #ff6600;
+      color:#fff;
+    }
+    .editBtn{
+      background: #169bd5;
+      color:#fff;
+    }
+    .delBtn{
+      background: #ff4a4a;
+      color:#fff;
+    }
+    .saveBtn{
+      background: #169bd5;
+      color:#fff;
+    }
 }
 .vertical-center-modal {
   text-align: center;
