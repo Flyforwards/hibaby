@@ -84,7 +84,7 @@ class PicturesWall extends React.Component {
           showUploadList = {!this.props.isHead}
           defaultFileList={defaultFileList}
           filelist={fileList}
-          multiple={true}
+          multiple={!this.props.isHead}
           beforeUpload={this.beforeUpload.bind(this)}
           onPreview={this.handlePreview.bind(this)}
           onChange={this.handleChange.bind(this)}

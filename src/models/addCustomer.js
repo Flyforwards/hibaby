@@ -499,7 +499,7 @@ export default {
         "imgURL": values.imgURL ,
         "insuranceSituation": values.insuranceSituation,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
-        "memberNumber": state.memberNumberValue,
+        "memberNumber": values.memberNumber,
         "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,
