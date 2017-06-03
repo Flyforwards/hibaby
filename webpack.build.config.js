@@ -121,7 +121,7 @@ var webpackConfig = {
         new HtmlWebpackPlugin({ //根据模板插入css/js等生成最终HTML
             filename: './index.html', //生成的html存放路径，相对于path
             template: './src/entry/index.html.ejs', //html模板路径
-            title: '管理台',
+            title: '凯贝姆Hi Baby管理后台',
             favicon: './src/entry/bomb.ico',
             inject: true, //js插入的位置，true/'head'/'body'/false
             hash: false, //为静态资源生成hash值

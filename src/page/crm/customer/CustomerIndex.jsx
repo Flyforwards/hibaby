@@ -108,8 +108,13 @@ class CustomerIndex extends React.Component {
           key: 'contractNumber'
         },{
           title: '添加人',
-          dataIndex: 'operator1',
-          key: 'operator1'
+          render: (record) => {
+            if (record.operator2 !=null ) {
+              return record.operator2;
+            } else {
+              return record.operator;
+            }
+          }
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -131,11 +136,7 @@ class CustomerIndex extends React.Component {
 
     onLook(record){
       const dispatch = this.props.dispatch;
-      dispatch({
-        type: 'addCustomer/setDataDetailId',
-        payload: { dataId:record.id }
-      })
-      dispatch(routerRedux.push('/crm/customer/customerDetails'))
+      dispatch(routerRedux.push(`/crm/customer/customerDetails?dataId=${record.id}`))
     }
 
     onDelete(record) {

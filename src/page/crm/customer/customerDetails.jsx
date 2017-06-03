@@ -227,10 +227,10 @@ class customerDetails extends React.Component{
     const ary = [];
     if ( this.props.users.expandData){
 
-      ary.push(<ExtensionInfo  {...this.props}/>)
+      ary.push(<ExtensionInfo key="ExtensionInfo"  {...this.props}/>)
     }
     if (this.props.users.remarkData.length > 0){
-      ary.push(<Remark  {...this.props}/>)
+      ary.push(<Remark key="Remark"  {...this.props}/>)
     }
 
     const {loading} = this.props;
