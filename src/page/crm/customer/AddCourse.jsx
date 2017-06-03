@@ -54,8 +54,8 @@ class AddCourse extends Component {
                 visible = true
             }
             return (
-                <span>
-                  <Button type="primary" onClick={this.addNumber.bind(this,record)} disabled={visible}>使用</Button>
+                <span className="tableBtnBox">
+                  <Button className="tableBtn" type="primary" onClick={this.addNumber.bind(this,record)} disabled={visible}>使用</Button>
                 </span>
             );
           },
@@ -142,13 +142,14 @@ class AddCourse extends Component {
             }
             console.log(addCourseList)
             dataList.push(<div className="addCourseList" key={dataKey}>
-                <p>套餐信息:</p>
+              <div className="viewServiceinfoTitle">
+                <p className="titleName">套餐信息:</p>
                 <p className="namep">套餐名称: {addName.name}</p>
                 <p className="pricep">套餐价格: ￥{addName.price}</p>
                 <p className="typep">套餐类型: {x}</p>
-                <br/>
+              </div>
                 <div className="viewServiceinfoTable" key={dataKey2}>
-                  <p>服务项目:</p> <span className="status">{status}</span>
+                  <p className="titleName">服务项目:</p> <span className="status">{status}</span>
                   <Table bordered
                     columns={ columns }
                     dataSource={ addCourseList }
@@ -163,7 +164,7 @@ class AddCourse extends Component {
         console.log("sdsd",dataList)
         return (
             <div className="addCourse">
-              <Button type="primary" onClick={this.addCourse.bind(this)}>添加套餐</Button>
+              <Button className="AddBtn" type="primary" onClick={this.addCourse.bind(this)}>添加套餐</Button>
               {
                 dataList
               }
@@ -191,4 +192,3 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(AddCourse)
-

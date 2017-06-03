@@ -154,8 +154,8 @@ class AddServiceed extends Component {
                     initialValue:this.props.findById?this.props.findById.price:null,
                     rules: [],
                     })(
-                     <Input 
-                      disabled={true} 
+                     <Input
+                      disabled={true}
                       addonBefore="￥"
                      />
                     )}
@@ -175,13 +175,14 @@ class AddServiceed extends Component {
                 </Form>
                 </div>
                 <div className="viewServiceinfoTable">
-                  <Table bordered 
-                    columns={ columns } 
+                <p>选择服务项目:</p>
+                  <Table bordered
+                    columns={ columns }
                     dataSource={ListLnformation}
                     pagination = { false }
                     loading = { loadingName }
                   />
-                </div>  
+                </div>
                 <div className="viewServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
@@ -203,7 +204,7 @@ class AddServiceed extends Component {
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
                 <Link to={{ pathname: '/crm/serviceinfo/editservice', query: { data:this.state.ID } }}><Button type="primary">编辑</Button></Link>
-                <Delete 
+                <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
                   ID = { this.state.ID }
