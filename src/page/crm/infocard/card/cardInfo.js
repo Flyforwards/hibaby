@@ -2,6 +2,7 @@
 * updated by Flyforwards 2017/5/25
 *
 * */
+
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col } from 'antd';
@@ -9,6 +10,7 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 import { Link } from 'react-router';
+import DictionarySelect from 'common/dictionary_select';
 
 class CardModal extends Component {
   componentWillMount() {
@@ -127,15 +129,7 @@ class CardModal extends Component {
                     initialValue: cardKind && cardKind.level ,
                     rules: [{ required: true, message: '请选择会员卡级别' }]
                   })(
-                    <Select
-                      showSearch
-                      allowClear
-                      placeholder="请选择"
-                      optionFilterProp="children"
-                      filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    >
-                      { options }
-                    </Select>
+                    <DictionarySelect  placeholder="请选择" selectName="MEMBER" />
                   )}
                 </FormItem>
               </Col>

@@ -1,7 +1,7 @@
 /**
  * Created by Flyforwards on 2017/5/25.
  */
-
+import DictionarySelect from 'common/dictionary_select';
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon, Card, Radio, Row, Col, Popconfirm, DatePicker, Modal, InputNumber, Table } from 'antd';
@@ -167,16 +167,7 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.level+'':''  ,
                     rules: [{ required: true, message: '请选择会员卡级别' }]
                   })(
-                    <Select
-                      showSearch
-                      allowClear
-                      placeholder="请选择"
-                      optionFilterProp="children"
-                      filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                      disabled={ true }
-                    >
-                      { options }
-                    </Select>
+                    <DictionarySelect  placeholder="请选择" selectName="MEMBER" />
                   )}
                 </FormItem>
               </Col>

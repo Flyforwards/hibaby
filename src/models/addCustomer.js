@@ -189,6 +189,11 @@ export default {
         }]};
     },
 
+    setPackageName(state, { payload: todo }){
+      const expandData = state.expandData;
+      expandData.purchasePackage = todo.data;
+      return {...state,expandData:expandData};
+    },
     deleteContractDLC(state, { payload: todo }){
       let arr = state.lookContractDLC;
       for(var i=0; i<arr.length; i++) {
@@ -253,23 +258,23 @@ export default {
 
     addMutDictData(state, { payload: todo }){
 
-      if(todo.ab_name === 'YCC'){
+      if(todo.abName === 'YCC'){
 
         return {...state,fetusAry:todo.data};
       }
-      else if(todo.ab_name === 'KZLY'){
+      else if(todo.abName === 'KZLY'){
         return {...state,guestInformationSourceAry:todo.data};
       }
-      else if(todo.ab_name === 'FMYY'){
+      else if(todo.abName === 'FMYY'){
         return {...state,hospitalAry:todo.data};
       }
-      else if(todo.ab_name === 'GZD'){
+      else if(todo.abName === 'GZD'){
         return {...state,concernsAry:todo.data};
       }
-      else if(todo.ab_name === 'WLSSC'){
+      else if(todo.abName === 'WLSSC'){
         return {...state,networkSearchWordsAry:todo.data};
       }
-      else if(todo.ab_name === 'TCLX'){
+      else if(todo.abName === 'TCLX'){
         return {...state,intentionPackageAry:todo.data};
       }
 
@@ -356,7 +361,7 @@ export default {
 
     *getDataDict({ payload: value },{ call, put }){
       const parameter ={
-        abName:value.ab_name,
+        abName:value.abName,
         softDelete: 0,
       };
 
@@ -367,7 +372,7 @@ export default {
         yield put({
           type: 'addMutDictData',
           payload: {
-            ab_name:value.ab_name,
+            abName:value.abName,
             data:data,
           }
         });
@@ -587,6 +592,13 @@ export default {
           yield put({type:'setExpandData',payload:{ data }} );
           yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
           yield put({type:'getDlcData'} );
+          if(data.purchasePackage){
+
+            yield put({type:'getCustomerPackageById',payload:{
+              dataId:dataDetailId
+            }} );
+          }
+
         }
       }
     },
@@ -599,6 +611,7 @@ export default {
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
       if (code == 0) {
         if (data){
+
           const tempData = [];
           for (let i = 0;i<data.length;i++){
             let dict = data[i];
@@ -606,10 +619,23 @@ export default {
             tempData.push(dict)
           }
 
-
           yield put({type:'setRemarkData',payload:{
             data:tempData
           }} );
+        }
+      }
+    },
+
+    *getCustomerPackageById({ payload: values },{ call, put ,select}) {
+
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerPackageById,values);
+
+      if (code == 0) {
+        if (data){
+          yield put({type:'setPackageName',payload:{
+            data:data.packageName
+          }} );
+
         }
       }
     },
@@ -690,37 +716,37 @@ function defDis(dispatch) {
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'YCC',
+      "abName": 'YCC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'KZLY',
+      "abName": 'KZLY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'FMYY',
+      "abName": 'FMYY',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'GZD',
+      "abName": 'GZD',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'WLSSC',
+      "abName": 'WLSSC',
     }
   });
   dispatch({
     type: 'getDataDict',
     payload:{
-      "ab_name": 'TCLX',
+      "abName": 'TCLX',
     }
   });
   dispatch({

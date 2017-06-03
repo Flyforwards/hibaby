@@ -142,6 +142,7 @@ class AddCourse extends Component {
             }
             console.log(addCourseList)
             dataList.push(<div className="addCourseList" key={dataKey}>
+              <div className="viewServiceinfoBox">
               <div className="viewServiceinfoTitle">
                 <p className="titleName">套餐信息:</p>
                 <p className="namep">套餐名称: {addName.name}</p>
@@ -157,11 +158,12 @@ class AddCourse extends Component {
                     loading = { loadingName }
                   />
                 </div>
+                </div>
             </div>)
           })
         }
       }
-        console.log("sdsd",dataList)
+
         return (
             <div className="addCourse">
               <Button className="AddBtn" type="primary" onClick={this.addCourse.bind(this)}>添加套餐</Button>

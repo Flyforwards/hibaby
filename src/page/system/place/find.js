@@ -15,10 +15,8 @@ class FindPlaceData extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-
         }
     }
-
       handleChange(e) {
          const myid=GetQueryString("id");
          const item=this.props.data ;
@@ -31,7 +29,6 @@ class FindPlaceData extends React.Component {
          this.setState({
             name:""
          })
-      //   console.log(value)
      }
     render() {
       const { getFieldDecorator } = this.props.form;
@@ -41,6 +38,7 @@ class FindPlaceData extends React.Component {
         labelCol: { span: 2 },
         wrapperCol: { span: 20 },
       };
+      let arr = [];
       const editid=GetQueryString("dataId");
       let fields=[];
       if (item.dictionarySideDOs && item.dictionarySideDOs.length >= 0) {
