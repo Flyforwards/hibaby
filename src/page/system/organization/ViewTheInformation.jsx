@@ -152,34 +152,22 @@ class ViewTheInformationed extends React.Component {
             JobInformation.push(<div key={i.toString()}>
                 <div className="entryInformation">入职信息{i}</div>
                 <div className="entryInformationContent">
-                  <p className="localCenter"><span>地方中心:</span><span className="Two">{endemicName}</span></p>
-                  <p className="affiliatedDepartment"><span>隶属部门:</span><span className="Two">{dept}</span></p>
-                  <p className="directLeadership"><span>直系领导:</span><span className="Two">{entrys[i].leaderName}</span></p>
-                  <p className="position"><span>职位:</span><span className="Two">{positionName}</span></p>
-                  <p className="systemRole"><span>系统角色:</span><span className="Two">{temp}</span></p>
+                  <p className="localCenter"><span>地方中心 :</span><span className="Two">{endemicName}</span></p>
+                  <p className="affiliatedDepartment"><span>隶属部门 :</span><span className="Two">{dept}</span></p>
+                  <p className="directLeadership"><span>直系领导 :</span><span className="Two">{entrys[i].leaderName}</span></p>
+                  <p className="position"><span>职位 :</span><span className="Two">{positionName}</span></p>
+                  <p className="systemRole"><span>系统角色 :</span><span className="Two">{temp}</span></p>
                 </div>
               <div className="contactInformation">联系方式</div>
                 <div className="contactInformationContent">
-                    <p className="localCenter"><span>登陆手机号:</span><span className="Two">{USER.mobile}</span></p>
-                    <p className="affiliatedDepartment"><span>联系方式:</span><span className="Two">{entrys[i].contact}</span></p>
-                    <p className="directLeadership"><span>公司邮箱:</span><span className="Two">{entrys[i].emaill}</span></p>
-                    <p className="position"><span>内部分机:</span><span className="Two">{entrys[i].extension}</span></p>
+                    <p className="localCenter"><span>登陆手机号 :</span><span className="Two">{USER.mobile}</span></p>
+                    <p className="affiliatedDepartment"><span>联系方式 :</span><span className="Two">{entrys[i].contact}</span></p>
+                    <p className="directLeadership"><span>公司邮箱 :</span><span className="Two">{entrys[i].emaill}</span></p>
+                    <p className="position"><span>内部分机 :</span><span className="Two">{entrys[i].extension}</span></p>
                 </div>
               </div>)
          }
-          function getLocalTime(nS) {
-            var now = new Date(parseInt(nS));
-            var year=now.getFullYear();
-            var month=now.getMonth()+1;
-            var date=now.getDate();
-            if(month<10){
-              month = "0"+month
-            }
-            if(date<10){
-              date = "0"+date
-            }
-            return `${year}-${month}-${date}`
-          }
+
           time = getLocalTime(USER.gmt_entry)
       }
       let imageUrl = USER.imgURL;
@@ -194,10 +182,10 @@ class ViewTheInformationed extends React.Component {
           <div className="basicInformation">基本信息</div>
             <div className="basicInformationContent">
               <img className="img" src={ imageUrl } onError={ this.onError.bind(this) }/>
-              <p className="userName"><span>姓名:</span><span className="Two">{USER.name}</span></p>
-              <p className="Numbering"><span>编号:</span><span className="Two">{identifier}</span></p>
-              <p className="gender"><span>性别:</span><span className="Two">{SEX}</span></p>
-              <p className="entryTime"><span>入职时间:</span><span className="Two">{ time }</span></p>
+              <p className="userName"><span>姓名 :</span><span className="Two">{USER.name}</span></p>
+              <p className="Numbering"><span>编号 :</span><span className="Two">{identifier}</span></p>
+              <p className="gender"><span>性别 :</span><span className="Two">{SEX}</span></p>
+              <p className="entryTime"><span>入职时间 :</span><span className="Two">{ time }</span></p>
             </div>
             { JobInformation }
 
@@ -223,6 +211,21 @@ class ViewTheInformationed extends React.Component {
       )
   }
 }
+
+function getLocalTime(nS) {
+  var now = new Date(parseInt(nS));
+  var year=now.getFullYear();
+  var month=now.getMonth()+1;
+  var date=now.getDate();
+  if(month<10){
+    month = "0"+month
+  }
+  if(date<10){
+    date = "0"+date
+  }
+  return `${year}-${month}-${date}`
+}
+
 function ViewTheInformation({
     dispatch,
     data,

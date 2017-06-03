@@ -1,17 +1,35 @@
 
 .CustomerConent{
-  min-width:1000px;
+  min-width:1030px;
   margin: 10px;
   .topSelect{
+    width: 1030px;
     height:50px;
     margin-top: 10px;
     padding-top:10px;
+    .search{
+      width:500px;
+      float:left;
+      .ant-form-item-control-wrapper{
+        width:500px;
+        .ant-form-item-control {
+          width: 500px;
+        }
+      }
+    }
     .ant-btn{
       border-radius: 5px;
       font: 14px "微软雅黑";
+      float:left;
+      margin-left:10px;
+    }
+    .findBtn{
+      float:left;
+      margin-left: 20px;
     }
   }
   .topAge{
+    width: 1030px;
     height: 50px;
     margin-top:10px;
     label{
@@ -24,7 +42,7 @@
     }
     .PreData{
       .ant-form-item-control {
-        width:128px;
+        width:116px;
       }
     }
     .TireNum{
@@ -34,7 +52,7 @@
     }
     .idCard{
       .ant-form-item-control {
-        width:110px;
+        width:120px;
       }
     }
     .Operator{
@@ -61,185 +79,15 @@
 	margin-bottom:20px;
 	position:relative;
 }
-.Customer-nav{
-	input{
-		width:40%;
-		height:30px;
-		font-size:14px;
-    margin-left: 30px;
-    border:none;
-    border:1px solid #999;
-    border-radius:4px;
-		padding-left:5px;
-	}
-}
+
 @media (max-width: 767px) {
     .mini .yt-admin-framework-content {
         transition: all .3s;
         margin-left: 0;
     }
 }
-.search {
-	.ant-btn-primary {
-	    color: #fff;
-	    background-color: #b67233;
-	    margin:20px;
-	    border-radius:4px;
-	    width:150px;
-	    height:30px;
-	}
-	.ant-btn {
-		border:none;
-	}
-}
-.screening {
-	.ant-btn-primary {
-	    color: #fff;
-	    background-color: #f89d2d;
-	    margin-top:20px;
-	    margin-right:20px;
-	    border-radius:4px;
-	    width:150px;
-	    height:30px;
-	}
-	.ant-btn {
-		border:none;
-	}
-}
-.customer {
-	 width:50px;
-	.ant-btn-primary {
-	    color: #fff;
-	    background-color: #693d20;
-	    margin-top:10px;
-	    border-radius:4px;
-	    width:150px;
-	    height:30px;
-	}
-	.ant-btn {
-		border:none;
-	}
-}
-.Customer-navigation {
-	overflow: hidden;
-	width:100%;
-	min-width:1100px;
-	height:auto;
 
-	 .Customer-first{
-     width:100%;
-     height:50px;
-     overflow: hidden;
-   }
-   .Customer-second{
-     width:100%;
-     height: 50px;
-     float:left;
-   }
-	.age{
-		margin-left:40px;
-    margin-top:10px;
-    float:left;
-    width:180px;
-    height:30px;
-		input{
-			width:60px;
-			height:30px;
-      margin:0 5px;
-      border:none;
-      border: 1px solid #d2e1e4;
-			text-align: center;
-			outline:none;
-			border:0;
-		}
-		input::-webkit-outer-spin-button,
-		input::-webkit-inner-spin-button {
-		    -webkit-appearance: none;
-		}
-	}
-	.Membership{
-		height:30px;
-		width:210px;
-		margin:10px 0 0 72px ;
-    float:left;
-    line-height:30px;
-    .ant-select{
-      float:right;
-    }
-		.ant-select-selection--single{
-			width:150px;
-      height:30px;
-			float:right;
-			div{
-				float:left;
-			}
-		}
-	}
-	.hospitals{
-		height:30px;
-		width:220px;
-    margin-top:10px;
-    margin-left:33px;
-    float:left;
-    line-height:30px;
-    .ant-select{
-      float:right;
-    }
-		.ant-select-selection--single{
-			width:150px;
-      height:30px;
-			float:right;
-		}
-	}
-	.period{
-		margin-top:10px;
-		height:30px;
-		line-height:30px;
-    width:220px;
-    margin-left:30px;
-    .ant-select{
-      float:right;
-    }
-		.ant-select-selection--single{
-			width:150px;
-      height:30px;
-			float:right;
-			margin-right:-6px;
-		}
-	}
-  .ant-calendar-picker{
-    margin-left:10px;
-    .ant-input{
-      height:30px;
-    }
-  }
-  .listDiv{
-    float:left;
-    width:242px;
-    position: relative;
-    top:-30px;
-    left:270px;
-  }
-	.current{
-		height:30px;
-		width:212px;
-		line-height:30px;
-		float: left;
-    position: relative;
-    top:-30px;
-    left:300px;
-		.ant-cascader-picker {
-			width:150px;
-			float:right;
-		}
-		.ant-cascader-input.ant-input {
-		    margin-left: 0px;
-		}
-		.ant-cascader-menu:last-child {
-			width:218px;
-		}
-	}
-}
+
 .ant-modal-title{
 	text-align:center;
 }
@@ -248,21 +96,10 @@
 	color:#fff;
 	border:0;
 	width:150px;
-	border-radius:0px;
-}
-.ant-btn:hover, .ant-btn:focus {
-    color: #fff;
-    background-color: #b67233;
-    border:0;
-    width:150px;
-}
-.ant-calendar{
-	top:32px;
-	left:10px;
-	width:179px;
-	border-radius:0;
+	border-radius:4px;
 }
 .CreateList{
+  width: 1030px;
 	span{
 		display:block;
 		float:left;

@@ -1,32 +1,37 @@
 .viewServiceinfo{
 	height:100%;
-	min-width: 1040px;
+	min-width: 1030px;
 	.viewServiceinfoList{
 		width:100%;
 		background-color:#fff;
 		height:20%;
-		margin:10px;
+		margin:10px 0 0 10px;
 		border-radius: 4px;
 		border:1px solid #999;
 		overflow: hidden;
 		p{
 			font-family: '微软雅黑 Bold', '微软雅黑';
 		    font-weight: 900;
-		    font-style: normal;
 		    font-size: 14px;
-			margin:10px 0 10px 20px;
+			margin:10px 0 10px 10px;
 		}
 		.namep,.pricep,.typep{
 			float:left;
 		}
 		.namep{
-			margin-left:50px; 
+			margin-left:50px;
+			font-weight: 100;
+			margin-top: 0px;
 		}
 		.pricep{
-			margin-left:200px; 
+			margin-left:200px;
+			font-weight:100;
+			margin-top: 0;
 		}
 		.typep{
-			margin-left:200px; 
+			margin-left:200px;
+			font-weight: 100;
+			margin-top:0;
 		}
 		.twoA{
 			border:none;
@@ -84,7 +89,11 @@
 		    font-weight: 900;
 		    font-style: normal;
 		    font-size: 14px;
-			margin:10px 0 10px 20px;
+			margin:10px 0 10px 10px;
+		}
+		.ant-table-wrapper{
+			width: 1010px;
+			margin: 0 10px;
 		}
 		.ant-table-thead > tr > th {
 		    background-color: rgba(102, 102, 102, 1);

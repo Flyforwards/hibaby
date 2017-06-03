@@ -127,26 +127,24 @@ class BindingPackagesed extends Component {
         return (
             <div className="viewServiceinfo">
                 <div className="viewServiceinfoList">
-                <p>套餐信息:</p>
+                <p className="titleName">套餐信息:</p>
                 <p className="namep">套餐名称: {this.props.findById?this.props.findById.name:null}</p>
                 <p className="pricep">套餐价格: {this.props.findById?this.props.findById.price:null}</p>
                 <p className="typep">套餐类型: {type}</p>
                 </div>
                 <div className="viewServiceinfoTable">
-                 <p>服务项目:</p>
-                  <Table bordered 
-                    columns={ columns } 
+                 <p className="titleName">服务项目:</p>
+                  <Table bordered
+                    columns={ columns }
                     dataSource={ListLnformation}
                     pagination = { false }
                     loading = { loadingName }
                   />
-                </div> 
-                {suiteId?<div>套房 {suiteId}</div>:null
+                </div>
+                {suiteId?<div>套房 {suiteId}</div>:null}
 
-                }
-                
                 <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>确定</Button>      
+                <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>确定</Button>
             </div>
         )
     }

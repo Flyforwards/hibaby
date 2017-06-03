@@ -122,7 +122,7 @@ class AddUsered extends React.Component {
                                             "deptId":fields.affiliatedDepartment,//fields.affiliatedDepartment,//隶属部门
                                             "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
                                             "extension":fields.internalExtension, //fields.internalExtension,//内部分机
-                                            "leaderId": this.state.TableData.id,//直系领导
+                                            "leaderId": this.state.TableData ? this.state.TableData.id : null,//直系领导
                                             "positionId": fields.position,//职位
                                             "identifier": fields.Numbering,//编号//fields.Numbering
                                             "roles": roleIdData
@@ -399,7 +399,7 @@ class AddUsered extends React.Component {
             </FormItem>
           </Form>
            <Button type="primary" className="saveButton" onClick={this.handleSave}>保存</Button>
-           <Button type="primary" className="returnButton" onClick={this.handelReturn}>返回</Button>
+           <Button type="default" className="returnButton" onClick={this.handelReturn}>返回</Button>
           <SelectTheNodeFrom
            visible={ this.state.visible}
            onCancel ={ this.handleCreateModalCancel.bind(this) }

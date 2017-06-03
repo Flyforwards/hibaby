@@ -10,8 +10,8 @@ import {Icon,Table, Modal,Row, Col,Button,Spin} from 'antd';
 const confirm = Modal.confirm;
 
 function rowDiv(dict) {
-  let titSpan = 7;
-  let contentSpan = 17;
+  let titSpan = 8;
+  let contentSpan = 16;
   if (dict.title === '现住址' || dict.title === '户籍地址'){
     titSpan = 2;
     contentSpan = 22
@@ -71,7 +71,7 @@ function BaseInfo(props) {
   }
 
   return(
-      <div className='contentDiv'>
+      <div className='contentDiv detail'>
         <h3>基本信息</h3>
           <Row>
             {baseInfoDiv}
@@ -130,7 +130,7 @@ function ExtensionInfo(props) {
 
 
   return(
-        <div className='contentDiv'>
+        <div className='contentDiv detail'>
           <h3>扩展信息</h3>
 
           <Row>
@@ -165,10 +165,8 @@ function Remark(props) {
   const {remarkListColumns} = props.users;
   const remarkList = props.users.remarkData;
   return(
-    <div className='contentDiv'>
-        <Row>
+    <div className='contentDiv detail'>
           <h3>客户备注</h3>
-        </Row>
         <Table texta dataSource={remarkList} columns={remarkListColumns} />
     </div>
   )
