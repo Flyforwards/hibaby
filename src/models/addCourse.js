@@ -108,6 +108,7 @@ export default {
 			      		code,
 			      		err
 		      }} = yield call(addCourseService.saveCustomerPackage, values);
+				console.log(data);
 				if (code == 0) {
 					message.success("添加套餐成功");
 
@@ -116,7 +117,7 @@ export default {
 				}else if(code == 210){
 					message.warning('已存在主套餐，只能绑定一个主套餐')
 				}else{
-					throw err || "请求出错";
+          message.error( err || "请求出错")
 				}
 			},
 			*useServiceInfo({payload: values}, { call, put }) {
