@@ -127,10 +127,20 @@ class LocalizedModal extends Component {
   handleOk  () {
 
     this.props.form.validateFields((err, values) => {
+      const v = {};
+
+      Object.keys(values).map((key, index)=>{
+        const record = values[key];
+        const strs = key.split('-');
+        if (values.keys.contains(Number(strs[1]))) {
+          v[key]=record;
+        }
+      })
+
       if (!err) {
         let names = [];
         // 取出数据
-        Object.keys(values).map((key, index) => {
+        Object.keys(v).map((key, index) => {
           if (key.indexOf("names-") == 0) {
             const strs = key.split('-');
             if ( strs.length >= 2 ) {
@@ -140,7 +150,7 @@ class LocalizedModal extends Component {
           }
         });
         // 冒泡排序
-        names.bubbleSortByKey("inx");
+          names.bubbleSortByKey("inx");
         // 对数据进行整合
         names.map((record, index)=>{
           let name = record;
@@ -167,18 +177,17 @@ class LocalizedModal extends Component {
 
         this.props.dispatch({
           type: 'position/saveOrModifyPosition',
-          payload: { delPositionDOs:delIds,deptId:this.deptId, positionDOs:names  }
+          payload: { delPositionDOs:delIds, deptId:this.deptId, positionDOs:names  }
         })
 
-        this.setState({
-          visible: false
-        });
+        this.handleCancel();
       }
     })
   }
 
 
   handleCancel () {
+    this.props.form.resetFields()
     this.setState({
       visible: false,
     });
@@ -191,6 +200,16 @@ class LocalizedModal extends Component {
       const keys = form.getFieldValue('keys');
       const side = this.positionInfo[this.positionInfo.length -1];
       const newKey = side.id > keys[keys.length -1] ? side.id+1:keys[keys.length -1]+1;
+
+      const nextKeys = keys.concat(newKey);
+      // can use data-binding to set
+      // important! notify form to detect changes
+      form.setFieldsValue({
+        keys: nextKeys,
+      });
+    } else {
+      const keys = form.getFieldValue('keys');
+      const newKey = keys[keys.length -1]+1;
 
       const nextKeys = keys.concat(newKey);
       // can use data-binding to set
@@ -222,9 +241,20 @@ class LocalizedModal extends Component {
     this.setState({
       isDetail: false,
     });
+    const { form } = this.props;
+    const keys = form.getFieldValue('keys');
+    if (this.positionInfo==0) {
+      form.setFieldsValue({
+        keys: [1],
+      });
+    }
   }
 
   cancelEdit() {
+    const initKeys = this.positionInfo.map((record)=>record.id)
+    this.props.form.setFieldsValue({
+      keys: initKeys,
+    });
     this.setState({
       isDetail: true,
     });
@@ -233,15 +263,15 @@ class LocalizedModal extends Component {
 
   render() {
     const { positionInfo, record } = this.props;
-    const endemic = session.get("endemic")
     this.positionInfo = positionInfo;
 
     let cancel = this.handleCancel.bind(this);
     let right = this.edit.bind(this);
     let formItems = (<DetailTable positionInfo={positionInfo}/>)
     let rightText = "编辑";
+
     if (!this.state.isDetail){
-      const initKeys = this.positionInfo.map((record)=>record.id)
+      let initKeys = this.positionInfo.map((record)=>record.id)
       const { getFieldDecorator, getFieldValue } = this.props.form;
       getFieldDecorator('keys', { initialValue: initKeys });
       const keys = getFieldValue('keys');
@@ -276,12 +306,9 @@ class LocalizedModal extends Component {
       });
     }
 
-
     return (
       <div className="editPositionIndex">
-        <Link onClick={() => {
-          this.showModal(record.id);
-        }}>查看</Link>
+        <Link onClick={  this.showModal.bind(this, record.id) }>查看</Link>
         <Modal width="500px"
                title="职位详情"
                onCancel={ cancel }
@@ -292,9 +319,11 @@ class LocalizedModal extends Component {
                visible={ this.state.visible }
         >
           <p className="position-name"><span>职位所属：</span>{name}</p>
-          {
-            formItems
-          }
+          <Form key={  this.state.visible }>
+            {
+              formItems
+            }
+          </Form>
         </Modal>
       </div>
     );
