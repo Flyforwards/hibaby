@@ -76,12 +76,12 @@ class Commodityed extends Component {
     componentDidMount() {
     }
     render() {
-        const { commodityListByPage, loading, pagination, dispatch } = this.props;
+        const { commodityListByPage, loading, commoditypagination, dispatch } = this.props;
         const columns = this.columns;
         const tableProps = {
           loading: loading.effects['packageInfo/commodityListByPage'],
-          dataSource : commodityListByPage ,
-          pagination,
+          dataSource: commodityListByPage ,
+          pagination: commoditypagination,
           onChange (page) {
             const { pathname } = location
             dispatch(routerRedux.push({
@@ -112,13 +112,13 @@ class Commodityed extends Component {
 function mapStateToProps(state) {
   const {
     commodityListByPage,
-    pagination
+    commoditypagination
   } = state.packageInfo;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     commodityListByPage,
-    pagination,
+    commoditypagination,
     permissionAlias
     };
 }

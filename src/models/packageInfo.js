@@ -18,7 +18,7 @@ export default {
 		findById:null,
 		selectDataSave:null,
 		getDictionary:null,
-		suiteListByPage:null,
+		suiteListByPage:[],
 		roomFindById:null,
 		commodityListByPage:[],
 		chineseToPinyin:null,
@@ -28,34 +28,34 @@ export default {
 	      current: 1,
 	      total: null,
 	    },
-	    suitepagination: {
-	      showQuickJumper: true,
-	      showTotal: total => `共 ${total} 条`,
-	      current: 1,
-	      total: null,
-	    },
-	    serviceinfopagination: {
-	      showQuickJumper: true,
-	      showTotal: total => `共 ${total} 条`,
-	      current: 1,
-	      total: null,
-	    },
-	    commoditypagination: {
-	      showQuickJumper: true,
-	      showTotal: total => `共 ${total} 条`,
-	      current: 1,
-	      total: null,
-	    },
+    suitepagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+    serviceinfopagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+    commoditypagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
 	    commodityFindById:null,
 	},
 	reducers: {
-		delSave(state, { payload: { record }}) {
-			state.selectedRows.remove(record);
-			state.selectedRowKeys.remove(record.key);
-			return {...state, };
-		},
-	    listByPageSave(state,{payload:{list,serviceinfopagination}}){
-	      return {...state, list, serviceinfopagination: {  ...state.serviceinfopagination,...serviceinfopagination }};
+      delSave(state, { payload: { record }}) {
+        state.selectedRows.remove(record);
+        state.selectedRowKeys.remove(record.key);
+        return {...state, };
+      },
+	    listByPageSave(state,{payload:{ list, pagination}}){
+	      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 	    },
 	    roomListSave(state,{payload:{ data:roomData,code }}){
 	      let roomListSavedata = {...state,roomData,code};
@@ -237,6 +237,7 @@ export default {
 				throw err || "请求出错";
 			}
 		},
+
 		//套房列表信息
 		*suiteListByPage({payload: values}, { call, put }) {
 			values = parse(location.search.substr(1))
@@ -252,7 +253,7 @@ export default {
 					type: 'suiteListByPageSave',
 					payload: {
 			            suiteListByPage: data,
-			            pagination: {
+                  suitepagination: {
 			              current: Number(page) || 1,
 			              pageSize: Number(size) || 10,
 			              total: total,
@@ -261,6 +262,7 @@ export default {
 				});
 			}
 		},
+
 		//商品分页列表信息
 		*commodityListByPage({payload: values}, { call, put }) {
 			values = parse(location.search.substr(1))
@@ -276,7 +278,7 @@ export default {
 					type: 'commodityListByPageSave',
 					payload: {
 			            commodityListByPage: data,
-			            pagination: {
+                  commoditypagination: {
 			              current: Number(page) || 1,
 			              pageSize: Number(size) || 10,
 			              total: total,
@@ -396,6 +398,7 @@ export default {
 				});
 			}
 		},
+
 		//获取房间分页的列表
 		*roomList({payload: values}, { call, put }) {
 			const {

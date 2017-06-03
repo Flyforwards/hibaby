@@ -53,8 +53,10 @@ class AppointmentMemberFrom extends Component {
       title: '添加人',
       dataIndex: 'operator',
       render: (record) => {
-        if (record.operator) {
-
+        if (record.operator2 != null) {
+          return record.operator2;
+        } else {
+          return record.operator;
         }
       }
     }];
