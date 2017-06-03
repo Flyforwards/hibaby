@@ -438,7 +438,6 @@ export default {
 
       const { data: { code, data,err } } = yield call((state.editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
       if (code == 0) {
-          yield put({type:"setDataDetailId",payload:{dataId:state.editCustomer ? state.baseData.id : data}})
         if (exDict){
           yield put({
             type:'savaExtensionInfo',
@@ -682,11 +681,13 @@ export default {
 
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
+          if(query.dataId){
+            dispatch({
+              type: 'setDataDetailId',
+              payload:{dataId:query.dataId}
+            })
+          }
 
-          dispatch({
-            type: 'setDataDetailId',
-            payload:{dataId:query.dataId}
-          })
 
           dispatch({
             type: 'pageStatus',
