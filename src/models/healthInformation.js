@@ -30,7 +30,7 @@ export default {
             dispatch({
               type: 'getHealthInformationListByCustomerId',
               payload:{
-                customerId : 104,
+                customerId : 101,
                 type : i
               }
             });
@@ -48,6 +48,15 @@ export default {
       const {data: { data, code,err} } = yield call(healthInformationService.saveHealthInformation, values);
       if (code == 0) {
         message.success("创建健康档案成功");
+        yield put({type:'setSaveDone',payload:{data}} );
+      }else{
+        message.error(err);
+      }
+    },
+    *updateHealthInformation({payload: values}, { call, put }) {
+      const {data: { data, code,err} } = yield call(healthInformationService.updateCustomerHealth, values);
+      if (code == 0) {
+        message.success("修改健康档案成功");
         yield put({type:'setSaveDone',payload:{data}} );
       }else{
         message.error(err);
@@ -80,7 +89,7 @@ export default {
         }else if(data.type === 3){
           return { ...state, skinHealthInformation : healthInfo };
         }else if(data.type === 4){
-          return { ...state, conclusionInformation : healthInfo };
+          return { ...state, conclusionInformation : data };
         }
         return {...state};
       }
@@ -98,13 +107,23 @@ export default {
         }else if(data.type === 3){
           return {...state,saveDone:saveDone,type:type, skinHealthInformation : healthInfo}
         }else if(data.type === 4){
-          return {...state,saveDone:saveDone,type:type, conclusionInformation : healthInfo}
+          return {...state,saveDone:saveDone,type:type, conclusionInformation : data}
         }
         return {...state};
       }
       return {...state};
+    },
+    deleteConclusionInformation(state, { payload: data }){
+      let arr = state.conclusionInformation;
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i].name == data.name) {
+          arr.splice(i, 1);
+          break;
+        }
+      }
+      return {...state,conclusionInformation:arr};
     }
 
-  },
+  }
 
 };

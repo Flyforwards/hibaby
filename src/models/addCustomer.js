@@ -438,7 +438,6 @@ export default {
 
       const { data: { code, data,err } } = yield call((state.editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
       if (code == 0) {
-          yield put({type:"setDataDetailId",payload:{dataId:state.editCustomer ? state.baseData.id : data}})
         if (exDict){
           yield put({
             type:'savaExtensionInfo',
@@ -449,7 +448,7 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${data}`))
 
         }
       }
@@ -500,7 +499,7 @@ export default {
         "imgURL": values.imgURL ,
         "insuranceSituation": values.insuranceSituation,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
-        "memberNumber": state.memberNumberValue,
+        "memberNumber": values.memberNumber,
         "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,
@@ -526,7 +525,8 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+
         }
       }
       else
@@ -553,7 +553,7 @@ export default {
         const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
         if (code == 0) {
           message.success('信息保存成功');
-          yield put(routerRedux.push('/crm/customer/customerDetails'))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
         }
         else {
           message(err)
@@ -561,7 +561,7 @@ export default {
       }
       else {
         message.success('信息保存成功');
-        yield put(routerRedux.push('/crm/customer/customerDetails'))
+        yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
       }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
@@ -673,7 +673,7 @@ export default {
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      return history.listen(({ pathname }) => {
+      return history.listen(({ pathname,query }) => {
         if (pathname === '/crm/customer/AddCustomerInformation') {
           isDetail(dispatch)
           defDis(dispatch)
@@ -681,6 +681,13 @@ export default {
 
         if (pathname === '/crm/customer/customerDetails'){
           defDis(dispatch)
+          if(query.dataId){
+            dispatch({
+              type: 'setDataDetailId',
+              payload:{dataId:query.dataId}
+            })
+          }
+
 
           dispatch({
             type: 'pageStatus',
