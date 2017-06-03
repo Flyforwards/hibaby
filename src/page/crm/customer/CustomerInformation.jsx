@@ -5,7 +5,7 @@ import FileUpload from './fileUpload'
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
 
-import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table} from 'antd';
+import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table,Spin} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -101,14 +101,17 @@ function cusComponent(dict) {
     case 'headUpload':
     {
         tempDiv =
-          <FileUpload fun={dict.fun} isHead={true} >
-            <div className="avatar-uploader">
-              {
-                dict.initValue ?
-                  <img src={dict.initValue} alt="" className="avatar" /> :
-                  <Icon type="plus" className="avatar-uploader-trigger" />
-              }
-            </div>
+          <FileUpload fun={dict.fun} isHead={true} loadProgress={dict.loadProgress}>
+            <Spin  spinning={dict.spin}>
+              <div className="avatar-uploader">
+                {
+                  dict.initValue ?
+                    <img src={dict.initValue} alt="" className="avatar" /> :
+                    <Icon type="plus" className="avatar-uploader-trigger" />
+                }
+              </div>
+            </Spin>
+
           </FileUpload>
 
     }
@@ -378,7 +381,7 @@ function BaseInfo(props) {
 function ExtensionInfo(props) {
 
   const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
-    headIconUrl,provinceData,permanentCityData,nationalData} = props.users;
+    headIconUrl,provinceData,permanentCityData,nationalData,headIconSpin} = props.users;
 
   const {dispatch} = props;
 
@@ -400,33 +403,30 @@ function ExtensionInfo(props) {
     dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:true,dataId:e.key}})
   }
 
-  function tt(err, values) {
-    console.log(err,values)
-  }
 
   function uploadHeadelImg(NewuserImg){
     dispatch({type:'addCustomer/addHeadIcon',payload:NewuserImg})
     props.form.resetFields(['imgURL']);
-    props.form.validateFields(['imgURL'], { force: true },tt);
+    props.form.validateFields(['imgURL'], { force: true });
 
   }
 
   function uploadIdcardFileProps(values) {
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
     props.form.resetFields(['idcardScan']);
-    props.form.validateFields(['idcardScan'], { force: true },tt);
+    props.form.validateFields(['idcardScan'], { force: true });
   }
 
   function uploadContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/addContractDLC',payload:values})
     props.form.resetFields(['contractAppendices']);
-    props.form.validateFields(['contractAppendices'], { force: true },tt);
+    props.form.validateFields(['contractAppendices'], { force: true });
   }
 
   function deleteIdcardFileProps(values) {
     dispatch({type:'addCustomer/deleteCardIDDLC',payload:values})
     props.form.resetFields(['idcardScan']);
-    props.form.validateFields(['idcardScan'], { force: false },tt);
+    props.form.validateFields(['idcardScan'], { force: false });
   }
 
   function deleteContractAppendicesFileProps(values) {
@@ -435,7 +435,9 @@ function ExtensionInfo(props) {
     props.form.validateFields(['contractAppendices'], { force: false },tt);
   }
 
-
+  function loadProgress(value) {
+    dispatch({type:'addCustomer/updataHeadIconSpin',payload:value})
+  }
 
   const memberChis = [];
 
@@ -487,7 +489,7 @@ function ExtensionInfo(props) {
     {title:'户籍地址',component:'Select',submitStr:'provincePermanent',fun:PermanentProvinceSelect,children:provinceDataChis,span:6},
     {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
     {component:'Input',submitStr:'detailedPermanent',span:17,offset:1},
-    {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl},
+    {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl,loadProgress:loadProgress,spin:headIconSpin},
   ];
 
   if (props.users.editCustomer){
