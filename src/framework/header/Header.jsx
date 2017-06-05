@@ -48,7 +48,7 @@ class Header extends React.Component {
     }
 
     getName(event,item){
-        console.log(event.target.innerHTML)
+        // console.log(event.target.innerHTML)
         this.setState({
             name:event.target.innerHTML
         })
