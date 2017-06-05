@@ -610,17 +610,20 @@ class customerInformation extends React.Component{
 
   handleSubmitBase() {
 
-    const tt = this.refs.extensionForm.getFieldsValue()
+    const formValues = this.refs.extensionForm.getFieldsValue()
 
     let num = 0;
+    let max = formValues['purchasePackage'] ? 3 : 2;
 
-    Object.keys(tt).map((item) => {
-      if (tt[item]){
-        num ++;
+    Object.keys(formValues).map((key) => {
+      if (formValues[key]){
+        if(formValues[key].length > 0){
+          num ++;
+        }
       }
     })
 
-    if (num > 4)
+    if (num > max)
     {
       this.refs.extensionForm.validateFieldsAndScroll((err, values) => {
 
