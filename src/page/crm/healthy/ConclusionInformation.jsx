@@ -72,7 +72,7 @@ function ConclusionInformation(props) {
             <div className="uploadOptions">出院小结:</div>
           </Col>
           <Col span="18">
-            <FileUpload fun={uploadConclusionInformationProps} deleteFun={deleteConclusionInformationProps} value = {fileList1}>
+            <FileUpload fun={uploadConclusionInformationProps} deleteFun={deleteConclusionInformationProps} value={fileList} isHead = {true}>
 
               <Button className="uploadOptionsButton"><Icon type="upload"/>上传附件</Button>
             </FileUpload>
