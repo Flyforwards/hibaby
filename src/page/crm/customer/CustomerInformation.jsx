@@ -325,7 +325,7 @@ function BaseInfo(props) {
     let dict = baseInfo[i];
 
     baseInfoDiv.push(
-      <Col span={6} key={i}>
+      <Col className={"baseInfo"+i} span={6} key={i}>
         {cusFromItem(props.form,dict)}
       </Col>
     );
@@ -504,7 +504,7 @@ function ExtensionInfo(props) {
   for (let i = 0; i < expandInfo.length - 4; i++) {
     let dict = expandInfo[i];
     expandInfoDiv.push(
-      <Col span={8} key={i}>
+      <Col className={"expandInfo"+i} span={8} key={i}>
         {cusFromItem(props.form,dict)}
       </Col>
     );
@@ -674,5 +674,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(customerInformation) ;
-
-

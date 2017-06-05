@@ -44,8 +44,47 @@
     .rowHeight{
       height: 50px;
     }
-
-
+    .baseInfo8{
+      position: absolute;
+      top:110px;
+    }
+    .baseInfo9{
+      position: absolute;
+      top:110px;
+      left:25%;
+    }
+    .baseInfo11{
+      .ant-form-item-label{
+        width: 32%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 68%;
+      }
+    }
+    .expandInfo5{
+      .ant-form-item-label{
+        width: 32%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 68%;
+      }
+    }
+    .expandInfo8{
+      .ant-form-item-label{
+        width: 35%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 65%;
+      }
+    }
+    .expandInfo11{
+      .ant-form-item-label{
+        width: 32%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 68%;
+      }
+    }
   }
 
   .headImageTitle{

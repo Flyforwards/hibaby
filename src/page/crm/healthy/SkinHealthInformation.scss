@@ -12,5 +12,88 @@
     margin:10px;
     border:1px solid #ccc;
   }
-  
+  .firstItem {
+    background-color: #fff;
+    border-bottom:1px solid #ccc;
+    .ant-form-item-label{
+      border-right:1px solid #ccc;
+    }
+    .ant-radio-group{
+      margin-left: 10px;
+    }
+    .ant-form-item-control{
+      margin-left: 10px;
+    }
+  }
+  .firstItemLeft{
+    width: 50%;
+    border-right:1px solid #ccc;
+  }
+  .ant-col-10{
+    width: 50%;
+  }
+  .medicalHistory{
+    .ant-col-10{
+      width: 100%;
+    }
+    .ant-form-item-label{
+      width: 12.5%;
+    }
+  }
+  .skinInfo{
+    width: 800px;
+    .ant-form-item-label{
+      width: 80px;
+    }
+    .ant-form-item-control-wrapper{
+      width: 700px;
+    }
+  }
+  .skinOtherInfo{
+    .ant-form-item-label{
+      width: 80px;
+      height: 110px;
+    }
+  }
+  .firstItemTitle{
+    height: 782px;
+    width: 12.5%;
+    line-height: 782px;
+    text-align: center;
+    border-right: 1px solid #ccc;
+  }
+  .skinProperty{
+    width: 12.5%;
+    height: 280px;
+    line-height: 280px;
+    text-align: center;
+    border-right: 1px solid #ccc;
+  }
+  .ant-form-item{
+    margin-bottom: 0;
+  }
+  .ant-col-6{
+    height: 55px;
+    line-height: 55px;
+  }
+
+  .ant-form-item-control{
+    height: 55px;
+    line-height: 55px;
+  }
+  .lastItem{
+    border-bottom: 0;
+  }
+  .skinPropertyItem{
+    .ant-form-item-label{
+      border-right:0;
+    }
+  }
+  .commitButton{
+    float: left;
+    margin-left: 10px;
+  }
+  .backBtn{
+    margin-left:700px;
+  }
 }
