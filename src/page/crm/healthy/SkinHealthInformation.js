@@ -15,7 +15,6 @@ class SkinHealthInformation extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-
     }
   }
   formItemLayout = {
@@ -24,7 +23,7 @@ class SkinHealthInformation extends React.Component {
   }
 
   //单选框
-  radioInput(inputTitle,inputName,required,data,message){
+  radioInput(inputTitle,inputName,required,data,message,fun){
     let { getFieldDecorator } = this.props.form;
     let radioItems = [];
     for(let i=0;i<data.length;i++){
@@ -38,7 +37,7 @@ class SkinHealthInformation extends React.Component {
         {getFieldDecorator(`${inputName}`, {
           rules: [{ required: required, message: message }]
         })(
-          <RadioGroup >
+          <RadioGroup>
             {radioItems}
           </RadioGroup>
         )}
@@ -54,7 +53,7 @@ class SkinHealthInformation extends React.Component {
         label={inputTitle}
       >
         {getFieldDecorator(`${inputName}`, {
-          rules: [{ required: required, message: message }]
+          rules: [{ required: required, message: `${message}` }]
         })(
           <Input
             suffix={unit}
@@ -84,6 +83,8 @@ class SkinHealthInformation extends React.Component {
     });
   }
 
+
+
   render(){
     return (
       <div className="skinHealthInformationDiv">
@@ -94,7 +95,7 @@ class SkinHealthInformation extends React.Component {
               {this.radioInput('看过皮肤科','1',false,[{value:0,name:'否'},{value:1,name:'是'}],'该项是必填项')}
             </Col>
             <Col span="10" style={{height: '55px',display: 'table'}}>
-              {this.myInput('诊断','2',null,false,'请输入孕前体重',null)}
+              {this.myInput('诊断','2',null,false,'请输入孕前体重')}
             </Col>
           </Row>
 
@@ -103,7 +104,7 @@ class SkinHealthInformation extends React.Component {
               {this.radioInput('镇定剂','3',false,[{value:0,name:'否'},{value:1,name:'是'}],'该项是必填项')}
             </Col>
             <Col span="10" style={{height: '55px',display: 'table'}}>
-              {this.myInput('药名','4',null,false,'请输入药名',null)}
+              {this.myInput('药名','4',null,false,'请输入药名')}
             </Col>
           </Row>
 
@@ -112,7 +113,7 @@ class SkinHealthInformation extends React.Component {
               {this.radioInput('服用药物','5',false,[{value:0,name:'否'},{value:1,name:'是'}],'该项是必填项')}
             </Col>
             <Col span="10" style={{height: '55px',display: 'table'}}>
-              {this.myInput('药名','6',null,false,'请输入药名',null)}
+              {this.myInput('药名','6',null,false,'请输入药名')}
             </Col>
           </Row>
 

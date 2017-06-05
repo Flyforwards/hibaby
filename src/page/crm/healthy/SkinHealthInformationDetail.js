@@ -86,13 +86,15 @@ class SkinHealthInformationDetail extends React.Component {
     const {dispatch} = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
         const healthInfo_ = JSON.stringify(values);
         dispatch({
-          type: 'healthInformation/saveHealthInformation',
+          type: 'healthInformation/updateHealthInformation',
           payload: {
             healthInfo : healthInfo_,
             type : type,
-            customerId : this.props.customerId
+            customerId : this.props.customerId,
+            id : skinHealthInformation.id
           }
         })
       }
