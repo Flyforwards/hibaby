@@ -36,7 +36,7 @@ export default (app) => [
     path: '/user/reset-password',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/users'));
+        registerModel(app, require('models/rePassword'));
         cb(null, require('page/user/resetPass/resetPassIndex.jsx'))
       })
     }
