@@ -576,12 +576,12 @@ function Remark(props) {
   }
   return(
     <div className='contentDiv'>
-      <Form>
+      <Form className="customRemark">
         <Row>
           <Col span={18}> <h3>客户备注</h3></Col>
           <Col span={6} className='addRemark'>  <Button type="primary" onClick={showModal}>添加备注</Button> </Col>
         </Row>
-        <Table texta dataSource={remarkList} columns={remarkListColumns} />
+        <Table bordered texta dataSource={remarkList} columns={remarkListColumns} />
 
         <Modal title="添加备注" visible={modal}
                onOk={handleOk} onCancel={handleCancel}
