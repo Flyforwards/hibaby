@@ -65,7 +65,7 @@ class SkinHealthInformation extends React.Component {
   }
 
   handleSubmit(){
-    console.log("您点击了保存按钮");
+    //console.log("您点击了保存按钮");
     const {dispatch} = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {

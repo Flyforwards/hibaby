@@ -14,7 +14,7 @@ class AddCourseModel extends Component {
           title: 'name',
           dataIndex: 'name',
           width: '25%',
-         
+
         }, {
           title: 'age',
           dataIndex: 'age',
@@ -24,7 +24,7 @@ class AddCourseModel extends Component {
             if(record.suiteName){
                 suiteName="套房 :"+record.suiteName
             }
-            
+
             return (
               suiteName
             )
@@ -45,17 +45,17 @@ class AddCourseModel extends Component {
         this.props.onCancel()
     }
     handleOk() {
-        
+
     }
     checkbox() {
         /*console.log("checkbox")*/
 
     }
     handleAfterClose() {
-      
+
     }
     handleClick = (e) => {
-        console.log('Clicked: ', e.key);
+        //console.log('Clicked: ', e.key);
         this.props.dispatch({
             type: 'addCourse/listByType',
             payload: {
@@ -120,7 +120,7 @@ class AddCourseModel extends Component {
                         <p className="price">套餐价格:￥{item.price}</p>
                     </Link>)
                 }
-               
+
             })
         }
         return (
@@ -128,7 +128,7 @@ class AddCourseModel extends Component {
                 visible={visible}
                 title="套餐"
                 closable={true}
-                afterClose={this.handleAfterClose.bind(this)} 
+                afterClose={this.handleAfterClose.bind(this)}
                 maskClosable={true}
                 onCancel={this.handleCancel.bind(this)}
                 footer={null}

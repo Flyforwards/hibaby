@@ -73,7 +73,7 @@ class SkinHealthInformationDetail extends React.Component {
   }
 
   handleEdit(){
-    console.log("您点击了编辑按钮");
+    //console.log("您点击了编辑按钮");
     const {dispatch} = this.props;
     this.setState({
       disabled:false
@@ -83,7 +83,7 @@ class SkinHealthInformationDetail extends React.Component {
   }
 
   handleSubmit(){
-    console.log("您点击了保存按钮");
+    //console.log("您点击了保存按钮");
     const {dispatch} = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {

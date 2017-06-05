@@ -210,7 +210,7 @@ function NutritionHealthInformationDetail(props) {
   }
   //提交表单
   function handleSubmit (e) {
-    console.log("您点击了保存按钮");
+    //console.log("您点击了保存按钮");
     const {dispatch} = props;
     props.form.validateFields((err, values) => {
       if (!err) {

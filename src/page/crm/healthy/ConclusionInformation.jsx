@@ -15,14 +15,14 @@ function ConclusionInformation(props) {
   const {dispatch} = props;
   var fileList = [];
   fileList = (props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?JSON.parse(props.healthInformation.conclusionInformation.healthInfo):[];
-  console.log("fileList1="+fileList);
+  //console.log("fileList1="+fileList);
   var conclusionInformationId = (props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?props.healthInformation.conclusionInformation.id:null;
   function uploadConclusionInformationProps(values) {
     if(conclusionInformationId!=null){
-      console.log("您上传了出院小票"+fileList+"kkkk="+conclusionInformationId);
+      //console.log("您上传了出院小票"+fileList+"kkkk="+conclusionInformationId);
 
     }else{
-      console.log("您上传了出院小票"+fileList);
+      //console.log("您上传了出院小票"+fileList);
 
     }
     fileList.push(values);
@@ -52,7 +52,7 @@ function ConclusionInformation(props) {
   }
   function deleteConclusionInformationProps(values) {
     dispatch({type:'healthInformation/deleteConclusionInformation',payload:values})
-    console.log("您删除了出院小票");
+    //console.log("您删除了出院小票");
 
     const healthInfo = JSON.stringify(props.healthInformation.conclusionInformation.healthInfo);
     dispatch({
