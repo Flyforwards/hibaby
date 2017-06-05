@@ -1,0 +1,25 @@
+.resetPass{
+  width: 30%;
+  //background: red;
+  margin-top: 50px;
+  position: absolute;
+  left: 50%;
+  transform:translateX(-40%);
+  img{
+    margin-bottom: 20px;
+    margin-left: 30%;
+    width: 40%;
+  }
+  input{
+    margin-top: 5px;
+    height: 40px;
+    font-size: 14px;
+    color: #999999;
+    padding-left: 20px;
+  }
+  button{
+    width: 30%;
+    margin-left: 35%;
+    height: 40px;
+  }
+}

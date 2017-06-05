@@ -64,8 +64,6 @@ export default {
             },
           },
         });
-      } else {
-        throw err || "请求出错";
       }
     },
     *submitCreateRole({ payload: values }, {call,put }) {
@@ -76,8 +74,6 @@ export default {
         yield put({
           type : 'getRolesByPage',
         });
-      } else {
-        throw err || "请求出错";
       }
     },
     *submitEditRole({ payload: values }, {call,put }) {
@@ -88,8 +84,6 @@ export default {
         yield put({
           type : 'getRolesByPage',
         });
-      } else {
-        throw err || "请求出错";
       }
     },
     *submitDelRole({ payload: values }, {call,put }) {
@@ -100,8 +94,6 @@ export default {
         yield put({
           type : 'getRolesByPage',
         });
-      } else {
-        throw err || "请求出错";
       }
     },
     *treeByRoleID({ payload }, {call, put}) {
@@ -113,8 +105,6 @@ export default {
           type : 'getTreeSuccess',
           payload : { data }
         });
-      } else {
-        throw err || "请求出错";
       }
     },
 
@@ -130,8 +120,6 @@ export default {
         // const {data:  {data : departmentList, code , err }} =  yield call(usersService.getDeptListByEndemicId, arg)
         // if (code == 0 && err == null) {
         //   departmentLists = departmentList;
-        // } else {
-        //   throw err || "请求出错";
         // }
 
         // yield put({
@@ -147,8 +135,6 @@ export default {
           type : 'getRoleUserPagSuccess',
           payload : { data, total,}
         });
-      } else {
-        throw err || "请求出错";
       }
     },
     // 给角色分配权限
@@ -156,8 +142,6 @@ export default {
       const {data: {data, code , err}} =  yield call(usersService.configRolePermission, values)
       if (code == 0 && err == null) {
         message.success("设置权限成功");
-      } else {
-        throw err || "请求出错";
       }
     },
 
@@ -183,8 +167,6 @@ export default {
           })
         }
 
-      } else {
-        throw err || "请求出错";
       }
     },
 
@@ -198,8 +180,6 @@ export default {
           type: "getUserPageListByRoleId",
           payload: { page, pageSize,roleId }
         })
-      } else {
-        throw err || "请求出错";
       }
     },
 
@@ -211,8 +191,6 @@ export default {
           type: "getUserByNodeIdSuccess",
           payload: { data, total, nodeid }
         })
-      } else {
-        throw err || "请求出错";
       }
     },
 
@@ -232,8 +210,6 @@ export default {
           type: "getUserPageListByRoleId",
           payload: { roleId, page: 1, size: 10, first: true }
         })
-      } else {
-        throw err || "请求出错";
       }
     },
 

@@ -261,7 +261,7 @@ function Healthyhome(props) {
 
   //提交表单
   function handleSubmit (e) {
-    console.log("您点击了保存按钮");
+    //console.log("您点击了保存按钮");
     const {dispatch} = props;
     props.form.validateFields((err, values) => {
       if (!err) {
@@ -583,19 +583,13 @@ function Healthyhome(props) {
 
 const HealthyhomeFrom = Form.create()(Healthyhome);
 
-function HealthyhomeFromTab({ dispatch }) {
-  return (
-    <HealthyhomeFrom dispatch={dispatch} />
-  )
-}
-
 
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
-    customerId:state.addCustomer.customerId
+    customerId:state.addCustomer.dataDetailId
   };
 }
 
 
-export default connect(mapStateToProps)(HealthyhomeFromTab)
+export default connect(mapStateToProps)(HealthyhomeFrom)

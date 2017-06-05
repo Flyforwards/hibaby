@@ -75,6 +75,7 @@ class PicturesWall extends React.Component {
 
   render() {
     const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
+
     return (
       <div>
         <Upload
@@ -84,7 +85,7 @@ class PicturesWall extends React.Component {
           showUploadList = {!this.props.isHead}
           defaultFileList={defaultFileList}
           filelist={fileList}
-          multiple={!this.props.isHead}
+          multiple={!this.props.isHead || this.props.multiple}
           beforeUpload={this.beforeUpload.bind(this)}
           onPreview={this.handlePreview.bind(this)}
           onChange={this.handleChange.bind(this)}

@@ -6,22 +6,17 @@ function parseJSON(response) {
   return response.json();
 }
 
-// function checkStatus(response) {
-//   if (response.status >= 200 && response.status < 300) {
-//     // 捕获业务异常抛出
-//     return response;
-//   } else {
-//     throw response;
-//   }
-// }
+
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
-    // 处理业务错误
     return response;
   }
 
-  const error = new Error(response.statusText);
+  let error = new Error(response.statusText);
+  if (response.status == 504) {
+    error = new Error( "请求超时");
+  }
   error.response = response;
   //console.log('request:error>>', response);
   throw error;
@@ -31,6 +26,17 @@ function checkStatus(response) {
 function catchErr(error) {
   throw error;
 }
+
+function checkCode(data) {
+  const { code, err } = data;
+  // const whiteList = [6];
+  if (code != 0) {
+    const error = new Error(err || "请求错误" );
+    throw error;
+  }
+  return { data };
+}
+
 
 /**
  * Requests a URL, returning a promise.
@@ -57,6 +63,6 @@ export default function request(url, options) {
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)
-    .then(data => ({ data }))
+    .then(checkCode)
     .catch(catchErr);
 }

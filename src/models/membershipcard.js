@@ -154,8 +154,6 @@ export default {
         yield put({
           type:'getBalanceInfo',
         });
-      }else{
-        message.error(err)
       }
     },
     //退费
@@ -183,8 +181,6 @@ export default {
         yield put({
           type:'getBalanceInfo',
         });
-      }else{
-        message.error(err)
       }
     },
 
@@ -213,8 +209,6 @@ export default {
         yield put({
           type:'switchCommonState'
         });
-      }else{
-        message.error(err)
       }
     },
 
@@ -241,11 +235,6 @@ export default {
         yield put({
           type:'getBalanceInfo',
         });
-      }else{
-        message.error(err)
-        yield put({
-          type:'switchChargeState',
-        })
       }
     },
 
@@ -378,8 +367,6 @@ export default {
             data
           }
         })
-      }else {
-        message.error(err)
       }
     }
 
