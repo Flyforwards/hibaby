@@ -325,7 +325,7 @@ function BaseInfo(props) {
     let dict = baseInfo[i];
 
     baseInfoDiv.push(
-      <Col span={6} key={i}>
+      <Col className={"baseInfo"+i} span={6} key={i}>
         {cusFromItem(props.form,dict)}
       </Col>
     );
@@ -504,7 +504,7 @@ function ExtensionInfo(props) {
   for (let i = 0; i < expandInfo.length - 4; i++) {
     let dict = expandInfo[i];
     expandInfoDiv.push(
-      <Col span={8} key={i}>
+      <Col className={"expandInfo"+i} span={8} key={i}>
         {cusFromItem(props.form,dict)}
       </Col>
     );
@@ -576,12 +576,12 @@ function Remark(props) {
   }
   return(
     <div className='contentDiv'>
-      <Form>
+      <Form className="customRemark">
         <Row>
           <Col span={18}> <h3>客户备注</h3></Col>
           <Col span={6} className='addRemark'>  <Button type="primary" onClick={showModal}>添加备注</Button> </Col>
         </Row>
-        <Table texta dataSource={remarkList} columns={remarkListColumns} />
+        <Table bordered texta dataSource={remarkList} columns={remarkListColumns} />
 
         <Modal title="添加备注" visible={modal}
                onOk={handleOk} onCancel={handleCancel}
@@ -677,5 +677,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(customerInformation) ;
-
-

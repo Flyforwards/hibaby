@@ -103,7 +103,7 @@ class AddCourse extends Component {
       });
     }
   componentWillUnmount(){
-    console.log("componentWillUnmount")
+    //console.log("componentWillUnmount")
     this.props.dispatch({type:'addCourse/setAddCustomerTab',payload:false})
   }
     render(){
@@ -140,7 +140,7 @@ class AddCourse extends Component {
               x="宝宝套餐";
               break;
             }
-            console.log(addCourseList)
+            //console.log(addCourseList)
             dataList.push(<div className="addCourseList" key={dataKey}>
               <div className="viewServiceinfoBox">
               <div className="viewServiceinfoTitle">

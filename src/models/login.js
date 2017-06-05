@@ -23,8 +23,6 @@ export default {
         yield put({
           type : "layout/getCurrentUserEndemic"
         });
-      } else {
-        // throw err;
       }
     },
 

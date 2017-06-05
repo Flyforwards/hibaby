@@ -78,7 +78,7 @@ class Login extends React.Component {
 
         return (
             <div className="login-page">
-                <DocumentTitle title="管理台"/>
+                <DocumentTitle title="凯贝姆Hi Baby管理后台"/>
                 <div className="login-box">
                     <img src={logoImg} alt="logo" className="logo"/>
                     <Spin spinning={this.state.loading} size="large">

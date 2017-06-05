@@ -165,9 +165,9 @@ function Remark(props) {
   const {remarkListColumns} = props.users;
   const remarkList = props.users.remarkData;
   return(
-    <div className='contentDiv detail'>
-          <h3>客户备注</h3>
-        <Table texta dataSource={remarkList} columns={remarkListColumns} />
+    <div className='contentDiv detail customRemark'>
+        <h3>客户备注</h3>
+        <Table texta bordered dataSource={remarkList} columns={remarkListColumns} />
     </div>
   )
 
@@ -248,7 +248,7 @@ class customerDetails extends React.Component{
 
           <div className='savaDiv'>
             <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
-            <Button className='backBtn' type="danger" onClick={this.onDelete.bind(this)}>删除</Button>
+            <Button className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</Button>
             <Button className='backBtn' type="primary" onClick={this.editBtnClick.bind(this)}>编辑</Button>
           </div>
         </Spin>
@@ -267,4 +267,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(customerDetails) ;
-

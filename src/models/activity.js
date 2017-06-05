@@ -71,7 +71,6 @@ export default {
   },
   effects: {
 
-
     // 获取会员身份下拉选项， 也是卡种列表
     *getMemberShipCard({payload: values}, { call, put }) {
         const {data: { data, code} } = yield call(systemService.getMemberShipCard, values);

@@ -99,8 +99,6 @@ export default {
         yield put({
           type: 'getMenuData'
         })
-      } else {
-        throw err || "请求出错";
       }
     },
 
