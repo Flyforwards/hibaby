@@ -13,7 +13,6 @@ export default {
   namespace: 'healthInformation',
 
   state: {
-    customerId : 101,
     medicalHealthInformation : null,//医疗健康档案
     nutritionHealthInformation : null,//营养健康档案
     skinHealthInformation : null,//美妍中心
@@ -37,7 +36,7 @@ export default {
               });
             }
           }
-        }
+        };
       });
     },
   },
@@ -70,7 +69,7 @@ export default {
         // message.info("根据用户编号查询健康档案成功");
         console.log("根据用户编号查询健康档案成功==>",data);
         //更新state
-        yield put({type:'setHealthInformation',payload:{data}} );
+        yield put({type:'setHealthInformation',payload:{data,type:values.type}} );
       }else{
         message.error(err);
       }
@@ -81,18 +80,15 @@ export default {
     save(state, action) {
       return { ...state, ...action.payload };
     },
-    setHealthInformation(state, { payload: { data }}){
-      if(data){
-        if(data.type === 1){
-          return { ...state, medicalHealthInformation : data };
-        }else if(data.type === 2){
-          return { ...state, nutritionHealthInformation : data };
-        }else if(data.type === 3){
-          return { ...state, skinHealthInformation : data };
-        }else if(data.type === 4){
-          return { ...state, conclusionInformation : data };
-        }
-        return {...state};
+    setHealthInformation(state, { payload: { data,type }}){
+      if(type === 1){
+        return { ...state, medicalHealthInformation : data };
+      }else if(type === 2){
+        return { ...state, nutritionHealthInformation : data };
+      }else if(type === 3){
+        return { ...state, skinHealthInformation : data };
+      }else if(type === 4){
+        return { ...state, conclusionInformation : data };
       }
       return {...state};
     },
@@ -124,7 +120,6 @@ export default {
       }
       return {...state,conclusionInformation:arr};
     }
-
   }
 
 };

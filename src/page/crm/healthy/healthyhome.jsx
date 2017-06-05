@@ -583,12 +583,6 @@ function Healthyhome(props) {
 
 const HealthyhomeFrom = Form.create()(Healthyhome);
 
-function HealthyhomeFromTab({ dispatch }) {
-  return (
-    <HealthyhomeFrom dispatch={dispatch} />
-  )
-}
-
 
 function mapStateToProps(state) {
   return {
@@ -598,4 +592,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(HealthyhomeFromTab)
+export default connect(mapStateToProps)(HealthyhomeFrom)
