@@ -205,22 +205,12 @@ export default {
 					type: 'getDepartmentNodes',
 					payload: { }
 				});
-			}else{
-				message.config({
-			        top: 100,
-			        duration: 3
-			    });
-				message.success("该组织架构节点存在关联数据无法删除");
 			}
 		},
 		//根据节点id更新组织架构节点
 		*modifyDepartment({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.modifyDepartment, values);
 			if (code == 0) {
-				message.config({
-			        top: 100,
-			        duration: 3
-			    });
 				message.success("修改该组织架构节点成功");
 				yield put({
 					type: 'getDepartment',
@@ -341,10 +331,6 @@ export default {
 		//添加用户信息
 		*addUser({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(organizationService.addUser, values);
-			message.config({
-		        top: 100,
-		        duration: 3
-		    });
 			switch(data.type)
 			{
 			case 1:

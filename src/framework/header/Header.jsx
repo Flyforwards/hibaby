@@ -81,8 +81,10 @@ class Header extends React.Component {
 
         let userName = "凯贝姆";
         let userPosition = "凯贝姆";
+        let userImg = UserImg;
         if (this.props.userInfo != null) {
           userName = this.props.userInfo.name;
+          userImg = this.props.userInfo.imgURL;
           const entrys = this.props.userInfo.entrys;
           if ( entrys != null && entrys.length > 0) {
             const entry = entrys[0];
@@ -115,35 +117,7 @@ class Header extends React.Component {
           leftMenu = (<span className="nav-two">{ selectEndemic ? selectEndemic.name: "凯贝姆" }</span>)
         }
 
-
         let projectTree = this.props.projectTree;
-        if (projectTree.length === 0) {
-          projectTree = [{
-            description : "首页",
-            id : 1,
-            isHave : null,
-            isSelect : null,
-            name :  "首页",
-            orderBy : 0,
-            path : "",
-          },{
-          description :  "CRM",
-          id : 2,
-          isHave : null,
-          isSelect : null,
-          name  : "CRM",
-          orderBy : 1,
-          path : "/crm/customer"},
-            {
-            description : "系统管理",
-            id :  3,
-            isHave : null,
-            isSelect : null,
-            name  : "系统管理",
-            orderBy : 2,
-            path : "/system/group-char",
-          }];
-        }
 
         const subNodes =  projectTree.map((item, index) => {
           let className="menu-item"
@@ -180,7 +154,7 @@ class Header extends React.Component {
                 </ul>
                 <Dropdown overlay={ this.userMenu } placement="bottomCenter" trigger={ ['click'] }>
                   <div className="header-menu-name">
-                    <img src={ UserImg }/>
+                    <img src={ userImg }/>
                     <p className="user-info-p">
                       <span className="user-name">{ userName }</span>
                       <span className="user-pro">{ userPosition }</span>
