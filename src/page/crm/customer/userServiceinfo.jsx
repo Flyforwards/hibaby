@@ -18,7 +18,7 @@ class UserServiceinfo extends Component {
         this.props.onCancel()
     }
     handleOk(record) {
-        console.log(record)
+        //console.log(record)
         this.props.dispatch({
           type: 'addCourse/useServiceInfo',
           payload: {

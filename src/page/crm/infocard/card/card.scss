@@ -48,6 +48,33 @@ padding: 10px;
     }
   }
 }
+.cardEdit{
+  .topTitleInfo{
+    margin-top:10px;
+    .ant-col-10{
+      width: 600px;
+      margin-right: 20px;
+    }
+    .ant-form-item{
+      width: 600px;
+      .ant-form-item-control {
+        width:600px;
+      }
+    }
+    button{
+      font:14px "微软雅黑";
+    }
+  }
+  .titleInfo{
+    label{
+      font: 12px "微软雅黑";
+    }
+    .ant-form-item-control {
+      width: 130px;
+    }
+  }
+
+}
 .ant-btn{
   width:150px;
   height:30px;

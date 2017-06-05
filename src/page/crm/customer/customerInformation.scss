@@ -44,10 +44,76 @@
     .rowHeight{
       height: 50px;
     }
-
-
+    .baseInfo8{
+      position: absolute;
+      top:110px;
+    }
+    .baseInfo9{
+      position: absolute;
+      top:110px;
+      left:25%;
+    }
+    .baseInfo11{
+      .ant-form-item-label{
+        width: 32%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 68%;
+      }
+    }
+    .expandInfo5{
+      .ant-form-item-label{
+        width: 32%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 68%;
+      }
+    }
+    .expandInfo8{
+      .ant-form-item-label{
+        width: 35%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 65%;
+      }
+    }
+    .expandInfo11{
+      .ant-form-item-label{
+        width: 32%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 68%;
+      }
+      button{
+        background: #169bd5;
+        color: #fff;
+      }
+    }
+    .expandInfo12{
+      button{
+        background: #169bd5;
+        color: #fff;
+      }
+    }
   }
-
+  .customRemark{
+    .ant-table-thead > tr > th {
+        background-color: dimgray;
+        font-weight: 500;
+        transition: background .3s ease;
+        text-align: center;
+        font:14px "微软雅黑";
+        color: rgba(255, 255, 255, 0.85);
+    }
+    .ant-table-tbody > tr > td {
+        text-align:center;
+        background-color: #fff;
+    	font-family: '微软雅黑 Regular', '微软雅黑';
+    	font-weight: 400;
+    	font-style: normal;
+    	font-size: 14px;
+  }
+}
   .headImageTitle{
     text-align: right;
   }
@@ -84,6 +150,11 @@
       height: 30px;
       margin-top:10px;
       margin-right: 10px;
+      font: 14px "微软雅黑";
+    }
+    .delBtn{
+      background: #ff4a4a;
+      color:#fff;
     }
   }
 }

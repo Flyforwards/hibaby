@@ -13,18 +13,24 @@ const type = 4;//出院小结
  */
 function ConclusionInformationDetail(props) {
   const {dispatch} = props;
-  console.log("healthInformation="+props);
-  console.log("healthInformation2="+props.healthInformation.conclusionInformation.healthInfo);
+  //console.log("healthInformation="+props);
+  //console.log("healthInformation2="+props.healthInformation.conclusionInformation.healthInfo);
 
   let fileList = (props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?JSON.parse(props.healthInformation.conclusionInformation.healthInfo):[];
-  console.log("fileList1="+fileList);
+  //console.log("fileList1="+fileList);
+
+  for(let i = 0;i<fileList.length;i++){
+    let dict = fileList[i];
+    dict.uid = i;
+  }
+
   var conclusionInformationId = (props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?props.healthInformation.conclusionInformation.id:null;
   function uploadConclusionInformationProps(values) {
     if(conclusionInformationId!=null){
-      console.log("您上传了出院小票"+fileList+"kkkk="+conclusionInformationId);
+      //console.log("您上传了出院小票"+fileList+"kkkk="+conclusionInformationId);
 
     }else{
-      console.log("您上传了出院小票"+fileList);
+      //console.log("您上传了出院小票"+fileList);
 
     }
     fileList.push(values);
@@ -54,7 +60,7 @@ function ConclusionInformationDetail(props) {
   }
   function deleteConclusionInformationProps(values) {
     dispatch({type:'healthInformation/deleteConclusionInformation',payload:values})
-    console.log("您删除了出院小票");
+    //console.log("您删除了出院小票");
 
     const healthInfo = JSON.stringify(props.healthInformation.conclusionInformation.healthInfo);
     dispatch({
@@ -74,7 +80,7 @@ function ConclusionInformationDetail(props) {
           <div className="uploadOptions">出院小结2:</div>
         </Col>
         <Col span="18">
-          <FileUpload fun={uploadConclusionInformationProps.bind()} deleteFun={deleteConclusionInformationProps.bind()}  value={fileList} isHead = {true}>
+          <FileUpload fun={uploadConclusionInformationProps.bind()} deleteFun={deleteConclusionInformationProps.bind()}  value={fileList} multiple = {false}>
             <Button className="uploadOptionsButton"><Icon type="upload"/>上传附件</Button>
           </FileUpload>
         </Col>

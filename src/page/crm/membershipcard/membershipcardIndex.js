@@ -95,7 +95,7 @@ class MemberShipCard extends Component {
 
   //销卡点击确定
   handleCancelCard (values){
-    console.log(">>>>",values)
+    //console.log(">>>>",values)
     this.props.dispatch({
       type: 'membershipcard/cancelCard',
       payload:{  ...values }
@@ -103,7 +103,7 @@ class MemberShipCard extends Component {
   }
   //退费点击确定
   handleRefundCard (values){
-    console.log("《《《",values)
+    //console.log("《《《",values)
     this.props.dispatch({
       type: 'membershipcard/returnsAmount',
       payload:{  ...values }
@@ -111,7 +111,7 @@ class MemberShipCard extends Component {
   }
   //续费点击确定
   handleRenewFee (values){
-    console.log("《《《",values)
+  //  console.log("《《《",values)
     this.props.dispatch({
       type: 'membershipcard/returnsAmount',
       payload:{  ...values }
@@ -128,7 +128,7 @@ class MemberShipCard extends Component {
 
 
   tabChange(key){
-    console.log(key);
+    //console.log(key);
   }
 
   render() {
@@ -166,7 +166,7 @@ class MemberShipCard extends Component {
             prams="amount"
             onOk={this.handleCancelCard.bind(this)}
           >
-            <Button  type="danger" className="cardBtn">消卡</Button>
+            <Button className="danBtn" style={{backgroundColor:'#ff4a4a',color:'#fff'}}  className="cardBtn">消卡</Button>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -177,7 +177,7 @@ class MemberShipCard extends Component {
             prams="amount"
             onOk={this.handleRefundCard.bind(this)}
           >
-            <Button type="danger" className="cardBtn">退费</Button>
+            <Button className="danBtn" style={{backgroundColor:'#ff4a4a',color:'#fff'}} className="cardBtn">退费</Button>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -188,7 +188,7 @@ class MemberShipCard extends Component {
             prams="amount"
             onOk={this.handleRenewFee.bind(this)}
           >
-            <Button type="primary" className="cardBtn" >续费</Button>
+            <Button style={{backgroundColor:'#ff9900',color:'#fff'}} className="cardBtn" >续费</Button>
           </AlertModalFrom>
 
           <ChargeBackFeeModal

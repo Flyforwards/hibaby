@@ -23,7 +23,7 @@ class Header extends React.Component {
         this.userMenu=(
             <div>
               <div>
-                <Button>个人中心</Button>
+                <Button onClick={ this.putUserInfoIndex.bind(this)}>个人中心</Button>
               </div>
               <div>
                 <Button onClick={ this.logout.bind(this)}>退出登录</Button>
@@ -31,12 +31,18 @@ class Header extends React.Component {
             </div>
         )
     }
+    putUserInfoIndex() {
+      this.props.dispatch({
+        type: "layout/pushUser",
+      });
+    }
 
     logout() {
       this.props.dispatch({
         type: "layout/logout",
       })
     }
+
     componentDidMount() {
         const projectList = this.props.projectList;
         if (projectList == null) {
@@ -48,11 +54,11 @@ class Header extends React.Component {
     }
 
     getName(event,item){
-        console.log(event.target.innerHTML)
         this.setState({
             name:event.target.innerHTML
         })
     }
+
     refreshMenu(item, index){
       this.props.dispatch({
         type: "layout/pushModule",
