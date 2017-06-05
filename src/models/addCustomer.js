@@ -7,7 +7,7 @@ import moment from 'moment'
 export default {
   namespace: 'addCustomer',
   state: {
-    dataDetailId:101,
+    dataDetailId:0,
     isDetail:false,
 
     baseData:[],
@@ -452,9 +452,6 @@ export default {
 
         }
       }
-      else {
-        message(err)
-      }
     },
 
 
@@ -529,10 +526,7 @@ export default {
 
         }
       }
-      else
-      {
-        message(err);
-      }
+
     },
 
     *savaRemark({ payload: values },{ call, put ,select}) {
@@ -554,9 +548,6 @@ export default {
         if (code == 0) {
           message.success('信息保存成功');
           yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
-        }
-        else {
-          message(err)
         }
       }
       else {

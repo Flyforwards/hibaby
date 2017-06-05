@@ -71,7 +71,6 @@ class Suiteed extends Component {
     }
     //删除
     delete(record) {
-    //  console.log("record",record.id)
       this.setState({
         DeleteVisible:true,
         ID:record.id
@@ -94,12 +93,12 @@ class Suiteed extends Component {
         });
     }
     render() {
-        const { suiteListByPage, loading, pagination, dispatch } = this.props;
+        const { suiteListByPage, loading, suitepagination, dispatch } = this.props;
         const columns = this.columns;
         const tableProps = {
           loading: loading.effects['packageInfo/suiteListByPage'],
           dataSource : suiteListByPage ,
-          pagination,
+          pagination: suitepagination,
           onChange (page) {
             const { pathname } = location
             dispatch(routerRedux.push({
@@ -131,13 +130,13 @@ class Suiteed extends Component {
 function mapStateToProps(state) {
   const {
     suiteListByPage,
-    pagination
+    suitepagination
   } = state.packageInfo;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     suiteListByPage,
-    pagination,
+    suitepagination,
     permissionAlias
     };
 }

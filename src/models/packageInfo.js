@@ -18,7 +18,7 @@ export default {
 		findById:null,
 		selectDataSave:null,
 		getDictionary:null,
-		suiteListByPage:null,
+		suiteListByPage:[],
 		roomFindById:null,
 		commodityListByPage:[],
 		chineseToPinyin:null,
@@ -28,34 +28,34 @@ export default {
 	      current: 1,
 	      total: null,
 	    },
-	    suitepagination: {
-	      showQuickJumper: true,
-	      showTotal: total => `共 ${total} 条`,
-	      current: 1,
-	      total: null,
-	    },
-	    serviceinfopagination: {
-	      showQuickJumper: true,
-	      showTotal: total => `共 ${total} 条`,
-	      current: 1,
-	      total: null,
-	    },
-	    commoditypagination: {
-	      showQuickJumper: true,
-	      showTotal: total => `共 ${total} 条`,
-	      current: 1,
-	      total: null,
-	    },
+    suitepagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+    serviceinfopagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+    commoditypagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
 	    commodityFindById:null,
 	},
 	reducers: {
-		delSave(state, { payload: { record }}) {
-			state.selectedRows.remove(record);
-			state.selectedRowKeys.remove(record.key);
-			return {...state, };
-		},
-	    listByPageSave(state,{payload:{list,serviceinfopagination}}){
-	      return {...state, list, serviceinfopagination: {  ...state.serviceinfopagination,...serviceinfopagination }};
+      delSave(state, { payload: { record }}) {
+        state.selectedRows.remove(record);
+        state.selectedRowKeys.remove(record.key);
+        return {...state, };
+      },
+	    listByPageSave(state,{payload:{ list, pagination}}){
+	      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 	    },
 	    roomListSave(state,{payload:{ data:roomData,code }}){
 	      let roomListSavedata = {...state,roomData,code};
@@ -143,8 +143,6 @@ export default {
 			if (code == 0) {
 				message.success("添加套餐成功");
 				yield put(routerRedux.push("/crm/serviceinfo"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//修改套房信息
@@ -158,8 +156,6 @@ export default {
 			if (code == 0) {
 				message.success("修改套房信息成功");
 				history.go(-1)
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//删除套房
@@ -173,8 +169,6 @@ export default {
 			if (code == 0) {
 				message.success("删除套房成功");
 				yield put(routerRedux.push("/crm/suite"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//添加套房
@@ -188,8 +182,6 @@ export default {
 			if (code == 0) {
 				message.success("添加套房成功");
 				yield put(routerRedux.push("/crm/suite"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//修改商品信息
@@ -203,8 +195,6 @@ export default {
 			if (code == 0) {
 				message.success("修改商品信息成功");
 				history.go(-1)
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//删除商品
@@ -218,8 +208,6 @@ export default {
 			if (code == 0) {
 				message.success("删除商品成功");
 				yield put(routerRedux.push("/crm/commodity"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//添加商品
@@ -233,10 +221,9 @@ export default {
 			if (code == 0) {
 				message.success("添加商品成功");
 				yield put(routerRedux.push("/crm/commodity"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
+
 		//套房列表信息
 		*suiteListByPage({payload: values}, { call, put }) {
 			values = parse(location.search.substr(1))
@@ -252,7 +239,7 @@ export default {
 					type: 'suiteListByPageSave',
 					payload: {
 			            suiteListByPage: data,
-			            pagination: {
+                  suitepagination: {
 			              current: Number(page) || 1,
 			              pageSize: Number(size) || 10,
 			              total: total,
@@ -261,6 +248,7 @@ export default {
 				});
 			}
 		},
+
 		//商品分页列表信息
 		*commodityListByPage({payload: values}, { call, put }) {
 			values = parse(location.search.substr(1))
@@ -276,7 +264,7 @@ export default {
 					type: 'commodityListByPageSave',
 					payload: {
 			            commodityListByPage: data,
-			            pagination: {
+                  commoditypagination: {
 			              current: Number(page) || 1,
 			              pageSize: Number(size) || 10,
 			              total: total,
@@ -328,8 +316,6 @@ export default {
 			if (code == 0) {
 				message.success("修改套餐成功");
 				history.go(-1)
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//获取套房下拉数据
@@ -396,6 +382,7 @@ export default {
 				});
 			}
 		},
+
 		//获取房间分页的列表
 		*roomList({payload: values}, { call, put }) {
 			const {
@@ -442,8 +429,6 @@ export default {
 			if (code == 0) {
 				message.success("删除成功");
 				yield put(routerRedux.push("/crm/serviceinfo"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 	},

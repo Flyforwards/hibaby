@@ -108,8 +108,13 @@ class CustomerIndex extends React.Component {
           key: 'contractNumber'
         },{
           title: '添加人',
-          dataIndex: 'operator1',
-          key: 'operator1'
+          render: (record) => {
+            if (record.operator2 !=null ) {
+              return record.operator2;
+            } else {
+              return record.operator;
+            }
+          }
         },{
           title: '操作',
           dataIndex: 'operating',

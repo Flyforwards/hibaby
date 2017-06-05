@@ -77,8 +77,6 @@ export default {
       if (code == 0) {
         message.success('删除成功');
         yield put(routerRedux.push('/system/permission-inside'));
-      } else {
-        throw err || "请求出错";
       }
     },
 

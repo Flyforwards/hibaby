@@ -207,7 +207,7 @@ function NutritionHealthInformation(props) {
   }
   //提交表单
   function handleSubmit (e) {
-    console.log("您点击了保存按钮");
+    //console.log("您点击了保存按钮");
     const {dispatch} = props;
     props.form.validateFields((err, values) => {
       if (!err) {
@@ -329,7 +329,7 @@ const NutritionHealthInformationForm = Form.create()(NutritionHealthInformation)
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
-    customerId:state.addCustomer.customerId
+    customerId:state.addCustomer.dataDetailId
 
   };
 }

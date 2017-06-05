@@ -23,7 +23,7 @@ class Header extends React.Component {
         this.userMenu=(
             <div>
               <div>
-                <Button>个人中心</Button>
+                <Button onClick={ this.putUserInfoIndex.bind(this)}>个人中心</Button>
               </div>
               <div>
                 <Button onClick={ this.logout.bind(this)}>退出登录</Button>
@@ -31,12 +31,18 @@ class Header extends React.Component {
             </div>
         )
     }
+    putUserInfoIndex() {
+      this.props.dispatch({
+        type: "layout/pushUser",
+      });
+    }
 
     logout() {
       this.props.dispatch({
         type: "layout/logout",
       })
     }
+
     componentDidMount() {
         const projectList = this.props.projectList;
         if (projectList == null) {
@@ -48,11 +54,11 @@ class Header extends React.Component {
     }
 
     getName(event,item){
-        // console.log(event.target.innerHTML)
         this.setState({
             name:event.target.innerHTML
         })
     }
+
     refreshMenu(item, index){
       this.props.dispatch({
         type: "layout/pushModule",
@@ -75,13 +81,15 @@ class Header extends React.Component {
 
         let userName = "凯贝姆";
         let userPosition = "凯贝姆";
+        let userImg = UserImg;
         if (this.props.userInfo != null) {
           userName = this.props.userInfo.name;
+          userImg = this.props.userInfo.imgURL;
           const entrys = this.props.userInfo.entrys;
           if ( entrys != null && entrys.length > 0) {
             const entry = entrys[0];
-            // userPosition = positionDict[entry.positionId];
-            userPosition="开发";
+            // console.log(entry);
+            // userPosition = positionDict[entry.id];
           }
         }
         const endemicMenu = session.get("clubs");
@@ -109,35 +117,7 @@ class Header extends React.Component {
           leftMenu = (<span className="nav-two">{ selectEndemic ? selectEndemic.name: "凯贝姆" }</span>)
         }
 
-
         let projectTree = this.props.projectTree;
-        if (projectTree.length === 0) {
-          projectTree = [{
-            description : "首页",
-            id : 1,
-            isHave : null,
-            isSelect : null,
-            name :  "首页",
-            orderBy : 0,
-            path : "",
-          },{
-          description :  "CRM",
-          id : 2,
-          isHave : null,
-          isSelect : null,
-          name  : "CRM",
-          orderBy : 1,
-          path : "/crm/customer"},
-            {
-            description : "系统管理",
-            id :  3,
-            isHave : null,
-            isSelect : null,
-            name  : "系统管理",
-            orderBy : 2,
-            path : "/system/group-char",
-          }];
-        }
 
         const subNodes =  projectTree.map((item, index) => {
           let className="menu-item"
@@ -174,7 +154,7 @@ class Header extends React.Component {
                 </ul>
                 <Dropdown overlay={ this.userMenu } placement="bottomCenter" trigger={ ['click'] }>
                   <div className="header-menu-name">
-                    <img src={ UserImg }/>
+                    <img src={ userImg }/>
                     <p className="user-info-p">
                       <span className="user-name">{ userName }</span>
                       <span className="user-pro">{ userPosition }</span>

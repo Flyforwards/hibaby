@@ -1,4 +1,3 @@
-"use strict"
 import React, { Component } from 'react';
 import { Icon, Table, Input,Modal, Button, Form, Row, Col, Popconfirm, message } from 'antd';
 import { connect } from 'dva';

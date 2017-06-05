@@ -99,8 +99,6 @@ export default {
       if (code == 0) {
         message.success('删除服务项目成功');
         yield put(routerRedux.push("/system/service-item"))
-      } else {
-        throw err || "请求出错";
       }
     },
 		//编辑服务内容

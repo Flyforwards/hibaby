@@ -9,6 +9,7 @@ import './framework/app/common.scss'
 import registerModel from './routs/register'
 import systemConfig from './routs/systemConfig'
 import crmConfig from './routs/crmConfig'
+import userConfig from './routs/userConfig'
 
 
 function RouterConfig({ history, app }) {
@@ -54,7 +55,7 @@ let routes = [
             replace('/login')
           }
         },
-        childRoutes: [...welcome,...systemConfig(app),...crmConfig(app)],
+        childRoutes: [...welcome,...systemConfig(app),...crmConfig(app),...userConfig(app)],
     },
     {
         path: '/login',

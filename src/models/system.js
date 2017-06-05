@@ -15,43 +15,20 @@ export default {
 	},
 	reducers: {
 
-		checkDataSave(state, {
-			payload: {
-				data: item,
-				code
-			}
-		}) {
-			let checkdata = {...state,
-				item,
-				code
-			};
-			return  {...checkdata,
-			};;
-		},
-	},
+		checkDataSave(state, { payload: { data: item } }) {
+			return  {...state, item }
+    }
+  },
 	effects: {
-		*checkData({
-			payload:values
-		}, {
-			call,
-			put
-		}) {
-			const {
-				data: {
-					data,
-					code
-				}
-			} = yield call(systemService.checkData, values);
-
+		*checkData({ payload:values }, { call, put }) {
+			const { data: { data, code } } = yield call(systemService.checkData, values);
 			if (code == 0) {
 				yield put({
 					type: 'checkDataSave',
 					payload: {
 						data,
-						code
-					}
+          }
 				});
-
 			}
 		},
 	},

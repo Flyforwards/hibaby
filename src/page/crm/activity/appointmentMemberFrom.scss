@@ -1,8 +1,34 @@
 .activity-cent{
   width:98%;
   margin:0 1%;
-  .add-activity{
-    padding: 10px 10px 0 10px;
+  .activityTop{
+    .findBtn{
+      width:130px;
+      float: left;
+      font: 14px "微软雅黑";
+    }
+    .resetBtn{
+      width:130px;
+      float: left;
+      margin-left: 10px;
+      font: 14px "微软雅黑";
+    }
+    button{
+      font: 14px "微软雅黑";
+    }
+  }
+  .activityTitle{
+    label{
+      font: 12px "微软雅黑";
+    }
+    .ant-form-item-control {
+      width: 110px;
+    }
+    .TireNum{
+      .ant-form-item-control {
+        width: 100px;
+      }
+    }
   }
   .card-title {
     h3{
@@ -16,62 +42,9 @@
       font-weight: 500;
     }
   }
-
    .ant-card{
      margin-top: 10px;
    }
-  .name{
-    margin:10px 0px 10px 10px;
-    font-family: '微软雅黑 Regular', '微软雅黑';
-    font-weight: 400;
-    font-style: normal;
-    font-size: 14px;
-    color:#333;
-    span{
-      display:inline-block;
-      color: #FFFFFF;
-      width: 140px;
-      height: 40px;
-      margin-left:10px;
-      text-align: center;
-      line-height: 40px;
-      background: inherit;
-      background-color: rgba(255, 102, 0, 1);
-      border: none;
-      border-radius: 5px;
-      font-family: '微软雅黑 Regular', '微软雅黑';
-      font-weight: 400;
-      font-style: normal;
-      font-size: 14px;
-    }
-  }
-
-  //.ant-input{
-  //  width:220px;
-  //  height:40px;
-  //  margin-left:40px;
-  //}
-
-  .card-span{
-    position: relative;
-    border-collapse: separate;
-    border: 1px solid #d9d9d9;
-    border-spacing: 0;
-    width: 100%;
-    span{
-      padding: 4px 7px;
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      color: rgba(0,0,0,.65);
-      text-align: center;
-      background-color: #eee;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      position: relative;
-      transition: all .3s;
-    }
-  }
 
   .ant-table-thead > tr > th {
     background-color: rgba(102, 102, 102, 1);
@@ -90,57 +63,6 @@
     font-family: '微软雅黑 Regular', '微软雅黑';
     font-weight: 400;
     font-size: 14px;
-    div{
-      width:100%;
-      a{
-        margin-right:9px;
-        margin-left:5px;
-        color:#b67231;
-      }
-      .firstA:hover{
-        color:#0066ff;
-      }
-      .firstB:hover{
-        color:#ff0000;
-      }
-    }
-  }
-  .ant-modal-body {
-    height:230px;
-    font-size: 14px;
-    line-height: 2.5;
-    margin-top:-10px;
-  }
-  .button-wrapper {
-    width: 100%;
-    height: 40px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-  }
-
-  .button-add {
-    background-color: #b67233;
-    width: 140px;
-    height: 100%;
-    color: #fff;
-    float: right;
-
-  }
-
-  .button-add:hover {
-    background-color: #f89d2d;
-    border: none;
-    color: #fff;
-  }
-
-  .ant-card-body{
-    padding: 10px;
-  }
-  .ant-modal-body{
-
-    .ant-btn{
-      width: 150px;
-    }
   }
 }
 .vertical-center-modal {
@@ -163,17 +85,4 @@
   height: 100%;
   vertical-align: middle;
   width: 0;
-}
-.subscribe{
-  width: 150px;
-  height:40px;
-  margin: 10px 0 0 50px;
-}
-.subscribe:hover{
-  background:#f5b55d;
-  color:#fff;
-  border: 1px solid #f5b55d;
-}
-.ant-input-number{
-  width:120px;
 }
