@@ -18,6 +18,12 @@ function ConclusionInformationDetail(props) {
 
   let fileList = (props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?JSON.parse(props.healthInformation.conclusionInformation.healthInfo):[];
   console.log("fileList1="+fileList);
+
+  for(let i = 0;i<fileList.length;i++){
+    let dict = fileList[i];
+    dict.uid = i;
+  }
+
   var conclusionInformationId = (props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?props.healthInformation.conclusionInformation.id:null;
   function uploadConclusionInformationProps(values) {
     if(conclusionInformationId!=null){
@@ -74,7 +80,7 @@ function ConclusionInformationDetail(props) {
           <div className="uploadOptions">出院小结2:</div>
         </Col>
         <Col span="18">
-          <FileUpload fun={uploadConclusionInformationProps.bind()} deleteFun={deleteConclusionInformationProps.bind()}  value={fileList} isHead = {true}>
+          <FileUpload fun={uploadConclusionInformationProps.bind()} deleteFun={deleteConclusionInformationProps.bind()}  value={fileList} multiple = {false}>
             <Button className="uploadOptionsButton"><Icon type="upload"/>上传附件</Button>
           </FileUpload>
         </Col>
