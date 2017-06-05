@@ -6,6 +6,8 @@ class PicturesWall extends React.Component {
   constructor(props) {
     super(props);
     this.loading = false;
+    console.log("this.props.value==="+this.props.value);
+
     this.state = {
       previewVisible: false,
       previewImage: '',
