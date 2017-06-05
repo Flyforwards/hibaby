@@ -11,7 +11,9 @@ const Option = Select.Option;
 function NutritionHealthInformationDetail(props) {
   let disabled=true;
 
-  const healthInfo = props.healthInformation.nutritionHealthInformation;
+  const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
+  const healthInfo = JSON.parse(nutritionHealthInformation.healthInfo);
+
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -265,7 +267,8 @@ function NutritionHealthInformationDetail(props) {
 const NutritionHealthInformationDetailForm = Form.create()(NutritionHealthInformationDetail);
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.dataDetailId
   };
 }
 export default connect(mapStateToProps)(NutritionHealthInformationDetailForm) ;

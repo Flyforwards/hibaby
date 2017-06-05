@@ -100,7 +100,9 @@ class SkinHealthInformationDetail extends React.Component {
   }
 
   render(){
-    this.healthInfo = this.props.healthInformation.skinHealthInformation;
+    const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
+    this.healthInfo = JSON.parse(skinHealthInformation.healthInfo);
+
 
     return (
       <div className="skinHealthInformationDiv">
@@ -352,7 +354,8 @@ const SkinHealthInformationDetailForm = Form.create()(SkinHealthInformationDetai
 
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.dataDetailId
   };
 }
 

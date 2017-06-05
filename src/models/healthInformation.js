@@ -24,16 +24,18 @@ export default {
   //加载页面
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(({ pathname }) => {
+      return history.listen(({ pathname,query }) => {
         if (pathname === '/crm/customer/customerDetails'){
-          for(let i=1 ;i<5; i++){
-            dispatch({
-              type: 'getHealthInformationListByCustomerId',
-              payload:{
-                customerId : 101,
-                type : i
-              }
-            });
+          if(query.dataId){
+            for(let i=1 ;i<5; i++){
+              dispatch({
+                type: 'getHealthInformationListByCustomerId',
+                payload:{
+                  customerId : query.dataId,
+                  type : i
+                }
+              });
+            }
           }
         }
       });
@@ -81,13 +83,12 @@ export default {
     },
     setHealthInformation(state, { payload: { data }}){
       if(data){
-        let healthInfo = JSON.parse(data.healthInfo);
         if(data.type === 1){
-          return { ...state, medicalHealthInformation : healthInfo };
+          return { ...state, medicalHealthInformation : data };
         }else if(data.type === 2){
-          return { ...state, nutritionHealthInformation : healthInfo };
+          return { ...state, nutritionHealthInformation : data };
         }else if(data.type === 3){
-          return { ...state, skinHealthInformation : healthInfo };
+          return { ...state, skinHealthInformation : data };
         }else if(data.type === 4){
           return { ...state, conclusionInformation : data };
         }
@@ -101,11 +102,11 @@ export default {
         let saveDone = true;
         let type = data.type;
         if(data.type === 1){
-          return {...state,saveDone:saveDone,type:type, medicalHealthInformation : healthInfo}
+          return {...state,saveDone:saveDone,type:type, medicalHealthInformation : data}
         }else if(data.type === 2){
-          return {...state,saveDone:saveDone,type:type, nutritionHealthInformation : healthInfo}
+          return {...state,saveDone:saveDone,type:type, nutritionHealthInformation : data}
         }else if(data.type === 3){
-          return {...state,saveDone:saveDone,type:type, skinHealthInformation : healthInfo}
+          return {...state,saveDone:saveDone,type:type, skinHealthInformation : data}
         }else if(data.type === 4){
           return {...state,saveDone:saveDone,type:type, conclusionInformation : data}
         }
