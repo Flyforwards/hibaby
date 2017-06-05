@@ -50,8 +50,6 @@ export default {
       if (code == 0) {
         message.success("创建健康档案成功");
         yield put({type:'setSaveDone',payload:{data}} );
-      }else{
-        message.error(err);
       }
     },
     *updateHealthInformation({payload: values}, { call, put }) {
@@ -59,8 +57,6 @@ export default {
       if (code == 0) {
         message.success("修改健康档案成功");
         yield put({type:'setSaveDone',payload:{data}} );
-      }else{
-        message.error(err);
       }
     },
     *getHealthInformationListByCustomerId({payload: values}, { call, put }){
@@ -70,8 +66,6 @@ export default {
         //console.log("根据用户编号查询健康档案成功==>",data);
         //更新state
         yield put({type:'setHealthInformation',payload:{data,type:values.type}} );
-      }else{
-        message.error(err);
       }
     }
   },

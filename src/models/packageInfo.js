@@ -143,8 +143,6 @@ export default {
 			if (code == 0) {
 				message.success("添加套餐成功");
 				yield put(routerRedux.push("/crm/serviceinfo"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//修改套房信息
@@ -158,8 +156,6 @@ export default {
 			if (code == 0) {
 				message.success("修改套房信息成功");
 				history.go(-1)
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//删除套房
@@ -173,8 +169,6 @@ export default {
 			if (code == 0) {
 				message.success("删除套房成功");
 				yield put(routerRedux.push("/crm/suite"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//添加套房
@@ -188,8 +182,6 @@ export default {
 			if (code == 0) {
 				message.success("添加套房成功");
 				yield put(routerRedux.push("/crm/suite"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//修改商品信息
@@ -203,8 +195,6 @@ export default {
 			if (code == 0) {
 				message.success("修改商品信息成功");
 				history.go(-1)
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//删除商品
@@ -218,8 +208,6 @@ export default {
 			if (code == 0) {
 				message.success("删除商品成功");
 				yield put(routerRedux.push("/crm/commodity"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//添加商品
@@ -233,8 +221,6 @@ export default {
 			if (code == 0) {
 				message.success("添加商品成功");
 				yield put(routerRedux.push("/crm/commodity"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 
@@ -330,8 +316,6 @@ export default {
 			if (code == 0) {
 				message.success("修改套餐成功");
 				history.go(-1)
-			}else{
-				throw err || "请求出错";
 			}
 		},
 		//获取套房下拉数据
@@ -445,8 +429,6 @@ export default {
 			if (code == 0) {
 				message.success("删除成功");
 				yield put(routerRedux.push("/crm/serviceinfo"));
-			}else{
-				throw err || "请求出错";
 			}
 		},
 	},
