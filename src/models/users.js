@@ -12,40 +12,15 @@ export default {
   	save(state, {payload: {data: list, total, page}}) {
   		return {...state, list, total, page};
   	},
-    loginSave(state, {payload: {data, code}}) {
-      let logindata= {...state, data, code};
-      return logindata;
-    },
-    testSave(state, {payload: {data, code}}) {
-      let testdata= {...state, data, code};
-      return testdata;
-    },
-    submitSave(state, {payload: {data, code}}) {
-      let submitdata= {...state, data, code};
-      return submitdata;
-    },
+
   },
   effects: {
 
-    *findValue({ payload: values }, { call, put }) {
-      const  {data: {data, code}}  = yield call(usersService.findValue, values);
-
-      // yield put({ type: 'submitSave', payload: { data, code } });
-      if(code == 0) {
-      //yield put(routerRedux.push('/login'));
-      }
-    },
 
   },
   subscriptions: {
   	setup({dispatch, history}) {
   		return history.listen(({pathname, query}) => {
-  			if(pathname === '/users') {
-  				dispatch({type: 'fetch', payload: query});
-  			}
-        if(pathname === '/system/fromModal') {
-          dispatch({type: '/system/fromModal', payload: {}});
-        }
   		})
   	}
   },

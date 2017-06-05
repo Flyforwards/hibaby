@@ -93,7 +93,7 @@ class SkinHealthInformationDetail extends React.Component {
           payload: {
             healthInfo : healthInfo_,
             type : type,
-            customerId : 101
+            customerId : this.props.customerId
           }
         })
       }
@@ -101,7 +101,8 @@ class SkinHealthInformationDetail extends React.Component {
   }
 
   render(){
-    this.healthInfo = this.props.healthInformation.skinHealthInformation;
+    const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
+    this.healthInfo = JSON.parse(skinHealthInformation.healthInfo);
     return (
       <div className="skinHealthInformationDiv">
         <div className="formBox">
@@ -326,7 +327,8 @@ const SkinHealthInformationDetailForm = Form.create()(SkinHealthInformationDetai
 
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.dataDetailId
   };
 }
 

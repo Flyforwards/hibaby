@@ -75,7 +75,7 @@ class SkinHealthInformation extends React.Component {
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : props.customerId
+            customerId : this.props.customerId
           }
         });
 
@@ -334,19 +334,13 @@ class SkinHealthInformation extends React.Component {
 const SkinHealthInformationForm = Form.create()(SkinHealthInformation);
 
 
-function SkinHealthInformationFormTab({ dispatch }) {
-  return (
-    <SkinHealthInformationForm dispatch={dispatch} />
-  )
-}
-
 
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
-    customerId:state.addCustomer.customerId
+    customerId:state.addCustomer.dataDetailId
   };
 }
 
 
-export default connect(mapStateToProps)(SkinHealthInformationFormTab)
+export default connect(mapStateToProps)(SkinHealthInformationForm)

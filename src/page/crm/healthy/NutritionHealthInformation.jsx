@@ -329,7 +329,7 @@ const NutritionHealthInformationForm = Form.create()(NutritionHealthInformation)
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
-    customerId:state.addCustomer.customerId
+    customerId:state.addCustomer.dataDetailId
 
   };
 }

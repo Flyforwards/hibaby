@@ -35,11 +35,10 @@ class userHealthInformation extends React.Component {
     const HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
     const NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
     const SkinHealthInformationDiv = (saveDone || isDetail)&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
-    const ConclusionInformationDiv = <ConclusionInformation />;
-
-    let defaultActiveKey = '1';
+    const ConclusionInformationDiv = (saveDone || isDetail)&&conclusionInformation ? <ConclusionInformationDetail/>:<ConclusionInformation />;
+    let defaultActiveKey = "1";
     if(type){
-      defaultActiveKey = type||'';
+      defaultActiveKey = type+"";
     }
     return (
       <div className = "user-health-cent">

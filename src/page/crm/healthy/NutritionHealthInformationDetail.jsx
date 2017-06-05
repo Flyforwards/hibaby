@@ -8,8 +8,11 @@ const Option = Select.Option;
 /**
  * 客户信息》健康档案》营养部健康档案
  */
-function NutritionHealthInformation(props) {
-  const type = 2;//营养部健康档案
+function NutritionHealthInformationDetail(props) {
+  let disabled=true;
+
+  const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
+  const healthInfo = JSON.parse(nutritionHealthInformation.healthInfo);
   const formItemLayout = {
     labelCol: { span: 7 },
     wrapperCol: { span: 16 }
@@ -328,7 +331,8 @@ function NutritionHealthInformation(props) {
 const NutritionHealthInformationDetailForm = Form.create()(NutritionHealthInformationDetail);
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.dataDetailId
   };
 }
 export default connect(mapStateToProps)(NutritionHealthInformationDetailForm) ;
