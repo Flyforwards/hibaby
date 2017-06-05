@@ -240,7 +240,7 @@ export default {
         throw err || "请求出错";
       }
     },
-    // 获取主模块和菜单树
+    // 刷新菜单页面
     *pushModule({ payload: { moduleList, selectIndex } }, {call, put}) {
       yield put({
         type: 'updateSelectProject',
@@ -262,7 +262,42 @@ export default {
         payload: { subMenu: moduleList || [] },
       })
     },
+
+    *pushUser({ payload }, {call, put}) {
+      yield put({
+        type: 'updateSelectProject',
+        payload: { selectIndex: -1 }
+      })
+      // if (moduleList != null && moduleList.length > 0) {
+      //   const module = moduleList[0];
+      //   if (module.children === null || module.children.length == 0) {
+      //     yield put(routerRedux.push(module.path));
+      //   } else {
+      //     const subModule = module.children[0];
+      //     yield put(routerRedux.push(subModule.path));
+      //   }
+      // } else {
+      //   yield put(routerRedux.push('/welcome'));
+      // }
+      // yield put({
+      //   type: "changeMenu",
+      //   payload: { subMenu: moduleList || [] },
+      // })
+
+      const moduleList = [
+        {"id":29,"name":"个人档案","path":"/user/information","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
+        {"id":29,"name":"我的消息","path":"/user/my-message","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
+        {"id":29,"name":"工作计划","path":"/user/work-plan","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
+        {"id":29,"name":"修改密码","path":"/user/reset-password","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]}]
+      yield put({
+        type: "changeMenu",
+        payload: { subMenu: moduleList || [] },
+      })
+
+      yield put(routerRedux.push('/user/information'));
+    },
   },
+
 
   reducers: {
     changeMenu (state, { payload: { subMenu } }) {

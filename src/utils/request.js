@@ -3,7 +3,9 @@ import fetch from 'dva/fetch';
 import { session } from 'common/util/storage.js';
 
 function parseJSON(response) {
-  return response.json();
+  const data = response.json();
+  console.log({data})
+  return data;
 }
 
 // function checkStatus(response) {
@@ -17,6 +19,8 @@ function parseJSON(response) {
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
+    // 处理业务错误
+    console.log(response)
     // 处理业务错误
     return response;
   }
