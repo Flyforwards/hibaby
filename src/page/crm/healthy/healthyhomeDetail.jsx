@@ -14,7 +14,9 @@ const Option = Select.Option;
  */
 function HealthyhomeDetail(props) {
   let disabled = true;
-  const healthInfo = props.healthInformation.medicalHealthInformation;
+  const medicalHealthInformation = props.healthInformation.medicalHealthInformation;
+  const healthInfo = JSON.parse(medicalHealthInformation.healthInfo);
+
 
 
   const formItemLayout = {
@@ -589,7 +591,8 @@ const HealthyhomeDetailFrom = Form.create()(HealthyhomeDetail);
 
 function mapStateToProps(state) {
   return {
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.dataDetailId
   };
 }
 export default connect(mapStateToProps)(HealthyhomeDetailFrom)
