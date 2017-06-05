@@ -63,7 +63,6 @@ class RenewRecord extends Component {
 
 function mapStateToProps(state) {
   const {total,renewRecordPagination,renewRecord} = state.membershipcard;
-  console.log("续费记录",renewRecord)
   return {
     loading: state.loading.models.membershipcard,
     total,

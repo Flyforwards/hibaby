@@ -36,7 +36,6 @@ class ChargeBackFeeModal extends Component {
       values.commodityId = values.name.key;
       values.name=values.name.label;
       if (!err) {
-        console.log("件数",this.state.quaiity)
         this.props.onOk(values)
       }
     })

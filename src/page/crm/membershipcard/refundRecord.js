@@ -66,7 +66,6 @@ class RefundRecord extends Component {
 
 function mapStateToProps(state) {
   const {total,refundRecordPagination,refundRecord} = state.membershipcard;
-  console.log("续费记录",refundRecord)
   return {
     loading: state.loading.models.membershipcard,
     total,

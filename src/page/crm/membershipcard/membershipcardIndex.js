@@ -24,6 +24,7 @@ class MemberShipCard extends Component {
     super(props);
     this.state={
       commonVisible:false,
+      flagValue:1,
     }
 
   }
@@ -95,7 +96,6 @@ class MemberShipCard extends Component {
 
   //销卡点击确定
   handleCancelCard (values){
-    console.log(">>>>",values)
     this.props.dispatch({
       type: 'membershipcard/cancelCard',
       payload:{  ...values }
@@ -103,7 +103,6 @@ class MemberShipCard extends Component {
   }
   //退费点击确定
   handleRefundCard (values){
-    console.log("《《《",values)
     this.props.dispatch({
       type: 'membershipcard/returnsAmount',
       payload:{  ...values }
@@ -111,7 +110,6 @@ class MemberShipCard extends Component {
   }
   //续费点击确定
   handleRenewFee (values){
-    console.log("《《《",values)
     this.props.dispatch({
       type: 'membershipcard/returnsAmount',
       payload:{  ...values }
@@ -128,7 +126,10 @@ class MemberShipCard extends Component {
 
 
   tabChange(key){
-    console.log(key);
+    console.log(key)
+    this.setState({
+      flagValue:key,
+    })
   }
 
   render() {
@@ -157,7 +158,8 @@ class MemberShipCard extends Component {
         <div style={{textAlign:'right',marginTop:'20px'}}>
           <Link to="/crm/customer"><Button className="cardBtn">返回</Button></Link>
 
-          {/*<Button className="cardBtn"  >打印</Button>*/}
+          <Button className="cardBtn"  >打印</Button>
+
           <AlertModalFrom
             modalTitle="会员销卡"
             okText="确定"

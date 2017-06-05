@@ -14,7 +14,7 @@ var webpackConfig = {
         historyApiFallback: true,
         inline: true,
         port: 9090,
-        //host: '192.168.199.81',
+        host: '192.168.199.81',
         compress: true,
         // https://webpack.github.io/docs/node.js-api.html
         // https://github.com/webpack/webpack/blob/master/lib/Stats.js#L50
@@ -28,21 +28,21 @@ var webpackConfig = {
         proxy: {
 
             // 开发环境
-            //   '/crm/api/*': {
-            //       target: 'http://dev.hbbcare.com:8087/crm/api',
-            //       pathRewrite: {
-            //           '^/crm/api': ''
-            //       },
-            //       changeOrigin: true
-            //   },
-            // 测试环境
-            '/crm/api/*': {
-              target: 'http://test.hbbcare.com:8088/crm/api',
-                pathRewrite: {
-                '^/crm/api': ''
+              '/crm/api/*': {
+                  target: 'http://dev.hbbcare.com:8087/crm/api',
+                  pathRewrite: {
+                      '^/crm/api': ''
+                  },
+                  changeOrigin: true
               },
-              changeOrigin: true
-            },
+            // 测试环境
+            // '/crm/api/*': {
+            //   target: 'http://test.hbbcare.com:8088/crm/api',
+            //     pathRewrite: {
+            //     '^/crm/api': ''
+            //   },
+            //   changeOrigin: true
+            // },
             // // 田春阳
             // '/crm/api/*': {
             //   target: 'http://192.168.199.124:8087/crm/api',
