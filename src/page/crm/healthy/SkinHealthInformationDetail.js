@@ -75,8 +75,6 @@ class SkinHealthInformationDetail extends React.Component {
 
 
   handleEdit(){
-    debugger;
-    console.log("您点击了编辑按钮");
     const {dispatch} = this.props;
     dispatch({
       type: 'healthInformation/setHealthInformationEditFlag',
