@@ -24,6 +24,7 @@ class userHealthInformation extends React.Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     const isDetail = this.props.users.isDetail;
     const {saveDone,type} = this.props.healthInformation;
@@ -64,7 +65,8 @@ class userHealthInformation extends React.Component {
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.dataDetailId
   };
 }
 

@@ -19,6 +19,7 @@ export default {
     conclusionInformation : null,//医院小结
     saveDone:false,
     type:null,
+    editSkin:false,
   },
   //加载页面
   subscriptions: {
@@ -67,6 +68,9 @@ export default {
         //更新state
         yield put({type:'setHealthInformation',payload:{data,type:values.type}} );
       }
+    },
+    *setHealthInformationEditFlag({payload: type}, { call, put }){
+      yield put({type:'setHealthInformationEditFlag',payload:{type:type}} );
     }
   },
   //同步请求
@@ -87,6 +91,7 @@ export default {
       return {...state};
     },
     setSaveDone(state, { payload: { data }}){
+      debugger;
       if(data){
         let healthInfo = JSON.parse(data.healthInfo);
         let saveDone = true;
@@ -113,6 +118,18 @@ export default {
         }
       }
       return {...state,conclusionInformation:arr};
+    },
+    setHealthInformationEditFlag(state, { payload: type }){
+      if(type === 1){
+        return { ...state,type:type, editSkin:true };
+      }else if(type === 2){
+        return { ...state,type:type, editSkin:true };
+      }else if(type === 3){
+        return { ...state,type:type, editSkin:true };
+      }else if(type === 4){
+        return { ...state,type:type, editSkin:true};
+      }
+      return {...state};
     }
   }
 
