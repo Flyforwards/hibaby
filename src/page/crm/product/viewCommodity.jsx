@@ -7,7 +7,7 @@ import { Link} from 'react-router'
 import './commodity.scss'
 import Current from '../../Current'
  import {local, session} from 'common/util/storage.js'
- import Delete from './DeleteSuite.jsx'
+ import Delete from './DeleteCommodity.jsx'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -56,12 +56,12 @@ class ViewCommodityed extends Component {
         ID:ID
       })
     }
-    handleDeleteCancel(){
-      this.setState({
-          DeleteVisible: false,
-      })
-      window.location.reload( true )
-    }
+    //handleDeleteCancel(){
+    //  this.setState({
+    //      DeleteVisible: false,
+    //  })
+    //  window.location.reload( true )
+    //}
     render() {
         let loadingName = true
         let roomInformation = []

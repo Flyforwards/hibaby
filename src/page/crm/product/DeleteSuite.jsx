@@ -67,7 +67,7 @@ class DeleteSuite extends Component {
                 width={ 200 }
             >
             <div>
-              是否确定删除该商品？
+              是否确定删除该套房？
             </div>
             </Modal>
         )
