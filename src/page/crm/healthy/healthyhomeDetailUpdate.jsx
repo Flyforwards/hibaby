@@ -607,7 +607,7 @@ function HealthyhomeDetailUpdate(props) {
 
       <div className='bottomButton'>
         <Button className='commitButton' onClick={handleBack}>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleSubmit}>编辑</Button>
+        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
       </div>
 
     </div>
