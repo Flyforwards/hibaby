@@ -10,7 +10,7 @@ export default {
     dataDetailId:0,
     isDetail:false,
 
-    baseData:[],
+    baseData:'',
     expandData:'',
     remarkData:[],
 
@@ -135,7 +135,7 @@ export default {
     },
     reductionState(state, { payload: todo }){
       return {...state,
-        baseData:[],
+        baseData:'',
         expandData:'',
         remarkData:[],
 
