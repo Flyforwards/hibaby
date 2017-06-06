@@ -1,6 +1,7 @@
 
 import * as usersService from '../services/users';
 import * as loginService from '../services/login';
+import * as systemService from '../services/system';
 import { routerRedux } from 'dva/router'
 import { local, session } from 'common/util/storage.js'
 
@@ -14,6 +15,7 @@ export default {
     userInfo: null,
     selectIndex: 0,
     permissionAlias: [],
+    systemTime: 0,
   },
 
   subscriptions: {
@@ -153,6 +155,18 @@ export default {
       if (code == 0 && err == null) {
         session.removeAll();
        yield put(routerRedux.push('/login'));
+      }
+    },
+
+    // 获取服务器时间
+    *getSystemTime ({ payload }, { call, put }) {
+      const { data: { data, code } }  = yield call(systemService.getSystemTime);
+      if (code == 0) {
+        yield put({
+          type: 'getTimeSuccess',
+          payload: { systemTime: data }
+        });
+
       }
     },
 
@@ -307,6 +321,9 @@ export default {
         ...state,
         permissionAlias,
       }
+    },
+    getTimeSuccess (state, { payload: { systemTime } }) {
+      return { ...state, systemTime }
     },
   },
 }
