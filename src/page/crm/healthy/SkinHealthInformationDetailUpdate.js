@@ -11,11 +11,11 @@ const RadioGroup = Radio.Group
 const createForm = Form.create
 const type = 3;//美研中心孕期健康挡案
 @createForm()
-class SkinHealthInformationDetail extends React.Component {
+class SkinHealthInformationDetailUpdate extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      disabled : true
+      disabled : false
     }
   }
 
@@ -72,21 +72,22 @@ class SkinHealthInformationDetail extends React.Component {
       </FormItem>
     );
   }
-
-
-  handleEdit(){
-    debugger;
-    console.log("您点击了编辑按钮");
-    const {dispatch} = this.props;
-    dispatch({
-      type: 'healthInformation/setHealthInformationEditFlag',
-      payload: {
-        type : type
-      }
-    })
+  componentWillUnmount(){
+    $('#editShinButton').show();
+    $('#saveShinButton').hide();
+    this.setState({
+      disabled:true
+    });
   }
 
+
   handleBack(){
+    if(this.state.disabled === false){
+      $('#editShinButton').show();
+      $('#saveShinButton').hide();
+      this.setState({
+        disabled:true
+      });
       const {dispatch} = this.props;
       dispatch({
         type: 'healthInformation/getHealthInformationListByCustomerId',
@@ -95,6 +96,7 @@ class SkinHealthInformationDetail extends React.Component {
           customerId : this.props.customerId
         }
       })
+    }
   }
 
   handleSubmit(){
@@ -118,6 +120,7 @@ class SkinHealthInformationDetail extends React.Component {
   }
 
   render(){
+    debugger;
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
     this.healthInfo = JSON.parse(skinHealthInformation.healthInfo);
     return (
@@ -331,7 +334,7 @@ class SkinHealthInformationDetail extends React.Component {
         </div>
         <div className='bottomButton'>
           <Button className='backButton' onClick={this.handleBack.bind(this)}>返回</Button>
-          <Button className='editButton' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</Button>
+          <Button className='commitButton' id="saveShinButton" type="primary" onClick={this.handleSubmit.bind(this)}>保存</Button>
 
         </div>
       </div>
@@ -339,7 +342,7 @@ class SkinHealthInformationDetail extends React.Component {
   }
 }
 
-const SkinHealthInformationDetailForm = Form.create()(SkinHealthInformationDetail);
+const SkinHealthInformationDetailUpdateForm = Form.create()(SkinHealthInformationDetailUpdate);
 
 function mapStateToProps(state) {
   return {
@@ -349,4 +352,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(SkinHealthInformationDetailForm)
+export default connect(mapStateToProps)(SkinHealthInformationDetailUpdateForm)

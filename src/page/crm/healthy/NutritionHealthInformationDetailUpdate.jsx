@@ -8,8 +8,8 @@ const Option = Select.Option;
 /**
  * 客户信息》健康档案》营养部健康档案
  */
-function NutritionHealthInformationDetail(props) {
-  let disabled=true;
+function NutritionHealthInformationDetailUpdate(props) {
+  let disabled=false;
 
   const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
   const healthInfo = JSON.parse(nutritionHealthInformation.healthInfo);
@@ -35,19 +35,19 @@ function NutritionHealthInformationDetail(props) {
   //文本输入框
   function myInput(inputTitle,inputName,unit,required,message,lastRow) {
     return(
-        <FormItem
-          {...formItemLayout}
-          label={inputTitle}
-        >
-          {getFieldDecorator(`${inputName}`, {
-            initialValue : healthInfo[inputName],
-            rules: [{ required: required, message: message }]
-          })(
-            <Input disabled={disabled}
-              suffix={unit}
-            />
-          )}
-        </FormItem>
+      <FormItem
+        {...formItemLayout}
+        label={inputTitle}
+      >
+        {getFieldDecorator(`${inputName}`, {
+          initialValue : healthInfo[inputName],
+          rules: [{ required: required, message: message }]
+        })(
+          <Input disabled={disabled}
+                 suffix={unit}
+          />
+        )}
+      </FormItem>
     );
   }
 
@@ -112,7 +112,7 @@ function NutritionHealthInformationDetail(props) {
           <div className="uploadOptions">附件:</div>
         </Col>
         <Col span="18">
-            <Button key={key} type="primary" className="uploadOptionsButton">查看附件</Button>
+          <Button key={key} type="primary" className="uploadOptionsButton">查看附件</Button>
         </Col>
       </div>
     )
@@ -123,21 +123,21 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row  className=" radioInputRow" key={key}>
         <Col className=" radioInputRowLeft" span="10" style={{height: '55px',display: 'table' ,width:'50%'}}>
-            {myRadioForm(radioName ,dict)}
+          {myRadioForm(radioName ,dict)}
         </Col>
         <Col className=" radioInputRowRight" span="10"  style={{height: '55px',display: 'table',width:'50%'}}>
-            <FormItem
-              {...formItemLayout}
-              label={inputTitle}>
-              {getFieldDecorator(`${inputName}`, {
-                initialValue : healthInfo[inputName],
-                rules: [{ required: false, message: '  ' }]
-              })(
-                <Input disabled={disabled}
-                  suffix={suffix}
-                />
-              )}
-            </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label={inputTitle}>
+            {getFieldDecorator(`${inputName}`, {
+              initialValue : healthInfo[inputName],
+              rules: [{ required: false, message: '  ' }]
+            })(
+              <Input disabled={disabled}
+                     suffix={suffix}
+              />
+            )}
+          </FormItem>
         </Col>
       </Row>
     )
@@ -148,19 +148,19 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row  className="radioWhiteRow" key={key}>
         <Col className="radioWhiteRowLeft"  span="10" style={{height: '55px',display: 'table'}}>
-            {myRadioForm(radioName ,dict)}
+          {myRadioForm(radioName ,dict)}
         </Col>
         <Col className="radioWhiteRowRight" span="10"  style={{height: '55px',display: 'table'}}>
-            <FormItem>
-              {getFieldDecorator(`${inputName}`, {
-                initialValue : healthInfo[inputName],
-                rules: [{ required: false, message: '  ' }]
-              })(
-                <Input disabled={disabled}
-                  suffix={suffix}
-                />
-              )}
-            </FormItem>
+          <FormItem>
+            {getFieldDecorator(`${inputName}`, {
+              initialValue : healthInfo[inputName],
+              rules: [{ required: false, message: '  ' }]
+            })(
+              <Input disabled={disabled}
+                     suffix={suffix}
+              />
+            )}
+          </FormItem>
         </Col>
       </Row>
     )
@@ -170,10 +170,10 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row>
         <Col span="10">
-            {myRadioForm(radioName, dict)}
+          {myRadioForm(radioName, dict)}
         </Col>
         <Col span="10">
-            {uploadOptionsItem({key})}
+          {uploadOptionsItem({key})}
         </Col>
       </Row>
     )
@@ -184,17 +184,17 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row>
         <Col span="10" style={{height: '55px',display: 'table' }}>
-            {myRadioForm(radioName, dict)}
-            <FormItem>
-              {getFieldDecorator(`${inputName}`, {
-                initialValue : healthInfo[inputName],
-                rules: [{ required: false, message: '  ' }]
-              })(
-                <Input disabled={disabled}
-                  suffix={suffix}
-                />
-              )}
-            </FormItem>
+          {myRadioForm(radioName, dict)}
+          <FormItem>
+            {getFieldDecorator(`${inputName}`, {
+              initialValue : healthInfo[inputName],
+              rules: [{ required: false, message: '  ' }]
+            })(
+              <Input disabled={disabled}
+                     suffix={suffix}
+              />
+            )}
+          </FormItem>
         </Col>
       </Row>
     )
@@ -205,7 +205,7 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row className="radioAllRow" key={key}>
         <Col className="radioAllRowBg" span="10" style={{height: '55px',display: 'table'}}>
-            {secondRadioForm(radioName, dict)}
+          {secondRadioForm(radioName, dict)}
         </Col>
       </Row>
     )
@@ -241,10 +241,10 @@ function NutritionHealthInformationDetail(props) {
             {myInput('孕前体重',inputNames[2],'kg',true,'请输入孕前体重',false)}
           </Col>
           <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
-              {myInput('现体重',inputNames[3],'kg',true,'请输入现体重',false)}
+            {myInput('现体重',inputNames[3],'kg',true,'请输入现体重',false)}
           </Col>
           <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
-              {myInput('宗教信仰',inputNames[4],'',true,'请输入宗教信仰',false)}
+            {myInput('宗教信仰',inputNames[4],'',true,'请输入宗教信仰',false)}
           </Col>
           <Row className="radioAll">
             {radioAllRow(radioNames[1],{title: '母乳喂养意愿',radioItems: ['是','否']},3)}
@@ -259,7 +259,7 @@ function NutritionHealthInformationDetail(props) {
           {radioInputRow(radioNames[9], inputNames[12], {title: '饮食规律',radioItems: ['无','有']},'孕期食用的药物',false,'',11)}
           <Row className="dietTaboo">
             <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'14.6%'}}>
-                <div className="dietTitle">饮食禁忌:</div>
+              <div className="dietTitle">饮食禁忌:</div>
             </Col>
             <Col span='20' style={{height: '110px',display: 'table',width:'85.4%'}}>
               {radioAllRow(radioNames[10],{radioItems: [
@@ -270,10 +270,10 @@ function NutritionHealthInformationDetail(props) {
           </Row>
           <Row className="matchItem">
             <Col className="matchItemLeft" style={{height: '55px',display: 'table',width:'50%'}}>
-                {myRadioForm(radioNames[11],{title: '谷物搭配比例',radioItems: ['粗细粮匀配','粗粮多', '细粮多']})}
+              {myRadioForm(radioNames[11],{title: '谷物搭配比例',radioItems: ['粗细粮匀配','粗粮多', '细粮多']})}
             </Col>
             <Col className="matchItemRight" style={{height: '55px',display: 'table',width:'50%'}}>
-                {myRadioForm(radioNames[12],{title: '荤素搭配比例',radioItems: ['荤素匀配','荤菜多','素菜多']})}
+              {myRadioForm(radioNames[12],{title: '荤素搭配比例',radioItems: ['荤素匀配','荤菜多','素菜多']})}
             </Col>
           </Row>
           <Row  className="dateDiet" key="14">
@@ -281,33 +281,33 @@ function NutritionHealthInformationDetail(props) {
               <div className="itemTitle">经常食用的食品</div>
             </Col>
             <Col span="20" style={{height: '496px',display: 'table',width:'85.4%'}}>
-            <Row className="dietTaboo">
-              <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
+              <Row className="dietTaboo">
+                <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
                   <div className="dietTitle">红肉类:</div>
-              </Col>
-              <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
-                {radioAllRow(radioNames[10],{radioItems: ['猪肉','牛肉','羊肉']},'',false,'',12)}
-                {radioWhiteRow(radioNames[11], inputNames[13], {radioItems: ['其他']},'',false,'',9)}
-              </Col>
-            </Row>
-            <Row className="dietTaboo">
-              <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
+                </Col>
+                <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
+                  {radioAllRow(radioNames[10],{radioItems: ['猪肉','牛肉','羊肉']},'',false,'',12)}
+                  {radioWhiteRow(radioNames[11], inputNames[13], {radioItems: ['其他']},'',false,'',9)}
+                </Col>
+              </Row>
+              <Row className="dietTaboo">
+                <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
                   <div className="dietTitle">白肉类:</div>
-              </Col>
-              <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
-                {radioAllRow(radioNames[10],{radioItems: ['鸡肉', '鱼肉', '虾蟹','鱿鱼']},'',false,'',12)}
-                {radioWhiteRow(radioNames[11], inputNames[13], {radioItems: ['其他']},'',false,'',9)}
-              </Col>
-            </Row>
-            <Row className="dietTaboo">
-              <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
+                </Col>
+                <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
+                  {radioAllRow(radioNames[10],{radioItems: ['鸡肉', '鱼肉', '虾蟹','鱿鱼']},'',false,'',12)}
+                  {radioWhiteRow(radioNames[11], inputNames[13], {radioItems: ['其他']},'',false,'',9)}
+                </Col>
+              </Row>
+              <Row className="dietTaboo">
+                <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
                   <div className="dietTitle">水果类:</div>
-              </Col>
-              <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
-                {radioAllRow(radioNames[10],{radioItems: ['柑橘类', '瓜类', '苹果','香蕉','凤梨','芒果']},'',false,'',17)}
-                {radioWhiteRow(radioNames[11], inputNames[13], {radioItems: ['其他']},'',false,'',9)}
-              </Col>
-            </Row>
+                </Col>
+                <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
+                  {radioAllRow(radioNames[10],{radioItems: ['柑橘类', '瓜类', '苹果','香蕉','凤梨','芒果']},'',false,'',17)}
+                  {radioWhiteRow(radioNames[11], inputNames[13], {radioItems: ['其他']},'',false,'',9)}
+                </Col>
+              </Row>
               {radioAllRow(radioNames[16], {title: '腌制类',radioItems: [ '咸鱼', '腊肉', '泡菜']},'',false,'',18)}
               {radioAllRow(radioNames[17], {title: '加工食品',radioItems: ['肉丸', '肉罐头','肉松','方便面','巧克力','话梅蜜饯','糖果','甜汤品', '面包', '蛋糕']},19)}
               <Row className="lastDiet">
@@ -315,7 +315,7 @@ function NutritionHealthInformationDetail(props) {
               </Row>
             </Col>
           </Row>
-            {radioWhiteRow(radioNames[19], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',21)}
+          {radioWhiteRow(radioNames[19], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',21)}
           <Row className="lastRow">
             {radioAllRow(radioNames[20],{title: '睡眠',radioItems: ['低于4小时','4-8小时','超过八小时']},22)}
           </Row>
@@ -330,11 +330,11 @@ function NutritionHealthInformationDetail(props) {
   );
 
 }
-const NutritionHealthInformationDetailForm = Form.create()(NutritionHealthInformationDetail);
+const NutritionHealthInformationDetailUpdateForm = Form.create()(NutritionHealthInformationDetailUpdate);
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
     customerId:state.addCustomer.dataDetailId
   };
 }
-export default connect(mapStateToProps)(NutritionHealthInformationDetailForm) ;
+export default connect(mapStateToProps)(NutritionHealthInformationDetailUpdateForm) ;
