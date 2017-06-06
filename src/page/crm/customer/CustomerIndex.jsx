@@ -349,7 +349,7 @@ class CustomerIndex extends React.Component {
                   <Col className="Operator" span={4} >
                     <FormItem  {...formChooseOneLayout} label="孕周" >
                       {getFieldDecorator('gestationalWeeks')(
-                        <InputNumber max={40} mix={1} />
+                        <InputNumber max={40} min={1} />
                       )}
                     </FormItem>
                   </Col>
