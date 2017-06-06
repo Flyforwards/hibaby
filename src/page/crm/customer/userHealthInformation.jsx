@@ -29,7 +29,6 @@ class userHealthInformation extends React.Component {
   }
 
   render() {
-    debugger;
     const isDetail = this.props.users.isDetail;
     const {saveDone,type,editMedicalFlag,editNutritionFlag,editSkinFlag} = this.props.healthInformation;
     const medicalHealthInformation = this.props.healthInformation.medicalHealthInformation;
