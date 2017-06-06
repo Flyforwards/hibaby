@@ -28,7 +28,7 @@ class RefundRecord extends Component {
     }, {
       title: '会员卡级别变动',
       dataIndex: 'levelChange',
-      key: 'leverlChange'
+      key: 'levelChange'
     },{
       title: '操作人',
       dataIndex: 'operatorName',
