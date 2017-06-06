@@ -6,10 +6,11 @@ const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
 /**
- * 客户信息》健康档案》营养部健康档案
+ * 客户信息》健康档案》营养部健康档案编辑页面
  */
 function NutritionHealthInformationDetailUpdate(props) {
   let disabled=false;
+  const type = 2;
 
   const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
   const healthInfo = JSON.parse(nutritionHealthInformation.healthInfo);
@@ -211,22 +212,34 @@ function NutritionHealthInformationDetailUpdate(props) {
     )
   }
   //提交表单
-  function handleEdit (e) {
+  function handleSubmit (e) {
     //console.log("您点击了保存按钮");
     const {dispatch} = props;
     props.form.validateFields((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
         dispatch({
-          type: 'healthInformation/saveHealthInformation',
+          type: 'healthInformation/updateHealthInformation',
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : props.customerId
+            customerId : props.customerId,
+            id : nutritionHealthInformation.id
           }
         })
       }
     });
+  }
+
+  function handleBack(){
+    const {dispatch} = props;
+    dispatch({
+      type: 'healthInformation/getHealthInformationListByCustomerId',
+      payload: {
+        type : type,
+        customerId : props.customerId
+      }
+    })
   }
 
 
@@ -323,8 +336,8 @@ function NutritionHealthInformationDetailUpdate(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton'>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
+        <Button className='commitButton' onClick={handleBack}>返回</Button>
+        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
       </div>
     </div>
   );

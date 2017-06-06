@@ -10,6 +10,7 @@ const Option = Select.Option;
  */
 function NutritionHealthInformationDetail(props) {
   let disabled=true;
+  const type = 2;
 
   const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
   const healthInfo = JSON.parse(nutritionHealthInformation.healthInfo);
@@ -210,23 +211,15 @@ function NutritionHealthInformationDetail(props) {
       </Row>
     )
   }
-  //提交表单
+  //编辑
   function handleEdit (e) {
-    //console.log("您点击了保存按钮");
     const {dispatch} = props;
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        const healthInfo = JSON.stringify(values);
-        dispatch({
-          type: 'healthInformation/saveHealthInformation',
-          payload: {
-            healthInfo : healthInfo,
-            type : type,
-            customerId : props.customerId
-          }
-        })
+    dispatch({
+      type: 'healthInformation/setHealthInformationEditFlag',
+      payload: {
+        type : type
       }
-    });
+    })
   }
 
 
