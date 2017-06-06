@@ -1,129 +1,135 @@
 "use strict"
-import React, {Component} from 'react'
-import {connect} from 'dva'
+import React, { Component } from 'react'
+import { connect } from 'dva'
 import './service.scss'
-import {Card,Form, Input, Button, Radio ,AutoComplete,InputNumber } from 'antd'
-import {Link} from 'react-router';
+import { Card, Form, Input, Button, Radio, AutoComplete, InputNumber } from 'antd'
+import { Link } from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create;
 
 @createForm()
 class AddService extends Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                formLayout: 'inline',
-            };
+  constructor(props) {
+    super(props);
+    this.state = {
+      formLayout: 'inline'
+    };
+  }
+  
+  handleSave = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        let values = this.props.form.getFieldsValue();
+        let params = {};
+        let data = [];
+        let price = 0;
+        Object.keys(values).map((key, index) => {
+          if (key !== -1) {
+            params[key] = values[key];
+          }
+        })
+        params = { ...params };
+        price = Number(params.price)
+        this.props.dispatch({
+          type: 'service/AddService',
+          payload: {
+            name: params.name,
+            price: price,
+            "contents": params.contents
+          }
+        })
       }
-
-       handleSave = (e) => {
-          e.preventDefault();
-          let values = this.props.form.getFieldsValue();
-          let params = {};
-          let data = [];
-          let price=0;
-          Object.keys(values).map((key, index) => {
-              if (key!== -1) {
-                params[key] = values[key];
-              }
-          })
-          params = {...params};
-          price=Number(params.price)
-          this.props.dispatch({
-             type: 'service/AddService',
-             payload: {
-                 name:params.name,
-                 price:price,
-                 "contents":params.contents
-             }
-           })
-
-         }
-
-       render() {
-          const { formLayout } = this.state;
-          const { getFieldDecorator } = this.props.form;
-          const formItemLayout = formLayout === 'horizontal' ? {
-            labelCol: { span:2 },
-            wrapperCol: { span: 22 },
-          } : null;
-          return (
-            <div className="ServiceBox">
-                <Card className="AddService" bordered={true} >
-                     <h3>服务项目信息:</h3>
-                      <Form className="projectname" layout={formLayout}>
-                          <FormItem label="项目名称">
-                          {getFieldDecorator('name', {rules: [{ required: true, message: '项目名称为必填项！' }],
-                            })(  <Input  /> )}
-                        </FormItem>
-                      </Form>
-                      <Form className="projectprice" layout={formLayout}>
-                            <h4>项目价格</h4>
-                            <div className="price">
-                                <span className="priceLeft">￥</span>
-                                <FormItem className="pricecon"
-                                  {...formItemLayout}
-                                >
-                                {getFieldDecorator('price', {rules: [{ required: true, message: '项目价格为必填项！' }],
-                              })(
-                                <Input type='number' />)}
-                                </FormItem>
-                                <span className="priceRight">元</span>
-                            </div>
-                      </Form>
-                      <Form className="AddCentent" layout={formLayout}>
-                          <FormItem  className="procontent" label="项目内容">
-                              {getFieldDecorator('contents', {rules: [{ required: true, message: '项目内容为必填项！' }],
-                            })(
-                                <Input rows = {6} className = "content"/>
-                              )}
-                          </FormItem>
-                      </Form>
-                </Card>
-                <div className="btn">
-                    <Link className="BackBtn AddBack" to='/system/service-item'>
-                        <Button>返回</Button>
-                    </Link>
-                    <Button onClick={ this.handleSave.bind(this) }>保存</Button>
-                </div>
+    });
+  }
+  
+  render() {
+    const { formLayout } = this.state;
+    const { getFieldDecorator } = this.props.form;
+    const formItemLayout = formLayout === 'horizontal' ? {
+      labelCol: { span: 2 },
+      wrapperCol: { span: 22 }
+    } : null;
+    return (
+      <div className="ServiceBox">
+        <Card className="AddService" bordered={true}>
+          <h3>服务项目信息:</h3>
+          <Form className="projectname" layout={formLayout}>
+            <FormItem label="项目名称">
+              {getFieldDecorator('name', {
+                rules: [{ required: true, message: '项目名称为必填项！' }]
+              })(<Input  />)}
+            </FormItem>
+          </Form>
+          <Form className="projectprice" layout={formLayout}>
+            <h4>项目价格</h4>
+            <div className="price">
+              <span className="priceLeft">￥</span>
+              <FormItem className="pricecon"
+                        {...formItemLayout}
+              >
+                {getFieldDecorator('price', {
+                  rules: [{ required: true, message: '项目价格为必填项！' }]
+                })(
+                  <Input type='number'/>)}
+              </FormItem>
+              <span className="priceRight">元</span>
             </div>
-          );
-        }
+          </Form>
+          <Form className="AddCentent" layout={formLayout}>
+            <FormItem className="procontent" label="项目内容">
+              {getFieldDecorator('contents', {
+                rules: [{ required: true, message: '项目内容为必填项！' }]
+              })(
+                <Input rows={6} className="content"/>
+              )}
+            </FormItem>
+          </Form>
+        </Card>
+        <div className="btn">
+          <Link className="BackBtn AddBack" to='/system/service-item'>
+            <Button>返回</Button>
+          </Link>
+          <Button onClick={ this.handleSave.bind(this) }>保存</Button>
+        </div>
+      </div>
+    );
+  }
 }
 
 function service({
-  dispatch,
-  loading,
-  data,
-}) {
+                   dispatch,
+                   loading,
+                   data
+                 }) {
   return ( < div >
-    < AddService dispatch = {
-      dispatch
-    }
-    loading = {
-      loading
-    }
-    data={
-      data
-    }
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    /> </div >
+      < AddService dispatch={
+        dispatch
+      }
+                   loading={
+                     loading
+                   }
+                   data={
+                     data
+                   }
+                   total={
+                     total
+                   }
+                   page={page}
+                   results={results}
+                   range={range}
+      /></div >
   )
-
+  
 }
 function mapStateToProps(state) {
   const {
-    data,
-  } = state.service;
-
+          data
+        } = state.service;
+  
   return {
     loading: state.loading.models.service,
-    data,
+    data
   };
 }
 
