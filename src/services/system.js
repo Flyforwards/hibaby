@@ -133,3 +133,13 @@ export function getMemberShipCard(values) {
     body: JSON.stringify(values),
   })
 }
+
+// 获取当前登录用户地方中心的部门列表
+export function getCurrentEndemicDeptList(values) {
+  return request('/crm/api/v1/department/getCurrentEndemicDeptList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+

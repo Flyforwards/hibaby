@@ -133,12 +133,17 @@
 				width:230px;
 			}
 		}
-		.button{
-			.ant-form-item-control-wrapper{
-				margin-left:10px;
-				margin-top: 20px;
-			}
-		}
+    .button{
+      button{
+        background: #f89d2d;
+        border-color: #f89d2d;
+      }
+
+      .ant-form-item-control-wrapper{
+        margin-left:10px;
+        margin-top: 20px;
+      }
+    }
 		.position{
 			margin-left:82px;
 			margin-top: 20px;
@@ -189,11 +194,26 @@
 			margin-bottom: 20px;
 		}
 	}
-	.returnButton,.saveButton{
-		float:right;
-		margin: 0 20px;
-		width:100px;
-	}
+  .saveButton{
+    float:right;
+    margin: 0 20px;
+    font:14px "微软雅黑";
+    width:150px;
+    height: 30px;
+    background: #f8f1e9;
+    color:#b67233;
+    border:1px solid #b67233;
+  }
+  .returnButton{
+    float:right;
+    margin: 0 20px;
+    font:14px "微软雅黑";
+    width:150px;
+    height: 30px;
+    background: #b67233;
+    color:#fff;
+    border:1px solid #dbb999 ;
+  }
 }
 .viewTheInformation{
   background-color: white;
@@ -310,18 +330,25 @@
 		float:right;
 		margin: 0 20px;
 		width:150px;
-		height:40px;
+    color:#fff;
+		height:30px;
 		margin-bottom: 20px;
-		font-size:16px;
+		font-size:14px "微软雅黑";
 	}
 	.disabledButton{
-		background-color: rgba(255, 74, 74, 1);
-		color:#fff;
+		background-color: #eb7c34;
 		border: 0;
 	}
 	.addButton{
    		background-color: rgba(255, 153, 0, 1);
    		border: 0;
-   		color:#fff;
 	}
+  .returnButton{
+    background: #b67233;
+    border-color: #b67233;
+  }
+  .editButton{
+    background:#693d20 ;
+    border-color:#693d20;
+  }
 }

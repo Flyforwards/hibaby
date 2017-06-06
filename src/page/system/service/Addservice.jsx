@@ -15,7 +15,7 @@ class AddService extends Component {
       formLayout: 'inline'
     };
   }
-  
+
   handleSave = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -42,7 +42,7 @@ class AddService extends Component {
       }
     });
   }
-  
+
   render() {
     const { formLayout } = this.state;
     const { getFieldDecorator } = this.props.form;
@@ -90,7 +90,7 @@ class AddService extends Component {
           <Link className="BackBtn AddBack" to='/system/service-item'>
             <Button>返回</Button>
           </Link>
-          <Button onClick={ this.handleSave.bind(this) }>保存</Button>
+          <Button className="SaveBtn" onClick={ this.handleSave.bind(this) }>保存</Button>
         </div>
       </div>
     );
@@ -120,13 +120,13 @@ function service({
                    range={range}
       /></div >
   )
-  
+
 }
 function mapStateToProps(state) {
   const {
           data
         } = state.service;
-  
+
   return {
     loading: state.loading.models.service,
     data

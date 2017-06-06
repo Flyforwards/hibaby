@@ -77,7 +77,7 @@ class AddGroupChar extends React.Component {
       const formItems = keys.map((k, index) => {
         return (
             <FormItem
-              lassName = "div2"
+              className = "div2"
               key={ k }
             >
               <p className = "label">{ `选项${String(index+1)}` }</p>
@@ -90,7 +90,7 @@ class AddGroupChar extends React.Component {
                 )}
               </div>
               {
-                index >=2?(<span className = "editable-add-btn" onClick={ () => this.remove(k) } > 删除 </span>):null
+                index >=2?(<span className = "editable-add-btn delBtn" onClick={ () => this.remove(k) } > 删除 </span>):null
               }
             </FormItem>
         );
@@ -136,7 +136,7 @@ class AddGroupChar extends React.Component {
               <Link to='/system/group-char'>
                 <Button className = "editable-add-btn return"> 返回 </Button>
               </Link>
-                <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+                <Button className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
             </div>
       </div>
       )
