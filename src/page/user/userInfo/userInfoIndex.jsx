@@ -9,11 +9,11 @@ const FormItem = Form.Item;
 
 function textforkey(dict,key) {
 
-  if(dict.hasOwnProperty(key)){
+  if(dict[key] !== undefined){
     return dict[key];
   }
-  else if(dict.entrys){
-    if (dict.entrys[0].hasOwnProperty(key)){
+  else if(dict.entrys[0]){
+    if (dict.entrys[0][key] !== undefined){
       return dict.entrys[0][key];
     }
   }
@@ -82,8 +82,14 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
   }
 
   function editBtnClick(edit = true) {
-    editFun(edit)
-    contact = textforkey(props,'contact');
+    if (props.entrys[0]){
+      editFun(edit)
+      contact = textforkey(props,'contact');
+    }
+    else {
+      message.error('缺少入职信息')
+    }
+
   }
 
   function onLogout() {
@@ -111,7 +117,7 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
       else {
         dispatch({
           type: "users/modifyUser",
-          payload:{categoryId:'1',entrys:[{contact:contact}]}
+          payload:{contact:contact}
         })
         editFun(false)
 
