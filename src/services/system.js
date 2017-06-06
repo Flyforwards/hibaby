@@ -1,5 +1,14 @@
 
 import request from '../utils/request';
+
+// 获取服务器时间
+export function getSystemTime(values) {
+  return request('/crm/api/v1/getSystemTime', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 //集团保存接口
 export function systemsave(values) {
   return request('/crm/api/v1/dictionary/saveDictionary', {

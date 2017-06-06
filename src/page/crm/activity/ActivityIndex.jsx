@@ -47,7 +47,7 @@ class ActivityIndex extends React.Component {
       dataIndex: 'activityTime',
       width: '10%',
       render: (record) => {
-        return moment(record).format("YYYY-MM-DD HH:mm:ss")
+        return moment(record).format("YYYY-MM-DD HH:mm")
       }
     },{
       title: '签到/人数',
@@ -68,9 +68,8 @@ class ActivityIndex extends React.Component {
         const detail = !this.props.permissionAlias.contains('ACTIVITY_DETAIL');
         const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
         const appoint = !this.props.permissionAlias.contains('ACTIVITY_APPOINT');
-        const timestamp = new Date().getTime()
         // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况服务删除活动
-        if (record.activityTime < timestamp || record.appointments > 0 ) {
+        if (record.activityTime < this.props.systemTime || record.appointments > 0 ) {
           return (
             <div key = { index }>
               <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
@@ -192,12 +191,16 @@ function mapStateToProps(state) {
     list,
     pagination
   } = state.activity;
+  const {
+    systemTime
+  } = state.layout;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
+    systemTime,
     list,
     pagination,
-    permissionAlias
+    permissionAlias,
   };
 }
 
