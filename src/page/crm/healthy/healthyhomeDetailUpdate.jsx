@@ -5,17 +5,15 @@ import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
 import styles from './healthyhome.scss';
 import PicturesWall from '../customer/fileUpload';
 import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
 /**
- * 客户信息》健康档案》医疗健康档案详情页面
+ * 客户信息》健康档案》医疗健康档案详情页面编辑页面
  */
-function HealthyhomeDetail(props) {
-  let disabled = true;
+function HealthyhomeDetailUpdate(props) {
+  let disabled = false;
   const type = 1;
   const medicalHealthInformation = props.healthInformation.medicalHealthInformation;
   const healthInfo = JSON.parse(medicalHealthInformation.healthInfo);
@@ -130,7 +128,6 @@ function HealthyhomeDetail(props) {
             style={{ width: 100 }}
             placeholder="请选择"
             optionFilterProp="children"
-            readOnly
             filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           >
             {optionItemDivs}
@@ -195,7 +192,7 @@ function HealthyhomeDetail(props) {
                 initialValue : dict.value,
                 rules: [{ required: true, message: '  ' }]
               })(
-                <Input readOnly
+                <Input
                   suffix={suffix}
                 />
               )}
@@ -268,20 +265,36 @@ function HealthyhomeDetail(props) {
     )
   }
 
-  function handleBack() {
-    props.dispatch(routerRedux.push('/crm/customer'));
+  //提交表单
+  function handleSubmit (e) {
+    const {dispatch} = props;
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        const healthInfo = JSON.stringify(values);
+        dispatch({
+          type: 'healthInformation/updateHealthInformation',
+          payload: {
+            healthInfo : healthInfo,
+            type : type,
+            customerId : props.customerId,
+            id : medicalHealthInformation.id
+          }
+        })
+      }
+    });
   }
 
-  //编辑
-  function handleEdit (e) {
+  function handleBack(){
     const {dispatch} = props;
     dispatch({
-      type: 'healthInformation/setHealthInformationEditFlag',
+      type: 'healthInformation/getHealthInformationListByCustomerId',
       payload: {
-        type : type
+        type : type,
+        customerId : props.customerId
       }
     })
   }
+
 
   return(
     <div className="healthContentDiv">
@@ -344,7 +357,7 @@ function HealthyhomeDetail(props) {
                       initialValue : healthInfo['input_2'],
                       rules: [{ required: true, message: '  ' }]
                     })(
-                      <Input readOnly
+                      <Input
                         suffix="/ mmHg"
                       />
                     )}
@@ -367,7 +380,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[4]}`,{
                     initialValue : healthInfo['input_4']
                   })(
-                    <Input readOnly/>
+                    <Input />
                   )}
                 </FormItem>
               </div>
@@ -392,7 +405,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_5'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly/>
+                    <Input />
                   )}
                 </FormItem>
               </div>
@@ -407,7 +420,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_6'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly
+                    <Input
                       suffix="ml"
                     />
                   )}
@@ -429,7 +442,7 @@ function HealthyhomeDetail(props) {
                       initialValue : healthInfo['input_7'],
                       rules: [{ required: true, message: '  ' }]
                     })(
-                      <Input readOnly
+                      <Input
                         suffix="小时"
                       />
                     )}
@@ -451,7 +464,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[8]}`,{
                     initialValue : healthInfo['input_8']
                   })(
-                    <Input readOnly/>
+                    <Input />
                   )}
                 </FormItem>
               </div>
@@ -484,7 +497,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[11]}`,{
                     initialValue : healthInfo['input_11']
                   })(
-                    <Input readOnly />
+                    <Input  />
                   )}
                 </FormItem>
               </div>
@@ -509,7 +522,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_12'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly
+                    <Input
                       suffix="g"
                     />
                   )}
@@ -526,7 +539,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_13'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly
+                    <Input
                       suffix="cm"
                     />
                   )}
@@ -556,7 +569,7 @@ function HealthyhomeDetail(props) {
                       initialValue : healthInfo['input_14'],
                       rules: [{ required: true, message: '  ' }]
                     })(
-                      <Input readOnly
+                      <Input
                         suffix="小时"
                       />
                     )}
@@ -583,7 +596,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[17]}`,{
                     initialValue : healthInfo['input_17']
                   })(
-                    <Input readOnly />
+                    <Input  />
                   )}
                 </FormItem>
               </div>
@@ -594,14 +607,14 @@ function HealthyhomeDetail(props) {
 
       <div className='bottomButton'>
         <Button className='commitButton' onClick={handleBack}>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
+        <Button className='commitButton' type="primary" onClick={handleSubmit}>编辑</Button>
       </div>
 
     </div>
   );
 }
 
-const HealthyhomeDetailFrom = Form.create()(HealthyhomeDetail);
+const HealthyhomeDetailUpdateFrom = Form.create()(HealthyhomeDetailUpdate);
 
 function mapStateToProps(state) {
   return {
@@ -609,4 +622,4 @@ function mapStateToProps(state) {
     customerId:state.addCustomer.dataDetailId
   };
 }
-export default connect(mapStateToProps)(HealthyhomeDetailFrom)
+export default connect(mapStateToProps)(HealthyhomeDetailUpdateFrom)

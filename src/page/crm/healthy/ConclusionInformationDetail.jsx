@@ -14,13 +14,17 @@ const type = 4;//出院小结
 function ConclusionInformationDetail(props) {
   const {dispatch} = props;
   //console.log("healthInformation="+props);
-  //console.log("healthInformation2="+props.healthInformation.conclusionInformation.healthInfo);
+ // console.log("healthInformation2="+props.healthInformation.conclusionInformation.healthInfo);
 
-  let fileList = (props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?JSON.parse(props.healthInformation.conclusionInformation.healthInfo):[];
-  //console.log("fileList1="+fileList);
+  let fileList = new Array();
+  fileList = eval((props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?JSON.parse(props.healthInformation.conclusionInformation.healthInfo):[]);
 
   for(let i = 0;i<fileList.length;i++){
+   // console.log("fileList[i]="+fileList[i]);
     let dict = fileList[i];
+
+   // let dict = JSON.parse(fileList[i]);
+    //dict.add("uid",i);
     dict.uid = i;
   }
 

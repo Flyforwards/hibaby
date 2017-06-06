@@ -1,5 +1,5 @@
 /**
- * 客户信息》健康档案》美研中心孕期健康挡案
+ * 客户信息》健康档案》美研中心孕期健康挡案编辑页面
  * Created by yangjingjing on 2017/6/1.
  */
 import React from 'react'
@@ -19,10 +19,7 @@ class SkinHealthInformationDetailUpdate extends React.Component {
     }
   }
 
-  componentDidMount(){
-    $('#editShinButton').show();
-    $('#saveShinButton').hide();
-  }
+
   healthInfo = {};
 
   formItemLayout = {
@@ -72,31 +69,17 @@ class SkinHealthInformationDetailUpdate extends React.Component {
       </FormItem>
     );
   }
-  componentWillUnmount(){
-    $('#editShinButton').show();
-    $('#saveShinButton').hide();
-    this.setState({
-      disabled:true
-    });
-  }
 
 
   handleBack(){
-    if(this.state.disabled === false){
-      $('#editShinButton').show();
-      $('#saveShinButton').hide();
-      this.setState({
-        disabled:true
-      });
-      const {dispatch} = this.props;
-      dispatch({
-        type: 'healthInformation/getHealthInformationListByCustomerId',
-        payload: {
-          type : type,
-          customerId : this.props.customerId
-        }
-      })
-    }
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'healthInformation/getHealthInformationListByCustomerId',
+      payload: {
+        type : type,
+        customerId : this.props.customerId
+      }
+    })
   }
 
   handleSubmit(){
@@ -120,7 +103,6 @@ class SkinHealthInformationDetailUpdate extends React.Component {
   }
 
   render(){
-    debugger;
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
     this.healthInfo = JSON.parse(skinHealthInformation.healthInfo);
     return (
