@@ -135,7 +135,7 @@ class ViewTheInformationed extends React.Component {
               }
             })
            }
-           console.log("getPosition职位>>>>",this.props.getPosition)
+           //console.log("getPosition职位>>>>",this.props.getPosition)
            if(this.props.getPosition){
             this.props.getPosition.map((item)=>{
               if(entrys[i].positionId == item.id){
