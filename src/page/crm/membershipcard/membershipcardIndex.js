@@ -167,7 +167,7 @@ class MemberShipCard extends Component {
         <div style={{textAlign:'right',marginTop:'20px'}}>
           <Link to="/crm/customer"><Button className="cardBtn">返回</Button></Link>
 
-          <Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>
+          {/*<Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>*/}
 
           <AlertModalFrom
             modalTitle="会员销卡"
