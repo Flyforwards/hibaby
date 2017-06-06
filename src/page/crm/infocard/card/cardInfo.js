@@ -28,7 +28,7 @@ class CardModal extends Component {
     this.props.dispatch({
       type:'card/getLevelInfo',
       payload:{
-        id:7,
+        abName:'HYKJB',
         softDelete:0,
         type:1,
       }

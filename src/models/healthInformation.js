@@ -73,6 +73,9 @@ export default {
     },
     *setHealthInformationEditFlag({payload: type}, { call, put }){
       put({type:'setHealthInformationEditFlag',payload:{type:type}} );
+    },
+    *clearAllHealthInformation({payload: values}, { call, put }){
+      put({type:'clearAllHealthInformation'} );
     }
   },
   //同步请求
@@ -131,6 +134,9 @@ export default {
         return { ...state,type:data.type, editSkinFlag:true};
       }
       return {...state};
+    },
+    clearAllHealthInformation(state, { payload: data }){
+      return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null}
     }
   }
 

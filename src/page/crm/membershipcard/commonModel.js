@@ -27,9 +27,9 @@ class AlertModalFrom extends Component {
      values.customerId=this.props.user.dataDetailId;
       if (!err) {
       this.props.onOk(values)
-        // this.setState({
-        //   visible:false,
-        // });
+        this.setState({
+          visible:false,
+        });
       }
     })
   }
@@ -38,8 +38,11 @@ class AlertModalFrom extends Component {
 
   }
   showModel() {
-    this.props.dispatch({
-      type:'membershipcard/switchCommonState'
+    // this.props.dispatch({
+    //   type:'membershipcard/switchCommonState'
+    // })
+    this.setState({
+      visible:true,
     })
   }
   checkPrice = (rule, value, callback) => {
@@ -71,7 +74,7 @@ class AlertModalFrom extends Component {
          <span onClick={this.showModel.bind(this)}>{this.props.children}</span>
       <Modal
         key = { commonVisible }
-        visible = { commonVisible }
+        visible = { this.state.visible }
         title = { modalTitle || "提示" }
         okText = { okText || "确定" }
         cancelText = { cancel || "取消" }

@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { connect } from 'dva'
-import { Table ,Input, Icon, Button, Popconfirm, Pagination, Tabs } from 'antd'
+import { Table ,Input, Icon, Button, Popconfirm, Pagination, Tabs,message } from 'antd'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import './userHealthInformation.scss'
@@ -26,6 +26,13 @@ class userHealthInformation extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+  //页面生命周期结束时调用
+  componentWillUnmount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'healthInformation/clearAllHealthInformation'
+    })
   }
 
   render() {

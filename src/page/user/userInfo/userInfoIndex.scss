@@ -2,8 +2,8 @@
 .user-cent{
   padding: 20px;
   .leftContent{
-    padding: 10px;
-    width: 400px;
+    padding: 20px;
+    width: 450px;
     float: left;
     background-color: white;
     .topDiv{
@@ -17,9 +17,11 @@
       .rightChi{
         width: 300px;
         float: left;
-        h3{
+        h1{
+          font:30px "微软雅黑";
           width: 100%;
           text-align: center;
+          margin-bottom: 20px;
         }
       }
     }
@@ -29,11 +31,19 @@
         width: 100%;
         line-height: 30px;
         text-align: center;
+        font:15px "微软雅黑";
+      }
+      .twoLine{
+        margin-top: 10px;
+        span{
+          color: sandybrown;
+          font:18px "微软雅黑";
+        }
       }
     }
   }
   .rightContent{
-    width: 500px;
+    width: 400px;
     float: left;
     margin-left:20px;
     .topDiv{
@@ -46,31 +56,34 @@
       }
     }
     .bottomDiv{
-      padding: 10px;
+      padding: 20px;
       background-color: white;
       margin-top: 20px;
     }
     .buttonDiv{
-      bottom: 0;
-      text-align: center;
-      width: 100%;
+      margin-left:60px;
       .button{
-        width: 100px;
+        width: 120px;
         float: left;
+        margin-left: 20px;
+        margin-top: 70px;
+        height: 30px;
       }
+
     }
   }
 
   .cell{
-    width: 300px;
+    margin-left:20px;
+    width: 330px;
     .titleLabel{
-      line-height: 30px;
-      text-align: right;
-      font-size: 12px;
+      height: 40px;
+      text-align: left;
+      font:14px "微软雅黑";
     }
     .valueLabel{
-      line-height: 30px;
-      font-size: 12px;
+      line-height: 40px;
+      font:14px "微软雅黑";
     }
   }
 

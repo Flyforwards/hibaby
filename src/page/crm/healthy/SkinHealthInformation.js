@@ -4,6 +4,7 @@
  */
 import React from 'react'
 import { connect } from 'dva'
+import { routerRedux } from 'dva/router';
 import { Form,Row,Col,Radio,Input,Button,message } from 'antd';
 import './SkinHealthInformation.scss'
 const FormItem = Form.Item
@@ -63,6 +64,10 @@ class SkinHealthInformation extends React.Component {
     );
   }
 
+  handleBack() {
+    this.props.dispatch(routerRedux.push('/crm/customer'));
+  }
+
   handleSubmit(){
     //console.log("您点击了保存按钮");
     const {dispatch} = this.props;
@@ -88,7 +93,6 @@ class SkinHealthInformation extends React.Component {
   render(){
     return (
       <div className="skinHealthInformationDiv">
-        <div className="formBox">
         <Form className="tableForm">
           <Row className="firstItem" key="1">
             <Col className="firstItemLeft" span="10"  style={{height: '55px',display: 'table'}}>
@@ -322,9 +326,8 @@ class SkinHealthInformation extends React.Component {
           </Row>
 
         </Form>
-        </div>
         <div className='bottomButton'>
-          <Button className='commitButton backBtn'>返回</Button>
+          <Button className='commitButton backBtn' onClick={this.handleBack.bind(this)}>返回</Button>
           <Button className='commitButton' type="primary" onClick={this.handleSubmit.bind(this)}>保存</Button>
         </div>
       </div>

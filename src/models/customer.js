@@ -68,6 +68,7 @@ export default {
       if (values.size === undefined) {
         values.size = 10;
       }
+      console.log(values)
       const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, values);
       if (code == 0) {
         yield put({

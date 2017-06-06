@@ -5,7 +5,7 @@ import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
 import styles from './healthyhome.scss';
 import PicturesWall from '../customer/fileUpload';
 import { connect } from 'dva';
-
+import { routerRedux } from 'dva/router';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
@@ -51,7 +51,7 @@ function Healthyhome(props) {
         style={{height: '100%'}}
       >
         {getFieldDecorator(`${radioName}`, {
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -77,7 +77,7 @@ function Healthyhome(props) {
         wrapperCol={{span: 18}}
       >
         {getFieldDecorator(`${radioName}`, {
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -183,7 +183,7 @@ function Healthyhome(props) {
               wrapperCol={{span: 18}}
               label={inputTitle}>
               {getFieldDecorator(`${inputName}`, {
-                rules: [{ required: true, message: '  ' }]
+                rules: [{ required: false, message: '  ' }]
               })(
                 <Input
                   suffix={suffix}
@@ -278,6 +278,11 @@ function Healthyhome(props) {
     });
   }
 
+  //返回
+  function handleBack() {
+    props.dispatch(routerRedux.push('/crm/customer'));
+  }
+
   return(
     <div className="healthContentDiv">
       <Form>
@@ -336,7 +341,7 @@ function Healthyhome(props) {
                     wrapperCol={{span: 16}}
                     label={'孕期最高血压'}>
                     {getFieldDecorator(`${inputNames[2]}`, {
-                      rules: [{ required: true, message: '  ' }]
+                      rules: [{ required: false, message: '  ' }]
                     })(
                       <Input
                         suffix="/ mmHg"
@@ -381,7 +386,7 @@ function Healthyhome(props) {
                   wrapperCol={{span: 18}}
                   label={'剖宫产手术指征'}>
                   {getFieldDecorator(`${inputNames[5]}`, {
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input/>
                   )}
@@ -395,7 +400,7 @@ function Healthyhome(props) {
                   wrapperCol={{span: 18}}
                   label={'产时出血'}>
                   {getFieldDecorator(`${inputNames[6]}`, {
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input
                       suffix="ml"
@@ -416,7 +421,7 @@ function Healthyhome(props) {
                     label={''}
                     wrapperCol={{span: 22, push: 1 }}>
                     {getFieldDecorator(`${inputNames[7]}`, {
-                      rules: [{ required: true, message: '  ' }]
+                      rules: [{ required: false, message: '  ' }]
                     })(
                       <Input
                         suffix="小时"
@@ -491,7 +496,7 @@ function Healthyhome(props) {
                   wrapperCol={{span: 18}}
                   label={'出生体重'}>
                   {getFieldDecorator(`${inputNames[12]}`, {
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input
                       suffix="g"
@@ -507,7 +512,7 @@ function Healthyhome(props) {
                   wrapperCol={{span: 18}}
                   label={'出生身长'}>
                   {getFieldDecorator(`${inputNames[13]}`, {
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input
                       suffix="cm"
@@ -536,7 +541,7 @@ function Healthyhome(props) {
                     label={''}
                     wrapperCol={{span: 22, push: 1 }}>
                     {getFieldDecorator(`${inputNames[14]}`, {
-                      rules: [{ required: true, message: '  ' }]
+                      rules: [{ required: false, message: '  ' }]
                     })(
                       <Input
                         suffix="小时"
@@ -573,8 +578,8 @@ function Healthyhome(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton'>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleSubmit.bind()}>保存</Button>
+        <Button className='commitButton' onClick={handleBack}>返回</Button>
+        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
       </div>
 
     </div>
