@@ -19,7 +19,7 @@ export default {
     conclusionInformation : null,//医院小结
     saveDone:false,
     type:null,
-    editSkin:false,
+    editSkinFlag : false,
   },
   //加载页面
   subscriptions: {
@@ -70,7 +70,7 @@ export default {
       }
     },
     *setHealthInformationEditFlag({payload: type}, { call, put }){
-      yield put({type:'setHealthInformationEditFlag',payload:{type:type}} );
+      put({type:'setHealthInformationEditFlag',payload:{type:type}} );
     }
   },
   //同步请求
@@ -84,14 +84,13 @@ export default {
       }else if(type === 2){
         return { ...state, nutritionHealthInformation : data };
       }else if(type === 3){
-        return { ...state, skinHealthInformation : data };
+        return { ...state,editSkinFlag:false, skinHealthInformation : data };
       }else if(type === 4){
         return { ...state, conclusionInformation : data };
       }
       return {...state};
     },
     setSaveDone(state, { payload: { data }}){
-      debugger;
       if(data){
         let healthInfo = JSON.parse(data.healthInfo);
         let saveDone = true;
@@ -101,7 +100,7 @@ export default {
         }else if(data.type === 2){
           return {...state,saveDone:saveDone,type:type, nutritionHealthInformation : data}
         }else if(data.type === 3){
-          return {...state,saveDone:saveDone,type:type, skinHealthInformation : data}
+          return {...state,saveDone:saveDone,editSkinFlag:false,type:type, skinHealthInformation : data}
         }else if(data.type === 4){
           return {...state,saveDone:saveDone,type:type, conclusionInformation : data}
         }
@@ -119,15 +118,15 @@ export default {
       }
       return {...state,conclusionInformation:arr};
     },
-    setHealthInformationEditFlag(state, { payload: type }){
-      if(type === 1){
-        return { ...state,type:type, editSkin:true };
-      }else if(type === 2){
-        return { ...state,type:type, editSkin:true };
-      }else if(type === 3){
-        return { ...state,type:type, editSkin:true };
-      }else if(type === 4){
-        return { ...state,type:type, editSkin:true};
+    setHealthInformationEditFlag(state, { payload: data }){
+      if(data.type === 1){
+        return { ...state,type:data.type, editSkinFlag:true };
+      }else if(data.type === 2){
+        return { ...state,type:data.type, editSkinFlag:true };
+      }else if(data.type === 3){
+        return { ...state,type:data.type, editSkinFlag:true };
+      }else if(data.type === 4){
+        return { ...state,type:data.type, editSkinFlag:true};
       }
       return {...state};
     }
