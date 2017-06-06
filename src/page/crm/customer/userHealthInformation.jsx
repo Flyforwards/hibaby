@@ -10,6 +10,7 @@ import NutritionHealthInformationDetail from '../healthy/NutritionHealthInformat
 import NutritionHealthInformationDetailUpdate from '../healthy/NutritionHealthInformationDetailUpdate';
 import HospitalHealthy from '../healthy/healthyhome';
 import HospitalHealthyDetail from '../healthy/healthyhomeDetail';
+import HospitalHealthyDetailUpdate from '../healthy/healthyhomeDetailUpdate';
 import SkinHealthInformation from '../healthy/SkinHealthInformation';
 import SkinHealthInformationDetail from '../healthy/SkinHealthInformationDetail';
 import SkinHealthInformationDetailUpdate from '../healthy/SkinHealthInformationDetailUpdate';
@@ -30,13 +31,16 @@ class userHealthInformation extends React.Component {
   render() {
     debugger;
     const isDetail = this.props.users.isDetail;
-    const {saveDone,type,editNutritionFlag,editSkinFlag} = this.props.healthInformation;
+    const {saveDone,type,editMedicalFlag,editNutritionFlag,editSkinFlag} = this.props.healthInformation;
     const medicalHealthInformation = this.props.healthInformation.medicalHealthInformation;
     const nutritionHealthInformation = this.props.healthInformation.nutritionHealthInformation;
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
     const conclusionInformation = this.props.healthInformation.conclusionInformation;
 
-    const HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
+    let HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
+    if(editMedicalFlag){
+      HospitalHealthyDiv = <HospitalHealthyDetailUpdate/>;
+    }
     let NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
     if(editNutritionFlag){
       NutritionHealthInformationDiv = <NutritionHealthInformationDetailUpdate />
