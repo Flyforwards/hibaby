@@ -51,7 +51,7 @@ class Page extends React.Component {
     render() {
 
         const titleName = this.props.title
-        const documentTitle = titleName === null ? '管理台' : '管理台' + '|' + titleName
+        const documentTitle = titleName === null ? '凯贝姆Hi Baby管理后台' : '凯贝姆Hi Baby管理后台' + '|' + titleName
 
         return (
             <QueueAnim className="yt-admin-framework-page" animConfig={this.props.animConfig} delay={100}>

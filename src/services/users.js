@@ -136,4 +136,19 @@ export function currentUserPermissionAliasList(values) {
   })
 }
 
+// 根据地方中心id查询下属部门
+export function getPositionByDeptId(values) {
+  return request('/crm/api/v1/position/getPositionByDeptId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 修改用户信息
+export function modifyUser(values) {
+  return request('/crm/api/v1/user/modifyUser', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 

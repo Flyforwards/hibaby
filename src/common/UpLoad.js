@@ -9,10 +9,6 @@ function getBase64(img, callback) {
 }
 
 function beforeUpload(file) {
-  message.config({
-    top: 100,
-    duration: 3,
-  });
   const isJPG = file.type === 'image/jpeg';
   const isBMP = file.type === 'image/bmp';
   const isPNG = file.type === 'image/png';
