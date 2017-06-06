@@ -49,8 +49,8 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
       if(dict.title === '联系方式' && isEdit){
         return(
           <Row className="cell" key={dict.title}>
-            <Col span={9} className="titleLabel">{dict.title}：</Col>
-            <Col className='valueLabel' span={15}>
+            <Col span={7} className="titleLabel">{dict.title}：</Col>
+            <Col className='valueLabel' span={17}>
               <FormItem validateStatus={validate}>
                 <Input  defaultValue={dict.value} onChange={onChange}/>
               </FormItem>
@@ -62,8 +62,8 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
       {
         return(
           <Row className="cell" key={dict.title}>
-            <Col span={9} className="titleLabel">{dict.title}：</Col>
-            <Col className='valueLabel' span={15}>{dict.value}</Col>
+            <Col span={7} className="titleLabel">{dict.title}：</Col>
+            <Col className='valueLabel' span={17}>{dict.value}</Col>
           </Row>
         )
       }
@@ -137,9 +137,9 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
 
         <div  className="bottomDiv">
 
-          <p>{props?`${moment( ).format('YYYY年MM月DD日')}入职`:''}<br/>
-            {props?`你与凯贝姆已经一起成长 ${moment().diff(props.createTime, 'days')}天 了`:''}
-          </p>
+          <p>{props?`${moment().format('YYYY年MM月DD日')}入职`:''}<br/></p>
+          <p className="twoLine">你与凯贝姆已经一起成长 <span>{props? `${moment().diff(props.createTime, 'days')}天`:''} </span> 了</p>
+
 
         </div>
 
