@@ -65,7 +65,7 @@ function NutritionHealthInformation(props) {
         style={{height: '100%'}}
       >
         {getFieldDecorator(`${radioName}`, {
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -90,7 +90,7 @@ function NutritionHealthInformation(props) {
         {...formItemLayout}
       >
         {getFieldDecorator(`${radioName}`, {
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}

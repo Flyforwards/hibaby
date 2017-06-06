@@ -58,7 +58,7 @@ function HealthyhomeDetailUpdate(props) {
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : dict.value,
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -85,7 +85,7 @@ function HealthyhomeDetailUpdate(props) {
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : dict.value,
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -190,7 +190,7 @@ function HealthyhomeDetailUpdate(props) {
               label={inputTitle}>
               {getFieldDecorator(`${inputName}`, {
                 initialValue : dict.value,
-                rules: [{ required: true, message: '  ' }]
+                rules: [{ required: false, message: '  ' }]
               })(
                 <Input
                   suffix={suffix}
@@ -355,7 +355,7 @@ function HealthyhomeDetailUpdate(props) {
                     label={'孕期最高血压'}>
                     {getFieldDecorator(`${inputNames[2]}`, {
                       initialValue : healthInfo['input_2'],
-                      rules: [{ required: true, message: '  ' }]
+                      rules: [{ required: false, message: '  ' }]
                     })(
                       <Input
                         suffix="/ mmHg"
@@ -403,7 +403,7 @@ function HealthyhomeDetailUpdate(props) {
                   label={'剖宫产手术指征'}>
                   {getFieldDecorator(`${inputNames[5]}`, {
                     initialValue : healthInfo['input_5'],
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input />
                   )}
@@ -418,7 +418,7 @@ function HealthyhomeDetailUpdate(props) {
                   label={'产时出血'}>
                   {getFieldDecorator(`${inputNames[6]}`, {
                     initialValue : healthInfo['input_6'],
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input
                       suffix="ml"
@@ -440,7 +440,7 @@ function HealthyhomeDetailUpdate(props) {
                     wrapperCol={{span: 22, push: 1 }}>
                     {getFieldDecorator(`${inputNames[7]}`, {
                       initialValue : healthInfo['input_7'],
-                      rules: [{ required: true, message: '  ' }]
+                      rules: [{ required: false, message: '  ' }]
                     })(
                       <Input
                         suffix="小时"
@@ -520,7 +520,7 @@ function HealthyhomeDetailUpdate(props) {
                   label={'出生体重'}>
                   {getFieldDecorator(`${inputNames[12]}`, {
                     initialValue : healthInfo['input_12'],
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input
                       suffix="g"
@@ -537,7 +537,7 @@ function HealthyhomeDetailUpdate(props) {
                   label={'出生身长'}>
                   {getFieldDecorator(`${inputNames[13]}`, {
                     initialValue : healthInfo['input_13'],
-                    rules: [{ required: true, message: '  ' }]
+                    rules: [{ required: false, message: '  ' }]
                   })(
                     <Input
                       suffix="cm"
@@ -567,7 +567,7 @@ function HealthyhomeDetailUpdate(props) {
                     wrapperCol={{span: 22, push: 1 }}>
                     {getFieldDecorator(`${inputNames[14]}`, {
                       initialValue : healthInfo['input_14'],
-                      rules: [{ required: true, message: '  ' }]
+                      rules: [{ required: false, message: '  ' }]
                     })(
                       <Input
                         suffix="小时"
