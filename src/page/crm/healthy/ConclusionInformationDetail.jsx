@@ -15,10 +15,11 @@ function ConclusionInformationDetail(props) {
   const {dispatch} = props;
   //console.log("healthInformation="+props);
  // console.log("healthInformation2="+props.healthInformation.conclusionInformation.healthInfo);
-
   let fileList = new Array();
   fileList = eval((props.healthInformation.conclusionInformation&&props.healthInformation.conclusionInformation!=null)?JSON.parse(props.healthInformation.conclusionInformation.healthInfo):[]);
-
+  if(typeof(fileList) === 'string' ){
+    fileList = eval(fileList);
+  }
   for(let i = 0;i<fileList.length;i++){
    // console.log("fileList[i]="+fileList[i]);
     let dict = fileList[i];
