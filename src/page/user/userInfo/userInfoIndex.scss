@@ -32,12 +32,18 @@
         line-height: 30px;
         text-align: center;
         font:15px "微软雅黑";
-
+      }
+      .twoLine{
+        margin-top: 10px;
+        span{
+          color: sandybrown;
+          font:18px "微软雅黑";
+        }
       }
     }
   }
   .rightContent{
-    width: 500px;
+    width: 400px;
     float: left;
     margin-left:20px;
     .topDiv{
@@ -55,7 +61,7 @@
       margin-top: 20px;
     }
     .buttonDiv{
-      margin-left:140px;
+      margin-left:60px;
       .button{
         width: 120px;
         float: left;
@@ -68,10 +74,11 @@
   }
 
   .cell{
-    width: 350px;
+    margin-left:20px;
+    width: 330px;
     .titleLabel{
       height: 40px;
-      text-align: right;
+      text-align: left;
       font:14px "微软雅黑";
     }
     .valueLabel{
