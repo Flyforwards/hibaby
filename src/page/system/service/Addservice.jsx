@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import './service.scss'
-import {Card,Form, Input, Button, Radio ,AutoComplete } from 'antd'
+import {Card,Form, Input, Button, Radio ,AutoComplete,InputNumber } from 'antd'
 import {Link} from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create;
@@ -66,7 +66,7 @@ class AddService extends Component {
                                 >
                                 {getFieldDecorator('price', {rules: [{ required: true, message: '项目价格为必填项！' }],
                               })(
-                                <Input  placeholder=" " />)}
+                                <Input type='number' />)}
                                 </FormItem>
                                 <span className="priceRight">元</span>
                             </div>
