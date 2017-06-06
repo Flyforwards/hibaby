@@ -5,7 +5,9 @@
 import React from 'react'
 import { connect } from 'dva'
 import { Form,Row,Col,Radio,Input,Button,message } from 'antd';
-import './SkinHealthInformation.scss'
+import './SkinHealthInformation.scss';
+import { routerRedux } from 'dva/router';
+
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const createForm = Form.create
@@ -73,6 +75,10 @@ class SkinHealthInformationDetail extends React.Component {
     );
   }
 
+  handleBack() {
+    this.props.dispatch(routerRedux.push('/crm/customer'));
+  }
+
 
   handleEdit(){
     const {dispatch} = this.props;
@@ -84,16 +90,6 @@ class SkinHealthInformationDetail extends React.Component {
     })
   }
 
-  handleBack(){
-      const {dispatch} = this.props;
-      dispatch({
-        type: 'healthInformation/getHealthInformationListByCustomerId',
-        payload: {
-          type : type,
-          customerId : this.props.customerId
-        }
-      })
-  }
 
   handleSubmit(){
     //console.log("您点击了保存按钮");

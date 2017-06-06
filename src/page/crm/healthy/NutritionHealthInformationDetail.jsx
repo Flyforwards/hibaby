@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'dva';
 import { Button, Col, Form, Input, Row, Radio, Select } from 'antd';
 import "./NutritionHealth.scss"
+import { routerRedux } from 'dva/router';
+
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
@@ -221,6 +223,10 @@ function NutritionHealthInformationDetail(props) {
       }
     })
   }
+  //返回
+  function handleBack() {
+    props.dispatch(routerRedux.push('/crm/customer'));
+  }
 
 
   return (
@@ -316,7 +322,7 @@ function NutritionHealthInformationDetail(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton'>返回</Button>
+        <Button className='commitButton' onClick={handleBack}>返回</Button>
         <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
       </div>
     </div>

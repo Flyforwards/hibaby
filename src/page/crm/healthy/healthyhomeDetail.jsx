@@ -5,6 +5,8 @@ import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
 import styles from './healthyhome.scss';
 import PicturesWall from '../customer/fileUpload';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
+
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
@@ -264,6 +266,10 @@ function HealthyhomeDetail(props) {
         </Col>
       </Row>
     )
+  }
+
+  function handleBack() {
+    props.dispatch(routerRedux.push('/crm/customer'));
   }
 
   //编辑
@@ -587,7 +593,7 @@ function HealthyhomeDetail(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton'>返回</Button>
+        <Button className='commitButton' onClick={handleBack}>返回</Button>
         <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
       </div>
 
