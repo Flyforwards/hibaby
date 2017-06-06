@@ -1,5 +1,90 @@
 
-
 .user-cent{
+  padding: 20px;
+  .leftContent{
+    padding: 20px;
+    width: 450px;
+    float: left;
+    background-color: white;
+    .topDiv{
+      .icon{
+        width: 80px;
+        height: 80px;
+        border-radius:40px;
+        float: left;
+        border:1px solid #e9e9e9;
+      }
+      .rightChi{
+        width: 300px;
+        float: left;
+        h1{
+          font:30px "微软雅黑";
+          width: 100%;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+      }
+    }
+    .bottomDiv{
+      clear: left;
+      p{
+        width: 100%;
+        line-height: 30px;
+        text-align: center;
+        font:15px "微软雅黑";
+      }
+      .twoLine{
+        margin-top: 10px;
+        span{
+          color: sandybrown;
+          font:18px "微软雅黑";
+        }
+      }
+    }
+  }
+  .rightContent{
+    width: 400px;
+    float: left;
+    margin-left:20px;
+    .topDiv{
+      background-color: #999999;
+      p{
+        text-indent:20px;
+        line-height: 50px;
+        color: white;
+        font-size: 15px;
+      }
+    }
+    .bottomDiv{
+      padding: 20px;
+      background-color: white;
+      margin-top: 20px;
+    }
+    .buttonDiv{
+      margin-left:60px;
+      .button{
+        width: 120px;
+        float: left;
+        margin-left: 20px;
+        margin-top: 70px;
+        height: 30px;
+      }
+
+    }
+  }
+
+  .cell{
+    margin-left:20px;
+    width: 330px;
+    .titleLabel{
+      height: 40px;
+      text-align: left;
+      font:14px "微软雅黑";
+    }
+    .valueLabel{
+      line-height: 40px;
+      font:14px "微软雅黑";
+    }
+  }
 
 }

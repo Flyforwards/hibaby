@@ -51,7 +51,7 @@ class AddGroupChar extends React.Component {
               <FormItem {...formItemLayout} label="活动时间" >
                 {getFieldDecorator('activityTime', {rules: [{ type: 'object', required: true, message: '请选择活动时间!' }],
                 })(
-                  <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+                  <DatePicker showTime format="YYYY-MM-DD HH:mm" />
                 )}
               </FormItem>
               <FormItem {...formItemLayout} label={ "活动地点"}>

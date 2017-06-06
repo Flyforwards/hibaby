@@ -229,7 +229,7 @@ class EditUsered extends React.Component {
       if(this.props.userID != null){
          USER = this.props.userID
          entrys = USER.entrys
-         SEX = USER.sex == 1?"男":"女"
+         SEX = USER.sex == 0?"男":"女"
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
             let headelDepartment = this.affiliatedDepartment

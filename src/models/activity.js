@@ -288,6 +288,11 @@ export default {
             type: 'getActivityPage',
             payload: query
           });
+
+          dispatch({
+            type: 'layout/getSystemTime',
+          });
+
         }
         if (pathname === '/crm/activity/detail') {
           dispatch({
@@ -302,11 +307,19 @@ export default {
           dispatch({
             type: 'getMemberShipCard',
           })
+
+          dispatch({
+            type: 'layout/getSystemTime',
+          });
         }
         if (pathname === '/crm/activity/edit') {
           dispatch({
             type: 'getActivityByIdEdit',
             payload: query
+          });
+
+          dispatch({
+            type: 'layout/getSystemTime',
           });
 
           dispatch({

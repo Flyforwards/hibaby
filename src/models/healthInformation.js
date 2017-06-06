@@ -19,6 +19,9 @@ export default {
     conclusionInformation : null,//医院小结
     saveDone:false,
     type:null,
+    editMedicalFlag : false,
+    editNutritionFlag : false,
+    editSkinFlag : false
   },
   //加载页面
   subscriptions: {
@@ -67,6 +70,12 @@ export default {
         //更新state
         yield put({type:'setHealthInformation',payload:{data,type:values.type}} );
       }
+    },
+    *setHealthInformationEditFlag({payload: type}, { call, put }){
+      put({type:'setHealthInformationEditFlag',payload:{type:type}} );
+    },
+    *clearAllHealthInformation({payload: values}, { call, put }){
+      put({type:'clearAllHealthInformation'} );
     }
   },
   //同步请求
@@ -76,11 +85,11 @@ export default {
     },
     setHealthInformation(state, { payload: { data,type }}){
       if(type === 1){
-        return { ...state, medicalHealthInformation : data };
+        return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
       }else if(type === 2){
-        return { ...state, nutritionHealthInformation : data };
+        return { ...state,editNutritionFlag : false, nutritionHealthInformation : data };
       }else if(type === 3){
-        return { ...state, skinHealthInformation : data };
+        return { ...state,editSkinFlag : false, skinHealthInformation : data };
       }else if(type === 4){
         return { ...state, conclusionInformation : data };
       }
@@ -92,11 +101,11 @@ export default {
         let saveDone = true;
         let type = data.type;
         if(data.type === 1){
-          return {...state,saveDone:saveDone,type:type, medicalHealthInformation : data}
+          return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
         }else if(data.type === 2){
-          return {...state,saveDone:saveDone,type:type, nutritionHealthInformation : data}
+          return {...state,saveDone:saveDone,editNutritionFlag : false,type:type, nutritionHealthInformation : data}
         }else if(data.type === 3){
-          return {...state,saveDone:saveDone,type:type, skinHealthInformation : data}
+          return {...state,saveDone:saveDone,editSkinFlag : false,type:type, skinHealthInformation : data}
         }else if(data.type === 4){
           return {...state,saveDone:saveDone,type:type, conclusionInformation : data}
         }
@@ -113,6 +122,21 @@ export default {
         }
       }
       return {...state,conclusionInformation:arr};
+    },
+    setHealthInformationEditFlag(state, { payload: data }){
+      if(data.type === 1){
+        return { ...state,type:data.type, editMedicalFlag:true };
+      }else if(data.type === 2){
+        return { ...state,type:data.type, editNutritionFlag:true };
+      }else if(data.type === 3){
+        return { ...state,type:data.type, editSkinFlag:true };
+      }else if(data.type === 4){
+        return { ...state,type:data.type, editSkinFlag:true};
+      }
+      return {...state};
+    },
+    clearAllHealthInformation(state, { payload: data }){
+      return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null}
     }
   }
 

@@ -2,16 +2,14 @@ import React from 'react';
 import { connect } from 'dva';
 import { Button, Col, Form, Input, Row, Radio, Select } from 'antd';
 import "./NutritionHealth.scss"
-import { routerRedux } from 'dva/router';
-
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
 /**
- * 客户信息》健康档案》营养部健康档案
+ * 客户信息》健康档案》营养部健康档案编辑页面
  */
-function NutritionHealthInformationDetail(props) {
-  let disabled=true;
+function NutritionHealthInformationDetailUpdate(props) {
+  let disabled=false;
   const type = 2;
 
   const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
@@ -38,19 +36,19 @@ function NutritionHealthInformationDetail(props) {
   //文本输入框
   function myInput(inputTitle,inputName,unit,required,message,lastRow) {
     return(
-        <FormItem
-          {...formItemLayout}
-          label={inputTitle}
-        >
-          {getFieldDecorator(`${inputName}`, {
-            initialValue : healthInfo[inputName],
-            rules: [{ required: required, message: message }]
-          })(
-            <Input disabled={disabled}
-              suffix={unit}
-            />
-          )}
-        </FormItem>
+      <FormItem
+        {...formItemLayout}
+        label={inputTitle}
+      >
+        {getFieldDecorator(`${inputName}`, {
+          initialValue : healthInfo[inputName],
+          rules: [{ required: required, message: message }]
+        })(
+          <Input disabled={disabled}
+                 suffix={unit}
+          />
+        )}
+      </FormItem>
     );
   }
 
@@ -71,7 +69,7 @@ function NutritionHealthInformationDetail(props) {
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : healthInfo[radioName],
-          rules: [{ required: false, message: '  ' }]
+          rules: [{ required: true, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -97,7 +95,7 @@ function NutritionHealthInformationDetail(props) {
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : healthInfo[radioName],
-          rules: [{ required: false, message: '  ' }]
+          rules: [{ required: true, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -115,7 +113,7 @@ function NutritionHealthInformationDetail(props) {
           <div className="uploadOptions">附件:</div>
         </Col>
         <Col span="18">
-            <Button key={key} type="primary" className="uploadOptionsButton">查看附件</Button>
+          <Button key={key} type="primary" className="uploadOptionsButton">查看附件</Button>
         </Col>
       </div>
     )
@@ -126,21 +124,21 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row  className=" radioInputRow" key={key}>
         <Col className=" radioInputRowLeft" span="10" style={{height: '55px',display: 'table' ,width:'50%'}}>
-            {myRadioForm(radioName ,dict)}
+          {myRadioForm(radioName ,dict)}
         </Col>
         <Col className=" radioInputRowRight" span="10"  style={{height: '55px',display: 'table',width:'50%'}}>
-            <FormItem
-              {...formItemLayout}
-              label={inputTitle}>
-              {getFieldDecorator(`${inputName}`, {
-                initialValue : healthInfo[inputName],
-                rules: [{ required: false, message: '  ' }]
-              })(
-                <Input disabled={disabled}
-                  suffix={suffix}
-                />
-              )}
-            </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label={inputTitle}>
+            {getFieldDecorator(`${inputName}`, {
+              initialValue : healthInfo[inputName],
+              rules: [{ required: false, message: '  ' }]
+            })(
+              <Input disabled={disabled}
+                     suffix={suffix}
+              />
+            )}
+          </FormItem>
         </Col>
       </Row>
     )
@@ -151,19 +149,19 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row  className="radioWhiteRow" key={key}>
         <Col className="radioWhiteRowLeft"  span="10" style={{height: '55px',display: 'table'}}>
-            {myRadioForm(radioName ,dict)}
+          {myRadioForm(radioName ,dict)}
         </Col>
         <Col className="radioWhiteRowRight" span="10"  style={{height: '55px',display: 'table'}}>
-            <FormItem>
-              {getFieldDecorator(`${inputName}`, {
-                initialValue : healthInfo[inputName],
-                rules: [{ required: false, message: '  ' }]
-              })(
-                <Input disabled={disabled}
-                  suffix={suffix}
-                />
-              )}
-            </FormItem>
+          <FormItem>
+            {getFieldDecorator(`${inputName}`, {
+              initialValue : healthInfo[inputName],
+              rules: [{ required: false, message: '  ' }]
+            })(
+              <Input disabled={disabled}
+                     suffix={suffix}
+              />
+            )}
+          </FormItem>
         </Col>
       </Row>
     )
@@ -173,10 +171,10 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row>
         <Col span="10">
-            {myRadioForm(radioName, dict)}
+          {myRadioForm(radioName, dict)}
         </Col>
         <Col span="10">
-            {uploadOptionsItem({key})}
+          {uploadOptionsItem({key})}
         </Col>
       </Row>
     )
@@ -187,17 +185,17 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row>
         <Col span="10" style={{height: '55px',display: 'table' }}>
-            {myRadioForm(radioName, dict)}
-            <FormItem>
-              {getFieldDecorator(`${inputName}`, {
-                initialValue : healthInfo[inputName],
-                rules: [{ required: false, message: '  ' }]
-              })(
-                <Input disabled={disabled}
-                  suffix={suffix}
-                />
-              )}
-            </FormItem>
+          {myRadioForm(radioName, dict)}
+          <FormItem>
+            {getFieldDecorator(`${inputName}`, {
+              initialValue : healthInfo[inputName],
+              rules: [{ required: false, message: '  ' }]
+            })(
+              <Input disabled={disabled}
+                     suffix={suffix}
+              />
+            )}
+          </FormItem>
         </Col>
       </Row>
     )
@@ -208,24 +206,40 @@ function NutritionHealthInformationDetail(props) {
     return (
       <Row className="radioAllRow" key={key}>
         <Col className="radioAllRowBg" span="10" style={{height: '55px',display: 'table'}}>
-            {secondRadioForm(radioName, dict)}
+          {secondRadioForm(radioName, dict)}
         </Col>
       </Row>
     )
   }
-  //编辑
-  function handleEdit (e) {
+  //提交表单
+  function handleSubmit (e) {
+    //console.log("您点击了保存按钮");
+    const {dispatch} = props;
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        const healthInfo = JSON.stringify(values);
+        dispatch({
+          type: 'healthInformation/updateHealthInformation',
+          payload: {
+            healthInfo : healthInfo,
+            type : type,
+            customerId : props.customerId,
+            id : nutritionHealthInformation.id
+          }
+        })
+      }
+    });
+  }
+
+  function handleBack(){
     const {dispatch} = props;
     dispatch({
-      type: 'healthInformation/setHealthInformationEditFlag',
+      type: 'healthInformation/getHealthInformationListByCustomerId',
       payload: {
-        type : type
+        type : type,
+        customerId : props.customerId
       }
     })
-  }
-  //返回
-  function handleBack() {
-    props.dispatch(routerRedux.push('/crm/customer'));
   }
 
 
@@ -325,17 +339,17 @@ function NutritionHealthInformationDetail(props) {
 
       <div className='bottomButton'>
         <Button className='commitButton' onClick={handleBack}>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
+        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
       </div>
     </div>
   );
 
 }
-const NutritionHealthInformationDetailForm = Form.create()(NutritionHealthInformationDetail);
+const NutritionHealthInformationDetailUpdateForm = Form.create()(NutritionHealthInformationDetailUpdate);
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
     customerId:state.addCustomer.dataDetailId
   };
 }
-export default connect(mapStateToProps)(NutritionHealthInformationDetailForm) ;
+export default connect(mapStateToProps)(NutritionHealthInformationDetailUpdateForm) ;

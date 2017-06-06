@@ -79,7 +79,7 @@ class ActivityDetailIndex extends Component {
         if (this.props.item) {
           const timestamp = new Date().getTime();
           // 活动未开始无法签到
-          if (this.props.item.activityTime > timestamp) {
+          if (this.props.item.activityTime > this.props.systemTime) {
             return (
               <div key = { index }>
                 <span> 活动未开始 </span>
@@ -225,7 +225,7 @@ class ActivityDetailIndex extends Component {
 
   render() {
 
-    const { form, item, signUserList,loading, signPagination, dispatch, shipCards } = this.props;
+    const { form, item, signUserList,loading, signPagination, dispatch, shipCards, systemTime } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 2 },
@@ -252,7 +252,7 @@ class ActivityDetailIndex extends Component {
     let itemName = "";
     let address = "";
     let content = "";
-    let activityTime = moment().format("YYYY-MM-DD HH:mm:ss")
+    let activityTime = moment().format("YYYY-MM-DD HH:mm")
     let appointments = 0;
     let signeds = 0;
     let orders = 0;
@@ -264,15 +264,14 @@ class ActivityDetailIndex extends Component {
       </div>)
     if (item != null) {
       itemName = item.name;
-      activityTime = moment(item.activityTime).format("YYYY-MM-DD HH:mm:ss");
+      activityTime = moment(item.activityTime).format("YYYY-MM-DD HH:mm");
       address = item.address;
       content = item.content;
       appointments = item.appointments;
       signeds = item.signeds;
       orders = item.orders;
-      const timestamp = new Date().getTime()
       // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况无法删除活动
-      if (item.activityTime < timestamp ) {
+      if (item.activityTime < systemTime ) {
         buttons = (
           <div className="button-wrapper">
             <Button className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
@@ -478,9 +477,12 @@ function mapStateToProps(state) {
     signPagination,
     shipCards
   } = state.activity;
-
+  const {
+    systemTime
+  } = state.layout;
   return {
     loading: state.loading,
+    systemTime,
     shipCards,
     item,
     signUserList,

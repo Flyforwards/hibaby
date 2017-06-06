@@ -89,11 +89,19 @@
       border-right:0;
     }
   }
-  .commitButton{
-    float: left;
-    margin-left: 10px;
+  .bottomButton {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
-  .backBtn{
-    margin-left:700px;
+  .commitButton{
+    width: 150px;
+    height: 35px;
+    margin-right: 10px;
+  }
+  .backButton{
+    width: 150px;
+    height: 35px;
+    margin-right: 10px;
   }
 }

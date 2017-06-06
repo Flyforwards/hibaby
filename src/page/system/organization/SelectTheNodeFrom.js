@@ -22,23 +22,78 @@ class SelectTheNodeFrom extends Component {
     }, {
       title: '职位',
       dataIndex: 'positionId',
-      key: 'positionId',
+      render: (positionId)=>{
+        const Position=this.props.getPosition;
+        //console.log("position>>>>>",Position)
+        let position=[];
+        Position.map((res,index)=>{
+          position.push(res.id)
+        })
+        for(let i=0;i<position.length;i++){
+          if(position[i]==positionId){
+            return Position[i].name;
+          }
+        }
+      },
     }, {
       title: '隶属部门',
       dataIndex: 'deptId',
-      key: 'deptId',
+      render: (deptId)=>{
+        const DeptList=this.props.getDeptList;
+        let deptlist=[];
+        DeptList.map((res,index)=>{
+          deptlist.push(res.id)
+        })
+        for(let i=0;i<deptlist.length;i++){
+          if(deptlist[i]==deptId){
+            return (DeptList[i].name)
+          }
+        }
+      },
     },{
       title: '地方中心',
       dataIndex: 'endemicId',
-      key: 'endemicId',
+      render: (endemicId)=>{
+        const Endemic=this.props.getEndemic;
+        let endemicCenter=[];
+        Endemic.map((res,index)=>{
+          endemicCenter.push(res.id)
+        })
+        for(let i=0;i<endemicCenter.length;i++){
+          if(endemicCenter[i]==endemicId){
+            return (Endemic[i].name)
+          }
+        }
+      }
     },{
       title: '系统角色',
       dataIndex: 'roleId',
-      key: 'roleId',
+      render: (roleId)=>{
+        let roleIdData=[];
+        roleIdData=roleId.split(",")
+        const selectData=this.props.selectData;
+        let roleData=[];
+        selectData.map((res,index)=>{
+          roleData.push(res.id)
+        })
+        let selectName=[];
+        for(let n=0;n<roleIdData.length;n++){
+          for(let i=0;i<roleData.length;i++){
+            if(roleData[i]==Number(roleIdData[n])){
+              selectName.push(selectData[i].name)
+            }
+          }
+        }
+        return selectName
+      },
     },{
       title: '账户状态',
       dataIndex: 'status',
-      key: 'status',
+      render: (status)=>{
+        let statusName="";
+        statusName=status?"禁用":"正常";
+        return (statusName)
+      },
     }];
   }
 
@@ -86,7 +141,8 @@ class SelectTheNodeFrom extends Component {
   }
 
   render() {
-    const { visible, treeData, list, total } = this.props
+    const { visible, treeData, list,total } = this.props;
+    //console.log("模态框表格>>>",this.props.dataEndemicId)
     let loops = []
     const rowSelection = {
       type: "radio",
@@ -173,10 +229,20 @@ class SelectTheNodeFrom extends Component {
 function mapStateToProps(state) {
   const {
     list,
+    selectData,
+    getPosition,
+    dataEndemicId,
+    getEndemic,
+    getDeptList,
     total
   } = state.organization;
   return {
     list,
+    selectData,
+    dataEndemicId,
+    getEndemic,
+    getPosition,
+    getDeptList,
     total
   };
 }

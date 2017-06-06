@@ -81,7 +81,7 @@ class ActivityDetailIndex extends Component {
               rules: [{ required: true, message: '请选择活动时间' }],
               initialValue: activityTime
             })(
-              <DatePicker format="YYYY-MM-DD HH:mm:ss" />
+              <DatePicker format="YYYY-MM-DD HH:mm" />
             )}
           </FormItem>
           <FormItem {...formItemLayout} label= "活动地点">
@@ -143,9 +143,12 @@ function mapStateToProps(state) {
     editSignUserList,
     editSignPagination
   } = state.activity;
-
+  const {
+    systemTime
+  } = state.layout;
   return {
     loading: state.loading,
+    systemTime,
     editItem,
     editSignUserList,
     editSignPagination
