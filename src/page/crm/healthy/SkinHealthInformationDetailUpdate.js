@@ -1,5 +1,5 @@
 /**
- * 客户信息》健康档案》美研中心孕期健康挡案
+ * 客户信息》健康档案》美研中心孕期健康挡案编辑页面
  * Created by yangjingjing on 2017/6/1.
  */
 import React from 'react'
