@@ -175,6 +175,10 @@ class CustomerIndex extends React.Component {
             values.month = values.time.get('month')+1;
           }
 
+          if(values.productionDate != undefined){
+            values.productionDate = values.productionDate.format("YYYY-MM-DD")
+          }
+
           this.props.dispatch(routerRedux.push({
             pathname: "/crm/customer",
             query: values
@@ -189,6 +193,8 @@ class CustomerIndex extends React.Component {
       }))
       this.props.form.resetFields()
     }
+
+
 
     render() {
         const columns = this.columns;
@@ -310,6 +316,52 @@ class CustomerIndex extends React.Component {
                       )}
                     </FormItem>
                   </Col>
+                </Row>
+                <Row className="topAge" style={{height: 50}}>
+                  <Col className="Operator" span={4}>
+                    <FormItem  {...formChooseOneLayout} label="意向套餐" >
+                      {getFieldDecorator('intentionPackage')(
+                        <DictionarySelect  placeholder="请选择" selectName="IntentionPackage" />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col className="Operator" span={4} >
+                    <FormItem  {...formChooseOneLayout} label="籍贯" >
+                      {getFieldDecorator('placeOrigin')(
+                        <Input max={40}  />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col className="Operator" span={4} >
+                    <FormItem  {...formChooseOneLayout} label="购买套餐" >
+                      {getFieldDecorator('purchasePackage')(
+                        <DictionarySelect  placeholder="请选择" selectName="IntentionPackage" />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col className="Operator" span={4} >
+                    <FormItem  {...formChooseOneLayout} label="宝宝生产日期" >
+                      {getFieldDecorator('productionDate')(
+                        <DatePicker  placeholder="请选择" />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col className="Operator" span={4} >
+                    <FormItem  {...formChooseOneLayout} label="孕周" >
+                      {getFieldDecorator('gestationalWeeks')(
+                        <InputNumber max={40} mix={1} />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col className="Operator" span={4}>
+                    <FormItem  {...formChooseOneLayout} label="分娩医院'" >
+                      {getFieldDecorator('hospital', {rules: [{ required: false }],
+                      })(
+                        <DictionarySelect  placeholder="请选择" selectName="Hospital"/>
+                      )}
+                    </FormItem>
+                  </Col>
+
                 </Row>
               </Form>
             <div className="CreateModaList-a">

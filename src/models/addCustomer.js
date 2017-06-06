@@ -428,7 +428,7 @@ export default {
 
       const state = yield select(state => state.addCustomer);
 
-      let dict = {...baseDict,
+      let dict = {...baseDict,birthTime:baseDict.birthTime.format('YYYY-MM-DD'),dueDate:baseDict.dueDate.format('YYYY-MM-DD'),
         hospital:baseDict.hospital.key, fetus:baseDict.fetus.key, focus:baseDict.focus.key, resourceCustomer:baseDict.resourceCustomer.key,
         intentionPackage:baseDict.intentionPackage.key, webSearchTerm:baseDict.webSearchTerm.key, province:baseDict.province.key, city:baseDict.city.key};
 
@@ -500,7 +500,7 @@ export default {
         "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,
-        "productionDate": values.productionDate.format(),
+        "productionDate": values.productionDate.format('YYYY-MM-DD'),
         "provincePermanent": values.provincePermanent.key,
         "purchasePackage": values.purchasePackage ? values.purchasePackage :  '',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
