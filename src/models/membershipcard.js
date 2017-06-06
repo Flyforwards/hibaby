@@ -12,7 +12,8 @@ export default {
   state: {
     fetching:false,
     chargeVisible:false,
-    commonVisible:'',
+    commonVisible:{},
+    trigger: false,
     timeDate:'',
     postValues: {},
     pagination: {
@@ -113,10 +114,11 @@ export default {
       }
     },
     //改变状态 commonModal
-    switchCommonState(state) {
+    switchCommonState(state, {payload: {commonVisible, trigger}}) {
       return {
         ...state,
-        commonVisible: false,
+        commonVisible,
+        trigger
       }
     },
 
@@ -158,12 +160,19 @@ export default {
   },
   effects: {
     //销卡
-    *cancelCard({ payload: values }, { call, put }) {
+    *cancelCard({ payload: values }, { call, put,select }) {
       const { data: { code,data,err } } = yield call(cardService.cancelCard, values);
+      const {type} = values;
+      let {commonVisible, trigger} = yield select(state => state.membershipcard);
+      if (commonVisible[type] == undefined) {
+        commonVisible[type] = 0;
+      }
       if (code == 0) {
         message.success("销卡成功")
+        commonVisible[type] = commonVisible[type] + 1;
         yield put({
-          type:'switchCommonState'
+          type:'switchCommonState',
+          payload: {commonVisible, trigger: !trigger}
         });
         yield put({
           type:'cancelCardInfo',
@@ -189,12 +198,19 @@ export default {
       }
     },
     //退费
-    *returnsAmount({ payload: values }, { call, put }) {
+    *returnsAmount({ payload: values }, { call, put, select }) {
       const { data: { code,data,err } } = yield call(cardService.returnsAmount, values);
+      const {type} = values;
+      let {commonVisible, trigger} = yield select(state => state.membershipcard);
+      if (commonVisible[type] == undefined) {
+        commonVisible[type] = 0;
+      }
       if (code == 0) {
         message.success("退费成功")
+        commonVisible[type] = commonVisible[type] + 1;
         yield put({
-          type:'switchCommonState'
+          type:'switchCommonState',
+          payload: {commonVisible, trigger: !trigger}
         });
         //退费记录
         yield put({
@@ -217,10 +233,16 @@ export default {
     },
 
     //续费
-    *renewAmount({ payload: values }, { call, put }) {
+    *renewAmount({ payload: values }, { call, put, select }) {
       const { data: { code,data,err } } = yield call(cardService.renewAmount, values);
+      const {type} = values;
+      let {commonVisible, trigger} = yield select(state => state.membershipcard);
+      if (commonVisible[type] == undefined) {
+        commonVisible[type] = 0;
+      }
       if (code == 0) {
         message.success("续费成功")
+        commonVisible[type] = commonVisible[type] + 1;
         //退费记录
         yield put({
           type:'getRenewRecord',
@@ -239,13 +261,15 @@ export default {
           type:'getBalanceInfo',
         });
         yield put({
-          type:'switchCommonState'
+          type:'switchCommonState',
+          payload: {commonVisible, trigger: !trigger}
         });
+
       }
     },
 
     //扣费
-    *getFeeDeduction({ payload: values }, { call, put }) {
+    *getFeeDeduction({ payload: values }, { call, put, select }) {
       const { data: { code, data,err } } = yield call(cardService.chargingAmount, values);
       if (code == 0) {
           message.success("已购买")

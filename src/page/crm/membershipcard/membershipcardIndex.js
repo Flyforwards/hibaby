@@ -98,7 +98,7 @@ class MemberShipCard extends Component {
   handleCancelCard (values){
     this.props.dispatch({
       type: 'membershipcard/cancelCard',
-      payload:{  ...values }
+      payload:{  ...values, type: 'DELETE' }
     })
 
   }
@@ -106,14 +106,14 @@ class MemberShipCard extends Component {
   handleRefundCard (values){
     this.props.dispatch({
       type: 'membershipcard/returnsAmount',
-      payload:{  ...values }
+      payload:{  ...values, type: 'REFUND' }
     })
   }
   //续费点击确定
   handleRenewFee (values){
     this.props.dispatch({
       type: 'membershipcard/renewAmount',
-      payload:{  ...values }
+      payload:{  ...values, type: 'CHARGE' }
     })
   }
  //扣费点击确定
@@ -167,7 +167,7 @@ class MemberShipCard extends Component {
         <div style={{textAlign:'right',marginTop:'20px'}}>
           <Link to="/crm/customer"><Button className="cardBtn">返回</Button></Link>
 
-          {/*<Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>*/}
+          <Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>
 
           <AlertModalFrom
             modalTitle="会员销卡"
@@ -176,6 +176,7 @@ class MemberShipCard extends Component {
             labelValue="退费金额"
             prams="amount"
             onOk={this.handleCancelCard.bind(this)}
+            type="DELETE"
           >
             <Button  type="danger" className="cardBtn">消卡</Button>
           </AlertModalFrom>
@@ -187,6 +188,7 @@ class MemberShipCard extends Component {
             labelValue="退费金额"
             prams="amount"
             onOk={this.handleRefundCard.bind(this)}
+            type="REFUND"
           >
             <Button type="danger" className="cardBtn">退费</Button>
           </AlertModalFrom>
@@ -198,6 +200,7 @@ class MemberShipCard extends Component {
             labelValue="续费金额"
             prams="amount"
             onOk={this.handleRenewFee.bind(this)}
+            type="CHARGE"
           >
             <Button type="primary" className="cardBtn" >续费</Button>
           </AlertModalFrom>
