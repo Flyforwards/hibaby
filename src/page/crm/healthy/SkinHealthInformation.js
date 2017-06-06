@@ -88,7 +88,6 @@ class SkinHealthInformation extends React.Component {
   render(){
     return (
       <div className="skinHealthInformationDiv">
-        <div className="formBox">
         <Form className="tableForm">
           <Row className="firstItem" key="1">
             <Col className="firstItemLeft" span="10"  style={{height: '55px',display: 'table'}}>
@@ -322,7 +321,6 @@ class SkinHealthInformation extends React.Component {
           </Row>
 
         </Form>
-        </div>
         <div className='bottomButton'>
           <Button className='commitButton backBtn'>返回</Button>
           <Button className='commitButton' type="primary" onClick={this.handleSubmit.bind(this)}>保存</Button>

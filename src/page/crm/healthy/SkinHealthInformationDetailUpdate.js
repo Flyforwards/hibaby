@@ -107,7 +107,6 @@ class SkinHealthInformationDetailUpdate extends React.Component {
     this.healthInfo = JSON.parse(skinHealthInformation.healthInfo);
     return (
       <div className="skinHealthInformationDiv">
-        <div className="formBox">
           <Form className="tableForm">
             <Row className="firstItem" key="1">
               <Col className="firstItemLeft" span="10"  style={{height: '55px',display: 'table'}}>
@@ -313,7 +312,6 @@ class SkinHealthInformationDetailUpdate extends React.Component {
               </Col>
             </Row>
           </Form>
-        </div>
         <div className='bottomButton'>
           <Button className='backButton' onClick={this.handleBack.bind(this)}>返回</Button>
           <Button className='commitButton' id="saveShinButton" type="primary" onClick={this.handleSubmit.bind(this)}>保存</Button>
