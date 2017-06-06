@@ -207,15 +207,15 @@
       top:15%;
     }
     .return {
-        background-color: #fff;
-        border: none;
-        color: #000;
+        background-color: #b67233;
+        border-color:#b67233 ;
+        color: #fff;
         margin-right: 10px;
     }
-
-    .return:hover {
-        background-color: #fff;
-        color: rgba(0, 0, 0, 0.85);
+    .SaveBtn{
+      background:#f1e8df;
+      border-color:#dbb999;
+      color:#b67233;
     }
    .ant-card {
       width:96%;
