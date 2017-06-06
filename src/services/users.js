@@ -146,7 +146,7 @@ export function getPositionByDeptId(values) {
 
 // 修改用户信息
 export function modifyUser(values) {
-  return request('/crm/api/v1/user/modifyUser', {
+  return request('/crm/api/v1/user/updateUserEntry', {
     method: 'POST',
     body: JSON.stringify(values),
   })

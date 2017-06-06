@@ -3,6 +3,25 @@
 		text-align: center;
 		background-color: rgba(228, 228, 228, 1);
 	}
+  .ant-form-item{
+    .ant-form-item-label{
+      line-height: 40px;
+    }
+    height: 40px;
+    margin-bottom: 5px;
+    .ant-input[disabled]{
+      height:40px;
+    }
+    .ant-select-selection--single{
+      height:40px;
+    }
+  }
+  .formText{
+    height:50px;
+    .ant-form-item-label{
+      line-height: 50px;
+    }
+  }
 	.nodeLeaderIput{
 		width:70%;
 		margin-left: 42px;
@@ -10,7 +29,7 @@
 	.nodeLeader{
 		margin-right: 92px;
 	    float: right;
-	    margin-top: -55px;
+	    margin-top: -44px;
 	}
 }
 .SeeChildNode{
@@ -35,10 +54,6 @@
 	    float: right;
 	    margin-top: -55px;
 	}
-	.ant-modal-footer{
-
-
-	}
 
 	.ant-modal-body{
 		overflow: hidden
@@ -48,6 +63,11 @@
 		margin-right:30px;
 		margin-top:10px;
 	}
+  .ant-modal-footer{
+    .ant-btn-primary{
+      margin-top:0;
+    }
+  }
 }
 .Disabled{
 	.ant-modal-header{
@@ -66,6 +86,7 @@
 	    float: right;
 	    margin-top: -55px;
 	}
+
 	.vertical-center-modal {
 	  text-align: center;
 	  white-space: nowrap;

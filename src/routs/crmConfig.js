@@ -292,5 +292,15 @@ export default (app) => [
     }
   },
 
+  //会员卡打印路由
+  {
+    path: '/crm/customer/printPage',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/membershipcard'));
+        cb(null, require('page/crm/membershipcard/printPage.js'))
+      })
+    }
+  },
 
 ]

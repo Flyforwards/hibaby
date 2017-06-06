@@ -9,11 +9,11 @@ const FormItem = Form.Item;
 
 function textforkey(dict,key) {
 
-  if(dict.hasOwnProperty(key)){
+  if(dict[key] !== undefined){
     return dict[key];
   }
-  else if(dict.entrys){
-    if (dict.entrys[0].hasOwnProperty(key)){
+  else if(dict.entrys[0]){
+    if (dict.entrys[0][key] !== undefined){
       return dict.entrys[0][key];
     }
   }
@@ -49,8 +49,8 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
       if(dict.title === '联系方式' && isEdit){
         return(
           <Row className="cell" key={dict.title}>
-            <Col span={6} className="titleLabel">{dict.title}：</Col>
-            <Col className='valueLabel' span={18}>
+            <Col span={7} className="titleLabel">{dict.title}：</Col>
+            <Col className='valueLabel' span={17}>
               <FormItem validateStatus={validate}>
                 <Input  defaultValue={dict.value} onChange={onChange}/>
               </FormItem>
@@ -62,8 +62,8 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
       {
         return(
           <Row className="cell" key={dict.title}>
-            <Col span={6} className="titleLabel">{dict.title}：</Col>
-            <Col className='valueLabel' span={18}>{dict.value}</Col>
+            <Col span={7} className="titleLabel">{dict.title}：</Col>
+            <Col className='valueLabel' span={17}>{dict.value}</Col>
           </Row>
         )
       }
@@ -82,8 +82,14 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
   }
 
   function editBtnClick(edit = true) {
-    editFun(edit)
-    contact = textforkey(props,'contact');
+    if (props.entrys[0]){
+      editFun(edit)
+      contact = textforkey(props,'contact');
+    }
+    else {
+      message.error('缺少入职信息')
+    }
+
   }
 
   function onLogout() {
@@ -111,7 +117,7 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
       else {
         dispatch({
           type: "users/modifyUser",
-          payload:{categoryId:'1',entrys:[{contact:contact}]}
+          payload:{contact:contact}
         })
         editFun(false)
 
@@ -126,14 +132,14 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
 
         <div className="topDiv">
           <img className="icon" src={props? props.imgURL : ''} alt=""/>
-          <div className="rightChi"> <h3>{props? props.name : ''}</h3> {baseInfoDiv}</div>
+          <div className="rightChi"> <h1>{props? props.name : ''}</h1> {baseInfoDiv}</div>
         </div>
 
         <div  className="bottomDiv">
 
-          <p>{props?`${moment( ).format('YYYY年MM月DD日')}入职`:''}<br/>
-            {props?`你与凯贝姆已经一起成长 ${moment().diff(props.createTime, 'days')}天 了`:''}
-            </p>
+          <p>{props?`${moment().format('YYYY年MM月DD日')}入职`:''}<br/></p>
+          <p className="twoLine">你与凯贝姆已经一起成长 <span>{props? `${moment().diff(props.createTime, 'days')}天`:''} </span> 了</p>
+
 
         </div>
 

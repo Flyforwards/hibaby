@@ -28,7 +28,7 @@ class RefundRecord extends Component {
     }, {
       title: '会员卡级别变动',
       dataIndex: 'levelChange',
-      key: 'leverlChange'
+      key: 'levelChange'
     },{
       title: '操作人',
       dataIndex: 'operatorName',
@@ -66,7 +66,6 @@ class RefundRecord extends Component {
 
 function mapStateToProps(state) {
   const {total,refundRecordPagination,refundRecord} = state.membershipcard;
-  console.log("续费记录",refundRecord)
   return {
     loading: state.loading.models.membershipcard,
     total,

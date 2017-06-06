@@ -1,16 +1,19 @@
 
 import React from 'react'
 import { connect } from 'dva'
-import { Table ,Input, Icon, Button, Popconfirm, Pagination, Tabs } from 'antd'
+import { Table ,Input, Icon, Button, Popconfirm, Pagination, Tabs,message } from 'antd'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import './userHealthInformation.scss'
 import NutritionHealthInformation from '../healthy/NutritionHealthInformation'
-import NutritionHealthInformationDetail from '../healthy/NutritionHealthInformationDetail'
+import NutritionHealthInformationDetail from '../healthy/NutritionHealthInformationDetail';
+import NutritionHealthInformationDetailUpdate from '../healthy/NutritionHealthInformationDetailUpdate';
 import HospitalHealthy from '../healthy/healthyhome';
 import HospitalHealthyDetail from '../healthy/healthyhomeDetail';
+import HospitalHealthyDetailUpdate from '../healthy/healthyhomeDetailUpdate';
 import SkinHealthInformation from '../healthy/SkinHealthInformation';
 import SkinHealthInformationDetail from '../healthy/SkinHealthInformationDetail';
+import SkinHealthInformationDetailUpdate from '../healthy/SkinHealthInformationDetailUpdate';
 import ConclusionInformation from '../healthy/ConclusionInformation';
 import ConclusionInformationDetail from '../healthy/ConclusionInformationDetail';
 
@@ -24,17 +27,34 @@ class userHealthInformation extends React.Component {
   constructor(props) {
     super(props);
   }
+  //页面生命周期结束时调用
+  componentWillUnmount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'healthInformation/clearAllHealthInformation'
+    })
+  }
+
   render() {
     const isDetail = this.props.users.isDetail;
-    const {saveDone,type} = this.props.healthInformation;
+    const {saveDone,type,editMedicalFlag,editNutritionFlag,editSkinFlag} = this.props.healthInformation;
     const medicalHealthInformation = this.props.healthInformation.medicalHealthInformation;
     const nutritionHealthInformation = this.props.healthInformation.nutritionHealthInformation;
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
     const conclusionInformation = this.props.healthInformation.conclusionInformation;
 
-    const HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
-    const NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
-    const SkinHealthInformationDiv = (saveDone || isDetail)&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
+    let HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
+    if(editMedicalFlag){
+      HospitalHealthyDiv = <HospitalHealthyDetailUpdate/>;
+    }
+    let NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
+    if(editNutritionFlag){
+      NutritionHealthInformationDiv = <NutritionHealthInformationDetailUpdate />
+    }
+    let SkinHealthInformationDiv = (saveDone || isDetail)&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
+    if(editSkinFlag){
+      SkinHealthInformationDiv = <SkinHealthInformationDetailUpdate/>
+    }
     const ConclusionInformationDiv = (saveDone || isDetail)&&conclusionInformation ? <ConclusionInformationDetail/>:<ConclusionInformation />;
     let defaultActiveKey = "1";
     if(type){
@@ -64,7 +84,8 @@ class userHealthInformation extends React.Component {
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
-    healthInformation: state.healthInformation
+    healthInformation: state.healthInformation,
+    customerId:state.addCustomer.dataDetailId
   };
 }
 

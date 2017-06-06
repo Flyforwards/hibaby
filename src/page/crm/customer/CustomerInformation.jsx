@@ -72,10 +72,10 @@ function cusComponent(dict) {
     case 'Select':
       if (dict.fun)
       {
-        tempDiv = (<Select labelInValue={true}  onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
+        tempDiv = (<Select labelInValue={true} disabled={dict.disabled} onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
       }
       else {
-        tempDiv = (<Select labelInValue={true}  placeholder='请选择'>{dict.children}</Select>);
+        tempDiv = (<Select labelInValue={true} disabled={dict.disabled} placeholder='请选择'>{dict.children}</Select>);
       }
       break;
     case 'DatePicker':
@@ -477,8 +477,8 @@ function ExtensionInfo(props) {
     {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
     {title:'保险情况',component:'Input',submitStr:'insuranceSituation'},
     {title:'联系人电话',component:'Input',submitStr:'contact'},
-    {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,},
-    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange},
+    {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,disabled:props.users.expandData},
+    {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
     {title:'合同编号',component:'Input',submitStr:'contractNumber'},
     {title:'关联客房',component:'Input',submitStr:'associatedRooms'},

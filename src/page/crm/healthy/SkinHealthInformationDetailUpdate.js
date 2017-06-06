@@ -1,30 +1,25 @@
 /**
- * 客户信息》健康档案》美研中心孕期健康挡案
+ * 客户信息》健康档案》美研中心孕期健康挡案编辑页面
  * Created by yangjingjing on 2017/6/1.
  */
 import React from 'react'
 import { connect } from 'dva'
 import { Form,Row,Col,Radio,Input,Button,message } from 'antd';
-import './SkinHealthInformation.scss';
-import { routerRedux } from 'dva/router';
-
+import './SkinHealthInformation.scss'
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const createForm = Form.create
 const type = 3;//美研中心孕期健康挡案
 @createForm()
-class SkinHealthInformationDetail extends React.Component {
+class SkinHealthInformationDetailUpdate extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      disabled : true
+      disabled : false
     }
   }
 
-  componentDidMount(){
-    $('#editShinButton').show();
-    $('#saveShinButton').hide();
-  }
+
   healthInfo = {};
 
   formItemLayout = {
@@ -75,21 +70,17 @@ class SkinHealthInformationDetail extends React.Component {
     );
   }
 
-  handleBack() {
-    this.props.dispatch(routerRedux.push('/crm/customer'));
-  }
 
-
-  handleEdit(){
+  handleBack(){
     const {dispatch} = this.props;
     dispatch({
-      type: 'healthInformation/setHealthInformationEditFlag',
+      type: 'healthInformation/getHealthInformationListByCustomerId',
       payload: {
-        type : type
+        type : type,
+        customerId : this.props.customerId
       }
     })
   }
-
 
   handleSubmit(){
     //console.log("您点击了保存按钮");
@@ -323,7 +314,7 @@ class SkinHealthInformationDetail extends React.Component {
           </Form>
         <div className='bottomButton'>
           <Button className='backButton' onClick={this.handleBack.bind(this)}>返回</Button>
-          <Button className='editButton' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</Button>
+          <Button className='commitButton' id="saveShinButton" type="primary" onClick={this.handleSubmit.bind(this)}>保存</Button>
 
         </div>
       </div>
@@ -331,7 +322,7 @@ class SkinHealthInformationDetail extends React.Component {
   }
 }
 
-const SkinHealthInformationDetailForm = Form.create()(SkinHealthInformationDetail);
+const SkinHealthInformationDetailUpdateForm = Form.create()(SkinHealthInformationDetailUpdate);
 
 function mapStateToProps(state) {
   return {
@@ -341,4 +332,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(SkinHealthInformationDetailForm)
+export default connect(mapStateToProps)(SkinHealthInformationDetailUpdateForm)

@@ -66,7 +66,6 @@ class ChargebackRecord extends Component {
 
 function mapStateToProps(state) {
   const {total,pagination,feeRecord} = state.membershipcard;
-  console.log("扣费记录",feeRecord)
   return {
     loading: state.loading.models.membershipcard,
     total,
