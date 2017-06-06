@@ -106,8 +106,8 @@ class ViewTheInformationed extends React.Component {
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
-          //console.log("sssss",this.props.userID)
-         SEX = USER.sex == 1?"男":"女"
+          console.log("sssss",this.props.userID)
+         SEX = USER.sex == 0?"男":"女"
          entrys = USER.entrys
         USER.entrys.map((item)=>{
           if(item.type == 0){
@@ -135,6 +135,7 @@ class ViewTheInformationed extends React.Component {
               }
             })
            }
+           console.log("getPosition职位>>>>",this.props.getPosition)
            if(this.props.getPosition){
             this.props.getPosition.map((item)=>{
               if(entrys[i].positionId == item.id){

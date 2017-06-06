@@ -22,11 +22,37 @@ class SelectTheNodeFrom extends Component {
     }, {
       title: '职位',
       dataIndex: 'positionId',
-      key: 'positionId',
+      render: (positionId)=>{
+        const Position=this.props.getPosition;
+        //console.log("position>>>>>",Position)
+        let position=[];
+        Position.map((res,index)=>{
+          position.push(res.id)
+        })
+        for(let i=0;i<position.length;i++){
+          if(position[i]==positionId){
+            return Position[i].name;
+          }
+        }
+      },
     }, {
       title: '隶属部门',
       dataIndex: 'deptId',
-      key: 'deptId',
+      render: (deptId)=>{
+        const DeptList=this.props.getDeptList;
+        console.log("deptId>>>>>",DeptList)
+        console.log(deptId)
+        let deptlist=[];
+        DeptList.map((res,index)=>{
+          deptlist.push(res.id)
+        })
+        console.log("deptlist>>>",deptlist)
+        for(let i=0;i<deptlist.length;i++){
+          if(deptlist[i]==deptId){
+            return (DeptList[i].name)
+          }
+        }
+      },
     },{
       title: '地方中心',
       dataIndex: 'endemicId',
@@ -86,7 +112,8 @@ class SelectTheNodeFrom extends Component {
   }
 
   render() {
-    const { visible, treeData, list, total } = this.props
+    const { visible, treeData, list,total } = this.props;
+    console.log("模态框表格>>>",this.props.dataEndemicId)
     let loops = []
     const rowSelection = {
       type: "radio",
@@ -173,10 +200,16 @@ class SelectTheNodeFrom extends Component {
 function mapStateToProps(state) {
   const {
     list,
+    getPosition,
+    dataEndemicId,
+    getDeptList,
     total
   } = state.organization;
   return {
     list,
+    dataEndemicId,
+    getPosition,
+    getDeptList,
     total
   };
 }
