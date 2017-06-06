@@ -260,4 +260,37 @@ export default (app) => [
         })
       }
     },
+
+    //客户投诉列表
+    {
+      path: '/crm/customer-comp',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/customerComp'));
+          cb(null, require('page/crm/customerService/CustomerCompIndex.jsx'))
+        })
+      }
+    },
+  //客户投诉添加
+  {
+    path: '/crm/customer-comp/add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/customerComp'));
+        cb(null, require('page/crm/customerService/CustomerCompAddIndex.jsx'))
+      })
+    }
+  },
+  //客户投诉详情
+  {
+    path: '/crm/customer-comp/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/customerComp'));
+        cb(null, require('page/crm/customerService/CustomerCompDetailIndex.jsx'))
+      })
+    }
+  },
+
+
 ]
