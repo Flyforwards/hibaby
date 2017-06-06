@@ -33,11 +33,9 @@ export default {
         yield put({type:'getCurrentUserEndemic'} );
 
 
-        if(data.entrys){
+        if(data.entrys[0]){
 
-          if (data.entrys[0].hasOwnProperty('deptId')){
             yield put({type:'getPositionByDeptId',payload:{dataId:data.entrys[0].deptId,positionId:data.entrys[0].positionId}} );
-          }
         }
 
       }
@@ -54,10 +52,8 @@ export default {
 
         yield put({type:'setUsersInfoChi',payload:{locCenter:data[0].name}} );
 
-        if(usersInfo.entrys){
-          if (usersInfo.entrys[0].hasOwnProperty('deptId')){
+        if(usersInfo.entrys[0]){
             yield put({type:'getDeptListByEndemicId',payload:{dataId:data[0].id,deptId:usersInfo.entrys[0].deptId}} );
-          }
         }
       }
     },
@@ -84,10 +80,16 @@ export default {
         }
       }
     },
-    *modifyUser({ payload: values },{ call, put}) {
-      const { data: { code, data ,err} } = yield call(usersService.modifyUser,values);
-      if (code == 0) {
+    *modifyUser({ payload: values },{ call, put,select}) {
+      const state = yield select(state => state.users);
 
+      const usersInfo = state.usersInfo;
+
+      let dict = {...values,userEntryId:usersInfo.entrys[0].id}
+
+      const { data: { code, data ,err} } = yield call(usersService.modifyUser,dict);
+      if (code == 0) {
+        yield put({type:'setUsersInfoChi',payload:values} );
       }
     },
 

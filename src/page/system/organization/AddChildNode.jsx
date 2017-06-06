@@ -165,7 +165,7 @@ class AddChildNodeed extends Component {
                         </Select>
                       )}
                     </FormItem>
-                    <FormItem
+                    <FormItem className="formText"
                      {...formItemLayout}
                       label="全称"
                     >
@@ -177,7 +177,7 @@ class AddChildNodeed extends Component {
                         <Input type="textarea" />
                       )}
                     </FormItem>
-                    <FormItem
+                    <FormItem className="formText"
                      {...formItemLayout}
                       label="简称"
                     >
@@ -189,7 +189,7 @@ class AddChildNodeed extends Component {
                         <Input type="textarea" />
                       )}
                     </FormItem>
-                    <FormItem
+                    <FormItem className="formText"
                      {...formItemLayout}
                       label="英文名称"
                     >
