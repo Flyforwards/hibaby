@@ -138,7 +138,7 @@ class AddJobed extends Component {
     render() {
       let traversalEndemicId = []
       let selectDataList = []
-      const {visible, form, confirmLoading} = this.props
+      const {visible, form, confirmLoading} = this.props;
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.dataEndemicId != null){
           traversalEndemicId = this.props.dataEndemicId.map((item)=>{
@@ -146,7 +146,7 @@ class AddJobed extends Component {
         })
       }
 
-      if(this.props.dataId != null){
+      if(this.props.dataId !== null){
           traversalDataId = this.props.dataId.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
         })

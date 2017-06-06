@@ -263,7 +263,7 @@ this.setState({
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
-          defaultPageSize:10,
+          pageSize:10,
           onChange: (current) => {
             this.props.dispatch({
               type: 'organization/organizationList',

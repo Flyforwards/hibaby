@@ -86,6 +86,7 @@ export default {
 	      return roleSelectdata
 	    },
 	    positionSave(state,{payload:{data:dataId,code}}){
+	      console.log("dataId>>>>",dataId)
 	      let Positiondata= {...state, dataId, code};
 	      return Positiondata
 	    },
@@ -426,9 +427,9 @@ export default {
 		        }
 		        if(pathname === '/system/organization/addUser') {
 		        	dispatch({
-						type: 'getEmpSerialList',
-						payload: query
-					});
+                type: 'getEmpSerialList',
+                payload: query
+              });
 		        }
 			})
 		}

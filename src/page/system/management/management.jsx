@@ -8,7 +8,7 @@ import moment from 'moment'
 import Current from '../../Current'
 
 class GroupCharIndex extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.columns = [{
@@ -27,12 +27,12 @@ class GroupCharIndex extends React.Component {
       key: 'description'
     }, {
       title: '最后编辑人',
-      dataIndex: 'modifiyId',
-      key: 'modifiyId',
+      dataIndex: 'operatorName',
+      key: 'operatorName',
       width: '100px'
     }, {
       title: '最后编辑时间',
-      dataIndex: 'modifyTime',
+      dataIndex: 'operatorTime',
       render: (record) => {
         return moment(record).format("YYYY-MM-DD HH:mm:ss")
       },
@@ -47,9 +47,10 @@ class GroupCharIndex extends React.Component {
       width: '150px'
     }];
   }
-  
+
   render() {
     const { list, loading, pagination, dispatch } = this.props;
+    console.log(" list>>>>", list)
     const tableProps = {
       loading: loading.effects['save/groupChar'],
       dataSource: list,
@@ -88,7 +89,7 @@ function mapStateToProps(state) {
           list,
           pagination
         } = state.save;
-  
+
   return {
     loading: state.loading,
     list,

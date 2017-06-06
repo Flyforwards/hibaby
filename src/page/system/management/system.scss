@@ -1,6 +1,6 @@
 .container2 {
     height: 100%;
-    width: 100%;
+    min-width: 1030px;
     padding: 10px;
     background-color: #f8f6f2;
     background-size: cover;
@@ -36,13 +36,13 @@
         height: 16px;
         margin-left: 45px;
         margin-top:10px;
-        width: 6%;
+        width: 75px;
         font:14px "微软雅黑";
         text-align: center;
     }
     .input {
         float: left;
-        width: 90%;
+        width: 680px;
         height: 40px;
         text-align: left;
         font-size: 13px;
@@ -53,7 +53,7 @@
     }
     .input2 {
         float: left;
-        width: 84%;
+        width:640px;
         height: 40px;
         font:14px "微软雅黑";
         line-height:40px;
@@ -77,35 +77,36 @@
     }
 
     .addBtn {
-        background-color: #108ee9;
-        width: 140px;
-        height: 100%;
+        background-color: #b67233;
+        width: 150px;
+        height: 30px;
         color: #fff;
         float: right;
         span{
-          height:40px;
+          height:30px;
           width:100%;
           font:14px "微软雅黑";
-          line-height:40px;
+          line-height:30px;
           text-align:center;
         }
     }
 
     .addBtn:hover {
         background-color: #f89d2d;
-        border: none;
+        border-color:#f89d2d ;
         color: #fff;
     }
     .add {
         margin-left: 90px;
-        height:40px;
+        height:30px;
+        background-color: #f89d2d;
         span{
           height:100%;
           display:block;
           width:100%;
           font:14px "微软雅黑";
           text-align:center;
-          line-height: 40px;
+          line-height: 30px;
         }
     }
 
@@ -137,18 +138,18 @@
       margin-left:50px;
     }
     .ant-btn {
-        height: 40px;
+        height: 30px;
     }
 
     .editable-add-btn {
-        background-color:#108ee9;
+        background-color:#b67233;
         color: #fff;
-        width: 140px;
+        width: 150px;
         span{
           display:block;
-          height:40px;
+          height:30px;
           font:14px "微软雅黑";
-          line-height:40px;
+          line-height:30px;
           text-align:center;
         }
     }
@@ -170,7 +171,7 @@
             height:100%;
             width:100%;
             font:14px "微软雅黑";
-            line-height:40px;
+            line-height:30px;
             text-align:center;
           }
         }
@@ -179,7 +180,7 @@
         overflow: hidden;
     }
     .childCen{
-      width: 86%;
+      width: 640px;
       float:left;
       margin-left:20px;
       font:14px "微软雅黑";
@@ -200,9 +201,9 @@
       text-align: center;
       line-height:26px;
       border-radius:4px;
-      background: red;
+      background: #f75555;
       position:absolute;
-      right:10%;
+      right:8%;
       top:15%;
     }
     .return {

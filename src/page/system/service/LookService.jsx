@@ -17,12 +17,6 @@ class LookService extends Component {
                 formLayout: 'inline',
             };
       }
-
-       componentWillMount() {
-         this.props.dispatch({
-           type : "service/LookService",
-         });
-       }
        //删除
        delete(addressid){
          this.id = addressid;

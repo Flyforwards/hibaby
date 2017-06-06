@@ -128,6 +128,7 @@ class SelectTheNodeFrom extends Component {
   //  console.log(selectedNodes[0])
     if(selectedNodes[0]){
       const node = selectedNodes[0];
+      console.log("节点>>>>",node)
       this.nodeId = node.props.nodeId;
       this.tissueProperty = node.props.tissueProperty;
       this.props.dispatch({
@@ -142,7 +143,6 @@ class SelectTheNodeFrom extends Component {
 
   render() {
     const { visible, treeData, list,total } = this.props;
-    //console.log("模态框表格>>>",this.props.dataEndemicId)
     let loops = []
     const rowSelection = {
       type: "radio",
@@ -171,7 +171,7 @@ class SelectTheNodeFrom extends Component {
       total: total, //数据总条数
       showQuickJumper: true,
       pageSize: 10,
-      onChange: (page, pageSize) => {
+      onChange: (current) => {
          let nodeId = this.nodeId
          let tissueProperty = this.tissueProperty
         this.props.dispatch({
@@ -179,8 +179,8 @@ class SelectTheNodeFrom extends Component {
           payload: {
             nodeid:nodeId,
             tissueProperty:tissueProperty,
-            page:page,
-            size: 5,
+            page:current,
+            size: 10,
           }
         });
       },
@@ -231,18 +231,18 @@ function mapStateToProps(state) {
     list,
     selectData,
     getPosition,
-    dataEndemicId,
     getEndemic,
     getDeptList,
+    page,
     total
   } = state.organization;
   return {
     list,
     selectData,
-    dataEndemicId,
     getEndemic,
     getPosition,
     getDeptList,
+    page,
     total
   };
 }

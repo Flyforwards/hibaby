@@ -25,12 +25,12 @@ class localCharIndex extends React.Component {
         key: 'description'
       }, {
         title: '最后编辑人',
-        dataIndex: 'modifiyId',
-        key: 'modifiyId'
+        dataIndex: 'operatorName',
+        key: 'operatorName'
 
       }, {
         title: '最后编辑时间',
-        dataIndex: 'modifyTime',
+        dataIndex: 'operatorTime',
         render: (record) => {
           return moment(record).format("YYYY-MM-DD HH:mm:ss")
         }
