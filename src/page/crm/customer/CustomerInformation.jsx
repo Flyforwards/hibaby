@@ -660,7 +660,7 @@ class customerInformation extends React.Component{
         <RemarkForm  {...this.props}/>
         <div className='savaDiv'>
           <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
-          <Button className='backBtn' type="primary" onClick={this.handleSubmitBase.bind(this)}>保存</Button>
+          <Button className='backBtn SaveBtn' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
         </div>
       </div>
     )

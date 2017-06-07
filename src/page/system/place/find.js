@@ -90,7 +90,7 @@ class FindPlaceData extends React.Component {
                       <Button className = "editable-add-btn return"> 返回 </Button>
                     </Link>
                     <Link to={{pathname:'/system/local-char/edit',query:{ dataId:`${editid}`}}}>
-                        <Button className = "editable-add-btn"> 编辑 </Button>
+                        <Button className = "editable-add-btn SaveBtn"> 编辑 </Button>
                     </Link>
                 </div>
            </div>

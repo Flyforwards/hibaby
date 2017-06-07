@@ -60,6 +60,32 @@
         width:100px;
       }
     }
+    .Origin{
+      margin-left: 10px;
+      width: 14%;
+      .ant-form-item-control {
+        width:80px;
+      }
+    }
+    .bordData{
+      width: 17%;
+      .ant-form-item-label{
+        width:100px;
+      }
+      .ant-form-item-control {
+        width:80px;
+      }
+    }
+    .Package{
+      .ant-form-item-control {
+        width:80px;
+      }
+    }
+    .intPackage{
+      .ant-form-item-label{
+        width: 80px;
+      }
+    }
   }
 
   .ant-form-item{
