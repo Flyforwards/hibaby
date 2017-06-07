@@ -9,6 +9,7 @@ import Content from '../content/Content.jsx'
 import { local, session} from 'common/util/storage.js'
 import { connect } from 'dva';
 import classNames from 'classnames';
+import Footer from '../footer/footer.jsx'
 
 class Layout extends React.Component {
     constructor(props) {
@@ -42,22 +43,6 @@ class Layout extends React.Component {
             'yt-admin-framework': true
         });
         const { projectTree, subMenu, userInfo, selectIndex } = this.props.layout;
-        // if (subMenu != null) {
-        //   menuData = subMenu;
-        // } else {
-        //   menuData = [{"name":"组织架构管理","path":"/system/organization","icon":"copyright","projectId":3,"permissionId":1,"children":[
-        //     {"name":"组织架构","path":"/system/organization","icon":"copyright","projectId":3,"permissionId":1,"children":null},
-        //     {"name":"职位管理","path":"/system/position","icon":"copyright","projectId":3,"permissionId":1,"children":null}]
-        //   },
-        //     {"name":"CRM数据管理","path":"/system/crmdata","icon":"copyright","projectId":3,"permissionId":1,"children":[
-        //       {"name":"集团字段","path":"/system/groupchar","icon":"copyright","projectId":3,"permissionId":1,"children":null},
-        //       {"name":"地方字段","path":"/system/localchar","icon":"copyright","projectId":3,"permissionId":1,"children":null},
-        //       {"name":"服务项目","path":"/system/serviceitem","icon":"copyright","projectId":3,"permissionId":1,"children":null}]
-        //     },
-        //     {"name":"权限管理","path":"/system/permission","icon":"copyright","projectId":3,"permissionId":1,"children":[]},
-        //     {"name":"菜单管理","path":"/system/module","icon":"copyright","projectId":3,"permissionId":1,"children":[]},
-        //     {"name":"日志查看","path":"/system/logsview","icon":"copyright","projectId":3,"permissionId":1,"children":[]}]
-        // }
 
         return (
             <div className={ cls }>
@@ -77,6 +62,7 @@ class Layout extends React.Component {
                             this.props.children
                         }
                     </Content>
+                    <Footer />
                     <BackTop style={{right: '40px', bottom: '40px'}}/>
                 </Spin>
             </div>
