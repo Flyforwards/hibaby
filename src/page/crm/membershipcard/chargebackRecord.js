@@ -7,7 +7,7 @@ import { connect } from 'dva'
 import './index.scss'
 import {Link} from 'react-router'
 import { Table, Icon, } from 'antd';
-
+import { format } from '../../../utils/index.js';
 
 class ChargebackRecord extends Component {
   constructor(props) {
@@ -16,7 +16,10 @@ class ChargebackRecord extends Component {
     this.columns = [{
       title: '扣费时间',
       dataIndex: 'deductionTime',
-      key: 'deductionTime'
+      key: 'deductionTime',
+      render:(text,record,index)=>{
+        return new Date(text).format('yyyy-MM-dd HH:mm:ss');
+      }
     }, {
       title: '服务项目名称',
       dataIndex: 'commodityName ',

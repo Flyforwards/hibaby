@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col,Popconfirm,Modal,Tabs } from 'antd';
+import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col,Popconfirm,Modal,Tabs ,message} from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
@@ -87,8 +87,8 @@ class MemberShipCard extends Component {
   dispatch({
     type:'membershipcard/getLevelInfo',
     payload:{
-      abName:'HYKJB',
-      softDelete:0,
+      "abName":'HYKJB',
+      "softDelete":0,
     }
   });
 }
@@ -126,12 +126,17 @@ class MemberShipCard extends Component {
   }
  //点击打印
   onPrint() {
-    this.props.dispatch(routerRedux.push({
-      pathname:'/crm/customer/printPage',
-      query:{
-        customerId:this.props.user.dataDetailId,
-      }
-    }))
+    // if(this.props.feeRecord != '' || this.props.renewRecord != '' || this.props.refundRecord != ''){
+      this.props.dispatch(routerRedux.push({
+        pathname:'/crm/customer/printPage',
+        query:{
+          dataId:this.props.user.dataDetailId,
+        }
+      }))
+    // }else{
+    //   message.warn('暂无可打印数据')
+    // }
+
   }
 
   tabChange(key){
@@ -142,6 +147,7 @@ class MemberShipCard extends Component {
   }
 
   render() {
+    const { feeRecord,renewRecord,refundRecord } = this.props;
     return (
       <div className="card" style={{overflow:'hidden'}}>
         <div>
@@ -167,7 +173,7 @@ class MemberShipCard extends Component {
         <div style={{textAlign:'right',marginTop:'20px'}}>
           <Link to="/crm/customer"><Button className="cardBtn">返回</Button></Link>
 
-          {/*<Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>*/}
+          <Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>
 
           <AlertModalFrom
             modalTitle="会员销卡"
@@ -221,7 +227,11 @@ class MemberShipCard extends Component {
 
 
 function mapStateToProps(state) {
+  const { feeRecord,renewRecord,refundRecord } = state.membershipcard;
   return {
+    feeRecord,
+    renewRecord,
+    refundRecord,
     user:state.addCustomer,
     cards:state.membershipcard,
   };
