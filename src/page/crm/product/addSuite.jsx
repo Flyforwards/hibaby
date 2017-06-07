@@ -70,9 +70,8 @@ class AddSuiteed extends Component {
         this.props.dispatch({
             type: 'packageInfo/getDictionary',
             payload: {
-              "id":5 ,
-              "softDelete": 0,
-              "type": 2
+              "abName":"TCLX" ,
+              "softDelete": 0
             }
         });
         this.props.dispatch({
