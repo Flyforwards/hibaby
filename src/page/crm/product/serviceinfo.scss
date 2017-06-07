@@ -7,9 +7,12 @@
 		height:60px;
 		position: relative;
 		button{
-			position: absolute;
-			width: 140px;
-    		height: 40px;
+			  position: absolute;
+			  width: 150px;
+    		height: 30px;
+        background:#b67233;
+        color:#fff;
+        border-color: #b67233;
     		right:2%;
     		top:30%;
 				font:14px "微软雅黑";
@@ -203,28 +206,30 @@
 			font-size: 20px;
 		}
 	}
-	.ant-btn {
-		margin-left:690px;
-		width:140px;
-		height:40px;
-		span{
-			display: inline-block;
-			height:40px;
-			width:100%;
-			text-align:center;
-			line-height: 40px;
-			font-size: 14px "微软雅黑";
-		}
-
-	}
+  .BackBtn{
+    margin-left:690px;
+    width:150px;
+    height:30px;
+    line-height: 30px;
+    background:#b67233;
+    color:#fff;
+    font: 14px "微软雅黑";
+    border-color:#b67233;
+  }
 	.ant-btn-primary{
     	margin-left:30px;
-    	width:140px;
-    	height:40px;
+    	width:150px;
+    	height:30px;
+    line-height: 30px;
 			span{
-				font-size: 14px "微软雅黑";
-				color:#fff;
+				font: 14px "微软雅黑";
+        color:#b67233;
 			}
-
 	}
+
+  .SaveBtn{
+    background:#f1e8df ;
+    border-color:#d4ad89;
+    color:#b67233;
+  }
 }

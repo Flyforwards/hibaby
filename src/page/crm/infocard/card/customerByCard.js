@@ -137,12 +137,12 @@ class CustomerByCard extends Component {
               </Col>
               <Col span={4} style={{ float:'left'}}>
                 <span>
-                  <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
+                  <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(182, 114, 51, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
                 </span>
               </Col>
               <Col span={4} style={{ float:'left'}}>
                 <span>
-                  <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 0, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
+                  <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'#f1e8df',borderColor:'#bb7c41',height:'40px',lineHeight:'40px',color:'#b67233'}}>重置</Button>
                 </span>
               </Col>
             </Row>

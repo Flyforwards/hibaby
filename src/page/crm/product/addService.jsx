@@ -60,7 +60,8 @@ class AddServiceed extends Component {
     componentWillMount() {
     }
     onSelect(value, option){
-      if(value == 43){
+      //console.log("value>>>>",value)
+      if(value == 1){
         this.roomVisbled = true
       }else{
         this.roomVisbled = false
@@ -247,7 +248,8 @@ class AddServiceed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                <div className="addServiceinfoSuite">
+                {
+                  this.roomVisbled? <div className="addServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
                   <FormItem
@@ -266,9 +268,11 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                 </Form>
-                </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+                </div>:null
+                }
+
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button className="SaveBtn" type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
         )
     }

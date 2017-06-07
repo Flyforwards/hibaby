@@ -63,6 +63,7 @@ class AddServiceed extends Component {
           selectedRowKeys:[],
           selectedRows: []
         };
+        this.roomVisbled = false
     }
     shouldComponentUpdate (nextProps) {
       if(nextProps.findById){
@@ -99,9 +100,8 @@ class AddServiceed extends Component {
         this.props.dispatch({
             type: 'packageInfo/getDictionary',
             payload: {
-              "id":5 ,
-              "softDelete": 0,
-              "type": 2
+             "abName":"TCLX" ,
+              "softDelete": 0
             }
         });
     }
@@ -175,6 +175,11 @@ class AddServiceed extends Component {
                 record.key = record.id;
             });
             loadingName = false
+            if(this.props.findById.type ==1){
+              this.roomVisbled = true
+            }else{
+              this.roomVisbled = false
+            }
         }
         if(this.props.selectData != null && this.props.findById){
           selectData = this.props.selectData.map((item)=>{
@@ -184,7 +189,7 @@ class AddServiceed extends Component {
             return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
         }
-        console.log(suiteId)
+        //console.log(suiteId)
         if(this.props.getDictionary != null &&　this.props.findById != null){
           roomList = this.props.getDictionary.map((item)=>{
             if(item.id == this.props.findById.type){
@@ -261,7 +266,8 @@ class AddServiceed extends Component {
                     defaultExpandedRowKeys = {ListLnformation}
                     />
                 </div>
-                <div className="addServiceinfoSuite">
+                {
+                  this.roomVisbled?<div className="addServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
                   <FormItem
@@ -281,9 +287,10 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                 </Form>
-                </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
+                </div>:null
+                }
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button className="SaveBtn" type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
             </div>
         )
     }

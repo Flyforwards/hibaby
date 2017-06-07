@@ -201,13 +201,13 @@ class CardDetail extends Component {
               <Col span = { 12}>
               </Col>
               <Col span = { 4}>
-                <Link to="/crm/card"><Button type="default">返回</Button></Link>
+                <Link to="/crm/card"><Button className="BackBtn">返回</Button></Link>
               </Col>
               <Col span = { 4 }>
                   <Button className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
               </Col>
               <Col span = { 4 }>
-                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button type="primary" >编辑</Button></Link>
+                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button className="SaveBtn">编辑</Button></Link>
               </Col>
             </Row>
           </Form>
