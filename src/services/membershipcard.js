@@ -95,3 +95,25 @@ export function getGoodsList(values) {
     body: JSON.stringify(values),
   })
 };
+//获取打印基础信息
+export function getPrintBaseMsg(values) {
+  return request('/crm/api/v1/customer/getMemberCardBillInfo', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+//获取服务器时间
+export function getSystemTime(values) {
+  return request('/crm/api/v1/getSystemTime', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+//获取账单打印信息
+export function getPrintAccountList(values) {
+  return request('/crm/api/v1/customer/getMemberCardBillList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+

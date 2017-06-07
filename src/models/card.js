@@ -118,13 +118,6 @@ export default {
             data
           }
         });
-      } else {
-        yield put({
-          type: 'cardKindInfo',
-          payload: {
-            data
-          }
-        });
       }
     },
 

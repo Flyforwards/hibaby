@@ -280,7 +280,7 @@ export default {
     *deleteUserEntry({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.deleteUserEntry, values);
       if (code == 0) {
-      
+
       }
     },
     //系统角色下拉列表
@@ -425,7 +425,7 @@ export default {
             type: 'getDepartmentNodes',
             payload: query
           });
-          
+
         }
         if (pathname === '/system/organization/addUser') {
           dispatch({

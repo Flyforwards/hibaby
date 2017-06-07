@@ -180,6 +180,7 @@
 							}
 							.pricecon{
 								float:left;
+                position: absolute;
 							}
 							input{
 									width:98%;
@@ -210,6 +211,13 @@
 				width:450%;
 				height:45px;
 			}
+      .ant-form-explain{
+        width: 100%;
+        overflow: auto;
+        font-size: 16px;
+        margin-left: 38px;
+        margin-top: 45px;
+      }
 			.ant-input[disabled] {
 				background-color:rgba(255,255,255,0);
 			    opacity: 1;

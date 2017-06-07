@@ -17,7 +17,7 @@
 		margin-top: -6px;
 	}
 	.basicInformationForm{
-		width:1280px;
+		width:1100px;
 		background-color: #fff;
 		margin-left:10px;
 		margin-top:-10px;
@@ -104,7 +104,7 @@
 	}
 
 	.entryInformationForm{
-		width:1280px;
+		width:1100px;
 		background-color: #fff;
 		margin-left:10px;
 		margin-top: -10px;
@@ -134,6 +134,11 @@
 			}
 		}
 		.button{
+      button{
+        background: #f89d2d;
+        border-color: #f89d2d;
+      }
+
 			.ant-form-item-control-wrapper{
 				margin-left:10px;
 				margin-top: 20px;
@@ -163,7 +168,7 @@
 		}
 	}
 	.contactInformationForm{
-		width:1280px;
+		width:1100px;
 		background-color: #fff;
 		margin-left:10px;
 		margin-bottom: 20px;
@@ -203,12 +208,26 @@
 			margin-bottom: 20px;
 		}
 	}
-	.returnButton,.saveButton{
+	.saveButton{
 		float:right;
 		margin: 0 20px;
-		width:126px;
-    height: 40px;
+    font:14px "微软雅黑";
+		width:150px;
+    height: 30px;
+    background: #f8f1e9;
+    color:#b67233;
+    border:1px solid #b67233;
 	}
+  .returnButton{
+    float:right;
+    margin: 0 20px;
+    font:14px "微软雅黑";
+    width:150px;
+    height: 30px;
+    background: #b67233;
+    color:#fff;
+    border:1px solid #dbb999 ;
+  }
 }
 .viewTheInformation{
 	.basicInformation,.contactInformation,.entryInformation{

@@ -5,13 +5,16 @@
 import * as cardService from '../services/membershipcard';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
+import { format } from '../utils/index.js';
 
 export default {
   namespace: 'membershipcard',
   state: {
     fetching:false,
     chargeVisible:false,
-    commonVisible:false,
+    commonVisible:{},
+    trigger: false,
+    timeDate:'',
     postValues: {},
     pagination: {
       showQuickJumper: true,
@@ -111,10 +114,11 @@ export default {
       }
     },
     //改变状态 commonModal
-    switchCommonState(state) {
+    switchCommonState(state, {payload: {commonVisible, trigger}}) {
       return {
         ...state,
-        commonVisible: !state.commonVisible,
+        commonVisible,
+        trigger
       }
     },
 
@@ -123,15 +127,52 @@ export default {
       let goodsInfo = { ...state, goodsInfoList,fetching:false, }
       return goodsInfo;
     },
+    //打印基础信息
+    savePrintBaseMsg(state, {payload: {data: printBaseMsg}}){
+      return { ...state, printBaseMsg }
+    },
+    //服务器时间
+    saveSystemTime(state, {payload: {data: systemTime}}){
+      return { ...state, systemTime }
+    },
+    //某日账单时间
+    getTimeDate(state, {payload: {data: timeDates}}){
+      const times = new Date(timeDates).format("yyyy年MM月dd日")
+      return { ...state, times }
+    },
+    //某日账单时间
+    getTimeDates(state, {payload: {data: startTims}}){
+      console.log("start",startTims)
+      if(startTims.startTime == startTims.endTime) {
+        const times = new Date(startTims.startTime).format("yyyy年MM月dd日")
+        return { ...state, times }
+      }else{
+        const times = `${new Date(startTims.startTime).format("yyyy年MM月dd日")} - ${new Date(startTims.endTime).format("yyyy年MM月dd日")}`
+        return { ...state, times }
+      }
+    },
+    //保存打印账单信息
+    savePrintAccount(state, {payload: {data: printList}}){
+      return { ...state, printList }
+    },
+
+
   },
   effects: {
     //销卡
-    *cancelCard({ payload: values }, { call, put }) {
+    *cancelCard({ payload: values }, { call, put,select }) {
       const { data: { code,data,err } } = yield call(cardService.cancelCard, values);
+      const {type} = values;
+      let {commonVisible, trigger} = yield select(state => state.membershipcard);
+      if (commonVisible[type] == undefined) {
+        commonVisible[type] = 0;
+      }
       if (code == 0) {
         message.success("销卡成功")
+        commonVisible[type] = commonVisible[type] + 1;
         yield put({
-          type:'switchCommonState'
+          type:'switchCommonState',
+          payload: {commonVisible, trigger: !trigger}
         });
         yield put({
           type:'cancelCardInfo',
@@ -157,12 +198,19 @@ export default {
       }
     },
     //退费
-    *returnsAmount({ payload: values }, { call, put }) {
+    *returnsAmount({ payload: values }, { call, put, select }) {
       const { data: { code,data,err } } = yield call(cardService.returnsAmount, values);
+      const {type} = values;
+      let {commonVisible, trigger} = yield select(state => state.membershipcard);
+      if (commonVisible[type] == undefined) {
+        commonVisible[type] = 0;
+      }
       if (code == 0) {
         message.success("退费成功")
+        commonVisible[type] = commonVisible[type] + 1;
         yield put({
-          type:'switchCommonState'
+          type:'switchCommonState',
+          payload: {commonVisible, trigger: !trigger}
         });
         //退费记录
         yield put({
@@ -185,10 +233,16 @@ export default {
     },
 
     //续费
-    *renewAmount({ payload: values }, { call, put }) {
+    *renewAmount({ payload: values }, { call, put, select }) {
       const { data: { code,data,err } } = yield call(cardService.renewAmount, values);
+      const {type} = values;
+      let {commonVisible, trigger} = yield select(state => state.membershipcard);
+      if (commonVisible[type] == undefined) {
+        commonVisible[type] = 0;
+      }
       if (code == 0) {
         message.success("续费成功")
+        commonVisible[type] = commonVisible[type] + 1;
         //退费记录
         yield put({
           type:'getRenewRecord',
@@ -207,13 +261,15 @@ export default {
           type:'getBalanceInfo',
         });
         yield put({
-          type:'switchCommonState'
+          type:'switchCommonState',
+          payload: {commonVisible, trigger: !trigger}
         });
+
       }
     },
 
     //扣费
-    *getFeeDeduction({ payload: values }, { call, put }) {
+    *getFeeDeduction({ payload: values }, { call, put, select }) {
       const { data: { code, data,err } } = yield call(cardService.chargingAmount, values);
       if (code == 0) {
           message.success("已购买")
@@ -235,11 +291,6 @@ export default {
         yield put({
           type:'getBalanceInfo',
         });
-      }else{
-        message.error(err)
-        yield put({
-          type:'switchChargeState',
-        })
       }
     },
 
@@ -373,6 +424,74 @@ export default {
           }
         })
       }
+    },
+    //获取打印基础信息
+    *getPrintBaseMsg({payload:values},{call,put}){
+      const customerId = location.search.substr(1).split('=')[1];
+      const value = {...values, customerId}
+      const { data: { code,data}} = yield call(cardService.getPrintBaseMsg,value);
+      if(code == 0){
+        console.log("success",values)
+        yield put({
+          type:'savePrintBaseMsg',
+          payload:{
+            data
+          }
+        })
+        yield put({
+          type:'getTimeDates',
+          payload:{
+            data:values,
+          }
+        })
+      }
+    },
+    //服务器时间
+    *getSystemTime({payload:value},{call,put}){
+      const { data: { code,data}} = yield  call(cardService.getSystemTime,value);
+      if(code == 0) {
+        yield put({
+          type:'saveSystemTime',
+          payload:{
+            data
+          }
+        });
+        yield put({
+          type:'getPrintBaseMsg',
+          payload:{
+            startTime:new Date(data).format('yyyy-MM-dd'),
+            endTime:new Date(data).format('yyyy-MM-dd'),
+          }
+        })
+        yield put({
+          type:'getPrintAccount',
+          payload:{
+            startTime:new Date(data).format('yyyy-MM-dd'),
+            endTime:new Date(data).format('yyyy-MM-dd'),
+          }
+        })
+        yield put({
+          type:'getTimeDates',
+          payload:{
+          data
+          }
+        })
+      }
+    },
+
+    //获取账单打印信息
+    *getPrintAccount({payload:values},{call,put}){
+      const customerId = location.search.substr(1).split('=')[1];
+      const value = {...values, customerId}
+      const { data: { code,data}} = yield  call(cardService.getPrintAccountList,value);
+      if(code == 0) {
+        yield put({
+          type:'savePrintAccount',
+          payload:{
+            data
+          }
+        });
+      }
     }
 
   },
@@ -383,6 +502,18 @@ export default {
         if (pathname === '/crm/customer/customerDetails') {
 
         };
+        if(pathname === '/crm/customer/printPage'){
+          // dispatch({
+          //   type:'getPrintBaseMsg',
+          //   payload:{
+          //     startTime:new Date().format('yyyy-MM-dd'),
+          //     endTime:new Date().format('yyyy-MM-dd')
+          //   }
+          // })
+          dispatch({
+            type:'getSystemTime',
+          })
+        }
       })
     }
   }

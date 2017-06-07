@@ -123,7 +123,7 @@ class EditPlaceData extends React.Component {
         const initValue = arr[k-1] ? arr[k-1].name : ""
         return (
           <FormItem
-            lassName = "div2"
+            className = "div2"
             key={ k }
           >
             <p className = "label" >{ `选项${String(index+1)}` }</p>

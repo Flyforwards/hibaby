@@ -24,8 +24,8 @@ class RenewRecord extends Component {
       key: 'renewAmount'
     }, {
       title: '会员级别变动',
-      dataIndex: 'leverlChange',
-      key: 'leverlChange'
+      dataIndex: 'levelChange',
+      key: 'levelChange'
     },{
       title: '操作人',
       dataIndex: 'operatorName',
@@ -63,7 +63,6 @@ class RenewRecord extends Component {
 
 function mapStateToProps(state) {
   const {total,renewRecordPagination,renewRecord} = state.membershipcard;
-  console.log("续费记录",renewRecord)
   return {
     loading: state.loading.models.membershipcard,
     total,

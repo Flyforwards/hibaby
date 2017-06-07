@@ -38,4 +38,14 @@ export const DictionaryArray = {
     abName: 'WLSSC',
     softDelete: 0
   },
+  // 客诉名称
+  'KSMC': {
+    abName: 'KSMC',
+    softDelete: 0
+  },
+  // 客诉等级
+  'KSDJ': {
+    abName: 'KSDJ',
+    softDelete: 0
+  },
 }

@@ -36,14 +36,14 @@
       height: 16px;
       margin-left: 45px;
       margin-top:10px;
-      width: 6%;
+      width: 75px;
       font:14px "微软雅黑";
       text-align: center;
     }
 
     .input {
         float: left;
-        width: 90%;
+        width: 700px;
         height: 40px;
         text-align: left;
         font-size: 13px;
@@ -53,7 +53,12 @@
         position: relative;
         overflow: hidden;
     }
-
+    .ant-form-explain{
+      overflow: hidden;
+      width:100%;
+      margin-left: 140px;
+      font: 16px "微软雅黑";
+    }
     .input2 {
       float: left;
       width: 84%;
@@ -176,7 +181,7 @@
         overflow: hidden;
     }
     .childCen{
-      width: 86%;
+      width: 750px;
       float:left;
       margin-left:20px;
       font:14px "微软雅黑";
@@ -190,7 +195,7 @@
       border-radius:4px;
       background: red;
       position:absolute;
-      right:10%;
+      right:8%;
       top:15%;
     }
 

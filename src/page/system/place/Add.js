@@ -73,7 +73,7 @@ class PlaceAdd extends React.Component {
       const formItems = keys.map((k, index) => {
         return (
           <FormItem
-            lassName = "div2"
+            className = "div2"
             key={ k }
           >
             <p className = "label">{ `选项${String(index+1)}` }</p>
@@ -86,7 +86,7 @@ class PlaceAdd extends React.Component {
               )}
             </div>
             {
-              index >=2?(<span className = "editable-add-btn" onClick={ () => this.remove(k) } > 删除 </span>):null
+              index >=2?(<span className = "editable-add-btn delBtn" onClick={ () => this.remove(k) } > 删除 </span>):null
             }
           </FormItem>
         );

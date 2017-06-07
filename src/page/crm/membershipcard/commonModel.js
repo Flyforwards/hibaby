@@ -16,10 +16,15 @@ class AlertModalFrom extends Component {
     this.state={
       visible:false,
     }
+    this.flag = {
+      'REFUND': 0,
+      'CHARGE': 0,
+      'DELETE': 0
+    };
   }
   handleCancel() {
-    this.props.dispatch({
-      type:'membershipcard/switchCommonState'
+    this.setState({
+      visible:false,
     })
   }
   handleOk() {
@@ -27,9 +32,9 @@ class AlertModalFrom extends Component {
      values.customerId=this.props.user.dataDetailId;
       if (!err) {
       this.props.onOk(values)
-        // this.setState({
-        //   visible:false,
-        // });
+        this.setState({
+          visible:false,
+        });
       }
     })
   }
@@ -38,8 +43,11 @@ class AlertModalFrom extends Component {
 
   }
   showModel() {
-    this.props.dispatch({
-      type:'membershipcard/switchCommonState'
+    // this.props.dispatch({
+    //   type:'membershipcard/switchCommonState'
+    // })
+    this.setState({
+      visible:true,
     })
   }
   checkPrice = (rule, value, callback) => {
@@ -60,7 +68,12 @@ class AlertModalFrom extends Component {
     callback('不能为负数');
   }
   render() {
-    let {  modalTitle , okText, cancel, message,form,labelValue,prams,commonVisible } = this.props
+    let {  modalTitle , okText, cancel, message,form,labelValue,prams,commonVisible, type } = this.props
+    let visible = this.state.visible;
+    if (commonVisible[type] != undefined && commonVisible[type] != this.flag[type] ) {
+      visible = false;
+      this.flag[type] = commonVisible[type]
+    }
     const { getFieldDecorator } = form
     const formItemLayout = {
       labelCol:{ span: 4 },
@@ -70,8 +83,8 @@ class AlertModalFrom extends Component {
       <span>
          <span onClick={this.showModel.bind(this)}>{this.props.children}</span>
       <Modal
-        key = { commonVisible }
-        visible = { commonVisible }
+        key = { visible }
+        visible = { visible }
         title = { modalTitle || "提示" }
         okText = { okText || "确定" }
         cancelText = { cancel || "取消" }

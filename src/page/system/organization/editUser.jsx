@@ -286,6 +286,7 @@ class EditUsered extends React.Component {
                   >
                     {getFieldDecorator('localCenter', {
                       initialValue: endemic.name,
+                      rules: [{ required: true, message: '此项为必选项' }],
                     })(
                    <Input  disabled = { true }/>
                     )}
@@ -296,7 +297,8 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 2 }
                   >
                   { getFieldDecorator(`affiliatedDepartment${i}`,{
-                    initialValue: deptName
+                    initialValue: deptName,
+                    rules: [{ required: true, message: '此项为必选项' }],
                   })(
                     <Select placeholder="请选择" onSelect = {this.affiliatedDepartment.bind(this)}>
                       { traversalEndemicId }
@@ -326,7 +328,8 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 5 }
                   >
                   { getFieldDecorator(`position${i}`,{
-                    initialValue: positionName
+                    initialValue: positionName,
+                    rules: [{ required: true, message: '此项为必选项' }],
                   })(
                     <Select placeholder="请选择">
                       { traversalDataId }
@@ -340,7 +343,8 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 6 }
                   >
                   { getFieldDecorator(`systemRole${i}`,{
-                    initialValue: roles
+                    initialValue: roles,
+                    rules: [{ required: true, message: '此项为必选项' }],
                   })(
                     <Select placeholder="请选择" dropdownMatchSelectWidth mode="tags">
                       { selectDataList }
@@ -357,7 +361,9 @@ class EditUsered extends React.Component {
                   >
                     {getFieldDecorator('phoneNumber', {
                       initialValue:USER.mobile,
-                      rules: [{
+                      rules: [
+                        { required: true, message: '此项为必选项' },
+                        {
                           pattern: /^1[34578]\d{9}$/, message: '手机号不正确'
                       }],
                     })(
@@ -371,7 +377,9 @@ class EditUsered extends React.Component {
                    key = { i * 100 + 2 }
                   >
                     {getFieldDecorator('password', {
-                      rules: [{
+                      rules: [
+                        { required: true, message: '此项为必选项' },
+                        {
                           pattern:/^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{8,20}$/, message: '由8到20位数字字母组成'
                       }],
                     })(
@@ -386,7 +394,9 @@ class EditUsered extends React.Component {
                   >
                     {getFieldDecorator(`information${i}`, {
                       initialValue:entryContent.contact,
-                      rules: [{
+                      rules: [
+                        { required: true, message: '此项为必选项' },
+                        {
                           pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '手机号不正确'
                         }],
                     })(
@@ -400,7 +410,9 @@ class EditUsered extends React.Component {
                   >
                     {getFieldDecorator(`companyEmail${i}`, {
                       initialValue:entryContent.emaill,
-                       rules: [{
+                       rules: [
+                         { required: true, message: '此项为必选项' },
+                         {
                           type: 'email'
                         }],
                     })(

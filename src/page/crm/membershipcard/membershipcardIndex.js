@@ -22,8 +22,10 @@ import ChargeBackFeeModal from './chargeBackFeeModal'
 class MemberShipCard extends Component {
   constructor(props) {
     super(props);
+    const _this=this;
     this.state={
       commonVisible:false,
+      flagValue:1,
     }
 
   }
@@ -85,9 +87,8 @@ class MemberShipCard extends Component {
   dispatch({
     type:'membershipcard/getLevelInfo',
     payload:{
-      id:7,
+      abName:'HYKJB',
       softDelete:0,
-      type:1,
     }
   });
 }
@@ -95,26 +96,24 @@ class MemberShipCard extends Component {
 
   //销卡点击确定
   handleCancelCard (values){
-    //console.log(">>>>",values)
     this.props.dispatch({
       type: 'membershipcard/cancelCard',
-      payload:{  ...values }
+      payload:{  ...values, type: 'DELETE' }
     })
+
   }
   //退费点击确定
   handleRefundCard (values){
-    //console.log("《《《",values)
     this.props.dispatch({
       type: 'membershipcard/returnsAmount',
-      payload:{  ...values }
+      payload:{  ...values, type: 'REFUND' }
     })
   }
   //续费点击确定
   handleRenewFee (values){
-  //  console.log("《《《",values)
     this.props.dispatch({
-      type: 'membershipcard/returnsAmount',
-      payload:{  ...values }
+      type: 'membershipcard/renewAmount',
+      payload:{  ...values, type: 'CHARGE' }
     })
   }
  //扣费点击确定
@@ -125,10 +124,21 @@ class MemberShipCard extends Component {
       payload:{  ...values }
     })
   }
-
+ //点击打印
+  onPrint() {
+    this.props.dispatch(routerRedux.push({
+      pathname:'/crm/customer/printPage',
+      query:{
+        customerId:this.props.user.dataDetailId,
+      }
+    }))
+  }
 
   tabChange(key){
-    //console.log(key);
+    console.log(key)
+    this.setState({
+      flagValue:key,
+    })
   }
 
   render() {
@@ -157,7 +167,8 @@ class MemberShipCard extends Component {
         <div style={{textAlign:'right',marginTop:'20px'}}>
           <Link to="/crm/customer"><Button className="cardBtn">返回</Button></Link>
 
-          {/*<Button className="cardBtn"  >打印</Button>*/}
+          {/*<Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>*/}
+
           <AlertModalFrom
             modalTitle="会员销卡"
             okText="确定"
@@ -165,8 +176,9 @@ class MemberShipCard extends Component {
             labelValue="退费金额"
             prams="amount"
             onOk={this.handleCancelCard.bind(this)}
+            type="DELETE"
           >
-            <Button className="danBtn" style={{backgroundColor:'#ff4a4a',color:'#fff'}}  className="cardBtn">消卡</Button>
+            <Button  type="danger" className="cardBtn">消卡</Button>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -176,8 +188,9 @@ class MemberShipCard extends Component {
             labelValue="退费金额"
             prams="amount"
             onOk={this.handleRefundCard.bind(this)}
+            type="REFUND"
           >
-            <Button className="danBtn" style={{backgroundColor:'#ff4a4a',color:'#fff'}} className="cardBtn">退费</Button>
+            <Button type="danger" className="cardBtn">退费</Button>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -187,8 +200,9 @@ class MemberShipCard extends Component {
             labelValue="续费金额"
             prams="amount"
             onOk={this.handleRenewFee.bind(this)}
+            type="CHARGE"
           >
-            <Button style={{backgroundColor:'#ff9900',color:'#fff'}} className="cardBtn" >续费</Button>
+            <Button type="primary" className="cardBtn" >续费</Button>
           </AlertModalFrom>
 
           <ChargeBackFeeModal
