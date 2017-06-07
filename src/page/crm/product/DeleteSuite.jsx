@@ -18,6 +18,7 @@ class DeleteSuite extends Component {
         this.props.onCancel()
     }
     handleOk() {
+        console.log("this.props.ID>>>>",this.props.ID)
         this.props.dispatch({
             type: 'packageInfo/roomDel',
             payload: {

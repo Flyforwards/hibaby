@@ -46,7 +46,7 @@ class AddServiceed extends Component {
           DeleteVisible:false,
           ID:null
         };
-        this.roomVisbled = false
+       
     }
     delete() {
       let ID = window.location.search.split("=")[1]
@@ -105,7 +105,7 @@ class AddServiceed extends Component {
                 record.key = record.id;
             });
             loadingName = false
-            if(this.props.findById.type ==1){
+            if(this.props.findById.suiteId){
               this.roomVisbled = true
             }else{
               this.roomVisbled = false

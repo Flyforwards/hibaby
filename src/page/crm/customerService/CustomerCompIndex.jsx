@@ -58,13 +58,12 @@ class CustomerComplaintsIndex extends React.Component {
       dataIndex: 'operation',
       width: '13%',
       render: (text, record, index) => {
-        const detail = !this.props.permissionAlias.contains('ACTIVITY_DETAIL');
-        const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
+        const detail = !this.props.permissionAlias.contains('CUSTOMERCOMP_DETAIL');
+        const del = !this.props.permissionAlias.contains('CUSTOMERCOMP_DELETE');
           return (
             <div key = { index }>
-              <Link className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
-
-              <Link className="firstB" onClick={ this.deleteCustomerComp.bind(this,record)} > 删除 </Link>
+              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link disabled={del} className="firstB" onClick={ this.deleteCustomerComp.bind(this,record)} > 删除 </Link>
             </div>
           )
         }
@@ -152,12 +151,13 @@ class CustomerComplaintsIndex extends React.Component {
         }))
       },
     }
-    const add = !this.props.permissionAlias.contains('ACTIVITY_ADD');
+
+    const add = !this.props.permissionAlias.contains('CUSTOMERCOMP_ADD');
     return (
       <div className = "activity-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/customer-comp/add'>
-            <Button className="button-add"> 创建投诉 </Button>
+            <Button disabled={add} className="button-add"> 创建投诉 </Button>
           </Link >
         </div>
         <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>

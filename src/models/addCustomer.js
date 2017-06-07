@@ -406,21 +406,6 @@ export default {
       }
     },
 
-    *getMainCustomerPackageById({ payload: value },{ call, put }){
-
-      const { data: { code, data } } = yield call(addCustomerInformation.getMainCustomerPackageById,{dataId:0});
-
-      if (code == 0) {
-
-        yield put({
-          type: 'setPurchasePackageValue',
-          payload: {
-            data,
-          }
-        });
-      }
-    },
-
 
     *savaBaseInfo({ payload: values},{ call, put ,select}) {
 
@@ -502,7 +487,7 @@ export default {
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format('YYYY-MM-DD'),
         "provincePermanent": values.provincePermanent.key,
-        "purchasePackage": purchasePackageValue?purchasePackageValue.packageId:'',
+        "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
@@ -511,7 +496,7 @@ export default {
       }
 
       const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
-      if (code == 0) {
+      try {
         if (remarkList.length > 0) {
           yield put({
             type: 'savaRemark',
@@ -523,10 +508,21 @@ export default {
         else {
           message.success('信息保存成功');
           yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
-
         }
       }
-
+      catch (err){
+        message.error('扩展信息保存失败');
+        if (remarkList.length > 0) {
+          yield put({
+            type: 'savaRemark',
+            payload: {
+              id: values.id
+            }
+          });
+        }else{
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+        }
+      }
     },
 
     *savaRemark({ payload: values },{ call, put ,select}) {
@@ -547,6 +543,10 @@ export default {
         const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
         if (code == 0) {
           message.success('信息保存成功');
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+        }
+        else{
+          message.error('备注信息保存失败');
           yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
         }
       }
@@ -626,7 +626,12 @@ export default {
           yield put({type:'setPackageName',payload:{
             data:data.packageName
           }} );
-
+          yield put({
+            type: 'setPurchasePackageValue',
+            payload: {
+              data,
+            }
+          });
         }
       }
     },
@@ -678,7 +683,6 @@ export default {
               payload:{dataId:query.dataId}
             })
           }
-
 
           dispatch({
             type: 'pageStatus',
@@ -762,7 +766,5 @@ function defDis(dispatch) {
   dispatch({
     type: 'getMemberSerial',
   });
-  dispatch({
-    type: 'getMainCustomerPackageById',
-  });
+
 }
