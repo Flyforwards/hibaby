@@ -76,15 +76,24 @@
         width: 68%;
       }
       button{
-        background: #169bd5;
-        color: #fff;
+        background: #f1e8df;
+        color: #b67233;
+        border-color:#b67233 ;
       }
     }
     .expandInfo12{
       button{
-        background: #169bd5;
-        color: #fff;
+        background: #f1e8df;
+        color:#b67233;
+        border-color: #b67233;
       }
+    }
+    .lineP12{
+        button{
+          background:#f1e8df;
+          border-color:#bb7c41;
+          color:#b67233;
+        }
     }
   }
   .customRemark{
@@ -130,6 +139,12 @@
 
   .addRemark{
     text-align: right;
+    font:14px "微软雅黑";
+    button{
+      font:14px "微软雅黑";
+      background:#b67233;
+      border-color: #b67233;
+    }
   }
 
   .savaDiv{
@@ -142,9 +157,16 @@
       margin-top:10px;
       margin-right: 10px;
       font: 14px "微软雅黑";
+      background: #b67233;
+      color: #fff;
+    }
+    .SaveBtn{
+      background:#f1e8df;
+      border-color:#dbb999 ;
+      color:#b67233;
     }
     .delBtn{
-      background: #ff4a4a;
+      background: #f75555;
       color:#fff;
     }
   }
@@ -170,4 +192,9 @@
 .yt-admin-framework-content {
   padding: 5px 18px 0 12px;
   background-color: #f7f6f2;
+}
+.ant-confirm-body{
+  .ant-confirm-content{
+    text-align:center;
+  }
 }

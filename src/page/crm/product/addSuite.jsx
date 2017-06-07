@@ -208,8 +208,8 @@ class AddSuiteed extends Component {
                   }
                 </div>
 
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button className="SaveBtn" type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
         )
     }

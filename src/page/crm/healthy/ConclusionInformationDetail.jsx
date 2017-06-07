@@ -12,6 +12,7 @@ const type = 4;//出院小结
  * 客户信息》健康档案》出院小结
  */
 function ConclusionInformationDetail(props) {
+
   const {dispatch} = props;
   //console.log("healthInformation="+props);
  // console.log("healthInformation2="+props.healthInformation.conclusionInformation.healthInfo);

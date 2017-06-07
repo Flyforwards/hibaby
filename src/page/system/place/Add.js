@@ -132,7 +132,7 @@ class PlaceAdd extends React.Component {
             <Link to='/system/local-char'>
               <Button className = "editable-add-btn return"> 返回 </Button>
             </Link>
-            <Button className = "editable-add-btn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+            <Button className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
           </div>
         </div>
       )

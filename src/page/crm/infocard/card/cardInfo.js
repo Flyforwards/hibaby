@@ -165,10 +165,10 @@ class CardModal extends Component {
               <Col span = { 16 }>
               </Col>
               <Col span = { 4 }>
-                <Link to="/crm/card"><Button type="default">返回</Button></Link>
+                <Link to="/crm/card"><Button className="BackBtn" >返回</Button></Link>
               </Col>
               <Col span = { 4 }>
-                <Button type="primary"  onClick={this.handleSubmit.bind(this)}>保存</Button>
+                <Button className="SaveBtn"  onClick={this.handleSubmit.bind(this)}>保存</Button>
               </Col>
             </Row>
           </Form>

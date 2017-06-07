@@ -256,7 +256,7 @@ class CustomerIndex extends React.Component {
                      </Col>
                     <Col>
                       <span>
-                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{width:'136px',backgroundColor:'rgba(22, 155, 213, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
+                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{width:'136px',backgroundColor:'rgba(182, 114, 51, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
                       </span>
                     </Col>
                   </Row>
@@ -318,42 +318,42 @@ class CustomerIndex extends React.Component {
                   </Col>
                 </Row>
                 <Row className="topAge" style={{height: 50}}>
-                  <Col className="Operator" span={4}>
+                  <Col className="Operator intPackage" span={4}>
                     <FormItem  {...formChooseOneLayout} label="意向套餐" >
                       {getFieldDecorator('intentionPackage')(
                         <DictionarySelect  placeholder="请选择" selectName="IntentionPackage" />
                       )}
                     </FormItem>
                   </Col>
-                  <Col className="Operator" span={4} >
+                  <Col className="Operator Origin" span={4} >
                     <FormItem  {...formChooseOneLayout} label="籍贯" >
                       {getFieldDecorator('placeOrigin')(
                         <Input max={40}  />
                       )}
                     </FormItem>
                   </Col>
-                  <Col className="Operator" span={4} >
+                  <Col className="Operator intPackage Package " span={4} >
                     <FormItem  {...formChooseOneLayout} label="购买套餐" >
                       {getFieldDecorator('purchasePackage')(
                         <DictionarySelect  placeholder="请选择" selectName="IntentionPackage" />
                       )}
                     </FormItem>
                   </Col>
-                  <Col className="Operator" span={4} >
+                  <Col className="Operator intPackage bordData" span={4} >
                     <FormItem  {...formChooseOneLayout} label="宝宝生产日期" >
                       {getFieldDecorator('productionDate')(
                         <DatePicker  placeholder="请选择" />
                       )}
                     </FormItem>
                   </Col>
-                  <Col className="Operator" span={4} >
+                  <Col className="Operator Origin" span={4} >
                     <FormItem  {...formChooseOneLayout} label="孕周" >
                       {getFieldDecorator('gestationalWeeks')(
                         <InputNumber max={40} min={1} />
                       )}
                     </FormItem>
                   </Col>
-                  <Col className="Operator" span={4}>
+                  <Col className="Operator intPackage" span={4}>
                     <FormItem  {...formChooseOneLayout} label="分娩医院'" >
                       {getFieldDecorator('hospital', {rules: [{ required: false }],
                       })(

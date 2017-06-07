@@ -1,12 +1,10 @@
 .card{
   min-width: 1030px;
   margin:10px 0 0 10px;
-padding: 10px;
+  padding: 10px;
   background: #FFFFFF;
 }
-.cardTable{
 
-}
 .cardFind{
   input{
     height: 40px;
@@ -15,13 +13,26 @@ padding: 10px;
     font: 14px "微软雅黑";
     color: #333;
   }
+  .SelBtn{
+    background:#b67233;
+    border-color:#b67233;
+    font:14px "微软雅黑";
+    color: #ffffff;
+  }
+  .SaveBtn{
+    background:#f1e8df;
+    border-color:#d4ad89;
+    font:14px "微软雅黑";
+    color: #b67233;
+  }
 }
+
 .cardDetail{
   .delbtn{
     background: #ff4a4a;
     border:#ff4a4a;
     color:#fff;
-    font:12px "微软雅黑";
+    font:14px "微软雅黑";
   }
   .topTitleInfo{
     margin-top:10px;
@@ -47,6 +58,10 @@ padding: 10px;
       width: 130px;
     }
   }
+}
+a{
+  border:none;
+  outline: none;
 }
 .cardEdit{
   .topTitleInfo{
@@ -78,7 +93,35 @@ padding: 10px;
 .ant-btn{
   width:150px;
   height:30px;
-  font:12px "微软雅黑";
+  font:14px "微软雅黑";
+}
+.BackBtn{
+   width:150px;
+   height:30px;
+   background:#b67233 ;
+   border-color:#b67233;
+   color:#fff;
+ }
+.BackBtn:hover{
+  width:150px;
+  height:30px;
+  background:#b67233 ;
+  border-color:#b67233;
+  color:#fff;
+}
+.SaveBtn{
+  width:150px;
+  height:30px;
+  background:#f1e8df;
+  border-color:#d4ad89;
+  color:#b67233;
+}
+.SaveBtn:hover{
+  width:150px;
+  height:30px;
+  background:#f1e8df;
+  border-color:#d4ad89;
+  color:#b67233;
 }
 .ant-form-item-required:before {
   content: '';
@@ -124,4 +167,14 @@ padding: 10px;
   vertical-align: middle;
   top: 0;
   text-align: left;
+}
+.ant-modal-body{
+  p{
+    text-align:center;
+  }
+}
+.ant-modal-footer{
+  button{
+    width:100px;
+  }
 }

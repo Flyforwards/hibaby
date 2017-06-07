@@ -12,12 +12,13 @@
 
   .add{
     display:inline-block;
-    width: 140px;
-    height: 40px;
+    width: 150px;
+    height: 30px;
     text-align: center;
-    line-height: 40px;
+    line-height: 30px;
     border: none;
     border-radius: 5px;
+    background-color:#b67233;
     font-family: '微软雅黑 Regular', '微软雅黑';
     font-weight: 400;
     font-style: normal;
@@ -25,6 +26,7 @@
     float: right;
     margin-bottom: 2px;
     margin-top: 2px;
+    color:#fff;
   }
   .divs {
     overflow: hidden;
