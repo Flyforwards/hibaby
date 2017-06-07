@@ -21,7 +21,17 @@ export default {
     type:null,
     editMedicalFlag : false,
     editNutritionFlag : false,
-    editSkinFlag : false
+    editSkinFlag : false,
+    imgInput_1_arr : [],
+    imgInput_2_arr : [],
+    imgInput_3_arr : [],
+    imgInput_4_arr : [],
+    imgInput_5_arr : [],
+    imgInput_6_arr : [],
+    imgInput_7_arr : [],
+    imgInput_8_arr : [],
+    bigImageData : [],
+    bigImageHidden : false,
   },
   //加载页面
   subscriptions: {
@@ -53,6 +63,10 @@ export default {
       if (code == 0) {
         message.success("创建健康档案成功");
         yield put({type:'setSaveDone',payload:{data}} );
+        if(values.type == 1){
+          const healthInfo = data.healthInfo?JSON.parse(data.healthInfo):null;
+          put({type:'setImgInputArrData',payload:{healthInfo:healthInfo}} );
+        }
       }
     },
     *updateHealthInformation({payload: values}, { call, put }) {
@@ -85,7 +99,21 @@ export default {
     },
     setHealthInformation(state, { payload: { data,type }}){
       if(type === 1){
-        return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
+        if(data.healthInfo){
+          const healthInfo = JSON.parse(data.healthInfo);
+          const imgInput_1_arr = healthInfo.imgInput_1?JSON.parse(healthInfo.imgInput_1):[];
+          const imgInput_2_arr = healthInfo.imgInput_2?JSON.parse(healthInfo.imgInput_2):[];
+          const imgInput_3_arr = healthInfo.imgInput_3?JSON.parse(healthInfo.imgInput_3):[];
+          const imgInput_4_arr = healthInfo.imgInput_4?JSON.parse(healthInfo.imgInput_4):[];
+          const imgInput_5_arr = healthInfo.imgInput_5?JSON.parse(healthInfo.imgInput_5):[];
+          const imgInput_6_arr = healthInfo.imgInput_6?JSON.parse(healthInfo.imgInput_6):[];
+          const imgInput_7_arr = healthInfo.imgInput_7?JSON.parse(healthInfo.imgInput_7):[];
+          const imgInput_8_arr = healthInfo.imgInput_8?JSON.parse(healthInfo.imgInput_8):[];
+          return {...state,editMedicalFlag : false, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
+            imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
+            Input_8_arr:imgInput_8_arr}
+        }
+        // return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
       }else if(type === 2){
         return { ...state,editNutritionFlag : false, nutritionHealthInformation : data };
       }else if(type === 3){
@@ -101,7 +129,20 @@ export default {
         let saveDone = true;
         let type = data.type;
         if(data.type === 1){
-          return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
+          if(data.healthInfo){
+            const imgInput_1_arr = healthInfo.imgInput_1?JSON.parse(healthInfo.imgInput_1):[];
+            const imgInput_2_arr = healthInfo.imgInput_2?JSON.parse(healthInfo.imgInput_2):[];
+            const imgInput_3_arr = healthInfo.imgInput_3?JSON.parse(healthInfo.imgInput_3):[];
+            const imgInput_4_arr = healthInfo.imgInput_4?JSON.parse(healthInfo.imgInput_4):[];
+            const imgInput_5_arr = healthInfo.imgInput_5?JSON.parse(healthInfo.imgInput_5):[];
+            const imgInput_6_arr = healthInfo.imgInput_6?JSON.parse(healthInfo.imgInput_6):[];
+            const imgInput_7_arr = healthInfo.imgInput_7?JSON.parse(healthInfo.imgInput_7):[];
+            const imgInput_8_arr = healthInfo.imgInput_8?JSON.parse(healthInfo.imgInput_8):[];
+            return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
+              imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
+              Input_8_arr:imgInput_8_arr}
+          }
+          // return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
         }else if(data.type === 2){
           return {...state,saveDone:saveDone,editNutritionFlag : false,type:type, nutritionHealthInformation : data}
         }else if(data.type === 3){
@@ -136,8 +177,122 @@ export default {
       return {...state};
     },
     clearAllHealthInformation(state, { payload: data }){
-      return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null}
-    }
+      return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null,
+        imgInput_1_arr:[],imgInput_2_arr:[],imgInput_3_arr:[],imgInput_4_arr:[],
+        imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],
+        Input_8_arr:[]}
+    },
+    setBigImageModalProps(state, { payload: data }){
+      return {...state,...data}
+    },
+    addImgData(state, { payload: data }){
+      const imgInputName = data.imgInputName;
+      const value = data.value;
+      if(imgInputName === 'imgInput_1'){
+        const imgInput_1_arr = state.imgInput_1_arr;
+        imgInput_1_arr.push(value);
+        return {...state,imgInput_1_arr:imgInput_1_arr}
+      }else if(imgInputName === 'imgInput_2'){
+        const imgInput_2_arr = state.imgInput_2_arr;
+        imgInput_2_arr.push(value);
+        return {...state,imgInput_2_arr:imgInput_2_arr}
+      }else if(imgInputName === 'imgInput_3'){
+        const imgInput_3_arr = state.imgInput_3_arr;
+        imgInput_3_arr.push(value);
+        return {...state,imgInput_3_arr:imgInput_3_arr}
+      }else if(imgInputName === 'imgInput_4'){
+        const imgInput_4_arr = state.imgInput_4_arr;
+        imgInput_4_arr.push(value);
+        return {...state,imgInput_4_arr:imgInput_4_arr}
+      }else if(imgInputName === 'imgInput_5'){
+        const imgInput_5_arr = state.imgInput_5_arr;
+        imgInput_5_arr.push(value);
+        return {...state,imgInput_5_arr:imgInput_5_arr}
+      }else if(imgInputName === 'imgInput_6'){
+        const imgInput_6_arr = state.imgInput_6_arr;
+        imgInput_6_arr.push(value);
+        return {...state,imgInput_6_arr:imgInput_6_arr}
+      }else if(imgInputName === 'imgInput_7'){
+        const imgInput_7_arr = state.imgInput_7_arr;
+        imgInput_7_arr.push(value);
+        return {...state,imgInput_7_arr:imgInput_7_arr}
+      }else if(imgInputName === 'imgInput_8'){
+        const imgInput_8_arr = state.imgInput_8_arr;
+        imgInput_8_arr.push(value);
+        return {...state,imgInput_8_arr:imgInput_8_arr}
+      }
+      return {...state}
+    },
+    delImgData(state, { payload: data }){
+      const imgInputName = data.imgInputName;
+      const value = data.value;
+      if(imgInputName === 'imgInput_1'){
+        const imgInput_1_arr = state.imgInput_1_arr;
+        for(var i=0;i<imgInput_1_arr.length;i++){
+          if(imgInput_1_arr[i].name == value.name){
+            imgInput_1_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_1_arr:imgInput_1_arr}
+      }else if(imgInputName === 'imgInput_2'){
+        const imgInput_2_arr = state.imgInput_2_arr;
+        for(var i=0;i<imgInput_2_arr.length;i++){
+          if(imgInput_2_arr[i].name == value.name){
+            imgInput_2_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_2_arr:imgInput_2_arr}
+      }else if(imgInputName === 'imgInput_3'){
+        const imgInput_3_arr = state.imgInput_3_arr;
+        for(var i=0;i<imgInput_3_arr.length;i++){
+          if(imgInput_3_arr[i].name == value.name){
+            imgInput_3_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_3_arr:imgInput_3_arr}
+      }else if(imgInputName === 'imgInput_4'){
+        const imgInput_4_arr = state.imgInput_4_arr;
+        for(var i=0;i<imgInput_4_arr.length;i++){
+          if(imgInput_4_arr[i].name == value.name){
+            imgInput_4_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_4_arr:imgInput_4_arr}
+      }else if(imgInputName === 'imgInput_5'){
+        const imgInput_5_arr = state.imgInput_5_arr;
+        for(var i=0;i<imgInput_5_arr.length;i++){
+          if(imgInput_5_arr[i].name == value.name){
+            imgInput_5_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_5_arr:imgInput_5_arr}
+      }else if(imgInputName === 'imgInput_6'){
+        const imgInput_6_arr = state.imgInput_6_arr;
+        for(var i=0;i<imgInput_6_arr.length;i++){
+          if(imgInput_6_arr[i].name == value.name){
+            imgInput_6_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_6_arr:imgInput_6_arr}
+      }else if(imgInputName === 'imgInput_7'){
+        const imgInput_7_arr = state.imgInput_7_arr;
+        for(var i=0;i<imgInput_7_arr.length;i++){
+          if(imgInput_7_arr[i].name == value.name){
+            imgInput_7_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_7_arr:imgInput_7_arr}
+      }else if(imgInputName === 'imgInput_8'){
+        const imgInput_8_arr = state.imgInput_8_arr;
+        for(var i=0;i<imgInput_8_arr.length;i++){
+          if(imgInput_8_arr[i].name == value.name){
+            imgInput_8_arr.splice(i,1);
+          }
+        }
+        return {...state,imgInput_8_arr:imgInput_8_arr}
+      }
+      return {...state}
+    },
   }
 
 };
