@@ -140,7 +140,6 @@ class MemberShipCard extends Component {
   }
 
   tabChange(key){
-    console.log(key)
     this.setState({
       flagValue:key,
     })

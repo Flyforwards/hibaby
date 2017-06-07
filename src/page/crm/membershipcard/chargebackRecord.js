@@ -22,16 +22,16 @@ class ChargebackRecord extends Component {
       }
     }, {
       title: '服务项目名称',
-      dataIndex: 'commodityName ',
-      key: 'commodityName '
+      dataIndex: 'commodityName',
+      key: 'commodityName'
     }, {
       title: '服务项目数量',
-      dataIndex: 'commodityQuantity ',
-      key: 'commodityQuantity '
+      dataIndex: 'commodityQuantity',
+      key: 'commodityQuantity'
     }, {
       title: '扣费金额',
-      dataIndex: 'deductionAmount ',
-      key: 'deductionAmount ',
+      dataIndex: 'deductionAmount',
+      key: 'deductionAmount',
     },{
       title: '操作人',
       dataIndex: 'operatorName',

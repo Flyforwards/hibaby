@@ -67,7 +67,7 @@ class CardBalance extends Component {
                     initialValue: cardBalance ?cardBalance.cardBalance : '' ,
                     rules: [{ required: true, message: '' }],
                   })(
-                    <Input placeholder="" readOnly addonAfter="元" type="number" min={0} />
+                    <Input placeholder="" readOnly addonAfter="元"  min={0} />
                   )}
                 </FormItem>
               </Col>
@@ -77,7 +77,7 @@ class CardBalance extends Component {
                     initialValue: cardBalance ? cardBalance.availableCredit : '',
                     rules: [{ required: true, }],
                   })(
-                    <Input placeholder="" addonAfter="元" readOnly type="number" min={0} />
+                    <Input placeholder="" addonAfter="元" readOnly min={0} />
                   )}
                 </FormItem>
               </Col>
@@ -87,7 +87,7 @@ class CardBalance extends Component {
                     initialValue: cardBalance ? cardBalance.frozenCredit : ''  ,
                     rules: [{validator:this.checkPrice, required: true,}],
                   })(
-                    <Input placeholder="" readOnly addonAfter="元"  type="number" min={0}/>
+                    <Input placeholder="" readOnly addonAfter="元"  min={0}/>
                   )}
                 </FormItem>
               </Col>

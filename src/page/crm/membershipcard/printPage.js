@@ -70,13 +70,14 @@ class MemberShipCard extends Component {
   }
   render() {
     const { systemTime ,feeRecord,renewRecord,refundRecord} = this.props;
+    console.info("xxxssss",systemTime)
     return (
       <div className="card" style={{overflow:'hidden'}}>
         <div>
           <RangePicker
             ranges={{ Today: [moment(), moment()], 'This Month': [moment(), moment().endOf('month')] }}
             showTime
-            defaultValue={[moment(new Date(systemTime), dateFormat), moment(new Date(systemTime), dateFormat)]}
+            defaultValue={[moment(systemTime ? new Date(systemTime): new Date(),dateFormat),moment(systemTime ? new Date(systemTime): new Date(),dateFormat)]}
             format="YYYY-MM-DD"
             onChange={this.onChange.bind(this)}
           />

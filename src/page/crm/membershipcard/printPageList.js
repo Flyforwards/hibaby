@@ -58,7 +58,7 @@ class MemberShipCard extends Component {
         //扣费
         childrenList.push(
           <tr style={{textAlign:'center',height:40,fontSize:'14px',lineHeight:'40px',color:'#333333',}}>
-            <td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>{elem.time}</td>
+            <td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>{new Date(elem.time).format('yyyy-MM-dd HH:mm:ss')}</td>
             <td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>{elem.commodity_name}</td>
             <td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>{elem.commodity_quantity}</td>
             <td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>￥{elem.amount}</td>
@@ -68,14 +68,14 @@ class MemberShipCard extends Component {
         //续费
         childrenList.push(
           <tr style={{textAlign:'center',height:40,fontSize:'14px',lineHeight:'40px',color:'#ffffff',backgroundColor:'#666666'}}>
-            <td colSpan="4" style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}> {elem.time}  续费  ￥{elem.amount} {elem.level_change }</td>
+            <td colSpan="4" style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}> {new Date(elem.time).format('yyyy-MM-dd HH:mm:ss')}  续费  ￥{elem.amount} {elem.level_change }</td>
           </tr>
         )
       }else if(elem.type == 3) {
         //退费
         childrenList.push(
           <tr style={{textAlign:'center',height:40,fontSize:'14px',lineHeight:'40px',color:'#ffffff',backgroundColor:'#666666'}}>
-            <td colSpan="4" style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}> {elem.time}  退费  ￥{elem.amount} {elem.level_change }</td>
+            <td colSpan="4" style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}> {new Date(elem.time).format('yyyy-MM-dd HH:mm:ss')}  退费  ￥{elem.amount} {elem.level_change }</td>
           </tr>
         )
       }
@@ -86,7 +86,7 @@ class MemberShipCard extends Component {
 
  tableList(printList) {
    let list='';
-   return (<table width='98%'  rules='all' className='table_d'  height='auto' cellspacing='1' cellpadding='0'  style={{margin:'10px auto 10px',borderCollapse:'collapse',border:'1px solid #e9e9e9'}}>
+   return (<table width='98%'  rules='all' className='table_d'  height='auto' cellSpacing='1' cellPadding='0'  style={{margin:'10px auto 10px',borderCollapse:'collapse',border:'1px solid #e9e9e9'}}>
        <thead style={{height:40,backgroundColor:'#666666',fontSize:'14px',lineHeight:'40px',color:'#ffffff',}}>
          <tr style={{textAlign:'center',}}>
            <td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>时间</td>
@@ -97,27 +97,6 @@ class MemberShipCard extends Component {
        </thead>
       <tbody>
       {this.tdList(printList)}
-        {/*<tr style={{textAlign:'center',height:40,fontSize:'14px',lineHeight:'40px',color:'#333333',}}>*/}
-          {/*<td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>2</td>*/}
-          {/*<td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>dsadfdsf</td>*/}
-          {/*<td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>的冯绍峰</td>*/}
-          {/*<td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>撒旦撒旦</td>*/}
-        {/*</tr>*/}
-        {/*<tr style={{textAlign:'center',height:40,fontSize:'14px',lineHeight:'40px',color:'#333333',}}>*/}
-          {/*<td>2</td>*/}
-          {/*<td>dsadfdsf</td>*/}
-          {/*<td>的冯绍峰</td>*/}
-          {/*<td>撒旦撒旦</td>*/}
-        {/*</tr>*/}
-        {/*<tr style={{textAlign:'center',height:40,fontSize:'14px',lineHeight:'40px',color:'#ffffff',backgroundColor:'#666666'}}>*/}
-         {/*<td colSpan="4"> dsadsdasdsa</td>*/}
-        {/*</tr>*/}
-        {/*<tr style={{textAlign:'center',height:40,fontSize:'14px',lineHeight:'40px',color:'#333333',}}>*/}
-          {/*<td>2</td>*/}
-          {/*<td>dsadfdsf</td>*/}
-          {/*<td>的冯绍峰</td>*/}
-          {/*<td>撒旦撒旦</td>*/}
-        {/*</tr>*/}
       </tbody>
       </table>
    )
@@ -130,7 +109,7 @@ class MemberShipCard extends Component {
     const danTime = printBaseMsg ? new Date(printBaseMsg.billTime).format('yyyy-MM-dd HH:mm:ss') : '';
 
     return (
-      <div className="print_all" style={{ minWidth: '1030px',border:'1px solid #e5e5e5',background: '#FFFFFF',fontFamily: '微软雅黑 Bold',marginTop: '10px', borderTopLeftRadius: '5px', borderTopRightRadius: '5px',}}>
+      <div className="print_all" style={{ width: '100%',margin:'0px auto 0px',border:'1px solid #e5e5e5',background: '#FFFFFF',fontFamily: '微软雅黑 Bold',marginTop: '10px', borderTopLeftRadius: '5px', borderTopRightRadius: '5px',}}>
         <div className="print_w100" style={{ width:'100%', padding:'16px', overflow: 'hidden', border:'none', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', backgroundColor:'rgba(102, 102, 102, 1)', color: '#FFFFFF', margin:'0px auto 0px'}}>
           <p className="print_w_ll_50" style={{ width:'50%', float: 'left', textAlign: 'left', fontSize: '28px', fontWeight: 700,}}>{times}账单</p>
           <p className="print_w_rr_50" style={{ width: '32%', float: 'right', textAlign: 'right', fontSize: '14px'}}>出单时间:<span>{ danTime }</span></p>
