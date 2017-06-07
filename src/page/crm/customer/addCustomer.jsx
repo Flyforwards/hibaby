@@ -36,7 +36,7 @@ class addCustomer extends React.Component{
         <AddCourse />
       </TabPane>];
 
-    if(editCustomer || isDetail){
+    if((editCustomer || isDetail)&&this.props.users.expandData){
       TabPaneAry.push(<TabPane tab="会员卡" key="4">
         <MembershipCard/>
       </TabPane>)

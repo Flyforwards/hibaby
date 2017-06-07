@@ -49,7 +49,6 @@ class ViewSuiteed extends Component {
       this.setState({
           DeleteVisible: false,
       })
-      window.location.reload( true )
     }
     render() {
         let loadingName = true
