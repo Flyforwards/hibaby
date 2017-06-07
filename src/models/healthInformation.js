@@ -182,9 +182,11 @@ export default {
         imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],
         Input_8_arr:[]}
     },
+    //设置查看附件Modal数据
     setBigImageModalProps(state, { payload: data }){
       return {...state,...data}
     },
+    //上传图片
     addImgData(state, { payload: data }){
       const imgInputName = data.imgInputName;
       const value = data.value;
@@ -223,6 +225,7 @@ export default {
       }
       return {...state}
     },
+    //删除图片
     delImgData(state, { payload: data }){
       const imgInputName = data.imgInputName;
       const value = data.value;
