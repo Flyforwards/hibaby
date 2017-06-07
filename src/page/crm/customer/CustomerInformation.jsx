@@ -474,7 +474,7 @@ function ExtensionInfo(props) {
     {title:'身份证',component:'Input',submitStr:'idcard'},
     {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
-    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
+    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,noRequired:"1"},
     {title:'保险情况',component:'Input',submitStr:'insuranceSituation'},
     {title:'联系人电话',component:'Input',submitStr:'contact'},
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,disabled:props.users.expandData},
@@ -660,7 +660,7 @@ class customerInformation extends React.Component{
         <RemarkForm  {...this.props}/>
         <div className='savaDiv'>
           <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
-          <Button className='backBtn' type="primary" onClick={this.handleSubmitBase.bind(this)}>保存</Button>
+          <Button className='backBtn SaveBtn' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
         </div>
       </div>
     )

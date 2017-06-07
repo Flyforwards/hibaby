@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tree, Button, Table, Modal, Form, Input } from 'antd'
+import {local, session} from '../../../common/util/storage.js'
 import "./SelectTheNodeFrom.scss"
 const createForm = Form.create
 const FormItem = Form.Item
@@ -95,12 +96,16 @@ class SelectTheNodeFrom extends Component {
         return (statusName)
       },
     }];
+    this.state = {
+      selectedRows:[]
+    }
   }
 
   handleCancel() {
     this.props.onCancel()
   }
   handleOk() {
+    this.props.headelReturnTabal(this.state.selectedRows)
    this.props.onCancel()
   }
 
@@ -113,7 +118,31 @@ class SelectTheNodeFrom extends Component {
   }
 
   componentDidMount() {
-      this.props.dispa
+    let endemic  = session.get("endemic")
+    this.props.dispatch({
+      type: 'organization/organizationList',
+      payload: {
+        "name":null,
+        "roleId":null,
+        "nodeid": endemic.id,
+        "status":null,
+        "page": 1,
+        "size": 10,
+        "tissueProperty":endemic.tissueProperty
+      }
+    });
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getEndemic',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
+    });
 
   }
   callback() {
@@ -125,7 +154,6 @@ class SelectTheNodeFrom extends Component {
   }
   onSelect(selectedKeys, e) {
     const  { selectedNodes } = e;
-  //  console.log(selectedNodes[0])
     if(selectedNodes[0]){
       const node = selectedNodes[0];
       console.log("节点>>>>",node)
@@ -144,11 +172,15 @@ class SelectTheNodeFrom extends Component {
   render() {
     const { visible, treeData, list,total } = this.props;
     let loops = []
+    // console.log("list>>>>",list)
     const rowSelection = {
       type: "radio",
       onChange: (selectedRowKeys, selectedRows) => {
       //console.log('selectedRows: ', selectedRows);
-        this.props.headelReturnTabal(selectedRows)
+        // this.props.headelReturnTabal(selectedRows)
+        this.setState({
+          selectedRows:selectedRows
+        })
       },
       getCheckboxProps: record => ({
         disabled: record.name === 'Disabled User',    // Column configuration not to be checked
@@ -172,13 +204,16 @@ class SelectTheNodeFrom extends Component {
       showQuickJumper: true,
       pageSize: 10,
       onChange: (current) => {
+         let endemic  = session.get("endemic");
+         console.log("endemic>>>>",endemic)
          let nodeId = this.nodeId
          let tissueProperty = this.tissueProperty
+        console.log("nodeId>>>>",this.nodeId)
         this.props.dispatch({
           type: "organization/organizationList",
           payload: {
-            nodeid:nodeId,
-            tissueProperty:tissueProperty,
+            nodeid:nodeId?nodeId:endemic.id,
+            tissueProperty:tissueProperty?tissueProperty:endemic.tissueProperty,
             page:current,
             size: 10,
           }

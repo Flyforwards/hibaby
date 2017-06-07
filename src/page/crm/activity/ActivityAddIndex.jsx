@@ -37,6 +37,7 @@ class AddGroupChar extends React.Component {
       wrapperCol:{ span:22 }
     }
 
+
     return (
       <div className="activity-cent">
         <div className="add-activity">
@@ -73,10 +74,9 @@ class AddGroupChar extends React.Component {
                   </Link>
                 </Col>
                 <Col span={4}>
-                  <Button type='primary' onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
+                  <Button className="saveBtn"  onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
                 </Col>
               </Row>
-
             </div>
           </Card>
         </div>

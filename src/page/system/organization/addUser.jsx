@@ -40,12 +40,14 @@ class AddUsered extends React.Component {
           dataId: endemic.id
         }
     })
-    this.props.dispatch({
-        type: 'organization/position',
-        payload: {
-          dataId: nodeId
-        }
-    })
+    if(nodeId){
+      this.props.dispatch({
+          type: 'organization/position',
+          payload: {
+            dataId: nodeId
+          }
+      })
+    }
   }
   handleCreateModalCancel() {
       this.setState({

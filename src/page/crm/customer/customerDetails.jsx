@@ -20,7 +20,7 @@ function rowDiv(dict) {
   return(
     <Row className='rowHeight'>
       <Col className='leftTitle' span={titSpan}>{`${dict.title}：`}</Col>
-      <Col span={contentSpan}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid||dict.onClick.onClickForContractAppendices} type="primary">查看附件</Button>  :dict.value }</Col>
+      <Col span={contentSpan}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid||dict.onClick.onClickForContractAppendices}>查看附件</Button>  :dict.value }</Col>
     </Row>
   )
 }
@@ -122,7 +122,7 @@ function ExtensionInfo(props) {
     const dict = expandInfo[i];
 
     expandInfoDiv.push(
-      <Col className="lineP" span={8} key={i}>
+      <Col className={"lineP"+i} span={8} key={i}>
         {rowDiv(dict)}
       </Col>
     );
@@ -249,7 +249,7 @@ class customerDetails extends React.Component{
           <div className='savaDiv'>
             <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
             <Button className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</Button>
-            <Button className='backBtn' type="primary" onClick={this.editBtnClick.bind(this)}>编辑</Button>
+            <Button className='backBtn SaveBtn' onClick={this.editBtnClick.bind(this)}>编辑</Button>
           </div>
         </Spin>
       </div>

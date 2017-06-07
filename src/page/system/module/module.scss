@@ -29,23 +29,34 @@
               height:32px;
             }
           }
-
       }
       .btn{
         width: 24%;
         float:left;
+        height:30px;
         margin:10px 0 0 10px;
+        .SelBtn{
+          background: #f1e8df;
+          border-color:#d4ad89;
+          font:14px "微软雅黑";
+          span{
+            color:#b67233;
+          }
+        }
         .ClearBtn{
           background:#ff4a4a;
+          border-color:#ff4a4a;
           color:#fff;
         }
         .AddBtn{
-          background:#169bd5;
+          background:#b67233;
           color:#fff;
+          border-color: #b67233;
         }
         .ant-btn{
           margin-left:10px;
-          height:32px;
+          height:30px;
+          font:14px "微软雅黑";
         }
       }
     }

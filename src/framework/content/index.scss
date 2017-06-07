@@ -4,12 +4,14 @@
 
 .mini .yt-admin-framework-content {
     transition: all .3s;
-    padding: 0 12px; 
+    padding: 0 12px;
+  margin-bottom:100px;
 }
 
 @media (max-width: 767px) {
     .mini .yt-admin-framework-content {
         transition: all .3s;
         margin-left: 0;
+      margin-bottom: 100px;
     }
 }

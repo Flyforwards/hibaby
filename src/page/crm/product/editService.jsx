@@ -42,13 +42,15 @@ class AddServiceed extends Component {
           width: "20%",
           render: (text, record, index) => {
             let count = 1
-            if(this,props.findById != null){
+            if(this.props.findById != null){
               this.props.findById.serviceInfoList.map((item)=>{
                 if(item.serviceInfoId == record.id){
-                    count = item.usageCount
+                  count = item.usageCount
+                  record.usageCount = item.usageCount
                 }
               })
             }
+           // console.log("count",record)
             return (
                 <span className="span">
                   <Input defaultValue ={ count } onChange={(event)=>{
@@ -63,6 +65,7 @@ class AddServiceed extends Component {
           selectedRowKeys:[],
           selectedRows: []
         };
+        this.TableEdit = false
     }
     shouldComponentUpdate (nextProps) {
       if(nextProps.findById){
@@ -99,9 +102,8 @@ class AddServiceed extends Component {
         this.props.dispatch({
             type: 'packageInfo/getDictionary',
             payload: {
-              "id":5 ,
-              "softDelete": 0,
-              "type": 2
+             "abName":"TCLX" ,
+              "softDelete": 0
             }
         });
     }
@@ -130,33 +132,51 @@ class AddServiceed extends Component {
             }
           })
       }
-      if(fields.name){
-        if(fields.price){
-          if(fields.type){
-            if(serviceInfoList.length>=1){
-              this.props.dispatch({
-                type: 'packageInfo/edit',
-                payload: {
-                  "id":ID,
-                  "name": fields.name,
-                  "price": fields.price,
-                  "serviceInfoList":serviceInfoList,
-                  "suiteId": fields.room,
-                  "type": fields.type
-                }
-              });
-            }else{
-              message.warning("请选择服务项目");
+      if(this.TableEdit){
+        if(fields.name){
+          this.props.dispatch({
+            type: 'packageInfo/edit',
+            payload: {
+              "id":ID,
+              "name": fields.name
             }
-          }else{
-            message.warning("请选择套餐的类型");
-          }
-        }else{
-          message.warning("请输入套餐的价格");
-        }
+          });
       }else{
         message.warning("请输入套餐的名称");
       }
+      }else{
+        if(fields.name){
+          if(fields.price){
+            if(fields.type){
+              if(serviceInfoList.length>=1){
+                console.log("serviceInfoList",serviceInfoList)
+                this.props.dispatch({
+                  type: 'packageInfo/edit',
+                  payload: {
+                    "id":ID,
+                    "name": fields.name,
+                    "price": fields.price,
+                    "serviceInfoList":serviceInfoList,
+                    "suiteId": fields.room,
+                    "type": fields.type
+                  }
+                });
+              }else{
+                message.warning("请选择服务项目");
+              }
+            }else{
+              message.warning("请选择套餐的类型");
+            }
+          }else{
+            message.warning("请输入套餐的价格");
+          }
+        }else{
+          message.warning("请输入套餐的名称");
+        }
+      }
+    }
+    onSelect(value, option){
+
     }
     render() {
         let loadingName = true
@@ -175,6 +195,7 @@ class AddServiceed extends Component {
                 record.key = record.id;
             });
             loadingName = false
+
         }
         if(this.props.selectData != null && this.props.findById){
           selectData = this.props.selectData.map((item)=>{
@@ -184,7 +205,7 @@ class AddServiceed extends Component {
             return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
         }
-        console.log(suiteId)
+        //console.log(suiteId)
         if(this.props.getDictionary != null &&　this.props.findById != null){
           roomList = this.props.getDictionary.map((item)=>{
             if(item.id == this.props.findById.type){
@@ -195,6 +216,12 @@ class AddServiceed extends Component {
         }
         if(this.props.findById){
           let data = [];
+         // console.log("this.props.findById>>>",this.props.findById)
+          if(this.props.findById.isUse == 1){
+              this.TableEdit = true
+          }else{
+              this.TableEdit = false
+          }
           this.props.findById.serviceInfoList.map((record)=>{
               data.push(record.serviceInfoId)
           });
@@ -202,6 +229,9 @@ class AddServiceed extends Component {
               selectedRows,
               selectedRowKeys,
               onChange: this.onSelectChange,
+              getCheckboxProps: record => ({
+                disabled: this.TableEdit,
+              }),
           };
         }
         return (
@@ -230,6 +260,7 @@ class AddServiceed extends Component {
                     })(
                     <Input
                       addonBefore="￥"
+                      disabled = {this.TableEdit}
                     />
                     )}
                   </FormItem>
@@ -240,7 +271,7 @@ class AddServiceed extends Component {
                       initialValue:type,
                       rules: [],
                     })(
-                    <Select
+                    <Select onSelect = {this.onSelect.bind(this)} disabled={this.TableEdit}
                     >
                       {
                         roomList
@@ -262,7 +293,7 @@ class AddServiceed extends Component {
                     />
                 </div>
                 <div className="addServiceinfoSuite">
-                <p>选择套房:</p>
+                <p>选择套房<span className="roomVist">(只有月子套餐才可以选择套房)</span>:</p>
                 <Form layout="inline">
                   <FormItem
                    label="套房"
@@ -272,7 +303,7 @@ class AddServiceed extends Component {
                       initialValue:suiteId,
                        rules: [],
                     })(
-                      <Select
+                      <Select disabled={this.TableEdit}
                     >
                      {
                       selectData
@@ -282,8 +313,8 @@ class AddServiceed extends Component {
                   </FormItem>
                 </Form>
                 </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button className="SaveBtn" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
             </div>
         )
     }

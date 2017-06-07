@@ -164,17 +164,22 @@
 		}
 	}
 	.ant-btn {
-		margin-left:55%;
-		width:140px;
-		height:40px;
+		margin-left:52%;
+		width:150px;
+		height:30px;
 		font:14px "微软雅黑";
 	}
 	.ant-btn-primary{
     	margin-left:20px;
-    	width:140px;
-    	height:40px;
+    	width:150px;
+    	height:30px;
 			font:14px "微软雅黑";
 	}
+  .BackBtn{
+    background:#b67233;
+    color:#fff;
+    border-color: #b67233;
+  }
 	.delet{
 		background-color: rgba(255, 74, 74, 1);
 		margin-left:20px;
@@ -182,4 +187,9 @@
 		font:14px "微软雅黑";
 		border:none;
 	}
+  .editBtn{
+    background:#f1e8df;
+    border-color:#d4ad89;
+    color:#b67233;
+  }
 }

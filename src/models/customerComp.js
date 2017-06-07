@@ -64,9 +64,18 @@ export default {
       }
     },
 
+    *confirmTreatmentFinish({payload: values}, { call, put }) {
+      const {data: { data, code} } = yield call(CustomerSerService.confirmTreatmentFinish, values);
+      if (code == 0) {
+        message.success("投诉完成处理");
+        yield put({
+          type: 'getCustomerCompById',
+          payload: values,
+        });
+      }
+    },
 
-
-    // 删除活动 列表页删除
+    // 删除投诉记录
     *deleteCustomerComp ({ payload: values}, { call, put }) {
       const {data: {data,code}} = yield call(CustomerSerService.deleteCustomerComp, values);
       if (code == 0) {
@@ -87,8 +96,7 @@ export default {
     },
 
 
-
-    // 删除活动 列表页删除
+    // 详情页删除
     *deleteCustomerCompFromDetail ({ payload: values}, { call, put }) {
       const {data: {data,code}} = yield call(CustomerSerService.deleteCustomerComp, values);
       if (code == 0) {
@@ -108,28 +116,6 @@ export default {
       }
     },
 
-    // 获取编辑数据
-    *getActivityByIdEdit({ payload: values}, { call, put }) {
-      const {data: {data, code}} = yield call(activityService.getActivityById, values);
-      if (code == 0) {
-        yield put({
-          type: 'getDetailEditSuccess',
-          payload: { editItem: data },
-        })
-      }
-    },
-    // 编辑活动保存
-    *updateActivity({ payload: values}, { call, put }) {
-      const {data: {data, code}} = yield call(activityService.updateActivity, values);
-      if (code == 0) {
-        message.success("活动保存成功")
-        const query = parse(location.search.substr(1))
-        yield put(routerRedux.push({
-          pathname: '/crm/activity/detail',
-          query
-        }))
-      }
-    },
     // 获取当前地方中心的部门列表
     *getCurrentEndemicDeptList({ payload: values}, { call, put }) {
       const {data: {data, code}} = yield call(systemService.getCurrentEndemicDeptList, values);

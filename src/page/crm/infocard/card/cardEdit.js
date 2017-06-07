@@ -172,10 +172,10 @@ class CardDetail extends Component {
               <Col span = { 16 }>
               </Col>
               <Col span = { 4 }>
-                <Link to={{ pathname:"/crm/card/detail", query: values}}><Button type="default">返回</Button></Link>
+                <Link to={{ pathname:"/crm/card/detail", query: values}}><Button className="BackBtn">返回</Button></Link>
               </Col>
               <Col span = { 4 }>
-                <Button type="primary"  onClick={this.onSave.bind(this)}>保存</Button>
+                <Button className="SaveBtn" onClick={this.onSave.bind(this)}>保存</Button>
               </Col>
             </Row>
           </Form>
