@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tree, Button, Table, Modal, Form, Input } from 'antd'
+import {local, session} from '../../../common/util/storage.js'
 import "./SelectTheNodeFrom.scss"
 const createForm = Form.create
 const FormItem = Form.Item
@@ -117,7 +118,31 @@ class SelectTheNodeFrom extends Component {
   }
 
   componentDidMount() {
-      this.props.dispa
+    let endemic  = session.get("endemic")
+    this.props.dispatch({
+      type: 'organization/organizationList',
+      payload: {
+        "name":null,
+        "roleId":null,
+        "nodeid": endemic.id,
+        "status":null,
+        "page": 1,
+        "size": 10,
+        "tissueProperty":endemic.tissueProperty
+      }
+    });
+    this.props.dispatch({
+      type: 'organization/getPosition',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getEndemic',
+      payload: { }
+    });
+    this.props.dispatch({
+      type: 'organization/getDeptList',
+      payload: { }
+    });
 
   }
   callback() {
@@ -131,7 +156,7 @@ class SelectTheNodeFrom extends Component {
     const  { selectedNodes } = e;
     if(selectedNodes[0]){
       const node = selectedNodes[0];
-      // console.log("节点>>>>",node)
+      console.log("节点>>>>",node)
       this.nodeId = node.props.nodeId;
       this.tissueProperty = node.props.tissueProperty;
       this.props.dispatch({
