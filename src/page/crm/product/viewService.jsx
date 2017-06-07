@@ -46,6 +46,7 @@ class AddServiceed extends Component {
           DeleteVisible:false,
           ID:null
         };
+        this.roomVisbled = false
     }
     delete() {
       let ID = window.location.search.split("=")[1]
@@ -82,9 +83,8 @@ class AddServiceed extends Component {
       this.props.dispatch({
         type: 'packageInfo/getDictionary',
         payload: {
-          "id":5 ,
-          "softDelete": 1,
-          "type": 2
+          "abName":"TCLX" ,
+          "softDelete": 0
         }
       });
     }
@@ -105,6 +105,11 @@ class AddServiceed extends Component {
                 record.key = record.id;
             });
             loadingName = false
+            if(this.props.findById.type ==1){
+              this.roomVisbled = true
+            }else{
+              this.roomVisbled = false
+            }
         }
         if(this.props.roomData != null){
           roomList = this.props.roomData.map((item)=>{
@@ -183,7 +188,8 @@ class AddServiceed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                <div className="viewServiceinfoSuite">
+                {
+                  this.roomVisbled?<div className="viewServiceinfoSuite">
                 <p>选择套房:</p>
                 <Form layout="inline">
                   <FormItem
@@ -200,7 +206,8 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                 </Form>
-                </div>
+                </div>:null
+                }
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
                 <Link to={{ pathname: '/crm/serviceinfo/editservice', query: { data:this.state.ID } }}><Button type="primary">编辑</Button></Link>

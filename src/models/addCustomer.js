@@ -502,7 +502,7 @@ export default {
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format('YYYY-MM-DD'),
         "provincePermanent": values.provincePermanent.key,
-        "purchasePackage": values.purchasePackage ? values.purchasePackage :  '',
+        "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
