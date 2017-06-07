@@ -55,17 +55,11 @@ class AddServiceed extends Component {
           selectedRows: [],
           loading: false,
         };
-        this.roomVisbled = false
     }
     componentWillMount() {
     }
     onSelect(value, option){
-      //console.log("value>>>>",value)
-      if(value == 1){
-        this.roomVisbled = true
-      }else{
-        this.roomVisbled = false
-      }
+     
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
       this.setState({ selectedRows });
@@ -110,34 +104,16 @@ class AddServiceed extends Component {
         if(fields.price){
           if(fields.type){
             if(serviceInfoList.length>=1){
-              if(this.roomVisbled){
-                if(fields.room){
-                  this.props.dispatch({
-                      type: 'packageInfo/add',
-                      payload: {
-                        "name": fields.name,
-                        "price": fields.price,
-                        "serviceInfoList":serviceInfoList,
-                        "suiteId": fields.room,
-                        "type": fields.type
-                      }
-                  });
-                }else{
-                  message.warning("请选择套房");
-                }
-              }
-              else{
-                this.props.dispatch({
-                    type: 'packageInfo/add',
-                    payload: {
-                      "name": fields.name,
-                      "price": fields.price,
-                      "serviceInfoList":serviceInfoList,
-                      "suiteId":null,
-                      "type": fields.type
-                    }
-                });
-              }
+              this.props.dispatch({
+                  type: 'packageInfo/add',
+                  payload: {
+                    "name": fields.name,
+                    "price": fields.price,
+                    "serviceInfoList":serviceInfoList,
+                    "suiteId": fields.room,
+                    "type": fields.type
+                  }
+              });
             }else{
               message.warning("请选择服务项目");
             }
@@ -248,9 +224,8 @@ class AddServiceed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                {
-                  this.roomVisbled? <div className="addServiceinfoSuite">
-                <p>选择套房:</p>
+                <div className="addServiceinfoSuite">
+                <p>选择套房<span className="roomVist">(只有月子套餐才可以选择套房)</span>:</p>
                 <Form layout="inline">
                   <FormItem
                    label="套房"
@@ -268,9 +243,7 @@ class AddServiceed extends Component {
                     )}
                   </FormItem>
                 </Form>
-                </div>:null
-                }
-               
+                </div>
                 <Button onClick={this.handleSubmit}>返回</Button>
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
