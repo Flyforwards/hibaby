@@ -474,7 +474,7 @@ function ExtensionInfo(props) {
     {title:'身份证',component:'Input',submitStr:'idcard'},
     {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
-    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,initValue:purchasePackageValue.packageName,noRequired:"1"},
+    {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,noRequired:"1"},
     {title:'保险情况',component:'Input',submitStr:'insuranceSituation'},
     {title:'联系人电话',component:'Input',submitStr:'contact'},
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,disabled:props.users.expandData},
