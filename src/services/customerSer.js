@@ -40,5 +40,15 @@ export function submitTreatmentResult(values) {
   })
 }
 
+// 确认投诉已处理
+export function confirmTreatmentFinish(values) {
+  return request('/crm/api/v1/customerComp/confirmTreatmentFinish', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
 
 

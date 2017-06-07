@@ -8,6 +8,7 @@ import './CustomerCompIndex.scss';
 import { Card, Input, Button, Form, DatePicker,Select, Row, Col, Modal } from 'antd';
 import DictionarySelect from 'common/dictionary_select';
 import { Link } from 'react-router';
+import { routerRedux } from 'dva/router'
 const FormItem = Form.Item;
 const createForm = Form.create
 const Option = Select.Option
@@ -49,6 +50,18 @@ class CustomerCompDetailIndex extends React.Component {
       },
     });
   }
+  back () {
+    this.props.dispatch(routerRedux.push('/crm/customer-comp'))
+  }
+
+  finish() {
+    const { dispatch, item } = this.props;
+    dispatch({
+      type: 'customerComp/confirmTreatmentFinish',
+      payload: { dataId: item.id }
+    })
+  }
+
 
   render() {
     const { departments, form, item } = this.props;
@@ -61,6 +74,75 @@ class CustomerCompDetailIndex extends React.Component {
     const options =  departments.map((record)=>{
       return (<Option value={record.id}  key={record.id}>{record.name}</Option>)
     });
+    const save = this.props.permissionAlias.contains('CUSTOMERCOMP_SAVE');
+    const finish = this.props.permissionAlias.contains('CUSTOMERCOMP_FINISH');
+    const del = this.props.permissionAlias.contains('CUSTOMERCOMP_DELETE');
+
+    let card = null;
+
+    let buttons = (
+      <div className="button-wrapper">
+        <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
+        <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+      </div>)
+    if (item.state == 0) {
+      if (save) {
+        buttons = (
+          <div className="button-wrapper">
+            <Button disabled={!save} className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.handleSubmit.bind(this) }>保存</Button>
+            <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
+            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+          </div>)
+        card = (
+          <Card title = "投诉处理:">
+            <Form >
+              <FormItem {...formItemLayout} label={"处理结果"}>
+                {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
+                })(<Input type="textarea" rows={6} className="input"/>
+                )}
+              </FormItem>
+            </Form>
+          </Card>
+        )
+      }
+
+    }
+    if (item.state == 1) {
+      if (finish) {
+        buttons = (
+          <div className="button-wrapper">
+            <Button disabled={!finish} className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.finish.bind(this) }>已处理</Button>
+            <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
+            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+          </div>)
+      }
+      card = (
+        <Card title = "投诉处理:">
+          <Form >
+            <FormItem {...formItemLayout} label={"处理结果"}>
+              {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
+              })(<Input readOnly type="textarea" rows={6} className="input"/>
+              )}
+            </FormItem>
+          </Form>
+        </Card>
+      )
+    }
+    if (item.state == 2) {
+      card = (
+        <Card title = "投诉处理:">
+          <Form >
+            <FormItem {...formItemLayout} label={"处理结果"}>
+              {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
+              })(<Input readOnly type="textarea" rows={6} className="input"/>
+              )}
+            </FormItem>
+          </Form>
+        </Card>
+      )
+    }
+
+
     return (
       <div className="activity-cent">
         <div className="add-activity">
@@ -106,30 +188,12 @@ class CustomerCompDetailIndex extends React.Component {
               </FormItem>
             </Form>
           </Card>
-          <Card title = "投诉处理:">
-            <Form >
-              <FormItem {...formItemLayout} label={"处理结果"}>
-                {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
-                })(<Input type="textarea" rows={6} className="input"/>
-                )}
-              </FormItem>
-            </Form>
-          </Card>
-          <div>
-            <Row>
-              <Col offset={4} span={4}>
-                <Link to='/crm/customer-comp'>
-                  <Button className="backBtn"> 返回 </Button>
-                </Link>
-              </Col>
-              <Col span={4}>
-                <Button type='primary' onClick={ this.delete.bind(this) }> 删除 </Button>
-              </Col>
-              <Col span={4}>
-                <Button type='primary' onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
-              </Col>
-            </Row>
-          </div>
+          {
+            card
+          }
+          {
+            buttons
+          }
         </div>
       </div>
     )
@@ -142,10 +206,12 @@ function mapStateToProps(state) {
     item,
     departments
   } = state.customerComp;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     item,
-    departments
+    departments,
+    permissionAlias
   };
 }
 
