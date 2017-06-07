@@ -59,7 +59,7 @@ class AddServiceed extends Component {
     componentWillMount() {
     }
     onSelect(value, option){
-     
+
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
       this.setState({ selectedRows });
@@ -244,8 +244,8 @@ class AddServiceed extends Component {
                   </FormItem>
                 </Form>
                 </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button className="SaveBtn" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
         )
     }

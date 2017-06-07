@@ -88,8 +88,8 @@ class CardFind extends Component {
               </FormItem>
             </Col>
             <Col span={ 7 }>
-              <Button type="primary" onClick={this.onSearch.bind(this)} size="large" style={{width:'120px',height:'40px',lineHeight:'38px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
-              <Link to={{ pathname: '/crm/card/add' }} ><Button disabled={add} type="primary" style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button></Link>
+              <Button className="SelBtn" onClick={this.onSearch.bind(this)} size="large" style={{width:'120px',height:'40px',lineHeight:'38px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
+              <Link to={{ pathname: '/crm/card/add' }} ><Button className="SaveBtn" disabled={add} style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button></Link>
             </Col>
           </Row>
 

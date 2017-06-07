@@ -13,7 +13,7 @@
 		border-radius:4px;
 		.ant-form{
 			height:30px;
-			width:76%;
+			width:56%;
 			float:left;
 			margin-top:15px;
 			margin-left:10px;
@@ -86,6 +86,7 @@
 			float:left;
 			background-color:#169bd5;
 			margin-left:10px;
+      font:14px "微软雅黑";
 			color:#fff;
 			text-align: center;
 			line-height: 30px;
@@ -93,6 +94,24 @@
 			display: inline-block;
 			border-radius: 4px;
 		}
+    .SelBtn{
+      background: #f1e8df;
+      border-color:#d4ad89;
+      font:14px "微软雅黑";
+      span{
+        color:#b67233;
+      }
+    }
+    .ClearBtn{
+      background:#ff4a4a;
+      border-color:#ff4a4a;
+      color:#fff;
+    }
+    .AddBtn{
+      background:#b67233;
+      color:#fff;
+      border-color: #b67233;
+    }
 	}
 
 	a{

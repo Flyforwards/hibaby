@@ -176,7 +176,7 @@ class AddServiceed extends Component {
       }
     }
     onSelect(value, option){
-     
+
     }
     render() {
         let loadingName = true
@@ -195,7 +195,7 @@ class AddServiceed extends Component {
                 record.key = record.id;
             });
             loadingName = false
-           
+
         }
         if(this.props.selectData != null && this.props.findById){
           selectData = this.props.selectData.map((item)=>{
@@ -230,7 +230,7 @@ class AddServiceed extends Component {
               selectedRowKeys,
               onChange: this.onSelectChange,
               getCheckboxProps: record => ({
-                disabled: this.TableEdit, 
+                disabled: this.TableEdit,
               }),
           };
         }
@@ -313,8 +313,8 @@ class AddServiceed extends Component {
                   </FormItem>
                 </Form>
                 </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button className="SaveBtn" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
             </div>
         )
     }

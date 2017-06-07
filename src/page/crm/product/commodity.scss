@@ -8,8 +8,11 @@
 		position: relative;
 		button{
 			position: absolute;
-			width: 140px;
-  		height: 40px;
+			width: 150px;
+  		height: 30px;
+      background:#b67233;
+      border-color:#b67233;
+      color:#fff;
   		right:2%;
   		top:30%;
 			font:14px "微软雅黑";
@@ -193,13 +196,21 @@
 	}
 	.ant-btn {
 		margin-left:706px;
-		width:140px;
-		height:40px;
+		width:150px;
+		height:30px;
+    background:#b67233;
+    border-color:#b67233;
+    font:14px "微软雅黑";
+    color:#fff;
 	}
 	.ant-btn-primary{
     	margin-left:30px;
-    	width:140px;
-    	height:40px;
+    	width:150px;
+    	height:30px;
+      background:#f1e8df;
+      border-color:#d4ad89;
+      font:14px "微软雅黑";
+      color:#b67233;
 	}
 }
 .viewCommodity{
