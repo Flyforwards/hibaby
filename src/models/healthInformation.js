@@ -165,7 +165,7 @@ export default {
               imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
               Input_8_arr:imgInput_8_arr,...requiredData}
           }
-          // return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
+          return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
         }else if(data.type === 2){
           return {...state,saveDone:saveDone,editNutritionFlag : false,type:type, nutritionHealthInformation : data}
         }else if(data.type === 3){
