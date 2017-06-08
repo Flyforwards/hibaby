@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'dva';
 import './place.scss';
 import {Card,Input,Button,Form} from 'antd';
-import  {NUM_TO_TEXT}  from 'common/constants';
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
 
