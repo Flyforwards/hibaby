@@ -88,7 +88,9 @@ class AddSuiteed extends Component {
     }
     handleAdd(){
       const fields = this.props.form.getFieldsValue();
-      let roomIdList = []
+      this.props.form.validateFields((err, fieldsValue) => {
+        if(!err){
+          let roomIdList = []
       $(".roomColorA").each(function(){
         roomIdList.push($(this).attr("value"))
       })
@@ -113,6 +115,8 @@ class AddSuiteed extends Component {
       }else{
         message.warning('请输入套房名称')
       }
+        }
+      })
     }
     roomClick(data,e){
       if(e.target.className == "roomColor"){
@@ -129,7 +133,6 @@ class AddSuiteed extends Component {
         let ListLnformation = []
         let roomList = []
         let selectData = []
-
         if(this.props.roomData != null){
           this.props.roomData.map((item)=>{
             roomInformation.push(<span key= {item.id} value={item.id} onClick={this.roomClick.bind(this,item.id)} className="roomColor">{item.roomNo}</span>)
@@ -182,7 +185,9 @@ class AddSuiteed extends Component {
                      className="price"
                   >
                   {getFieldDecorator('price', {
-                      rules: [],
+                  rules: [{
+                    pattern: /^[0-9]*$/, message: '请输入数字'
+                  }],
                     })(
                     <Input
                       addonBefore="￥"

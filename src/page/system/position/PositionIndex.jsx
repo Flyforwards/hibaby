@@ -51,8 +51,9 @@ class PositionIndex extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+
       let postInfo = {
-        ...values,
+          ...values,
         'page': 1,
         'size': 4,
       }
@@ -62,12 +63,12 @@ class PositionIndex extends Component {
   }
 
   handlePageChange(value) {
-    this.setState({
-      name: value.name
-    })
     this.props.dispatch({
       type: 'position/getDepartmentInfo',
       payload: value
+    })
+    this.setState({
+      name: value.name
     })
   }
 
@@ -114,10 +115,11 @@ function mapStateToProps(state) {
     list,
     pagination
   } = state.position;
+
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
   };
 }
 

@@ -25,7 +25,10 @@ class Card extends Component {
     }, {
       title: '折扣权限',
       dataIndex: 'salesDiscount',
-      key: 'salesDiscount'
+      key: 'salesDiscount',
+      render:(text,record,index)=>{
+        return text+'%';giot
+      }
     }, {
       title: '卡种类型',
       dataIndex: 'cardType',

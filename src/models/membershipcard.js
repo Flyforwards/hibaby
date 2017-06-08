@@ -11,6 +11,7 @@ export default {
   namespace: 'membershipcard',
   state: {
     fetching:false,
+    activeKey:"1",
     chargeVisible:false,
     commonVisible:{},
     trigger: false,
@@ -142,7 +143,6 @@ export default {
     },
     //某日账单时间
     getTimeDates(state, {payload: {data: startTims}}){
-      console.log("start",startTims)
       if(startTims.startTime == startTims.endTime) {
         const times = new Date(startTims.startTime).format("yyyy年MM月dd日")
         return { ...state, times }
@@ -154,6 +154,13 @@ export default {
     //保存打印账单信息
     savePrintAccount(state, {payload: {data: printList}}){
       return { ...state, printList }
+    },
+  //改变tab值
+    getChangeTabKey(state, {payload: {activeKeys}}){
+      return {
+        ...state,
+        activeKey:activeKeys ,
+      }
     },
 
 
@@ -195,6 +202,12 @@ export default {
         yield put({
           type:'getBalanceInfo',
         });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            activeKeys:"3",
+          }
+        });
       }
     },
     //退费
@@ -228,6 +241,12 @@ export default {
         });
         yield put({
           type:'getBalanceInfo',
+        });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            "activeKeys":"3",
+          }
         });
       }
     },
@@ -264,6 +283,12 @@ export default {
           type:'switchCommonState',
           payload: {commonVisible, trigger: !trigger}
         });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            activeKeys:"2",
+          }
+        });
 
       }
     },
@@ -290,6 +315,12 @@ export default {
         });
         yield put({
           type:'getBalanceInfo',
+        });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            "activeKeys":"1",
+          }
         });
       }
     },
@@ -415,7 +446,9 @@ export default {
 
     //获取商品信息
     *getGoodsList({ payload: values },{ call, put }){
-      const { data: {code,data,err}} = yield call(cardService.getGoodsList,values);
+      const customerId = queryURL('dataId')
+      const value = {...values, customerId}
+      const { data: {code,data,err}} = yield call(cardService.getGoodsList,value);
       if(code == 0) {
         yield put({
           type:'goodsInfo',
@@ -429,7 +462,6 @@ export default {
     *getPrintBaseMsg({payload:values},{call,put}){
       const customerId = queryURL('dataId')
       const value = {...values, customerId}
-      console.log("xxxxx",value)
       const { data: { code,data}} = yield call(cardService.getPrintBaseMsg,value);
       if(code == 0){
         yield put({

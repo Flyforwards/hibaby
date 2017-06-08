@@ -189,14 +189,16 @@ class customerDetails extends React.Component{
   }
 
   onDelete(record) {
+    const that = this;
     confirm({
       title: '提示',
       content: '确定删除此用户?',
       onOk() {
-        this.dispatch({
+        that.dispatch({
           type: 'customer/deleteCustomer',
-          payload: { dataId: this.netData.id }
-        })
+          payload: { dataId: that.props.users.baseData.id }
+       })
+        that.backBtnClick()
       },
       onCancel() {
       },

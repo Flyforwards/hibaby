@@ -16,6 +16,9 @@ import SkinHealthInformationDetail from '../healthy/SkinHealthInformationDetail'
 import SkinHealthInformationDetailUpdate from '../healthy/SkinHealthInformationDetailUpdate';
 import ConclusionInformation from '../healthy/ConclusionInformation';
 import ConclusionInformationDetail from '../healthy/ConclusionInformationDetail';
+import ConclusionInformationDetailUpdate from '../healthy/ConclusionInformationDetailUpdate';
+
+
 
 
 
@@ -37,7 +40,7 @@ class userHealthInformation extends React.Component {
 
   render() {
     const isDetail = this.props.users.isDetail;
-    const {saveDone,type,editMedicalFlag,editNutritionFlag,editSkinFlag} = this.props.healthInformation;
+    const {saveDone,type,editMedicalFlag,editNutritionFlag,editSkinFlag,editConclusionFlag} = this.props.healthInformation;
     const medicalHealthInformation = this.props.healthInformation.medicalHealthInformation;
     const nutritionHealthInformation = this.props.healthInformation.nutritionHealthInformation;
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
@@ -55,7 +58,10 @@ class userHealthInformation extends React.Component {
     if(editSkinFlag){
       SkinHealthInformationDiv = <SkinHealthInformationDetailUpdate/>
     }
-    const ConclusionInformationDiv = (saveDone || isDetail)&&conclusionInformation ? <ConclusionInformationDetail/>:<ConclusionInformation />;
+    let ConclusionInformationDiv = (saveDone || isDetail)&&conclusionInformation ? <ConclusionInformationDetail/>:<ConclusionInformation />;
+    if(editConclusionFlag){
+      ConclusionInformationDiv = <ConclusionInformationDetailUpdate/>;
+    }
     let defaultActiveKey = "1";
     if(type){
       defaultActiveKey = type+"";

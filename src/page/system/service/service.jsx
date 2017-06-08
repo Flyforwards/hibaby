@@ -35,10 +35,12 @@ class serviceIndex extends Component {
           key: 'operating',
           width: '150px',
           render: (text, record, index) => {
+            const detail = !this.props.permissionAlias.contains('SERVICE_ITEM_DETAIL');
+            const del = !this.props.permissionAlias.contains('SERVICE_ITEM_DELETE');
             return (
                 <div className="OperateList" key={ index }>
-                  <Link to={{ pathname: '/system/service-item/detail', query: { id:record.id } }} className="firstA" >查看</Link>
-                  <a className="firstB" onClick={ this.delete.bind(this,record )}>删除</a>
+                  <Link disabled={detail} to={{ pathname: '/system/service-item/detail', query: { id:record.id } }} className="firstA" >查看</Link>
+                  <Link disabled={del} className="firstB" onClick={ this.delete.bind(this,record )}>删除</Link>
                 </div>
             );
           },
@@ -85,11 +87,12 @@ class serviceIndex extends Component {
             }))
           },
         }
+        const add = !this.props.permissionAlias.contains('SERVICE_ITEM_ADD');
         return (
            <div className="ServiceBox">
               <div className="name">
                 <Link to="/system/service-item/add">
-                  <span >添加</span>
+                  <Button disabled={add} >添加</Button>
                 </Link>
               </div>
               <div className="CreateModaList">
@@ -112,10 +115,12 @@ function mapStateToProps(state) {
     list,
     pagination
   } = state.service;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
+    permissionAlias
   };
 }
 
