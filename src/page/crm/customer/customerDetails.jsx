@@ -154,8 +154,8 @@ function ExtensionInfo(props) {
           </Row>
 
           <Row>
-            <p>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')}
-            ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</p>
+            <div>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')}
+            ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</div>
           </Row>
         </div>
   )
