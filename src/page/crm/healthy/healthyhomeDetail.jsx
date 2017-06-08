@@ -329,10 +329,10 @@ function HealthyhomeDetail(props) {
             <div className="itemTitle"><span>优生四向</span></div>
           </Col>
           <Col span="22">
-            {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_1']},'1',false,'imgInput_1')}
-            {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_2']},'2',false,'imgInput_2')}
-            {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3']},'3',false,'imgInput_3')}
-            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4']},'4',true,'imgInput_4')}
+            {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_2']},'1',false,'imgInput_1')}
+            {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3']},'2',false,'imgInput_2')}
+            {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4']},'3',false,'imgInput_3')}
+            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_5']},'4',true,'imgInput_4')}
           </Col>
         </Row>
 

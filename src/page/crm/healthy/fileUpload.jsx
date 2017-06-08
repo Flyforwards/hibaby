@@ -68,7 +68,6 @@ class FileUpload extends React.Component {
 
 
   render() {
-    debugger;
     const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
 
     return (
