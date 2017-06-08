@@ -656,14 +656,7 @@ class customerInformation extends React.Component{
   backBtnClick(props){
     this.props.dispatch(routerRedux.push('/crm/customer'))
   }
-
-  baseFormRule(dict){
-    this.refs.baseForm.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:values,exDict:dict}})
-      }
-    });
-  }
+  
 
 
   render() {
