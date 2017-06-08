@@ -25,7 +25,7 @@ export default {
 		      let listByTypeSavedata = {...state,listByType,code};
 		      return listByTypeSavedata
 		    },
-		     setAddCustomerTab(state, { payload: todo }){
+		    setAddCustomerTab(state, { payload: todo }){
       			return {...state,addSuccess:todo};
    			 },
 		    findByIdSave(state,{payload:{ data:findById,code }}){
