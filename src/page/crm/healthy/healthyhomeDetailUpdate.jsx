@@ -285,16 +285,13 @@ function HealthyhomeDetailUpdate(props) {
 
   //row 左边单选右边上传附件
   function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName,imgRequired) {
-    var col1Class='topItembg';
-    var col2Class='leftRightItemBg';
-    if (lastRow == true){
-      col1Class='bottomItemBg';
-      col2Class='allNoneBg';
-    }
+    var col1Class='topRightItemBg';
+    var col2Class='onlyLeftItemBg';
+
     return (
-      <Row>
+      <Row className={col1Class}>
         <Col span="12">
-          <div className={col1Class}>
+          <div>
             {myRadioForm(radioName ,dict)}
           </div>
         </Col>
@@ -401,50 +398,50 @@ function HealthyhomeDetailUpdate(props) {
             <div className="itemTitle"><span>优生四向</span></div>
           </Col>
           <Col span="22">
-            <Row>
+            <Row className="topRightItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[2], {title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_2'],radioChangeFun:radioChangeFun1})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(1,'imgInput_1',props.healthInformation.imgInput_1_required)}
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className="topRightItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[3], {title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3'],radioChangeFun:radioChangeFun2})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(2,'imgInput_2',props.healthInformation.imgInput_2_required)}
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className="topRightItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[4], {title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4'],radioChangeFun:radioChangeFun3})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(3,'imgInput_3',props.healthInformation.imgInput_3_required)}
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className="onlyLeftItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[5], {title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_5'],radioChangeFun:radioChangeFun4})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(4,'imgInput_4',props.healthInformation.imgInput_4_required)}
                 </div>
               </Col>
@@ -461,14 +458,14 @@ function HealthyhomeDetailUpdate(props) {
             <div className="itemTitle">孕期合并症</div>
           </Col>
           <Col span="22">
-            <Row>
+            <Row className="topRightItemBg" style={{minHeight: '110px'}}>
               <Col span="12">
-                <div className="topItembg" style={{height: '110px'}}>
+                <div>
                   {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg" style={{height: '110px',paddingTop: '25px'}}>
+                <div className="onlyLeftItemBg" style={{minHeight: '110px'}}>
                   {uploadOptionsItem('5','imgInput_5')}
                 </div>
               </Col>

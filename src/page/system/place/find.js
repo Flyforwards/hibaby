@@ -82,7 +82,7 @@ class FindPlaceData extends React.Component {
                   </FormItem>
                 </Card>
                 <Card title = "下拉选项:" >
-                  {fields}
+                  {fields.length > 0 ? fields : <p style={{textAlign: 'center', color: '#999'}}>无该地方中心字典数据，点击编辑按钮进行添加</p>}
                 </Card >
                 <div className="retuSave">
                     <Link to='/system/local-char'>

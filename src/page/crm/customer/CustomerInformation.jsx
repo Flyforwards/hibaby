@@ -161,7 +161,7 @@ function cusFromItem(form,dict) {
     callback('请输入会员身份或特殊身份');
   }
 
-  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || dict.submitStr}!`}],};
+  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || '此项'}!`}],};
 
   if (dict.submitStr === 'contact')
   {
@@ -613,6 +613,15 @@ class customerInformation extends React.Component{
 
   handleSubmitBase() {
 
+    let baseDict = null;
+    let exDict = null;
+
+    this.refs.baseForm.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        baseDict = values;
+      }
+    });
+
     const formValues = this.refs.extensionForm.getFieldsValue()
 
     let num = 0;
@@ -629,15 +638,18 @@ class customerInformation extends React.Component{
     if (num > max)
     {
       this.refs.extensionForm.validateFieldsAndScroll((err, values) => {
-
         if (!err) {
-          this.baseFormRule(values);
+          exDict = values;
+        }
+        else {
+          return;
         }
       });
     }
-    else {
-      this.baseFormRule();
-    }
+
+    if (!baseDict) return;
+
+    this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
 
   }
 
@@ -645,13 +657,6 @@ class customerInformation extends React.Component{
     this.props.dispatch(routerRedux.push('/crm/customer'))
   }
 
-  baseFormRule(dict){
-    this.refs.baseForm.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:values,exDict:dict}})
-      }
-    });
-  }
 
 
   render() {

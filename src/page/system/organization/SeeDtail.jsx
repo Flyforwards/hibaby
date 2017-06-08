@@ -214,9 +214,9 @@ class SeeDtailed extends Component {
                       )}
                     </FormItem>
                 </Form>
-                 <Button type="primary" className="edit" onClick={this.EditNode.bind(this,Nodesdata)}>编辑</Button>
-                 <Button type="primary" className="delet" onClick={this.delet.bind(this,this.props.ID)} style={{display:display}}>删除</Button>
-                <Button  type="primary" onClick={this.ReturnLeader.bind(this)}>返回</Button>
+                 <Button className="SaveBtn" onClick={this.EditNode.bind(this,Nodesdata)}>编辑</Button>
+                 <Button className="delet delBtn" onClick={this.delet.bind(this,this.props.ID)} style={{display:display}}>删除</Button>
+                <Button  className="BackBtn" onClick={this.ReturnLeader.bind(this)}>返回</Button>
                 <NodeEdit
                     visible={ this.state.NodeEditVisible }
                     handleOk={this.state.handleOk}

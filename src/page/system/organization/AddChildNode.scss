@@ -28,17 +28,22 @@
 		margin-left: 42px;
 	}
 	.nodeLeader{
-		margin-right: 92px;
+      width: 80px;
+      height: 35px;
+		  margin-right: 92px;
 	    float: right;
 	    margin-top: -44px;
 	}
   .selBtn{
-    background:#f1e8df;
-    border-color:#bb7c41;
-    color: #bb7c41;
+    width:80px;
+    height:35px;
+    background:#693d20;
+    border-color:#693d20;
+    color: #fff;
   }
 }
 .SeeChildNode{
+  min-width:600px;
 	.ant-modal-header{
 		text-align: center;
 		background-color: rgba(228, 228, 228, 1);
@@ -47,32 +52,37 @@
 		background-color: rgba(22, 155, 213, 1);
 		border: 0;
 	}
-	.delet{
-		background-color: rgba(255, 74, 74, 1);
-		border:none;
+	.delBtn{
+		background-color:#b67233;
+		border-color:#b67233;
 	}
 	.nodeLeaderIput{
 		width:70%;
 		margin-left: 42px;
 	}
-	.nodeLeader{
-		margin-right: 92px;
+  .nodeLeader{
+      width: 80px;
+      height: 35px;
+		  margin-right: 92px;
 	    float: right;
-	    margin-top: -55px;
+	    margin-top: -44px;
 	}
+  .selBtn{
+    width:80px;
+    height:35px;
+    background:#693d20;
+    border-color:#693d20;
+    color: #fff;
+  }
 
-	.ant-modal-body{
-		overflow: hidden
-	}
-	.ant-btn-primary{
+	.SaveBtn{
 		float:right;
-		margin-right:30px;
+		margin-right:40px;
 		margin-top:10px;
 	}
-  .ant-modal-footer{
-    .ant-btn-primary{
-      margin-top:0;
-    }
+  .BackBtn{
+    float: right;
+    margin-right:10px;
   }
 }
 .Disabled{
@@ -87,11 +97,21 @@
 		width:70%;
 		margin-left: 42px;
 	}
-	.nodeLeader{
-		margin-right: 92px;
+  .nodeLeader{
+      width: 80px;
+      height: 35px;
+		  margin-right: 92px;
 	    float: right;
-	    margin-top: -55px;
+	    margin-top: -44px;
 	}
+  .selBtn{
+    width:80px;
+    height:35px;
+    background:#693d20;
+    border-color:#693d20;
+    color: #fff;
+  }
+
 
 	.vertical-center-modal {
 	  text-align: center;
@@ -124,4 +144,27 @@
 			float: left;
 		}
 	}
+
+}
+.ant-modal-body{
+  overflow: hidden;
+  button{
+		width: 80px;
+    margin-top: 10px;
+		.ant-btn{
+			width: 80px;
+			float: left;
+      font:14px "微软雅黑";
+		}
+	}
+  .BackBtn{
+    background:#693d20;
+    border-color:#693d20;
+    color:#fff;
+  }
+  .SaveBtn{
+    background: #eb7c34;
+    border-color: #eb7c34;
+    color:#fff;
+  }
 }

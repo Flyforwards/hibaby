@@ -35,8 +35,8 @@ class CustomerComplaintsAddIndex extends React.Component {
     const { departments, form } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol:{ span: 2 },
-      wrapperCol:{ span:22 }
+      labelCol:{ span: 3 },
+      wrapperCol:{ span:20 }
     }
 
     const options =  departments.map((record)=>{

@@ -60,12 +60,16 @@ class appointmentNotMemberFrom extends Component {
           </FormItem>
 
           <FormItem {...formItemLayout} label={"客户姓名"}>
-            {getFieldDecorator('name', {rules: [{ required: true, message: '请填写客户姓名！' }],
+            {getFieldDecorator('name', {rules: [{ required: true, message: '请填写客户姓名！限30字！', max: 30 }],
             })(<Input className="input"/>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label={"联系电话"}>
-            {getFieldDecorator('contact', {rules: [{ required: true, message: '请填写联系电话！' }],
+            {getFieldDecorator('contact', {rules: [{
+              type: "string",
+              pattern: /^[1][34578][0-9]{9}$/,
+              required: true,
+              message: '请正确填写联系电话!' }],
             })(<Input className="input"/>
             )}
           </FormItem>

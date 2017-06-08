@@ -164,9 +164,9 @@ class AppointmentMemberFrom extends Component {
         <div className="activity-cent">
           <Form>
             <div className="activityTop">
-              <Row style={{width:'1116px'}}>
-                <Col span={10} style={{float:'left'}}>
-                  <FormItem {...formChooseLayout} style={{ width:'774px',height:'40px',lineHeight:'40px'}} >
+              <Row>
+                <Col className="selectTop" span={10} style={{float:'left'}}>
+                  <FormItem {...formChooseLayout} style={{height:'40px',lineHeight:'40px'}} >
                     {getFieldDecorator('sear', {rules: [{ required: false }],
                     })(
                       <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
@@ -187,24 +187,24 @@ class AppointmentMemberFrom extends Component {
             </div>
             <div className="activityTitle">
             <Row>
-              <Col span={4} style={{width:'140px'}}>
+              <Col className="selItem ageItem" >
                 <FormItem {...formChooseOneLayout}  label="年龄" >
                   {getFieldDecorator('age1', {rules: [{ required: false }],
                   })(
-                    <InputNumber style={{width: "80px"}} min={1} max={100}  />
+                    <InputNumber min={1} max={100}  />
                   )}
                 </FormItem>
               </Col>
-              <Col span={3}  style={{width:'90px'}}>
+              <Col className="selItem ageItem2" style={{width:'60px'}}>
                 <FormItem {...formChooseLayout} style={{width:'100%'}}>
                   {getFieldDecorator('age2', {rules: [{ required: false }],
                   })(
-                    <InputNumber min={1} max={100} style={{width: "80px"}} />
+                    <InputNumber min={1} max={100} style={{width: "60px"}} />
                   )}
                 </FormItem>
 
               </Col>
-              <Col className="PreData"  span={4} style={{width:'180px'}}>
+              <Col className="PreData selItem" >
                 <FormItem {...formChooseOneLayout}  label="预产期" >
                   {getFieldDecorator('time', {rules: [{ required: false }],
                   })(
@@ -214,7 +214,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col className="TireNum" span={4} style={{width:'170px'}}>
+              <Col className="TireNum selItem">
                 <FormItem  {...formChooseOneLayout} label="第几胎" >
                   {getFieldDecorator('fetus', {rules: [{ required: false }],
                   })(
@@ -222,7 +222,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col className="idCard" span={4} style={{width:'190px'}} >
+              <Col className="idCard selItem" >
                 <FormItem  {...formChooseOneLayout} label="会员身份" >
                   {getFieldDecorator('member', {rules: [{ required: false }],
                   })(
@@ -234,7 +234,7 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col className="Operator" span={4} style={{width:'170px'}}>
+              <Col className="Operator selItem">
                 <FormItem  {...formChooseOneLayout} label="操作者2" >
                   {getFieldDecorator('operator2', {rules: [{ required: false }],
                   })(
