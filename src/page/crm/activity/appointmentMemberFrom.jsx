@@ -6,6 +6,8 @@ import { Modal,Card, Input, DatePicker, Button, Form,Table, Select,Cascader, Row
 import DictionarySelect from 'common/dictionary_select';
 import PropTypes from 'prop-types'
 import './appointmentMemberFrom.scss'
+import { message } from 'antd'
+
 const FormItem = Form.Item;
 const createForm = Form.create
 const { MonthPicker } = DatePicker
@@ -79,6 +81,11 @@ class AppointmentMemberFrom extends Component {
   }
 
   onOk() {
+    if (this.state.selectedRowKeys.length === 0)
+    {
+      message.error('请至少选择一个用户');
+      return;
+    }
     this.props.dispatch({
       type: "activity/saveMemberCustomer",
       payload: {
