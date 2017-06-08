@@ -613,6 +613,15 @@ class customerInformation extends React.Component{
 
   handleSubmitBase() {
 
+    let baseDict = null;
+    let exDict = null;
+
+    this.refs.baseForm.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        baseDict = values;
+      }
+    });
+
     const formValues = this.refs.extensionForm.getFieldsValue()
 
     let num = 0;
@@ -629,15 +638,18 @@ class customerInformation extends React.Component{
     if (num > max)
     {
       this.refs.extensionForm.validateFieldsAndScroll((err, values) => {
-
         if (!err) {
-          this.baseFormRule(values);
+          exDict = values;
+        }
+        else {
+          return;
         }
       });
     }
-    else {
-      this.baseFormRule();
-    }
+
+    if (!baseDict) return;
+
+    this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
 
   }
 
