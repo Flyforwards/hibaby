@@ -100,7 +100,6 @@ function HealthyhomeDetail(props) {
   }
 
     function showImg(imgInputName) {
-    debugger;
       const imgData = healthInfo[imgInputName];
       let bigImageData = imgData ? JSON.parse(imgData) : [];
       console.log(bigImageData);
@@ -127,16 +126,21 @@ function HealthyhomeDetail(props) {
 
   //上传附件 传一个key过来
   function uploadOptionsItem (key,imgInputName) {
-    return (
-      <div>
-        <Col span="4">
-          <div className="uploadOptions">附件:</div>
-        </Col>
-        <Col span="18">
+    const imgData = healthInfo[imgInputName];
+    const data = imgData ? JSON.parse(imgData) : [];
+    if(data && data.length > 0){
+      return (
+        <div>
+          <Col span="4">
+            <div className="uploadOptions"></div>
+          </Col>
+          <Col span="18">
             <Button key={key} type="primary" className="uploadOptionsButton" onClick={()=>showImg(imgInputName)}>查看附件</Button>
-        </Col>
-      </div>
-    )
+          </Col>
+        </div>
+      )
+    }
+
   }
 
   //评分选择器
