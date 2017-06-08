@@ -14,7 +14,6 @@ export default {
 		listByType:null,
 		addSuccess:false,
 		useServiceInfo:null,
-		codeName:0
 	},
 	reducers: {
 
@@ -26,7 +25,7 @@ export default {
 		      let listByTypeSavedata = {...state,listByType,code};
 		      return listByTypeSavedata
 		    },
-		     setAddCustomerTab(state, { payload: todo }){
+		    setAddCustomerTab(state, { payload: todo }){
       			return {...state,addSuccess:todo};
    			 },
 		    findByIdSave(state,{payload:{ data:findById,code }}){

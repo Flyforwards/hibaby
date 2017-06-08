@@ -30,13 +30,18 @@ class OrganizationLefted extends React.Component {
       SeeDtailNodeVisible: false,
       ID: null,
       node: null,
-      DeleteNodeVisible: false
+      DeleteNodeVisible: false,
+      unfolded:["1"]
     }
     this.addDisplay = "block";
     this.nodes = null;
   }
 
-  expandHandler = () => {
+  expandHandler = (expandedKeys, {expanded: bool, node}) => {
+    console.log("sssss>>>>>",expandedKeys)
+    this.setState({
+      unfolded:expandedKeys
+    })
     setTimeout(() => {
       $(".Organization-left li").find(".ant-tree-title").each((index, e) => {
         if ($(e).siblings(".plus").length == 0) {
@@ -47,9 +52,13 @@ class OrganizationLefted extends React.Component {
   }
 
   onSelect(value, node) {
+    console.log("展开",value)
     this.addDisplay = "block"
     this.deleteDisplay = "block"
     if (value[0] != null) {
+      this.setState({
+        unfolded:value
+      })
       this.nodes = node.selectedNodes[0].props.dataIndex
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
@@ -244,8 +253,9 @@ class OrganizationLefted extends React.Component {
           className="draggable-tree"
           onSelect={ this.onSelect.bind(this) }
           onExpand={this.expandHandler.bind(this)}
-          autoExpandParent={ true }
-          defaultExpandedKeys={ ["0"] }
+          
+          autoExpandParent = { true }
+          expandedKeys = { this.state.unfolded }
         >
           { loops }
         </Tree>
