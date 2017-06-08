@@ -9,7 +9,7 @@ class PicturesWall extends React.Component {
     this.state = {
       previewVisible: false,
       previewImage: '',
-      defaultFileList : (typeof this.props.value === 'object') ? this.props.value : [],
+      defaultFileList :this.props.value,
       fileList: [],
     };
 
