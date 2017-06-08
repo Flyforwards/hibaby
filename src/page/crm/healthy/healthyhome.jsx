@@ -146,6 +146,7 @@ function Healthyhome(props) {
           <FormItem
             labelCol={{span: 5}}
             wrapperCol={{span: 18}}
+            label="附件:"
           >
             {getFieldDecorator(`${imgInputName}`, {
               rules: [{ required: required, message: '请上传附件' }]
