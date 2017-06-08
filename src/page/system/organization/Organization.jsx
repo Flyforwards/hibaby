@@ -149,6 +149,7 @@ class Organization extends React.Component {
             tissueProperty:endemic.tissueProperty
         }
         this.current = 1
+        this.query = false
     }
     onDrop = (info) => {
     const loop = (data, key, callback) => {
@@ -203,6 +204,7 @@ Disabled(record) {
 }
 //按条件查询用户
 OrganizationInquire() {
+  this.query = true
 this.setState({
   userName:$(".userName").val()
 })
@@ -218,6 +220,7 @@ this.setState({
       "tissueProperty":this.state.tissueProperty
   },
 });
+this.false = true 
 }
     //获取系统角色的id
     onSelectCharacter(value){
@@ -258,7 +261,6 @@ this.setState({
         const {getPosition:positionInfo} = this.props;
         POSITION = keyToText(positionInfo, "id", "name", "POSITION");
         const {getDeptList:depInfo} = this.props;
-        console.log("depInfo>>>>",depInfo)
         DEPTEMENT = keyToText(depInfo, "id", "name", "POSITION");
         const columns = this.columns;
         const pagination = {
@@ -269,15 +271,16 @@ this.setState({
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
-                  "name": this.state.userName,
+                  "name": this.query?this.state.userName:null,
                   "nodeid": this.state.nodeid,
-                  "roleId": this.state.character,
-                  "status": this.state.status,
+                  "roleId": this.query?this.state.character:null,
+                  "status": this.query?this.state.status:null,
                   "page": current,
                   "size": 10,
                   "tissueProperty": this.state.tissueProperty
               },
             });
+            this.query = false
           },
         };
         const traversalRoleId = (roleId) => {
