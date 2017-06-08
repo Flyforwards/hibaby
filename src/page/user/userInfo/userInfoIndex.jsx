@@ -112,7 +112,6 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
       if(contact === textforkey(props,'contact')){
         editFun(false)
         return;
-        alert(11)
       }
       else {
         dispatch({
@@ -121,6 +120,19 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
         })
         editFun(false)
 
+      }
+    }
+  }
+
+  function bottomDiv() {
+    if (props){
+      if(props.entrys[0]){
+        return (
+          <div  className="bottomDiv">
+            <p>{props?`${moment(props.createTime).format('YYYY年MM月DD日')}入职`:''}<br/></p>
+            <p className="twoLine">你与凯贝姆已经一起成长 <span>{props? `${moment().diff(props.createTime, 'days')}天`:''} </span> 了</p>
+          </div>
+        )
       }
     }
   }
@@ -135,13 +147,9 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
           <div className="rightChi"> <h1>{props? props.name : ''}</h1> {baseInfoDiv}</div>
         </div>
 
-        <div  className="bottomDiv">
-
-          <p>{props?`${moment().format('YYYY年MM月DD日')}入职`:''}<br/></p>
-          <p className="twoLine">你与凯贝姆已经一起成长 <span>{props? `${moment().diff(props.createTime, 'days')}天`:''} </span> 了</p>
+        {bottomDiv()}
 
 
-        </div>
 
       </div>
 

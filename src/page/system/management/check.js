@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'dva';
 import './system.scss';
 import {Card,Input,Button,Form} from 'antd';
-import  {NUM_TO_TEXT}  from 'common/constants';
 import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
 
@@ -47,7 +46,7 @@ class CheckData extends React.Component {
 
         fields = arr.map((value, index) => {
           return (
-            <FormItem {...formItemLayout} label={`选项 ${NUM_TO_TEXT[index]}`} key={index}>
+            <FormItem {...formItemLayout} label={`选项 ${String(index+1)}`} key={index}>
               {getFieldDecorator(`field-${index}`,{
                 initialValue: value.name
               })(

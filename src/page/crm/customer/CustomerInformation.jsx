@@ -182,7 +182,10 @@ function cusFromItem(form,dict) {
   {
     rules = {rules: [{validator:identityRule}]};
   }
-
+  if (dict.submitStr === 'contractNumber')
+  {
+    rules = { rules: [{ required: true, max:12, message: `请输入正确的${dict.title}!`}]};
+  }
 
   return(
     dict.title ?
@@ -432,7 +435,7 @@ function ExtensionInfo(props) {
   function deleteContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/deleteContractDLC',payload:values})
     props.form.resetFields(['contractAppendices']);
-    props.form.validateFields(['contractAppendices'], { force: false },tt);
+    props.form.validateFields(['contractAppendices'], { force: false });
   }
 
   function loadProgress(value) {
@@ -481,7 +484,7 @@ function ExtensionInfo(props) {
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
     {title:'合同编号',component:'Input',submitStr:'contractNumber'},
-    {title:'关联客房',component:'Input',submitStr:'associatedRooms'},
+    {title:'关联客房',component:'InputNumber',submitStr:'associatedRooms'},
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,initValue:memberNumberValue},

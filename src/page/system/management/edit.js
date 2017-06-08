@@ -140,7 +140,7 @@ class editGroupData extends React.Component {
             <div className="posi childCen " style={{position:'relative',overflow:'hidden'}}>
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
-                rules: [{ required: true, message: '选项不能为空' }],
+                rules: [{ required: true, message: '选项不能为空,限50字！', max: 50 }],
                 initialValue: initValue,
               })(
                 <Input rows = {6} className = "input2"/>

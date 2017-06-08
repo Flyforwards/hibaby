@@ -25,33 +25,52 @@
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    height: 55px;
+    min-height: 55px;
+    overflow: hidden;
+  }
+
+  .onlyLeftItemBg {
+    border-left: 1px solid #ccc;
+    min-height: 55px;
+    overflow: hidden;
+  }
+
+  .topRightItemBg {
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    min-height: 55px;
+    overflow: hidden;
   }
 
   .bottomItemBg {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    height: 55px;
+    min-height: 55px;
+    overflow: hidden;
   }
 
   .rightItemBg {
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    height: 55px;
+    min-height: 55px;
+    overflow: hidden;
   }
 
   .leftRightItemBg {
-    height: 55px;
+    min-height: 55px;
+    overflow: hidden;
     border-bottom: 1px solid #ccc;
   }
 
   .allNoneBg {
-    height: 55px;
+    min-height: 55px;
+    overflow: hidden;
   }
 
   .bottomRightItemBg {
     border-left: 1px solid #ccc;
-    height: 55px;
+    min-height: 55px;
+    overflow: hidden;
   }
 
   .ant-form-item-label {
@@ -61,6 +80,11 @@
   .ant-form-item-control {
     line-height: 55px;
   }
+
+  .ant-form-item {
+    margin-bottom:0;
+  }
+
   .ApgarOption{
     .ant-col-2{
       height:30px;
@@ -70,6 +94,7 @@
       width:40px;
     }
   }
+
   .uploadOptions {
     margin-top: 13px;
     text-align: right;

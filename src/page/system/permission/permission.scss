@@ -54,7 +54,11 @@
       margin-top: 2px;
       float: left;
       width: 80%;
-      border: 2px solid #999999 ;
+      border: 2px solid #ddd ;
+      p {
+        line-height: 40px;
+        margin-left: 10px;
+      }
     }
 
 
@@ -69,11 +73,13 @@
 
     .component-display {
       display: block;
+      padding-bottom: 45px;
+      padding-right: 15px;
       position: absolute;
       width: 800px;
       background-color: white;
       z-index: 9999;
-      border: 2px solid #999999 ;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       border-radius: 2px;
       margin-top: 42px;
       height:auto!important;
