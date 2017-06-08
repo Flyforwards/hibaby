@@ -1,7 +1,7 @@
 import React from 'react'
 import './Organization.scss'
 import { connect } from 'dva'
-import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree} from 'antd'
+import { Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree, Form} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import { routerRedux } from 'dva/router'
@@ -13,7 +13,7 @@ import Disabled from './Disabled.jsx';
 import {keyToText} from '../../../utils';
 
 
-const roleId = local.get("rolSelectData")
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -21,6 +21,7 @@ const TreeNode = Tree.TreeNode;
 let endemic  = session.get("endemic");
 let POSITION = [];
 let DEPTEMENT = [];
+const FormItem = Form.Item;
 
 class Organization extends React.Component {
     constructor(props) {
@@ -204,36 +205,26 @@ Disabled(record) {
 }
 //按条件查询用户
 OrganizationInquire() {
-  this.query = true
-this.setState({
-  userName:$(".userName").val()
-})
+  const fields = this.props.form.getFieldsValue();
+  console.log("fields>>>>",fields)
+  this.setState({
+    userName:fields.userName,
+    status:fields.OrganizationType,
+    character:fields.SystemRoles,
+  })
  this.props.dispatch({
   type: 'organization/organizationList',
   payload: {
-      "name": $(".userName").val(),
+      "name": fields.userName,
       "nodeid": this.state.nodeid,
-      "roleId": this.state.character,
-      "status": this.state.status,
+      "roleId": fields.SystemRoles,
+      "status": fields.OrganizationType,
       "page": 1,
       "size": 10,
       "tissueProperty":this.state.tissueProperty
   },
 });
-this.false = true 
 }
-    //获取系统角色的id
-    onSelectCharacter(value){
-     this.setState({
-        character:value
-     })
-    }
-    //获取账户状态的id
-    onSelectStatus(value){
-     this.setState({
-        status:value
-     })
-    }
     showCreateModal() {
         this.setState({
             createModalVisible: true
@@ -251,6 +242,9 @@ this.false = true
       })
     }
     render() {
+        const { getFieldDecorator } = this.props.form;
+        const fields = this.props.form.getFieldsValue();
+        let roleId = local.get("rolSelectData")
         let ListLnformation = []
         if(this.props.list != null){
           ListLnformation = this.props.list;
@@ -271,16 +265,15 @@ this.false = true
             this.props.dispatch({
               type: 'organization/organizationList',
               payload: {
-                  "name": this.query?this.state.userName:null,
+                  "name": this.state.userName,
                   "nodeid": this.state.nodeid,
-                  "roleId": this.query?this.state.character:null,
-                  "status": this.query?this.state.status:null,
+                  "roleId": this.state.character,
+                  "status":this.state.status,
                   "page": current,
                   "size": 10,
                   "tissueProperty": this.state.tissueProperty
               },
             });
-            this.query = false
           },
         };
         const traversalRoleId = (roleId) => {
@@ -302,19 +295,43 @@ this.false = true
             />
             <div className="Organization-right">
             <div className="Organization-nav">
-              <div className="name">姓名<Input className="userName"/></div>
-              <div className="SystemRoles">系统角色
-                <Select placeholder="请选择" style={{ width:180 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true}>
-                      { traversalRoleIdData }
-                  </Select>
-                  {/*<DictionarySelect  selectName="ROLE"  defaultValue="请选择" style={{ width: 220 }} className="OrganizationType" onBlur={this.onSelectCharacter.bind(this)} allowClear={true} />*/}
-              </div>
-              <div className="status">账户状态
-                <Select placeholder="请选择" style={{ width: 180 }} className="OrganizationType" onBlur={this.onSelectStatus.bind(this)} allowClear={true}>
+             <Form layout="inline">
+             <FormItem
+                label="姓名"
+                className="userName"
+              >
+              {getFieldDecorator('userName', {
+                rules: [],
+              })(
+                <Input />
+              )}
+              </FormItem>
+               <FormItem
+                label="系统角色"
+                className="SystemRoles"
+              >
+              {getFieldDecorator('SystemRoles', {
+                rules: [],
+              })(
+                <Select placeholder="请选择" style={{ width:180 }}  allowClear={true}>
+                  { traversalRoleIdData }
+              </Select>
+              )}
+              </FormItem>
+               <FormItem
+                label="账户状态"
+                className="OrganizationType"
+              >
+                  {getFieldDecorator('OrganizationType', {
+                    rules: [],
+                  })(
+                    <Select placeholder="请选择" style={{ width: 180 }}  allowClear={true}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
-              </div>
+                  )}
+              </FormItem>
+             </Form>
               <div className="btn">
                 {this.state.tissueProperty == 3?
                   <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
@@ -425,4 +442,5 @@ function mapStateToProps(state) {
     code
     };
 }
-export default connect(mapStateToProps)(Organization)
+const OrganizationForm = Form.create()(Organization);
+export default connect(mapStateToProps)(OrganizationForm)

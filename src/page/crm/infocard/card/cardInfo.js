@@ -94,7 +94,6 @@ class CardModal extends Component {
               <Col span = { 8 } style={{width:'251px'}} >
                 <FormItem {...formItemLayout} label="会员卡名称">
                   {getFieldDecorator('name', {
-                    initialValue: cardKind && cardKind.name ,
                     rules: [{ required: true, message: '请输入会员卡名称' }],
                   })(
                     <Input placeholder="请输入会员卡名称"/>
@@ -104,7 +103,6 @@ class CardModal extends Component {
               <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="储值金额" {...formItemLayout}>
                   {getFieldDecorator('storedValue', {
-                    initialValue: cardKind && cardKind.storedValue ,
                     rules: [{validator:this.checkPrice, required: true, }],
                   })(
                     <Input placeholder="请输入储值金额" addonAfter="元" type="number" min={0} />
@@ -114,7 +112,6 @@ class CardModal extends Component {
               <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="折扣权限" {...formItemLayout}>
                   {getFieldDecorator('salesDiscount', {
-                    initialValue: cardKind && cardKind.salesDiscount ,
                     rules: [{validator:this.checkPrice, required: true,}],
                   })(
                     <Input placeholder="请输入折扣权限" addonAfter="%"  type="number" min={0}/>
@@ -126,7 +123,6 @@ class CardModal extends Component {
               <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="会员卡级别" {...formItemLayout}>
                   {getFieldDecorator('level', {
-                    initialValue: cardKind && cardKind.level ,
                     rules: [{ required: true, message: '请选择会员卡级别' }]
                   })(
                     <Select
@@ -146,7 +142,6 @@ class CardModal extends Component {
               <Col span={ 24 } style={{width:'400px'}}>
                 <FormItem {...formTextItemLayout} label="备注">
                   {getFieldDecorator('remarks', {
-                    initialValue: cardKind && cardKind.remarks ,
                     rules: [{ required: true, message: '请填写备注' }],
                   })(
                     <Input type="textarea" rows={6}/>
@@ -158,7 +153,6 @@ class CardModal extends Component {
               <Col span={22} style={{width:'401px' }}>
                 <FormItem label="卡种类型" {...formRadioItemLayout}>
                   {getFieldDecorator('cardType', {
-                    initialValue: cardKind && cardKind.cardType ,
                     rules: [{ required: true, message: '请选择卡种类型' }]
                   })(
                     <RadioGroup >

@@ -93,6 +93,7 @@ class AlertModalFrom extends Component {
         onOk = { this.handleOk.bind(this) }
         width = { 400 }
         style={{height:'300px'}}
+        maskClosable={false}
         wrapClassName = { "alert-vertical-center-modal" }
       >
         <Form layout="vertical">
