@@ -161,7 +161,7 @@ function cusFromItem(form,dict) {
     callback('请输入会员身份或特殊身份');
   }
 
-  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || dict.submitStr}!`}],};
+  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || '此项'}!`}],};
 
   if (dict.submitStr === 'contact')
   {
@@ -656,7 +656,7 @@ class customerInformation extends React.Component{
   backBtnClick(props){
     this.props.dispatch(routerRedux.push('/crm/customer'))
   }
-  
+
 
 
   render() {
