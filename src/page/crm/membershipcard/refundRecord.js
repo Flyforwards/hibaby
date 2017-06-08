@@ -7,7 +7,7 @@ import { connect } from 'dva'
 import './index.scss'
 import {Link} from 'react-router'
 import { Table, Icon, } from 'antd';
-
+import { format } from '../../../utils/index.js';
 
 class RefundRecord extends Component {
   constructor(props) {
@@ -16,7 +16,10 @@ class RefundRecord extends Component {
     this.columns = [{
       title: '退费时间',
       dataIndex: 'refundTime',
-      key: 'refundTime'
+      key: 'refundTime',
+      render:(text,record,index)=>{
+        return new Date(text).format('yyyy-MM-dd HH:mm:ss');
+      }
     }, {
       title: '卡内余额',
       dataIndex: 'cardBalance',

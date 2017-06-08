@@ -84,7 +84,7 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.storedValue : '',
                     rules: [{validator:this.checkPrice, required: true, }],
                   })(
-                    <Input placeholder="请输入储值金额" addonAfter="元" readOnly type="number" min={0} />
+                    <Input placeholder="请输入储值金额" addonAfter="元" readOnly  min={0} />
                   )}
                 </FormItem>
               </Col>
@@ -94,7 +94,7 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.salesDiscount : ''  ,
                     rules: [{validator:this.checkPrice, required: true,}],
                   })(
-                    <Input placeholder="请输入折扣权限" readOnly addonAfter="%"  type="number" min={0}/>
+                    <Input placeholder="请输入折扣权限" readOnly addonAfter="%"   min={0}/>
                   )}
                 </FormItem>
               </Col>

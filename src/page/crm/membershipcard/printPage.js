@@ -11,13 +11,14 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 import { Link } from 'react-router';
 import './index.scss';
-import './printPage.scss';
+import './printPage.css';
 import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY-MM-DD';
 const monthFormat = 'YYYY-MM';
 import PrintPageList from './printPageList';
-import { format } from '../../../utils/index.js'
+import { format } from '../../../utils/index.js';
+import { do_print } from 'common/util/print.js';
 class MemberShipCard extends Component {
   constructor(props) {
     super(props);
@@ -33,16 +34,16 @@ class MemberShipCard extends Component {
       this.props.dispatch({
         type:'membershipcard/getPrintBaseMsg',
         payload:{
-          startTime:this.state.data.startTime,
-          endTime:this.state.data.endTime,
+          "startTime":this.state.data ?this.state.data.startTime:'',
+          "endTime":this.state.data ? this.state.data.endTime:'',
         }
       })
       //账单打印信息
      this.props.dispatch({
        type:'membershipcard/getPrintAccount',
        payload:{
-         startTime:this.state.data.startTime,
-         endTime:this.state.data.endTime,
+         "startTime":this.state.data ?this.state.data.startTime:'',
+         "endTime":this.state.data ? this.state.data.endTime:'',
        }
     })
   }
@@ -64,27 +65,31 @@ class MemberShipCard extends Component {
     //   }
     // })
   }
+  onPrint(){
+    do_print('print-content');
+  }
   render() {
-    const { systemTime } = this.props;
+    const { systemTime ,feeRecord,renewRecord,refundRecord} = this.props;
+    console.info("xxxssss",systemTime)
     return (
       <div className="card" style={{overflow:'hidden'}}>
         <div>
           <RangePicker
             ranges={{ Today: [moment(), moment()], 'This Month': [moment(), moment().endOf('month')] }}
             showTime
-            defaultValue={[moment(new Date(systemTime), dateFormat), moment(new Date(systemTime), dateFormat)]}
+            defaultValue={[moment(systemTime ? new Date(systemTime): new Date(),dateFormat),moment(systemTime ? new Date(systemTime): new Date(),dateFormat)]}
             format="YYYY-MM-DD"
             onChange={this.onChange.bind(this)}
           />
           <Button type="primary" className="cardBtn" onClick={this.onSearch.bind(this)}>查询</Button>
-          <Button type="primary" className="cardBtn" style={{float:'right'}}>打印</Button>
+          <Button type="primary" className="cardBtn" style={{float:'right'}} onClick={this.onPrint.bind(this)}>打印</Button>
         </div>
-
-        <PrintPageList />
-        <Card style={{width:'100%',height:'200px',margin:'10px auto',fontSize:'14px',fontWeight:'700',fontFamily:'微软雅黑'}}>
-          <p>客户签名：</p>
-        </Card>
-
+        <div id="print-content">
+          <PrintPageList />
+          <Card style={{width:'100%',height:'200px',margin:'10px auto',fontSize:'14px',fontWeight:'700',fontFamily:'微软雅黑',border:'1px solid #e9e9e9'}}>
+            <p style={{paddingLeft:'2%'}}>客户签名：</p>
+          </Card>
+        </div>
 
       </div>
 
@@ -95,9 +100,12 @@ class MemberShipCard extends Component {
 
 
 function mapStateToProps(state) {
-  const { systemTime } = state.membershipcard;
+  const { systemTime ,feeRecord,renewRecord,refundRecord} = state.membershipcard;
   return {
     systemTime,
+    feeRecord,
+    renewRecord,
+    refundRecord,
     user:state.addCustomer,
     cards:state.membershipcard,
   };
