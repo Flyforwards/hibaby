@@ -258,6 +258,7 @@ this.setState({
         const {getPosition:positionInfo} = this.props;
         POSITION = keyToText(positionInfo, "id", "name", "POSITION");
         const {getDeptList:depInfo} = this.props;
+        console.log("depInfo>>>>",depInfo)
         DEPTEMENT = keyToText(depInfo, "id", "name", "POSITION");
         const columns = this.columns;
         const pagination = {

@@ -13,6 +13,8 @@ export default {
 		getCustomerPackageById:null,
 		listByType:null,
 		addSuccess:false,
+		useServiceInfo:null,
+		codeName:0
 	},
 	reducers: {
 
@@ -123,15 +125,16 @@ export default {
 				}
 			},
 			*useServiceInfo({payload: values}, { call, put }) {
+				//console.log("values>>>",values)
 				const {
 					data: {
 			      		data,
 			      		code,
 			      		err
-		      }} = yield call(addCourseService.useServiceInfo, values);
+		      }} = yield call(addCourseService.useServiceInfo, {"dataId":values.dataId});
 				if (code == 0) {
 					message.success("使用服务项成功");
-					// yield put(routerRedux.push("/crm/customer/AddCustomerInformation"));
+					yield put({type:'getCustomerPackageById',payload:{dataId:values.userID}});
 				}
 			},
 		},
