@@ -29,7 +29,14 @@ class CardDetail extends Component {
       type: 'card/getCardKindInfo',
       payload: { dataId }
     })
-
+    dispatch({
+      type:'card/getLevelInfo',
+      payload:{
+        "abName":"HYKJB",
+        "softDelete":0,
+        "type":1,
+      }
+    });
     dispatch({
       type: 'card/getCustomerPage',
       payload: { member: dataId }
@@ -116,7 +123,7 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.storedValue : '',
                     rules: [{validator:this.checkPrice, required: true, }],
                   })(
-                    <Input placeholder="请输入储值金额" addonAfter="元"  type="number" min={0} />
+                    <Input placeholder="请输入储值金额" addonAfter="元" readOnly min={0} />
                   )}
                 </FormItem>
               </Col>
@@ -126,7 +133,7 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.salesDiscount : ''  ,
                     rules: [{validator:this.checkPrice, required: true,}],
                   })(
-                    <Input placeholder="请输入折扣权限"  addonAfter="%"  type="number" min={0}/>
+                    <Input placeholder="请输入折扣权限"  addonAfter="%"  readOnly min={0}/>
                   )}
                 </FormItem>
               </Col>
@@ -138,7 +145,16 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.level+'':''  ,
                     rules: [{ required: true, message: '请选择会员卡级别' }]
                   })(
-                    <DictionarySelect  placeholder="请选择" selectName="MEMBER" />
+                    <Select
+                      showSearch
+                      allowClear
+                      placeholder="请选择"
+                      optionFilterProp="children"
+                      filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                      disabled={true}
+                    >
+                      { options }
+                    </Select>
                   )}
                 </FormItem>
               </Col>
@@ -150,7 +166,7 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.remarks : '' ,
                     rules: [{ required: true, message: '请填写备注' }],
                   })(
-                    <Input type="textarea" rows={6}  />
+                    <Input type="textarea" rows={6} readOnly  />
                   )}
                 </FormItem>
               </Col>
@@ -162,13 +178,18 @@ class CardDetail extends Component {
                     initialValue: cardKind ? cardKind.cardType+'' : '' ,
                     rules: [{ required: true, message: '请选择卡种类型' }]
                   })(
-                    <RadioGroup  >
+                    <RadioGroup disabled >
                       <Radio value="1">模板卡种</Radio>
                       <Radio value="2">自定义卡种</Radio>
                     </RadioGroup>
                   )}
                 </FormItem>
               </Col>
+            </Row>
+            <Row>
+              <CustomerByCard {...{loading, userPagination, list}} />
+            </Row>
+            <Row style={{marginTop:'16px'}}>
               <Col span = { 16 }>
               </Col>
               <Col span = { 4 }>
@@ -180,7 +201,7 @@ class CardDetail extends Component {
             </Row>
           </Form>
         </Card>
-        <CustomerByCard {...{loading, userPagination, list}} />
+
       </div>
     )
   }

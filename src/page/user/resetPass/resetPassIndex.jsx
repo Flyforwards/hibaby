@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'dva'
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import  './resetPass.scss';
+import logo from 'common/logo.png'
+import { local, session } from 'common/util/storage.js';
+
 const FormItem = Form.Item;
-import './resetPass.scss'
-import { local, session } from 'common/util/storage.js'
 
 class NormalLoginForm extends React.Component {
   handleSubmit = (e) => {
@@ -23,7 +25,7 @@ class NormalLoginForm extends React.Component {
       }
     });
   }
-  
+
   checkPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('newPassWord')) {
@@ -32,12 +34,12 @@ class NormalLoginForm extends React.Component {
       callback();
     }
   }
-  
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="resetPass">
-        <img src="/6035b12a.png"/>
+        <img src={logo}/>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <FormItem>
             {getFieldDecorator('oldPassWord', {

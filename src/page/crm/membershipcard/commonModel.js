@@ -2,12 +2,13 @@
  * Created by Flyforwards on 2017/6/2.
  */
 
-import React, { Component } from 'react'
-import { connect } from 'dva'
-import { Modal,Form,Row,Col,Input} from 'antd'
-const createForm = Form.create
-const FormItem = Form.Item
-import "./index.scss"
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import { Modal,Form,Row,Col,Input} from 'antd';
+const createForm = Form.create;
+const FormItem = Form.Item;
+import "./index.scss";
+import { queryURL } from '../../../utils/index.js';
 
 @createForm()
 class AlertModalFrom extends Component {
@@ -29,7 +30,7 @@ class AlertModalFrom extends Component {
   }
   handleOk() {
    this.props.form.validateFields((err, values) => {
-     values.customerId=this.props.user.dataDetailId;
+     values.customerId= queryURL('dataId');
       if (!err) {
       this.props.onOk(values)
         this.setState({

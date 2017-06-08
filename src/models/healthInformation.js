@@ -32,6 +32,10 @@ export default {
     imgInput_8_arr : [],
     bigImageData : [],
     bigImageHidden : false,
+    imgInput_1_required : false,
+    imgInput_2_required : false,
+    imgInput_3_required : false,
+    imgInput_4_required : false,
   },
   //加载页面
   subscriptions: {
@@ -99,7 +103,7 @@ export default {
     },
     setHealthInformation(state, { payload: { data,type }}){
       if(type === 1){
-        if(data.healthInfo){
+        if(data && data.healthInfo){
           const healthInfo = JSON.parse(data.healthInfo);
           const imgInput_1_arr = healthInfo.imgInput_1?JSON.parse(healthInfo.imgInput_1):[];
           const imgInput_2_arr = healthInfo.imgInput_2?JSON.parse(healthInfo.imgInput_2):[];
@@ -109,11 +113,21 @@ export default {
           const imgInput_6_arr = healthInfo.imgInput_6?JSON.parse(healthInfo.imgInput_6):[];
           const imgInput_7_arr = healthInfo.imgInput_7?JSON.parse(healthInfo.imgInput_7):[];
           const imgInput_8_arr = healthInfo.imgInput_8?JSON.parse(healthInfo.imgInput_8):[];
+          const requiredData = {};
+          const imgInput_1_required = healthInfo.radio_2 && healthInfo.radio_2 == 1 ? true : false;
+          const imgInput_2_required = healthInfo.radio_3 && healthInfo.radio_3 == 1 ? true : false;
+          const imgInput_3_required = healthInfo.radio_4 && healthInfo.radio_4 == 1 ? true : false;
+          const imgInput_4_required = healthInfo.radio_5 && healthInfo.radio_5 == 1 ? true : false;
+          requiredData.imgInput_1_required = imgInput_1_required;
+          requiredData.imgInput_2_required = imgInput_2_required;
+          requiredData.imgInput_3_required = imgInput_3_required;
+          requiredData.imgInput_4_required = imgInput_4_required;
+
           return {...state,editMedicalFlag : false, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
             imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
-            Input_8_arr:imgInput_8_arr}
+            Input_8_arr:imgInput_8_arr,...requiredData}
         }
-        // return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
+        return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
       }else if(type === 2){
         return { ...state,editNutritionFlag : false, nutritionHealthInformation : data };
       }else if(type === 3){
@@ -138,11 +152,20 @@ export default {
             const imgInput_6_arr = healthInfo.imgInput_6?JSON.parse(healthInfo.imgInput_6):[];
             const imgInput_7_arr = healthInfo.imgInput_7?JSON.parse(healthInfo.imgInput_7):[];
             const imgInput_8_arr = healthInfo.imgInput_8?JSON.parse(healthInfo.imgInput_8):[];
+            const requiredData = {};
+            const imgInput_1_required = healthInfo.radio_2 && healthInfo.radio_2 == 1 ? true : false;
+            const imgInput_2_required = healthInfo.radio_3 && healthInfo.radio_3 == 1 ? true : false;
+            const imgInput_3_required = healthInfo.radio_4 && healthInfo.radio_4 == 1 ? true : false;
+            const imgInput_4_required = healthInfo.radio_5 && healthInfo.radio_5 == 1 ? true : false;
+            requiredData.imgInput_1_required = imgInput_1_required;
+            requiredData.imgInput_2_required = imgInput_2_required;
+            requiredData.imgInput_3_required = imgInput_3_required;
+            requiredData.imgInput_4_required = imgInput_4_required;
             return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
               imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
-              Input_8_arr:imgInput_8_arr}
+              Input_8_arr:imgInput_8_arr,...requiredData}
           }
-          // return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
+          return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
         }else if(data.type === 2){
           return {...state,saveDone:saveDone,editNutritionFlag : false,type:type, nutritionHealthInformation : data}
         }else if(data.type === 3){
@@ -172,15 +195,15 @@ export default {
       }else if(data.type === 3){
         return { ...state,type:data.type, editSkinFlag:true };
       }else if(data.type === 4){
-        return { ...state,type:data.type, editSkinFlag:true};
+        return {...state};
       }
       return {...state};
     },
     clearAllHealthInformation(state, { payload: data }){
       return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null,
         imgInput_1_arr:[],imgInput_2_arr:[],imgInput_3_arr:[],imgInput_4_arr:[],
-        imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],
-        Input_8_arr:[]}
+        imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],Input_8_arr:[],
+        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,}
     },
     //设置查看附件Modal数据
     setBigImageModalProps(state, { payload: data }){
@@ -296,6 +319,20 @@ export default {
       }
       return {...state}
     },
+    setImgInputRequired(state, { payload: data }){
+      const imgInputName = data.imgInputName;
+      const value = data.value == 1 ? true : false;
+      if(imgInputName === 'imgInput_1'){
+        return {...state,imgInput_1_required:value}
+      }else if(imgInputName === 'imgInput_2'){
+        return {...state,imgInput_2_required:value}
+      }else if(imgInputName === 'imgInput_3'){
+        return {...state,imgInput_3_required:value}
+      }else if(imgInputName === 'imgInput_4'){
+        return {...state,imgInput_4_required:value}
+      }
+      return {...state}
+    }
   }
 
 };

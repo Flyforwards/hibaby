@@ -55,3 +55,10 @@ export function deleteCardById (values) {
     body:JSON.stringify(values)
   })
 };
+//获取会员卡级别
+export function getLevel(values) {
+  return request('/crm/api/v1/dictionary/getDictionary', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};

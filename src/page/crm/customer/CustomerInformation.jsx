@@ -161,7 +161,7 @@ function cusFromItem(form,dict) {
     callback('请输入会员身份或特殊身份');
   }
 
-  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || dict.submitStr}!`}],};
+  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || '此项'}!`}],};
 
   if (dict.submitStr === 'contact')
   {
@@ -182,7 +182,10 @@ function cusFromItem(form,dict) {
   {
     rules = {rules: [{validator:identityRule}]};
   }
-
+  if (dict.submitStr === 'contractNumber')
+  {
+    rules = { rules: [{ required: true, max:12, message: `请输入正确的${dict.title}!`}]};
+  }
 
   return(
     dict.title ?
@@ -432,7 +435,7 @@ function ExtensionInfo(props) {
   function deleteContractAppendicesFileProps(values) {
     dispatch({type:'addCustomer/deleteContractDLC',payload:values})
     props.form.resetFields(['contractAppendices']);
-    props.form.validateFields(['contractAppendices'], { force: false },tt);
+    props.form.validateFields(['contractAppendices'], { force: false });
   }
 
   function loadProgress(value) {
@@ -481,7 +484,7 @@ function ExtensionInfo(props) {
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
     {title:'合同编号',component:'Input',submitStr:'contractNumber'},
-    {title:'关联客房',component:'Input',submitStr:'associatedRooms'},
+    {title:'关联客房',component:'InputNumber',submitStr:'associatedRooms'},
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,initValue:memberNumberValue},
@@ -610,6 +613,15 @@ class customerInformation extends React.Component{
 
   handleSubmitBase() {
 
+    let baseDict = null;
+    let exDict = null;
+
+    this.refs.baseForm.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        baseDict = values;
+      }
+    });
+
     const formValues = this.refs.extensionForm.getFieldsValue()
 
     let num = 0;
@@ -626,15 +638,18 @@ class customerInformation extends React.Component{
     if (num > max)
     {
       this.refs.extensionForm.validateFieldsAndScroll((err, values) => {
-
         if (!err) {
-          this.baseFormRule(values);
+          exDict = values;
+        }
+        else {
+          return;
         }
       });
     }
-    else {
-      this.baseFormRule();
-    }
+
+    if (!baseDict) return;
+
+    this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
 
   }
 
@@ -642,13 +657,6 @@ class customerInformation extends React.Component{
     this.props.dispatch(routerRedux.push('/crm/customer'))
   }
 
-  baseFormRule(dict){
-    this.refs.baseForm.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:values,exDict:dict}})
-      }
-    });
-  }
 
 
   render() {

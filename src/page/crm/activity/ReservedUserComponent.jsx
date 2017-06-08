@@ -31,7 +31,9 @@ class ReservedUserComponent extends Component {
       title: '预产期',
       dataIndex: 'dueDate',
       render: (record) => {
-        return moment(record).format("YYYY-MM-DD")
+        if (record!=null) {
+          return moment(record).format("YYYY-MM-DD")
+        }
       }
     }, {
       title: '怀孕周期',

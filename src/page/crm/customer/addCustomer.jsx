@@ -29,14 +29,14 @@ class addCustomer extends React.Component{
       <TabPane className='tabsContent' tab="客户信息" key="1">
         {isDetail ? <CustomerDetails/> : <CustomerInformation/>}
       </TabPane>,
-      <TabPane tab="健康档案" disabled={!this.props.users.baseData} key="2">
+      <TabPane tab="健康档案" disabled={!(editCustomer || isDetail)} key="2">
         <UserHealthInformation/>
       </TabPane>,
       <TabPane tab="套餐" key="3" disabled={!this.props.users.expandData}>
         <AddCourse />
       </TabPane>];
 
-    if((editCustomer || isDetail)&&this.props.users.expandData){
+    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess){
       TabPaneAry.push(<TabPane tab="会员卡" key="4">
         <MembershipCard/>
       </TabPane>)

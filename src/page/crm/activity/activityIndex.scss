@@ -224,10 +224,14 @@
     width:135px;
   }
 }
+.ant-modal-close{
+  width: 50px;
+}
 .subscribe{
   width: 150px;
   height:40px;
-  margin: 10px 0 0 50px;
+  margin: 10px 50px;
+  font:14px "微软雅黑" ;
 }
 .subscribe:hover{
   background:#f5b55d;

@@ -126,16 +126,16 @@ class MemberShipCard extends Component {
   }
  //点击打印
   onPrint() {
-    // if(this.props.feeRecord != '' || this.props.renewRecord != '' || this.props.refundRecord != ''){
+     if(this.props.feeRecord != '' || this.props.renewRecord != '' || this.props.refundRecord != ''){
       this.props.dispatch(routerRedux.push({
         pathname:'/crm/customer/printPage',
         query:{
           dataId:this.props.user.dataDetailId,
         }
       }))
-    // }else{
-    //   message.warn('暂无可打印数据')
-    // }
+    }else{
+      message.warn('暂无可打印数据')
+    }
 
   }
 
@@ -144,9 +144,19 @@ class MemberShipCard extends Component {
       flagValue:key,
     })
   }
+  //tab点击
+  onTabClick(key){
+   this.props.dispatch({
+     type:'membershipcard/getChangeTabKey',
+     payload:{
+       activeKeys:key,
+     }
+   })
+  }
+
 
   render() {
-    const { feeRecord,renewRecord,refundRecord } = this.props;
+    const { feeRecord,renewRecord,refundRecord,activeKey } = this.props;
     return (
       <div className="card" style={{overflow:'hidden'}}>
         <div>
@@ -157,7 +167,7 @@ class MemberShipCard extends Component {
           <div>
 
           </div>
-          <Tabs onChange={this.tabChange.bind(this)} type="card">
+          <Tabs activeKey={activeKey} onChange={this.tabChange.bind(this)} type="card" onTabClick={this.onTabClick.bind(this)}>
             <TabPane tab="扣费记录" key="1">
                 <ChargebackRecord />
             </TabPane>
@@ -183,7 +193,7 @@ class MemberShipCard extends Component {
             onOk={this.handleCancelCard.bind(this)}
             type="DELETE"
           >
-            <Button  type="danger" className="cardBtn">消卡</Button>
+            <Button  type="danger" className="cardBtn">销卡</Button>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -226,11 +236,12 @@ class MemberShipCard extends Component {
 
 
 function mapStateToProps(state) {
-  const { feeRecord,renewRecord,refundRecord } = state.membershipcard;
+  const { feeRecord,renewRecord,refundRecord ,activeKey} = state.membershipcard;
   return {
     feeRecord,
     renewRecord,
     refundRecord,
+    activeKey,
     user:state.addCustomer,
     cards:state.membershipcard,
   };

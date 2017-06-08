@@ -11,6 +11,7 @@ export default {
   namespace: 'membershipcard',
   state: {
     fetching:false,
+    activeKey:"1",
     chargeVisible:false,
     commonVisible:{},
     trigger: false,
@@ -155,6 +156,13 @@ export default {
     savePrintAccount(state, {payload: {data: printList}}){
       return { ...state, printList }
     },
+  //改变tab值
+    getChangeTabKey(state, {payload: {activeKeys}}){
+      return {
+        ...state,
+        activeKey:activeKeys ,
+      }
+    },
 
 
   },
@@ -195,6 +203,12 @@ export default {
         yield put({
           type:'getBalanceInfo',
         });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            activeKeys:"3",
+          }
+        });
       }
     },
     //退费
@@ -228,6 +242,12 @@ export default {
         });
         yield put({
           type:'getBalanceInfo',
+        });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            "activeKeys":"3",
+          }
         });
       }
     },
@@ -264,6 +284,12 @@ export default {
           type:'switchCommonState',
           payload: {commonVisible, trigger: !trigger}
         });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            activeKeys:"2",
+          }
+        });
 
       }
     },
@@ -290,6 +316,12 @@ export default {
         });
         yield put({
           type:'getBalanceInfo',
+        });
+        yield put({
+          type:'getChangeTabKey',
+          payload:{
+            "activeKeys":"1",
+          }
         });
       }
     },

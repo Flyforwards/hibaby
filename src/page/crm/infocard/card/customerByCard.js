@@ -59,8 +59,8 @@ class CustomerByCard extends Component {
       key: 'contractNumber'
     },{
       title: '添加人',
-      dataIndex: 'operator1',
-      key: 'operator1'
+      dataIndex: 'operator2',
+      key: 'operator2'
     }];
   }
 

@@ -67,8 +67,8 @@ class CustomerCompDetailIndex extends React.Component {
     const { departments, form, item } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol:{ span: 2 },
-      wrapperCol:{ span:22 }
+      labelCol:{ span: 3 },
+      wrapperCol:{ span:20 }
     }
 
     const options =  departments.map((record)=>{
@@ -89,9 +89,9 @@ class CustomerCompDetailIndex extends React.Component {
       if (save) {
         buttons = (
           <div className="button-wrapper">
-            <Button disabled={!save} className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.handleSubmit.bind(this) }>保存</Button>
+            <Button disabled={!save} className="editBtn SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.handleSubmit.bind(this) }>保存</Button>
             <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
-            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+            <Button className="BackBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
           </div>)
         card = (
           <Card className="ComplaintHandle" title = "投诉处理:">

@@ -62,6 +62,19 @@ button{
   vertical-align: middle;
   width: 0;
 }
+.ant-modal-footer {
+  .ant-btn{
+    width: 100px;
+    background: #b67233;
+    border-color:#b67233;
+    color:#fff;
+  }
+  .ant-btn-primary{
+    background: #f1e8df;
+    border-color:#d4ad89;
+    color:#b67233;
+  }
+}
 
 .ant-message-notice-content{
   padding:6px 15px;

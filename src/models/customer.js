@@ -14,6 +14,7 @@ export default {
     list: [],
     item: null,
     editItem: null,
+    packageList:[],//主套餐列表
     signUserList: [], // 预约用户列表
     editSignUserList: [], // 编辑
     userList:[], // 会员用户列表
@@ -42,6 +43,9 @@ export default {
         return {...state,fetusAry:todo.data};
       }
       return {...state};
+    },
+    setPackageList(state, { payload: todo }){
+      return {...state,packageList:todo.data};
     },
   },
   effects: {
@@ -76,7 +80,6 @@ export default {
       if (values.size === undefined) {
         values.size = 10;
       }
-      console.log(values)
       const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, values);
       if (code == 0) {
         yield put({
@@ -110,6 +113,19 @@ export default {
         });
       }
     },
+
+    *listByMain({ payload: value },{ call, put }){
+
+      const { data: { code, data } } = yield call(customerService.listByMain);
+      if (code == 0) {
+        yield put({
+          type: 'setPackageList',
+          payload: {
+            data:data,
+          }
+        });
+      }
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -119,6 +135,9 @@ export default {
           dispatch({
             type: 'getCustomerPage',
             payload: query
+          });
+          dispatch({
+            type: 'listByMain',
           });
           dispatch({
             type: 'getMemberShipCard',

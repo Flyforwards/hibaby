@@ -53,6 +53,11 @@ export default {
       let cardType ={ ...state, typeValues}
       return cardType;
     },
+    //会员卡级别
+    levelInfo(state, { payload: { data: level } }){
+      let levelInfo = { ...state, level }
+      return levelInfo;
+    },
 
     getCustomerPageSave(state, { payload: { list, userPagination }}) {
       return {...state, list, pagination: {  ...state.userPagination,...userPagination }};
@@ -184,7 +189,18 @@ export default {
         })
       }
     },
-
+    //获取会员卡级别
+    *getLevelInfo({ payload: values }, { call, put }) {
+      const { data: { code, data } } = yield call(cardService.getLevel, values);
+      if (code == 0) {
+        yield put({
+          type: 'levelInfo',
+          payload: {
+            data
+          }
+        });
+      }
+    },
 
   },
 
@@ -204,6 +220,14 @@ export default {
           });
           dispatch({
             type: 'getZhekouInfo',
+          });
+          dispatch({
+            type:'getLevelInfo',
+            payload:{
+             "abName":"HYKJB",
+              "softDelete":0,
+              "type":1,
+            }
           });
         };
       })

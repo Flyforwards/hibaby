@@ -3,8 +3,8 @@
 import React from 'react'
 import {message, Button, Icon} from 'antd'
 import Page from '../../framework/page'
-import request from '../../common/request/request.js'
-import './index.scss'
+import './index.scss';
+import logo from 'common/logo.png'
 
 class Home extends React.Component {
 
@@ -15,9 +15,9 @@ class Home extends React.Component {
     render() {
         return (
             <Page>
-                <div className='wellcome'>
-                    <Icon type='smile-o'/>
-                    <h3>antd admin boilerplate</h3>
+                <div className='welcome'>
+                    {/*<Icon type='smile-o'/>*/}
+                    <img src={logo}/>
                 </div>
             </Page>
         )
