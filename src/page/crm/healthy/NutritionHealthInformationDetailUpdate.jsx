@@ -302,7 +302,7 @@ function NutritionHealthInformationDetailUpdate(props) {
                 </Col>
                 <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
                   {radioAllRow(radioNames[13],{radioItems: ['猪肉','牛肉','羊肉']},'',false,'',13)}
-                  {radioWhiteRow(radioNames[14], inputNames[14], {radioItems: ['其他']},'',false,'',14)}
+                  {radioWhiteRow(radioNames[13], inputNames[14], {radioItems: ['其他']},'',false,'',14)}
                 </Col>
               </Row>
               <Row className="dietTaboo">
@@ -311,7 +311,7 @@ function NutritionHealthInformationDetailUpdate(props) {
                 </Col>
                 <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
                   {radioAllRow(radioNames[15],{radioItems: ['鸡肉', '鱼肉', '虾蟹','鱿鱼']},'',false,'',15)}
-                  {radioWhiteRow(radioNames[16], inputNames[15], {radioItems: ['其他']},'',false,'',16)}
+                  {radioWhiteRow(radioNames[15], inputNames[15], {radioItems: ['其他']},'',false,'',16)}
                 </Col>
               </Row>
               <Row className="dietTaboo">
@@ -320,7 +320,7 @@ function NutritionHealthInformationDetailUpdate(props) {
                 </Col>
                 <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
                   {radioAllRow(radioNames[17],{radioItems: ['柑橘类', '瓜类', '苹果','香蕉','凤梨','芒果']},'',false,'',17)}
-                  {radioWhiteRow(radioNames[18], inputNames[16], {radioItems: ['其他']},'',false,'',18)}
+                  {radioWhiteRow(radioNames[17], inputNames[16], {radioItems: ['其他']},'',false,'',18)}
                 </Col>
               </Row>
               {radioAllRow(radioNames[19], {title: '腌制类',radioItems: [ '咸鱼', '腊肉', '泡菜']},'',false,'',19)}

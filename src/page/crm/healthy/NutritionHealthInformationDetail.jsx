@@ -157,26 +157,37 @@ function NutritionHealthInformationDetail(props) {
   }
   //row 单选输入框
   function radioWhiteRow (radioName, inputName, dict, inputTitle, lastRow, suffix, key) {
-
-    return (
-      <Row  className="radioWhiteRow" key={key}>
-        <Col className="radioWhiteRowLeft"  span="10" style={{height: '55px',display: 'table'}}>
+    const radioValue = healthInfo[radioName];
+    if(radioValue && (radioValue == '其他' || radioValue == '有' || radioValue == '是')){
+      return (
+        <Row  className="radioWhiteRow" key={key}>
+          <Col className="radioWhiteRowLeft"  span="10" style={{height: '55px',display: 'table'}}>
             {myRadioForm(radioName ,dict)}
-        </Col>
-        <Col className="radioWhiteRowRight" span="10"  style={{height: '55px',display: 'table'}}>
+          </Col>
+          <Col className="radioWhiteRowRight" span="10"  style={{height: '55px',display: 'table'}}>
             <FormItem>
               {getFieldDecorator(`${inputName}`, {
                 initialValue : healthInfo[inputName],
                 rules: [{ required: false, message: '  ' }]
               })(
                 <Input disabled={disabled}
-                  suffix={suffix}
+                       suffix={suffix}
                 />
               )}
             </FormItem>
+          </Col>
+        </Row>
+      )
+    }else{
+      return (<Row  className="radioWhiteRow" key={key}>
+        <Col className="radioWhiteRowLeft"  span="10" style={{height: '55px',display: 'table'}}>
+          {myRadioForm(radioName ,dict)}
         </Col>
-      </Row>
-    )
+        <Col className="radioWhiteRowRight" span="10"  style={{height: '55px',display: 'table'}}>
+        </Col>
+      </Row>)
+    }
+
   }
   //row 左边单选右边上传附件
   function radioUploadOptionsRow (radioName, dict, key, lastRow) {
