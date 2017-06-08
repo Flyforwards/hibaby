@@ -82,17 +82,23 @@ export default {
       }
       const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, values);
       if (code == 0) {
-        yield put({
-          type: 'getCustomerPageSave',
-          payload: {
-            list: data,
-            pagination: {
-              current: Number(page) || 1,
-              pageSize: Number(size) || 10,
-              total: total,
+        if(data.length == 0 && page > 1){
+          yield put(routerRedux.push(`/crm/customer?page=${page -1}&size=10`))
+
+        }else{
+          yield put({
+            type: 'getCustomerPageSave',
+            payload: {
+              list: data,
+              pagination: {
+                current: Number(page) || 1,
+                pageSize: Number(size) || 10,
+                total: total,
+              },
             },
-          },
-        })
+          })
+        }
+
       }
     },
 
@@ -133,7 +139,10 @@ export default {
 
         if (pathname === '/crm/customer') {
 
-
+          dispatch({type: 'getCustomerPage',});
+          dispatch({type: 'listByMain',});
+          dispatch({type: 'getMemberShipCard',});
+          dispatch({ type: 'getDataDict',payload:{"abName": 'YCC',}});
         }
         // if (pathname === '/crm/customer/detail') {
         //   dispatch({
