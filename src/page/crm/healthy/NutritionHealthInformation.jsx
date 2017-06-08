@@ -55,7 +55,7 @@ function NutritionHealthInformation(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={dict.radioItems[i]}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -81,7 +81,7 @@ function NutritionHealthInformation(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={dict.radioItems[i]}>{dict.radioItems[i]}</Radio>
       );
     }
 
