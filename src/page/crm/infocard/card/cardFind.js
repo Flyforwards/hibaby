@@ -61,7 +61,7 @@ class CardFind extends Component {
     const { form ,typeValues, zheKou } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol:{ span: 6 },
+      labelCol:{ span:7 },
       wrapperCol:{ span:15 }
     }
 
@@ -97,14 +97,32 @@ class CardFind extends Component {
             <Col span= { 7 } style={{width:'290px'}}>
               <FormItem  {...formItemLayout} label="折扣权限">
                 {getFieldDecorator('salesDiscount')(
-                  <DictionarySelect  placeholder="请选择" selectName="MEMBER" />
+                  <Select
+                    showSearch
+                    allowClear
+                    placeholder="请选择"
+                    optionFilterProp="children"
+                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    onChange={ this.onSelectChange.bind(this)}
+                  >
+                    { limitOptions }
+                  </Select>
                 )}
               </FormItem>
             </Col>
             <Col span={ 7 } style={{width:'290px'}}>
               <FormItem {...formItemLayout} label="卡种类型">
                 {getFieldDecorator('cardType')(
-                  <DictionarySelect  placeholder="请选择" selectName="MEMBER" />
+                  <Select
+                    showSearch
+                    allowClear
+                    placeholder="请选择"
+                    optionFilterProp="children"
+                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    onChange={ this.onSelectChangeCard.bind(this)}
+                  >
+                    { cardTypeOptions }
+                  </Select>
                 )}
               </FormItem>
             </Col>

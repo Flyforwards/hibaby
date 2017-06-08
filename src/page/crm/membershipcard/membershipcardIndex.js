@@ -126,16 +126,16 @@ class MemberShipCard extends Component {
   }
  //点击打印
   onPrint() {
-    // if(this.props.feeRecord != '' || this.props.renewRecord != '' || this.props.refundRecord != ''){
+     if(this.props.feeRecord != '' || this.props.renewRecord != '' || this.props.refundRecord != ''){
       this.props.dispatch(routerRedux.push({
         pathname:'/crm/customer/printPage',
         query:{
           dataId:this.props.user.dataDetailId,
         }
       }))
-    // }else{
-    //   message.warn('暂无可打印数据')
-    // }
+    }else{
+      message.warn('暂无可打印数据')
+    }
 
   }
 
@@ -183,7 +183,7 @@ class MemberShipCard extends Component {
             onOk={this.handleCancelCard.bind(this)}
             type="DELETE"
           >
-            <Button  type="danger" className="cardBtn">消卡</Button>
+            <Button  type="danger" className="cardBtn">销卡</Button>
           </AlertModalFrom>
 
           <AlertModalFrom

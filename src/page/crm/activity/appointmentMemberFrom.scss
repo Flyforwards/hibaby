@@ -1,11 +1,21 @@
 .activity-cent{
-  width:98%;
-  margin:0 1%;
+  min-width: 1000px;
   .activityTop{
+    width: 960px;
+    .selectTop{
+      width: 600px;
+    }
+     .ant-form-item-control-wrapper{
+       width:600px;
+       .ant-form-item-control{
+         width:600px;
+       }
+     }
     .findBtn{
       width:130px;
       float: left;
       font: 14px "微软雅黑";
+      margin-left: 10px;
     }
     .resetBtn{
       width:130px;
@@ -16,16 +26,68 @@
     button{
       font: 14px "微软雅黑";
     }
+
   }
   .activityTitle{
+    width: 960px;
     label{
       font: 12px "微软雅黑";
     }
-    .ant-form-item-control {
-      width: 110px;
+    .ageItem{
+      width: 100px;
+      float: left;
+      .ant-form-item-label{
+        width: 40px;
+      }
+      .ant-form-item-control-wrapper{
+        width: 60px;
+        .ant-input-number-lg{
+          width:60px;
+        }
+      }
+    }
+    .ageItem2{
+      width: 60px;
+      float: left;
+      margin-left: 5px;
+    }
+    .PreData{
+      width:180px;
+      float: left;
+      .ant-form-item-label{
+        width: 60px;
+      }
+      .ant-form-item-control-wrapper{
+        width: 114px;
+      }
     }
     .TireNum{
-      .ant-form-item-control {
+      width:180px;
+      float: left;
+      .ant-form-item-label{
+        width: 60px;
+      }
+      .ant-form-item-control-wrapper{
+        width: 114px;
+      }
+    }
+    .idCard{
+      width:180px;
+      float: left;
+      .ant-form-item-label{
+        width: 80px;
+      }
+      .ant-form-item-control-wrapper{
+        width: 100px;
+      }
+    }
+    .Operator{
+      width:180px;
+      float: left;
+      .ant-form-item-label{
+        width: 80px;
+      }
+      .ant-form-item-control-wrapper{
         width: 100px;
       }
     }
@@ -44,6 +106,7 @@
   }
    .ant-card{
      margin-top: 10px;
+     width:960px;
    }
 
   .ant-table-thead > tr > th {
@@ -85,4 +148,19 @@
   height: 100%;
   vertical-align: middle;
   width: 0;
+}
+.ant-modal-body{
+  .ant-form-item-label{
+    width:100px;
+  }
+  label{
+    font: 14px "微软雅黑";
+  }
+  label:before{
+    content: '';
+    display: none;
+  }
+  .ant-form-item-control-wrapper{
+    width:200px;
+  }
 }

@@ -13,24 +13,24 @@ import { Link } from 'react-router';
 import DictionarySelect from 'common/dictionary_select';
 
 class CardModal extends Component {
-  componentWillMount() {
-    const { dispatch } = this.props;
-    const str = window.location.search
-    const dataId = str.substr(str.length - 1, 1);
-    dispatch({
-      type: 'card/getCardKindInfo',
-      payload: { dataId }
-    })
-
-
-  }
+  // componentWillMount() {
+  //   const { dispatch } = this.props;
+  //   const str = window.location.search
+  //   const dataId = str.substr(str.length - 1, 1);
+  //   dispatch({
+  //     type: 'card/getCardKindInfo',
+  //     payload: { dataId }
+  //   })
+  //
+  //
+  // }
   componentDidMount() {
     this.props.dispatch({
       type:'card/getLevelInfo',
       payload:{
-        abName:'HYKJB',
-        softDelete:0,
-        type:1,
+        "abName":'HYKJB',
+        "softDelete":0,
+        "type":1,
       }
     })
   }
@@ -129,7 +129,15 @@ class CardModal extends Component {
                     initialValue: cardKind && cardKind.level ,
                     rules: [{ required: true, message: '请选择会员卡级别' }]
                   })(
-                    <DictionarySelect  placeholder="请选择" selectName="MEMBER" />
+                    <Select
+                      showSearch
+                      allowClear
+                      placeholder="请选择"
+                      optionFilterProp="children"
+                      filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                      { options }
+                    </Select>
                   )}
                 </FormItem>
               </Col>
