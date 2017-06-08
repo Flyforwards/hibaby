@@ -123,14 +123,18 @@ class Organization extends React.Component {
           key: 'operating',
           width: '10%',
           render: (text, record, index) => {
-            let Forbidden = false
+            let Forbidden = "禁用"
+            const detail = !this.props.permissionAlias.contains('EMPLOYEE_DETAIL');
+            let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
             if(record.status == 1){
-              Forbidden = true
+              Forbidden = "已禁用"
+              disable = true;
             }
+
             return (
                 <span>
-                 <Link to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                  <a href="#" className="twoA" disabled={ Forbidden } onClick={this.Disabled.bind(this,record)}>禁用</a>
+                  <Link disabled={ detail} to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
+                  <Link className="twoA" disabled={ disable } onClick={this.Disabled.bind(this,record)}>{Forbidden}</Link>
                 </span>
             );
           },
@@ -291,6 +295,8 @@ this.setState({
           type: 1,
           softDelete: 0
         }
+
+        const add = this.props.permissionAlias.contains('EMPLOYEE_ADD')
         return (
         <div className="organizationConnet">
             <main className="yt-admin-framework-Customer-a">
@@ -314,8 +320,8 @@ this.setState({
               </div>
               <div className="btn">
                 {this.state.tissueProperty == 3?
-                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}>新增员工</Link></span>:
-                  <span className="Organization-Inquire"><Link to="/system/organization/addUser">新增员工</Link></span>
+                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}><Button disabled={!add}>新增员工</Button></Link></span>:
+                  <span className="Organization-Inquire"><Link to="/system/organization/addUser"><Button disabled={!add}>新增员工</Button></Link></span>
                 }
 
                 <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
@@ -356,47 +362,7 @@ this.setState({
         )
     }
 }
-function Organization({
-  dispatch,
-  loading,
-  list,
-  getPosition,
-  getDeptList,
-  getEndemic,
-  total,
-  page,
-  results,
-  range,
-  code
-}) {
-  return ( < div >
-    <Organizationed dispatch = {
-      dispatch
-    }
-    list = {
-      list
-    }
-    getEndemic = {
-      getEndemic
-    }
-    getPosition = {
-      getPosition
-    }
-    getDeptList = {
-      getDeptList
-    }
-    loading = {
-      loading
-    }
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    /> </div >
-  )
-}
+
 function mapStateToProps(state) {
   const {
     list,
@@ -407,8 +373,8 @@ function mapStateToProps(state) {
     page,
     results,
     range,
-    code
   } = state.organization;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.organization,
     list,
@@ -419,7 +385,7 @@ function mapStateToProps(state) {
     page,
     results,
     range,
-    code
+    permissionAlias
     };
 }
 export default connect(mapStateToProps)(Organization)

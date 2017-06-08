@@ -57,44 +57,45 @@ class CheckData extends React.Component {
         })
 
       };
-        return (
-            <div className="xuanxiang container2">
-                <Card title = "字段信息:" >
-                  <FormItem {...formItemLayout} label='字段名称'>
-                    {getFieldDecorator('name',{
-                      initialValue: name,
-                    })(
-                      <Input readOnly={true}/>
-                    )}
-                  </FormItem>
-                  <FormItem {...formItemLayout} label='字段描述'>
-                    {getFieldDecorator('description',{
-                      initialValue: description,
-                    })(
-                      <Input readOnly={true} />
-                    )}
-                  </FormItem>
-                  <FormItem {...formItemLayout} label='别名'>
-                    {getFieldDecorator('abName',{
-                      initialValue: abName,
-                    })(
-                      <Input readOnly={true} />
-                    )}
-                  </FormItem>
-                </Card>
-                <Card title = "下拉选项:" >
-                  {fields}
-                </Card >
-                <div className="retuSave">
-                    <Link to='/system/group-char'>
-                    <Button className = "editable-add-btn return"> 返回 </Button>
-                    </Link>
-                    <Link to={{pathname:'/system/group-char/edit',query:{ dataId:`${editid}`}}}>
-                        <Button className = "editable-add-btn SaveBtn"> 编辑 </Button>
-                    </Link>
-                </div>
-           </div>
-        )
+      const edit = !this.props.permissionAlias.contains('GROUP_CHAR_EDIT');
+      return (
+          <div className="xuanxiang container2">
+              <Card title = "字段信息:" >
+                <FormItem {...formItemLayout} label='字段名称'>
+                  {getFieldDecorator('name',{
+                    initialValue: name,
+                  })(
+                    <Input readOnly={true}/>
+                  )}
+                </FormItem>
+                <FormItem {...formItemLayout} label='字段描述'>
+                  {getFieldDecorator('description',{
+                    initialValue: description,
+                  })(
+                    <Input readOnly={true} />
+                  )}
+                </FormItem>
+                <FormItem {...formItemLayout} label='别名'>
+                  {getFieldDecorator('abName',{
+                    initialValue: abName,
+                  })(
+                    <Input readOnly={true} />
+                  )}
+                </FormItem>
+              </Card>
+              <Card title = "下拉选项:" >
+                {fields}
+              </Card >
+              <div className="retuSave">
+                  <Link to='/system/group-char'>
+                  <Button className = "editable-add-btn return"> 返回 </Button>
+                  </Link>
+                  <Link to={{pathname:'/system/group-char/edit',query:{ dataId:`${editid}`}}}>
+                      <Button disabled={edit} className = "editable-add-btn SaveBtn"> 编辑 </Button>
+                  </Link>
+              </div>
+         </div>
+      )
     }
 }
 
@@ -107,21 +108,15 @@ function GetQueryString(name){
 
 
 
-function check({dispatch,data,code}) {
-    return (<div >
-              <CheckData dispatch = {dispatch} data = {data}/>
-            </div>
-      )
-  }
-
 function mapStateToProps(state) {
   const {
     item: data
   } = state.save;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.save,
-    data
+    data,
+    permissionAlias
   };
 }
-export default connect(mapStateToProps)(check);
+export default connect(mapStateToProps)(CheckData);
