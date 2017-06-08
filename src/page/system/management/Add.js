@@ -84,7 +84,7 @@ class AddGroupChar extends React.Component {
               <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                 {getFieldDecorator(`names-${k}`, {
                   validateTrigger: ['onChange', 'onBlur'],
-                  rules: [{ required: true, message: '选项不能为空' }],
+                  rules: [{ required: true, message: '选项不能为空,限50字！' ,max: 50}],
                 })(
                   <Input rows = {6} className = "input2"/>
                 )}
@@ -101,7 +101,7 @@ class AddGroupChar extends React.Component {
             <Card title = "字段信息:" >
                 <Form >
                     <FormItem className = "div">
-                    {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项！' }],
+                    {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项,限50字！' , max: 50}],
                   })(<div>
                         <p className ="label" > 字段名称 </p>
                         <Input className="input"/>
@@ -109,7 +109,7 @@ class AddGroupChar extends React.Component {
                     )}
                   </FormItem>
                   <FormItem className = "div">
-                  {getFieldDecorator('description', {rules: [{ required: true, message: '字段描述为必填项！' }],
+                  {getFieldDecorator('description', {rules: [{ required: true, message: '字段描述为必填项,限50字！' ,max: 50}],
                 })(<div>
                       <p className = "label"> 字段描述 </p>
                       <Input className="input"/>
@@ -117,7 +117,7 @@ class AddGroupChar extends React.Component {
                   )}
                   </FormItem>
                   <FormItem className = "div">
-                    {getFieldDecorator('abName', {rules: [{ required: true, message: '别名为必填项！' }],
+                    {getFieldDecorator('abName', {rules: [{ required: true, message: '别名为必填项,限50字', max: 50 }],
                     })(<div>
                         <p className = "label"> 别名 </p>
                         <Input className="input"/>
