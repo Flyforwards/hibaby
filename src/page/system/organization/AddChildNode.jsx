@@ -217,7 +217,7 @@ class AddChildNodeed extends Component {
                     >
                       {getFieldDecorator('nodeLeader', {
                       })(
-                        <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
+                        <Button className="selBtn" onClick={this.directLeader.bind(this)}>选择</Button>
                       )}
                     </FormItem>
                 </Form>

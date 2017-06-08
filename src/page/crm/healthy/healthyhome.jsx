@@ -1,7 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
-import { Button, Col, Form, Input, Row, Radio, Select,message } from 'antd'
+import { Button, Col, Form, Input, Row, Radio, Select, message, Icon } from 'antd'
 import styles from './healthyhome.scss';
 import FileUpload from './fileUpload';
 import { connect } from 'dva';
@@ -133,7 +133,7 @@ function Healthyhome(props) {
             })(
 
               <FileUpload addImgFun={addImgFun} deleteImgFun={deleteImgFun} imgInputName={imgInputName}>
-                <Button key={key} type="primary" className="uploadOptionsButton">上传附件</Button>
+                <Button key={key} type="primary" className="uploadOptionsButton"><Icon type="upload"/>上传附件</Button>
               </FileUpload>
             )}
           </FormItem>
@@ -172,27 +172,27 @@ function Healthyhome(props) {
   //Apgar评分
   function apgarScoreRow () {
     return (
-      <div>
+      <div className="ApgarOption">
         <Col span="5">
           <div className="uploadOptions">Apgar评分:</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_0')}</div>
+          <div className="upload">{scoreSelectDiv('select_0')}</div>
         </Col>
         <Col span="1">
           <div className="score-line">-</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_1')}</div>
+          <div className="upload">{scoreSelectDiv('select_1')}</div>
         </Col>
         <Col span="1">
           <div className="score-line">-</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_2')}</div>
+          <div className="upload">{scoreSelectDiv('select_2')}</div>
         </Col>
         <Col span="1">
-          <div className="uploadOptions">分</div>
+          <div className="uploadOptions Fraction">分</div>
         </Col>
       </div>
     )
@@ -239,17 +239,16 @@ function Healthyhome(props) {
   //row 左边单选右边上传附件
   function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName) {
 
-    var col1Class='topItembg';
-    var col2Class='leftRightItemBg';
+    var col1Class='topRightItemBg';
+    var col2Class='onlyLeftItemBg';
     if (lastRow == true){
-      col1Class='bottomItemBg';
-      col2Class='allNoneBg';
+      col1Class='onlyLeftItemBg';
     }
 
     return (
-      <Row>
+      <Row className={col1Class}>
         <Col span="12">
-          <div className={col1Class}>
+          <div>
             {myRadioForm(radioName, dict)}
           </div>
         </Col>
@@ -260,6 +259,7 @@ function Healthyhome(props) {
         </Col>
       </Row>
     )
+
   }
 
   //row 左边单选右边空白
@@ -352,7 +352,7 @@ function Healthyhome(props) {
             {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性']},'1',false,'imgInput_1')}
             {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性']},'2',false,'imgInput_2')}
             {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性']},'3',false,'imgInput_3')}
-            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性']},'4',false,'imgInput_4')}
+            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性']},'4',true,'imgInput_4')}
           </Col>
         </Row>
 
@@ -361,14 +361,14 @@ function Healthyhome(props) {
             <div className="itemTitle">孕期合并症</div>
           </Col>
           <Col span="22">
-            <Row>
+            <Row className="topRightItemBg" style={{minHeight: '110px'}}>
               <Col span="12">
-                <div className="topItembg" style={{height: '110px'}}>
+                <div>
                   {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性']})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg" style={{height: '110px',paddingTop: '25px'}}>
+                <div className="onlyLeftItemBg" style={{minHeight: '110px'}}>
                   {uploadOptionsItem('5','imgInput_5')}
                 </div>
               </Col>
@@ -626,8 +626,8 @@ function Healthyhome(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton' onClick={handleBack}>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
+        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
+        <Button className='commitButton SaveBtn' type="primary" onClick={handleSubmit}>保存</Button>
       </div>
 
     </div>

@@ -1,4 +1,5 @@
 .AddChildNode{
+  min-width:600px;
 	.ant-modal-header{
 		text-align: center;
 		background-color: rgba(228, 228, 228, 1);
@@ -31,6 +32,11 @@
 	    float: right;
 	    margin-top: -44px;
 	}
+  .selBtn{
+    background:#f1e8df;
+    border-color:#bb7c41;
+    color: #bb7c41;
+  }
 }
 .SeeChildNode{
 	.ant-modal-header{
@@ -108,6 +114,9 @@
 	  vertical-align: middle;
 	  width: 0;
 	}
+  .ant-modal-content{
+    width:600px;
+  }
 	button{
 		width: 80px;
 		.ant-btn{
