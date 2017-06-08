@@ -90,45 +90,49 @@ class AddServiceed extends Component {
     }
     handleAdd(){
       const fields = this.props.form.getFieldsValue();
-      let serviceInfoList =[]
-      if(this.state.selectedRows.length>=1){
-        this.state.selectedRows.map((item)=>{
-          if(item.usageCount){
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
-          }else{
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
+      this.props.form.validateFields((err, fieldsValue) => {
+        if(!err){
+          let serviceInfoList =[]
+          if(this.state.selectedRows.length>=1){
+            this.state.selectedRows.map((item)=>{
+              if(item.usageCount){
+                serviceInfoList.push({"serviceInfoId":item.id,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
+              }else{
+                serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
+              }
+            })
           }
-        })
-      }
-      if(fields.name){
-        if(fields.price){
-          if(fields.type){
-            if(serviceInfoList.length>=1){
-              this.props.dispatch({
-                  type: 'packageInfo/add',
-                  payload: {
-                    "name": fields.name,
-                    "price": fields.price,
-                    "serviceInfoList":serviceInfoList,
-                    "suiteId": fields.room,
-                    "type": fields.type
-                  }
-              });
+          if(fields.name){
+            if(fields.price){
+              if(fields.type){
+                if(serviceInfoList.length>=1){
+                  this.props.dispatch({
+                      type: 'packageInfo/add',
+                      payload: {
+                        "name": fields.name,
+                        "price": fields.price,
+                        "serviceInfoList":serviceInfoList,
+                        "suiteId": fields.room,
+                        "type": fields.type
+                      }
+                  });
+                }else{
+                  message.warning("请选择服务项目");
+                }
+
+              }else{
+                message.warning("请选择套餐的类型");
+              }
+
             }else{
-              message.warning("请选择服务项目");
+              message.warning("请输入套餐的价格");
             }
 
           }else{
-            message.warning("请选择套餐的类型");
+            message.warning("请输入套餐的名称");
           }
-
-        }else{
-          message.warning("请输入套餐的价格");
         }
-
-      }else{
-        message.warning("请输入套餐的名称");
-      }
+      })
     }
     render() {
         let loadingName = true

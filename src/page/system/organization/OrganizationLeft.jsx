@@ -38,7 +38,7 @@ class OrganizationLefted extends React.Component {
   }
 
   expandHandler = (expandedKeys, {expanded: bool, node}) => {
-    console.log("sssss>>>>>",expandedKeys)
+    console.log("sds",expandedKeys)
     this.setState({
       unfolded:expandedKeys
     })
@@ -52,13 +52,12 @@ class OrganizationLefted extends React.Component {
   }
 
   onSelect(value, node) {
-    console.log("展开",value)
     this.addDisplay = "block"
     this.deleteDisplay = "block"
     if (value[0] != null) {
-      this.setState({
-        unfolded:value
-      })
+      // this.setState({
+      //   unfolded:value
+      // })
       this.nodes = node.selectedNodes[0].props.dataIndex
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
@@ -76,7 +75,8 @@ class OrganizationLefted extends React.Component {
           ID: node.selectedNodes[0].key,
           node: node.selectedNodes[0],
           parentId: node.selectedNodes[0].props.parentId,
-          dataIndex: node.selectedNodes[0].props.dataIndex
+          dataIndex: node.selectedNodes[0].props.dataIndex,
+          unfolded:value
         })
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.dispatch({
@@ -253,7 +253,7 @@ class OrganizationLefted extends React.Component {
           className="draggable-tree"
           onSelect={ this.onSelect.bind(this) }
           onExpand={this.expandHandler.bind(this)}
-          
+          defaultExpandedKeys = {["1"]}
           autoExpandParent = { true }
           expandedKeys = { this.state.unfolded }
         >
