@@ -478,7 +478,6 @@ export default {
         "detailedPermanent": values.detailedPermanent,
         "idcard": values.idcard,
         "idcardScan": caridStr,
-        "imgURL": values.imgURL ,
         "insuranceSituation": values.insuranceSituation,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
         "memberNumber": values.memberNumber,
@@ -487,7 +486,7 @@ export default {
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format('YYYY-MM-DD'),
         "provincePermanent": values.provincePermanent.key,
-        "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.packageId:'',
+        "purchasePackage": state.purchasePackageValue.packageId?state.purchasePackageValue.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
@@ -606,7 +605,7 @@ export default {
           const tempData = [];
           for (let i = 0;i<data.length;i++){
             let dict = data[i];
-            dict.createTime =  moment(dict.createTime ).format('YYYY-MM-DD')
+            dict.createTime =  moment(dict.createTime ).format('YYYY-MM-DD HH:mm:ss')
             tempData.push(dict)
           }
 

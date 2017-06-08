@@ -30,10 +30,14 @@ class EditPlaceData extends React.Component {
 
     add = () => {
       const { form } = this.props;
-      if (this.editItem!== null && this.editItem.dictionarySideDOs.length>0) {
+
         // can use data-binding to get
         const keys = form.getFieldValue('keys');
-        const newKey = keys[keys.length -1]+1;
+        let newKey = 1;
+        if (keys.length > 0) {
+          newKey = keys[keys.length -1]+1;
+        }
+
 
         const nextKeys = keys.concat(newKey);
         // can use data-binding to set
@@ -41,7 +45,7 @@ class EditPlaceData extends React.Component {
         form.setFieldsValue({
           keys: nextKeys,
         });
-      }
+
     }
     handleSubmit = (e) => {
       e.preventDefault();
@@ -130,7 +134,7 @@ class EditPlaceData extends React.Component {
             <div className="posi childCen" style={{position:'relative',overflow:'hidden'}}>
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
-                rules: [{ required: true, message: '选项不能为空' }],
+                rules: [{ required: true, message: '选项不能为空,限50字!', max: 50 }],
                 initialValue: initValue,
               })(
                 <Input rows = {6} className = "input2"/>

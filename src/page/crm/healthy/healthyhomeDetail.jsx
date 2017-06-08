@@ -171,27 +171,27 @@ function HealthyhomeDetail(props) {
   //Apgar评分
   function apgarScoreRow () {
     return (
-      <div>
+      <div className="ApgarOption">
         <Col span="5">
           <div className="uploadOptions">Apgar评分:</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_0')}</div>
+          <div className="upload">{scoreSelectDiv('select_0')}</div>
         </Col>
         <Col span="1">
           <div className="score-line">-</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_1')}</div>
+          <div className="upload">{scoreSelectDiv('select_1')}</div>
         </Col>
         <Col span="1">
           <div className="score-line">-</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_2')}</div>
+          <div className="upload">{scoreSelectDiv('select_2')}</div>
         </Col>
         <Col span="1">
-          <div className="uploadOptions">分</div>
+          <div className="uploadOptions Fraction">分</div>
         </Col>
       </div>
     )
@@ -627,8 +627,8 @@ function HealthyhomeDetail(props) {
       />
 
       <div className='bottomButton'>
-        <Button className='commitButton' onClick={handleBack}>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleEdit}>编辑</Button>
+        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
+        <Button className='commitButton SaveBtn' type="primary" onClick={handleEdit}>编辑</Button>
       </div>
 
     </div>
