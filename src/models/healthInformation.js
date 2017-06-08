@@ -32,6 +32,10 @@ export default {
     imgInput_8_arr : [],
     bigImageData : [],
     bigImageHidden : false,
+    imgInput_1_required : false,
+    imgInput_2_required : false,
+    imgInput_3_required : false,
+    imgInput_4_required : false,
   },
   //加载页面
   subscriptions: {
@@ -99,7 +103,7 @@ export default {
     },
     setHealthInformation(state, { payload: { data,type }}){
       if(type === 1){
-        if(data.healthInfo){
+        if(data && data.healthInfo){
           const healthInfo = JSON.parse(data.healthInfo);
           const imgInput_1_arr = healthInfo.imgInput_1?JSON.parse(healthInfo.imgInput_1):[];
           const imgInput_2_arr = healthInfo.imgInput_2?JSON.parse(healthInfo.imgInput_2):[];
@@ -113,7 +117,7 @@ export default {
             imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
             Input_8_arr:imgInput_8_arr}
         }
-        // return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
+        return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
       }else if(type === 2){
         return { ...state,editNutritionFlag : false, nutritionHealthInformation : data };
       }else if(type === 3){
@@ -296,6 +300,20 @@ export default {
       }
       return {...state}
     },
+    setImgInputRequired(state, { payload: data }){
+      const imgInputName = data.imgInputName;
+      const value = data.value == 1 ? true : false;
+      if(imgInputName === 'imgInput_1'){
+        return {...state,imgInput_1_required:value}
+      }else if(imgInputName === 'imgInput_2'){
+        return {...state,imgInput_2_required:value}
+      }else if(imgInputName === 'imgInput_3'){
+        return {...state,imgInput_3_required:value}
+      }else if(imgInputName === 'imgInput_4'){
+        return {...state,imgInput_4_required:value}
+      }
+      return {...state}
+    }
   }
 
 };

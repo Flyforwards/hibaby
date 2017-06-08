@@ -213,6 +213,17 @@ export default {
       }
     },
 
+    // 清除选择的行
+    *removeSelected({ payload: { record  } },{ put, select }) {
+
+      const selectedRowKeys = yield select(state => state.permission.selectedRowKeys);
+      selectedRowKeys.remove(record.key);
+      yield put({
+        type: 'selectedRowsChange',
+        payload: { selectedRowKeys }
+      })
+    },
+
   },
   reducers: {
 
@@ -262,13 +273,6 @@ export default {
 
       state.users.removeRepeatAttr();
       return {...state, undisUserList, undisUserTotal };
-    },
-    // 清除选择的行
-    removeSelected(state, { payload: { record }}) {
-
-      state.selectedRows.remove(record);
-      state.selectedRowKeys.remove(record.key);
-      return {...state, };
     },
 
     clearPermissionList(state, { payload }) {

@@ -7,6 +7,9 @@ import { Link} from 'react-router'
 import './AddCourse.scss';
 import AddCourseModel from './AddCourseModel.jsx'
 import UserServiceinfo from './userServiceinfo.jsx'
+import {keyToText} from '../../../utils';
+
+let TYPENAME = [];
 
 class AddCourse extends Component {
     constructor(props) {
@@ -50,12 +53,13 @@ class AddCourse extends Component {
           width: '10%',
           render: (text, record, index) => {
             let visible = false
-            if(record.usageCount<=0){
+            //console.log("record.usageCount>>>>",record.usageCount)
+            if(record.usageCount <= 0){
                 visible = true
             }
             return (
                 <span className="tableBtnBox">
-                  <Button className="tableBtn" type="primary" onClick={this.addNumber.bind(this,record)} disabled={visible}>使用</Button>
+                  <Button className="tableBtn" type="primary" onClick={this.addNumber.bind(this,record,)} disabled={visible}>使用</Button>
                 </span>
             );
           },
@@ -63,8 +67,12 @@ class AddCourse extends Component {
         this.state = {
           AddCourseVisible: false,
           UserServiceinfoVisible:false,
-          data:{}
+          data:{},
+          handle:"",
+          ID:null
         }
+        this.handle = false
+        this.code = false
     }
     addCourse (){
       this.setState({
@@ -72,19 +80,32 @@ class AddCourse extends Component {
       })
     }
     addNumber(record,dataDetailId){
-      this.setState({
-        UserServiceinfoVisible: true,
-        data:record
-      })
+      // console.log("record>>>>",record.usageCount)
+      if(record.usageCount<=0){
+          return
+      }else{
+        this.setState({
+          UserServiceinfoVisible: true,
+          data:record,
+          handle:this.handle
+        })
+
+      }
     }
     handleDeleteCancel(){
       this.setState({
         AddCourseVisible: false,
       })
     }
-    handleUserServiceinfoCancel(){
+    handleUserServiceinfoCancel(code){
       this.setState({
         UserServiceinfoVisible: false,
+      })
+    }
+    componentDidMount() {
+      let ID = window.location.search.split("=")[1]
+      this.setState({
+        ID:ID
       })
       this.props.dispatch({
           type: 'addCourse/getCustomerPackageById',
@@ -92,13 +113,11 @@ class AddCourse extends Component {
              "dataId":this.props.users.dataDetailId
           }
       });
-    }
-    componentDidMount() {
-     // console.log(this.props.users.dataDetailId)
-      this.props.dispatch({
-          type: 'addCourse/getCustomerPackageById',
+     this.props.dispatch({
+          type: 'packageInfo/getDictionary',
           payload: {
-             "dataId":this.props.users.dataDetailId
+            "abName":"TCLX" ,
+            "softDelete": 0
           }
       });
     }
@@ -124,30 +143,19 @@ class AddCourse extends Component {
             addCourseList.map((item)=>{
               item.key=item.id
             })
-            loadingName = false
-            let x = null
+            loadingName = false     
              dataKey++
              dataKey2++
-            switch (addName.type)
-            {
-            case 43:
-              x="月子套餐";
-              break;
-            case 44:
-              x="产后套餐";
-              break;
-            case 45:
-              x="宝宝套餐";
-              break;
-            }
-            //console.log(addCourseList)
-            dataList.push(<div className="addCourseList" key={dataKey}>
+             const { getDictionary } = this.props
+             let typeName = addName.type
+             TYPENAME = keyToText(getDictionary, "id", "name", "TCLX");
+             dataList.push(<div className="addCourseList" key={dataKey}>
               <div className="viewServiceinfoBox">
               <div className="viewServiceinfoTitle">
                 <p className="titleName">套餐信息:</p>
                 <p className="namep">套餐名称: {addName.name}</p>
                 <p className="pricep">套餐价格: ￥{addName.price}</p>
-                <p className="typep">套餐类型: {x}</p>
+                <p className="typep">套餐类型: {TYPENAME[typeName]}</p>
               </div>
                 <div className="viewServiceinfoTable" key={dataKey2}>
                   <p className="titleName">服务项目:</p> <span className="status">{status}</span>
@@ -163,7 +171,6 @@ class AddCourse extends Component {
           })
         }
       }
-
         return (
             <div className="addCourse">
               <Button className="AddBtn" type="primary" onClick={this.addCourse.bind(this)}>添加套餐</Button>
@@ -176,8 +183,10 @@ class AddCourse extends Component {
               />
                <UserServiceinfo
                  visible={ this.state.UserServiceinfoVisible }
-                 onCancel ={ this.handleUserServiceinfoCancel.bind(this) }
+                 onCancel ={ this.handleUserServiceinfoCancel.bind(this,this.props.code) }
                  record= { this.state.data }
+                 handle = { this.state.handle}
+                 ID = { this.state.ID }
                 />
             </div>
         )
@@ -185,11 +194,15 @@ class AddCourse extends Component {
 }
 function mapStateToProps(state) {
   const {
-    getCustomerPackageById
+    getCustomerPackageById,
+    getDictionary,
+    codeName
   } = state.addCourse;
   return {
     loading: state.loading.models.addCourse,
     getCustomerPackageById,
+    getDictionary,
+    codeName,
     users: state.addCustomer
     };
 }

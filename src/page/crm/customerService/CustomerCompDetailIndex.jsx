@@ -83,7 +83,7 @@ class CustomerCompDetailIndex extends React.Component {
     let buttons = (
       <div className="button-wrapper">
         <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
-        <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+        <Button className="BackBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
       </div>)
     if (item.state == 0) {
       if (save) {
@@ -94,7 +94,7 @@ class CustomerCompDetailIndex extends React.Component {
             <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
           </div>)
         card = (
-          <Card title = "投诉处理:">
+          <Card className="ComplaintHandle" title = "投诉处理:">
             <Form >
               <FormItem {...formItemLayout} label={"处理结果"}>
                 {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
@@ -146,7 +146,7 @@ class CustomerCompDetailIndex extends React.Component {
     return (
       <div className="activity-cent">
         <div className="add-activity">
-          <Card title = "客户投诉:">
+          <Card className="CustomerComplaints" title = "客户投诉:">
             <Form >
               <FormItem {...formItemLayout} label="投诉者" >
                 {getFieldDecorator('name', {

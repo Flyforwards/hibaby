@@ -1,7 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
-import { Button, Col, Form, Input, Row, Radio, Select,message } from 'antd'
+import { Button, Col, Form, Input, Row, Radio, Select, message, Icon } from 'antd'
 import styles from './healthyhome.scss';
 import FileUpload from './fileUpload';
 import { connect } from 'dva';
@@ -34,6 +34,30 @@ function Healthyhome(props) {
 
   const { getFieldDecorator } = props.form;
 
+
+  function setImgInputRequired(imgInputName,value){
+    props.dispatch({
+      type : 'healthInformation/setImgInputRequired',
+      payload : {
+        imgInputName : imgInputName,
+        value :value
+      }
+    });
+  }
+
+  function radioChangeFun1(e){
+    setImgInputRequired("imgInput_1",e.target.value);
+  }
+  function radioChangeFun2(e){
+    setImgInputRequired("imgInput_2",e.target.value);
+  }
+  function radioChangeFun3(e){
+    setImgInputRequired("imgInput_3",e.target.value);
+  }
+  function radioChangeFun4(e){
+    setImgInputRequired("imgInput_4",e.target.value);
+  }
+
   //单选item
   function myRadioForm (radioName, dict) {
 
@@ -53,7 +77,7 @@ function Healthyhome(props) {
         {getFieldDecorator(`${radioName}`, {
           rules: [{ required: false, message: '  ' }]
         })(
-          <RadioGroup>
+          <RadioGroup onChange={dict.radioChangeFun} >
             {radioItemDivs}
           </RadioGroup>
         )}
@@ -115,30 +139,24 @@ function Healthyhome(props) {
 
 
   //上传附件 传一个key过来
-  function uploadOptionsItem (key,imgInputName) {
+  function uploadOptionsItem (key,imgInputName,required) {
     let addImgFun = imgInput_1AddImg;
     let deleteImgFun = imgInputDeleteImgFun;
     return (
-      <div>
-        <Col span="4">
-          <div className="uploadOptions">附件:</div>
-        </Col>
-        <Col span="18">
           <FormItem
             labelCol={{span: 5}}
             wrapperCol={{span: 18}}
+            label="附件:"
           >
             {getFieldDecorator(`${imgInputName}`, {
-              rules: [{ required: false, message: '请上传附件' }]
+              rules: [{ required: required, message: '请上传附件' }]
             })(
 
               <FileUpload addImgFun={addImgFun} deleteImgFun={deleteImgFun} imgInputName={imgInputName}>
-                <Button key={key} type="primary" className="uploadOptionsButton">上传附件</Button>
+                <Button key={key} type="primary" className="uploadOptionsButton"><Icon type="upload"/>上传附件</Button>
               </FileUpload>
             )}
           </FormItem>
-        </Col>
-      </div>
     )
   }
 
@@ -172,27 +190,27 @@ function Healthyhome(props) {
   //Apgar评分
   function apgarScoreRow () {
     return (
-      <div>
+      <div className="ApgarOption">
         <Col span="5">
           <div className="uploadOptions">Apgar评分:</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_0')}</div>
+          <div className="upload">{scoreSelectDiv('select_0')}</div>
         </Col>
         <Col span="1">
           <div className="score-line">-</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_1')}</div>
+          <div className="upload">{scoreSelectDiv('select_1')}</div>
         </Col>
         <Col span="1">
           <div className="score-line">-</div>
         </Col>
         <Col span="2">
-          <div style={{marginTop: '12px'}}>{scoreSelectDiv('select_2')}</div>
+          <div className="upload">{scoreSelectDiv('select_2')}</div>
         </Col>
         <Col span="1">
-          <div className="uploadOptions">分</div>
+          <div className="uploadOptions Fraction">分</div>
         </Col>
       </div>
     )
@@ -237,29 +255,27 @@ function Healthyhome(props) {
   }
 
   //row 左边单选右边上传附件
-  function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName) {
-
+  function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName,imgRequired) {
     var col1Class='topItembg';
     var col2Class='leftRightItemBg';
     if (lastRow == true){
-      col1Class='bottomItemBg';
-      col2Class='allNoneBg';
+      col1Class='onlyLeftItemBg';
     }
-
     return (
-      <Row>
+      <Row className={col1Class}>
         <Col span="12">
           <div className={col1Class}>
-            {myRadioForm(radioName, dict)}
+            {myRadioForm(radioName ,dict)}
           </div>
         </Col>
         <Col span="12">
           <div className={col2Class}>
-            {uploadOptionsItem(key,imgInputName)}
+            {uploadOptionsItem(key,imgInputName,imgRequired)}
           </div>
         </Col>
       </Row>
     )
+
   }
 
   //row 左边单选右边空白
@@ -303,14 +319,14 @@ function Healthyhome(props) {
     //console.log("您点击了保存按钮");
     const {dispatch,form} = props;
     const {imgInput_1_arr,imgInput_2_arr,imgInput_3_arr,imgInput_4_arr,imgInput_5_arr,imgInput_6_arr,imgInput_7_arr,imgInput_8_arr} = props.healthInformation;
-    form.setFieldsValue({imgInput_1 : JSON.stringify(imgInput_1_arr)});
-    form.setFieldsValue({imgInput_2 : JSON.stringify(imgInput_2_arr)});
-    form.setFieldsValue({imgInput_3 : JSON.stringify(imgInput_3_arr)});
-    form.setFieldsValue({imgInput_4 : JSON.stringify(imgInput_4_arr)});
-    form.setFieldsValue({imgInput_5 : JSON.stringify(imgInput_5_arr)});
-    form.setFieldsValue({imgInput_6 : JSON.stringify(imgInput_6_arr)});
-    form.setFieldsValue({imgInput_7 : JSON.stringify(imgInput_7_arr)});
-    form.setFieldsValue({imgInput_8 : JSON.stringify(imgInput_8_arr)});
+    form.setFieldsValue({imgInput_1 : (imgInput_1_arr&&imgInput_1_arr.length>0)?JSON.stringify(imgInput_1_arr):null});
+    form.setFieldsValue({imgInput_2 : (imgInput_2_arr&&imgInput_2_arr.length>0)?JSON.stringify(imgInput_2_arr):null});
+    form.setFieldsValue({imgInput_3 : (imgInput_3_arr&&imgInput_3_arr.length>0)?JSON.stringify(imgInput_3_arr):null});
+    form.setFieldsValue({imgInput_4 : (imgInput_4_arr&&imgInput_4_arr.length>0)?JSON.stringify(imgInput_4_arr):null});
+    form.setFieldsValue({imgInput_5 : (imgInput_5_arr&&imgInput_5_arr.length>0)?JSON.stringify(imgInput_5_arr):null});
+    form.setFieldsValue({imgInput_6 : (imgInput_6_arr&&imgInput_6_arr.length>0)?JSON.stringify(imgInput_6_arr):null});
+    form.setFieldsValue({imgInput_7 : (imgInput_7_arr&&imgInput_7_arr.length>0)?JSON.stringify(imgInput_7_arr):null});
+    form.setFieldsValue({imgInput_8 : (imgInput_8_arr&&imgInput_8_arr.length>0)?JSON.stringify(imgInput_8_arr):null});
     props.form.validateFields((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
@@ -349,10 +365,55 @@ function Healthyhome(props) {
             <div className="itemTitle"><span>优生四向</span></div>
           </Col>
           <Col span="22">
-            {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性']},'1',false,'imgInput_1')}
-            {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性']},'2',false,'imgInput_2')}
-            {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性']},'3',false,'imgInput_3')}
-            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性']},'4',false,'imgInput_4')}
+            <Row>
+              <Col span="12">
+                <div className="topItembg">
+                  {myRadioForm(radioNames[2], {title: '弓形体',radioItems: ['阴性','阳性'],radioChangeFun:radioChangeFun1})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="leftRightItemBg">
+                  {uploadOptionsItem(1,'imgInput_1',props.healthInformation.imgInput_1_required)}
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="12">
+                <div className="topItembg">
+                  {myRadioForm(radioNames[3], {title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],radioChangeFun:radioChangeFun2})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="leftRightItemBg">
+                  {uploadOptionsItem(2,'imgInput_2',props.healthInformation.imgInput_2_required)}
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="12">
+                <div className="topItembg">
+                  {myRadioForm(radioNames[4], {title: '风疹病毒',radioItems: ['阴性','阳性'],radioChangeFun:radioChangeFun3})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="leftRightItemBg">
+                  {uploadOptionsItem(3,'imgInput_3',props.healthInformation.imgInput_3_required)}
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="12">
+                <div className="topItembg">
+                  {myRadioForm(radioNames[5], {title: '巨细胞病毒',radioItems: ['阴性','阳性'],radioChangeFun:radioChangeFun4})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="leftRightItemBg">
+                  {uploadOptionsItem(4,'imgInput_4',props.healthInformation.imgInput_4_required)}
+                </div>
+              </Col>
+            </Row>
+
           </Col>
         </Row>
 
@@ -361,21 +422,21 @@ function Healthyhome(props) {
             <div className="itemTitle">孕期合并症</div>
           </Col>
           <Col span="22">
-            <Row>
+            <Row className="topRightItemBg" style={{minHeight: '110px'}}>
               <Col span="12">
-                <div className="topItembg" style={{height: '110px'}}>
+                <div>
                   {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性']})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg" style={{height: '110px',paddingTop: '25px'}}>
+                <div className="onlyLeftItemBg" style={{minHeight: '110px'}}>
                   {uploadOptionsItem('5','imgInput_5')}
                 </div>
               </Col>
             </Row>
-            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是']},'6',false,'imgInput_6')}
-            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是']},'7',false,'imgInput_7')}
-            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是']},'8',false,'imgInput_8')}
+            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是']},'6',false,'imgInput_6',false)}
+            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是']},'7',false,'imgInput_7',false)}
+            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是']},'8',false,'imgInput_8',false)}
             <Row>
               <Col span="12">
                 <div className="topItembg">
@@ -626,8 +687,8 @@ function Healthyhome(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton' onClick={handleBack}>返回</Button>
-        <Button className='commitButton' type="primary" onClick={handleSubmit}>保存</Button>
+        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
+        <Button className='commitButton SaveBtn' type="primary" onClick={handleSubmit}>保存</Button>
       </div>
 
     </div>

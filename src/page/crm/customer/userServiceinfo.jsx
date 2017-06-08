@@ -17,15 +17,20 @@ class UserServiceinfo extends Component {
     handleCancel() {
         this.props.onCancel()
     }
-    handleOk(record) {
-        //console.log(record)
-        this.props.dispatch({
-          type: 'addCourse/useServiceInfo',
-          payload: {
-            "dataId":record.id
-          }
-        });
+    handleOk(record,code) {
+        //console.log("次数",this.props.ID)
+        if(record.usageCount<=0){
+            return this.props.onCancel()
+        }else{
+            this.props.dispatch({
+              type: 'addCourse/useServiceInfo',
+              payload: {
+                "dataId":record.id,
+                "userID":this.props.ID
+              }
+            });
         this.props.onCancel()
+        }
     }
     checkbox() {
         /*console.log("checkbox")*/
@@ -50,7 +55,8 @@ class UserServiceinfo extends Component {
         }, 1000)
     }
     render() {
-        const {visible, form, confirmLoading} = this.props
+        const {visible, form, confirmLoading, codeName} = this.props
+        // console.log("codeName???????",codeName)
         return (
             <Modal
                 visible={visible}
@@ -62,7 +68,7 @@ class UserServiceinfo extends Component {
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}
                 onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this,this.props.record)}
+                onOk={this.handleOk.bind(this,this.props.record,codeName)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
                 width={ 200 }
@@ -88,9 +94,11 @@ function UserServiceinfoed({
 }
 function mapStateToProps(state) {
   const {
+    codeName
   } = state.addCourse;
   return {
-    loading: state.loading.models.addCourse
+    loading: state.loading.models.addCourse,
+    codeName
     };
 }
 export default connect(mapStateToProps)(UserServiceinfo)
