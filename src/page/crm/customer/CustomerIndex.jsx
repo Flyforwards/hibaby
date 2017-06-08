@@ -195,10 +195,27 @@ class CustomerIndex extends React.Component {
     }
 
 
+    textforkey(array,value,valuekey = 'name') {
+      for (let i = 0 ;i<array.length ;i++){
+        let dict = array[i];
+        if(dict['id'] === value){
+          return  dict[valuekey];
+        }
+       }
+       return value;
+    }
 
     render() {
         const columns = this.columns;
-        const { list, loading, pagination, dispatch, form, shipCards } = this.props;
+        const { list, loading, pagination, dispatch, form, shipCards,fetusAry,packageList } = this.props;
+
+        for(let i = 0;i<list.length;i++){
+          let dict = list[i];
+          dict.fetus = this.textforkey(fetusAry,dict.fetus)
+          dict.purchasePackage = this.textforkey(packageList,dict.purchasePackage)
+        }
+
+
         const { getFieldDecorator } = form;
         const tableProps = {
           loading: loading.effects['customer/getCustomerPage'],
@@ -384,14 +401,18 @@ function mapStateToProps(state) {
     list,
     pagination,
     shipCards,
+    fetusAry,
+    packageList
   } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     list,
+    fetusAry,
     pagination,
     shipCards,
-    permissionAlias
+    permissionAlias,
+    packageList,
   };
 }
 export default connect(mapStateToProps)(CustomerIndex)

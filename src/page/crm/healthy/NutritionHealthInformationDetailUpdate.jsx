@@ -69,7 +69,7 @@ function NutritionHealthInformationDetailUpdate(props) {
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : healthInfo[radioName],
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -95,7 +95,7 @@ function NutritionHealthInformationDetailUpdate(props) {
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : healthInfo[radioName],
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -249,16 +249,16 @@ function NutritionHealthInformationDetailUpdate(props) {
         <Row className="firstItem">
           <Row  key="1">
             <Col className="ItemLeft" span="10"  style={{height: '55px',display: 'table',width:'50%'}}>
-              {myInput('身高',inputNames[1],'cm',true,'请输入身高',false)}
+              {myInput('身高',inputNames[1],'cm',false,'请输入身高',false)}
             </Col>
             <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
-              {myInput('孕前体重',inputNames[2],'kg',true,'请输入孕前体重',false)}
+              {myInput('孕前体重',inputNames[2],'kg',false,'请输入孕前体重',false)}
             </Col>
             <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
-              {myInput('现体重',inputNames[3],'kg',true,'请输入现体重',false)}
+              {myInput('现体重',inputNames[3],'kg',false,'请输入现体重',false)}
             </Col>
             <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
-              {myInput('宗教信仰',inputNames[4],'',true,'请输入宗教信仰',false)}
+              {myInput('宗教信仰',inputNames[4],'',false,'请输入宗教信仰',false)}
             </Col>
           </Row>
           <Row className="radioAll">
