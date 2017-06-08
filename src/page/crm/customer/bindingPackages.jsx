@@ -86,6 +86,11 @@ class BindingPackagesed extends Component {
       });
     }
     handleSubmit = ()=>{
+      console.log("history>>>>")
+      this.props.dispatch({
+        type: 'addCourse/setAddCustomerTab',
+        payload: true 
+      })
       history.go(-1)
     }
     render() {

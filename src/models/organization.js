@@ -333,6 +333,10 @@ export default {
     },
     //添加用户信息
     *addUser({ payload: values }, { call, put }) {
+      message.config({
+        top: 100,
+        duration: 4,
+      });
       const { data: { data, code } } = yield call(organizationService.addUser, values);
       switch (data.type) {
         case 1:
@@ -343,7 +347,8 @@ export default {
           message.success("该手机号已被注册");
           break;
         case 3:
-          message.success(`用户${data.name}已在${data.endemicName}`);
+          message.success(`用户${data.name}已在${data.endemicName}注册过`);
+          yield put(routerRedux.push("/system/organization"));
           break;
         default:
           break;

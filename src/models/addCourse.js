@@ -14,7 +14,6 @@ export default {
 		listByType:null,
 		addSuccess:false,
 		useServiceInfo:null,
-		codeName:0
 	},
 	reducers: {
 
