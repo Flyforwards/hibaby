@@ -12,8 +12,23 @@
   .SaveBtn{
     margin-top:10px;
     background:#f1e8df;
-    font: 14px "#bb7c41";
+    border-color:#bb7c41 ;
+    font: 14px "微软雅黑";
     color:#bb7c41;
+  }
+  .delBtn{
+    margin-top:10px;
+    background:#f75555;
+    border-color: #f75555;
+    color:#fff;
+    font: 14px "微软雅黑";
+  }
+  label{
+    font:14px "微软雅黑";
+  }
+  label:before{
+    content: "";
+    display:none;
   }
   .ant-table-thead > tr > th {
     background-color: rgba(102, 102, 102, 1);
@@ -58,9 +73,18 @@
   .add-activity{
     .ant-card{
       margin-top:10px;
+      .ant-card-head-title{
+        font:900 16px "微软雅黑";
+      }
     }
     .BackBtn{
       margin-top:10px;
     }
+  }
+}
+.ant-modal-body{
+  .ant-confirm-content{
+    font:16px "微软雅黑";
+    text-align: center;
   }
 }
