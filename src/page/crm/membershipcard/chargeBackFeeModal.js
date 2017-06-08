@@ -21,6 +21,7 @@ class ChargeBackFeeModal extends Component {
       InputValue:'',
      objValue:{},
      quaiity:'',
+     disabledValue:true,
 
      // fetching: false,
     }
@@ -37,6 +38,11 @@ class ChargeBackFeeModal extends Component {
       values.name=values.name.label;
       if (!err) {
         this.props.onOk(values)
+        this.setState({
+          InputValue:'',
+          objValue:{},
+          disabledValue:false,
+        })
       }
     })
   }
@@ -86,6 +92,7 @@ class ChargeBackFeeModal extends Component {
     this.setState({
       objValue:value,
       InputValue:goodPrice,
+      disabledValue:false,
     })
 
   }
@@ -154,7 +161,7 @@ class ChargeBackFeeModal extends Component {
                 {getFieldDecorator('quantity', {
                   rules: [{validator:this.checkPrice, required: true, message: '' }],
                 })(
-                  <Input  placeholder="" type="number" min={0} addonAfter="件" onChange={this.numHandleChange.bind(this)}/>
+                  <Input  placeholder="" type="number" min={0} addonAfter="件" disabled={this.state.disabledValue} onChange={this.numHandleChange.bind(this)}/>
                 )}
               </FormItem>
             </Col>
@@ -166,7 +173,7 @@ class ChargeBackFeeModal extends Component {
                   initialValue: this.state.InputValue || '' ,
                  // rules: [{validator:this.checkPrice, required: true, message: '' }],
                 })(
-                  <Input  placeholder="" readOnly type="number" min={0} addonAfter="元" addonBefore="￥" />
+                  <Input  placeholder="" readOnly  min={0} addonAfter="元" addonBefore="￥" />
                 )}
               </FormItem>
             </Col>
@@ -179,7 +186,6 @@ class ChargeBackFeeModal extends Component {
 }
 function mapStateToProps(state) {
   const { goodsInfoList,fetching ,chargeVisible} = state.membershipcard;
-  console.log("value",goodsInfoList)
   return {
     user:state.addCustomer,
     goodsInfoList,
