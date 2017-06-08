@@ -663,7 +663,7 @@ function Healthyhome(props) {
             {radioAllRow(radioNames[39],{title: '低血糖史',radioItems: ['无','有']})}
             {radioAllRow(radioNames[40],{title: '呼吸困难',radioItems: ['无','有']})}
             {radioAllRow(radioNames[41],{title: '出生后窒息',radioItems: ['无','有']})}
-            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['否','是']},'体温')}
+            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['否','是']},'体温',false,'℃')}
             {radioAllRow(radioNames[43],{title: '心脏杂音',radioItems: ['无','有']})}
             {radioAllRow(radioNames[44],{title: '皮疹',radioItems: ['无','有']})}
             {radioAllRow(radioNames[45],{title: '尿量少',radioItems: ['无','有']})}

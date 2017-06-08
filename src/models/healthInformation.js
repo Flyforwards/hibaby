@@ -36,6 +36,10 @@ export default {
     imgInput_2_required : false,
     imgInput_3_required : false,
     imgInput_4_required : false,
+    imgInput_5_required : false,
+    imgInput_6_required : false,
+    imgInput_7_required : false,
+    imgInput_8_required : false
   },
   //加载页面
   subscriptions: {
@@ -118,10 +122,18 @@ export default {
           const imgInput_2_required = healthInfo.radio_3 && healthInfo.radio_3 == 1 ? true : false;
           const imgInput_3_required = healthInfo.radio_4 && healthInfo.radio_4 == 1 ? true : false;
           const imgInput_4_required = healthInfo.radio_5 && healthInfo.radio_5 == 1 ? true : false;
+          const imgInput_5_required = healthInfo.radio_6 && healthInfo.radio_6 != 0 ? true : false;
+          const imgInput_6_required = healthInfo.radio_7 && healthInfo.radio_7 == 1 ? true : false;
+          const imgInput_7_required = healthInfo.radio_8 && healthInfo.radio_8 == 1 ? true : false;
+          const imgInput_8_required = healthInfo.radio_9 && healthInfo.radio_9 == 1 ? true : false;
           requiredData.imgInput_1_required = imgInput_1_required;
           requiredData.imgInput_2_required = imgInput_2_required;
           requiredData.imgInput_3_required = imgInput_3_required;
           requiredData.imgInput_4_required = imgInput_4_required;
+          requiredData.imgInput_5_required = imgInput_5_required;
+          requiredData.imgInput_6_required = imgInput_6_required;
+          requiredData.imgInput_7_required = imgInput_7_required;
+          requiredData.imgInput_8_required = imgInput_8_required;
 
           return {...state,editMedicalFlag : false, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
             imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
@@ -157,10 +169,18 @@ export default {
             const imgInput_2_required = healthInfo.radio_3 && healthInfo.radio_3 == 1 ? true : false;
             const imgInput_3_required = healthInfo.radio_4 && healthInfo.radio_4 == 1 ? true : false;
             const imgInput_4_required = healthInfo.radio_5 && healthInfo.radio_5 == 1 ? true : false;
+            const imgInput_5_required = healthInfo.radio_6 && healthInfo.radio_6 != 0 ? true : false;
+            const imgInput_6_required = healthInfo.radio_7 && healthInfo.radio_7 == 1 ? true : false;
+            const imgInput_7_required = healthInfo.radio_8 && healthInfo.radio_8 == 1 ? true : false;
+            const imgInput_8_required = healthInfo.radio_9 && healthInfo.radio_9 == 1 ? true : false;
             requiredData.imgInput_1_required = imgInput_1_required;
             requiredData.imgInput_2_required = imgInput_2_required;
             requiredData.imgInput_3_required = imgInput_3_required;
             requiredData.imgInput_4_required = imgInput_4_required;
+            requiredData.imgInput_5_required = imgInput_5_required;
+            requiredData.imgInput_6_required = imgInput_6_required;
+            requiredData.imgInput_7_required = imgInput_7_required;
+            requiredData.imgInput_8_required = imgInput_8_required;
             return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
               imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
               Input_8_arr:imgInput_8_arr,...requiredData}
@@ -203,7 +223,7 @@ export default {
       return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null,
         imgInput_1_arr:[],imgInput_2_arr:[],imgInput_3_arr:[],imgInput_4_arr:[],
         imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],Input_8_arr:[],
-        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,}
+        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_6_required:false,imgInput_7_required:false,imgInput_8_required:false,imgInput_9_required:false}
     },
     //设置查看附件Modal数据
     setBigImageModalProps(state, { payload: data }){
@@ -330,6 +350,14 @@ export default {
         return {...state,imgInput_3_required:value}
       }else if(imgInputName === 'imgInput_4'){
         return {...state,imgInput_4_required:value}
+      }else if(imgInputName === 'imgInput_5'){
+        return {...state,imgInput_5_required:value}
+      }else if(imgInputName === 'imgInput_6'){
+        return {...state,imgInput_6_required:value}
+      }else if(imgInputName === 'imgInput_7'){
+        return {...state,imgInput_7_required:value}
+      }else if(imgInputName === 'imgInput_8'){
+        return {...state,imgInput_8_required:value}
       }
       return {...state}
     }
