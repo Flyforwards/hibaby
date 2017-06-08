@@ -1,6 +1,7 @@
 
 import * as activityService from '../services/activity';
 import * as customerService from '../services/customer';
+import * as addCustomerInformation from '../services/addCustomerInformation';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
@@ -17,6 +18,7 @@ export default {
     editSignUserList: [], // 编辑
     userList:[], // 会员用户列表
     shipCards:[],
+    fetusAry:[],
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -34,6 +36,12 @@ export default {
 
     memberShipCardSave(state, { payload: { shipCards }}) {
       return {...state, shipCards};
+    },
+    addMutDictData(state, { payload: todo }){
+      if(todo.abName === 'YCC'){
+        return {...state,fetusAry:todo.data};
+      }
+      return {...state};
     },
   },
   effects: {
@@ -85,6 +93,23 @@ export default {
       }
     },
 
+    *getDataDict({ payload: value },{ call, put }){
+      const parameter ={
+        abName:value.abName,
+        softDelete: 0,
+      };
+      const { data: { code, data } } = yield call(addCustomerInformation.getDataDict,parameter);
+      if (code == 0) {
+
+        yield put({
+          type: 'addMutDictData',
+          payload: {
+            abName:value.abName,
+            data:data,
+          }
+        });
+      }
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -98,6 +123,13 @@ export default {
           dispatch({
             type: 'getMemberShipCard',
           });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "abName": 'YCC',
+            }
+          });
+
         }
         // if (pathname === '/crm/customer/detail') {
         //   dispatch({
