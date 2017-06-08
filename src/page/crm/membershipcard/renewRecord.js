@@ -8,7 +8,7 @@ import { connect } from 'dva'
 import './index.scss'
 import {Link} from 'react-router'
 import { Table, Icon, } from 'antd';
-
+import { format } from '../../../utils/index.js';
 
 class RenewRecord extends Component {
   constructor(props) {
@@ -17,7 +17,10 @@ class RenewRecord extends Component {
     this.columns = [{
       title: '续费时间',
       dataIndex: 'renewTime',
-      key: 'renewTime'
+      key: 'renewTime',
+      render:(text,record,index)=>{
+        return new Date(text).format('yyyy-MM-dd HH:mm:ss');
+      }
     }, {
       title: '续费金额',
       dataIndex: 'renewAmount',

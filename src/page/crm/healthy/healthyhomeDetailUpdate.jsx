@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
 import styles from './healthyhome.scss';
-import PicturesWall from '../customer/fileUpload';
+import FileUpload from './fileUpload';
 import { connect } from 'dva';
 
 const FormItem = Form.Item
@@ -13,12 +13,13 @@ const Option = Select.Option;
  * 客户信息》健康档案》医疗健康档案详情页面编辑页面
  */
 function HealthyhomeDetailUpdate(props) {
+
+
+
   let disabled = false;
   const type = 1;
   const medicalHealthInformation = props.healthInformation.medicalHealthInformation;
   const healthInfo = JSON.parse(medicalHealthInformation.healthInfo);
-
-
 
   const formItemLayout = {
     labelCol: { span: 10 },
@@ -95,15 +96,77 @@ function HealthyhomeDetailUpdate(props) {
     )
   }
 
+  function imgInput_1AddImg(imgInputName,value){
+    console.log(value);
+    const {form} = props;
+    props.dispatch({
+      type : 'healthInformation/addImgData',
+      payload : {
+        imgInputName :imgInputName,
+        value : value
+      }
+    });
+  }
+
+  function imgInputDeleteImgFun(imgInputName,value){
+    console.log("删除图片成功");
+    console.log(value);
+    const {form} = props;
+    props.dispatch({
+      type : 'healthInformation/delImgData',
+      payload : {
+        imgInputName :imgInputName,
+        value : value
+      }
+    });
+  }
+
   //上传附件 传一个key过来
-  function uploadOptionsItem (key) {
+  function uploadOptionsItem (key,imgInputName) {
+    let addImgFun = imgInput_1AddImg;
+    let deleteImgFun = imgInputDeleteImgFun;
+    let defaultFileList = [];
+    if(imgInputName === 'imgInput_1'){
+      defaultFileList = props.healthInformation.imgInput_1_arr;
+    }else if(imgInputName === 'imgInput_2'){
+      defaultFileList = props.healthInformation.imgInput_2_arr;
+    }else if(imgInputName === 'imgInput_3'){
+      defaultFileList = props.healthInformation.imgInput_3_arr;
+    }else if(imgInputName === 'imgInput_4'){
+      defaultFileList = props.healthInformation.imgInput_4_arr;
+    }else if(imgInputName === 'imgInput_5'){
+      defaultFileList = props.healthInformation.imgInput_5_arr;
+    }else if(imgInputName === 'imgInput_6'){
+      defaultFileList = props.healthInformation.imgInput_6_arr;
+    }else if(imgInputName === 'imgInput_7'){
+      defaultFileList = props.healthInformation.imgInput_7_arr;
+    }else if(imgInputName === 'imgInput_8'){
+      defaultFileList = props.healthInformation.imgInput_8_arr;
+    }
+
+    for(var i=0;i<defaultFileList.length;i++){
+      defaultFileList[i].uid = i;
+    }
+
     return (
       <div>
         <Col span="4">
           <div className="uploadOptions">附件:</div>
         </Col>
         <Col span="18">
-            <Button key={key} type="primary" className="uploadOptionsButton">查看附件</Button>
+          <FormItem
+            labelCol={{span: 5}}
+            wrapperCol={{span: 18}}
+          >
+            {getFieldDecorator(`${imgInputName}`, {
+              rules: [{ required: false, message: '请上传附件' }]
+            })(
+
+              <FileUpload defaultFileList={defaultFileList}  addImgFun={addImgFun} deleteImgFun={deleteImgFun} imgInputName={imgInputName}>
+                <Button key={key} type="primary" className="uploadOptionsButton">上传附件</Button>
+              </FileUpload>
+            )}
+          </FormItem>
         </Col>
       </div>
     )
@@ -205,7 +268,7 @@ function HealthyhomeDetailUpdate(props) {
   }
 
   //row 左边单选右边上传附件
-  function radioUploadOptionsRow (radioName, dict, key, lastRow) {
+  function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName) {
     var col1Class='topItembg';
     var col2Class='leftRightItemBg';
     if (lastRow == true){
@@ -222,7 +285,7 @@ function HealthyhomeDetailUpdate(props) {
         </Col>
         <Col span="12">
           <div className={col2Class}>
-            {uploadOptionsItem({key})}
+            {uploadOptionsItem(key,imgInputName)}
           </div>
         </Col>
       </Row>
@@ -267,7 +330,16 @@ function HealthyhomeDetailUpdate(props) {
 
   //提交表单
   function handleSubmit (e) {
-    const {dispatch} = props;
+    const {dispatch,form} = props;
+    const {imgInput_1_arr,imgInput_2_arr,imgInput_3_arr,imgInput_4_arr,imgInput_5_arr,imgInput_6_arr,imgInput_7_arr,imgInput_8_arr} = props.healthInformation;
+    form.setFieldsValue({imgInput_1 : JSON.stringify(imgInput_1_arr)});
+    form.setFieldsValue({imgInput_2 : JSON.stringify(imgInput_2_arr)});
+    form.setFieldsValue({imgInput_3 : JSON.stringify(imgInput_3_arr)});
+    form.setFieldsValue({imgInput_4 : JSON.stringify(imgInput_4_arr)});
+    form.setFieldsValue({imgInput_5 : JSON.stringify(imgInput_5_arr)});
+    form.setFieldsValue({imgInput_6 : JSON.stringify(imgInput_6_arr)});
+    form.setFieldsValue({imgInput_7 : JSON.stringify(imgInput_7_arr)});
+    form.setFieldsValue({imgInput_8 : JSON.stringify(imgInput_8_arr)});
     props.form.validateFields((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
@@ -314,10 +386,10 @@ function HealthyhomeDetailUpdate(props) {
             <div className="itemTitle"><span>优生四向</span></div>
           </Col>
           <Col span="22">
-            {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_1']},'1')}
-            {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_2']},'2')}
-            {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3']},'3')}
-            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4']},'4',true)}
+            {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_1']},'1',false,'imgInput_1')}
+            {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_2']},'2',false,'imgInput_2')}
+            {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3']},'3',false,'imgInput_3')}
+            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4']},'4',true,'imgInput_4')}
           </Col>
         </Row>
 
@@ -334,13 +406,13 @@ function HealthyhomeDetailUpdate(props) {
               </Col>
               <Col span="12">
                 <div className="leftRightItemBg" style={{height: '110px',paddingTop: '25px'}}>
-                  {uploadOptionsItem('5')}
+                  {uploadOptionsItem('5','imgInput_5')}
                 </div>
               </Col>
             </Row>
-            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_7']},'6')}
-            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_8']},'7')}
-            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_9']},'7')}
+            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_7']},'6',false,'imgInput_6')}
+            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_8']},'7',false,'imgInput_7')}
+            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_9']},'8',false,'imgInput_8')}
             <Row>
               <Col span="12">
                 <div className="topItembg">

@@ -50,12 +50,13 @@ class AddCourse extends Component {
           width: '10%',
           render: (text, record, index) => {
             let visible = false
-            if(record.usageCount<=0){
+            console.log("record.usageCount>>>>",record.usageCount)
+            if(record.usageCount <= 0){
                 visible = true
             }
             return (
                 <span className="tableBtnBox">
-                  <Button className="tableBtn" type="primary" onClick={this.addNumber.bind(this,record)} disabled={visible}>使用</Button>
+                  <Button className="tableBtn" type="primary" onClick={this.addNumber.bind(this,record,)} disabled={visible}>使用</Button>
                 </span>
             );
           },
@@ -63,8 +64,10 @@ class AddCourse extends Component {
         this.state = {
           AddCourseVisible: false,
           UserServiceinfoVisible:false,
-          data:{}
+          data:{},
+          handle:""
         }
+        this.handle = false
     }
     addCourse (){
       this.setState({
@@ -72,10 +75,16 @@ class AddCourse extends Component {
       })
     }
     addNumber(record,dataDetailId){
-      this.setState({
-        UserServiceinfoVisible: true,
-        data:record
-      })
+      if(record.usageCount<=0){
+          return
+      }else{
+        this.setState({
+          UserServiceinfoVisible: true,
+          data:record,
+          handle:this.handle
+        })
+
+      }
     }
     handleDeleteCancel(){
       this.setState({
@@ -114,6 +123,7 @@ class AddCourse extends Component {
         if(this.props.getCustomerPackageById.length>=1){
           let dataKey = 0
           let dataKey2 = 1000
+          //console.log("this.props.getCustomerPackageById",this.props.getCustomerPackageById)
           this.props.getCustomerPackageById.map((item)=>{
             let status = "使用中"
             if(item.status == 1){
@@ -125,19 +135,19 @@ class AddCourse extends Component {
               item.key=item.id
             })
             loadingName = false
-            let x = null
+            let typeName = null
              dataKey++
              dataKey2++
             switch (addName.type)
             {
             case 43:
-              x="月子套餐";
+              typeName=PAG_TYPE[addName.type];
               break;
             case 44:
-              x="产后套餐";
+              typeName="产后套餐";
               break;
             case 45:
-              x="宝宝套餐";
+              typeName="宝宝套餐";
               break;
             }
             //console.log(addCourseList)
@@ -147,7 +157,7 @@ class AddCourse extends Component {
                 <p className="titleName">套餐信息:</p>
                 <p className="namep">套餐名称: {addName.name}</p>
                 <p className="pricep">套餐价格: ￥{addName.price}</p>
-                <p className="typep">套餐类型: {x}</p>
+                <p className="typep">套餐类型: {typeName}</p>
               </div>
                 <div className="viewServiceinfoTable" key={dataKey2}>
                   <p className="titleName">服务项目:</p> <span className="status">{status}</span>
@@ -178,6 +188,7 @@ class AddCourse extends Component {
                  visible={ this.state.UserServiceinfoVisible }
                  onCancel ={ this.handleUserServiceinfoCancel.bind(this) }
                  record= { this.state.data }
+                 handle = { this.state.handle}
                 />
             </div>
         )

@@ -6,6 +6,8 @@ import styles from './healthyhome.scss';
 import PicturesWall from '../customer/fileUpload';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
+import BigImageModal from '../customer/BigImageModal';
+
 
 
 const FormItem = Form.Item
@@ -97,15 +99,41 @@ function HealthyhomeDetail(props) {
     )
   }
 
+    function showImg(imgInputName) {
+    debugger;
+      const imgData = healthInfo[imgInputName];
+      let bigImageData = imgData ? JSON.parse(imgData) : [];
+      console.log(bigImageData);
+      props.dispatch({
+        type: 'healthInformation/setBigImageModalProps',
+        payload: {
+          bigImageData : bigImageData,
+          bigImageHidden : true
+        }
+      });
+
+
+    }
+
+    function handleImgDivCancel() {
+      props.dispatch({
+        type: 'healthInformation/setBigImageModalProps',
+        payload: {
+          bigImageData : [],
+          bigImageHidden : false
+        }
+      });
+    }
+
   //上传附件 传一个key过来
-  function uploadOptionsItem (key) {
+  function uploadOptionsItem (key,imgInputName) {
     return (
       <div>
         <Col span="4">
           <div className="uploadOptions">附件:</div>
         </Col>
         <Col span="18">
-            <Button key={key} type="primary" className="uploadOptionsButton">查看附件</Button>
+            <Button key={key} type="primary" className="uploadOptionsButton" onClick={()=>showImg(imgInputName)}>查看附件</Button>
         </Col>
       </div>
     )
@@ -208,7 +236,7 @@ function HealthyhomeDetail(props) {
   }
 
   //row 左边单选右边上传附件
-  function radioUploadOptionsRow (radioName, dict, key, lastRow) {
+  function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName) {
     var col1Class='topItembg';
     var col2Class='leftRightItemBg';
     if (lastRow == true){
@@ -225,7 +253,7 @@ function HealthyhomeDetail(props) {
         </Col>
         <Col span="12">
           <div className={col2Class}>
-            {uploadOptionsItem({key})}
+            {uploadOptionsItem(key,imgInputName)}
           </div>
         </Col>
       </Row>
@@ -301,10 +329,10 @@ function HealthyhomeDetail(props) {
             <div className="itemTitle"><span>优生四向</span></div>
           </Col>
           <Col span="22">
-            {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_1']},'1')}
-            {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_2']},'2')}
-            {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3']},'3')}
-            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4']},'4',true)}
+            {radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_1']},'1',false,'imgInput_1')}
+            {radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_2']},'2',false,'imgInput_2')}
+            {radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3']},'3',false,'imgInput_3')}
+            {radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4']},'4',true,'imgInput_4')}
           </Col>
         </Row>
 
@@ -321,13 +349,13 @@ function HealthyhomeDetail(props) {
               </Col>
               <Col span="12">
                 <div className="leftRightItemBg" style={{height: '110px',paddingTop: '25px'}}>
-                  {uploadOptionsItem('5')}
+                  {uploadOptionsItem('5','imgInput_5')}
                 </div>
               </Col>
             </Row>
-            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_7']},'6')}
-            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_8']},'7')}
-            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_9']},'7')}
+            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_7']},'6','imgInput_6')}
+            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_8']},'7','imgInput_7')}
+            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_9']},'8','imgInput_8')}
             <Row>
               <Col span="12">
                 <div className="topItembg">
@@ -591,6 +619,12 @@ function HealthyhomeDetail(props) {
           </Col>
         </Row>
       </Form>
+
+      <BigImageModal
+        images={props.healthInformation.bigImageData}
+        isOpen={props.healthInformation.bigImageHidden}
+        onClose={handleImgDivCancel}
+      />
 
       <div className='bottomButton'>
         <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
