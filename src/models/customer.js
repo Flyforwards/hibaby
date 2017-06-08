@@ -14,6 +14,7 @@ export default {
     list: [],
     item: null,
     editItem: null,
+    packageList:[],//主套餐列表
     signUserList: [], // 预约用户列表
     editSignUserList: [], // 编辑
     userList:[], // 会员用户列表
@@ -105,6 +106,19 @@ export default {
           type: 'addMutDictData',
           payload: {
             abName:value.abName,
+            data:data,
+          }
+        });
+      }
+    },
+
+    *listByMain({ payload: value },{ call, put }){
+
+      const { data: { code, data } } = yield call(customerService.listByMain,parameter);
+      if (code == 0) {
+        yield put({
+          type: 'setPackageList',
+          payload: {
             data:data,
           }
         });
