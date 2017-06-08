@@ -182,7 +182,9 @@ class AddSuiteed extends Component {
                      className="price"
                   >
                   {getFieldDecorator('price', {
-                      rules: [],
+                  rules: [{
+                    pattern: /^[0-9]*$/, message: '请输入数字'
+                  }],
                     })(
                     <Input
                       addonBefore="￥"

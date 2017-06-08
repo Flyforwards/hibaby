@@ -132,22 +132,7 @@ export default {
       return history.listen(({ pathname, query }) => {
 
         if (pathname === '/crm/customer') {
-          dispatch({
-            type: 'getCustomerPage',
-            payload: query
-          });
-          dispatch({
-            type: 'listByMain',
-          });
-          dispatch({
-            type: 'getMemberShipCard',
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload:{
-              "abName": 'YCC',
-            }
-          });
+
 
         }
         // if (pathname === '/crm/customer/detail') {
