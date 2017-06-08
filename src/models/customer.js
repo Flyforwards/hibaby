@@ -1,6 +1,7 @@
 
 import * as activityService from '../services/activity';
 import * as customerService from '../services/customer';
+import * as addCustomerInformation from '../services/addCustomerInformation';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
@@ -13,10 +14,12 @@ export default {
     list: [],
     item: null,
     editItem: null,
+    packageList:[],//主套餐列表
     signUserList: [], // 预约用户列表
     editSignUserList: [], // 编辑
     userList:[], // 会员用户列表
     shipCards:[],
+    fetusAry:[],
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -34,6 +37,15 @@ export default {
 
     memberShipCardSave(state, { payload: { shipCards }}) {
       return {...state, shipCards};
+    },
+    addMutDictData(state, { payload: todo }){
+      if(todo.abName === 'YCC'){
+        return {...state,fetusAry:todo.data};
+      }
+      return {...state};
+    },
+    setPackageList(state, { payload: todo }){
+      return {...state,packageList:todo.data};
     },
   },
   effects: {
@@ -68,7 +80,6 @@ export default {
       if (values.size === undefined) {
         values.size = 10;
       }
-      console.log(values)
       const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, values);
       if (code == 0) {
         yield put({
@@ -85,6 +96,36 @@ export default {
       }
     },
 
+    *getDataDict({ payload: value },{ call, put }){
+      const parameter ={
+        abName:value.abName,
+        softDelete: 0,
+      };
+      const { data: { code, data } } = yield call(addCustomerInformation.getDataDict,parameter);
+      if (code == 0) {
+
+        yield put({
+          type: 'addMutDictData',
+          payload: {
+            abName:value.abName,
+            data:data,
+          }
+        });
+      }
+    },
+
+    *listByMain({ payload: value },{ call, put }){
+
+      const { data: { code, data } } = yield call(customerService.listByMain);
+      if (code == 0) {
+        yield put({
+          type: 'setPackageList',
+          payload: {
+            data:data,
+          }
+        });
+      }
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -96,8 +137,18 @@ export default {
             payload: query
           });
           dispatch({
+            type: 'listByMain',
+          });
+          dispatch({
             type: 'getMemberShipCard',
           });
+          dispatch({
+            type: 'getDataDict',
+            payload:{
+              "abName": 'YCC',
+            }
+          });
+
         }
         // if (pathname === '/crm/customer/detail') {
         //   dispatch({
