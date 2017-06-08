@@ -44,6 +44,9 @@ export default {
       }
       return {...state};
     },
+    setPackageList(state, { payload: todo }){
+      return {...state,packageList:todo.data};
+    },
   },
   effects: {
 
@@ -77,7 +80,6 @@ export default {
       if (values.size === undefined) {
         values.size = 10;
       }
-      console.log(values)
       const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, values);
       if (code == 0) {
         yield put({
@@ -114,7 +116,7 @@ export default {
 
     *listByMain({ payload: value },{ call, put }){
 
-      const { data: { code, data } } = yield call(customerService.listByMain,parameter);
+      const { data: { code, data } } = yield call(customerService.listByMain);
       if (code == 0) {
         yield put({
           type: 'setPackageList',
@@ -133,6 +135,9 @@ export default {
           dispatch({
             type: 'getCustomerPage',
             payload: query
+          });
+          dispatch({
+            type: 'listByMain',
           });
           dispatch({
             type: 'getMemberShipCard',
