@@ -38,17 +38,6 @@ class MemberShipCard extends Component {
       dataIndex: 'operatorName',
       key: 'operatorName',
     }, ];
-    this.dataSource = [{
-      key: '1',
-      renewTime: '胡彦斌',
-      renewAmount: 32,
-      renewAmount: '西湖区湖底公园1号'
-    }, {
-      key: '2',
-      renewTime: '胡彦斌',
-      renewAmount: 32,
-      renewAmount: '西湖区湖底公园1号'
-    }];
   }
 
   tdList(printList){
