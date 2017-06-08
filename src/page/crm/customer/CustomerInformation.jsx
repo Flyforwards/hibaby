@@ -67,7 +67,7 @@ function cusComponent(dict) {
 
   switch (dict.component) {
     case 'Input':
-      tempDiv = (<Input disabled={dict.disabled}/>);
+      tempDiv = (<Input max={dict.max} disabled={dict.disabled}/>);
       break;
     case 'Select':
       if (dict.fun)
@@ -480,8 +480,8 @@ function ExtensionInfo(props) {
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,disabled:props.users.expandData},
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
-    {title:'合同编号',component:'Input',submitStr:'contractNumber'},
-    {title:'关联客房',component:'Input',submitStr:'associatedRooms'},
+    {title:'合同编号',component:'Input',submitStr:'contractNumber',max:12},
+    {title:'关联客房',component:'InputNumber',submitStr:'associatedRooms'},
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,initValue:memberNumberValue},
