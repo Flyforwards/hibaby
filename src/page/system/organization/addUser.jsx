@@ -17,7 +17,6 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
-const SelectData = local.get("rolSelectData")
 const department = local.get("department")
 let traversalDataId = []
 
@@ -180,6 +179,7 @@ class AddUsered extends React.Component {
       let traversalEndemicId = []
       let selectDataList = []
       let endemic = session.get("endemic")
+      let SelectData = local.get("rolSelectData")
       let NODEID = window.location.search.split("=")[1];
       let departmentDisabled = false
       if(NODEID){
