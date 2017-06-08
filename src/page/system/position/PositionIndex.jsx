@@ -115,10 +115,11 @@ function mapStateToProps(state) {
     list,
     pagination
   } = state.position;
+
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
   };
 }
 

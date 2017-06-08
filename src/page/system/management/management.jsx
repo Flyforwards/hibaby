@@ -41,8 +41,9 @@ class GroupCharIndex extends React.Component {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
+        const detail = !this.props.permissionAlias.contains('GROUP_CHAR_DETAIL');
         return (
-          <Link className="firstA" to={`/system/group-char/detail?dataId=${record.id}` }> 查看 </Link>)
+          <Link disabled={detail} className="firstA" to={`/system/group-char/detail?dataId=${record.id}` }> 查看 </Link>)
       },
       width: '150px'
     }];
@@ -67,15 +68,13 @@ class GroupCharIndex extends React.Component {
         }))
       }
     }
-    // <Current page = { this.props.page }  totalpage = { this.props.totalpage }
-    //         total = { this.props.total } results = { this.props.results }
-    //         range = { this.props.range }
-    // />
+
+    const add = !this.props.permissionAlias.contains('GROUP_CHAR_ADD');
     return (
       <div className="container2">
         <div className="buttonwrapper">
           <Link to='/system/group-char/add'>
-            <Button className="addBtn"> 添加 </Button>
+            <Button disabled={add} className="addBtn"> 添加 </Button>
           </Link >
         </div>
         <Table {...tableProps} bordered columns={ this.columns } rowKey={record => record.id}/>
@@ -86,14 +85,15 @@ class GroupCharIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          pagination
-        } = state.save;
-
+    list,
+    pagination
+  } = state.save;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     list,
-    pagination
+    pagination,
+    permissionAlias
   };
 }
 

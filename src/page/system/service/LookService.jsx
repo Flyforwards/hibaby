@@ -55,6 +55,8 @@ class LookService extends Component {
           }
             name=values.name;
           const { formLayout } = this.state;
+         const del = !this.props.permissionAlias.contains('SERVICE_ITEM_DELETE');
+         const edit = !this.props.permissionAlias.contains('SERVICE_ITEM_EDIT');
           return (
             <div className="ServiceBox">
                 <Card className="AddService" bordered={true} >
@@ -85,10 +87,10 @@ class LookService extends Component {
                           <Button>返回</Button>
                       </Link>
                       <Link className="DelBtn" >
-                          <Button onClick={ this.delete.bind(this,addressid) }>删除</Button>
+                          <Button disabled={del} onClick={ this.delete.bind(this,addressid) }>删除</Button>
                       </Link>
                       <Link className="EditBtn" to={{pathname:'/system/service-item/edit',query:{id:`${addressid}`}}}>
-                          <Button>编辑</Button>
+                          <Button disabled={edit}>编辑</Button>
                       </Link>
                 </div>
                 <AlertModalFrom
@@ -101,50 +103,22 @@ class LookService extends Component {
           );
         }
 }
-  function GetQueryString(name){
-       var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-       var r = window.location.search.substr(1).match(reg);
-       if(r!=null)return  unescape(r[2]); return null;
-  }
-
-function LookService({
-  dispatch,
-  loading,
-  data,
-  total,
-  page,
-  results,
-  code
-}) {
-  return ( < div >
-    < LookService dispatch = {
-      dispatch
-    }
-    loading = {
-      loading
-    }
-    data={
-      data
-    }
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    /> </div >
-  )
-
+function GetQueryString(name){
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
 }
+
+
 function mapStateToProps(state) {
   const {
     data,
-    code
   } = state.service;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.service,
     data,
-    code
+    permissionAlias
   };
 }
 

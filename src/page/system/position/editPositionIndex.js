@@ -1,9 +1,11 @@
+
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import './editPositionIndex.scss'
 import { Button, Input, Icon, Modal, Form, Table, Popconfirm, Row, Col } from 'antd'
 import { local, session } from 'common/util/storage.js'
 import { Link } from 'react-router';
+import { message } from 'antd';
 const FormItem = Form.Item
 const createForm = Form.create
 
@@ -125,7 +127,11 @@ class LocalizedModal extends Component {
   }
 
   handleOk  () {
-
+    const edit = this.props.permissionAlias.contains('POSITION_EDIT');
+    if (!edit){
+      message.error("没有该权限");
+      return;
+    }
     this.props.form.validateFields((err, values) => {
       const v = {};
 
@@ -238,6 +244,12 @@ class LocalizedModal extends Component {
   }
 
   edit() {
+    const edit = this.props.permissionAlias.contains('POSITION_EDIT');
+    if (!edit){
+      message.error("没有该权限");
+      return;
+    }
+
     this.setState({
       isDetail: false,
     });
@@ -305,10 +317,10 @@ class LocalizedModal extends Component {
         );
       });
     }
-
+    const detail = !this.props.permissionAlias.contains('POSITION_DETAIL');
     return (
       <div className="editPositionIndex">
-        <Link onClick={  this.showModal.bind(this, record.id) }>查看</Link>
+        <Link disabled={detail} onClick={  this.showModal.bind(this, record.id) }>查看</Link>
         <Modal width="500px"
                title="职位详情"
                onCancel={ cancel }
@@ -333,9 +345,11 @@ class LocalizedModal extends Component {
 
 function mapStateToProps(state) {
   const { positionInfo } = state.position;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.position,
-    positionInfo
+    positionInfo,
+    permissionAlias
   };
 }
 
