@@ -5,7 +5,7 @@
 import * as cardService from '../services/membershipcard';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
-import { format } from '../utils/index.js';
+import { format,queryURL } from '../utils/index.js';
 
 export default {
   namespace: 'membershipcard',
@@ -296,7 +296,7 @@ export default {
 
     //查询扣费记录
     *getFeeDuctionRecord({ payload:values }, { call,put,select }){
-      const customerId = yield select(state => state.addCustomer.dataDetailId)
+      const customerId = queryURL('dataId')
       const value = {...values, customerId}
       const { data: { code, data ,page,size,total} } = yield call(cardService.getDeductionRecord, value);
       if ( code == 0) {
@@ -322,7 +322,7 @@ export default {
 
     //查看续费记录
     *getRenewRecord({ payload:values }, { call,put,select}){
-      const customerId=yield select(state=>state.addCustomer.dataDetailId)
+      const customerId=queryURL('dataId')
       const value = { ...values,customerId}
       const { data: { code, data ,page,size,total} } = yield call(cardService.getRenew, value);
       if ( code == 0) {
@@ -348,7 +348,7 @@ export default {
 
     //查看退费记录
     *getRefundRecord({ payload:values }, { call, put, select }){
-      const customerId = yield select(state=>state.addCustomer.dataDetailId)
+      const customerId =queryURL('dataId')
       const value = { ...values,customerId}
       const { data: { code, data ,page,size,total} } = yield call(cardService.getRefund, value);
       if ( code == 0) {
@@ -373,7 +373,7 @@ export default {
     },
     //查询客户会员卡信息
     *getCardInfo({ payload: values }, { call, put,select }) {
-      const dataId = yield select(state => state.addCustomer.dataDetailId)
+      const dataId = queryURL('dataId')
       const value = {...values, dataId}
       const { data: { code, data,} } = yield call(cardService.getCustomerMembershipcard, value);
       if (code == 0) {
@@ -387,7 +387,7 @@ export default {
     },
     //查询余额信息
     *getBalanceInfo({ payload: values }, { call, put, select }) {
-      const dataId = yield select(state => state.addCustomer.dataDetailId)
+      const dataId = queryURL('dataId')
       const value = {...values, dataId}
       const { data: { code, data,} } = yield call(cardService.getCustomerBalance, value);
       if (code == 0) {
@@ -427,11 +427,11 @@ export default {
     },
     //获取打印基础信息
     *getPrintBaseMsg({payload:values},{call,put}){
-      const customerId = location.search.substr(1).split('=')[1];
+      const customerId = queryURL('dataId')
       const value = {...values, customerId}
+      console.log("xxxxx",value)
       const { data: { code,data}} = yield call(cardService.getPrintBaseMsg,value);
       if(code == 0){
-        console.log("success",values)
         yield put({
           type:'savePrintBaseMsg',
           payload:{
@@ -459,15 +459,15 @@ export default {
         yield put({
           type:'getPrintBaseMsg',
           payload:{
-            startTime:new Date(data).format('yyyy-MM-dd'),
-            endTime:new Date(data).format('yyyy-MM-dd'),
+            "startTime":new Date(data).format('yyyy-MM-dd'),
+            "endTime":new Date(data).format('yyyy-MM-dd'),
           }
         })
         yield put({
           type:'getPrintAccount',
           payload:{
-            startTime:new Date(data).format('yyyy-MM-dd'),
-            endTime:new Date(data).format('yyyy-MM-dd'),
+            "startTime":new Date(data).format('yyyy-MM-dd'),
+            "endTime":new Date(data).format('yyyy-MM-dd'),
           }
         })
         yield put({
@@ -481,7 +481,7 @@ export default {
 
     //获取账单打印信息
     *getPrintAccount({payload:values},{call,put}){
-      const customerId = location.search.substr(1).split('=')[1];
+      const customerId = queryURL('dataId')
       const value = {...values, customerId}
       const { data: { code,data}} = yield  call(cardService.getPrintAccountList,value);
       if(code == 0) {
@@ -499,9 +499,6 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/crm/customer/customerDetails') {
-
-        };
         if(pathname === '/crm/customer/printPage'){
           // dispatch({
           //   type:'getPrintBaseMsg',

@@ -160,8 +160,17 @@
   }
 
   .commitButton {
-    width: 150px;
-    height: 35px;
     margin-right: 10px;
+    font:14px "微软雅黑";
+  }
+  .BackBtn{
+    background:#b67233;
+    border-color:#b67233;
+    color:#fff;
+  }
+  .SaveBtn{
+    background:#f1e8df;
+    border-color:#bb7c41;
+    color:#b67233;
   }
 }

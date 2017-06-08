@@ -77,7 +77,7 @@ class ChargeBackFeeModal extends Component {
     this.props.dispatch({
       type:'membershipcard/getGoodsList',
       payload:{
-        'name':value
+        "name":value
       }
     })
   }
