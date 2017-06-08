@@ -49,8 +49,8 @@ class MemberShipCard extends Component {
   }
   //日期选择改变
   onChange(dates, dateStrings) {
-    console.log('From: ', dates[0], ', to: ', dates[1]);
-    console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+    // console.log('From: ', dates[0], ', to: ', dates[1]);
+    // console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
     const data = {};
     data.startTime =  dateStrings[0];
     data.endTime =  dateStrings[1];
@@ -70,7 +70,6 @@ class MemberShipCard extends Component {
   }
   render() {
     const { systemTime ,feeRecord,renewRecord,refundRecord} = this.props;
-    console.info("xxxssss",systemTime)
     return (
       <div className="card" style={{overflow:'hidden'}}>
         <div>
