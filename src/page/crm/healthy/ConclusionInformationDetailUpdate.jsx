@@ -13,9 +13,14 @@ const type = 4;//出院小结
 /**
  * 客户信息》健康档案》出院小结
  */
-function ConclusionInformation(props) {
+function ConclusionInformationUpdate(props) {
   const {dispatch} = props;
   const { getFieldDecorator } = props.form;
+  const conclusionInformation = props.healthInformation.conclusionInformation;
+  const defaultFileList = props.healthInformation.conclusionImg_arr;
+  for(var i=0;i<defaultFileList.length;i++){
+    defaultFileList[i].uid = i;
+  }
 
   function imgInputAddImg(imgInputName,value){
     const {form} = props;
@@ -51,11 +56,12 @@ function ConclusionInformation(props) {
       if (!err) {
         const healthInfo = JSON.stringify(conclusionImg_arr);
         dispatch({
-          type: 'healthInformation/saveHealthInformation',
+          type: 'healthInformation/updateHealthInformation',
           payload: {
             healthInfo : healthInfo,
             type : type,
-            customerId : props.customerId
+            customerId : props.customerId,
+            id : conclusionInformation.id
           }
         })
       }
@@ -77,7 +83,7 @@ function ConclusionInformation(props) {
               {getFieldDecorator("conclusion", {
                 rules: [{ required: true, message: '请上传附件' }]
               })(
-                <FileUpload addImgFun={imgInputAddImg} deleteImgFun={imgInputDeleteImgFun} imgInputName="conclusion">
+                <FileUpload defaultFileList={defaultFileList} addImgFun={imgInputAddImg} deleteImgFun={imgInputDeleteImgFun} imgInputName="conclusion">
                   <Button key="1" className="uploadOptionsButton"><Icon type="upload"/>上传附件</Button>
                 </FileUpload>
               )}
@@ -94,7 +100,7 @@ function ConclusionInformation(props) {
     </div>
   );
 }
-const ConclusionInformationFrom = Form.create()(ConclusionInformation);
+const ConclusionInformationUpdateFrom = Form.create()(ConclusionInformationUpdate);
 
 
 function mapStateToProps(state) {
@@ -104,4 +110,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(ConclusionInformationFrom)
+export default connect(mapStateToProps)(ConclusionInformationUpdateFrom)
