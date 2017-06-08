@@ -37,13 +37,13 @@ export default {
   effects: {
     //获取部门分页信息
     *getDepartmentInfo({ payload: values }, { call, put }) {
-      values = parse(location.search.substr(1))
-      if (values.page === undefined) {
-        values.page = 1;
-      }
-      if (values.size === undefined) {
-        values.size = 10;
-      }
+      // values = parse(location.search.substr(1))
+      // if (values.page === undefined) {
+      //   values.page = 1;
+      // }
+      // if (values.size === undefined) {
+      //   values.size = 10;
+      // }
       const { data: { data, code, page, size, total } } = yield call(postionService.getDepartmentByEndemicId, values);
       if (code == 0) {
         yield put({
