@@ -45,7 +45,7 @@ class CustomerComplaintsAddIndex extends React.Component {
     return (
       <div className="activity-cent">
         <div className="add-activity">
-          <Card title = "客户投诉:">
+          <Card className="CustomerComplaints"  title = "客户投诉:">
             <Form >
               <FormItem {...formItemLayout} label="投诉者" >
                 {getFieldDecorator('name', {rules: [{ required: true, message: '请填写投诉者！', max: 10 }],
@@ -87,11 +87,11 @@ class CustomerComplaintsAddIndex extends React.Component {
             <Row>
               <Col offset={16} span={4}>
                 <Link to='/crm/customer-comp'>
-                  <Button className="backBtn"> 返回 </Button>
+                  <Button className="BackBtn"> 返回 </Button>
                 </Link>
               </Col>
               <Col span={4}>
-                <Button type='primary' onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
+                <Button className="SaveBtn" onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
               </Col>
             </Row>
 

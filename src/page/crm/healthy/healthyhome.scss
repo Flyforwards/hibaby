@@ -61,15 +61,28 @@
   .ant-form-item-control {
     line-height: 55px;
   }
-
+  .ApgarOption{
+    .ant-col-2{
+      height:30px;
+      margin-top:12px;
+    }
+    .Fraction{
+      width:40px;
+    }
+  }
   .uploadOptions {
     margin-top: 13px;
     text-align: right;
     line-height: 30px;
     margin-right: 10px;
+    margin-left: 10px;
   }
 
   .uploadOptionsButton {
+    background:#f1e8df;
+    border-color:#bb7c41;
+    color:#b67233;
+    font:14px "微软雅黑";
     margin-top: 13px;
     height: 30px;
     width: 120px;
@@ -89,9 +102,18 @@
   }
 
   .commitButton {
-    width: 150px;
-    height: 35px;
     margin-right: 10px;
+    font:14px "微软雅黑";
+  }
+  .BackBtn{
+    background:#b67233;
+    border-color:#b67233;
+    color:#fff;
+  }
+  .SaveBtn{
+    background:#f1e8df;
+    border-color:#bb7c41;
+    color:#b67233;
   }
 
 }

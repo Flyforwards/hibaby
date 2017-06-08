@@ -157,10 +157,12 @@ class CustomerComplaintsIndex extends React.Component {
       <div className = "activity-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/customer-comp/add'>
-            <Button disabled={add} className="button-add"> 创建投诉 </Button>
+            <Button disabled={add} className="button-add BackBtn"> 创建投诉 </Button>
           </Link >
         </div>
-        <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
+        <div className="CreateModaList">
+            <Table className="" {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
+        </div>
       </div>
     );
   }
