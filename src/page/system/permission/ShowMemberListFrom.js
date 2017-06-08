@@ -197,7 +197,7 @@ class ShowMemberListFrom extends Component {
     let selects = selectedRows.map((record, index)=> {
       return (
         <li className="li-item" key = { index }>
-          <div className="li-div-item">{ record.name }</div>
+          <div className="li-div-item">{ record.name  }</div>
           <span className="li-span-item" onClick={ this.removeSelectedRows.bind(this, record) }></span>
        </li>)
     })
@@ -218,7 +218,7 @@ class ShowMemberListFrom extends Component {
             <div className="input-div">
               <div className="div-input">
                 {
-                 selects
+                  selects.length > 0 ? selects : <p>点击添加按钮进行添加</p>
                 }
               </div>
               <div className = { this.state.addMemberClassName }>
