@@ -4,6 +4,8 @@ import * as usersService from '../services/users';
 import { message } from 'antd';
 import  { session } from 'common/util/storage.js';
 import { parse } from 'qs'
+import { routerRedux } from 'dva/router';
+
 
 // tissueProperty 3是部门 2是地方中心
 export default {
@@ -51,19 +53,27 @@ export default {
   effects: {
     *getRolesByPage({ payload: values }, {call,put }) {
       values = parse(location.search.substr(1))
+      console.log(values)
       const { data: { data, total, page, size, code, err }} = yield call(systemService.getRolesByPage, values);
       if (code == 0) {
-        yield put({
-          type : 'getRolesSuccess',
-          payload : {
-            data,
-            pagination: {
-              current: Number(page) || 1,
-              pageSize: Number(size) || 10,
-              total: total,
+        if(data.length == 0 && page > 1){
+          yield put(routerRedux.push(`/system/permission?page=${page -1}&size=10`))
+
+        }
+        else {
+          yield put({
+            type : 'getRolesSuccess',
+            payload : {
+              data,
+              pagination: {
+                current: Number(page) || 1,
+                pageSize: Number(size) || 10,
+                total: total,
+              },
             },
-          },
-        });
+          });
+        }
+
       }
     },
     *submitCreateRole({ payload: values }, {call,put }) {

@@ -22,6 +22,7 @@ export default {
     editMedicalFlag : false,
     editNutritionFlag : false,
     editSkinFlag : false,
+    editConclusionFlag:false,
     imgInput_1_arr : [],
     imgInput_2_arr : [],
     imgInput_3_arr : [],
@@ -30,6 +31,7 @@ export default {
     imgInput_6_arr : [],
     imgInput_7_arr : [],
     imgInput_8_arr : [],
+    conclusionImg_arr : [],
     bigImageData : [],
     bigImageHidden : false,
     imgInput_1_required : false,
@@ -133,17 +135,21 @@ export default {
       }else if(type === 3){
         return { ...state,editSkinFlag : false, skinHealthInformation : data };
       }else if(type === 4){
-        return { ...state, conclusionInformation : data };
+        if(data && data.healthInfo) {
+          const conclusionImg_arr = JSON.parse(data.healthInfo);
+          return {...state,editConclusionFlag:false, conclusionInformation : data,conclusionImg_arr:conclusionImg_arr}
+        }
+        return { ...state,editConclusionFlag:false, conclusionInformation : data };
       }
       return {...state};
     },
     setSaveDone(state, { payload: { data }}){
       if(data){
-        let healthInfo = JSON.parse(data.healthInfo);
         let saveDone = true;
         let type = data.type;
         if(data.type === 1){
           if(data.healthInfo){
+            const healthInfo = JSON.parse(data.healthInfo);
             const imgInput_1_arr = healthInfo.imgInput_1?JSON.parse(healthInfo.imgInput_1):[];
             const imgInput_2_arr = healthInfo.imgInput_2?JSON.parse(healthInfo.imgInput_2):[];
             const imgInput_3_arr = healthInfo.imgInput_3?JSON.parse(healthInfo.imgInput_3):[];
@@ -171,7 +177,11 @@ export default {
         }else if(data.type === 3){
           return {...state,saveDone:saveDone,editSkinFlag : false,type:type, skinHealthInformation : data}
         }else if(data.type === 4){
-          return {...state,saveDone:saveDone,type:type, conclusionInformation : data}
+          if(data && data.healthInfo) {
+            const conclusionImg_arr = JSON.parse(data.healthInfo);
+            return {...state,saveDone:saveDone,type:type,editConclusionFlag:false, conclusionInformation : data,conclusionImg_arr:conclusionImg_arr}
+          }
+          return {...state,saveDone:saveDone,type:type,editConclusionFlag:false, conclusionInformation : data}
         }
         return {...state};
       }
@@ -195,15 +205,15 @@ export default {
       }else if(data.type === 3){
         return { ...state,type:data.type, editSkinFlag:true };
       }else if(data.type === 4){
-        return {...state};
+        return { ...state,type:data.type, editConclusionFlag:true };
       }
       return {...state};
     },
     clearAllHealthInformation(state, { payload: data }){
-      return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null,
+      return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,editConclusionFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null,
         imgInput_1_arr:[],imgInput_2_arr:[],imgInput_3_arr:[],imgInput_4_arr:[],
         imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],Input_8_arr:[],
-        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,}
+        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,conclusionImg_arr:[]}
     },
     //设置查看附件Modal数据
     setBigImageModalProps(state, { payload: data }){
@@ -245,6 +255,10 @@ export default {
         const imgInput_8_arr = state.imgInput_8_arr;
         imgInput_8_arr.push(value);
         return {...state,imgInput_8_arr:imgInput_8_arr}
+      }else if(imgInputName === 'conclusion'){
+        const conclusionImg_arr = state.conclusionImg_arr;
+        conclusionImg_arr.push(value);
+        return {...state,conclusionImg_arr:conclusionImg_arr}
       }
       return {...state}
     },
@@ -316,6 +330,14 @@ export default {
           }
         }
         return {...state,imgInput_8_arr:imgInput_8_arr}
+      }else if(imgInputName === 'conclusion'){
+        const conclusionImg_arr = state.conclusionImg_arr;
+        for(var i=0;i<conclusionImg_arr.length;i++){
+          if(conclusionImg_arr[i].name == value.name){
+            conclusionImg_arr.splice(i,1);
+          }
+        }
+        return {...state,conclusionImg_arr:conclusionImg_arr}
       }
       return {...state}
     },
