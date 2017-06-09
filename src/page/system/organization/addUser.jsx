@@ -71,6 +71,15 @@ class AddUsered extends React.Component {
           "tissueProperty": endemic.tissueProperty
       }
     })
+    this.props.dispatch({
+      type: "organization/organizationList",
+      payload: {
+        nodeid:endemic.id,
+        tissueProperty:endemic.tissueProperty,
+        page:1,
+        size: 10,
+      }
+    });
   }
   //返回按键
   handelReturn = ()=>{

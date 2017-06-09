@@ -154,7 +154,7 @@ class CustomerComplaintsIndex extends React.Component {
 
     const add = !this.props.permissionAlias.contains('CUSTOMERCOMP_ADD');
     return (
-      <div className = "activity-cent">
+      <div className = "customer-comp-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/customer-comp/add'>
             <Button disabled={add} className="button-add BackBtn"> 创建投诉 </Button>

@@ -63,6 +63,30 @@ class CardDetail extends Component {
     level? level.map(function(elem,index){
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
+    let cardLevel = null;
+    if (cardKind && cardKind.level) {
+      cardLevel = <Row>
+        <Col span = { 8 } style={{width:'251px'}}>
+          <FormItem label="会员卡级别" {...formItemLayout}>
+            {getFieldDecorator('level', {
+              initialValue: cardKind ? cardKind.level+'':''  ,
+              rules: [{ required: true, message: '请选择会员卡级别' }]
+            })(
+              <Select
+                showSearch
+                allowClear
+                placeholder="请选择"
+                optionFilterProp="children"
+                filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                disabled={ true }
+              >
+                { options }
+              </Select>
+            )}
+          </FormItem>
+        </Col>
+      </Row>
+    }
     return (
       <div className="cardDetail">
         <Card title="会员卡信息" style={{ width: '100%' }}>
@@ -98,25 +122,7 @@ class CardDetail extends Component {
                   )}
                 </FormItem>
               </Col>
-                <Col span = { 8 } style={{width:'251px'}}>
-                  <FormItem label="会员卡级别" {...formItemLayout}>
-                    {getFieldDecorator('level', {
-                      initialValue: cardKind ? cardKind.level+'':''  ,
-                      rules: [{ required: true, message: '请选择会员卡级别' }]
-                    })(
-                      <Select
-                        showSearch
-                        allowClear
-                        placeholder="请选择"
-                        optionFilterProp="children"
-                        filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                        disabled={ true }
-                      >
-                        { options }
-                      </Select>
-                    )}
-                  </FormItem>
-                </Col>
+              {cardLevel}
             </Row>
             <Row>
               <Col span={ 24 } style={{width:'600px'}}>
