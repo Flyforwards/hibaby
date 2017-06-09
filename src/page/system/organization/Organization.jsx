@@ -157,7 +157,8 @@ class Organization extends React.Component {
             ID:null,
             nodeid:endemic.id,
             tissueProperty:endemic.tissueProperty,
-            statusType:false
+            statusType:false,
+            default:null
         }
         this.current = false
         this.query = false
@@ -255,9 +256,12 @@ OrganizationInquire() {
     statusType(status){
       console.log("1")
         this.setState({
-          statusType:status
+          statusType:status,
+          default:1
         })
-       this.current = true
+    }
+    onChange(){
+      console.log("onChange>>>>",onChange)
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -278,6 +282,7 @@ OrganizationInquire() {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
+          defaultCurrent:null,
           pageSize:10,
           onChange: (current) => {
             if(this.state.statusType){
@@ -310,6 +315,8 @@ OrganizationInquire() {
             }
           },
         };
+        pagination.defaultCurrent = 1
+        console.log("current",pagination)
         const traversalRoleId = (roleId) => {
           return roleId.map((item)=>{
              return <Option value={item.id+""} key={item.id}>{item.name}</Option>
