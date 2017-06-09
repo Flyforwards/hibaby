@@ -140,7 +140,7 @@ class Organization extends React.Component {
             return (
                 <span>
                   <Link disabled={ detail} to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                  <Link className="twoA" disabled={ disable } onClick={this.Disabled.bind(this,record)}>{Forbidden}</Link>
+                  <Link className="twoA" disabled={ disable } onClick={this.disabled.bind(this,record)}>{ Forbidden }</Link>
                 </span>
             );
           },
@@ -204,17 +204,17 @@ class Organization extends React.Component {
     });
   }
 
-//禁止
-Disabled(record) {
+  //禁止
+  disabled(record) {
+      this.setState({
+        toViewVisible:true,
+        ID:record.id
+      })
+  }
+  onChange(current){
     this.setState({
-      toViewVisible:true,
-      ID:record.id
+      current:current
     })
-}
-onChange(current){
-  this.setState({
-    current:current
-  })
    if(this.state.statusType){
       this.props.dispatch({
         type: 'organization/organizationList',
@@ -275,19 +275,6 @@ OrganizationInquire() {
         this.setState({
           toViewVisible: false
         })
-        let endemic  = session.get("endemic")
-        this.props.dispatch({
-          type: 'organization/organizationList',
-          payload: {
-            "name":null,
-            "roleId":null,
-            "nodeid": endemic.id,
-            "status":null,
-            "page": this.state.current,
-            "size": 10,
-            "tissueProperty":endemic.tissueProperty
-          }
-        });
     }
     ObtainOrganization(nodeid,tissueProperty){
       this.setState({
@@ -330,11 +317,6 @@ OrganizationInquire() {
           })
         }
         const traversalRoleIdData = traversalRoleId(roleId);
-        const selectParams = {
-          id: 3,
-          type: 1,
-          softDelete: 0
-        }
 
         const add = this.props.permissionAlias.contains('EMPLOYEE_ADD')
         return (
@@ -454,5 +436,6 @@ function mapStateToProps(state) {
     permissionAlias
     };
 }
+
 const OrganizationForm = Form.create()(Organization);
 export default connect(mapStateToProps)(OrganizationForm)

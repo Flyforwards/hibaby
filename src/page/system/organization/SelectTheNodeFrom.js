@@ -71,17 +71,19 @@ class SelectTheNodeFrom extends Component {
       dataIndex: 'roleId',
       render: (roleId)=>{
         let roleIdData=[];
-        roleIdData=roleId.split(",")
-        const selectData=this.props.selectData;
-        let roleData=[];
-        selectData.map((res,index)=>{
-          roleData.push(res.id)
-        })
         let selectName=[];
-        for(let n=0;n<roleIdData.length;n++){
-          for(let i=0;i<roleData.length;i++){
-            if(roleData[i]==Number(roleIdData[n])){
-              selectName.push(selectData[i].name)
+        if(roleId){
+          roleIdData=roleId.split(",")
+          const selectData=local.get("rolSelectData");
+          let roleData=[];
+          selectData.map((res,index)=>{
+            roleData.push(res.id)
+          })
+          for(let n=0;n<roleIdData.length;n++){
+            for(let i=0;i<roleData.length;i++){
+              if(roleData[i]==Number(roleIdData[n])){
+                selectName.push(selectData[i].name)
+              }
             }
           }
         }
@@ -156,7 +158,7 @@ class SelectTheNodeFrom extends Component {
     const  { selectedNodes } = e;
     if(selectedNodes[0]){
       const node = selectedNodes[0];
-      console.log("节点>>>>",node)
+      //console.log("节点>>>>",node)
       this.nodeId = node.props.nodeId;
       this.tissueProperty = node.props.tissueProperty;
       this.props.dispatch({
@@ -205,10 +207,10 @@ class SelectTheNodeFrom extends Component {
       pageSize: 10,
       onChange: (current) => {
          let endemic  = session.get("endemic");
-         console.log("endemic>>>>",endemic)
+        // console.log("endemic>>>>",endemic)
          let nodeId = this.nodeId
          let tissueProperty = this.tissueProperty
-        console.log("nodeId>>>>",this.nodeId)
+        //console.log("nodeId>>>>",this.nodeId)
         this.props.dispatch({
           type: "organization/organizationList",
           payload: {
