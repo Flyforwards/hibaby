@@ -52,15 +52,6 @@ class appointmentNotMemberFrom extends Component {
         wrapClassName = { "vertical-center-modal" }
       >
         <Form>
-<<<<<<< HEAD
-          <FormItem label={"客户姓名"}>
-            {getFieldDecorator('name', {rules: [{ required: true, message: '请填写客户姓名！' }],
-            })(<Input className="input"/>
-            )}
-          </FormItem>
-          <FormItem label={"联系电话"}>
-            {getFieldDecorator('contact', {rules: [{ required: true, message: '请填写联系电话！' }],
-=======
           <FormItem {...formItemLayout}>
           </FormItem>
 
@@ -75,7 +66,6 @@ class appointmentNotMemberFrom extends Component {
               pattern: /^[1][34578][0-9]{9}$/,
               required: true,
               message: '请正确填写联系电话!' }],
->>>>>>> 24b93ef22c29cdf24c1ca968eee13b918b8c121f
             })(<Input className="input"/>
             )}
           </FormItem>
