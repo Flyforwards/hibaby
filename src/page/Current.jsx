@@ -4,7 +4,7 @@ class Current extends React.Component {
     let range = this.props.range;
     return (range ?
       <div>
-      <p> 第 {
+      <p className="pagination"> 第 {
         this.props.page
       }
       页, 共 {

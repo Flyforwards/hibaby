@@ -129,8 +129,8 @@
 		.directLeadership{
 			margin-left:61px;
 			margin-top: 20px;
-			input{
-				width:230px;
+			.ant-select-arrow:before {
+				display:none;
 			}
 		}
     .button{
@@ -323,6 +323,7 @@
 
 	}
 	.ant-btn{
+    width: 150px;
 		float:right;
 		margin: 0 20px;
     color:#fff;

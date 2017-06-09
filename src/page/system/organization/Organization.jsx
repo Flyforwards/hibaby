@@ -18,9 +18,9 @@ const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
 const TreeNode = Tree.TreeNode;
-let endemic  = session.get("endemic");
 let POSITION = [];
 let DEPTEMENT = [];
+let endemic  = session.get("endemic")
 const FormItem = Form.Item;
 
 class Organization extends React.Component {
@@ -82,23 +82,28 @@ class Organization extends React.Component {
           title: '系统角色',
           dataIndex: 'roleId',
           key: 'roleId',
-          width: '30%',
+          width: '28%',
           render: (text, record, index) => {
-            let roleId = record.roleId.split(",")
+            let roleId = []
             let list = []
-            let len = roleId.length-1
-            if(local.get("rolSelectData")){
-              roleId.map((data,index)=>{
-                local.get("rolSelectData").map((item)=>{
-                  if(item.id == Number(data)){
-                    if(len == index){
-                      list.push(item.name)
-                    }else{
-                      list.push(item.name+" ; ")
+            if(record.roleId){
+              roleId = record.roleId.split(",")
+              let len = roleId.length-1
+              if(local.get("rolSelectData")){
+                roleId.map((data,index)=>{
+                  local.get("rolSelectData").map((item)=>{
+                    if(item.id == Number(data)){
+                      if(len == index){
+                        list.push(item.name)
+                      }else{
+                        list.push(item.name+" ; ")
+                      }
                     }
-                  }
+                  })
                 })
-              })
+              }
+            }else{
+              list = ""
             }
             return(
               list
@@ -122,7 +127,7 @@ class Organization extends React.Component {
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
-          width: '10%',
+          width: '12%',
           render: (text, record, index) => {
             let Forbidden = "禁用"
             const detail = !this.props.permissionAlias.contains('EMPLOYEE_DETAIL');
@@ -135,7 +140,7 @@ class Organization extends React.Component {
             return (
                 <span>
                   <Link disabled={ detail} to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                  <Link className="twoA" disabled={ disable } onClick={this.Disabled.bind(this,record)}>{Forbidden}</Link>
+                  <Link className="twoA" disabled={ disable } onClick={this.disabled.bind(this,record)}>{ Forbidden }</Link>
                 </span>
             );
           },
@@ -151,9 +156,11 @@ class Organization extends React.Component {
             toViewVisible:false,
             ID:null,
             nodeid:endemic.id,
-            tissueProperty:endemic.tissueProperty
+            tissueProperty:endemic.tissueProperty,
+            statusType:false,
+            default:null,
+            current:1
         }
-        this.current = 1
         this.query = false
     }
     onDrop = (info) => {
@@ -168,10 +175,7 @@ class Organization extends React.Component {
       });
     };
   }
-  //获取部门
-  acquisitionDepartment(id){
 
-  }
   componentDidMount(){
     let endemic  = session.get("endemic")
     this.props.dispatch({
@@ -200,43 +204,76 @@ class Organization extends React.Component {
     });
   }
 
-//禁止
-Disabled(record) {
+  //禁止
+  disabled(record) {
+      this.setState({
+        toViewVisible:true,
+        ID:record.id
+      })
+  }
+  onChange(current){
     this.setState({
-      toViewVisible:true,
-      ID:record.id
+      current:current
     })
+   if(this.state.statusType){
+      this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": this.state.userName,
+            "nodeid": this.state.nodeid,
+            "roleId": this.state.character,
+            "status":this.state.status,
+            "page": current,
+            "size": 10,
+            "tissueProperty": this.state.tissueProperty
+        },
+      });
+    }else{
+      this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": null,
+            "nodeid": this.state.nodeid,
+            "roleId": null,
+            "status": null,
+            "page":current,
+            "size": 10,
+            "tissueProperty": this.state.tissueProperty
+        },
+      });
+    }
 }
 //按条件查询用户
 OrganizationInquire() {
   const fields = this.props.form.getFieldsValue();
-  console.log("fields>>>>",fields)
+  //console.log("fields>>>>",fields)
   this.setState({
     userName:fields.userName,
     status:fields.OrganizationType,
     character:fields.SystemRoles,
+    statusType:true
   })
- this.props.dispatch({
-  type: 'organization/organizationList',
-  payload: {
-      "name": fields.userName,
-      "nodeid": this.state.nodeid,
-      "roleId": fields.SystemRoles,
-      "status": fields.OrganizationType,
-      "page": 1,
-      "size": 10,
-      "tissueProperty":this.state.tissueProperty
-  },
-});
+  this.props.dispatch({
+    type: 'organization/organizationList',
+    payload: {
+        "name": fields.userName,
+        "nodeid": this.state.nodeid,
+        "roleId": fields.SystemRoles,
+        "status": fields.OrganizationType,
+        "page": 1,
+        "size": 10,
+        "tissueProperty":this.state.tissueProperty
+    },
+  });
 }
     showCreateModal() {
         this.setState({
-            createModalVisible: true
+          createModalVisible: true
         })
     }
     handleCreateModalCancel() {
         this.setState({
-            toViewVisible: false
+          toViewVisible: false
         })
     }
     ObtainOrganization(nodeid,tissueProperty){
@@ -244,6 +281,12 @@ OrganizationInquire() {
           nodeid:nodeid,
           tissueProperty:tissueProperty
       })
+    }
+    statusType(status){
+        this.setState({
+          statusType:status,
+          current:1
+        })
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -264,21 +307,9 @@ OrganizationInquire() {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
+          current:this.state.current,
           pageSize:10,
-          onChange: (current) => {
-            this.props.dispatch({
-              type: 'organization/organizationList',
-              payload: {
-                  "name": this.state.userName,
-                  "nodeid": this.state.nodeid,
-                  "roleId": this.state.character,
-                  "status":this.state.status,
-                  "page": current,
-                  "size": 10,
-                  "tissueProperty": this.state.tissueProperty
-              },
-            });
-          },
+          onChange: this.onChange.bind(this)
         };
         const traversalRoleId = (roleId) => {
           return roleId.map((item)=>{
@@ -286,11 +317,6 @@ OrganizationInquire() {
           })
         }
         const traversalRoleIdData = traversalRoleId(roleId);
-        const selectParams = {
-          id: 3,
-          type: 1,
-          softDelete: 0
-        }
 
         const add = this.props.permissionAlias.contains('EMPLOYEE_ADD')
         return (
@@ -298,6 +324,8 @@ OrganizationInquire() {
             <main className="yt-admin-framework-Customer-a">
             <OrganizationLeft
               onBtain={this.ObtainOrganization.bind(this)}
+              statusType = { this.statusType.bind(this) }
+              current = { this.state.current }
             />
             <div className="Organization-right">
             <div className="Organization-nav">
@@ -340,8 +368,8 @@ OrganizationInquire() {
              </Form>
               <div className="btn">
                 {this.state.tissueProperty == 3?
-                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}><Button disabled={!add}>新增员工</Button></Link></span>:
-                  <span className="Organization-Inquire"><Link to="/system/organization/addUser"><Button disabled={!add}>新增员工</Button></Link></span>
+                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}><Button className="SaveBtn" disabled={!add}>新增员工</Button></Link></span>:
+                  <span className="Organization-Inquire"><Link to="/system/organization/addUser"><Button className="SaveBtn" disabled={!add}>新增员工</Button></Link></span>
                 }
 
                 <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
@@ -362,9 +390,9 @@ OrganizationInquire() {
                     results = {
                       this.props.results
                     }
-                    // range = {
-                    //   this.props.range
-                    // }
+                    range = {
+                      this.props.range
+                    }
                     />
             </div>:null}
             <CreateModal
@@ -408,5 +436,6 @@ function mapStateToProps(state) {
     permissionAlias
     };
 }
+
 const OrganizationForm = Form.create()(Organization);
 export default connect(mapStateToProps)(OrganizationForm)

@@ -86,10 +86,10 @@ class MemberShipCard extends Component {
   })
   dispatch({
     type:'membershipcard/getLevelInfo',
-    payload:{
-      "abName":'HYKJB',
-      "softDelete":0,
-    }
+    // payload:{
+    //   "abName":'HYKJB',
+    //   "softDelete":0,
+    // }
   });
 }
 
@@ -180,9 +180,9 @@ class MemberShipCard extends Component {
           </Tabs>
         </Card>
         <div style={{textAlign:'right',marginTop:'20px'}}>
-          <Link to="/crm/customer"><Button className="cardBtn">返回</Button></Link>
+          <Link to="/crm/customer"><Button className="cardBtn BackBtn">返回</Button></Link>
 
-          <Button className="cardBtn"  onClick={this.onPrint.bind(this)}>打印</Button>
+          <Button className="cardBtn PrintBtn"  onClick={this.onPrint.bind(this)}>打印</Button>
 
           <AlertModalFrom
             modalTitle="会员销卡"
@@ -193,7 +193,7 @@ class MemberShipCard extends Component {
             onOk={this.handleCancelCard.bind(this)}
             type="DELETE"
           >
-            <Button  type="danger" className="cardBtn">销卡</Button>
+            <Button className="cardBtn clearBtn">销卡</Button>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -205,7 +205,7 @@ class MemberShipCard extends Component {
             onOk={this.handleRefundCard.bind(this)}
             type="REFUND"
           >
-            <Button type="danger" className="cardBtn">退费</Button>
+            <Button className="cardBtn RefundBtn">退费</Button>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -217,13 +217,13 @@ class MemberShipCard extends Component {
             onOk={this.handleRenewFee.bind(this)}
             type="CHARGE"
           >
-            <Button type="primary" className="cardBtn" >续费</Button>
+            <Button className="cardBtn renewBtn" >续费</Button>
           </AlertModalFrom>
 
           <ChargeBackFeeModal
             onOk={this.onCharge.bind(this)}
           >
-            <Button type="primary" className="cardBtn">扣费</Button>
+            <Button className="cardBtn decBtn">扣费</Button>
           </ChargeBackFeeModal>
 
         </div>

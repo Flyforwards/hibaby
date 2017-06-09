@@ -82,7 +82,7 @@ export function getCustomerBalance (values) {
 
 //获取会员卡级别
 export function getLevel(values) {
-  return request('/crm/api/v1/dictionary/getDictionary', {
+  return request('/crm/api/v1/membershipcard/getCardLevel', {
     method: 'POST',
     body: JSON.stringify(values),
   })

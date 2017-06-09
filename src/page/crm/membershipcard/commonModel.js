@@ -4,11 +4,13 @@
 
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Modal,Form,Row,Col,Input} from 'antd';
-const createForm = Form.create;
-const FormItem = Form.Item;
+import { Modal,Form,Row,Col,Input, Radio} from 'antd';
 import "./index.scss";
 import { queryURL } from '../../../utils/index.js';
+
+const createForm = Form.create;
+const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 @createForm()
 class AlertModalFrom extends Component {
@@ -69,17 +71,35 @@ class AlertModalFrom extends Component {
     callback('不能为负数');
   }
   render() {
-    let {  modalTitle , okText, cancel, message,form,labelValue,prams,commonVisible, type } = this.props
+    let {  modalTitle , okText, cancel, message,form,labelValue,prams,commonVisible, type } = this.props;
+    const { getFieldDecorator } = form;
+    const formItemLayout = {
+      labelCol:{ span: 6 },
+      wrapperCol:{ span:15 }
+    }
     let visible = this.state.visible;
+    let upgradeBlock = null;
+    if (type == 'CHARGE')  {
+      upgradeBlock = <Row>
+        <Col span={24} style={{width:'401px' }}>
+          <FormItem label="自动升级卡级别" {...formItemLayout}>
+            {getFieldDecorator('upgrade', {
+              rules: [{ required: true, message: '自动升级卡级别' }]
+            })(
+              <RadioGroup >
+                <Radio value="1">是</Radio>
+                <Radio value="0">否</Radio>
+              </RadioGroup>
+            )}
+          </FormItem>
+        </Col>
+      </Row>
+    }
     if (commonVisible[type] != undefined && commonVisible[type] != this.flag[type] ) {
       visible = false;
       this.flag[type] = commonVisible[type]
     }
-    const { getFieldDecorator } = form
-    const formItemLayout = {
-      labelCol:{ span: 4 },
-      wrapperCol:{ span:15 }
-    }
+
     return (
       <span>
          <span onClick={this.showModel.bind(this)}>{this.props.children}</span>
@@ -108,6 +128,7 @@ class AlertModalFrom extends Component {
               </FormItem>
             </Col>
           </Row>
+          {upgradeBlock}
         </Form>
       </Modal>
        </span>

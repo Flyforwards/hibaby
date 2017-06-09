@@ -84,6 +84,9 @@ class CardDetail extends Component {
   render() {
     const { cardKind, form, level,loading,userPagination,list } = this.props;
     const { getFieldDecorator } = form;
+    if (cardKind && cardKind.upgrade) {
+      getFieldDecorator('upgrade', {initialValue: cardKind.upgrade});
+    }
     const formItemLayout = {
       labelCol:{ span: 8 },
       wrapperCol:{ span:15 }

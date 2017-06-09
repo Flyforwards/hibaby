@@ -106,27 +106,41 @@ class AppointmentMemberFrom extends Component {
   }
 
   onSearch(){
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        values.activityId = this.props.selectRecord.id;
 
+        if (values.time != undefined) {
+          values.year = values.time.get('year');
+          values.month = values.time.get('month')+1;
+        }
+        //  console.log(values);
+
+        this.props.dispatch({
+          type: "activity/getNoAppointmentCustomerPageList",
+          payload: values
+        })
+      }
+    })
   }
-  reset(){ }
+
+  reset() {
+    const { pathname } = location;
+    const query = parse(location.search.substr(1))
+    this.props.dispatch(routerRedux.push({
+      pathname,
+      query
+    }))
+    this.props.form.resetFields()
+  }
 
   render() {
-    let { dispatch,visible, userList, loading, noAppointmentPagination,selectRecord, form, shipCards } = this.props
+    let { dispatch,visible, userList, loading, noAppointmentPagination, selectRecord, form, shipCards } = this.props
     const { getFieldDecorator } = form;
 
     const options = shipCards.map((record)=>{
       return (<Option key={record.id} value={record.id}>{record.name}</Option>)
     });
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
 
     const { selectedRowKeys } = this.state;
 
@@ -139,13 +153,24 @@ class AppointmentMemberFrom extends Component {
       dataSource: userList ,
       pagination: noAppointmentPagination,
       onChange (page) {
-        dispatch({
-          type: 'activity/getNoAppointmentCustomerPageList',
-          payload: {
+
+        form.validateFields((err, values) => {
+          let query = {
             activityId: selectRecord.id,
             page: page.current,
             size: page.pageSize,
           }
+          if (!err) {
+            if (values.time != undefined) {
+              values.year = values.time.get('year');
+              values.month = values.time.get('month')+1;
+            }
+            query = {...query,...values}
+          }
+          dispatch({
+            type: "activity/getNoAppointmentCustomerPageList",
+            payload: query
+          })
         })
       },
     }
@@ -165,7 +190,7 @@ class AppointmentMemberFrom extends Component {
         title = { "预约" }
         onCancel = { this.handleCancel.bind(this) }
         onOk = { this.onOk.bind(this) }
-        wrapClassName = { "vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal appointMentModal" }
         width ={ 1000 }
       >
         <div className="activity-cent">
@@ -202,11 +227,11 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col className="selItem ageItem2" style={{width:'60px'}}>
+              <Col className="selItem ageItem2" style={{width:'55px'}}>
                 <FormItem {...formChooseLayout} style={{width:'100%'}}>
                   {getFieldDecorator('age2', {rules: [{ required: false }],
                   })(
-                    <InputNumber min={1} max={100} style={{width: "60px"}} />
+                    <InputNumber min={1} max={100} style={{width: "55px"}} />
                   )}
                 </FormItem>
 

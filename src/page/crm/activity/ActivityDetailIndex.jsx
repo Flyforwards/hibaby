@@ -258,11 +258,22 @@ class ActivityDetailIndex extends Component {
     let appointments = 0;
     let signeds = 0;
     let orders = 0;
+    const edit = !this.props.permissionAlias.contains('ACTIVITY_EDIT');
+    const appoint = !this.props.permissionAlias.contains('ACTIVITY_APPOINT');
+    const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
+
+
+    const edit_btn = (<Button key="1" disabled={edit} className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>);
+    const del_btn = (<Button key="2" disabled={del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.deleteActivity.bind(this) }>删除</Button>);
+    const app_btn = (<Button key="3" disabled={appoint} className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>);
+    const back_btn = (<Button key="4" className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>);
+
+
     let buttons = (
       <div className="button-wrapper">
-        <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
-        <Button style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
-        <Button style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+        {
+          [edit_btn,app_btn,back_btn]
+        }
       </div>)
     if (item != null) {
       itemName = item.name;
@@ -276,22 +287,22 @@ class ActivityDetailIndex extends Component {
       if (item.activityTime < systemTime ) {
         buttons = (
           <div className="button-wrapper">
-            <Button className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
-            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+            {
+              [app_btn,back_btn]
+            }
           </div>)
       } else {
         if ( item.appointments > 0 ) {
           buttons = (<div className="button-wrapper">
-            <Button className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
-            <Button className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
-            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+            {
+              [edit_btn,app_btn,back_btn]
+            }
           </div>)
         } else {
           buttons = (<div className="button-wrapper">
-            <Button className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
-            <Button className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.deleteActivity.bind(this) }>删除</Button>
-            <Button className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
-            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+            {
+              [edit_btn,del_btn,app_btn,back_btn]
+            }
           </div>)
         }
       }
@@ -370,7 +381,7 @@ class ActivityDetailIndex extends Component {
               </Col>
               <Col span={6}>
                 <FormItem {...formItemsLayout} style={{ width:'249px'}} label= "成单率">
-                  <Input value={ orders } addonAfter="人" readOnly/>
+                  <Input value={ orders } addonAfter="%" readOnly/>
                 </FormItem>
               </Col>
             </Row>
@@ -480,7 +491,8 @@ function mapStateToProps(state) {
     shipCards
   } = state.activity;
   const {
-    systemTime
+    systemTime,
+    permissionAlias
   } = state.layout;
   return {
     loading: state.loading,
@@ -489,6 +501,7 @@ function mapStateToProps(state) {
     item,
     signUserList,
     signPagination,
+    permissionAlias
   };
 }
 

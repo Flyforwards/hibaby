@@ -1,6 +1,7 @@
 
 import * as systemService from '../services/system';
 import * as usersService from '../services/users';
+import * as organizationService from '../services/organization';
 import { message } from 'antd';
 import  { session } from 'common/util/storage.js';
 import { parse } from 'qs'
@@ -23,6 +24,8 @@ export default {
     undisUserTotal: 0,
     selectedRows: [],
     selectedRowKeys: [],
+    getPosition: null,
+    getDeptList: null,
     users:[],
     // 默认选择的节点 --添加成员
     nodeid: null,
@@ -45,20 +48,53 @@ export default {
             type: 'getRolesByPage',
             payload: query
           });
+          dispatch({
+            type: 'getPosition',
+          });
+          dispatch({
+            type: 'getDeptList',
+          });
         }
       })
     }
   },
 
   effects: {
+
+    //获取所有的职位信息
+    *getPosition({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(organizationService.getPosition, values);
+      if (code == 0) {
+        yield put({
+          type: 'getPositionSave',
+          payload: {
+            data,
+            code
+          }
+        });
+      }
+    },
+    //获取所有的部门信息
+    *getDeptList({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(organizationService.getDeptList, values);
+
+      if (code == 0) {
+        yield put({
+          type: 'getDeptListSave',
+          payload: {
+            data,
+            code
+          }
+        });
+      }
+    },
+
     *getRolesByPage({ payload: values }, {call,put }) {
       values = parse(location.search.substr(1))
-      console.log(values)
       const { data: { data, total, page, size, code, err }} = yield call(systemService.getRolesByPage, values);
       if (code == 0) {
         if(data.length == 0 && page > 1){
           yield put(routerRedux.push(`/system/permission?page=${page -1}&size=10`))
-
         }
         else {
           yield put({
@@ -139,12 +175,23 @@ export default {
         //  获取职位字典
       }
 
-      const {data: {data, total , code , err}} =  yield call(usersService.getUserPageListByRoleId, values)
+      const {data: {data, total ,page, code , err}} =  yield call(usersService.getUserPageListByRoleId, values)
+
+
       if (code == 0 && err == null) {
-        yield put({
-          type : 'getRoleUserPagSuccess',
-          payload : { data, total,}
-        });
+
+        if(data.length == 0 && page > 1){
+
+          yield put({
+            type : 'getUserPageListByRoleId',
+            payload: { page:page - 1, size: 10, roleId:values.roleId }
+          })
+        }else{
+          yield put({
+            type : 'getRoleUserPagSuccess',
+            payload : { data, total,}
+          });
+        }
       }
     },
     // 给角色分配权限
@@ -196,6 +243,7 @@ export default {
     *getUserPageListByUserRole({ payload: values },{call, put}) {
       const { nodeid } = values;
       const {data: {data, code, total , err}} =  yield call(usersService.getUserPageListByUserRole, values)
+
       if (code == 0 && err == null) {
         yield put({
           type: "getUserByNodeIdSuccess",
@@ -236,7 +284,14 @@ export default {
 
   },
   reducers: {
-
+    getDeptListSave(state, { payload: { data: getDeptList, code } }){
+      let getDeptListSavedata = { ...state, getDeptList, code };
+      return getDeptListSavedata
+    },
+    getPositionSave(state, { payload: { data: getPosition, code } }){
+      let getPositionSavedata = { ...state, getPosition, code };
+      return getPositionSavedata
+    },
     getRolesSuccess( state, { payload: { data, pagination }}) {
       return {...state, data, pagination: {  ...state.pagination,...pagination }};
     },

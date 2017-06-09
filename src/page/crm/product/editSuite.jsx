@@ -26,7 +26,7 @@ class EditSuiteed extends Component {
         });
          this.props.dispatch({
             type: 'packageInfo/roomFindById',
-            payload: { 
+            payload: {
               "dataId":ID
             }
         });
@@ -62,7 +62,7 @@ class EditSuiteed extends Component {
         }
       }else{
         message.warning('请输入套房名称')
-      }    
+      }
      this.props.dispatch({
         type: 'packageInfo/suiteListByPage',
         payload: {
@@ -116,7 +116,7 @@ class EditSuiteed extends Component {
                     initialValue:this.props.roomFindById?this.props.roomFindById.price:null,
                     rules: [],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                     />
                     )}
@@ -140,8 +140,8 @@ class EditSuiteed extends Component {
                     roomInformation
                   }
                 </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button className="SaveBtn" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
         )
     }

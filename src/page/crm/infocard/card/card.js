@@ -1,14 +1,16 @@
 /*
 * updataed by Flyforwards 2015/5/25
 * */
-import React, { Component } from 'react'
-import { connect } from 'dva'
-import './card.scss'
-import {Link} from 'react-router'
-import { Table, Icon, Modal,Popconfirm } from 'antd';
-import CardFind from './cardFind'
-import CardModal from './cardInfo'
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import './card.scss';
+import {Link} from 'react-router';
+import { Table, Icon, Modal,Popconfirm } from 'antd';;
+import CardFind from './cardFind';
+import CardModal from './cardInfo';
+import { keyToText } from '../../../../utils';
 
+let VIPLEVEL = [];
 class Card extends Component {
   constructor(props) {
     super(props);
@@ -28,6 +30,17 @@ class Card extends Component {
       key: 'salesDiscount',
       render:(text,record,index)=>{
         return text+'%';giot
+      }
+    }, {
+      title: '会员卡级别',
+      dataIndex: 'level',
+      key: 'level',
+      render:(text,record,index)=>{
+        if (VIPLEVEL[text]) {
+          return VIPLEVEL[text]
+        } else {
+          return '自定义卡';
+        }
       }
     }, {
       title: '卡种类型',
@@ -77,8 +90,10 @@ class Card extends Component {
     // })
   }
   render() {
-    const { cardInfo, dispatch, total, postValues, typeValues,loading,pagination } = this.props;
-    const { sear, salesDiscount, cardType } = postValues;
+    const { cardInfo, dispatch, total, postValues, typeValues,loading,pagination,level } = this.props;
+    const { sear, salesDiscount, cardType ,} = postValues;
+    const {level:levelInfo} = this.props;
+    VIPLEVEL = keyToText(levelInfo, "id", "name", "LEVELS");
     const tableProps = {
       loading:loading,
       pagination:pagination,
@@ -107,7 +122,7 @@ class Card extends Component {
 }
 
 function mapStateToProps(state) {
-  const { cardInfo, total, postValues, typeValues ,pagination} = state.card;
+  const { cardInfo, total, postValues, typeValues ,pagination,level} = state.card;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.card,
@@ -115,6 +130,7 @@ function mapStateToProps(state) {
     cardInfo,
     total,
     postValues,
+    level,
     typeValues,
     pagination,
   };

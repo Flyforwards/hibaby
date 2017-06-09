@@ -75,7 +75,7 @@ class MemberShipCard extends Component {
 
  tableList(printList) {
    let list='';
-   return (<table width='98%'  rules='all' className='table_d'  height='auto' cellSpacing='1' cellPadding='0'  style={{margin:'10px auto 10px',borderCollapse:'collapse',border:'1px solid #e9e9e9'}}>
+   return (<table width='98%'  className='table_d'  height='auto' cellSpacing='1' cellPadding='0'  style={{margin:'10px auto 10px',borderCollapse:'collapse',border:'1px solid #e9e9e9',rules:'all'}}>
        <thead style={{height:40,backgroundColor:'#666666',fontSize:'14px',lineHeight:'40px',color:'#ffffff',}}>
          <tr style={{textAlign:'center',}}>
            <td style={{ borderLeft: '1px solid #e9e9e9', borderTop: '1px solid #e9e9e9',}}>时间</td>
@@ -100,8 +100,8 @@ class MemberShipCard extends Component {
     return (
       <div className="print_all" style={{ width: '100%',margin:'0px auto 0px',border:'1px solid #e5e5e5',background: '#FFFFFF',fontFamily: '微软雅黑 Bold',marginTop: '10px', borderTopLeftRadius: '5px', borderTopRightRadius: '5px',}}>
         <div className="print_w100" style={{ width:'100%', padding:'16px', overflow: 'hidden', border:'none', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', backgroundColor:'rgba(102, 102, 102, 1)', color: '#FFFFFF', margin:'0px auto 0px'}}>
-          <p className="print_w_ll_50" style={{ width:'50%', float: 'left', textAlign: 'left', fontSize: '28px', fontWeight: 700,}}>{times}账单</p>
-          <p className="print_w_rr_50" style={{ width: '32%', float: 'right', textAlign: 'right', fontSize: '14px'}}>出单时间:<span>{ danTime }</span></p>
+          <p style={{ width:'62%', float: 'left', textAlign: 'left', fontSize: '28px', fontWeight: 700,}}>{times ? times : ""}账单</p>
+          <p className="print_w_rr_36" style={{ width: '32%', float: 'right', textAlign: 'right', fontSize: '14px'}}>出单时间:<span>{ danTime }</span></p>
         </div>
         <div className="print_normal" style={{width:'100%', padding:'16px', overflow: 'hidden', backgroundColor:'rgba(102, 102, 102, 1)', color: '#FFFFFF'}}>
           <p className="print_w_ll_30" style={{width:'30%', float: 'left', textAlign: 'left', fontSize: '14px',}}>客户姓名:<span>{ printBaseMsg ? printBaseMsg.name:'' }</span></p>

@@ -33,11 +33,11 @@ class CardDetail extends Component {
     })
     dispatch({
       type:'card/getLevelInfo',
-      payload:{
-        "abName":"HYKJB",
-        "softDelete":0,
-        "type":1,
-      }
+      // payload:{
+      //   "abName":"HYKJB",
+      //   "softDelete":0,
+      //   "type":1,
+      // }
     });
     dispatch({
       type: 'card/getCustomerPage',
@@ -124,13 +124,40 @@ class CardDetail extends Component {
       wrapperCol:{ span:17 }
     }
 
+    let cardLevel = null;
     const values = parse(location.search.substr(1))
+
+    const edit = !this.props.permissionAlias.contains('CARD_EDIT');
+    const del = !this.props.permissionAlias.contains('CARD_DELETE');
 
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
+    if (cardKind && cardKind.level) {
+      cardLevel = <Row>
+        <Col span = { 8 } style={{width:'251px'}}>
+          <FormItem label="会员卡级别" {...formItemLayout}>
+            {getFieldDecorator('level', {
+              initialValue: cardKind ? cardKind.level+'':''  ,
+              rules: [{ required: true, message: '请选择会员卡级别' }]
+            })(
+              <Select
+                showSearch
+                allowClear
+                placeholder="请选择"
+                optionFilterProp="children"
+                filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                disabled={ true }
+              >
+                { options }
+              </Select>
+            )}
+          </FormItem>
+        </Col>
+      </Row>
+    }
     return (
       <div className="cardDetail" style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
@@ -167,27 +194,7 @@ class CardDetail extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row>
-              <Col span = { 8 } style={{width:'251px'}}>
-                <FormItem label="会员卡级别" {...formItemLayout}>
-                  {getFieldDecorator('level', {
-                    initialValue: cardKind ? cardKind.level+'':''  ,
-                    rules: [{ required: true, message: '请选择会员卡级别' }]
-                  })(
-                    <Select
-                      showSearch
-                      allowClear
-                      placeholder="请选择"
-                      optionFilterProp="children"
-                      filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                       disabled={ true }
-                    >
-                      { options }
-                    </Select>
-                  )}
-                </FormItem>
-              </Col>
-            </Row>
+            {cardLevel}
             <Row>
               <Col span={ 24 } style={{width:'400px'}}>
                 <FormItem {...formTextItemLayout} label="备注">
@@ -225,10 +232,10 @@ class CardDetail extends Component {
                 <Link to="/crm/card"><Button className="BackBtn">返回</Button></Link>
               </Col>
               <Col span = { 4 }>
-                  <Button className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
+                  <Button disabled={del} className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
               </Col>
               <Col span = { 4 }>
-                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button className="SaveBtn">编辑</Button></Link>
+                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button disabled={edit} className="SaveBtn">编辑</Button></Link>
               </Col>
             </Row>
           </Form>
@@ -256,6 +263,7 @@ class CardDetail extends Component {
 
 function mapStateToProps(state) {
   const { cardKind, level, zheKou,userPagination,list } = state.card;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     userPagination,
@@ -263,6 +271,7 @@ function mapStateToProps(state) {
     cardKind,
     level,
     zheKou,
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(CardDetail)

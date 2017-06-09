@@ -39,17 +39,31 @@ a[disabled] {
 }
 button{
   height:30px;
-  width:150px;
   font: 14px "微软雅黑";
 }
 .BackBtn{
+  //float: left;
+  width: 150px;
   background: #b67233;
   border-color: #b67233;
+  font:14px "微软雅黑";
+  color:#fff;
 }
 .SaveBtn{
+  //float: left;
+  width: 150px;
   background: #f1e8df;
   color:#b67233;
   border-color:#d4ad89;
+  font:14px "微软雅黑";
+}
+.delBtn{
+  //float: left;
+  width: 150px;
+  background: #f75555;
+  border-color: #f75555;
+  font:14px "微软雅黑";
+  color:#fff;
 }
 .vertical-center-modal {
   text-align: center;

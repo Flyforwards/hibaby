@@ -26,7 +26,7 @@ class DictionarySelect extends Component {
 
     this.defaultParams = DictionaryArray[this.name];
     this.selectData = session.get(this.name);
-
+    //console.log("select>>>>>",this.selectData)
     if (this.params || this.force) {
       this.getData(this.params)
     } else if (this.selectData == null || this.selectData.length == 0) {

@@ -44,7 +44,7 @@ class NodeEdited extends Component {
         this.setState({
           TableData:null
         })
-       // this.props.onCancel()
+        this.props.onCancel()
     }
     handleAfterClose() {
       this.setState({

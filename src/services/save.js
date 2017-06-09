@@ -19,7 +19,7 @@ export function checkData(values) {
 
 //编辑集团数据
 export function editData(values) {
-  return request('/crm/api/v1/dictionary/modifyDictionary', {
+  return request('/crm/api/v1/dictionary/modifyGroupDictionary', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -27,7 +27,7 @@ export function editData(values) {
 
 //集团列表数据
 export function groupCharList(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
+  return request('/crm/api/v1/dictionary/getGroupDictionaryMainPageLists', {
     method: 'POST',
     body: JSON.stringify(values),
   })

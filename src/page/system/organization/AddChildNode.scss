@@ -97,6 +97,40 @@
     float: right;
     margin-right:10px;
   }
+  .ant-modal-body{
+    overflow: hidden;
+    button{
+  		width: 80px;
+      margin-top: 10px;
+      float: left;
+      margin-left:10px;
+  		.ant-btn{
+  			width: 80px;
+  			float: left;
+        font:14px "微软雅黑";
+  		}
+  	}
+    .BackBtn{
+      float: left;
+      background:#693d20;
+      border-color:#693d20;
+      color:#fff;
+      margin-right: 0;
+      margin-left: 300px;
+    }
+    .delBtn{
+      float: left;
+      background: #f75555;
+      border-color: #f75555;
+      color:#fff;
+    }
+    .SaveBtn{
+      float: left;
+      background: #eb7c34;
+      border-color: #eb7c34;
+      color:#fff;
+    }
+  }
 }
 .Disabled{
 	.ant-modal-header{
@@ -152,27 +186,4 @@
   height: 100%;
   vertical-align: middle;
   width: 0;
-}
-
-.ant-modal-body{
-  overflow: hidden;
-  button{
-		width: 80px;
-    margin-top: 10px;
-		.ant-btn{
-			width: 80px;
-			float: left;
-      font:14px "微软雅黑";
-		}
-	}
-  .BackBtn{
-    background:#693d20;
-    border-color:#693d20;
-    color:#fff;
-  }
-  .SaveBtn{
-    background: #eb7c34;
-    border-color: #eb7c34;
-    color:#fff;
-  }
 }

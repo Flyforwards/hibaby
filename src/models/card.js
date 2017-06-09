@@ -55,8 +55,7 @@ export default {
     },
     //会员卡级别
     levelInfo(state, { payload: { data: level } }){
-      let levelInfo = { ...state, level }
-      return levelInfo;
+      return { ...state, level }
     },
 
     getCustomerPageSave(state, { payload: { list, userPagination }}) {
@@ -189,6 +188,18 @@ export default {
         })
       }
     },
+    // //获取会员卡级别
+    // *getLevelInfo({ payload: values }, { call, put }) {
+    //   const { data: { code, data } } = yield call(cardService.getLevel, values);
+    //   if (code == 0) {
+    //     yield put({
+    //       type: 'levelInfo',
+    //       payload: {
+    //         data
+    //       }
+    //     });
+    //   }
+    // },
     //获取会员卡级别
     *getLevelInfo({ payload: values }, { call, put }) {
       const { data: { code, data } } = yield call(cardService.getLevel, values);
@@ -223,11 +234,11 @@ export default {
           });
           dispatch({
             type:'getLevelInfo',
-            payload:{
-             "abName":"HYKJB",
-              "softDelete":0,
-              "type":1,
-            }
+            // payload:{
+            //  "abName":"HYKJB",
+            //   "softDelete":0,
+            //   "type":1,
+            // }
           });
         };
       })
