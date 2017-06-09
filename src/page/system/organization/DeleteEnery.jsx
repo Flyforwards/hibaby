@@ -33,7 +33,7 @@ class DeleteEnery extends Component {
           }
         })
         window.location.reload( true )
-        this.props.onCancel()
+        // this.props.onCancel()
     }
     checkbox() {
       //  console.log("checkbox")
@@ -76,7 +76,7 @@ class DeleteEnery extends Component {
                 width={ 200 }
             >
             <div>
-              是否确定该入职信息？
+              是否确定删除该入职信息？
             </div>
             </Modal>
         )
