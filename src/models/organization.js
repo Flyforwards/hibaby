@@ -258,6 +258,7 @@ export default {
     //根据用户id查看用户信息
     *getUserListById({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.getUserListById, values);
+      console.log("根据用户id查看用户信息",code)
       if (code == 0) {
         yield put({
           type: 'getUserListByIdSave',
@@ -273,7 +274,7 @@ export default {
       const { data: { data, code } } = yield call(organizationService.forbiddenUser, values);
       if (code == 0) {
         message.success("用户信息已被禁用");
-        yield put(routerRedux.push("/system/organization"));
+        yield put(routerRedux.push("/system/organization"))       
       }
     },
     //根据入职信息id删除入职信息
