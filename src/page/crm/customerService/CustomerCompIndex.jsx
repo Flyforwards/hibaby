@@ -23,12 +23,12 @@ class CustomerComplaintsIndex extends React.Component {
       title: '编号',
       dataIndex: 'id',
       key: 'id',
-      width: '5%'
+      width: '7%'
     },{
       title: '客户名称',
       dataIndex: 'name',
       key: 'name',
-      width: '15%'
+      width: '18%'
     }, {
       title: '投诉内容',
       dataIndex: 'content',
@@ -48,7 +48,7 @@ class CustomerComplaintsIndex extends React.Component {
       }
     },{
       title: '处理状态',
-      width: '6%',
+      width: '7%',
       dataIndex: 'state',
       render: (record) => {
         return state[record];
