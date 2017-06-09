@@ -17,7 +17,6 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
-const endemic  = session.get("endemic")
 
 class ViewTheInformationed extends React.Component {
   constructor(props) {
@@ -31,6 +30,7 @@ class ViewTheInformationed extends React.Component {
   }
   componentDidMount(){
     let dataID = window.location.search.split("=")[1]
+    let endemic  = session.get("endemic")
     this.props.dispatch({
       type: 'organization/getUserListById',
       payload: {

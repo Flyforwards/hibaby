@@ -170,11 +170,9 @@ class SelectTheNodeFrom extends Component {
       });
     }
   }
-
   render() {
     const { visible, treeData, list,total } = this.props;
     let loops = []
-    // console.log("list>>>>",list)
     const rowSelection = {
       type: "radio",
       onChange: (selectedRowKeys, selectedRows) => {
@@ -207,10 +205,8 @@ class SelectTheNodeFrom extends Component {
       pageSize: 10,
       onChange: (current) => {
          let endemic  = session.get("endemic");
-        // console.log("endemic>>>>",endemic)
          let nodeId = this.nodeId
          let tissueProperty = this.tissueProperty
-        //console.log("nodeId>>>>",this.nodeId)
         this.props.dispatch({
           type: "organization/organizationList",
           payload: {

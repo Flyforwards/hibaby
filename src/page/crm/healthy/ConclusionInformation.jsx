@@ -41,7 +41,11 @@ function ConclusionInformation(props) {
 
   //返回
   function handleBack() {
-    dispatch(routerRedux.push('/crm/customer'));
+    const {dispatch} = props;
+    dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
   function handleSubmit(){
@@ -100,7 +104,7 @@ const ConclusionInformationFrom = Form.create()(ConclusionInformation);
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
-    customerId:state.addCustomer.dataDetailId
+    customerId:state.addCustomer.dataDetailId,
   };
 }
 

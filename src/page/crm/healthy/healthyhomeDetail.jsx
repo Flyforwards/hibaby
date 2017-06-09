@@ -371,7 +371,11 @@ function HealthyhomeDetail(props) {
   }
 
   function handleBack() {
-    props.dispatch(routerRedux.push('/crm/customer'));
+    const {dispatch} = props;
+    dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
   //编辑

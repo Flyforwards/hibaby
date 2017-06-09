@@ -13,7 +13,9 @@ const type = 1;//医疗健康档案
 /**
  * 客户信息》健康档案》医疗健康档案
  */
-function Healthyhome(props) {
+function HealthyhomeMainComponent(props) {
+
+  console.log(props);
 
   const formItemLayout = {
     labelCol: { span: 10 },
@@ -89,7 +91,7 @@ function Healthyhome(props) {
         {getFieldDecorator(`${radioName}`, {
           rules: [{ required: false, message: '  ' }]
         })(
-          <RadioGroup onChange={dict.radioChangeFun} >
+          <RadioGroup onChange= {dict.radioChangeFun}>
             {radioItemDivs}
           </RadioGroup>
         )}
@@ -231,12 +233,18 @@ function Healthyhome(props) {
   //row 左边单选右边输入框
   function radioInputRow (radioName, inputName, dict, inputTitle, lastRow, suffix) {
 
+    const {input_requireds} = props;
+    const input_required = input_requireds[`${inputName}_required`];
+
     var col1Class='topItembg';
     var col2Class='leftRightItemBg';
     if (lastRow == true){
       col1Class='bottomItemBg';
       col2Class='allNoneBg';
     }
+
+    const radioValue = props.form.getFieldValue(`${radioName}`);
+    dict['radioChangeFun'] = props.operationRadio({radioValue,radioName});
 
     return (
       <Row>
@@ -252,7 +260,7 @@ function Healthyhome(props) {
               wrapperCol={{span: 18}}
               label={inputTitle}>
               {getFieldDecorator(`${inputName}`, {
-                rules: [{ required: false, message: '  ' }]
+                rules: [{ required: input_required, message: '  ' }]
               })(
                 <Input
                   suffix={suffix}
@@ -264,28 +272,6 @@ function Healthyhome(props) {
         </Col>
       </Row>
     )
-  }
-
-  //row 左边单选右边上传附件
-  function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName,imgRequired) {
-    var col1Class='topRightItemBg';
-    var col2Class='onlyLeftItemBg';
-
-    return (
-      <Row className={col1Class}>
-        <Col span="12">
-          <div>
-            {myRadioForm(radioName ,dict)}
-          </div>
-        </Col>
-        <Col span="12">
-          <div className={col2Class}>
-            {uploadOptionsItem(key,imgInputName,imgRequired)}
-          </div>
-        </Col>
-      </Row>
-    )
-
   }
 
   //row 左边单选右边空白
@@ -354,7 +340,11 @@ function Healthyhome(props) {
 
   //返回
   function handleBack() {
-    props.dispatch(routerRedux.push('/crm/customer'));
+    const {dispatch} = props;
+    dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
   return(
@@ -365,8 +355,8 @@ function Healthyhome(props) {
             <div className="itemTitle">既往史</div>
           </Col>
           <Col span="22">
-            {radioInputRow(radioNames[0],inputNames[0],{title: '既往疾病史',radioItems: ['无','有']},'请描述')}
-            {radioInputRow(radioNames[1],inputNames[1],{title: '既往手术史',radioItems: ['无','有']},'请描述',true)}
+            {radioInputRow(radioNames[0],inputNames[0],{title: '既往疾病史',radioItems: ['无','有']},'请描述',false,'',props.input_0_required)}
+            {radioInputRow(radioNames[1],inputNames[1],{title: '既往手术史',radioItems: ['无','有']},'请描述',true,'',props.input_1_required)}
           </Col>
         </Row>
 
@@ -738,15 +728,55 @@ function Healthyhome(props) {
   );
 }
 
-const HealthyhomeFrom = Form.create()(Healthyhome);
+const HealthyhomeFrom = Form.create()(HealthyhomeMainComponent);
 
+class Healthyhome extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      input_requireds:{
+        input_0_required:false,
+        input_1_required:false,
+        input_2_required:false,
+        input_3_required:false,
+        input_7_required:false,
+        input_9_required:false,
+        input_10_required:false,
+        input_14_required:false,
+        input_15_required:false,
+        input_16_required:false
+      }
+    }
+  }
+
+  operationRadio(value) {
+    console.log(this.state);
+
+    this.setState ({
+      input_0_required: true
+    });
+
+    console.log(this.state);
+
+  }
+
+  render (){
+    return (
+      <div>
+        <HealthyhomeFrom ref="mainForm" {...this.props} {...this.state} operationRadio={() => {this.operationRadio.bind(this)}}/>
+      </div>
+    )
+  }
+
+}
 
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
-    customerId:state.addCustomer.dataDetailId
+    customerId:state.addCustomer.dataDetailId,
   };
 }
 
 
-export default connect(mapStateToProps)(HealthyhomeFrom)
+export default connect(mapStateToProps)(Healthyhome)
