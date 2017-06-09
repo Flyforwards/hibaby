@@ -147,11 +147,12 @@
     }
   }
 
-  .savaDiv{
+  .saveDiv{
     text-align: right;
     margin-top:10px;
     height: 60px;
     .backBtn{
+      float: right;
       width: 150px;
       height: 30px;
       margin-top:10px;
@@ -161,6 +162,7 @@
       color: #fff;
     }
     .SaveBtn{
+      float: right;
       background:#f1e8df;
       border-color:#dbb999 ;
       color:#b67233;
