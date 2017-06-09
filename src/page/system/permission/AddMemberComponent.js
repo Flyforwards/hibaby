@@ -4,24 +4,14 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tree, Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
+import { departmentDict, positionDict} from 'common/constants';
+
 
 const TreeNode = Tree.TreeNode;
 
 class AddMemberComponent extends Component {
-
-  textforkey(array,value,valuekey = 'name') {
-    for (let i = 0 ;i<array.length ;i++){
-      let dict = array[i];
-      if(dict['id'] === value){
-        return  dict[valuekey];
-      }
-    }
-  }
-
   constructor(props) {
     super(props)
-
-
     this.columns = [{
       title: '姓名',
       dataIndex: 'name',
@@ -30,15 +20,15 @@ class AddMemberComponent extends Component {
       title: '职位',
       dataIndex: 'positionId',
       key: 'positionId',
-      render: (record) => {
-        return this.textforkey(this.props.getPosition,record);
+      render: (positionId) => {
+        return departmentDict[positionId];
       }
     }, {
       title: '隶属部门',
       dataIndex: 'deptId',
       key: 'deptId',
-      render: (record) =>  {
-        return this.textforkey(this.props.getDeptList ,record);
+      render: (deptId) =>  {
+        return positionDict[deptId];
       }
     }];
   }
@@ -189,16 +179,13 @@ function mapStateToProps(state) {
     selectedRowKeys,
     nodeid,
     tissueProperty,
-    getPosition,
-    getDeptList,
+
   } = state.permission;
   return {
     loading: state.loading,
     currentDeptTree,
     undisUserList,
     undisUserTotal,
-    getPosition,
-    getDeptList,
     selectedRowKeys,
     nodeid,
     tissueProperty
