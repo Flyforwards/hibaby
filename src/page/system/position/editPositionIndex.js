@@ -325,6 +325,7 @@ class LocalizedModal extends Component {
                title="职位详情"
                onCancel={ cancel }
                onOk={ right }
+               wrapClassName="editPositionModal"
                cancelText="取消"
                okText= { rightText }
                key={ this.state.visible }

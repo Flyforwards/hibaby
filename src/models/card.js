@@ -55,8 +55,7 @@ export default {
     },
     //会员卡级别
     levelInfo(state, { payload: { data: level } }){
-      let levelInfo = { ...state, level }
-      return levelInfo;
+      return { ...state, level }
     },
 
     getCustomerPageSave(state, { payload: { list, userPagination }}) {

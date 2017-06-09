@@ -82,7 +82,7 @@ class Organization extends React.Component {
           title: '系统角色',
           dataIndex: 'roleId',
           key: 'roleId',
-          width: '30%',
+          width: '28%',
           render: (text, record, index) => {
             let roleId = []
             let list = []
@@ -127,7 +127,7 @@ class Organization extends React.Component {
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
-          width: '10%',
+          width: '12%',
           render: (text, record, index) => {
             let Forbidden = "禁用"
             const detail = !this.props.permissionAlias.contains('EMPLOYEE_DETAIL');
@@ -371,8 +371,8 @@ OrganizationInquire() {
              </Form>
               <div className="btn">
                 {this.state.tissueProperty == 3?
-                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}><Button disabled={!add}>新增员工</Button></Link></span>:
-                  <span className="Organization-Inquire"><Link to="/system/organization/addUser"><Button disabled={!add}>新增员工</Button></Link></span>
+                  <span className="Organization-Inquire"><Link to={{ pathname: '/system/organization/addUser', query: { nodeid:this.state.nodeid } }}><Button className="SaveBtn" disabled={!add}>新增员工</Button></Link></span>:
+                  <span className="Organization-Inquire"><Link to="/system/organization/addUser"><Button className="SaveBtn" disabled={!add}>新增员工</Button></Link></span>
                 }
 
                 <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
