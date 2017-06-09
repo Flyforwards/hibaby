@@ -326,8 +326,9 @@ class SkinHealthInformationDetail extends React.Component {
             </Row>
           </Form>
         <div className='bottomButton'>
-          <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
           <Button className='commitButton SaveBtn' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</Button>
+          <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
+
 
         </div>
       </div>

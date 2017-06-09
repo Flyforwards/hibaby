@@ -8,7 +8,6 @@ import AppointmentModalFrom from './appointmentModalFrom'
 import AppointmentMemberFrom from './appointmentMemberFrom'
 import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
 import moment from 'moment'
-import Current from '../../Current'
 import AlertModalFrom from 'common/AlertModalFrom'
 
 class ActivityIndex extends React.Component {

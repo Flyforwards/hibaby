@@ -71,7 +71,7 @@ class UserServiceinfo extends Component {
                 onOk={this.handleOk.bind(this,this.props.record,codeName)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
-                width={ 200 }
+                width={ 300 }
             >
             <div>
               是否确定要使用该服务项？

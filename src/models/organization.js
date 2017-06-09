@@ -285,7 +285,6 @@ export default {
           type: 'refreshPage',
           payload: { list }
         })
-
       }
     },
     //根据入职信息id删除入职信息
