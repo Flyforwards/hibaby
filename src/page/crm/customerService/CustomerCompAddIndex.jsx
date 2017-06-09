@@ -43,7 +43,7 @@ class CustomerComplaintsAddIndex extends React.Component {
       return (<Option value={record.id} key={record.id}>{record.name}</Option>)
     });
     return (
-      <div className="activity-cent">
+      <div className="customer-comp-cent">
         <div className="add-activity">
           <Card className="CustomerComplaints"  title = "客户投诉:">
             <Form >
