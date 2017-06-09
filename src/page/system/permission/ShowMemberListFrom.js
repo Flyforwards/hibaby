@@ -207,6 +207,7 @@ class ShowMemberListFrom extends Component {
         title = "成员列表"
         okText =  "保存"
         cancelText  = "返回"
+        wrapClassName = { "ShowMemberListModal" }
         onCancel = { this.handleCancel.bind(this) }
         afterClose = { this.handleAfterClose.bind(this) }
         onOk = { this.handleOk.bind(this) }

@@ -1,36 +1,40 @@
-.ant-modal-content{
-  .ant-form-item{margin-bottom:0px;}
-  .ant-form-item-control{
-    margin-top: 10px;
-    h4{
-      width:100px;
-      float:left;
-      height:30px;
-      margin-left:20px;
-      text-align:center;
-      line-height: 30px;
-      border:1px solid #d9d9d9;
+.editPositionModal{
+    .ant-modal-content{
+      .ant-form-item{margin-bottom:0px;}
+      .ant-form-item-control{
+        margin-top: 10px;
+        h4{
+          width:100px;
+          float:left;
+          height:30px;
+          margin-left:20px;
+          text-align:center;
+          line-height: 30px;
+          border:1px solid #d9d9d9;
+        }
+        .ant-input{
+          width:200px;
+          float:left;
+          margin-left:5px;
+          height:30px;
+        }
+        .ant-btn-lg {
+          padding: 0 15px;
+          font-size: 12px;
+          border-radius: 4px;
+          height: 30px;
+          margin-left: 5px;
+          width: 100px;
+        }
+      }
+      .ant-modal-close{
+        width: 50px;
+      }
     }
-    .ant-input{
-      width:200px;
-      float:left;
-      margin-left:5px;
-      height:30px;
+    .detail-table-cell .col-left {
+      border: none;
     }
-    .ant-btn-lg {
-      padding: 0 15px;
-      font-size: 12px;
-      border-radius: 4px;
-      height: 30px;
-      margin-left: 5px;
-      width: 100px;
+    .detail-table-cell .col-right{
+      border: none;
     }
-  }
-
-}
-.detail-table-cell .col-left {
-  border: none;
-}
-.detail-table-cell .col-right{
-  border: none;
 }
