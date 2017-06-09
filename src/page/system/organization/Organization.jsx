@@ -275,6 +275,19 @@ OrganizationInquire() {
         this.setState({
           toViewVisible: false
         })
+        let endemic  = session.get("endemic")
+        this.props.dispatch({
+          type: 'organization/organizationList',
+          payload: {
+            "name":null,
+            "roleId":null,
+            "nodeid": endemic.id,
+            "status":null,
+            "page": this.state.current,
+            "size": 10,
+            "tissueProperty":endemic.tissueProperty
+          }
+        });
     }
     ObtainOrganization(nodeid,tissueProperty){
       this.setState({

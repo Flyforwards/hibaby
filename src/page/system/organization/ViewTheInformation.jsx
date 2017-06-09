@@ -105,7 +105,6 @@ class ViewTheInformationed extends React.Component {
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
-          console.log("sssss",this.props.userID)
          SEX = USER.sex == 0?"男":"女"
          entrys = USER.entrys
         USER.entrys.map((item)=>{

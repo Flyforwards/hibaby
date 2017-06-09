@@ -270,7 +270,7 @@ class EditUsered extends React.Component {
             }
             if(SelectData != null){
                 selectDataList = SelectData.map((item,index)=>{
-                  return (<Option value={item.id+""} key={ item.id * 100 }>{item.name}</Option>)
+                  return (<Option value={item.id+""} key={ item.id * 1000 }>{item.name}</Option>)
               })
             }
             EntryInformationList.push(
