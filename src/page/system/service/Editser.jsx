@@ -94,7 +94,7 @@ class EditService extends Component {
                                   <FormItem className="pricecon"
                                     {...formItemLayout}
                                   >
-                                  {getFieldDecorator('price', {initialValue:`${this.state.price}`,rules: [{ required: true, message: '项目价格为必填项！' }],
+                                  {getFieldDecorator('price', {initialValue:`${this.state.price}`,rules: [{ required: true, message: '项目价格为必填项！限10字！' }],
                                 })(
                                   <Input  placeholder=" " />)}
                                   </FormItem>

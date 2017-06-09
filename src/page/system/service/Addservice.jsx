@@ -69,7 +69,7 @@ class AddService extends Component {
                         {...formItemLayout}
               >
                 {getFieldDecorator('price', {
-                  rules: [{ required: true, message: '项目价格为必填项！' , max: 10}]
+                  rules: [{ required: true, message: '项目价格为必填项！限10字！' , max: 10}]
                 })(
                   <Input type='number'/>)}
               </FormItem>

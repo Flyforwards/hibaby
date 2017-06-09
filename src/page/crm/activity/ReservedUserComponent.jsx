@@ -200,7 +200,7 @@ class ReservedUserComponent extends Component {
           </Col>
           <Col span={6}>
             <FormItem {...formItemsLayout} style={{ width:'249px'}} label= "成单率">
-              <Input value={ orders } addonAfter="人" readOnly/>
+              <Input value={ orders } addonAfter="%" readOnly/>
             </FormItem>
           </Col>
         </Row>
