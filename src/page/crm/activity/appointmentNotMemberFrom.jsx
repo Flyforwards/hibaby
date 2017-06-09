@@ -3,10 +3,9 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal,  Card,Input,Button,Form } from 'antd'
 import PropTypes from 'prop-types'
+import './activityIndex.scss'
 const FormItem = Form.Item;
 const createForm = Form.create
-
-
 
 @createForm()
 class appointmentNotMemberFrom extends Component {
@@ -29,9 +28,6 @@ class appointmentNotMemberFrom extends Component {
       }
     })
   }
-
-
-
   render() {
     let { visible  } = this.props
     const { getFieldDecorator } = this.props.form;

@@ -64,7 +64,7 @@ class Disabl extends Component {
                 onOk={this.handleOk.bind(this)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
-                width={ 200 }
+                width={ 300 }
             >
             <div>
               是否确定禁用此员工？

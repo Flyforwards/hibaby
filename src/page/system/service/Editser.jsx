@@ -80,7 +80,7 @@ class EditService extends Component {
                           <FormItem label="项目名称" {...formItemLayout}>
                               {getFieldDecorator('name', {
                                   initialValue:`${this.state.name}`,
-                                    rules: [{ required: true ,message: '在此输入内容'}],
+                                    rules: [{ required: true ,message: '项目名称为必填项！限50字！' , max: 50}],
                                 })(
                               <Input  />
                               )}
@@ -105,7 +105,7 @@ class EditService extends Component {
                             <FormItem  className="procontent" label="项目内容">
                             {getFieldDecorator('contents', {
                               initialValue:`${this.state.contents}`,
-                                  rules: [{ required: true ,message: '在此输入内容'}],
+                                  rules: [{ required: true ,message: '项目内容为必填项！限100字！',max:100}],
                               })(
                               <Input className = "content"/>
                               )}

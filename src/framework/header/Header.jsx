@@ -159,7 +159,7 @@ class Header extends React.Component {
                       <span className="user-name">{ userName }</span>
                       <span className="user-pro">{ userPosition }</span>
                     </p>
-                    <Icon type="caret-down" />
+                    <Icon className="userIcon" type="caret-down" />
                   </div>
                 </Dropdown>
                 <UpdateModal

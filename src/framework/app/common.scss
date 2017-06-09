@@ -39,7 +39,18 @@ a[disabled] {
 }
 button{
   height:30px;
-  width:150px;
+  font: 14px "微软雅黑";
+}
+.BackBtn{
+  width: 150px;
+  background: #b67233;
+  border-color: #b67233;
+}
+.SaveBtn{
+  width: 150px;
+  background: #f1e8df;
+  color:#b67233;
+  border-color:#d4ad89;
 }
 .vertical-center-modal {
   text-align: center;
