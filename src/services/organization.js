@@ -16,13 +16,13 @@ export function organizationPage(values) {
     body: JSON.stringify(values),
   })
 }
-//按条件查询用户列表页数据
-export function getUserPageListByDeptId(values) {
-  return request('/crm/api/v1/user/getUserPageListByDeptId', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
+// //按条件查询用户列表页数据
+// export function getUserPageListByDeptId(values) {
+//   return request('/crm/api/v1/user/getUserPageListByDeptId', {
+//     method: 'POST',
+//     body: JSON.stringify(values),
+//   })
+// }
 //添加用户信息
 export function addUser(values) {
   return request('/crm/api/v1/user/addUser', {

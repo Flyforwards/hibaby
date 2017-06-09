@@ -130,6 +130,7 @@ class AddCourseModel extends Component {
                 closable={true}
                 afterClose={this.handleAfterClose.bind(this)}
                 maskClosable={true}
+                wrapClassName={"addCourseModal"}
                 onCancel={this.handleCancel.bind(this)}
                 footer={null}
                 width={ 1000 }

@@ -345,8 +345,8 @@ function NutritionHealthInformationDetail(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
         <Button className='commitButton SaveBtn' onClick={handleEdit}>编辑</Button>
+        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
       </div>
     </div>
   );

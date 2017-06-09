@@ -21,7 +21,7 @@ class Disabl extends Component {
         this.props.dispatch({
             type: 'organization/forbiddenUser',
             payload: {
-              dataId:Number(this.props.ID)
+              dataId:Number(this.props.ID),
             }
         })
         this.props.onCancel()

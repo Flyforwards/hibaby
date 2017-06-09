@@ -140,7 +140,7 @@ class Organization extends React.Component {
             return (
                 <span>
                   <Link disabled={ detail} to={{ pathname: '/system/organization/ViewTheInformation', query: { data:record.id } }}>查看</Link>
-                  <Link className="twoA" disabled={ disable } onClick={this.Disabled.bind(this,record)}>{Forbidden}</Link>
+                  <Link className="twoA" disabled={ disable } onClick={this.disabled.bind(this,record)}>{ Forbidden }</Link>
                 </span>
             );
           },
@@ -158,9 +158,9 @@ class Organization extends React.Component {
             nodeid:endemic.id,
             tissueProperty:endemic.tissueProperty,
             statusType:false,
-            default:null
+            default:null,
+            current:1
         }
-        this.current = false
         this.query = false
     }
     onDrop = (info) => {
@@ -204,12 +204,44 @@ class Organization extends React.Component {
     });
   }
 
-//禁止
-Disabled(record) {
+  //禁止
+  disabled(record) {
+      this.setState({
+        toViewVisible:true,
+        ID:record.id
+      })
+  }
+  onChange(current){
     this.setState({
-      toViewVisible:true,
-      ID:record.id
+      current:current
     })
+   if(this.state.statusType){
+      this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": this.state.userName,
+            "nodeid": this.state.nodeid,
+            "roleId": this.state.character,
+            "status":this.state.status,
+            "page": current,
+            "size": 10,
+            "tissueProperty": this.state.tissueProperty
+        },
+      });
+    }else{
+      this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": null,
+            "nodeid": this.state.nodeid,
+            "roleId": null,
+            "status": null,
+            "page":current,
+            "size": 10,
+            "tissueProperty": this.state.tissueProperty
+        },
+      });
+    }
 }
 //按条件查询用户
 OrganizationInquire() {
@@ -251,14 +283,10 @@ OrganizationInquire() {
       })
     }
     statusType(status){
-      console.log("1")
         this.setState({
           statusType:status,
-          default:1
+          current:1
         })
-    }
-    onChange(){
-      console.log("onChange>>>>",onChange)
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -279,52 +307,16 @@ OrganizationInquire() {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
-          defaultCurrent:null,
+          current:this.state.current,
           pageSize:10,
-          onChange: (current) => {
-            if(this.state.statusType){
-              this.props.dispatch({
-                type: 'organization/organizationList',
-                payload: {
-                    "name": this.state.userName,
-                    "nodeid": this.state.nodeid,
-                    "roleId": this.state.character,
-                    "status":this.state.status,
-                    "page": current,
-                    "size": 10,
-                    "tissueProperty": this.state.tissueProperty
-                },
-              });
-              this.current = false
-            }else{
-              this.props.dispatch({
-                type: 'organization/organizationList',
-                payload: {
-                    "name": null,
-                    "nodeid": this.state.nodeid,
-                    "roleId": null,
-                    "status": null,
-                    "page":current,
-                    "size": 10,
-                    "tissueProperty": this.state.tissueProperty
-                },
-              });
-            }
-          },
+          onChange: this.onChange.bind(this)
         };
-        pagination.defaultCurrent = 1
-        console.log("current",pagination)
         const traversalRoleId = (roleId) => {
           return roleId.map((item)=>{
              return <Option value={item.id+""} key={item.id}>{item.name}</Option>
           })
         }
         const traversalRoleIdData = traversalRoleId(roleId);
-        const selectParams = {
-          id: 3,
-          type: 1,
-          softDelete: 0
-        }
 
         const add = this.props.permissionAlias.contains('EMPLOYEE_ADD')
         return (
@@ -333,6 +325,7 @@ OrganizationInquire() {
             <OrganizationLeft
               onBtain={this.ObtainOrganization.bind(this)}
               statusType = { this.statusType.bind(this) }
+              current = { this.state.current }
             />
             <div className="Organization-right">
             <div className="Organization-nav">
@@ -443,5 +436,6 @@ function mapStateToProps(state) {
     permissionAlias
     };
 }
+
 const OrganizationForm = Form.create()(Organization);
 export default connect(mapStateToProps)(OrganizationForm)

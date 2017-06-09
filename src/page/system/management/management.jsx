@@ -51,7 +51,6 @@ class GroupCharIndex extends React.Component {
 
   render() {
     const { list, loading, pagination, dispatch } = this.props;
-    console.log(" list>>>>", list)
     const tableProps = {
       loading: loading.effects['save/groupChar'],
       dataSource: list,

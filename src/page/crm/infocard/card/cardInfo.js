@@ -13,6 +13,15 @@ import { Link } from 'react-router';
 import DictionarySelect from 'common/dictionary_select';
 
 class CardModal extends Component {
+  constructor(props) {
+    super(props);
+    const _this=this;
+    this.state={
+      showVisible:false,
+    }
+
+  }
+
   // componentWillMount() {
   //   const { dispatch } = this.props;
   //   const str = window.location.search
@@ -27,11 +36,11 @@ class CardModal extends Component {
   componentDidMount() {
     this.props.dispatch({
       type:'card/getLevelInfo',
-      payload:{
-        "abName":'HYKJB',
-        "softDelete":0,
-        "type":1,
-      }
+      // payload:{
+      //   "abName":'HYKJB',
+      //   "softDelete":0,
+      //   "type":1,
+      // }
     })
   }
   handleSubmit = (e) => {
@@ -66,15 +75,37 @@ class CardModal extends Component {
     }
     callback('不能为负数');
   }
+
+
+  //选择验证卡种
+  onCradTypeChange = (e) => {
+    console.log('radio checked', e.target.value);
+    if(e.target.value == 1){
+      this.setState({
+       showVisible:true,
+      });
+    }else if(e.target.value == 2) {
+      this.props.form.setFieldsValue({"upgrade":0})
+      this.props.form.setFieldsValue({"level":1})
+      this.setState({
+        showVisible:false,
+      });
+    }
+
+  }
   render() {
     const { cardKind, form, level} = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol:{ span: 8 },
+      labelCol:{ span: 9 },
       wrapperCol:{ span:15 }
     }
+    const formItemLayoutRadio = {
+      labelCol:{ span: 8 },
+      wrapperCol:{ span:14 },
+    }
     const formTextItemLayout = {
-      labelCol:{ span:3},
+      labelCol:{ span:4},
       wrapperCol:{ span:19 }
     }
     const formRadioItemLayout = {
@@ -120,6 +151,35 @@ class CardModal extends Component {
               </Col>
             </Row>
             <Row>
+              <Col span={22} style={{width:'401px' }}>
+                <FormItem label="卡种类型" {...formRadioItemLayout}>
+                  {getFieldDecorator('cardType', {
+                    rules: [{ required: true, message: '请选择卡种类型' }]
+                  })(
+                    <RadioGroup onChange={this.onCradTypeChange.bind(this)} >
+                      <Radio value="1">模板卡种</Radio>
+                      <Radio value="2">自定义卡种</Radio>
+                    </RadioGroup>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+            { this.state.showVisible ? (<span><Row>
+              <Col span={22} style={{width:'401px' }}>
+                <FormItem label="此卡是否允许升级" {...formItemLayoutRadio}>
+                  {getFieldDecorator('upgrade', {
+                    rules: [{ required: true, message: '请选择是否为可升级卡' }]
+                  })(
+                    <RadioGroup >
+                      <Radio value="1">是</Radio>
+                      <Radio value="0">否</Radio>
+                    </RadioGroup>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+
+            <Row>
               <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="会员卡级别" {...formItemLayout}>
                   {getFieldDecorator('level', {
@@ -137,7 +197,8 @@ class CardModal extends Component {
                   )}
                 </FormItem>
               </Col>
-            </Row>
+            </Row></span>):''}
+
             <Row>
               <Col span={ 24 } style={{width:'400px'}}>
                 <FormItem {...formTextItemLayout} label="备注">
@@ -149,20 +210,7 @@ class CardModal extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row>
-              <Col span={22} style={{width:'401px' }}>
-                <FormItem label="卡种类型" {...formRadioItemLayout}>
-                  {getFieldDecorator('cardType', {
-                    rules: [{ required: true, message: '请选择卡种类型' }]
-                  })(
-                    <RadioGroup >
-                      <Radio value="1">模板卡种</Radio>
-                      <Radio value="2">自定义卡种</Radio>
-                    </RadioGroup>
-                  )}
-                </FormItem>
-              </Col>
-            </Row>
+
             <Row>
               <Col span = { 16 }>
               </Col>
