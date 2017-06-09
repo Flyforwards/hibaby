@@ -35,7 +35,6 @@ var webpackConfig = {
                   },
                   changeOrigin: true
               },
-<<<<<<< HEAD
             // 测试环境
             // '/crm/api/*': {
             //   target: 'http://test.hbbcare.com:8088/crm/api',
@@ -44,9 +43,6 @@ var webpackConfig = {
             //   },
             //   changeOrigin: true
             // },
-=======
-
->>>>>>> 0943a752b5f787aa2dff2527713e6a54b4916947
             // // 田春阳
             // '/crm/api/*': {
             //   target: 'http://192.168.199.124:8087/crm/api',

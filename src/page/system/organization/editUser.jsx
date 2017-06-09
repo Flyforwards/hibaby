@@ -24,7 +24,6 @@ let len = null
 let gmt_entry =null
 //地方中心字段
 let traversalDataId = []
-let TableList = []
 class EditUsered extends React.Component {
   constructor(props) {
     super(props);
@@ -35,14 +34,13 @@ class EditUsered extends React.Component {
       display:"block",
       identifier:null,
       Leager:null,
-      TableData:[],
+      TableData:null,
       NewuserImg:null,
       DeleteVisible: false,
       DeleteIndex:null,
       dataIndex:null
     }
     this.dataIndex = null
-    console.log("a",this.props.userID)
   }
   componentDidMount(){
     let ID = window.location.search.split("=")[1]
@@ -90,9 +88,8 @@ class EditUsered extends React.Component {
     })
   }
   headelReturnTabal(data){
-    TableList[this.dataIndex]=data[0].id
     this.setState({
-      TableData:TableList
+      TableData:data[0]
     })
   }
   //返回按键
@@ -142,19 +139,18 @@ class EditUsered extends React.Component {
         for (var i=0;i<entrys.length;i++){
           let roleIdData = []
           if(fields[`systemRole${i}`]){
-           console.log("position",fields[`position${i}`])
             fields[`systemRole${i}`].map((item)=>{
               roleIdData.push({"roleId":item,"userID":ID})
             })
           }
           if(entrys[i].type == 0){
-            //console.log(fields[`affiliatedDepartment${i}`])
+           // console.log("position",fields[`directLeadership${i}`][0])
             entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
               "emaill":fields[`companyEmail${i}`],//fields.companyEmail,//公司邮箱
               "extension":fields[`internalExtension${i}`], //fields.internalExtension,//内部分机
-              "leaderId": fields[`directLeadership${i}`],//直系领导
+              "leaderId": fields[`directLeadership${i}`][0],//直系领导
               "positionId": fields[`position${i}`],//职位
               "id":entrys[i].id,
               "roles": roleIdData,
@@ -166,7 +162,7 @@ class EditUsered extends React.Component {
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
               "emaill":fields[`companyEmail${i}`],//fields.companyEmail,//公司邮箱
               "extension":fields[`internalExtension${i}`], //fields.internalExtension,//内部分机
-              "leaderId": fields[`directLeadership${i}`],//直系领导
+              "leaderId": fields[`directLeadership${i}`][0],//直系领导
               "positionId": fields[`position${i}`],//职位
               "id":entrys[i].id,
               "roles": roleIdData
@@ -218,6 +214,7 @@ class EditUsered extends React.Component {
       let roles = []
       let entrys = []
       let traversalEndemicId = []
+      let leaderId = []
       let selectDataList = []
       let EntryInformationList = []
       var time = null;
@@ -273,6 +270,12 @@ class EditUsered extends React.Component {
                   return (<Option value={item.id+""} key={ item.id * 1000 }>{item.name}</Option>)
               })
             }
+            if(this.state.TableData){
+              leaderId.push(<Option value={this.state.TableData.id+""} key={ this.state.TableData.id * 1000 }>{this.state.TableData.name}</Option>)
+            }else{
+              leaderId.push(<Option value={entryContent.leaderId+""} key={ entryContent.leaderId * 1000 }>{entryContent.leaderName}</Option>)
+            }
+            
             EntryInformationList.push(
               <div className="AddChildNode" key={ i }>
                  <div className="entryInformation">入职信息{i}
@@ -311,9 +314,11 @@ class EditUsered extends React.Component {
                    key = { i * 10 + 3 }
                   >
                     {getFieldDecorator(`directLeadership${i}`, {
-                    initialValue:TableList[i]?TableList[i]:entryContent.leaderId
+                    initialValue:this.state.TableData?[String(this.state.TableData.id)]:entryContent.leaderId?[String(entryContent.leaderId)]:""
                     })(
-                      <Input />
+                      <Select  style={{ width: 260 }} disabled={true}>
+                        {leaderId}
+                      </Select>
                     )}
                   </FormItem>
                   <FormItem
@@ -378,7 +383,6 @@ class EditUsered extends React.Component {
                   >
                     {getFieldDecorator('password', {
                       rules: [
-                        { required: true, message: '此项为必选项' },
                         {
                           pattern:/^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{8,20}$/, message: '由8到20位数字字母组成'
                       }],
