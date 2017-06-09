@@ -1,25 +1,38 @@
-.ServiceBox{
-	 width: 98%;
-	 margin: 0 1%;
-	.name{
-		margin:10px 0px 10px 84%;
-		font-family: '微软雅黑 Regular', '微软雅黑';
-	    font-weight: 400;
-	    font-style: normal;
-	    font-size: 14px;
-	    color:#fff;
-			.BackBtn{
-        float: none;
-				color: #fff;
-				font:14px "微软雅黑";
-			}
-	}
-	.ant-input{
-		width:220px;
-		height:40px;
-		margin-left:40px;
-	}
-	.ant-table-thead > tr > th {
+.ServiceBox {
+  width: 98%;
+  margin: 0 1%;
+  .name {
+    margin: 10px 0px 10px 84%;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #fff;
+    .addBtn {
+      background-color: #b67233;
+      width: 150px;
+      height: 30px;
+      color: #fff;
+      span {
+        height: 30px;
+        width: 100%;
+        font: 14px "微软雅黑";
+        line-height: 30px;
+        text-align: center;
+      }
+    }
+    .addBtn:hover {
+      background-color: #f89d2d;
+      border-color: #f89d2d;
+      color: #fff;
+    }
+  }
+  .ant-input {
+    width: 220px;
+    height: 40px;
+    margin-left: 40px;
+  }
+  .ant-table-thead > tr > th {
     background-color: rgba(102, 102, 102, 1);
     font-weight: 500;
     transition: background .3s ease;
@@ -29,291 +42,291 @@
     font-style: normal;
     font-size: 14px;
     color: #FFFFFF;
+  }
+  .ant-table-tbody > tr > td {
+    text-align: center;
+    background-color: #fff;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-size: 14px;
+    div {
+      width: 100%;
+      color: #ca9b71;
+      .firstA {
+        display: inline-block;
+        color: #ca9b71;
+        text-decoration: none;
+        margin: 0 30px;
+        float: left;
+      }
+      .firstA:hover {
+        color: #0066ff;
+      }
+      .firstB {
+        color: #ca9b71;
+        float: left;
+        text-decoration: none;
+      }
+      .firstB:hover {
+        color: #ff0000;
+      }
+    }
+  }
+  .ant-modal-body {
+    height: 230px;
+    font-size: 14px;
+    line-height: 2.5;
+    margin-top: -10px;
+  }
+  .allList {
+    width: 400px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #999999;
+    text-align: left;
+    display: inline-block;
+    margin-top: -40px;
+    margin-left: 10px;
+    float: left;
+  }
+  .AddService {
+    margin: 10px;
+    height: 100%;
+    border: 1px solid #d9d9d9;
+    h3 {
+      margin: -10px 0 0 -10px;
+      height: 16px;
+      font-size: 14px;
+      font-weight: 900;
+      color: #333;
+    }
+    .ant-form-inline {
+      float: left;
+      margin: 20px 0 10px 10px;
+      height: auto;
+      .ant-form-item-label {
+        height: 45px;
+        line-height: 45px;
+      }
+      label {
+        font-size: 14px;
+        color: #333;
+      }
+
+      .ant-form-item-required:before {
+        content: "";
+        display: none;
+      }
+      .ant-form-item-required:after {
+        content: "";
+        display: none;
+      }
+
+    }
+    .projectname {
+      width: 44%;
+      height: 45px;
+      float: left;
+      .ant-form-item {
+        width: 100%;
+        height: 45px;
+        .ant-form-item-control-wrapper {
+          height: 45px;
+          width: 80%;
+          .ant-form-item-control {
+            height: 45px;
+            width: 100%;
+            float: left;
+            input {
+              width: 100%;
+              float: left;
+              text-align: center;
+              height: 45px;
+              line-height: 43px;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+      .ant-form-explain {
+        width: 100%;
+        overflow: auto;
+        font-size: 16px;
+        margin-left: 38px;
+        margin-top: 45px;
+      }
+    }
+    .projectprice {
+      width: 44.5%;
+      height: 45px;
+      float: left;
+      h4 {
+        font-size: 14px;
+        color: #333;
+        height: 45px;
+        line-height: 45px;
+        width: 20%;
+        text-align: center;
+        float: left;
+      }
+      .price {
+        width: 80%;
+        float: left;
+        border-radius: 4px;
+        border: 1px solid #d9d9d9;
+        .priceLeft {
+          height: 45px;
+          width: 45px;
+          float: left;
+          line-height: 45px;
+          text-align: center;
+          font-size: 14px;
+          color: #333;
+        }
+        .pricecon {
+          float: left;
+          position: absolute;
+        }
+        input {
+          width: 98%;
+          float: left;
+          text-align: center;
+          height: 43px;
+          line-height: 43px;
+          border: none;
+          font-size: 14px;
+          outline: none;
+        }
+        .priceRight {
+          height: 45px;
+          width: 45px;
+          float: right;
+          line-height: 45px;
+          text-align: center;
+          font-size: 14px;
+          color: #333;
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+          background: #ddd;
+        }
+      }
+      .ant-form-explain {
+        width: 100%;
+        overflow: auto;
+        font-size: 16px;
+        margin-left: 38px;
+        margin-top: 45px;
+      }
+    }
+    .procontent {
+      .ant-form-explain {
+        width: 200%;
+        overflow: auto;
+        font-size: 16px;
+        margin-left: 38px;
+      }
+    }
+  }
+  .content {
+    width: 450%;
+    height: 45px;
+  }
+
+  .ant-input[disabled] {
+    background-color: rgba(255, 255, 255, 0);
+    opacity: 1;
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  .btn {
+    height: 30px;
+    margin: 10px;
+    .BackBtn {
+      display: block;
+      height: 30px;
+      width: 150px;
+      float: left;
+      margin-left: 52%;
+      border-radius: 4px;
+      .ant-btn {
+        font: 14px "微软雅黑";
+        height: 30px;
+        width: 100%;
+        background: #b67233;
+        color: #fff;
+      }
+      .ant-btn {
+        border-color: #b67233;
+      }
+    }
+    .AddBack {
+      margin-left: 68%;
+    }
+    .SaveBtn {
+      display: block;
+      height: 30px;
+      width: 150px;
+      float: left;
+      margin-left: 10px;
+      border-radius: 4px;
+      font: 14px "微软雅黑";
+      background: #f1e8df;
+      color: #b67233;
+      border-color: #dbb999;
+      .ant-btn {
+        height: 30px;
+        font: 14px "微软雅黑";
+        width: 100%;
+      }
+      .ant-btn:hover {
+        border-color: #dbb999;
+      }
+    }
+    .DelBtn {
+      display: block;
+      height: 30px;
+      width: 150px;
+      float: left;
+      margin-left: 10px;
+      border-radius: 4px;
+      font: 14px "微软雅黑";
+
+      .ant-btn {
+        height: 30px;
+        font: 14px "微软雅黑";
+        width: 100%;
+        background: #f75555;
+        border: 1px solid #f75555;
+        color: #fff;
+      }
+      .ant-btn:hover {
+        height: 30px;
+        border-color: #f75555;
+      }
+    }
+    .EditBtn {
+      display: block;
+      height: 30px;
+      width: 150px;
+      float: left;
+      margin-left: 10px;
+      border-radius: 4px;
+      .ant-btn {
+        height: 30px;
+        background: #f1e8df;
+        border-color: #dbb999;
+        color: #b67233;
+        font: 14px "微软雅黑";
+        width: 100%;
+      }
+      .ant-btn:hover {
+        border-color: #dbb999;
+      }
+    }
+  }
+  .collection-create-form_last-form-item {
+    margin-bottom: 0;
+  }
 }
-	.ant-table-tbody > tr > td {
-	    text-align:center;
-	    background-color: #fff;
-		font-family: '微软雅黑 Regular', '微软雅黑';
-	    font-weight: 400;
-	    font-size: 14px;
-		div{
-			width:100%;
-			color:#ca9b71;
-			.firstA{
-				display: inline-block;
-				color:#ca9b71;
-				text-decoration: none;
-				margin:0 30px;
-				float:left;
-			}
-			.firstA:hover{
-				color:#0066ff;
-			}
-			.firstB{
-				color: #ca9b71;
-				float:left;
-				text-decoration: none;
-			}
-			.firstB:hover{
-				color:#ff0000;
-			}
-		}
-	}
-	.ant-modal-body {
-	    height:230px;
-	    font-size: 14px;
-	    line-height: 2.5;
-	    margin-top:-10px;
-	}
-	.allList{
-		width:400px;
-		font-family: '微软雅黑 Regular', '微软雅黑';
-	    font-weight: 400;
-	    font-style: normal;
-	    font-size: 14px;
-	    color: #999999;
-	    text-align: left;
-	    display:inline-block;
-	    margin-top:-40px;
-	    margin-left:10px;
-	    float:left;
-	}
-	.AddService{
-			margin: 10px;
-			height:100%;
-			border:1px solid #d9d9d9;
-			h3{
-				 margin:-10px 0 0 -10px;
-				 height:16px;
-				 font-size:14px;
-				 font-weight:900;
-				 color:#333;
-			}
-			.ant-form-inline{
-				float: left;
-					margin: 20px 0 10px 10px;
-					height:auto;
-				.ant-form-item-label{
-						height:45px;
-						line-height:45px;
-					}
-						label{
-							font-size:14px;
-							color:#333;
-						}
-
-						.ant-form-item-required:before{
-							content:"";
-							display:none;
-						}
-						.ant-form-item-required:after{
-							content:"";
-							display:none;
-						}
-
-				}
-				.projectname{
-					width:44%;
-					height:45px;
-					float:left;
-					.ant-form-item{
-						width:100%;
-						height:45px;
-						.ant-form-item-control-wrapper{
-							height:45px;
-							width:80%;
-							.ant-form-item-control {
-								height:45px;
-								width:100%;
-								float:left;
-								input{
-									width:100%;
-									float:left;
-									text-align:center;
-									height:45px;
-									line-height:43px;
-									font-size:14px;
-								}
-							}
-						}
-					}
-					.ant-form-explain{
-						width: 100%;
-						overflow: auto;
-						font-size: 16px;
-						margin-left: 38px;
-						margin-top: 45px;
-					}
-				}
-				.projectprice{
-					width:44.5%;
-					height:45px;
-					float: left;
-					h4{
-						font-size:14px;
-						color:#333;
-						height:45px;
-						line-height:45px;
-						width:20%;
-						text-align:center;
-						float:left;
-					}
-					.price{
-						width:80%;
-						float:left;
-						border-radius:4px;
-						border: 1px solid #d9d9d9;
-						.priceLeft{
-									height:45px;
-									width:45px;
-									float:left;
-									line-height:45px;
-									text-align:center;
-									font-size:14px;
-									color:#333;
-							}
-							.pricecon{
-								float:left;
-                position: absolute;
-							}
-							input{
-									width:98%;
-									float:left;
-									text-align:center;
-									height:43px;
-									line-height:43px;
-									border:none;
-									font-size:14px;
-									outline: none;
-							}
-							.priceRight{
-									height:45px;
-									width:45px;
-									float:right;
-									line-height:45px;
-									text-align:center;
-									font-size:14px;
-									color:#333;
-									border-top-right-radius: 4px;
-									border-bottom-right-radius: 4px;
-									background:#ddd;
-							}
-					}
-					.ant-form-explain{
-						width: 100%;
-						overflow: auto;
-						font-size: 16px;
-						margin-left: 38px;
-						margin-top: 45px;
-					}
-				}
-				.procontent{
-					.ant-form-explain{
-						width: 200%;
-						overflow: auto;
-						font-size: 16px;
-						margin-left: 38px;
-					}
-				}
-			}
-			.content{
-				width:450%;
-				height:45px;
-			}
-
-			.ant-input[disabled] {
-				background-color:rgba(255,255,255,0);
-			    opacity: 1;
-			    cursor: not-allowed;
-			    color: rgba(0, 0, 0, 0.6);
-			}
-			.btn{
-					height:30px;
-					margin:10px;
-					.BackBtn{
-							display:block;
-							height:30px;
-							width:150px;
-							float:left;
-							margin-left:52%;
-							border-radius:4px;
-							.ant-btn{
-									font:14px "微软雅黑";
-									height:30px;
-									width:100%;
-									background: #b67233;
-									color:#fff;
-							}
-							.ant-btn{
-								border-color:#b67233;
-							}
-					}
-					.AddBack{
-						margin-left: 68%;
-					}
-					.SaveBtn{
-						display:block;
-						height:30px;
-						width:150px;
-						float:left;
-						margin-left:10px;
-						border-radius:4px;
-						font:14px "微软雅黑";
-						background:#f1e8df ;
-						color:#b67233;
-						border-color:#dbb999;
-						.ant-btn{
-								height:30px;
-								font:14px "微软雅黑";
-								width:100%;
-						}
-						.ant-btn:hover{
-							border-color:#dbb999;
-						}
-					}
-					.DelBtn{
-						display:block;
-						height:30px;
-						width:150px;
-						float:left;
-						margin-left:10px;
-						border-radius:4px;
-						font:14px "微软雅黑";
-
-						.ant-btn{
-								height:30px;
-								font:14px "微软雅黑";
-								width:100%;
-								background:#f75555 ;
-								border:1px solid #f75555;
-								color:#fff;
-						}
-						.ant-btn:hover{
-							height:30px;
-							border-color:#f75555;
-						}
-					}
-					.EditBtn{
-							display:block;
-							height:30px;
-							width:150px;
-							float:left;
-							margin-left:10px;
-							border-radius:4px;
-							.ant-btn{
-									height:30px;
-									background:#f1e8df ;
-									border-color:#dbb999;
-									color:#b67233;
-									font:14px "微软雅黑";
-									width:100%;
-							}
-							.ant-btn:hover{
-								border-color:#dbb999;
-							}
-					}
-			}
-			.collection-create-form_last-form-item {
-			  margin-bottom: 0;
-			}
-	}
