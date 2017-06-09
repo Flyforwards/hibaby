@@ -23,91 +23,89 @@ export default {
     getEndemic: null
   },
   reducers: {
-    getDeptListSave(state, { payload: { data: getDeptList, code } }){
-      let getDeptListSavedata = { ...state, getDeptList, code };
+    getDeptListSave(state, { payload: { data: getDeptList } }){
+      let getDeptListSavedata = { ...state, getDeptList };
       return getDeptListSavedata
     },
-    getEndemicSave(state, { payload: { data: getEndemic, code } }){
-      let getEndemicSavedata = { ...state, getEndemic, code };
+    getEndemicSave(state, { payload: { data: getEndemic } }){
+      let getEndemicSavedata = { ...state, getEndemic };
       return getEndemicSavedata
     },
-    getPositionSave(state, { payload: { data: getPosition, code } }){
-      let getPositionSavedata = { ...state, getPosition, code };
+    getPositionSave(state, { payload: { data: getPosition } }){
+      let getPositionSavedata = { ...state, getPosition };
       return getPositionSavedata
     },
-    getUserPageListByDeptId(state, { payload: { data, code } }){
-      let getUserPageListByDeptIddata = { ...state, data, code };
-      return getUserPageListByDeptIddata
-    },
-    getTissuePropertyList(state, { payload: { data: TissueProperty, code } }){
-      let getTissuePropertyListdata = { ...state, TissueProperty, code };
+    // getUserPageListByDeptId(state, { payload: { data } }){
+    //   let getUserPageListByDeptIddata = { ...state, data };
+    //   return getUserPageListByDeptIddata
+    // },
+    getTissuePropertyList(state, { payload: { data: TissueProperty } }){
+      let getTissuePropertyListdata = { ...state, TissueProperty };
       return getTissuePropertyListdata
     },
-    getAllTissuePropertyList(state, { payload: { data: AllTissueProperty, code } }){
-      let getTissuePropertyListdata = { ...state, AllTissueProperty, code };
+    getAllTissuePropertyList(state, { payload: { data: AllTissueProperty } }){
+      let getTissuePropertyListdata = { ...state, AllTissueProperty };
       return getTissuePropertyListdata
     },
-    deleteDepartmentSave(state, { payload: { data, code } }){
-      let deleteDepartmentdata = { ...state, data, code };
+    deleteDepartmentSave(state, { payload: { data } }){
+      let deleteDepartmentdata = { ...state, data };
       return deleteDepartmentdata
     },
-    modifyDepartmentSave(state, { payload: { data, code } }){
-      let modifyDepartmentdata = { ...state, data, code };
+    modifyDepartmentSave(state, { payload: { data } }){
+      let modifyDepartmentdata = { ...state, data };
       return modifyDepartmentdata
     },
-    getDepartmentSave(state, { payload: { data: getDepartmentNode, code } }){
-      let getDepartmentdata = { ...state, getDepartmentNode, code };
+    getDepartmentSave(state, { payload: { data: getDepartmentNode } }){
+      let getDepartmentdata = { ...state, getDepartmentNode };
       return getDepartmentdata
     },
-    getLeagerDepartmentNodesSave(state, { payload: { data: LeagerData, code } }){
-      let getLeagerDepartmentNodesdata = { ...state, LeagerData, code };
+    getLeagerDepartmentNodesSave(state, { payload: { data: LeagerData } }){
+      let getLeagerDepartmentNodesdata = { ...state, LeagerData };
       return getLeagerDepartmentNodesdata
     },
-    getUserListByIdSave(state, { payload: { data: userID, code } }){
-      let getUserListByIddata = { ...state, userID, code };
+    getUserListByIdSave(state, { payload: { data: userID } }){
+      let getUserListByIddata = { ...state, userID };
       return getUserListByIddata
     },
-    forbiddenUserSave(state, { payload: { data, code } }){
-      let forbiddenUserdata = { ...state, data, code };
-      return forbiddenUserdata
-    },
-    saveDepartmentSave(state, { payload: { data, code } }){
-      let saveDepartmentdata = { ...state, data, code };
+    saveDepartmentSave(state, { payload: { data } }){
+      let saveDepartmentdata = { ...state, data };
       return saveDepartmentdata
     },
-    getDeptListByEndemicIdSave(state, { payload: { data: dataEndemicId, code } }){
-      let getDeptListByEndemicIddata = { ...state, dataEndemicId, code };
+    getDeptListByEndemicIdSave(state, { payload: { data: dataEndemicId } }){
+      let getDeptListByEndemicIddata = { ...state, dataEndemicId };
       return getDeptListByEndemicIddata
     },
-    roleSelectDataSave(state, { payload: { data: selectData, code } }){
-      let roleSelectdata = { ...state, selectData, code };
+    roleSelectDataSave(state, { payload: { data: selectData } }){
+      let roleSelectdata = { ...state, selectData };
       local.set("rolSelectData", selectData)
       return roleSelectdata
     },
-    positionSave(state, { payload: { data: dataId, code } }){
-      let Positiondata = { ...state, dataId, code };
+    positionSave(state, { payload: { data: dataId } }){
+      let Positiondata = { ...state, dataId };
       return Positiondata
     },
-    addUserSave(state, { payload: { data, code } }){
-      let addUserdata = { ...state, data, code };
+    addUserSave(state, { payload: { data } }){
+      let addUserdata = { ...state, data };
       return addUserddata
     },
-    getEmpSerial(state, { payload: { data, code } }){
-      let getEmpSerialdata = { ...state, data, code };
+    getEmpSerial(state, { payload: { data } }){
+      let getEmpSerialdata = { ...state, data };
       return getEmpSerialdata
     },
-    getDepartmentNodesList(state, { payload: { data: leftList, code } }){
-      let getDepartmentNodesdata = { ...state, leftList, code };
+    getDepartmentNodesList(state, { payload: { data: leftList } }){
+      let getDepartmentNodesdata = { ...state, leftList };
       return getDepartmentNodesdata
     },
-    organizationPage(state, { payload: { data: list, total, page, size, code } }){
+    refreshPage(state, { payload: { list } }){
+      return { ...state, list };
+    },
+    organizationPage(state, { payload: { data: list, total, page, size } }){
       let organizationdata = {
         ...state,
         list,
         total,
         page,
         size,
-        code
       };
       let range = {
         start: page == 1 ? 1 : (page - 1) * 10 + 1,
@@ -115,7 +113,8 @@ export default {
         totalpage: Math.ceil(total / size)
       }
       return { ...organizationdata, range };
-    }
+    },
+
   },
   effects: {
     //获取组织架构的列表
@@ -270,11 +269,23 @@ export default {
       }
     },
     //根据用户id禁用用户
-    *forbiddenUser({ payload: values }, { call, put }) {
+    *forbiddenUser({ payload: values }, { call, put, select }) {
       const { data: { data, code } } = yield call(organizationService.forbiddenUser, values);
       if (code == 0) {
-        message.success("用户信息已被禁用");
-        yield put(routerRedux.push("/system/organization"))       
+        message.success("该用户信息禁用成功");
+        const list = yield select(state => state.organization.list);
+         if (list != null) {
+           list.map((record)=>{
+            if (record.id == values.dataId) {
+              record.status = 1;
+            };
+          })
+        }
+        yield put({
+          type: 'refreshPage',
+          payload: { list }
+        })
+
       }
     },
     //根据入职信息id删除入职信息
@@ -375,19 +386,19 @@ export default {
         yield put({ type: 'positionSave', payload: { data, code } });
       }
     },
-    //根据条件获取用户列表
-    *getUserPageListByDeptId({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(organizationService.getUserPageListByDeptId, values);
-      if (code == 0) {
-        yield put({
-          type: 'getUserPageListByDeptId',
-          payload: {
-            data,
-            code
-          }
-        });
-      }
-    },
+    // //根据条件获取用户列表
+    // *getUserPageListByDeptId({ payload: values }, { call, put }) {
+    //   const { data: { data, code } } = yield call(organizationService.getUserPageListByDeptId, values);
+    //   if (code == 0) {
+    //     yield put({
+    //       type: 'getUserPageListByDeptId',
+    //       payload: {
+    //         data,
+    //         code
+    //       }
+    //     });
+    //   }
+    // },
     //获取组织架构的列表信息
     *organizationList({ payload: values }, { call, put }){
       const {
