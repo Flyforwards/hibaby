@@ -194,16 +194,18 @@
 			margin-bottom: 20px;
 		}
 	}
-  .saveButton{
+  .SaveBtn{
     float:right;
     margin: 0 20px;
     background: #f8f1e9;
+    font:14px "微软雅黑";
     color:#b67233;
     border:1px solid #b67233;
   }
-  .returnButton{
+  .BackBtn{
     float:right;
     margin: 0 20px;
+    font:14px "微软雅黑";
     background: #b67233;
     color:#fff;
     border:1px solid #dbb999 ;
@@ -325,6 +327,7 @@
 		margin: 0 20px;
     color:#fff;
 		margin-bottom: 20px;
+    font:14px "微软雅黑";
 	}
 	.disabledButton{
 		background-color: #eb7c34;
@@ -334,7 +337,7 @@
    		background-color: rgba(255, 153, 0, 1);
    		border: 0;
 	}
-  .returnButton{
+  .BackBtn{
     background: #b67233;
     border-color: #b67233;
   }

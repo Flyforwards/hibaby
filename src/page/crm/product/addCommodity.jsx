@@ -94,6 +94,7 @@ class AddCommodityed extends Component {
     render() {
         let str = null
         let loadingName = true
+        console.log(1)
         let roomInformation = []
         const { getFieldDecorator } = this.props.form;
         const columns = this.columns;

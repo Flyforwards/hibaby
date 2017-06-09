@@ -81,7 +81,7 @@ class AddService extends Component {
               {getFieldDecorator('contents', {
                 rules: [{ required: true, message: '项目内容为必填项！限300字' ,max: 300}]
               })(
-                <Input rows={6} className="content"/>
+                <Input className="content"/>
               )}
             </FormItem>
           </Form>

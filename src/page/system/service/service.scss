@@ -92,7 +92,7 @@
 	}
 	.AddService{
 			margin: 10px;
-			height: auto;
+			height:100%;
 			border:1px solid #d9d9d9;
 			h3{
 				 margin:-10px 0 0 -10px;
@@ -149,7 +149,13 @@
 							}
 						}
 					}
-
+					.ant-form-explain{
+						width: 100%;
+						overflow: auto;
+						font-size: 16px;
+						margin-left: 38px;
+						margin-top: 45px;
+					}
 				}
 				.projectprice{
 					width:44.5%;
@@ -205,19 +211,28 @@
 									background:#ddd;
 							}
 					}
+					.ant-form-explain{
+						width: 100%;
+						overflow: auto;
+						font-size: 16px;
+						margin-left: 38px;
+						margin-top: 45px;
+					}
+				}
+				.procontent{
+					.ant-form-explain{
+						width: 200%;
+						overflow: auto;
+						font-size: 16px;
+						margin-left: 38px;
+					}
 				}
 			}
 			.content{
 				width:450%;
 				height:45px;
 			}
-      .ant-form-explain{
-        width: 100%;
-        overflow: auto;
-        font-size: 16px;
-        margin-left: 38px;
-        margin-top: 45px;
-      }
+
 			.ant-input[disabled] {
 				background-color:rgba(255,255,255,0);
 			    opacity: 1;
