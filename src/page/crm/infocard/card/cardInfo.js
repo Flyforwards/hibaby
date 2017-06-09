@@ -48,6 +48,7 @@ class CardModal extends Component {
     const { cardKind, form, dispatch } = this.props;
     const { validateFields } = form;
     form.validateFields((err, values) => {
+      console.log('cardinfo>>', values);
       if (!err) {
         dispatch({
           type: 'card/saveCard',
@@ -85,8 +86,9 @@ class CardModal extends Component {
        showVisible:true,
       });
     }else if(e.target.value == 2) {
-      this.props.form.setFieldsValue({"upgrade":0})
-      this.props.form.setFieldsValue({"level":1})
+      // this.props.form.setFieldsValue({"upgrade":0})
+      // this.props.form.setFieldsValue({"level":1})
+      this.props.form.getFieldDecorator('upgrade', {initialValue: 0});
       this.setState({
         showVisible:false,
       });
@@ -143,6 +145,7 @@ class CardModal extends Component {
               <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="折扣权限" {...formItemLayout}>
                   {getFieldDecorator('salesDiscount', {
+                    initialValue: 100,
                     rules: [{validator:this.checkPrice, required: true,}],
                   })(
                     <Input placeholder="请输入折扣权限" addonAfter="%"  type="number" min={0}/>
@@ -183,7 +186,7 @@ class CardModal extends Component {
               <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="会员卡级别" {...formItemLayout}>
                   {getFieldDecorator('level', {
-                    rules: [{ required: true, message: '请选择会员卡级别' }]
+                    rules: [{ required: this.state.showVisible, message: '请选择会员卡级别' }]
                   })(
                     <Select
                       showSearch

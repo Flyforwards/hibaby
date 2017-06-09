@@ -39,7 +39,7 @@ class Card extends Component {
         if (VIPLEVEL[text]) {
           return VIPLEVEL[text]
         } else {
-          return text;
+          return '自定义卡';
         }
       }
     }, {
