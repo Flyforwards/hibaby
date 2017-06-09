@@ -64,7 +64,6 @@ export default {
     //获取所有的职位信息
     *getPosition({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.getPosition, values);
-      console.log(data);
       if (code == 0) {
         yield put({
           type: 'getPositionSave',
@@ -78,7 +77,6 @@ export default {
     //获取所有的部门信息
     *getDeptList({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.getDeptList, values);
-      console.log(data);
 
       if (code == 0) {
         yield put({
@@ -93,12 +91,10 @@ export default {
 
     *getRolesByPage({ payload: values }, {call,put }) {
       values = parse(location.search.substr(1))
-      console.log(values)
       const { data: { data, total, page, size, code, err }} = yield call(systemService.getRolesByPage, values);
       if (code == 0) {
         if(data.length == 0 && page > 1){
           yield put(routerRedux.push(`/system/permission?page=${page -1}&size=10`))
-
         }
         else {
           yield put({
@@ -179,12 +175,23 @@ export default {
         //  获取职位字典
       }
 
-      const {data: {data, total , code , err}} =  yield call(usersService.getUserPageListByRoleId, values)
+      const {data: {data, total ,page, code , err}} =  yield call(usersService.getUserPageListByRoleId, values)
+
+
       if (code == 0 && err == null) {
-        yield put({
-          type : 'getRoleUserPagSuccess',
-          payload : { data, total,}
-        });
+
+        if(data.length == 0 && page > 1){
+
+          yield put({
+            type : 'getUserPageListByRoleId',
+            payload: { page:page - 1, size: 10, roleId:values.roleId }
+          })
+        }else{
+          yield put({
+            type : 'getRoleUserPagSuccess',
+            payload : { data, total,}
+          });
+        }
       }
     },
     // 给角色分配权限
@@ -236,6 +243,7 @@ export default {
     *getUserPageListByUserRole({ payload: values },{call, put}) {
       const { nodeid } = values;
       const {data: {data, code, total , err}} =  yield call(usersService.getUserPageListByUserRole, values)
+
       if (code == 0 && err == null) {
         yield put({
           type: "getUserByNodeIdSuccess",

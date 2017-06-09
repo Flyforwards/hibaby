@@ -176,8 +176,9 @@ class ViewTheInformationed extends React.Component {
       if ( this.state.error ) {
         imageUrl = IMG;
       }
-      const add_position = !this.props.permissionAlias.contains("EMPLOYEE_POSITION_ADD");
+      const add_position = !this.props.permissionAlias.contains("POSITION_ADD");
       let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
+      let edit = !this.props.permissionAlias.contains('EMPLOYEE_EDIT');
       return(
         <div className="viewTheInformation">
           <div className="basicInformation">基本信息</div>
@@ -192,7 +193,7 @@ class ViewTheInformationed extends React.Component {
 
           <Button  className="disabledButton" onClick={this.headelDisabled}>禁用</Button>
           <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID} }}>
-              <Button  type="primary" className="editButton">编辑</Button>
+              <Button disabled={edit}  type="primary" className="editButton">编辑</Button>
           </Link>
           <Button disabled={add_position} className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>
           <Link><Button disabled={disable} className="BackBtn" onClick={this.headelReturn.bind(this)}>返回</Button></Link>

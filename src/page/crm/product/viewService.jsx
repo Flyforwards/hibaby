@@ -46,7 +46,7 @@ class AddServiceed extends Component {
           DeleteVisible:false,
           ID:null
         };
-       
+
     }
     delete() {
       let ID = window.location.search.split("=")[1]
@@ -135,6 +135,8 @@ class AddServiceed extends Component {
             }
           })
         }
+        const edit = !this.props.permissionAlias.contains('SERVICEINFO_EDIT');
+        const del = !this.props.permissionAlias.contains('SERVICEINFO_DELETE');
         return (
             <div className="viewServiceinfo">
                 <div className="viewServiceinfoList">
@@ -209,8 +211,8 @@ class AddServiceed extends Component {
                 </div>:null
                 }
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
-                <Link to={{ pathname: '/crm/serviceinfo/editservice', query: { data:this.state.ID } }}><Button className="editBtn" type="primary">编辑</Button></Link>
+                <Button disabled={del} className="delet" onClick={this.delete.bind(this)}>删除</Button>
+                <Link to={{ pathname: '/crm/serviceinfo/editservice', query: { data:this.state.ID } }}><Button disabled={edit} className="editBtn" type="primary">编辑</Button></Link>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
@@ -221,39 +223,21 @@ class AddServiceed extends Component {
         )
     }
 }
-function AddService({
-  dispatch,
-  findById,
-  getDictionary,
-  selectData
-}) {
-  return ( < div >
-    <AddServiceed dispatch = {
-      dispatch
-    }
-    findById = {
-      findById
-    }
-    getDictionary = {
-      getDictionary
-    }
-    selectData = {
-      selectData
-    }
-    /></div>
-  )
-}
+
+
 function mapStateToProps(state) {
   const {
     findById,
     getDictionary,
     selectData
   } = state.packageInfo;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.packageInfo,
     findById,
     getDictionary,
-    selectData
+    selectData,
+    permissionAlias
     };
 }
 const addService = Form.create()(AddServiceed);

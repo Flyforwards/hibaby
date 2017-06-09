@@ -157,9 +157,10 @@ class Organization extends React.Component {
             ID:null,
             nodeid:endemic.id,
             tissueProperty:endemic.tissueProperty,
-            statusType:false
+            statusType:false,
+            default:null,
+            current:1
         }
-        this.current = false
         this.query = false
     }
     onDrop = (info) => {
@@ -210,6 +211,38 @@ Disabled(record) {
       ID:record.id
     })
 }
+onChange(current){
+  this.setState({
+    current:current
+  })
+   if(this.state.statusType){
+      this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": this.state.userName,
+            "nodeid": this.state.nodeid,
+            "roleId": this.state.character,
+            "status":this.state.status,
+            "page": current,
+            "size": 10,
+            "tissueProperty": this.state.tissueProperty
+        },
+      });
+    }else{
+      this.props.dispatch({
+        type: 'organization/organizationList',
+        payload: {
+            "name": null,
+            "nodeid": this.state.nodeid,
+            "roleId": null,
+            "status": null,
+            "page":current,
+            "size": 10,
+            "tissueProperty": this.state.tissueProperty
+        },
+      });
+    }
+}
 //按条件查询用户
 OrganizationInquire() {
   const fields = this.props.form.getFieldsValue();
@@ -250,11 +283,10 @@ OrganizationInquire() {
       })
     }
     statusType(status){
-      console.log("1")
         this.setState({
-          statusType:status
+          statusType:status,
+          current:1
         })
-       this.current = true
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -275,37 +307,9 @@ OrganizationInquire() {
         const pagination = {
           total:this.props.total,
           showQuickJumper: true,
+          current:this.state.current,
           pageSize:10,
-          onChange: (current) => {
-            if(this.state.statusType){
-              this.props.dispatch({
-                type: 'organization/organizationList',
-                payload: {
-                    "name": this.state.userName,
-                    "nodeid": this.state.nodeid,
-                    "roleId": this.state.character,
-                    "status":this.state.status,
-                    "page": current,
-                    "size": 10,
-                    "tissueProperty": this.state.tissueProperty
-                },
-              });
-              this.current = false
-            }else{
-              this.props.dispatch({
-                type: 'organization/organizationList',
-                payload: {
-                    "name": null,
-                    "nodeid": this.state.nodeid,
-                    "roleId": null,
-                    "status": null,
-                    "page":current,
-                    "size": 10,
-                    "tissueProperty": this.state.tissueProperty
-                },
-              });
-            }
-          },
+          onChange: this.onChange.bind(this)
         };
         const traversalRoleId = (roleId) => {
           return roleId.map((item)=>{
@@ -326,6 +330,7 @@ OrganizationInquire() {
             <OrganizationLeft
               onBtain={this.ObtainOrganization.bind(this)}
               statusType = { this.statusType.bind(this) }
+              current = { this.state.current }
             />
             <div className="Organization-right">
             <div className="Organization-nav">
