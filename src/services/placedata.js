@@ -17,7 +17,7 @@ export function PlaceFind(values) {
 }
 //  编辑地方集团数据
 export function EditPlaceData(values) {
-  return request('/crm/api/v1/dictionary/modifyDictionary', {
+  return request('/crm/api/v1/dictionary/modifyLocalDictionary', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -25,7 +25,7 @@ export function EditPlaceData(values) {
 
 //地方列表数据
 export function localCharList(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
+  return request('/crm/api/v1/dictionary/getLocalDictionaryMainPageLists', {
     method: 'POST',
     body: JSON.stringify(values),
   })
