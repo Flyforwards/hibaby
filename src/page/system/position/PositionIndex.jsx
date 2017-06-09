@@ -13,9 +13,7 @@ import { routerRedux } from 'dva/router';
 class PositionIndex extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: ''
-    }
+    this.name ='';
 
     this.columns = [{
       title: '序号',
@@ -51,31 +49,21 @@ class PositionIndex extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-
-      let postInfo = {
-          ...values,
-        'page': 1,
-        'size': 4,
-      }
-      this.handlePageChange(postInfo);
-
+      console.log(values);
+      this.props.dispatch({
+        type: 'position/getDepartmentInfo',
+        payload: values
+      })
+      this.name = values.name
     });
   }
 
-  handlePageChange(value) {
-    this.props.dispatch({
-      type: 'position/getDepartmentInfo',
-      payload: value
-    })
-    this.setState({
-      name: value.name
-    })
-  }
+
 
   render() {
     const { form, list, pagination, dispatch, loading} = this.props
     const { getFieldDecorator } = form;
-    const state = this.state;
+    const name = this.name;
     const tableProps = {
       loading: loading.effects['position/getDepartmentInfo'],
       dataSource : list ,
@@ -87,7 +75,7 @@ class PositionIndex extends Component {
           query: {
             page: page.current,
             size: page.pageSize,
-            name: state.name,
+            name,
           },
         }))
       },
