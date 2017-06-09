@@ -1,0 +1,33 @@
+.workPlanIndex {
+  padding: 10px;
+  .addBtn{
+    margin-bottom: 10px;
+  }
+  .calendar{
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 10px;
+  }
+  .planInfo{
+    background: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    h4{
+      color: #916136;
+      padding-left: 8px;
+      margin-bottom: 10px;
+
+    }
+  }
+}
+
+.event-error {
+  color: #f50;
+}
+
+.workPlanAdd{
+  padding: 20px;
+}
