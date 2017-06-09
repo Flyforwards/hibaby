@@ -340,7 +340,11 @@ function HealthyhomeMainComponent(props) {
 
   //返回
   function handleBack() {
-    props.dispatch(routerRedux.push('/crm/customer'));
+    const {dispatch} = props;
+    dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
   return(
@@ -754,7 +758,7 @@ class Healthyhome extends Component {
     });
 
     console.log(this.state);
-    
+
   }
 
   render (){
@@ -770,7 +774,7 @@ class Healthyhome extends Component {
 function mapStateToProps(state) {
   return {
     healthInformation: state.healthInformation,
-    customerId:state.addCustomer.dataDetailId
+    customerId:state.addCustomer.dataDetailId,
   };
 }
 

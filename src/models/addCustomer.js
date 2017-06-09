@@ -29,7 +29,7 @@ export default {
     loading:false,
     headIcon:'',
     headIconUrl:'',
-
+    activityKey: "1",
     operator:'',
 
     editCustomer:false,
@@ -103,6 +103,9 @@ export default {
       return {...state,bigImageHidden:true,bigImageData:(todo.isCardid ? lookCardIDDLC
         :lookContractDLC)};
 
+    },
+    changeTabs(state, { payload: { activityKey } }){
+      return {...state, activityKey};
     },
 
     hideDlc(state, { payload: todo }){

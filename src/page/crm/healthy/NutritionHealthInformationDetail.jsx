@@ -246,7 +246,11 @@ function NutritionHealthInformationDetail(props) {
   }
   //返回
   function handleBack() {
-    props.dispatch(routerRedux.push('/crm/customer'));
+    const {dispatch} = props;
+    dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
 
