@@ -22,13 +22,15 @@ class serviceIndex extends Component {
         }, {
           title: '服务项目内容',
           dataIndex: 'contents',
-          key:'contents',
+          key: 'contents',
           width: '600px',
         },{
           title: '服务项目价格',
           dataIndex: 'price',
-          key:'price',
           width: '150px',
+          render: ( (record) => {
+            return ("￥"+String(record))
+          }),
         },{
           title: '操作',
           dataIndex: 'operating',
