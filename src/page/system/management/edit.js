@@ -128,8 +128,7 @@ class editGroupData extends React.Component {
       getFieldDecorator('keys', { initialValue: initKeys });
 
       const keys = getFieldValue('keys');
-    //  console.log(initKeys);
-    //  console.log(keys);
+      const edit = !this.props.permissionAlias.contains('GROUP_CHAR_EDIT');
       const formItems = keys.map((k,index) => {
         const initValue = arr[k-1] ? arr[k-1].name : ""
         return (
@@ -193,7 +192,7 @@ class editGroupData extends React.Component {
               <Link  to={{pathname:'/system/group-char/detail',query:{ dataId }}}>
                   <Button className = "editable-add-btn return"> 返回 </Button>
               </Link>
-              <Button className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+              <Button disabled={edit} className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
           </div>
         </div>
      )
@@ -209,9 +208,11 @@ function GetQueryString(name){
 function mapStateToProps(state) {
 
   const { editData } = state.save;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.save,
     editData,
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(editGroupData);

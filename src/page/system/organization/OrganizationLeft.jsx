@@ -30,13 +30,18 @@ class OrganizationLefted extends React.Component {
       SeeDtailNodeVisible: false,
       ID: null,
       node: null,
-      DeleteNodeVisible: false
+      DeleteNodeVisible: false,
+      unfolded:["1"]
     }
     this.addDisplay = "block";
     this.nodes = null;
   }
 
-  expandHandler = () => {
+  expandHandler = (expandedKeys, {expanded: bool, node}) => {
+    console.log("sds",expandedKeys)
+    this.setState({
+      unfolded:expandedKeys
+    })
     setTimeout(() => {
       $(".Organization-left li").find(".ant-tree-title").each((index, e) => {
         if ($(e).siblings(".plus").length == 0) {
@@ -50,6 +55,9 @@ class OrganizationLefted extends React.Component {
     this.addDisplay = "block"
     this.deleteDisplay = "block"
     if (value[0] != null) {
+      // this.setState({
+      //   unfolded:value
+      // })
       this.nodes = node.selectedNodes[0].props.dataIndex
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
@@ -67,7 +75,8 @@ class OrganizationLefted extends React.Component {
           ID: node.selectedNodes[0].key,
           node: node.selectedNodes[0],
           parentId: node.selectedNodes[0].props.parentId,
-          dataIndex: node.selectedNodes[0].props.dataIndex
+          dataIndex: node.selectedNodes[0].props.dataIndex,
+          unfolded:value
         })
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.dispatch({
@@ -238,21 +247,26 @@ class OrganizationLefted extends React.Component {
                          dataIndex={this.props.leftList.tissueProperty}
                          parentId={this.props.leftList.parentId}>{loops}</TreeNode>]
     }
+
+    const add = !this.props.permissionAlias.contains('NODE_ADD');
+    const detail = !this.props.permissionAlias.contains('NODE_DETAIL');
+      const del = !this.props.permissionAlias.contains('NODE_DELETE');
     return (
       <div className="Organization-left">
         <Tree
           className="draggable-tree"
           onSelect={ this.onSelect.bind(this) }
           onExpand={this.expandHandler.bind(this)}
-          autoExpandParent={ true }
-          defaultExpandedKeys={ ["0"] }
+          defaultExpandedKeys = {["1"]}
+          autoExpandParent = { true }
+          expandedKeys = { this.state.unfolded }
         >
           { loops }
         </Tree>
         <ul className="nameList" style={{ top: this.state.ulTop, display: this.state.upblock }}>
-          <li className="li" onClick={this.AddChildNode.bind(this)} style={{ display: this.addDisplay }}>添加子节点</li>
-          <li className="li" onClick={this.seeDetails.bind(this)}>查看详情</li>
-          <li className="li" onClick={this.DeleteNode.bind(this)} style={{ display: this.deleteDisplay }}>删除</li>
+          <li disabled={add} className="li" onClick={this.AddChildNode.bind(this)} style={{ display: this.addDisplay }}>添加子节点</li>
+          <li disabled={detail} className="li" onClick={this.seeDetails.bind(this)}>查看详情</li>
+          <li disabled={del} className="li" onClick={this.DeleteNode.bind(this)} style={{ display: this.deleteDisplay }}>删除</li>
           <li className="fourLi">ID {this.state.ID}</li>
         </ul>
         <AddChildNode
@@ -289,35 +303,7 @@ class OrganizationLefted extends React.Component {
   }
 }
 
-function OrganizationLeft({
-                            dispatch,
-                            loading,
-                            data,
-                            leftList,
-                            getDepartmentNode,
-                            TissueProperty,
-                            AllTissueProperty,
-                            code
-                          }) {
-  return ( < div >
-      <OrganizationLefted dispatch={
-        dispatch
-      }
-                          leftList={
-                            leftList
-                          }
-                          TissueProperty={
-                            TissueProperty
-                          }
-                          getDepartmentNode={
-                            getDepartmentNode
-                          }
-                          AllTissueProperty={
-                            AllTissueProperty
-                          }
-      /></div >
-  )
-}
+
 function mapStateToProps(state) {
   const {
     data,
@@ -325,8 +311,8 @@ function mapStateToProps(state) {
     getDepartmentNode,
     TissueProperty,
     AllTissueProperty,
-    code
   } = state.organization;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.organization,
     data,
@@ -334,7 +320,7 @@ function mapStateToProps(state) {
     getDepartmentNode,
     TissueProperty,
     AllTissueProperty,
-    code
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(OrganizationLefted)

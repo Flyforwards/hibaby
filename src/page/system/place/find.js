@@ -56,44 +56,45 @@ class FindPlaceData extends React.Component {
         })
 
       };
-        return (
-            <div className="xuanxiang PlaceProject">
-                <Card title = "字段信息:" >
-                  <FormItem {...formItemLayout}  label='字段名称'>
-                    {getFieldDecorator('name',{
-                      initialValue: name,
-                    })(
-                      <Input readOnly={true} />
-                    )}
-                  </FormItem>
-                  <FormItem {...formItemLayout} label='字段描述'>
-                    {getFieldDecorator('description',{
-                      initialValue: description,
-                    })(
-                      <Input readOnly={true} />
-                    )}
-                  </FormItem>
-                  <FormItem {...formItemLayout} label='别名'>
-                    {getFieldDecorator('abName',{
-                      initialValue: abName,
-                    })(
-                      <Input readOnly={true} />
-                    )}
-                  </FormItem>
-                </Card>
-                <Card title = "下拉选项:" >
-                  {fields.length > 0 ? fields : <p style={{textAlign: 'center', color: '#999'}}>无该地方中心字典数据，点击编辑按钮进行添加</p>}
-                </Card >
-                <div className="retuSave">
-                    <Link to='/system/local-char'>
-                      <Button className = "editable-add-btn return"> 返回 </Button>
-                    </Link>
-                    <Link to={{pathname:'/system/local-char/edit',query:{ dataId:`${editid}`}}}>
-                        <Button className = "editable-add-btn SaveBtn"> 编辑 </Button>
-                    </Link>
-                </div>
-           </div>
-        )
+      const edit = !this.props.permissionAlias.contains('LOCAL_CHAR_EDIT');
+      return (
+          <div className="xuanxiang PlaceProject">
+              <Card title = "字段信息:" >
+                <FormItem {...formItemLayout}  label='字段名称'>
+                  {getFieldDecorator('name',{
+                    initialValue: name,
+                  })(
+                    <Input readOnly={true} />
+                  )}
+                </FormItem>
+                <FormItem {...formItemLayout} label='字段描述'>
+                  {getFieldDecorator('description',{
+                    initialValue: description,
+                  })(
+                    <Input readOnly={true} />
+                  )}
+                </FormItem>
+                <FormItem {...formItemLayout} label='别名'>
+                  {getFieldDecorator('abName',{
+                    initialValue: abName,
+                  })(
+                    <Input readOnly={true} />
+                  )}
+                </FormItem>
+              </Card>
+              <Card title = "下拉选项:" >
+                {fields.length > 0 ? fields : <p style={{textAlign: 'center', color: '#999'}}>无该地方中心字典数据，点击编辑按钮进行添加</p>}
+              </Card >
+              <div className="retuSave">
+                  <Link to='/system/local-char'>
+                    <Button className = "editable-add-btn return"> 返回 </Button>
+                  </Link>
+                  <Link to={{pathname:'/system/local-char/edit',query:{ dataId:`${editid}`}}}>
+                      <Button disabled={edit} className = "editable-add-btn SaveBtn"> 编辑 </Button>
+                  </Link>
+              </div>
+         </div>
+      )
     }
 }
 
@@ -110,10 +111,11 @@ function mapStateToProps(state) {
   const {
     item: data
   } = state.localData;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.localData,
-    data
+    data,
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(FindPlaceData);

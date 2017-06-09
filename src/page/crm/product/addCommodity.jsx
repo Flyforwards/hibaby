@@ -47,7 +47,9 @@ class AddCommodityed extends Component {
     }
     handleAdd(){
       const fields = this.props.form.getFieldsValue();
-      if(fields.name){
+      this.props.form.validateFields((err, fieldsValue) => {
+        if(!err){
+          if(fields.name){
         if(fields.price){
           if(fields.nameLetter){
               this.props.dispatch({
@@ -70,6 +72,8 @@ class AddCommodityed extends Component {
       }else{
         message.warning("请输入商品名称");
       }
+        }
+      })
     }
     chineseToPinyin(){
       const fields = this.props.form.getFieldsValue();
@@ -90,6 +94,7 @@ class AddCommodityed extends Component {
     render() {
         let str = null
         let loadingName = true
+        console.log(1)
         let roomInformation = []
         const { getFieldDecorator } = this.props.form;
         const columns = this.columns;

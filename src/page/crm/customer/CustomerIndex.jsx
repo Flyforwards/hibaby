@@ -205,6 +205,13 @@ class CustomerIndex extends React.Component {
        return value;
     }
 
+  componentDidMount(){
+    this.props.dispatch({type: 'customer/getCustomerPage',});
+    this.props.dispatch({type: 'customer/listByMain',});
+    this.props.dispatch({type: 'customer/getMemberShipCard',});
+    this.props.dispatch({ type: 'customer/getDataDict',payload:{"abName": 'YCC',}});
+  }
+
     render() {
         const columns = this.columns;
         const { list, loading, pagination, dispatch, form, shipCards,fetusAry,packageList } = this.props;

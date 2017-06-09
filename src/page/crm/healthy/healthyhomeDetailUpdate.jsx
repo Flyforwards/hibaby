@@ -63,6 +63,18 @@ function HealthyhomeDetailUpdate(props) {
   function radioChangeFun4(e){
     setImgInputRequired("imgInput_4",e.target.value);
   }
+  function radioChangeFun5(e){
+    setImgInputRequired("imgInput_5",e.target.value);
+  }
+  function radioChangeFun6(e){
+    setImgInputRequired("imgInput_6",e.target.value);
+  }
+  function radioChangeFun7(e){
+    setImgInputRequired("imgInput_7",e.target.value);
+  }
+  function radioChangeFun8(e){
+    setImgInputRequired("imgInput_8",e.target.value);
+  }
 
   //单选item
   function myRadioForm (radioName, dict) {
@@ -268,7 +280,7 @@ function HealthyhomeDetailUpdate(props) {
               wrapperCol={{span: 18}}
               label={inputTitle}>
               {getFieldDecorator(`${inputName}`, {
-                initialValue : dict.value,
+                initialValue : dict.info,
                 rules: [{ required: false, message: '  ' }]
               })(
                 <Input
@@ -283,48 +295,19 @@ function HealthyhomeDetailUpdate(props) {
     )
   }
 
-  //row 左边单选右边上传附件
-  function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName,imgRequired) {
-    var col1Class='topItembg';
-    var col2Class='leftRightItemBg';
-    if (lastRow == true){
-      col1Class='bottomItemBg';
-      col2Class='allNoneBg';
-    }
-    return (
-      <Row>
-        <Col span="12">
-          <div className={col1Class}>
-            {myRadioForm(radioName ,dict)}
-          </div>
-        </Col>
-        <Col span="12">
-          <div className={col2Class}>
-            {uploadOptionsItem(key,imgInputName,imgRequired)}
-          </div>
-        </Col>
-      </Row>
-    )
-  }
-
   //row 左边单选右边空白
   function radioSpaceRow (radioName, dict, lastRow) {
     var col1Class='rightItemBg';
-    var col2Class='leftRightItemBg';
     if (lastRow == true){
       col1Class='bottomItemBg';
-      col2Class='allNoneBg';
     }
 
     return (
-      <Row>
+      <Row className={col1Class}>
         <Col span="12">
-          <div className={col1Class}>
+          <div>
             {myRadioForm(radioName, dict)}
           </div>
-        </Col>
-        <Col span="12">
-          <div className={col2Class}></div>
         </Col>
       </Row>
     )
@@ -355,7 +338,7 @@ function HealthyhomeDetailUpdate(props) {
     form.setFieldsValue({imgInput_6 : (imgInput_6_arr&&imgInput_6_arr.length>0)?JSON.stringify(imgInput_6_arr):null});
     form.setFieldsValue({imgInput_7 : (imgInput_7_arr&&imgInput_7_arr.length>0)?JSON.stringify(imgInput_7_arr):null});
     form.setFieldsValue({imgInput_8 : (imgInput_8_arr&&imgInput_8_arr.length>0)?JSON.stringify(imgInput_8_arr):null});
-    props.form.validateFields((err, values) => {
+    props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
         dispatch({
@@ -391,8 +374,8 @@ function HealthyhomeDetailUpdate(props) {
             <div className="itemTitle">既往史</div>
           </Col>
           <Col span="22">
-            {radioInputRow(radioNames[0],inputNames[0],{title: '既往疾病史',radioItems: ['无','有'],value:healthInfo['radio_0']},'请描述')}
-            {radioInputRow(radioNames[1],inputNames[1],{title: '既往手术史',radioItems: ['无','有'],value:healthInfo['radio_1']},'请描述',true)}
+            {radioInputRow(radioNames[0],inputNames[0],{title: '既往疾病史',radioItems: ['无','有'],value:healthInfo['radio_0'],info:healthInfo['input_0']},'请描述')}
+            {radioInputRow(radioNames[1],inputNames[1],{title: '既往手术史',radioItems: ['无','有'],value:healthInfo['radio_1'],info:healthInfo['input_1']},'请描述',true)}
           </Col>
         </Row>
 
@@ -401,58 +384,54 @@ function HealthyhomeDetailUpdate(props) {
             <div className="itemTitle"><span>优生四向</span></div>
           </Col>
           <Col span="22">
-            <Row>
+            <Row className="topRightItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[2], {title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_2'],radioChangeFun:radioChangeFun1})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(1,'imgInput_1',props.healthInformation.imgInput_1_required)}
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className="topRightItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[3], {title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3'],radioChangeFun:radioChangeFun2})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(2,'imgInput_2',props.healthInformation.imgInput_2_required)}
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className="topRightItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[4], {title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4'],radioChangeFun:radioChangeFun3})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(3,'imgInput_3',props.healthInformation.imgInput_3_required)}
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className="onlyLeftItemBg">
               <Col span="12">
-                <div className="topItembg">
+                <div>
                   {myRadioForm(radioNames[5], {title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_5'],radioChangeFun:radioChangeFun4})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg">
+                <div className="onlyLeftItemBg">
                   {uploadOptionsItem(4,'imgInput_4',props.healthInformation.imgInput_4_required)}
                 </div>
               </Col>
             </Row>
-            {/*{radioUploadOptionsRow(radioNames[2],{title: '弓形体',radioItems: ['阴性','阳性'],value:healthInfo['radio_2']},'1',false,'imgInput_1')}*/}
-            {/*{radioUploadOptionsRow(radioNames[3],{title: '单纯疱疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_3']},'2',false,'imgInput_2')}*/}
-            {/*{radioUploadOptionsRow(radioNames[4],{title: '风疹病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_4']},'3',false,'imgInput_3')}*/}
-            {/*{radioUploadOptionsRow(radioNames[5],{title: '巨细胞病毒',radioItems: ['阴性','阳性'],value:healthInfo['radio_5']},'4',true,'imgInput_4')}*/}
           </Col>
         </Row>
 
@@ -461,21 +440,54 @@ function HealthyhomeDetailUpdate(props) {
             <div className="itemTitle">孕期合并症</div>
           </Col>
           <Col span="22">
-            <Row>
+            <Row className="topRightItemBg" style={{minHeight: '110px'}}>
               <Col span="12">
-                <div className="topItembg" style={{height: '110px'}}>
-                  {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
+                <div>
+                  {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6'],radioChangeFun:radioChangeFun5})}
                 </div>
               </Col>
               <Col span="12">
-                <div className="leftRightItemBg" style={{height: '110px',paddingTop: '25px'}}>
-                  {uploadOptionsItem('5','imgInput_5')}
+                <div className="onlyLeftItemBg" style={{minHeight: '110px'}}>
+                  {uploadOptionsItem('5','imgInput_5',props.healthInformation.imgInput_5_required)}
                 </div>
               </Col>
             </Row>
-            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_7']},'6',false,'imgInput_6')}
-            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_8']},'7',false,'imgInput_7')}
-            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_9']},'8',false,'imgInput_8')}
+            <Row className="topRightItemBg">
+              <Col span="12">
+                <div>
+                  {myRadioForm(radioNames[7], {title: '丙肝病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_7'],radioChangeFun:radioChangeFun6})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="onlyLeftItemBg">
+                  {uploadOptionsItem(6,'imgInput_6',props.healthInformation.imgInput_6_required)}
+                </div>
+              </Col>
+            </Row>
+            <Row className="topRightItemBg">
+              <Col span="12">
+                <div>
+                  {myRadioForm(radioNames[8], {title: '梅毒病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_8'],radioChangeFun:radioChangeFun7})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="onlyLeftItemBg">
+                  {uploadOptionsItem(7,'imgInput_7',props.healthInformation.imgInput_7_required)}
+                </div>
+              </Col>
+            </Row>
+            <Row className="topRightItemBg">
+              <Col span="12">
+                <div>
+                  {myRadioForm(radioNames[9], {title: '艾滋病病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_9'],radioChangeFun:radioChangeFun8})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="onlyLeftItemBg">
+                  {uploadOptionsItem(8,'imgInput_8',props.healthInformation.imgInput_8_required)}
+                </div>
+              </Col>
+            </Row>
             <Row>
               <Col span="12">
                 <div className="topItembg">
@@ -504,7 +516,7 @@ function HealthyhomeDetailUpdate(props) {
             {radioSpaceRow(radioNames[11],{title: '贫血',radioItems: ['否','是'],value:healthInfo['radio_11']})}
             {radioSpaceRow(radioNames[12],{title: '糖尿病',radioItems: ['否','是'],value:healthInfo['radio_12']})}
             {radioSpaceRow(radioNames[13],{title: '子宫肌瘤',radioItems: ['否','是'],value:healthInfo['radio_13']})}
-            {radioInputRow(radioNames[14], inputNames[3], {title: '甲状腺功能减退',radioItems: ['否','是'],value:healthInfo['radio_14']},'用药')}
+            {radioInputRow(radioNames[14], inputNames[3], {title: '甲状腺功能减退',radioItems: ['否','是'],value:healthInfo['radio_14'],info:healthInfo['input_3']},'用药')}
 
             <Row>
               <div className="bottomRightItemBg">
@@ -613,11 +625,11 @@ function HealthyhomeDetailUpdate(props) {
           </Col>
           <Col span="22">
             {radioAllRow(radioNames[21],{title: '产后清宫',radioItems: ['无','有'],value:healthInfo['radio_21']})}
-            {radioInputRow(radioNames[22], inputNames[9], {title: '产后大出血',radioItems: ['无','有'],value:healthInfo['radio_22']},'出血量',false,'毫升')}
+            {radioInputRow(radioNames[22], inputNames[9], {title: '产后大出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
             {radioAllRow(radioNames[23],{title: '血压异常',radioItems: ['无','有','低血压','高血压'],value:healthInfo['radio_23']})}
             {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开'],value:healthInfo['radio_24']})}
             {radioAllRow(radioNames[25],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染'],value:healthInfo['radio_25']})}
-            {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26']},'体温',false,'℃')}
+            {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26'],info:healthInfo['input_10']},'体温',false,'℃')}
             {radioAllRow(radioNames[27],{title: '乳房肿胀',radioItems: ['无','有'],value:healthInfo['radio_27']})}
             {radioAllRow(radioNames[28],{title: '哺乳困难',radioItems: ['无','有'],value:healthInfo['radio_28']})}
             {radioAllRow(radioNames[29],{title: '下肢水肿',radioItems: ['无','有'],value:healthInfo['radio_29']})}
@@ -713,11 +725,11 @@ function HealthyhomeDetailUpdate(props) {
               </Col>
             </Row>
             {radioAllRow(radioNames[37],{title: '羊水污染',radioItems: ['无','有','1度','2度','3度'],value:healthInfo['radio_37']})}
-            {radioInputRow(radioNames[38], inputNames[15], {title: '发热史',radioItems: ['否','是'],value:healthInfo['radio_38']},'体温',false,'℃')}
+            {radioInputRow(radioNames[38], inputNames[15], {title: '发热史',radioItems: ['否','是'],value:healthInfo['radio_38'],info:healthInfo['input_15']},'体温',false,'℃')}
             {radioAllRow(radioNames[39],{title: '低血糖史',radioItems: ['无','有'],value:healthInfo['radio_39']})}
             {radioAllRow(radioNames[40],{title: '呼吸困难',radioItems: ['无','有'],value:healthInfo['radio_40']})}
             {radioAllRow(radioNames[41],{title: '出生后窒息',radioItems: ['无','有'],value:healthInfo['radio_41']})}
-            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['否','是'],value:healthInfo['radio_42']},'体温')}
+            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['否','是'],value:healthInfo['radio_42'],info:healthInfo['input_16']},'体温',false,'℃')}
             {radioAllRow(radioNames[43],{title: '心脏杂音',radioItems: ['无','有'],value:healthInfo['radio_43']})}
             {radioAllRow(radioNames[44],{title: '皮疹',radioItems: ['无','有'],value:healthInfo['radio_44']})}
             {radioAllRow(radioNames[45],{title: '尿量少',radioItems: ['无','有'],value:healthInfo['radio_45']})}

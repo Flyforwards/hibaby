@@ -174,7 +174,12 @@ export default {
           yield put({
             type: 'getActivityById',
             payload: { dataId: values.activityId}
+          });
+          yield put({
+            type: 'getActivityCustomerPageList',
+            payload: { activityId: values.activityId}
           })
+
         }
       }
     },
@@ -191,6 +196,10 @@ export default {
             yield put({
               type: 'getActivityById',
               payload: { dataId: values.activityId}
+            })
+            yield put({
+              type: 'getActivityCustomerPageList',
+              payload: { activityId: values.activityId}
             })
           }
 

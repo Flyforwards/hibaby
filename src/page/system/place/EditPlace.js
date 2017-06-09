@@ -147,7 +147,7 @@ class EditPlaceData extends React.Component {
         );
       });
       const dataId = GetQueryString("dataId");
-
+      const edit = !this.props.permissionAlias.contains('LOCAL_CHAR_EDIT');
       return (
         <div className="xuanxiang PlaceProject">
           <Card title = "字段信息:" >
@@ -187,7 +187,7 @@ class EditPlaceData extends React.Component {
             <Link to={{pathname:'/system/local-char/detail',query:{ dataId }}}>
               <Button className = "editable-add-btn return"> 返回 </Button>
             </Link>
-            <Button className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+            <Button disabled={edit} className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
           </div>
         </div>
       )
@@ -205,10 +205,11 @@ function mapStateToProps(state) {
   const {
     editData,
   } = state.localData;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.localData,
-    editData
+    editData,
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(EditPlaceData);

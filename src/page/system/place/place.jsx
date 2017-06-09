@@ -37,9 +37,11 @@ class localCharIndex extends React.Component {
       }, {
         title: '操作',
         dataIndex: 'operation',
+
         render: (text, record, index) => {
+          const detail = !this.props.permissionAlias.contains('LOCAL_CHAR_DETAIL');
           return (
-            <Link to = {`/system/local-char/detail?dataId=${record.id}`} > 查看 </Link>)
+            <Link disabled={detail} to = {`/system/local-char/detail?dataId=${record.id}`} > 查看 </Link>)
           },
         }];
     }
@@ -62,11 +64,13 @@ class localCharIndex extends React.Component {
           }))
         },
       }
+
+      const add = !this.props.permissionAlias.contains('LOCAL_CHAR_ADD');
       return (
         <div className = "PlaceProject">
           <div className = "buttonwrapper">
               <Link to = "/system/local-char/add" >
-                  <Button className="addBtn"> 添加 </Button>
+                  <Button disabled={add} className="addBtn"> 添加 </Button>
               </Link>
           </div>
           <Table {...tableProps} rowKey = { record=>record.id } bordered columns = { this.columns } />
@@ -93,9 +97,10 @@ function mapStateToProps(state) {
     list,
     pagination
   } = state.localData;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
+    permissionAlias,
     list,
     pagination
   };

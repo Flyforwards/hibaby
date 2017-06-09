@@ -29,19 +29,38 @@ class AddChildNodeed extends Component {
     }
     handleOk() {
         const fields = this.props.form.getFieldsValue();
-      //  console.log("fields",fields)
-          this.props.dispatch({
-            type: 'organization/saveDepartment',
-            payload: {
-              abbreviation: fields.referredTo,
-              englishName: fields.englishName,
-              leaderId: this.state.TableData?this.state.TableData.id:null,
-              leaderName: this.state.TableData?this.state.TableData.name:null,
-              name: fields.fullName,
-              parentId:this.props.ID,
-              tissueProperty: fields.localCenter
+        if(fields.localCenter){
+          if(fields.fullName){
+            if(fields.referredTo){
+              if(fields.englishName){
+                this.props.dispatch({
+                    type: 'organization/saveDepartment',
+                    payload: {
+                      abbreviation: fields.referredTo,
+                      englishName: fields.englishName,
+                      leaderId: this.state.TableData?this.state.TableData.id:null,
+                      leaderName: this.state.TableData?this.state.TableData.name:null,
+                      name: fields.fullName,
+                      parentId:this.props.ID,
+                      tissueProperty: fields.localCenter
+                    }
+                })
+                 this.props.onCancel()
+              }else{
+              message.warning("请输入节点的英文信息");
+              }
+
+            }else{
+              message.warning("请输入节点的简称信息");
             }
-        })
+
+          }else{
+            message.warning("请输入节点的全称信息");
+          }
+
+        }else{
+          message.warning("请输入节点的组织性质");
+        }
         this.props.dispatch({
             type: 'organization/getDepartmentNodes',
             payload: { }
@@ -50,7 +69,6 @@ class AddChildNodeed extends Component {
           TableData:"",
           NodeDisplay:"block"
         })
-        this.props.onCancel()
     }
     checkbox() {
         //console.log("checkbox")

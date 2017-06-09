@@ -205,83 +205,153 @@ function HealthyhomeDetail(props) {
   function radioInputRow (radioName, inputName, dict, inputTitle, lastRow, suffix) {
     var col1Class='topItembg';
     var col2Class='leftRightItemBg';
+    var col3Class='rightItemBg';
     if (lastRow == true){
       col1Class='bottomItemBg';
       col2Class='allNoneBg';
+      col3Class='bottomRightItemBg';
     }
 
-    return (
-      <Row>
-        <Col span="12">
-          <div className={col1Class}>
-            {myRadioForm(radioName ,dict)}
-          </div>
-        </Col>
-        <Col span="12">
-          <div className={col2Class}>
-            <FormItem
-              labelCol={{span: 4}}
-              wrapperCol={{span: 18}}
-              label={inputTitle}>
-              {getFieldDecorator(`${inputName}`, {
-                initialValue : dict.value,
-                rules: [{ required: true, message: '  ' }]
-              })(
-                <Input readOnly
-                  suffix={suffix}
-                />
-              )}
+    var tmpItemLayout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 16 }
+    };
 
-            </FormItem>
-          </div>
-        </Col>
-      </Row>
-    )
+    if (!inputTitle || inputTitle ==''){
+      tmpItemLayout = {
+        wrapperCol:{span: 22, push: 1 }
+      };
+    }
+
+    if (inputTitle == '孕期最高血压'){
+      tmpItemLayout = {
+        labelCol: {span: 6},
+        wrapperCol: {span: 16}
+      }
+    }
+
+    if (!dict.value){
+      return (
+        <Row className={col3Class}>
+          <Col span="12">
+            <div>
+              {myRadioForm(radioName ,dict)}
+            </div>
+          </Col>
+        </Row>
+      )
+    }
+    else {
+      return (
+        <Row>
+          <Col span="12">
+            <div className={col1Class}>
+              {myRadioForm(radioName ,dict)}
+            </div>
+          </Col>
+          <Col span="12">
+            <div className={col2Class}>
+              <FormItem
+                {...tmpItemLayout}
+                label={inputTitle}>
+                {getFieldDecorator(`${inputName}`, {
+                  initialValue : dict.info,
+                  rules: [{ required: true, message: '  ' }]
+                })(
+                  <Input readOnly
+                         suffix={suffix}
+                  />
+                )}
+
+              </FormItem>
+            </div>
+          </Col>
+        </Row>
+      )
+    }
+  }
+
+  //两行的row 左边单选右边上传附件
+  function radioUploadOptionsTwoRow () {
+    if (!healthInfo['radio_6']) {
+      return (
+        <Row className='rightItemBg'>
+          <Col span="12">
+            <div>
+              {myRadioForm(radioNames[6], {title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
+            </div>
+          </Col>
+        </Row>
+      )
+    }
+    else {
+      return (
+        <Row className="topRightItemBg" style={{minHeight: '110px'}}>
+          <Col span="12">
+            <div>
+              {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
+            </div>
+          </Col>
+          <Col span="12">
+            <div className="onlyLeftItemBg" style={{minHeight: '110px'}}>
+              {uploadOptionsItem('5','imgInput_5')}
+            </div>
+          </Col>
+        </Row>
+      )
+    }
   }
 
   //row 左边单选右边上传附件
   function radioUploadOptionsRow (radioName, dict, key, lastRow,imgInputName) {
-    var col1Class='topItembg';
-    var col2Class='leftRightItemBg';
+    var col2Class='onlyLeftItemBg';
+    var col3Class='rightItemBg';
     if (lastRow == true){
-      col1Class='bottomItemBg';
-      col2Class='allNoneBg';
+      col3Class='bottomRightItemBg';
     }
 
-    return (
-      <Row>
-        <Col span="12">
-          <div className={col1Class}>
-            {myRadioForm(radioName, dict)}
-          </div>
-        </Col>
-        <Col span="12">
-          <div className={col2Class}>
-            {uploadOptionsItem(key,imgInputName)}
-          </div>
-        </Col>
-      </Row>
-    )
+    if (!dict.value) {
+      return (
+        <Row className={col3Class}>
+          <Col span="12">
+            <div>
+              {myRadioForm(radioName, dict)}
+            </div>
+          </Col>
+        </Row>
+      )
+    }
+    else {
+      return (
+        <Row className={col3Class}>
+          <Col span="12">
+            <div>
+              {myRadioForm(radioName, dict)}
+            </div>
+          </Col>
+          <Col span="12">
+            <div className={col2Class}>
+              {uploadOptionsItem(key,imgInputName)}
+            </div>
+          </Col>
+        </Row>
+      )
+    }
   }
 
   //row 左边单选右边空白
   function radioSpaceRow (radioName, dict, lastRow) {
     var col1Class='rightItemBg';
-    var col2Class='leftRightItemBg';
     if (lastRow == true){
       col1Class='bottomItemBg';
-      col2Class='allNoneBg';
     }
 
     return (
-      <Row>
+      <Row className={col1Class}>
         <Col span="12">
-          <div className={col1Class}>
+          <div>
             {myRadioForm(radioName, dict)}
           </div>
-        </Col>
-        <Col span="12">
-          <div className={col2Class}></div>
         </Col>
       </Row>
     )
@@ -323,8 +393,8 @@ function HealthyhomeDetail(props) {
             <div className="itemTitle">既往史</div>
           </Col>
           <Col span="22">
-            {radioInputRow(radioNames[0],inputNames[0],{title: '既往疾病史',radioItems: ['无','有'],value:healthInfo['radio_0']},'请描述')}
-            {radioInputRow(radioNames[1],inputNames[1],{title: '既往手术史',radioItems: ['无','有'],value:healthInfo['radio_1']},'请描述',true)}
+            {radioInputRow(radioNames[0],inputNames[0],{title: '既往疾病史',radioItems: ['无','有'],value:healthInfo['radio_0'],info:healthInfo['input_0']},'请描述')}
+            {radioInputRow(radioNames[1],inputNames[1],{title: '既往手术史',radioItems: ['无','有'],value:healthInfo['radio_1'],info:healthInfo['input_1']},'请描述',true)}
           </Col>
         </Row>
 
@@ -345,50 +415,15 @@ function HealthyhomeDetail(props) {
             <div className="itemTitle">孕期合并症</div>
           </Col>
           <Col span="22">
-            <Row>
-              <Col span="12">
-                <div className="topItembg" style={{height: '110px'}}>
-                  {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
-                </div>
-              </Col>
-              <Col span="12">
-                <div className="leftRightItemBg" style={{height: '110px',paddingTop: '25px'}}>
-                  {uploadOptionsItem('5','imgInput_5')}
-                </div>
-              </Col>
-            </Row>
+            {radioUploadOptionsTwoRow()}
             {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_7']},'6','imgInput_6')}
             {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_8']},'7','imgInput_7')}
             {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是'],value:healthInfo['radio_9']},'8','imgInput_8')}
-            <Row>
-              <Col span="12">
-                <div className="topItembg">
-                  {myRadioForm(radioNames[10],{title: '高血压',radioItems: ['否','是'],value:healthInfo['radio_10']})}
-                </div>
-              </Col>
-              <Col span="12">
-                <div className="leftRightItemBg">
-                  <FormItem
-                    labelCol={{span: 6}}
-                    wrapperCol={{span: 16}}
-                    label={'孕期最高血压'}>
-                    {getFieldDecorator(`${inputNames[2]}`, {
-                      initialValue : healthInfo['input_2'],
-                      rules: [{ required: true, message: '  ' }]
-                    })(
-                      <Input readOnly
-                        suffix="/ mmHg"
-                      />
-                    )}
-
-                  </FormItem>
-                </div>
-              </Col>
-            </Row>
+            {radioInputRow(radioNames[10], inputNames[2], {title: '高血压',radioItems: ['否','是'],value:healthInfo['radio_10'],info:healthInfo['input_2']},'孕期最高血压',false,'/ mmHg')}
             {radioSpaceRow(radioNames[11],{title: '贫血',radioItems: ['否','是'],value:healthInfo['radio_11']})}
             {radioSpaceRow(radioNames[12],{title: '糖尿病',radioItems: ['否','是'],value:healthInfo['radio_12']})}
             {radioSpaceRow(radioNames[13],{title: '子宫肌瘤',radioItems: ['否','是'],value:healthInfo['radio_13']})}
-            {radioInputRow(radioNames[14], inputNames[3], {title: '甲状腺功能减退',radioItems: ['否','是'],value:healthInfo['radio_14']},'用药')}
+            {radioInputRow(radioNames[14], inputNames[3], {title: '甲状腺功能减退',radioItems: ['否','是'],value:healthInfo['radio_14'],info:healthInfo['input_3']},'用药')}
 
             <Row>
               <div className="bottomRightItemBg">
@@ -446,30 +481,7 @@ function HealthyhomeDetail(props) {
                 </FormItem>
               </div>
             </Row>
-            <Row>
-              <Col span="12">
-                <div className="topItembg">
-                  {myRadioForm(radioNames[17],{title: '胎膜早破',radioItems: ['否','是'],value:healthInfo['radio_17']})}
-                </div>
-              </Col>
-              <Col span="12">
-                <div className="leftRightItemBg">
-                  <FormItem
-                    label={''}
-                    wrapperCol={{span: 22, push: 1 }}>
-                    {getFieldDecorator(`${inputNames[7]}`, {
-                      initialValue : healthInfo['input_7'],
-                      rules: [{ required: true, message: '  ' }]
-                    })(
-                      <Input readOnly
-                        suffix="小时"
-                      />
-                    )}
-                  </FormItem>
-                </div>
-              </Col>
-            </Row>
-
+            {radioInputRow(radioNames[17], inputNames[7], {title: '胎膜早破',radioItems: ['否','是'],value:healthInfo['radio_17'],info:healthInfo['input_7']},'',false,'小时')}
             {radioAllRow(radioNames[18],{title: '前置胎盘',radioItems: ['否','是'],value:healthInfo['radio_18']})}
             {radioAllRow(radioNames[19],{title: '胎盘早剥',radioItems: ['否','是'],value:healthInfo['radio_19']})}
             {radioAllRow(radioNames[20],{title: '胎盘残留',radioItems: ['否','是'],value:healthInfo['radio_20']})}
@@ -497,11 +509,11 @@ function HealthyhomeDetail(props) {
           </Col>
           <Col span="22">
             {radioAllRow(radioNames[21],{title: '产后清宫',radioItems: ['无','有'],value:healthInfo['radio_21']})}
-            {radioInputRow(radioNames[22], inputNames[9], {title: '产后大出血',radioItems: ['无','有'],value:healthInfo['radio_22']},'出血量',false,'毫升')}
+            {radioInputRow(radioNames[22], inputNames[9], {title: '产后大出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
             {radioAllRow(radioNames[23],{title: '血压异常',radioItems: ['无','有','低血压','高血压'],value:healthInfo['radio_23']})}
             {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开'],value:healthInfo['radio_24']})}
             {radioAllRow(radioNames[25],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染'],value:healthInfo['radio_25']})}
-            {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26']},'体温',false,'℃')}
+            {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26'],info:healthInfo['input_10']},'体温',false,'℃')}
             {radioAllRow(radioNames[27],{title: '乳房肿胀',radioItems: ['无','有'],value:healthInfo['radio_27']})}
             {radioAllRow(radioNames[28],{title: '哺乳困难',radioItems: ['无','有'],value:healthInfo['radio_28']})}
             {radioAllRow(radioNames[29],{title: '下肢水肿',radioItems: ['无','有'],value:healthInfo['radio_29']})}
@@ -573,35 +585,13 @@ function HealthyhomeDetail(props) {
             {radioAllRow(radioNames[33],{title: '喂养方式',radioItems: ['纯母乳','混合','人工'],value:healthInfo['radio_33']})}
             {radioAllRow(radioNames[34],{title: '产时胎心异常',radioItems: ['无','有','胎心快','胎心慢'],value:healthInfo['radio_34']})}
             {radioAllRow(radioNames[35],{title: '高胆红素血症',radioItems: ['无','有'],value:healthInfo['radioNam_35']})}
-            <Row>
-              <Col span="12">
-                <div className="topItembg">
-                  {myRadioForm(radioNames[36],{title: '蓝光治疗史',radioItems: ['否','是'],value:healthInfo['radio_36']})}
-                </div>
-              </Col>
-              <Col span="12">
-                <div className="leftRightItemBg">
-                  <FormItem
-                    label={''}
-                    wrapperCol={{span: 22, push: 1 }}>
-                    {getFieldDecorator(`${inputNames[14]}`, {
-                      initialValue : healthInfo['input_14'],
-                      rules: [{ required: true, message: '  ' }]
-                    })(
-                      <Input readOnly
-                        suffix="小时"
-                      />
-                    )}
-                  </FormItem>
-                </div>
-              </Col>
-            </Row>
+            {radioInputRow(radioNames[36], inputNames[14], {title: '蓝光治疗史',radioItems: ['否','是'],value:healthInfo['radio_36'],info:healthInfo['input_14']},'',false,'小时')}
             {radioAllRow(radioNames[37],{title: '羊水污染',radioItems: ['无','有','1度','2度','3度'],value:healthInfo['radio_37']})}
-            {radioInputRow(radioNames[38], inputNames[15], {title: '发热史',radioItems: ['否','是'],value:healthInfo['radio_38']},'体温',false,'℃')}
+            {radioInputRow(radioNames[38], inputNames[15], {title: '发热史',radioItems: ['否','是'],value:healthInfo['radio_38'],info:healthInfo['input_15']},'体温',false,'℃')}
             {radioAllRow(radioNames[39],{title: '低血糖史',radioItems: ['无','有'],value:healthInfo['radio_39']})}
             {radioAllRow(radioNames[40],{title: '呼吸困难',radioItems: ['无','有'],value:healthInfo['radio_40']})}
             {radioAllRow(radioNames[41],{title: '出生后窒息',radioItems: ['无','有'],value:healthInfo['radio_41']})}
-            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['否','是'],value:healthInfo['radio_42']},'体温')}
+            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['否','是'],value:healthInfo['radio_42'],info:healthInfo['input_16']},'体温',false,'℃')}
             {radioAllRow(radioNames[43],{title: '心脏杂音',radioItems: ['无','有'],value:healthInfo['radio_43']})}
             {radioAllRow(radioNames[44],{title: '皮疹',radioItems: ['无','有'],value:healthInfo['radio_44']})}
             {radioAllRow(radioNames[45],{title: '尿量少',radioItems: ['无','有'],value:healthInfo['radio_45']})}

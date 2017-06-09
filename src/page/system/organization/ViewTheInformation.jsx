@@ -18,7 +18,6 @@ const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
 const endemic  = session.get("endemic")
-let traversalDataId = []
 
 class ViewTheInformationed extends React.Component {
   constructor(props) {
@@ -177,7 +176,8 @@ class ViewTheInformationed extends React.Component {
       if ( this.state.error ) {
         imageUrl = IMG;
       }
-      console.log()
+      const add_position = !this.props.permissionAlias.contains("EMPLOYEE_POSITION_ADD");
+      let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
       return(
         <div className="viewTheInformation">
           <div className="basicInformation">基本信息</div>
@@ -194,8 +194,8 @@ class ViewTheInformationed extends React.Component {
           <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID} }}>
               <Button  type="primary" className="editButton">编辑</Button>
           </Link>
-          <Button className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>
-          <Link><Button className="BackBtn" onClick={this.headelReturn.bind(this)}>返回</Button></Link>
+          <Button disabled={add_position} className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>
+          <Link><Button disabled={disable} className="BackBtn" onClick={this.headelReturn.bind(this)}>返回</Button></Link>
            <Disabled
               visible={ this.state.toViewVisible }
               handleOk={this.state.handleOk}
@@ -227,33 +227,6 @@ function getLocalTime(nS) {
   return `${year}-${month}-${date}`
 }
 
-function ViewTheInformation({
-    dispatch,
-    data,
-    userID,
-    getPosition,
-    getDeptList,
-    getEndemic
-}) {
-  return ( <div>
-    <ViewTheInformationed dispatch = {
-      dispatch
-    }
-    userID = {
-      userID
-    }
-    getPosition ={
-      getPosition
-    }
-    getDeptList = {
-      getDeptList
-    }
-    getEndemic ={
-      getEndemic
-    }
-    /></div>
-  )
-}
 function mapStateToProps(state) {
   const {
     userID,
@@ -263,14 +236,15 @@ function mapStateToProps(state) {
     getEndemic,
 
   } = state.organization;
-
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.organization,
     userID,
     data,
     getPosition,
     getDeptList,
-    getEndemic
+    getEndemic,
+    permissionAlias
   };
 }
 const viewTheInformation = Form.create()(ViewTheInformationed);
