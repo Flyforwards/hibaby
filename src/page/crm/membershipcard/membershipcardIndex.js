@@ -86,10 +86,10 @@ class MemberShipCard extends Component {
   })
   dispatch({
     type:'membershipcard/getLevelInfo',
-    payload:{
-      "abName":'HYKJB',
-      "softDelete":0,
-    }
+    // payload:{
+    //   "abName":'HYKJB',
+    //   "softDelete":0,
+    // }
   });
 }
 
