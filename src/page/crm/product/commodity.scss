@@ -348,24 +348,21 @@
 			background-color: #999;
 		}
 	}
-	.ant-btn {
-		margin-left:548px;
-		width:140px;
-		height:40px;
+	.BackBtn {
+		margin-left:54%;
+		height:30px;
 		font:14px "微软雅黑";
 	}
-	.ant-btn-primary{
-    	margin-left:30px;
-    	width:140px;
-    	height:40px;
+	.SaveBtn{
+    	margin-left:10px;
+			height:30px;
 			font:14px "微软雅黑";
 	}
-	.delet{
-		background-color: rgba(255, 74, 74, 1);
-		margin-left:30px;
+	.delBtn{
+		margin-left:10px;
+		height:30px;
 		color:#fff;
 		font:14px "微软雅黑";
-		border:none;
 	}
 }
 .editCommodity{
@@ -503,18 +500,16 @@
 			background-color: #999;
 		}
 	}
-	.ant-btn {
-		margin-left:706px;
-		width:140px;
-		height:40px;
+	.BackBtn {
+		margin-left:71%;
+		height:30px;
 		span{
 			font:14px "微软雅黑";
 		}
 	}
-	.ant-btn-primary{
-    	margin-left:30px;
-    	width:140px;
-    	height:40px;
+	.SaveBtn{
+    	margin-left:10px;
+    	height:30px;
 			span{
 				font:14px "微软雅黑";
 			}

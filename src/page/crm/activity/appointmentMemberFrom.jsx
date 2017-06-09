@@ -165,7 +165,7 @@ class AppointmentMemberFrom extends Component {
         title = { "预约" }
         onCancel = { this.handleCancel.bind(this) }
         onOk = { this.onOk.bind(this) }
-        wrapClassName = { "vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal appointMentModal" }
         width ={ 1000 }
       >
         <div className="activity-cent">
@@ -202,11 +202,11 @@ class AppointmentMemberFrom extends Component {
                   )}
                 </FormItem>
               </Col>
-              <Col className="selItem ageItem2" style={{width:'60px'}}>
+              <Col className="selItem ageItem2" style={{width:'55px'}}>
                 <FormItem {...formChooseLayout} style={{width:'100%'}}>
                   {getFieldDecorator('age2', {rules: [{ required: false }],
                   })(
-                    <InputNumber min={1} max={100} style={{width: "60px"}} />
+                    <InputNumber min={1} max={100} style={{width: "55px"}} />
                   )}
                 </FormItem>
 

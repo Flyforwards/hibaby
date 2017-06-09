@@ -115,9 +115,9 @@ class ViewSuiteed extends Component {
                     roomInformation
                   }
                 </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button disabled={del} className="delet" onClick={this.delete.bind(this)}>删除</Button>
-                <Link disabled={edit} to={{ pathname: '/crm/serviceinfo/editsuite', query:{ suite:ID } }}><Button type="primary">编辑</Button></Link>
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button  disabled={del} className="delBtn" onClick={this.delete.bind(this)}>删除</Button>
+                <Link to={{ pathname: '/crm/serviceinfo/editsuite', query:{ suite:ID } }}><Button disabled={edit}  className="SaveBtn">编辑</Button></Link>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }

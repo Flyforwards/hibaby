@@ -56,7 +56,7 @@ class DeleteCommodity extends Component {
                 title="提示"
                 okText="确定"
                 cancelText="取消"
-                wrapClassName="Disabled"
+                wrapClassName={"Disabled"}
                 closable={false}
                 confirmLoading={confirmLoading}
                 afterClose={this.handleAfterClose.bind(this)}

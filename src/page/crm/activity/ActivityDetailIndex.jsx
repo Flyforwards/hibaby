@@ -263,7 +263,7 @@ class ActivityDetailIndex extends Component {
     const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
 
 
-    const edit_btn = (<Button disabled={edit} className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>);
+    const edit_btn = (<Button disabled={edit} className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>);
     const del_btn = (<Button disabled={del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.deleteActivity.bind(this) }>删除</Button>);
     const app_btn = (<Button disabled={appoint} className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>);
     const back_btn = (<Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>);
