@@ -325,7 +325,7 @@ function Healthyhome(props) {
     form.setFieldsValue({imgInput_6 : (imgInput_6_arr&&imgInput_6_arr.length>0)?JSON.stringify(imgInput_6_arr):null});
     form.setFieldsValue({imgInput_7 : (imgInput_7_arr&&imgInput_7_arr.length>0)?JSON.stringify(imgInput_7_arr):null});
     form.setFieldsValue({imgInput_8 : (imgInput_8_arr&&imgInput_8_arr.length>0)?JSON.stringify(imgInput_8_arr):null});
-    props.form.validateFields((err, values) => {
+    props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
         dispatch({

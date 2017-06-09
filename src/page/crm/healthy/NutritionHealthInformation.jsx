@@ -214,7 +214,7 @@ function NutritionHealthInformation(props) {
   function handleSubmit (e) {
     //console.log("您点击了保存按钮");
     const {dispatch} = props;
-    props.form.validateFields((err, values) => {
+    props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
         dispatch({
