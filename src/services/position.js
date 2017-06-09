@@ -1,5 +1,6 @@
 
 import request from '../utils/request';
+
 //获取组织架构列表
 export function getDepartmentByEndemicId(values) {
   return request('/crm/api/v1/position/getDepartmentByEndemicId', {
