@@ -23,7 +23,6 @@ const dateFormat = 'YYYY-MM-DD';
 let len = null
 let gmt_entry =null
 //地方中心字段
-const SelectData = local.get("rolSelectData")
 let traversalDataId = []
 let TableList = []
 class EditUsered extends React.Component {
@@ -225,6 +224,7 @@ class EditUsered extends React.Component {
       let display = 'block'
       let endemic  = session.get("endemic")
       let LeaderTableList = null
+      const SelectData = local.get("rolSelectData")
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID
