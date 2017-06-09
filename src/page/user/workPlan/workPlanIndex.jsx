@@ -40,7 +40,7 @@ class WorkPlanIndex extends React.Component {
         const dataId = record.id;
         return (
           <Popconfirm title="确定删除？" style={{ width: 70 }} placement="right" onConfirm={() => this.onDelete(dataId)}>
-            <Icon style={{ backgroundColor: '#fff' }} type="delete"/>
+            <Icon style={{ color: '#b67233' }} type="delete"/>
           </Popconfirm>
         )
       }
