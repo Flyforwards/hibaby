@@ -248,10 +248,10 @@ class customerDetails extends React.Component{
             onClose={this.handleCancel.bind(this)}
           />
 
-          <div className='savaDiv'>
-            <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
-            <Button className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</Button>
+          <div className='saveDiv'>
             <Button className='backBtn SaveBtn' onClick={this.editBtnClick.bind(this)}>编辑</Button>
+            <Button className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</Button>
+            <Button className='backBtn BackBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
           </div>
         </Spin>
       </div>

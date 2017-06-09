@@ -33,11 +33,11 @@ class CardDetail extends Component {
     })
     dispatch({
       type:'card/getLevelInfo',
-      payload:{
-        "abName":"HYKJB",
-        "softDelete":0,
-        "type":1,
-      }
+      // payload:{
+      //   "abName":"HYKJB",
+      //   "softDelete":0,
+      //   "type":1,
+      // }
     });
     dispatch({
       type: 'card/getCustomerPage',

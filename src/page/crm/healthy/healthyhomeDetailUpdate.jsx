@@ -753,8 +753,8 @@ function HealthyhomeDetailUpdate(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
         <Button className='commitButton SaveBtn' type="primary" onClick={handleSubmit}>保存</Button>
+        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
       </div>
 
     </div>
