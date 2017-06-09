@@ -57,6 +57,18 @@ function Healthyhome(props) {
   function radioChangeFun4(e){
     setImgInputRequired("imgInput_4",e.target.value);
   }
+  function radioChangeFun5(e){
+    setImgInputRequired("imgInput_5",e.target.value);
+  }
+  function radioChangeFun6(e){
+    setImgInputRequired("imgInput_6",e.target.value);
+  }
+  function radioChangeFun7(e){
+    setImgInputRequired("imgInput_7",e.target.value);
+  }
+  function radioChangeFun8(e){
+    setImgInputRequired("imgInput_8",e.target.value);
+  }
 
   //单选item
   function myRadioForm (radioName, dict) {
@@ -423,18 +435,51 @@ function Healthyhome(props) {
             <Row className="topRightItemBg" style={{minHeight: '110px'}}>
               <Col span="12">
                 <div>
-                  {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性']})}
+                  {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],radioChangeFun:radioChangeFun5})}
                 </div>
               </Col>
               <Col span="12">
                 <div className="onlyLeftItemBg" style={{minHeight: '110px'}}>
-                  {uploadOptionsItem('5','imgInput_5')}
+                  {uploadOptionsItem('5','imgInput_5',props.healthInformation.imgInput_5_required)}
                 </div>
               </Col>
             </Row>
-            {radioUploadOptionsRow(radioNames[7],{title: '丙肝病毒感染或携带',radioItems: ['否','是']},'6',false,'imgInput_6',false)}
-            {radioUploadOptionsRow(radioNames[8],{title: '梅毒病毒感染或携带',radioItems: ['否','是']},'7',false,'imgInput_7',false)}
-            {radioUploadOptionsRow(radioNames[9],{title: '艾滋病病毒感染或携带',radioItems: ['否','是']},'8',false,'imgInput_8',false)}
+            <Row className="onlyLeftItemBg">
+              <Col span="12">
+                <div>
+                  {myRadioForm(radioNames[7], {title: '丙肝病毒感染或携带',radioItems: ['否','是'],radioChangeFun:radioChangeFun6})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="onlyLeftItemBg">
+                  {uploadOptionsItem(6,'imgInput_6',props.healthInformation.imgInput_6_required)}
+                </div>
+              </Col>
+            </Row>
+            <Row className="onlyLeftItemBg">
+              <Col span="12">
+                <div>
+                  {myRadioForm(radioNames[8], {title: '梅毒病毒感染或携带',radioItems: ['否','是'],radioChangeFun:radioChangeFun7})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="onlyLeftItemBg">
+                  {uploadOptionsItem(7,'imgInput_7',props.healthInformation.imgInput_7_required)}
+                </div>
+              </Col>
+            </Row>
+            <Row className="onlyLeftItemBg">
+              <Col span="12">
+                <div>
+                  {myRadioForm(radioNames[9], {title: '艾滋病病毒感染或携带',radioItems: ['否','是'],radioChangeFun:radioChangeFun8})}
+                </div>
+              </Col>
+              <Col span="12">
+                <div className="onlyLeftItemBg">
+                  {uploadOptionsItem(8,'imgInput_8',props.healthInformation.imgInput_8_required)}
+                </div>
+              </Col>
+            </Row>
             <Row>
               <Col span="12">
                 <div className="topItembg">
