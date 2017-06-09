@@ -20,9 +20,9 @@ function beforeUpload(file) {
     message.error('你上传的图片格式不正确');
     return isJPG || isPNG
   }else{
-    const isLt2M = file.size / 1024 / 1024 < 15;
+    const isLt2M = file.size / 1024 / 1024 < 8;
     if (!isLt2M) {
-      message.error('图片已经超过图片限定大小15MB!');
+      message.error('图片已经超过图片限定大小8MB!');
     }
     return isLt2M ;
   }

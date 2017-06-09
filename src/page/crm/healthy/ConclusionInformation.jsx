@@ -47,7 +47,7 @@ function ConclusionInformation(props) {
   function handleSubmit(){
     const {conclusionImg_arr} = props.healthInformation;
     props.form.setFieldsValue({conclusion : (conclusionImg_arr&&conclusionImg_arr.length>0)?JSON.stringify(conclusionImg_arr):null});
-    props.form.validateFields((err, values) => {
+    props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(conclusionImg_arr);
         dispatch({

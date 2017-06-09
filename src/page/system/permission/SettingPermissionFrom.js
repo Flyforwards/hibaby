@@ -103,6 +103,7 @@ class SettingPermissionFrom extends Component {
         cancelText = "返回"
         onCancel = { this.handleCancel.bind(this) }
         onOk = { this.handleOk.bind(this) }
+        wrapClassName = { "SettingPermissionModal" }
         closable = { false }
         width = { 1000 }
       >

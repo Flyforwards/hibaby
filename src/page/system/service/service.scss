@@ -7,24 +7,11 @@
 	    font-weight: 400;
 	    font-style: normal;
 	    font-size: 14px;
-	    color:#333;
-	    span{
-				display:inline-block;
-				color: #FFFFFF;
-				width: 150px;
-		    height: 30px;
-		    margin-left:10px;
-		    text-align: center;
-		    line-height: 30px;
-		    background: inherit;
-		    background-color:#b67233;
-		    border: none;
-		    border-radius: 5px;
-		    font-family: '微软雅黑 Regular', '微软雅黑';
-		    font-weight: 400;
-		    font-style: normal;
-		    font-size: 14px;
-		}
+	    color:#fff;
+			.BackBtn{
+				color: #fff;
+				font:14px "微软雅黑";
+			}
 	}
 	.ant-input{
 		width:220px;

@@ -94,7 +94,7 @@ class serviceIndex extends Component {
            <div className="ServiceBox">
               <div className="name">
                 <Link to="/system/service-item/add">
-                  <Button disabled={add} >添加</Button>
+                  <Button className="BackBtn" disabled={add} >添加</Button>
                 </Link>
               </div>
               <div className="CreateModaList">

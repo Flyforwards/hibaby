@@ -258,7 +258,7 @@ function HealthyhomeDetail(props) {
                   initialValue : dict.info,
                   rules: [{ required: true, message: '  ' }]
                 })(
-                  <Input readOnly
+                  <Input disabled={disabled}
                          suffix={suffix}
                   />
                 )}
@@ -434,7 +434,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[4]}`,{
                     initialValue : healthInfo['input_4']
                   })(
-                    <Input readOnly/>
+                    <Input disabled={disabled}/>
                   )}
                 </FormItem>
               </div>
@@ -459,7 +459,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_5'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly/>
+                    <Input disabled={disabled}/>
                   )}
                 </FormItem>
               </div>
@@ -474,7 +474,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_6'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly
+                    <Input disabled={disabled}
                       suffix="ml"
                     />
                   )}
@@ -495,7 +495,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[8]}`,{
                     initialValue : healthInfo['input_8']
                   })(
-                    <Input readOnly/>
+                    <Input disabled={disabled}/>
                   )}
                 </FormItem>
               </div>
@@ -528,7 +528,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[11]}`,{
                     initialValue : healthInfo['input_11']
                   })(
-                    <Input readOnly />
+                    <Input disabled={disabled} />
                   )}
                 </FormItem>
               </div>
@@ -553,7 +553,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_12'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly
+                    <Input disabled={disabled}
                       suffix="g"
                     />
                   )}
@@ -570,7 +570,7 @@ function HealthyhomeDetail(props) {
                     initialValue : healthInfo['input_13'],
                     rules: [{ required: true, message: '  ' }]
                   })(
-                    <Input readOnly
+                    <Input disabled={disabled}
                       suffix="cm"
                     />
                   )}
@@ -605,7 +605,7 @@ function HealthyhomeDetail(props) {
                   {getFieldDecorator(`${inputNames[17]}`,{
                     initialValue : healthInfo['input_17']
                   })(
-                    <Input readOnly />
+                    <Input disabled={disabled} />
                   )}
                 </FormItem>
               </div>

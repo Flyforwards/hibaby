@@ -125,7 +125,7 @@ class AddCommodityed extends Component {
                   >
                   {getFieldDecorator('price', {
                       rules: [{
-                    pattern: /^[0-9]*$/, message: '请输入数字'
+                    pattern: /^\d{0,7}$/, message: '请输入0-7位数字'
                   }],
                     })(
                     <Input 
