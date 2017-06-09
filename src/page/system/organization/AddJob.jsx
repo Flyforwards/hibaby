@@ -10,7 +10,7 @@ const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-const SelectData = local.get("rolSelectData")
+
 const departmentData = local.set("department")
 let traversalDataId = []
 
@@ -137,6 +137,7 @@ class AddJobed extends Component {
     }
     render() {
       let traversalEndemicId = []
+      const SelectData = local.get("rolSelectData")
       let selectDataList = []
       const {visible, form, confirmLoading} = this.props;
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
