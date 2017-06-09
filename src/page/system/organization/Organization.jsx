@@ -84,21 +84,26 @@ class Organization extends React.Component {
           key: 'roleId',
           width: '28%',
           render: (text, record, index) => {
-            let roleId = record.roleId.split(",")
+            let roleId = []
             let list = []
-            let len = roleId.length-1
-            if(local.get("rolSelectData")){
-              roleId.map((data,index)=>{
-                local.get("rolSelectData").map((item)=>{
-                  if(item.id == Number(data)){
-                    if(len == index){
-                      list.push(item.name)
-                    }else{
-                      list.push(item.name+" ; ")
+            if(record.roleId){
+              roleId = record.roleId.split(",")
+              let len = roleId.length-1
+              if(local.get("rolSelectData")){
+                roleId.map((data,index)=>{
+                  local.get("rolSelectData").map((item)=>{
+                    if(item.id == Number(data)){
+                      if(len == index){
+                        list.push(item.name)
+                      }else{
+                        list.push(item.name+" ; ")
+                      }
                     }
-                  }
+                  })
                 })
-              })
+              }
+            }else{
+              list = ""
             }
             return(
               list

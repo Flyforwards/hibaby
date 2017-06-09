@@ -1,6 +1,7 @@
 
 import * as systemService from '../services/system';
 import * as usersService from '../services/users';
+import * as organizationService from '../services/organization';
 import { message } from 'antd';
 import  { session } from 'common/util/storage.js';
 import { parse } from 'qs'
@@ -23,6 +24,8 @@ export default {
     undisUserTotal: 0,
     selectedRows: [],
     selectedRowKeys: [],
+    getPosition: null,
+    getDeptList: null,
     users:[],
     // 默认选择的节点 --添加成员
     nodeid: null,
@@ -45,12 +48,49 @@ export default {
             type: 'getRolesByPage',
             payload: query
           });
+          dispatch({
+            type: 'getPosition',
+          });
+          dispatch({
+            type: 'getDeptList',
+          });
         }
       })
     }
   },
 
   effects: {
+
+    //获取所有的职位信息
+    *getPosition({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(organizationService.getPosition, values);
+      console.log(data);
+      if (code == 0) {
+        yield put({
+          type: 'getPositionSave',
+          payload: {
+            data,
+            code
+          }
+        });
+      }
+    },
+    //获取所有的部门信息
+    *getDeptList({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(organizationService.getDeptList, values);
+      console.log(data);
+
+      if (code == 0) {
+        yield put({
+          type: 'getDeptListSave',
+          payload: {
+            data,
+            code
+          }
+        });
+      }
+    },
+
     *getRolesByPage({ payload: values }, {call,put }) {
       values = parse(location.search.substr(1))
       console.log(values)
@@ -236,7 +276,14 @@ export default {
 
   },
   reducers: {
-
+    getDeptListSave(state, { payload: { data: getDeptList, code } }){
+      let getDeptListSavedata = { ...state, getDeptList, code };
+      return getDeptListSavedata
+    },
+    getPositionSave(state, { payload: { data: getPosition, code } }){
+      let getPositionSavedata = { ...state, getPosition, code };
+      return getPositionSavedata
+    },
     getRolesSuccess( state, { payload: { data, pagination }}) {
       return {...state, data, pagination: {  ...state.pagination,...pagination }};
     },

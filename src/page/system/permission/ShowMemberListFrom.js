@@ -9,9 +9,20 @@ import  { session } from 'common/util/storage.js';
 import AlertModalFrom from 'common/AlertModalFrom'
 import AddMemberComponent from './AddMemberComponent'
 
-import { departmentDict, positionDict} from 'common/constants';
 
 class ShowMemberListFrom extends Component {
+
+
+   textforkey(array,value,valuekey = 'name') {
+    for (let i = 0 ;i<array.length ;i++){
+      let dict = array[i];
+      if(dict['id'] === value){
+        return  dict[valuekey];
+      }
+    }
+  }
+
+
   constructor(props) {
     super(props)
     this.endemic = session.get("endemic");
@@ -31,14 +42,14 @@ class ShowMemberListFrom extends Component {
       dataIndex: 'positionId',
       key:'positionId',
       render: (record) => {
-        return departmentDict[record];
+        return this.textforkey(this.props.getPosition,record);
       }
     }, {
       title: '隶属部门',
       dataIndex: 'deptId',
       key:'deptId',
       render: (record) =>  {
-        return positionDict[record];
+        return this.textforkey(this.props.getDeptList ,record);
       }
     }, {
       title: '地方中心',
@@ -249,13 +260,18 @@ function mapStateToProps(state) {
     departmentList,
     club,
     memberTotal,
-    selectedRows
+    selectedRows,
+    getPosition,
+    getDeptList,
   } = state.permission;
+
   return {
     loading: state.loading,
     userList,
     departmentList,
     club,
+    getPosition,
+    getDeptList,
     memberTotal,
     selectedRows
   };
