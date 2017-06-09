@@ -35,12 +35,17 @@ class OrganizationLefted extends React.Component {
     }
     this.addDisplay = "block";
     this.nodes = null;
+    this.unfolded = null;
   }
 
   expandHandler = (expandedKeys, {expanded: bool, node}) => {
-    console.log("sds",expandedKeys)
+    // console.log("sds",expandedKeys[expandedKeys.length-1])
+    let len = []
+    len.push(expandedKeys[expandedKeys.length-1])
+    // console.log("sdsssss",len)
+    this.unfolded = len
     this.setState({
-      unfolded:expandedKeys
+      unfolded:len
     })
     setTimeout(() => {
       $(".Organization-left li").find(".ant-tree-title").each((index, e) => {
@@ -55,9 +60,6 @@ class OrganizationLefted extends React.Component {
     this.addDisplay = "block"
     this.deleteDisplay = "block"
     if (value[0] != null) {
-      // this.setState({
-      //   unfolded:value
-      // })
       this.nodes = node.selectedNodes[0].props.dataIndex
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
@@ -79,6 +81,7 @@ class OrganizationLefted extends React.Component {
           unfolded:value
         })
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
+         this.props.statusType(false)
         this.props.dispatch({
           type: 'organization/organizationList',
           payload: {
@@ -130,7 +133,8 @@ class OrganizationLefted extends React.Component {
 
   DeleteNode() {
     this.setState({
-      DeleteNodeVisible: true
+      DeleteNodeVisible: true,
+      unfolded: this.unfolded
     })
   }
 
@@ -250,7 +254,7 @@ class OrganizationLefted extends React.Component {
 
     const add = !this.props.permissionAlias.contains('NODE_ADD');
     const detail = !this.props.permissionAlias.contains('NODE_DETAIL');
-      const del = !this.props.permissionAlias.contains('NODE_DELETE');
+    const del = !this.props.permissionAlias.contains('NODE_DELETE');
     return (
       <div className="Organization-left">
         <Tree
