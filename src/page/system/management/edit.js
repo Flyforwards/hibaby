@@ -90,7 +90,7 @@ class editGroupData extends React.Component {
           // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'save/editData',
-            payload: { id: this.editItem.id, name: values.name, abName:values.abName, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds  }
+            payload: { id: this.editItem.id, name: values.name, type: 1, abName:values.abName, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds  }
           })
         }
       })

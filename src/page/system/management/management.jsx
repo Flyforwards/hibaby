@@ -63,6 +63,7 @@ class GroupCharIndex extends React.Component {
           query: {
             page: page.current,
             size: page.pageSize,
+            type: 1
           }
         }))
       }

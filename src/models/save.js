@@ -91,6 +91,9 @@ export default {
       if (values.size === undefined) {
         values.size = 10;
       }
+      if (values.type === undefined) {
+        values.type = 1;
+      }
       const { data: { data, total, page, size, code } } = yield call(saveService.groupCharList, values);
       if (code == 0) {
         yield put({

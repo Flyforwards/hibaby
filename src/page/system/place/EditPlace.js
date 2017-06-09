@@ -85,9 +85,10 @@ class EditPlaceData extends React.Component {
           })
 
           const delIds = ids.map((record)=>{ return { id: record }});
+          // 集团字段为1 地方字段为2
           this.props.dispatch({
             type: 'localData/EditPlaceData',
-            payload: { id: this.editItem.id, name: values.name,abName: values.abName, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds }
+            payload: { id: this.editItem.id, name: values.name,abName: values.abName, type: 2, description: values.description, dictionarySideDOs: names, deldictionarySideDOs: delIds }
           })
         }
       })
