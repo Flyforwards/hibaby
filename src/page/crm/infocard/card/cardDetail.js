@@ -126,6 +126,9 @@ class CardDetail extends Component {
 
     const values = parse(location.search.substr(1))
 
+    const edit = !this.props.permissionAlias.contains('CARD_EDIT');
+    const del = !this.props.permissionAlias.contains('CARD_DELETE');
+
     //卡种级别渲染
     let options = [];
     level? level.map(function(elem,index){
@@ -225,10 +228,10 @@ class CardDetail extends Component {
                 <Link to="/crm/card"><Button className="BackBtn">返回</Button></Link>
               </Col>
               <Col span = { 4 }>
-                  <Button className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
+                  <Button disabled={del} className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
               </Col>
               <Col span = { 4 }>
-                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button className="SaveBtn">编辑</Button></Link>
+                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button disabled={edit} className="SaveBtn">编辑</Button></Link>
               </Col>
             </Row>
           </Form>
@@ -256,6 +259,7 @@ class CardDetail extends Component {
 
 function mapStateToProps(state) {
   const { cardKind, level, zheKou,userPagination,list } = state.card;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     userPagination,
@@ -263,6 +267,7 @@ function mapStateToProps(state) {
     cardKind,
     level,
     zheKou,
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(CardDetail)

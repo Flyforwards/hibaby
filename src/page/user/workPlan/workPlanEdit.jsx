@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Form, Button, Card, Input, DatePicker } from 'antd'
+import { Form, Button, Card, Input, DatePicker, Row, Col } from 'antd'
 import './workPlanIndex.scss'
 const FormItem = Form.Item;
 import moment from 'moment';
+import { Link } from 'react-router'
 import { routerRedux } from 'dva/router';
 class WorkPlanAdd extends React.Component {
   
@@ -65,11 +66,27 @@ class WorkPlanAdd extends React.Component {
                 <Input type="textarea" rows={6}/>
               )}
             </FormItem>
-            <FormItem>
-              <Button className="SaveBtn" type="primary" htmlType="submit" size="large">保存</Button>
-            </FormItem>
+            {/*<FormItem>*/}
+            {/*<Button className="SaveBtn" type="primary" htmlType="submit" size="large">保存</Button>*/}
+            {/*</FormItem>*/}
+            {/*<Button className="BackBtn" onClick={()=>this.back()}>返回</Button>*/}
+            <Row gutter={16}>
+              <Col span={6}/>
+              <Col span={8}/>
+              <Col span={4}>
+                <FormItem>
+                  <Button className="backLink"><Link to='/user/work-plan'>返回</Link>
+                  </Button>
+                </FormItem>
+              </Col>
+              
+              <Col span={6}>
+                <FormItem>
+                  <Button className="saveInfoBtn" type="primary" htmlType="submit" size="large">保存</Button>
+                </FormItem>
+              </Col>
+            </Row>
           </Form>
-          <Button className="BackBtn" onClick={()=>this.back()}>返回</Button>
         
         </Card>
       
