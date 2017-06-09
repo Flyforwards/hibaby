@@ -51,11 +51,17 @@
       }
     }
     .idCard{
+      .ant-form-item-label{
+        width: 80px;
+      }
       .ant-form-item-control {
         width:120px;
       }
     }
     .Operator{
+      .ant-form-item-label{
+        width: 80px;
+      }
       .ant-form-item-control {
         width:100px;
       }
@@ -68,6 +74,9 @@
     .Origin{
       margin-left: 10px;
       width: 14%;
+       .ant-form-item-label{
+         width:55px;
+       }
       .ant-form-item-control {
         width:80px;
       }
@@ -86,7 +95,6 @@
         width:80px;
       }
     }
-
   }
 
   .ant-form-item{

@@ -56,12 +56,6 @@ class ViewCommodityed extends Component {
         ID:ID
       })
     }
-    //handleDeleteCancel(){
-    //  this.setState({
-    //      DeleteVisible: false,
-    //  })
-    //  window.location.reload( true )
-    //}
     render() {
         let loadingName = true
         let roomInformation = []
@@ -76,6 +70,8 @@ class ViewCommodityed extends Component {
             roomInformation.push(<span key= {item} className="roomColor">{item}</span>)
           })
         }
+        const edit = !this.props.permissionAlias.contains('COMMODITY_EDIT');
+        const del = !this.props.permissionAlias.contains('COMMODITY_DELETE');
         return (
             <div className="viewCommodity">
                 <div className="viewCommodityList">
@@ -133,9 +129,9 @@ class ViewCommodityed extends Component {
                   </FormItem>
                 </Form>
                 </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button className="delet" onClick={this.delete.bind(this)}>删除</Button>
-                <Link to={{ pathname: '/crm/commodity/editcommodity', query:{ commodity:ID } }}><Button type="primary">编辑</Button></Link>
+                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
+                <Button disabled={del} className="delBtn" onClick={this.delete.bind(this)}>删除</Button>
+                <Link to={{ pathname: '/crm/commodity/editcommodity', query:{ commodity:ID } }}><Button disabled={edit} className="SaveBtn">编辑</Button></Link>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
@@ -146,40 +142,7 @@ class ViewCommodityed extends Component {
         )
     }
 }
-function ViewCommodity({
-  dispatch,
-  serviceListByPage,
-  roomData,
-  selectData,
-  getDictionary,
-  roomFindById,
-  commodityFindById
-}) {
-  return ( < div >
-    <ViewCommodityed dispatch = {
-      dispatch
-    }
-    selectData = {
-      selectData
-    }
-    serviceListByPage = {
-      serviceListByPage
-    }
-    roomData = {
-      roomData
-    }
-    getDictionary = {
-      getDictionary
-    }
-    roomFindById = {
-      roomFindById
-    }
-    commodityFindById = {
-      commodityFindById
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     serviceListByPage,
@@ -189,6 +152,7 @@ function mapStateToProps(state) {
     roomFindById,
     commodityFindById
   } = state.packageInfo;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.packageInfo,
     serviceListByPage,
@@ -196,7 +160,8 @@ function mapStateToProps(state) {
     selectData,
     getDictionary,
     roomFindById,
-    commodityFindById
+    commodityFindById,
+    permissionAlias
     };
 }
 const viewCommodity = Form.create()(ViewCommodityed);

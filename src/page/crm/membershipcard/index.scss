@@ -79,17 +79,41 @@
   text-align: left;
 }
 .cardBtn{
-  width:140px;
-  height:40px;
-  margin:0px 16px;
+  width:150px;
+  height:30px;
+  margin-left: 10px;
   font-size: 14px;
-  //border:none;
-  //border-radius: 5px;
-  //cursor:pointer;
-  //font-size: 14px;
-  //font-weight: 400;
-  //background-color: rgba(255, 74, 74, 1);
-  //color:#FFFFFF;
+  font-family:"微软雅黑";
+}
+.cardBtn:hover{
+  background: #f99d2e;
+  border-color:#f99d2e;
+  color:#fff;
+}
+.PrintBtn{
+  background:#eb7c34;
+  border-color: #eb7c34;
+  color: #fff;
+}
+.clearBtn{
+  background:#f75555;
+  border-color: #f75555;
+  color:#fff;
+}
+.RefundBtn{
+  background: #693d20;
+  border-color: #693d20;
+  color:#fff;
+}
+.renewBtn{
+  background: #d4ad89;
+  border-color: #d4ad89 ;
+  color:#fff;
+}
+.decBtn{
+  background:#f1e8df;
+  border-color:#b67233;
+  color: #b67233;
 }
 .ant-tabs{
 

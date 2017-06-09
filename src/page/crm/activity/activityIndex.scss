@@ -160,6 +160,9 @@
     font:14px "微软雅黑";
     color: #fff;
   }
+  .ant-card{
+    width: 100%;
+  }
 
   .ant-card-body{
     padding: 10px;
@@ -168,6 +171,10 @@
       height: 30px;
       width: 150px;
       font: 14px "微软雅黑";
+    }
+    .ant-btn:hover{
+      background: #f99d2e;
+      border-color: #f99d2e;
     }
     .backBtn{
       background:#b67233;
@@ -191,6 +198,12 @@
       background: #f1e8df;
       border-color:#d4ad89;
       color:#b67233;
+    }
+    .saveBtn:hover{
+      color:#fff;
+    }
+    .SaveBtn:hover{
+      color:#fff;
     }
 }
 .vertical-center-modal {

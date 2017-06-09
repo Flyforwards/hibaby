@@ -32,16 +32,16 @@ class permission extends Component {
           key: 'operating',
           width: '500px',
           render: (text, record, index) => {
-            const roleConfig = !this.props.permissionAlias.contains('rolePermissionC');
-            const users = !this.props.permissionAlias.contains('roleUsers');
-            const roleU = !this.props.permissionAlias.contains('roleU')
-            const roleD =  !this.props.permissionAlias.contains('roleD')
+            const config = !this.props.permissionAlias.contains('ROLE_CONFIG');
+            const users = !this.props.permissionAlias.contains('ROLE_USERS');
+            const edit = !this.props.permissionAlias.contains('ROLE_EDIT')
+            const del =  !this.props.permissionAlias.contains('ROLE_DELETE')
             return (
               <div key = { index }>
-                <Link className="firstA" disabled={roleU} onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
-                <Link className="firstA" disabled={roleConfig} onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
+                <Link className="firstA" disabled={edit} onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
+                <Link className="firstA" disabled={config} onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
                 <Link className="firstA" disabled={users} onClick={ this.showMemberList.bind(this,record) }>成员列表</Link>
-                <Link className="firstB" disabled={roleD} onClick={ this.delete.bind(this,record )}>删除</Link>
+                <Link className="firstB" disabled={del} onClick={ this.delete.bind(this,record )}>删除</Link>
               </div>
             );
           },
@@ -136,7 +136,7 @@ class permission extends Component {
         return (
            <div className="permission-cent">
              <div className="divs">
-               <Button disabled={ !permissionAlias.contains("roleC") }  className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
+               <Button disabled={ !permissionAlias.contains("ROLE_ADD") }  className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
                 <Table {...tableProps} columns={ this.columns } bordered rowKey={record => record.id}/>

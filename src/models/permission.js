@@ -98,7 +98,6 @@ export default {
       if (code == 0) {
         if(data.length == 0 && page > 1){
           yield put(routerRedux.push(`/system/permission?page=${page -1}&size=10`))
-
         }
         else {
           yield put({
@@ -181,6 +180,7 @@ export default {
 
       const {data: {data, total , code , err}} =  yield call(usersService.getUserPageListByRoleId, values)
       if (code == 0 && err == null) {
+
         yield put({
           type : 'getRoleUserPagSuccess',
           payload : { data, total,}

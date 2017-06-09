@@ -109,24 +109,20 @@
 			background-color: #999;
 		}
 	}
-	.ant-btn {
-		margin-left:528px;
-		width:140px;
-		height:40px;
+	.BackBtn {
+		margin-left:54%;
+		height:30px;
 		font:14px "微软雅黑";
 	}
-	.ant-btn-primary{
-    	margin-left:30px;
-    	width:140px;
-    	height:40px;
+	.SaveBtn{
+    	margin-left:10px;
+    	height:30px;
 			font:14px "微软雅黑";
 	}
-	.delet{
-		background-color: rgba(255, 74, 74, 1);
-		margin-left:30px;
+	.delBtn{
+		margin-left:10px;
+		height:30px;
 		color:#fff;
-		border:none;
-		font:14px "微软雅黑";
 	}
 }
 .editSuite{
@@ -233,17 +229,14 @@
 			background-color: #999;
 		}
 	}
-	.ant-btn {
+	.BackBtn {
 		margin-left:69%;
-		width:140px;
-		height:40px;
-		margin-top:10px;
+		height:30px;
 		font:14px "微软雅黑";
 	}
-	.ant-btn-primary{
-    	margin-left:30px;
-    	width:140px;
-    	height:40px;
+	.SaveBtn{
+    	margin-left:10px;
+    	height:30px;
 			font:14px "微软雅黑";
 	}
 }

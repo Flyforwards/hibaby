@@ -175,10 +175,7 @@ class Organization extends React.Component {
       });
     };
   }
-  //获取部门
-  acquisitionDepartment(id){
 
-  }
   componentDidMount(){
     let endemic  = session.get("endemic")
     this.props.dispatch({

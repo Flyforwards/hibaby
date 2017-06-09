@@ -3,12 +3,16 @@
   height:100%;
   margin-top:10px;
   .AddBtn{
-    margin-left: 850px;
+    margin-left: 85%;
+    background:#b67233;
+    border-color:#b67233;
+    color:#fff;
+    font:14px "微软雅黑";
   }
   .addCourseList{
     width:100%;
     height:auto;
-    margin-top: 20px;
+    margin-top: 10px;
     border:1px solid #ccc;
     border-radius: 4px;
     .namep,.pricep,.typep{
@@ -76,6 +80,9 @@
             margin: 0 10px;
             .tableBtn{
               width:90px;
+              background:#f1e8df;
+              border-color:#b67233;
+              color:#b67233;
             }
           }
       }
@@ -96,10 +103,10 @@
       margin-left:50px;
     }
     .pricep{
-      margin-left:200px;
+      margin-left:10%;
     }
     .typep{
-      margin-left:200px;
+      margin-left:10%;
     }
   }
 }
