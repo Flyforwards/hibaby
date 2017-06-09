@@ -282,13 +282,13 @@ class ActivityDetailIndex extends Component {
       } else {
         if ( item.appointments > 0 ) {
           buttons = (<div className="button-wrapper">
-            <Button className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
+            <Button className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
             <Button className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
             <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
           </div>)
         } else {
           buttons = (<div className="button-wrapper">
-            <Button className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
+            <Button className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>
             <Button className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.deleteActivity.bind(this) }>删除</Button>
             <Button className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>
             <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
