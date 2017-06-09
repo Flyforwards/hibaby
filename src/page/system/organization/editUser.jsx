@@ -504,8 +504,8 @@ class EditUsered extends React.Component {
            DeleteIndex = { this.state.DeleteIndex }
            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
-           <Button type="primary" className="saveButton" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
-           <Button className="returnButton" onClick={ this.headelReturn }>返回</Button>
+           <Button className="SaveBtn" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
+           <Button className="BackBtn" onClick={ this.headelReturn }>返回</Button>
         </div>
       )
   }

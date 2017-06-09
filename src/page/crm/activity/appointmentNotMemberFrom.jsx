@@ -3,10 +3,9 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal,  Card,Input,Button,Form } from 'antd'
 import PropTypes from 'prop-types'
+import './activityIndex.scss'
 const FormItem = Form.Item;
 const createForm = Form.create
-
-
 
 @createForm()
 class appointmentNotMemberFrom extends Component {
@@ -29,9 +28,6 @@ class appointmentNotMemberFrom extends Component {
       }
     })
   }
-
-
-
   render() {
     let { visible  } = this.props
     const { getFieldDecorator } = this.props.form;
@@ -56,15 +52,12 @@ class appointmentNotMemberFrom extends Component {
         wrapClassName = { "vertical-center-modal" }
       >
         <Form>
-          <FormItem {...formItemLayout}>
-          </FormItem>
-
-          <FormItem {...formItemLayout} label={"客户姓名"}>
+          <FormItem label={"客户姓名"}>
             {getFieldDecorator('name', {rules: [{ required: true, message: '请填写客户姓名！' }],
             })(<Input className="input"/>
             )}
           </FormItem>
-          <FormItem {...formItemLayout} label={"联系电话"}>
+          <FormItem label={"联系电话"}>
             {getFieldDecorator('contact', {rules: [{ required: true, message: '请填写联系电话！' }],
             })(<Input className="input"/>
             )}

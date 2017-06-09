@@ -57,7 +57,7 @@ class AddService extends Component {
           <Form className="projectname" layout={formLayout}>
             <FormItem label="项目名称">
               {getFieldDecorator('name', {
-                rules: [{ required: true, message: '项目名称为必填项！' }]
+                rules: [{ required: true, message: '项目名称为必填项！限50字！' , max: 50}]
               })(<Input  />)}
             </FormItem>
           </Form>
@@ -69,7 +69,7 @@ class AddService extends Component {
                         {...formItemLayout}
               >
                 {getFieldDecorator('price', {
-                  rules: [{ required: true, message: '项目价格为必填项！' }]
+                  rules: [{ required: true, message: '项目价格为必填项！' , max: 50}]
                 })(
                   <Input type='number'/>)}
               </FormItem>
@@ -79,9 +79,9 @@ class AddService extends Component {
           <Form className="AddCentent" layout={formLayout}>
             <FormItem className="procontent" label="项目内容">
               {getFieldDecorator('contents', {
-                rules: [{ required: true, message: '项目内容为必填项！' }]
+                rules: [{ required: true, message: '项目内容为必填项！限100字！',max:100}]
               })(
-                <Input rows={6} className="content"/>
+                <Input className="content"/>
               )}
             </FormItem>
           </Form>

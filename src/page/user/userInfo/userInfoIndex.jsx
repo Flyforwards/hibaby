@@ -164,8 +164,8 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
           </div>
             :
             <div className='buttonDiv'>
-              <Button className='button' onClick={backBtnClick}>返回</Button>
-              <Button className='button' type="primary" onClick={subMit}>完成</Button>
+              <Button className='button BackBtn' onClick={backBtnClick}>返回</Button>
+              <Button className='button SaveBtn' onClick={subMit}>完成</Button>
             </div>
         }
 

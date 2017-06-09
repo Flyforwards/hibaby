@@ -201,6 +201,7 @@ class AddChildNodeed extends Component {
                         <Input type="textarea" />
                       )}
                     </FormItem>
+                    <div className="leaderNode">
                     <FormItem
                      {...formItemLayout}
                       label="节点负责人"
@@ -220,6 +221,7 @@ class AddChildNodeed extends Component {
                         <Button className="selBtn" onClick={this.directLeader.bind(this)}>选择</Button>
                       )}
                     </FormItem>
+                    </div>
                 </Form>
                 <SelectTheNodeFrom
                  visible={ this.state.visible}
