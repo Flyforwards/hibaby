@@ -26,8 +26,28 @@ export default (app) => [
     path: '/user/work-plan',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/users'));
+        registerModel(app, require('models/workPlanIndex'));
         cb(null, require('page/user/workPlan/workPlanIndex.jsx'))
+      })
+    }
+  },
+  //添加工作计划
+  {
+    path: '/user/work-plan-add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/workPlanIndex'));
+        cb(null, require('page/user/workPlan/workPlanAdd.jsx'))
+      })
+    }
+  },
+  //编辑工作计划
+  {
+    path: '/user/work-plan-edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/workPlanIndex'));
+        cb(null, require('page/user/workPlan/workPlanEdit.jsx'))
       })
     }
   },
