@@ -13,7 +13,8 @@ function checkStatus(response) {
     return response;
   }
 
-  let error = new Error(response.statusText);
+  // let error = new Error(response.statusText);
+  let error = new Error('获取数据异常');
   if (response.status == 504) {
     error = new Error( "请求超时");
   }

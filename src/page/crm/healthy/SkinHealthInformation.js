@@ -71,7 +71,7 @@ class SkinHealthInformation extends React.Component {
   handleSubmit(){
     //console.log("您点击了保存按钮");
     const {dispatch} = this.props;
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
         dispatch({
