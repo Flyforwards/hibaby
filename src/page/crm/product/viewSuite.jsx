@@ -64,6 +64,8 @@ class ViewSuiteed extends Component {
             roomInformation.push(<span key= {item} className="roomColor">{item}</span>)
           })
         }
+        const edit = !this.props.permissionAlias.contains('SUITE_EDIT');
+        const del = !this.props.permissionAlias.contains('SUITE_DELETE');
         return (
             <div className="viewSuite">
                 <div className="viewSuiteList">
@@ -114,8 +116,8 @@ class ViewSuiteed extends Component {
                   }
                 </div>
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button className="delBtn" onClick={this.delete.bind(this)}>删除</Button>
-                <Link to={{ pathname: '/crm/serviceinfo/editsuite', query:{ suite:ID } }}><Button className="SaveBtn">编辑</Button></Link>
+                <Button  disabled={del} className="delBtn" onClick={this.delete.bind(this)}>删除</Button>
+                <Link to={{ pathname: '/crm/serviceinfo/editsuite', query:{ suite:ID } }}><Button disabled={edit}  className="SaveBtn">编辑</Button></Link>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
@@ -126,36 +128,7 @@ class ViewSuiteed extends Component {
         )
     }
 }
-function ViewSuite({
-  dispatch,
-  serviceListByPage,
-  roomData,
-  selectData,
-  getDictionary,
-  roomFindById
-}) {
-  return ( < div >
-    <ViewSuiteed dispatch = {
-      dispatch
-    }
-    selectData = {
-      selectData
-    }
-    serviceListByPage = {
-      serviceListByPage
-    }
-    roomData = {
-      roomData
-    }
-    getDictionary = {
-      getDictionary
-    }
-    roomFindById = {
-      roomFindById
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     serviceListByPage,
@@ -164,13 +137,15 @@ function mapStateToProps(state) {
     getDictionary,
     roomFindById
   } = state.packageInfo;
+  const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.packageInfo,
     serviceListByPage,
     roomData,
     selectData,
     getDictionary,
-    roomFindById
+    roomFindById,
+    permissionAlias
     };
 }
 const viewSuite = Form.create()(ViewSuiteed);
