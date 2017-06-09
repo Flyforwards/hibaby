@@ -377,7 +377,7 @@ class CustomerIndex extends React.Component {
                       )}
                     </FormItem>
                   </Col>
-                  <Col className="Operator intPackage" span={4}>
+                  <Col className="Operator intPackage Hospital" span={4}>
                     <FormItem  {...formChooseOneLayout} label="分娩医院'" >
                       {getFieldDecorator('hospital', {rules: [{ required: false }],
                       })(
