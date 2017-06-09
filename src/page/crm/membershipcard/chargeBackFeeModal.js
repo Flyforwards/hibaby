@@ -2,13 +2,13 @@
  * Created by Flyforwards on 2017/6/2.
  */
 
-import React, { Component } from 'react'
-import { connect } from 'dva'
-import { Modal,Form,Row,Col,Input,Select, Spin} from 'antd'
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import { Modal,Form,Row,Col,Input,Select, Spin} from 'antd';
 const Option = Select.Option;
-const createForm = Form.create
-const FormItem = Form.Item
-import "./index.scss"
+const createForm = Form.create;
+const FormItem = Form.Item;
+import "./index.scss";
 
 @createForm()
 class ChargeBackFeeModal extends Component {
@@ -20,7 +20,7 @@ class ChargeBackFeeModal extends Component {
       value: [],
       InputValue:'',
      objValue:{},
-     quaiity:'',
+     num:0,
      disabledValue:true,
 
      // fetching: false,
@@ -42,6 +42,7 @@ class ChargeBackFeeModal extends Component {
           InputValue:'',
           objValue:{},
           disabledValue:false,
+          num:0,
         })
       }
     })
@@ -88,29 +89,29 @@ class ChargeBackFeeModal extends Component {
     })
   }
   handleChange = (value) => {
-    const goodPrice =  value.title*this.state.quaiity;
+    const goodPrice =(value.title*this.state.num).toFixed(2);
+    this.props.form.resetFields(["quantity"])
     this.setState({
       objValue:value,
-      InputValue:goodPrice,
+      InputValue:goodPrice != 'NaN'? goodPrice : '',
       disabledValue:false,
     })
-
   }
 
   //件数改变
   numHandleChange(e) {
     const { value } =e.target;
-    const goodPrice = value*this.state.objValue.title;
+    const goodPrice = (value*this.state.objValue.title).toFixed(2);
     this.setState({
       quaiity:value,
-      InputValue:goodPrice,
+      InputValue:goodPrice ? goodPrice:'',
     })
   }
 
   render() {
-    let {  modalTitle , okText, cancel, message,form,labelValue,fetching, goodsInfoList, value,chargeVisible } = this.props
+    let {  modalTitle , okText, cancel, message,form,labelValue,fetching, goodsInfoList, value,chargeVisible } = this.props;
   //  const value = value|| '';
-    const { getFieldDecorator } = form
+    const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 4 },
       wrapperCol:{ span:15 }
@@ -160,9 +161,10 @@ class ChargeBackFeeModal extends Component {
             <Col span={24}>
               <FormItem { ...formItemLayout } label="消费数量">
                 {getFieldDecorator('quantity', {
+                   initialValue: this.state.num ,
                   rules: [{validator:this.checkPrice, required: true, message: '' }],
                 })(
-                  <Input  placeholder="" type="number" min={0} addonAfter="件" disabled={this.state.disabledValue} onChange={this.numHandleChange.bind(this)}/>
+                  <Input  placeholder=""  type="number" min={0} addonAfter="件" disabled={this.state.disabledValue} onChange={this.numHandleChange.bind(this)}/>
                 )}
               </FormItem>
             </Col>
