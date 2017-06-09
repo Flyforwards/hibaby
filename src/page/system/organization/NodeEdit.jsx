@@ -154,7 +154,7 @@ class NodeEdited extends Component {
                          <Input disabled = { true }/>
                       )}
                     </FormItem>
-                    <FormItem
+                    <FormItem className="formText"
                      {...formItemLayout}
                       label="全称"
                     >
@@ -167,7 +167,7 @@ class NodeEdited extends Component {
                         <Input type="textarea" />
                       )}
                     </FormItem>
-                    <FormItem
+                    <FormItem className="formText"
                      {...formItemLayout}
                       label="简称"
                     >
@@ -180,7 +180,7 @@ class NodeEdited extends Component {
                         <Input type="textarea" />
                       )}
                     </FormItem>
-                    <FormItem
+                    <FormItem className="formText"
                      {...formItemLayout}
                       label="英文名称"
                     >
@@ -193,6 +193,7 @@ class NodeEdited extends Component {
                         <Input type="textarea" />
                       )}
                     </FormItem>
+                    <div className="leaderNode">
                     <FormItem
                      {...formItemLayout}
                       label="节点负责人"
@@ -201,7 +202,7 @@ class NodeEdited extends Component {
                       {getFieldDecorator('nodeLeaderIput', {
                         initialValue:this.state.TableData?this.state.TableData.name:Nodesdata.leaderName
                       })(
-                        <Input/>
+                        <Input className="nodeInput"/>
                       )}
                     </FormItem>
                     <FormItem
@@ -212,6 +213,7 @@ class NodeEdited extends Component {
                         <Button className="selBtn" onClick={this.directLeader.bind(this)}>选择</Button>
                       )}
                     </FormItem>
+                    </div>
                 </Form>
                 <SelectTheNodeFrom
                  visible={ this.state.visible}

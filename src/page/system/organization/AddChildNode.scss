@@ -23,20 +23,33 @@
       line-height: 50px;
     }
   }
-	.nodeLeaderIput{
-		width:70%;
-		margin-left: 42px;
-	}
-	.nodeLeader{
-      width: 80px;
-      height: 35px;
-		  margin-right: 92px;
-	    float: right;
-	    margin-top: -44px;
-	}
+  .leaderNode{
+    height: 50px;
+    .nodeLeaderIput{
+  		width:63%;
+      float:left;
+  		margin-left: 42px;
+      .ant-form-item-label{
+        width: 29%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 70%;
+      }
+  	}
+    .nodeLeader{
+        width: 80px;
+        float:left;
+        height: 30px;
+        margin:5px 0;
+  	}
+  }
+  .nodeInput{
+    height:40px;
+  }
   .selBtn{
     width:80px;
-    height:35px;
+    margin-top: 0px;
+    height:30px;
     background:#693d20;
     border-color:#693d20;
     color: #fff;
@@ -84,6 +97,40 @@
     float: right;
     margin-right:10px;
   }
+  .ant-modal-body{
+    overflow: hidden;
+    button{
+  		width: 80px;
+      margin-top: 10px;
+      float: left;
+      margin-left:10px;
+  		.ant-btn{
+  			width: 80px;
+  			float: left;
+        font:14px "微软雅黑";
+  		}
+  	}
+    .BackBtn{
+      float: left;
+      background:#693d20;
+      border-color:#693d20;
+      color:#fff;
+      margin-right: 0;
+      margin-left: 300px;
+    }
+    .delBtn{
+      float: left;
+      background: #f75555;
+      border-color: #f75555;
+      color:#fff;
+    }
+    .SaveBtn{
+      float: left;
+      background: #eb7c34;
+      border-color: #eb7c34;
+      color:#fff;
+    }
+  }
 }
 .Disabled{
 	.ant-modal-header{
@@ -111,60 +158,32 @@
     border-color:#693d20;
     color: #fff;
   }
-
-
-	.vertical-center-modal {
-	  text-align: center;
-	  white-space: nowrap;
-	  .ant-modal {
-	    display: inline-block;
-	    vertical-align: middle;
-	    top: 0;
-	    text-align: center;
-	    .ant-modal-body {
-	      text-align: left;
-	    }
-	  }
-	}
-
-	.vertical-center-modal:before {
-	  content: '';
-	  display: inline-block;
-	  height: 100%;
-	  vertical-align: middle;
-	  width: 0;
-	}
-  .ant-modal-content{
-    width:600px;
-  }
-	button{
-		width: 80px;
-		.ant-btn{
-			width: 80px;
-			float: left;
-		}
-	}
-
-}
-.ant-modal-body{
-  overflow: hidden;
   button{
-		width: 80px;
-    margin-top: 10px;
-		.ant-btn{
-			width: 80px;
-			float: left;
-      font:14px "微软雅黑";
-		}
-	}
-  .BackBtn{
-    background:#693d20;
-    border-color:#693d20;
-    color:#fff;
+    width: 80px;
+    .ant-btn{
+      width: 80px;
+      float: left;
+    }
   }
-  .SaveBtn{
-    background: #eb7c34;
-    border-color: #eb7c34;
-    color:#fff;
+}
+.vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+  .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: center;
+    .ant-modal-body {
+      text-align: left;
+    }
   }
+}
+
+.vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
 }

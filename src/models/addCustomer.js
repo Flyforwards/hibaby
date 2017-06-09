@@ -486,7 +486,7 @@ export default {
         "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate.format('YYYY-MM-DD'),
         "provincePermanent": values.provincePermanent.key,
-        "purchasePackage": state.purchasePackageValue.data.packageId?state.purchasePackageValue.data.packageId:'',
+        "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.data.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 

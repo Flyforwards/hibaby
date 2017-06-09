@@ -17,12 +17,13 @@ export default {
     nutritionHealthInformation : null,//营养健康档案
     skinHealthInformation : null,//美妍中心
     conclusionInformation : null,//医院小结
-    saveDone:false,
-    type:null,
-    editMedicalFlag : false,
-    editNutritionFlag : false,
-    editSkinFlag : false,
-    editConclusionFlag:false,
+    saveDone:false,//提交表单保存状态，作用：档案保存成功后，更新该字段为true，从而使页面跳转到详情
+    type:null,//档案类型
+    editMedicalFlag : false, //医疗健康档案的编辑状态，用户点击编辑按钮，更新该值为true，从而使页面跳转到编辑页面
+    editNutritionFlag : false,//营养健康档案的编辑状态，同上
+    editSkinFlag : false,//美妍健康档案的编辑状态，同上
+    editConclusionFlag:false,//出院小结健康档案的编辑状态，同上
+    //以下为医疗健康档案（type=1）内所有上传附件对应的附件集合
     imgInput_1_arr : [],
     imgInput_2_arr : [],
     imgInput_3_arr : [],
@@ -31,9 +32,10 @@ export default {
     imgInput_6_arr : [],
     imgInput_7_arr : [],
     imgInput_8_arr : [],
-    conclusionImg_arr : [],
-    bigImageData : [],
-    bigImageHidden : false,
+    conclusionImg_arr : [],//客户出院小结附件集合
+    bigImageData : [],//查看附件，附件数据集合
+    bigImageHidden : false,//查看附件,对话框显示状态
+    //以下为医疗健康档案（type=1）内所有需要上传附件对应的必填状态（true，为必填，false：非必填）
     imgInput_1_required : false,
     imgInput_2_required : false,
     imgInput_3_required : false,
@@ -63,7 +65,7 @@ export default {
       });
     },
   },
-  //异步请求
+  //调用服务器端接口
   effects: {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'save' });
@@ -95,14 +97,8 @@ export default {
         yield put({type:'setHealthInformation',payload:{data,type:values.type}} );
       }
     },
-    *setHealthInformationEditFlag({payload: type}, { call, put }){
-      put({type:'setHealthInformationEditFlag',payload:{type:type}} );
-    },
-    *clearAllHealthInformation({payload: values}, { call, put }){
-      put({type:'clearAllHealthInformation'} );
-    }
   },
-  //同步请求
+  //同步请求，更新state
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
@@ -233,7 +229,7 @@ export default {
       return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,editConclusionFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null,
         imgInput_1_arr:[],imgInput_2_arr:[],imgInput_3_arr:[],imgInput_4_arr:[],
         imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],Input_8_arr:[],
-        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,imgInput_6_required:false,imgInput_7_required:false,imgInput_8_required:false,imgInput_9_required:false,conclusionImg_arr:[]}
+        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,imgInput_6_required:false,imgInput_7_required:false,imgInput_8_required:false,conclusionImg_arr:[]}
     },
     //设置查看附件Modal数据
     setBigImageModalProps(state, { payload: data }){

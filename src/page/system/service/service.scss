@@ -7,24 +7,11 @@
 	    font-weight: 400;
 	    font-style: normal;
 	    font-size: 14px;
-	    color:#333;
-	    span{
-				display:inline-block;
-				color: #FFFFFF;
-				width: 150px;
-		    height: 30px;
-		    margin-left:10px;
-		    text-align: center;
-		    line-height: 30px;
-		    background: inherit;
-		    background-color:#b67233;
-		    border: none;
-		    border-radius: 5px;
-		    font-family: '微软雅黑 Regular', '微软雅黑';
-		    font-weight: 400;
-		    font-style: normal;
-		    font-size: 14px;
-		}
+	    color:#fff;
+			.BackBtn{
+				color: #fff;
+				font:14px "微软雅黑";
+			}
 	}
 	.ant-input{
 		width:220px;
@@ -92,7 +79,7 @@
 	}
 	.AddService{
 			margin: 10px;
-			height: auto;
+			height:100%;
 			border:1px solid #d9d9d9;
 			h3{
 				 margin:-10px 0 0 -10px;
@@ -149,7 +136,13 @@
 							}
 						}
 					}
-
+					.ant-form-explain{
+						width: 100%;
+						overflow: auto;
+						font-size: 16px;
+						margin-left: 38px;
+						margin-top: 45px;
+					}
 				}
 				.projectprice{
 					width:44.5%;
@@ -205,19 +198,28 @@
 									background:#ddd;
 							}
 					}
+					.ant-form-explain{
+						width: 100%;
+						overflow: auto;
+						font-size: 16px;
+						margin-left: 38px;
+						margin-top: 45px;
+					}
+				}
+				.procontent{
+					.ant-form-explain{
+						width: 200%;
+						overflow: auto;
+						font-size: 16px;
+						margin-left: 38px;
+					}
 				}
 			}
 			.content{
 				width:450%;
 				height:45px;
 			}
-      .ant-form-explain{
-        width: 100%;
-        overflow: auto;
-        font-size: 16px;
-        margin-left: 38px;
-        margin-top: 45px;
-      }
+
 			.ant-input[disabled] {
 				background-color:rgba(255,255,255,0);
 			    opacity: 1;

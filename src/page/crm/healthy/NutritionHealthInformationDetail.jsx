@@ -285,9 +285,9 @@ function NutritionHealthInformationDetail(props) {
             </Col>
             <Col span='20' style={{height: '110px',display: 'table',width:'85.4%'}}>
               {radioAllRow(radioNames[10],{radioItems: [
-                '猪肉','牛肉','羊肉','鸡肉', '其他','苦瓜', '茄子','带壳海鲜','猕猴桃','西红柿'
+                '猪肉','牛肉','羊肉','鸡肉','苦瓜', '茄子','带壳海鲜','猕猴桃','西红柿'
               ]},'',false,'',12)}
-              {radioWhiteRow(radioNames[11], inputNames[13], {radioItems: ['其他']},'',false,'',12)}
+              {radioWhiteRow(radioNames[10], inputNames[13], {radioItems: ['其他']},'',false,'',12)}
             </Col>
           </Row>
           <Row className="matchItem">

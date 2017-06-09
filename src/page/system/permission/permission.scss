@@ -55,6 +55,7 @@
       float: left;
       width: 80%;
       border: 2px solid #ddd ;
+      border-radius:5px;
       p {
         line-height: 40px;
         margin-left: 10px;
@@ -240,5 +241,50 @@
     margin-bottom: 2px;
     margin-top: 2px;
   }
-
+}
+.ShowMemberListModal{
+  .permission-cent{
+    .div-input{
+      margin-bottom: 10px;
+    }
+    .add{
+      margin-top: 7px;
+    }
+    .CreateModaList{
+      .firstC{
+        color:#b67233;
+      }
+      .firstC:hover{
+        color:#f75555;
+      }
+    }
+    .component-display{
+      left:0;
+      width: 100%;
+      background: #f1e8df;
+      .divs{
+        margin: 10px 0;
+        .ant-input{
+          width: 76%;
+        }
+        .search-button-div{
+          width: 150px;
+          margin-left: 10px;
+          float: left;
+          background:#693d20;
+          border-radius:5px;
+          border-color:#693d20;
+          color: #fff;
+          font: 14px "微软雅黑";
+        }
+        .search-button-div:hover{
+          background:#f99d2e;
+          border-color: #f99d2e;
+        }
+      }
+    }
+    table{
+      border-radius:5px;
+    }
+  }
 }
