@@ -4,10 +4,10 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tree, Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
-import { departmentDict, positionDict} from 'common/constants';
 
 
 const TreeNode = Tree.TreeNode;
+
 
 class AddMemberComponent extends Component {
   constructor(props) {
@@ -20,23 +20,33 @@ class AddMemberComponent extends Component {
       title: '职位',
       dataIndex: 'positionId',
       key: 'positionId',
-      render: (positionId) => {
-        return departmentDict[positionId];
+      render: (record) => {
+        return this.textforkey(this.props.getPosition,record);
       }
     }, {
       title: '隶属部门',
       dataIndex: 'deptId',
       key: 'deptId',
-      render: (deptId) =>  {
-        return positionDict[deptId];
+      render: (record) =>  {
+        return this.textforkey(this.props.getDeptList ,record);
       }
     }];
   }
+  textforkey(array,value,valuekey = 'name') {
+    for (let i = 0 ;i<array.length ;i++){
+      let dict = array[i];
+      if(dict['id'] === value){
+        return  dict[valuekey];
+      }
+    }
+  }
+
 
   state = {
     visible: false,
     selectedRowKeys: [],
     selectedKeys: [],
+    current : 1,
   }
 
   search() {
@@ -65,6 +75,9 @@ class AddMemberComponent extends Component {
   onSelect(selectedKeys, e) {
     const  { selectedNodes } = e;
     if (selectedNodes !== null && selectedNodes.length !== 0) {
+      this.setState({
+        current : 1
+      });
       const node = selectedNodes[0];
       this.nodeId = node.props.nodeId;
       this.tissueProperty = node.props.tissueProperty;
@@ -107,7 +120,12 @@ class AddMemberComponent extends Component {
       total: undisUserTotal, //数据总条数
       showQuickJumper: true,
       pageSize: 10,
+      current:this.state.current,
       onChange: (page, pageSize) => {
+        this.setState({
+          current : page
+        });
+
         this.props.dispatch({
             type: "permission/getUserPageListByUserRole",
             payload: { nodeid: this.nodeId, tissueProperty: this.tissueProperty, roleId:this.props.selectRole.id, page, size: pageSize }
@@ -179,7 +197,8 @@ function mapStateToProps(state) {
     selectedRowKeys,
     nodeid,
     tissueProperty,
-
+    getPosition,
+    getDeptList,
   } = state.permission;
   return {
     loading: state.loading,
@@ -188,6 +207,8 @@ function mapStateToProps(state) {
     undisUserTotal,
     selectedRowKeys,
     nodeid,
+    getPosition,
+    getDeptList,
     tissueProperty
   };
 }
