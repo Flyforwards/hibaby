@@ -219,7 +219,7 @@ class customerDetails extends React.Component{
     this.dispatch(routerRedux.push('/crm/customer/AddCustomerInformation'))
   }
 
-    componentDidMount(){
+  componentDidMount(){
     this.dispatch({type: 'addCustomer/getCustomerById'});
     this.dispatch({type: 'addCustomer/getCustomerExtendById'});
     this.dispatch({type: 'addCustomer/getCustomerRemarkById'});

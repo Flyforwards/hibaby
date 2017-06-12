@@ -31,7 +31,7 @@ class OrganizationLefted extends React.Component {
       ID: null,
       node: null,
       DeleteNodeVisible: false,
-      unfolded:["1"]
+      unfolded:["2"]
     }
     this.addDisplay = "block";
     this.nodes = null;
@@ -44,6 +44,7 @@ class OrganizationLefted extends React.Component {
     len.push(expandedKeys[expandedKeys.length-1])
     // console.log("sdsssss",len)
     this.unfolded = len
+    //console.log("len>>>",len)
     this.setState({
       unfolded:len
     })
@@ -61,6 +62,7 @@ class OrganizationLefted extends React.Component {
     this.deleteDisplay = "block"
     if (value[0] != null) {
       this.nodes = node.selectedNodes[0].props.dataIndex
+      console.log("node节点")
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
         this.deleteDisplay = "none"
@@ -73,16 +75,18 @@ class OrganizationLefted extends React.Component {
         this.addDisplay = "block"
       }
       if (node.selectedNodes[0].key != 1) {
+        //console.log("value>>>>>",node.selectedNodes[0])
         this.setState({
           ID: node.selectedNodes[0].key,
           node: node.selectedNodes[0],
           parentId: node.selectedNodes[0].props.parentId,
           dataIndex: node.selectedNodes[0].props.dataIndex,
-          unfolded:value
+          unfolded:value,
+          TissueProperty:node.selectedNodes[0].props.dataIndex
         })
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.statusType(false,1)
-        console.log("this.state.current",this.props.current)
+        //console.log("this.state.current",this.props.current)
         this.props.dispatch({
           type: 'organization/organizationList',
           payload: {
@@ -97,7 +101,8 @@ class OrganizationLefted extends React.Component {
           ID: node.selectedNodes[0].key,
           node: node.selectedNodes[0],
           parentId: node.selectedNodes[0].props.parentId,
-          dataIndex: node.selectedNodes[0].props.dataIndex
+          dataIndex: node.selectedNodes[0].props.dataIndex,
+          unfolded:value
         })
       }
       this.props.dispatch({
@@ -118,6 +123,7 @@ class OrganizationLefted extends React.Component {
         this.addDisplay = "block"
       }
     }
+    console.log("this.state.unfolded",this.state.unfolded)
   }
 
   seeDetails() {
@@ -133,9 +139,9 @@ class OrganizationLefted extends React.Component {
   }
 
   DeleteNode() {
+    // console.log("DeleteNode>>>>>",this.state.unfolded)
     this.setState({
-      DeleteNodeVisible: true,
-      unfolded: this.unfolded
+      DeleteNodeVisible: true
     })
   }
 
@@ -218,7 +224,8 @@ class OrganizationLefted extends React.Component {
       }
     })
     // $(".Organization-left li").find(".ant-tree-title").after("<span class='plus'>+</span>");
-    if (userInfo.categoryId != 0) {
+    
+    if (userInfo != null && userInfo.categoryId != 0) {
       $("li").find(".plus").eq(0).css('display', 'none');
     }
   }
@@ -230,7 +237,6 @@ class OrganizationLefted extends React.Component {
       upblock: "none"
     })
   }
-
   render() {
     let loops = []
     let tissueProperty = null
@@ -262,9 +268,9 @@ class OrganizationLefted extends React.Component {
           className="draggable-tree"
           onSelect={ this.onSelect.bind(this) }
           onExpand={this.expandHandler.bind(this)}
-          defaultExpandedKeys = {["1"]}
           autoExpandParent = { true }
-          expandedKeys = { this.state.unfolded }
+          defaultSelectedKeys = { this.state.unfolded }
+        
         >
           { loops }
         </Tree>
@@ -282,6 +288,7 @@ class OrganizationLefted extends React.Component {
           parentId={this.state.parentId}
           TissueProperty={this.props.TissueProperty}
           dataIndex={this.state.dataIndex}
+          parentTissueProperty={this.state.TissueProperty}
         />
         <SeeDtail
           visible={ this.state.SeeDtailNodeVisible }
@@ -300,7 +307,7 @@ class OrganizationLefted extends React.Component {
           onCancel={ this.handleDeleteNodeCancel.bind(this) }
           ID={this.state.ID}
           parentId={this.state.parentId}
-          TissueProperty={this.props.TissueProperty}
+          TissueProperty={this.state.TissueProperty}
           dataIndex={this.state.dataIndex}
         />
       </div>
