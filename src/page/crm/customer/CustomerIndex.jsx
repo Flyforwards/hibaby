@@ -1,11 +1,26 @@
 import React from 'react'
 import './CustomerIndex.scss'
-import {connect} from 'dva'
-import { Select, Button, DatePicker, Table, Input,Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal} from 'antd'
+import { connect } from 'dva'
+import {
+  Select,
+  Button,
+  DatePicker,
+  Table,
+  Input,
+  Form,
+  Icon,
+  Popconfirm,
+  Pagination,
+  Cascader,
+  Col,
+  Row,
+  InputNumber,
+  Modal
+} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
-import {routerRedux} from 'dva/router'
-import {Link} from 'react-router'
+import { routerRedux } from 'dva/router'
+import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
 import Current from '../../Current'
 const Option = Select.Option
@@ -19,7 +34,7 @@ const createForm = Form.create
 class Customer extends React.Component {
   state = {
     value: this.props.value,
-    editable: false,
+    editable: false
   }
   handleChange = (e) => {
     const value = e.target.value;
@@ -34,6 +49,7 @@ class Customer extends React.Component {
   edit = () => {
     this.setState({ editable: true });
   }
+  
   render() {
     const { value, editable } = this.state;
     return (
@@ -69,348 +85,391 @@ class Customer extends React.Component {
 
 @createForm()
 class CustomerIndex extends React.Component {
-    constructor(props) {
-        super(props)
-        this.columns = [{
-          title: '客户姓名',
-          dataIndex: 'name',
-          key: 'name'
-        },{
-          title: '年龄',
-          dataIndex: 'age',
-          key: 'age'
-        }, {
-          title: '预产期',
-          dataIndex: 'dueDate',
-          render: (record) => {
-            return moment(record).format("YYYY-MM-DD")
-          }
-        }, {
-          title: '怀孕周期',
-          dataIndex: 'gestationalWeeks',
-          key: 'gestationalWeeks'
-
-        }, {
-          title: '第几胎',
-          dataIndex: 'fetus',
-          key: 'fetus'
-        },{
-          title: '联系方式',
-          dataIndex: 'contact',
-          key: 'contact'
-        },{
-          title: '购买套餐',
-          dataIndex: 'purchasePackage',
-          key: 'purchasePackage'
-        },{
-          title: '合同编号',
-          dataIndex: 'contractNumber',
-          key: 'contractNumber'
-        },{
-          title: '添加人',
-          render: (record) => {
-            if (record.operator2 !=null ) {
-              return record.operator2;
-            } else {
-              return record.operator;
-            }
-          }
-        },{
-          title: '操作',
-          dataIndex: 'operating',
-          render: (text, record, index) => {
-            const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
-            const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
-            return (
-              <div>
-                <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
-                <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
-              </div>
-            );
-          },
-        }];
-        this.state = {
-            createModalVisible: false
+  constructor(props) {
+    super(props)
+    this.columns = [{
+      title: '客户姓名',
+      dataIndex: 'name',
+      key: 'name'
+    }, {
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age'
+    }, {
+      title: '预产期',
+      dataIndex: 'dueDate',
+      render: (record) => {
+        return moment(record).format("YYYY-MM-DD")
+      }
+    }, {
+      title: '怀孕周期',
+      dataIndex: 'gestationalWeeks',
+      key: 'gestationalWeeks'
+      
+    }, {
+      title: '第几胎',
+      dataIndex: 'fetus',
+      key: 'fetus'
+    }, {
+      title: '联系方式',
+      dataIndex: 'contact',
+      key: 'contact'
+    }, {
+      title: '购买套餐',
+      dataIndex: 'purchasePackage',
+      key: 'purchasePackage'
+    }, {
+      title: '合同编号',
+      dataIndex: 'contractNumber',
+      key: 'contractNumber'
+    }, {
+      title: '添加人',
+      render: (record) => {
+        if (record.operator2 != null) {
+          return record.operator2;
+        } else {
+          return record.operator;
         }
-    }
-
-    onLook(record){
-      const dispatch = this.props.dispatch;
-      dispatch(routerRedux.push(`/crm/customer/customerDetails?dataId=${record.id}`))
-    }
-
-    onDelete(record) {
-      const dispatch = this.props.dispatch;
-      confirm({
-        title: '提示',
-        content: '是否确定删除此用户',
-        onOk() {
-          dispatch({
-            type: 'customer/deleteCustomer',
-            payload: { dataId: record.id }
-          })
-        },
-        onCancel() {
-        },
-      });
-    }
-
-    handleCreateModalCancel() {
-        this.setState({
-            createModalVisible: false
-        })
-    }
-
-    showCreateModal() {
-        this.setState({
-            createModalVisible: true
-        })
-    }
-
-    onSearch() {
-      this.props.form.validateFields((err, values) => {
-        if (!err) {
-          if (values.time != undefined) {
-            values.year = values.time.get('year');
-            values.month = values.time.get('month')+1;
-          }
-
-          if(values.productionDate != undefined){
-            values.productionDate = values.productionDate.format("YYYY-MM-DD")
-          }
-
-          this.props.dispatch(routerRedux.push({
-            pathname: "/crm/customer",
-            query: values
-          }))
-        }
-      })
-    }
-    reset() {
-      const { pathname } = location;
-      this.props.dispatch(routerRedux.push({
-        pathname,
-      }))
-      this.props.form.resetFields()
-    }
-
-
-    textforkey(array,value,valuekey = 'name') {
-      for (let i = 0 ;i<array.length ;i++){
-        let dict = array[i];
-        if(dict['id'] === value){
-          return  dict[valuekey];
-        }
-       }
-       return value;
-    }
-
-  componentDidMount(){
-    this.props.dispatch({type: 'customer/getCustomerPage',});
-    this.props.dispatch({type: 'customer/listByMain',});
-    this.props.dispatch({type: 'customer/getMemberShipCard',});
-    this.props.dispatch({ type: 'customer/getDataDict',payload:{"abName": 'YCC',}});
-  }
-
-    render() {
-        const columns = this.columns;
-        const { list, loading, pagination, dispatch, form, shipCards,fetusAry,packageList } = this.props;
-
-        for(let i = 0;i<list.length;i++){
-          let dict = list[i];
-          dict.fetus = this.textforkey(fetusAry,dict.fetus)
-          dict.purchasePackage = this.textforkey(packageList,dict.purchasePackage)
-        }
-
-
-        const { getFieldDecorator } = form;
-        const tableProps = {
-          loading: loading.effects['customer/getCustomerPage'],
-          dataSource : list ,
-          pagination,
-          columns,
-          onChange (page) {
-            const { pathname } = location
-            dispatch(routerRedux.push({
-              pathname,
-              query: {
-                page: page.current,
-                size: page.pageSize,
-              },
-            }))
-          },
-        }
-
-        const options = shipCards.map((record)=>{
-          return (<Option key={record.id} value={record.id}>{record.name}</Option>)
-        });
-
-        const formChooseOneLayout = {
-          labelCol:{ span: 8 },
-          wrapperCol:{ span: 10 }
-        }
-        const formChooseLayout = {
-          labelCol:{ span: 10 },
-          wrapperCol:{ span: 14 }
-        }
-
-        const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
+      }
+    }, {
+      title: '操作',
+      dataIndex: 'operating',
+      render: (text, record, index) => {
+        const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
+        const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
-        <div className="CustomerConent">
-            <main className="yt-admin-framework-Customer">
-              <Form>
-                  <Row className="topSelect">
-                    <Col className="search" >
-                      <FormItem {...formChooseLayout} style={{height:'40px',lineHeight:'40px'}} >
-                        {getFieldDecorator('sear', {rules: [{ required: false }],
-                        })(
-                          <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
-                        )}
-                      </FormItem>
-                    </Col>
-                    <Col className="findBtn">
-                      <span>
-                        <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px',backgroundColor:'rgba(255, 102, 0, 1)'}}>查询</Button>
-                        </span>
-                    </Col>
-                    <Col>
-                        <span>
-                          <Button onClick={ this.reset.bind(this)} style={{width:'136px',height:'40px',lineHeight:'40px',backgroundColor:'rgba(255, 0, 0, 1)'}}>重置</Button>
-                        </span>
-                     </Col>
-                    <Col>
-                      <span>
-                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{width:'136px',backgroundColor:'rgba(182, 114, 51, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>新增客户</Button></Link>
-                      </span>
-                    </Col>
-                  </Row>
-                <Row className="topAge" style={{height: 50}}>
-                  <Col span={4} style={{width:'140px'}}>
-                    <FormItem {...formChooseOneLayout}  label="年龄" >
-                      {getFieldDecorator('age1', {rules: [{ required: false }],
-                      })(
-                        <InputNumber style={{width: "80px"}} min={1} max={100}  />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col span={3}  style={{width:'90px'}}>
-                    <FormItem {...formChooseLayout} style={{width:'100%'}}>
-                      {getFieldDecorator('age2', {rules: [{ required: false }],
-                      })(
-                        <InputNumber min={1} max={100} style={{width: "80px"}} />
-                      )}
-                    </FormItem>
-
-                  </Col>
-                  <Col className="PreData" span={4} style={{width:'190px'}}>
-                    <FormItem {...formChooseOneLayout}  label="预产期" >
-                      {getFieldDecorator('time', {rules: [{ required: false }],
-                      })(
-                        <MonthPicker
-                          placeholder="请选择"
-                        />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="TireNum" span={4} style={{width:'180px'}}>
-                    <FormItem  {...formChooseOneLayout} label="第几胎" >
-                      {getFieldDecorator('fetus', {rules: [{ required: false }],
-                      })(
-                        <DictionarySelect  placeholder="请选择" selectName="FETUS" />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="idCard" span={4} style={{width:'210px'}} >
-                    <FormItem  {...formChooseOneLayout} label="会员身份" >
-                      {getFieldDecorator('member', {rules: [{ required: false }],
-                      })(
-                        <Select   placeholder="请选择" >
-                          {
-                            options
-                          }
-                        </Select>
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="Operator" span={4} style={{width:'192px'}}>
-                    <FormItem  {...formChooseOneLayout} label="操作者2" >
-                      {getFieldDecorator('operator2', {rules: [{ required: false }],
-                      })(
-                        <Input max={40}  />
-                      )}
-                    </FormItem>
-                  </Col>
-                </Row>
-                <Row className="topAge" style={{height: 50}}>
-                  <Col className="Operator intPackage" span={4}>
-                    <FormItem  {...formChooseOneLayout} label="意向套餐" >
-                      {getFieldDecorator('intentionPackage')(
-                        <DictionarySelect  placeholder="请选择" selectName="IntentionPackage" />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="Operator Origin" span={4} >
-                    <FormItem  {...formChooseOneLayout} label="籍贯" >
-                      {getFieldDecorator('placeOrigin')(
-                        <Input max={40}  />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="Operator intPackage Package " span={4} >
-                    <FormItem  {...formChooseOneLayout} label="购买套餐" >
-                      {getFieldDecorator('purchasePackage')(
-                        <DictionarySelect  placeholder="请选择" selectName="IntentionPackage" />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="Operator intPackage bordData" span={4} >
-                    <FormItem  {...formChooseOneLayout} label="宝宝生产日期" >
-                      {getFieldDecorator('productionDate')(
-                        <DatePicker  placeholder="请选择" />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="Operator Origin" span={4} >
-                    <FormItem  {...formChooseOneLayout} label="孕周" >
-                      {getFieldDecorator('gestationalWeeks')(
-                        <InputNumber max={40} min={1} />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className="Operator intPackage Hospital" span={4}>
-                    <FormItem  {...formChooseOneLayout} label="分娩医院'" >
-                      {getFieldDecorator('hospital', {rules: [{ required: false }],
-                      })(
-                        <DictionarySelect  placeholder="请选择" selectName="Hospital"/>
-                      )}
-                    </FormItem>
-                  </Col>
-
-                </Row>
-              </Form>
-            <div className="CreateModaList-a">
-              <Table bordered {...tableProps} rowKey={ record=>record.id}/>
-            </div>
-            <CreateModal
-                handleOk={this.state.handleOk}
-                visible={ this.state.createModalVisible }
-                onCancel={ this.handleCreateModalCancel.bind(this) }
-            />
-          </main>
-        </div>
-        )
+          <div>
+            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
+            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+          </div>
+        );
+      }
+    }];
+    this.state = {
+      createModalVisible: false
     }
+  }
+  
+  onLook(record) {
+    const dispatch = this.props.dispatch;
+    dispatch(routerRedux.push(`/crm/customer/customerDetails?dataId=${record.id}`))
+  }
+  
+  onDelete(record) {
+    const dispatch = this.props.dispatch;
+    confirm({
+      title: '提示',
+      content: '是否确定删除此用户',
+      onOk() {
+        dispatch({
+          type: 'customer/deleteCustomer',
+          payload: { dataId: record.id }
+        })
+      },
+      onCancel() {
+      }
+    });
+  }
+  
+  handleCreateModalCancel() {
+    this.setState({
+      createModalVisible: false
+    })
+  }
+  
+  showCreateModal() {
+    this.setState({
+      createModalVisible: true
+    })
+  }
+  
+  onSearch() {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        if (values.time != undefined) {
+          values.year = values.time.get('year');
+          values.month = values.time.get('month') + 1;
+        }
+        
+        if (values.productionDate != undefined) {
+          values.productionDate = values.productionDate.format("YYYY-MM-DD")
+        }
+        
+        this.props.dispatch(routerRedux.push({
+          pathname: "/crm/customer",
+          query: values
+        }))
+      }
+    })
+  }
+  
+  reset() {
+    const { pathname } = location;
+    this.props.dispatch(routerRedux.push({
+      pathname
+    }))
+    this.props.form.resetFields()
+  }
+  
+  
+  textforkey(array, value, valuekey = 'name') {
+    for (let i = 0; i < array.length; i++) {
+      let dict = array[i];
+      if (dict['id'] === value) {
+        return dict[valuekey];
+      }
+    }
+    return value;
+  }
+  
+  componentDidMount() {
+    this.props.dispatch({ type: 'customer/getCustomerPage' });
+    this.props.dispatch({ type: 'customer/listByMain' });
+    this.props.dispatch({ type: 'customer/getMemberShipCard' });
+    this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
+  }
+  
+  render() {
+    const columns = this.columns;
+    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
+    
+    for (let i = 0; i < list.length; i++) {
+      let dict = list[i];
+      dict.fetus = this.textforkey(fetusAry, dict.fetus)
+      dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
+    }
+    
+    
+    const { getFieldDecorator } = form;
+    const tableProps = {
+      loading: loading.effects['customer/getCustomerPage'],
+      dataSource: list,
+      pagination,
+      columns,
+      onChange (page) {
+        const { pathname } = location
+        dispatch(routerRedux.push({
+          pathname,
+          query: {
+            page: page.current,
+            size: page.pageSize
+          }
+        }))
+      }
+    }
+    
+    const options = shipCards.map((record) => {
+      return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+    });
+    
+    const formChooseLayout = {
+      labelCol: { span: 10 },
+      wrapperCol: { span: 14 }
+    }
+    const formChooseOneLayout = {
+      labelCol: { span: 9 },
+      wrapperCol: { span: 13 }
+    }
+    const formChooseOneAge = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 }
+    }
+    
+    const formChooseTwoAge = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 }
+    }
+    
+    const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
+    return (
+      <div className="CustomerConent">
+        <main className="yt-admin-framework-Customer">
+          <Form>
+            <Row className="topSelect">
+              <Col className="search" span={12}>
+                <FormItem {...formChooseLayout} style={{ height: '40px', lineHeight: '40px' }}>
+                  {getFieldDecorator('sear', {
+                    rules: [{ required: false }]
+                  })(
+                    <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{ height: '40px', width: 700 }}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col className="findBtn" span={12}>
+                <Row justify="end" type="flex" gutter={8}>
+                  <Col span={6}>
+                      <span>
+                        <Button onClick={ this.onSearch.bind(this)} style={{
+                          width: '100%',
+                          height: '40px',
+                          lineHeight: '40px',
+                          backgroundColor: 'rgba(255, 102, 0, 1)'
+                        }}>查询</Button>
+                        </span>
+                  </Col>
+                  <Col span={6}>
+                  <span>
+                          <Button onClick={ this.reset.bind(this)} style={{
+                            width: '100%',
+                            height: '40px',
+                            lineHeight: '40px',
+                            backgroundColor: 'rgba(255, 0, 0, 1)'
+                          }}>重置</Button>
+                        </span>
+                  </Col>
+                  <Col span={6}>
+                  <span>
+                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{
+                          width: '100%',
+                          backgroundColor: 'rgba(182, 114, 51, 1)',
+                          height: '40px',
+                          lineHeight: '40px',
+                          color: '#ffffff'
+                        }}>新增客户</Button></Link>
+                      </span>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row gutter={16} style={{ height: 50 }}>
+              <Col span={5} >
+                <FormItem label="年龄" {...formChooseOneAge}>
+                  {getFieldDecorator('age1', {
+                    rules: [{ required: false }]
+                  })(
+                    <InputNumber min={1} max={100}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={1} style={{ marginLeft: -100, marginRight: 100 }}>
+                <FormItem >
+                  {getFieldDecorator('age2', {
+                    rules: [{ required: false }]
+                  })(
+                    <InputNumber min={1} max={100}/>
+                  )}
+                </FormItem>
+              
+              </Col>
+              <Col span={6} className="delDisplan">
+                <FormItem label="预产期" {...formChooseOneAge}>
+                  {getFieldDecorator('time', {
+                    rules: [{ required: false }]
+                  })(
+                    <MonthPicker
+                      placeholder="请选择"
+                    />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
+                <FormItem label="操作者2" {...formChooseOneAge}>
+                  {getFieldDecorator('operator2', {
+                    rules: [{ required: false }]
+                  })(
+                    <Input max={40}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
+                <FormItem label="会员身份" {...formChooseOneAge}>
+                  {getFieldDecorator('member', {
+                    rules: [{ required: false }]
+                  })(
+                    <Select placeholder="请选择">
+                      {
+                        options
+                      }
+                    </Select>
+                  )}
+                </FormItem>
+              </Col>
+            
+            </Row>
+            <Row style={{ height: 50 }} gutter={16}>
+              <Col span={5}>
+                <FormItem label="籍贯" {...formChooseOneAge}>
+                  {getFieldDecorator('placeOrigin')(
+                    <Input max={40}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={1}/>
+              <Col span={6}>
+                <FormItem label="第几胎" {...formChooseOneAge}>
+                  {getFieldDecorator('fetus', {
+                    rules: [{ required: false }]
+                  })(
+                    <DictionarySelect placeholder="请选择" selectName="FETUS"/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
+                <FormItem label="意向套餐" {...formChooseOneAge}>
+                  {getFieldDecorator('intentionPackage')(
+                    <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
+                <FormItem label="购买套餐" {...formChooseOneAge}>
+                  {getFieldDecorator('purchasePackage')(
+                    <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row style={{ height: 50 }} gutter={16}>
+              <Col span={5}>
+                <FormItem label="孕周" {...formChooseOneAge}>
+                  {getFieldDecorator('gestationalWeeks')(
+                    <InputNumber max={40} min={1}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={1}/>
+              <Col span={6} className="delDisplan">
+                <FormItem label="宝宝生日"  {...formChooseOneAge}>
+                  {getFieldDecorator('productionDate')(
+                    <DatePicker placeholder="请选择"/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
+                <FormItem label="分娩医院" {...formChooseOneAge}>
+                  {getFieldDecorator('hospital', {
+                    rules: [{ required: false }]
+                  })(
+                    <DictionarySelect placeholder="请选择" selectName="Hospital"/>
+                  )}
+                </FormItem>
+              </Col>
+            
+            </Row>
+          </Form>
+          <div className="CreateModaList-a">
+            <Table bordered {...tableProps} rowKey={ record => record.id}/>
+          </div>
+          <CreateModal
+            handleOk={this.state.handleOk}
+            visible={ this.state.createModalVisible }
+            onCancel={ this.handleCreateModalCancel.bind(this) }
+          />
+        </main>
+      </div>
+    )
+  }
 }
 
 
 function mapStateToProps(state) {
   const {
-    list,
-    pagination,
-    shipCards,
-    fetusAry,
-    packageList
-  } = state.customer;
+          list,
+          pagination,
+          shipCards,
+          fetusAry,
+          packageList
+        } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
@@ -419,7 +478,7 @@ function mapStateToProps(state) {
     pagination,
     shipCards,
     permissionAlias,
-    packageList,
+    packageList
   };
 }
 export default connect(mapStateToProps)(CustomerIndex)

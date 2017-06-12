@@ -7,17 +7,11 @@ import { Link } from 'react-router'
 import moment from 'moment'
 const confirm = Modal.confirm;
 
-class CustomerComplaintsIndex extends React.Component {
+class CustomerCompIndex extends React.Component {
 
   constructor(props) {
     super(props);
-    this.selectRecord = null;
-    this.state={
-      appointmentVisible: false,
-      memberVisible: false,
-      notMemberVisible: false,
-      alertModalVisible: false
-    }
+
     const state = { "0": '处理中',"1": '待确认',"2": '已确认'}
     this.columns = [{
       title: '编号',
@@ -87,18 +81,9 @@ class CustomerComplaintsIndex extends React.Component {
     });
   }
 
-  // 确认删除
-  onOk(record) {
-    this.props.dispatch({
-      type: 'activity/deleteActivity',
-      payload: { dataId: record.id }
-    })
-    this.onCancel();
-  }
 
   // 查看
   pushDetail(record) {
-    this.selectRecord = record;
     this.props.dispatch(routerRedux.push({
       pathname:'/crm/customer-comp/detail',
       query: {
@@ -108,36 +93,10 @@ class CustomerComplaintsIndex extends React.Component {
 
   }
 
-  onCancel() {
-    this.setState({
-      appointmentVisible: false,
-      memberVisible: false,
-      notMemberVisible: false,
-      alertModalVisible: false
-    })
-  }
-  onChoose(on) {
-    if(on){
-      this.setState({
-        appointmentVisible: false,
-        memberVisible: true,
-      })
-      this.props.dispatch({
-        type: 'activity/getNoAppointmentCustomerPageList',
-        payload: { 'activityId': this.selectRecord.id }
-      })
-    } else {
-      this.setState({
-        notMemberVisible: true,
-        appointmentVisible: false,
-      })
-    }
-  }
-
   render() {
     const { list, loading, pagination, dispatch } = this.props;
     const tableProps = {
-      loading: loading.effects['activity/getActivityPage'],
+      loading: loading.effects['customerComp/getCustomerCompPage'],
       dataSource : list ,
       pagination,
       onChange (page) {
@@ -182,4 +141,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CustomerComplaintsIndex);
+export default connect(mapStateToProps)(CustomerCompIndex);
