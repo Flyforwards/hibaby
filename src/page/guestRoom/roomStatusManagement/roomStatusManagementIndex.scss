@@ -10,26 +10,24 @@
   }
   .ScreenBarDiv{
     margin-left:10px;
-
     .headDiv{
       width: 100%;
       height: 40px;
-      margin-bottom: 10px;
       div{
-        float: left;
         border-radius:5px;
-        .btn{
-          clear: both;
-          margin-right: 0px;
-        }
       }
-      span{
-        font: 14px "微软雅黑";
-        span{
-          font: 18px "微软雅黑";
-        }
+      .switchDiv{
+        float: left;
+        margin-left:50px;
+        padding-top: 3px;
+        background-color: dimgray;
+        color: white;
+        width: 50px;
+        height: 100%;
+        text-align: center;
       }
       .statisticalDiv{
+        float: left;
         text-align: center;
         background-color: dimgray;
         color: white;
@@ -38,21 +36,19 @@
         width: 530px;
         span{
           line-height: 40px;
+          font: 14px "微软雅黑";
+          span{
+            font: 18px "微软雅黑";
+          }
         }
-
       }
-      .switchDiv{
-        margin-left:50px;
-        padding-top: 3px;
-        background-color: dimgray;
-        color: white;
-        width: 50px;
-        height: 100%;
-        text-align: center;
-
+      .btn{
+        float: right;
       }
     }
     .SelectDiv{
+      clear: both;
+      margin-top: -20px;
       label{
         font: 14px "微软雅黑";
       }
