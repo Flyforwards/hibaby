@@ -256,7 +256,8 @@ class Organization extends React.Component {
       userName: fields.userName,
       status: fields.OrganizationType,
       character: fields.SystemRoles,
-      statusType: true
+      statusType: true,
+      current:1
     })
     this.props.dispatch({
       type: 'organization/organizationList',
