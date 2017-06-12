@@ -15,28 +15,31 @@ class GroupCharIndex extends React.Component {
       title: '别名',
       dataIndex: 'abName',
       key: 'abName',
-      width: '200px'
+      width: '15%'
     }, {
       title: '字段名称',
       dataIndex: 'name',
       key: 'name',
-      width: '200px'
+      width: '15%'
     }, {
       title: '字段描述',
       dataIndex: 'description',
-      key: 'description'
+      key: 'description',
+      width: '25%'
     }, {
       title: '最后编辑人',
       dataIndex: 'operatorName',
       key: 'operatorName',
-      width: '100px'
+      width: '100px',
+      width: '15%'
     }, {
       title: '最后编辑时间',
       dataIndex: 'operatorTime',
+      width: '200px',
+      width: '20%',
       render: (record) => {
         return moment(record).format("YYYY-MM-DD HH:mm:ss")
       },
-      width: '200px'
     }, {
       title: '操作',
       dataIndex: 'operation',
@@ -45,7 +48,7 @@ class GroupCharIndex extends React.Component {
         return (
           <Link disabled={detail} className="firstA" to={`/system/group-char/detail?dataId=${record.id}` }> 查看 </Link>)
       },
-      width: '150px'
+      width: '10%'
     }];
   }
 

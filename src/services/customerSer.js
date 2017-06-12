@@ -48,6 +48,14 @@ export function confirmTreatmentFinish(values) {
   })
 }
 
+// 创建参观信息
+export function saveCustomerVis(values) {
+  return request('/crm/api/v1/customerVis/saveCustomerVis', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 
 
