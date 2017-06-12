@@ -21,7 +21,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/dishes'));
-        cb(null, require('page/meals/dishes/DishesFormModal.js'))
+        cb(null, require('page/meals/dishes/DishesFormPage.js'))
       })
     }
   },
