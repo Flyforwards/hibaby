@@ -64,6 +64,16 @@ export function getCustomerVisListByDate(values) {
   })
 }
 
+// 详情数据
+export function getCustomerVisById(values) {
+  return request('/crm/api/v1/customerVis/getCustomerVisById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
 
 
 

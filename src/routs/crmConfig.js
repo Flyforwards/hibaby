@@ -311,6 +311,16 @@ export default (app) => [
       })
     }
   },
+  //预约参观详情
+  {
+    path: '/crm/customer-vis/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/customerVis'));
+        cb(null, require('page/crm/customerService/CustomerVisDetailIndex.jsx'))
+      })
+    }
+  },
 
 
   //会员卡打印路由
