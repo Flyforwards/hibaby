@@ -82,7 +82,7 @@ class OrganizationLefted extends React.Component {
         })
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.statusType(false,1)
-        console.log("this.state.current",this.props.current)
+        //console.log("this.state.current",this.props.current)
         this.props.dispatch({
           type: 'organization/organizationList',
           payload: {
