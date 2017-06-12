@@ -18,6 +18,10 @@ class addCustomer extends React.Component{
 
   componentWillUnmount(){
     this.props.dispatch({type:'addCustomer/reductionState'})
+    this.props.dispatch({
+      type: 'membershipcard/setAddCustomerTab',
+      payload: false 
+    })
   }
 
   onChangeTabs(activityKey) {
@@ -32,19 +36,20 @@ class addCustomer extends React.Component{
 
     const {editCustomer,isDetail}= this.props.users;
     const {addSuccess}= this.props.course;
-
+    const { getSuccess } =this.props.membershipcard;
+    // console.log("membershipcard>>>>",getSuccess)
     let TabPaneAry = [
       <TabPane className='tabsContent' tab="客户信息" key="1">
         {isDetail ? <CustomerDetails/> : <CustomerInformation/>}
       </TabPane>,
-      <TabPane tab="健康档案" disabled={!(this.props.users.expandData||addSuccess)} key="2">
+      <TabPane tab="健康档案" disabled={!(this.props.users.expandData||addSuccess || getSuccess)} key="2">
         <UserHealthInformation/>
       </TabPane>,
-      <TabPane tab="套餐" key="3" disabled={!(this.props.users.expandData||addSuccess)}>
+      <TabPane tab="套餐" key="3" disabled={!(this.props.users.expandData||addSuccess || getSuccess)}>
         <AddCourse />
       </TabPane>];
 
-    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess){
+    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess || getSuccess){
       TabPaneAry.push(<TabPane tab="会员卡" key="4">
         <MembershipCard/>
       </TabPane>)
@@ -53,6 +58,10 @@ class addCustomer extends React.Component{
     if (addSuccess){
       defaultActiveKey = '3';
     }
+    if(getSuccess){
+      defaultActiveKey = '4';
+    }
+    // console.log("defaultActiveKey>>>",defaultActiveKey)
     return(
       <div>
         <Tabs onChange={this.onChangeTabs.bind(this)} defaultActiveKey={defaultActiveKey} type="card">
@@ -69,7 +78,8 @@ function mapStateToProps(state) {
   return {
     users: state.addCustomer,
     course:state.addCourse,
-    activityKey: state.addCustomer.activityKey
+    activityKey: state.addCustomer.activityKey,
+    membershipcard:state.membershipcard
   };
 }
 export default connect(mapStateToProps)(addCustomer)

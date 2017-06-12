@@ -17,6 +17,7 @@ export default {
     trigger: false,
     timeDate:'',
     postValues: {},
+    getSuccess:false,
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -43,6 +44,9 @@ export default {
     //分页
     getCardPageSave(state, { payload: { list, pagination }}) {
       return {...state, list, pagination: {  ...state.pagination,...pagination }};
+    },
+    setAddCustomerTab(state, { payload: todo }){
+      return {...state,getSuccess:todo};
     },
     //续费记录分页
     getRenewPageSave(state, { payload: { list, renewRecordPagination }}) {
@@ -478,6 +482,7 @@ export default {
             data:values,
           }
         })
+        // yield put({type:'setAddCustomerTab',payload:true});
       }
     },
     //服务器时间
