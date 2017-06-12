@@ -289,7 +289,9 @@ export default {
             activeKeys:"2",
           }
         });
-
+        yield put({
+          type:'addCustomer/getCustomerExtendById',
+        });
       }
     },
 
