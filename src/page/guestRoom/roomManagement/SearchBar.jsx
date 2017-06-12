@@ -3,7 +3,7 @@
 import React from 'react'
 import {connect} from 'dva'
 import './roomManagementIndex.scss'
-import {Link} from 'react-router'
+import {Link,routerRedux} from 'react-router'
 import {Button,Row, Col,pagination,Form,Select} from 'antd'
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -39,15 +39,15 @@ function SearchBar(props) {
   let searchDiv = [];
 
   for(let i = 0;i<searchAry.length;i++){
-    searchDiv.push(cusFromItem(searchAry[i]))
+    searchDiv.push(<Col span={8}>{cusFromItem(searchAry[i])}</Col>  )
   }
 
   function onSearch() {
 
-    this.props.form.validateFields((err, values) => {
+    props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.dispatch(routerRedux.push({
-          type: 'roomManagement/listByPage',
+        props.dispatch(routerRedux.push({
+          pathname: '/chamber/roomindex',
           query: values
         }))
       }
@@ -59,7 +59,7 @@ function SearchBar(props) {
     onSearch();
   }
 
-  const divArray = [<Col span={8}>{searchDiv[3]}</Col>];
+  const divArray = [searchDiv[3]];
   if(isSearch){
     divArray.push(
       <Col span={16}>
@@ -82,9 +82,9 @@ function SearchBar(props) {
   return(
     <div className="searchDiv">
       <Row style={{height: 50,overflow:'hidden'}}>
-        <Col span={8}>{searchDiv[0]}</Col>
-        <Col span={8}>{searchDiv[1]}</Col>
-        <Col span={8}>{searchDiv[2]}</Col>
+        {searchDiv[0]}
+        {searchDiv[1]}
+        {searchDiv[2]}
       </Row>
       <Row style={{height: 50,overflow:'hidden'}}>
         {divArray}
