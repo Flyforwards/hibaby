@@ -8,7 +8,7 @@ import logo from './images/logo.png'
 import { Link} from 'react-router'
 const FormItem = Form.Item;
 const createForm = Form.create
-
+import moment from 'moment'
 @createForm()
 class LoginIndex extends React.Component {
 
@@ -37,6 +37,8 @@ class LoginIndex extends React.Component {
   }
 
   render() {
+      // console.log(moment().format('A hh:mm'))
+      // console.log(moment('PM 04:44').format('hh:mm'))
       const { getFieldDecorator } = this.props.form;
       return (
         <div className="login-form-cent login">

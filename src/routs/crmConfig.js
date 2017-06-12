@@ -291,6 +291,27 @@ export default (app) => [
       })
     }
   },
+  //预约参观
+  {
+    path: '/crm/customer-vis',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/customerVis'));
+        cb(null, require('page/crm/customerService/CustomerVisIndex.jsx'))
+      })
+    }
+  },
+  //预约参观添加
+  {
+    path: '/crm/customer-vis/add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/customerVis'));
+        cb(null, require('page/crm/customerService/CustomerVisAddIndex.jsx'))
+      })
+    }
+  },
+
 
   //会员卡打印路由
   {
