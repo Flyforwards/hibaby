@@ -23,6 +23,7 @@ class MemberShipCard extends Component {
   constructor(props) {
     super(props);
     const _this=this;
+    this.dispatch = props.dispatch;
     this.state={
       commonVisible:false,
       flagValue:1,
@@ -155,10 +156,12 @@ class MemberShipCard extends Component {
   }
 
   backTabs() {
-    this.props.dispatch({
-      type: 'addCustomer/changeTabs',
-      payload: { activityKey: "1" }
-    })
+
+    this.dispatch(routerRedux.push("/crm/customer"))
+    // this.props.dispatch({
+    //   type: 'addCustomer/changeTabs',
+    //   payload: { activityKey: "1" }
+    // })
   }
 
 
