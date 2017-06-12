@@ -18,11 +18,12 @@ class DeleteNode extends Component {
         this.props.onCancel()
     }
     handleOk() {
-      //  console.log("ok",Number(this.props.ID))
+      console.log("ok",this.props.TissueProperty)
         this.props.dispatch({
             type: 'organization/deleteDepartment',
             payload: {
-              dataId:Number(this.props.ID)
+              dataId:Number(this.props.ID),
+              TissueProperty:this.props.TissueProperty
             }
         })
         this.props.onCancel()

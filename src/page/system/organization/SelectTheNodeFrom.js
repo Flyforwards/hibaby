@@ -42,12 +42,14 @@ class SelectTheNodeFrom extends Component {
       render: (deptId)=>{
         const DeptList=this.props.getDeptList;
         let deptlist=[];
-        DeptList.map((res,index)=>{
+        if(DeptList){
+          DeptList.map((res,index)=>{
           deptlist.push(res.id)
-        })
-        for(let i=0;i<deptlist.length;i++){
-          if(deptlist[i]==deptId){
-            return (DeptList[i].name)
+          })
+          for(let i=0;i<deptlist.length;i++){
+            if(deptlist[i]==deptId){
+              return (DeptList[i].name)
+            }
           }
         }
       },
