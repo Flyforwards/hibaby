@@ -46,7 +46,6 @@ export default {
       return {...state, list, pagination: {  ...state.pagination,...pagination }};
     },
     setAddCustomerTab(state, { payload: todo }){
-      console.log("成功")
       return {...state,getSuccess:todo};
     },
     //续费记录分页
