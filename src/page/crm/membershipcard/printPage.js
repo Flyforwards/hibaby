@@ -10,6 +10,7 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 import { Link } from 'react-router';
+import {routerRedux} from 'dva/router';
 import './index.scss';
 import './printPage.css';
 import moment from 'moment';
@@ -68,6 +69,14 @@ class MemberShipCard extends Component {
   onPrint(){
     do_print('print-content');
   }
+  onBack() {
+    this.props.dispatch(routerRedux.push({
+      pathname:'/crm/customer/customerDetails',
+      query:{
+        dataId:this.props.user.dataDetailId,
+      }
+    }))
+  }
   render() {
     const { systemTime ,feeRecord,renewRecord,refundRecord} = this.props;
     return (
@@ -82,6 +91,8 @@ class MemberShipCard extends Component {
           />
           <Button type="primary" className="cardBtn" onClick={this.onSearch.bind(this)}>查询</Button>
           <Button type="primary" className="cardBtn" style={{float:'right'}} onClick={this.onPrint.bind(this)}>打印</Button>
+          <Button type="primary" className="cardBtn" style={{float:'right'}} onClick={this.onBack.bind(this)}>返回</Button>
+
         </div>
         <div id="print-content">
           <PrintPageList />
