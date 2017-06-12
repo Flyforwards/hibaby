@@ -35,16 +35,16 @@ class MemberShipCard extends Component {
       this.props.dispatch({
         type:'membershipcard/getPrintBaseMsg',
         payload:{
-          "startTime":this.state.data ?this.state.data.startTime:'',
-          "endTime":this.state.data ? this.state.data.endTime:'',
+          "startTime":this.state.data ?this.state.data.startTime:new Date().format("yyyy-MM-dd"),
+          "endTime":this.state.data ? this.state.data.endTime:new Date().format("yyyy-MM-dd"),
         }
       })
       //账单打印信息
      this.props.dispatch({
        type:'membershipcard/getPrintAccount',
        payload:{
-         "startTime":this.state.data ?this.state.data.startTime:'',
-         "endTime":this.state.data ? this.state.data.endTime:'',
+         "startTime":this.state.data ?this.state.data.startTime:new Date().format("yyyy-MM-dd"),
+         "endTime":this.state.data ? this.state.data.endTime:new Date().format("yyyy-MM-dd"),
        }
     })
   }
@@ -72,7 +72,7 @@ class MemberShipCard extends Component {
   onBack() {
     this.props.dispatch({
       type: 'membershipcard/setAddCustomerTab',
-      payload: true 
+      payload: true
     })
     history.go(-1)
   }
