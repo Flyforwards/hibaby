@@ -56,6 +56,14 @@ export function saveCustomerVis(values) {
   })
 }
 
+// 根据日期获取预约信息
+export function getCustomerVisListByDate(values) {
+  return request('/crm/api/v1/customerVis/getCustomerVisListByDate', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 
 

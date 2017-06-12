@@ -1,0 +1,55 @@
+
+.Dishes-left{
+	float:left;
+	background-color:#fff;
+	height:100%;
+	min-height: 800px;
+	overflow: hidden;
+	position:relative;
+	margin:10px 2px 0 0;
+	min-width:180px;
+	.ant-tree li a[draggable], .ant-tree li a[draggable="true"] {
+		font-size: 14px;
+		display:inline-block;
+		width:100%;
+		font-weight: 400;
+	}
+	.ant-tree li a:hover {
+	    background-color: rgba(204, 204, 204, 1);
+	    font-weight: 400;
+	    margin-left:-20px;
+	}
+	.ant-tree li ul {
+		margin-right: 10px;
+	}
+	.ant-tree li a.ant-tree-node-selected {
+    	background-color: rgba(204, 204, 204, 1);
+    	font-weight: 400;
+	}
+	.ant-tree > li:first-child {
+	    a{
+	    	font-size:15px;
+	    	font-weight: 400;
+	    }
+	}
+	.ant-tree-title{
+		display:inline-block;
+		margin-left:-0px;
+	}
+	.ant-tree-node-content-wrapper{
+		width:100%;
+		.plus {
+		 font-size:18px;
+	     position: absolute;
+	     left:64%;
+	     //margin-top:4px;
+	     color: #b87638 !important;
+	 	}
+	.ant-tree li{
+		margin-left:-11px;
+	}
+	.ant-tree {
+		margin-left:22px;
+	}
+}
+}

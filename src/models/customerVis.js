@@ -6,7 +6,7 @@ import { local, session } from 'common/util/storage.js';
 import { PAGE_SIZE } from 'common/constants.js'
 import { parse } from 'qs'
 import * as systemService from '../services/system';
-
+import moment from 'moment'
 export default {
   namespace: 'customerVis',
   state: {
@@ -59,7 +59,7 @@ export default {
     *saveCustomerVis({payload: values}, { call, put }) {
       const {data: { data, code} } = yield call(CustomerSerService.saveCustomerVis, values);
       if (code == 0) {
-        message.success("创建客诉信息成功");
+        message.success("创建客户参观信息成功");
         yield put(routerRedux.push('/crm/customer-vis'));
       }
     },
@@ -131,26 +131,15 @@ export default {
 
 
     *getCustomerVisByDate({ payload: values }, { call, put }) {
-      values = parse(location.search.substr(1))
-      if (values.page === undefined) {
-        values.page = 1;
-      }
-      if (values.size === undefined) {
-        values.size = 10;
-      }
-      const { data: { data, total, page, size, code } } = yield call(CustomerSerService.getCustomerCompList, values);
+      const { data  } = yield call(CustomerSerService.getCustomerVisListByDate, values);
       if (code == 0) {
-        yield put({
-          type: 'getCustomerVisSave',
-          payload: {
-            list: data,
-            pagination: {
-              current: Number(page) || 1,
-              pageSize: Number(size) || 10,
-              total: total,
-            },
-          },
-        })
+        // yield put({
+        //   type: 'getCustomerVisSave',
+        //   payload: {
+        //     list: data,
+        //   },
+        // })
+        console.log(data);
       }
     },
 
@@ -159,10 +148,10 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
 
-        if (pathname === '/crm/customer-comp') {
+        if (pathname === '/crm/customer-vis') {
           dispatch({
             type: 'getCustomerVisByDate',
-            payload: query
+            payload: { visDate: moment().format('YYYY-MM-DD')}
           });
 
         }

@@ -19,9 +19,8 @@ import moment from 'moment'
 class CustomerVisAddIndex extends React.Component {
   constructor(props) {
     super(props);
-    // value={ moment(record).format('A hh:mm')}
     this.options =  VISIT_TIME.map((record,index)=>{
-      return (<Option value={record.value} key={index}>{record.name}</Option>)
+      return (<Option value={index+1} key={index}>{record}</Option>)
     });
     this.userInfo = session.get("userInfo");
   }
@@ -40,7 +39,7 @@ class CustomerVisAddIndex extends React.Component {
   }
 
   render() {
-    const { departments, form } = this.props;
+    const { form } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 3 },
@@ -67,7 +66,7 @@ class CustomerVisAddIndex extends React.Component {
                 )}
               </FormItem>
               <FormItem {...formItemLayout} label={ "参观时段"}>
-                {getFieldDecorator('visitTime', {rules: [{ required: true, message: '请选择参观时段' }],
+                {getFieldDecorator('visitTimeId', {rules: [{ required: true, message: '请选择参观时段' }],
                 })(
                   <Select>
                     {

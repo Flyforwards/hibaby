@@ -15,4 +15,14 @@ export default (app) => [
       })
     }
   },
+  //创建菜品
+  {
+    path: '/meals/dishes/addDishes',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/dishes'));
+        cb(null, require('page/meals/dishes/DishesFormPage.js'))
+      })
+    }
+  },
 ]

@@ -21,6 +21,19 @@ export default {
   },
   //调用服务器端接口
   effects: {
+    //获取组织架构的列表
+    *getNodesList({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(dishesService.getDepartmentNodes, values);
+      if (code == 0) {
+        yield put({
+          type: 'getNodesList',
+          payload: {
+            data,
+            code
+          }
+        });
+      }
+    },
 
   },
   //同步请求，更新state
