@@ -82,7 +82,7 @@ class SelectTheNodeFrom extends Component {
           for(let n=0;n<roleIdData.length;n++){
             for(let i=0;i<roleData.length;i++){
               if(roleData[i]==Number(roleIdData[n])){
-                selectName.push(selectData[i].name)
+                selectName.push(selectData[i].name+" ; ")
               }
             }
           }
@@ -158,7 +158,7 @@ class SelectTheNodeFrom extends Component {
     const  { selectedNodes } = e;
     if(selectedNodes[0]){
       const node = selectedNodes[0];
-      //console.log("节点>>>>",node)
+      console.log("节点>>>>",node.props.nodeId)
       this.nodeId = node.props.nodeId;
       this.tissueProperty = node.props.tissueProperty;
       this.props.dispatch({
@@ -172,6 +172,7 @@ class SelectTheNodeFrom extends Component {
   }
   render() {
     const { visible, treeData, list,total } = this.props;
+    let endemic = session.get("endemic")
     let loops = []
     const rowSelection = {
       type: "radio",
@@ -188,10 +189,11 @@ class SelectTheNodeFrom extends Component {
     };
     const nodesIteration = (nodes, itemKey) => {
       return nodes.map((item, index) => {
+        //console.log("item>>>>>",item.id)
         if (item.nodes && item.nodes.length) {
-          return <TreeNode key={ index } title={item.name+"("+String(item.count)+")"} nodeId={item.id} tissueProperty={item.tissueProperty} >{nodesIteration(item.nodes, (index+1) * 10)}</TreeNode>;
+          return <TreeNode key={ item.id } title={item.name+"("+String(item.count)+")"} nodeId={item.id} tissueProperty={item.tissueProperty} >{nodesIteration(item.nodes, (index+1) * 10)}</TreeNode>;
         }
-        return <TreeNode key={ itemKey+index } title={item.name+"("+String(item.count)+")"} nodeId={item.id} tissueProperty={item.tissueProperty}/>;
+        return <TreeNode key={ item.id } title={item.name+"("+String(item.count)+")"} nodeId={item.id} tissueProperty={item.tissueProperty}/>;
       })
     }
     if(list != null){
@@ -241,7 +243,7 @@ class SelectTheNodeFrom extends Component {
                 className="draggable-tree"
                 onExpand={ this.expandHandler.bind(this) }
                 onSelect={ this.onSelect.bind(this,) }
-                defaultSelectedKeys = { ["7"] }
+                defaultExpandedKeys = { [String(endemic.id)] }
               >
               {
                 loops
