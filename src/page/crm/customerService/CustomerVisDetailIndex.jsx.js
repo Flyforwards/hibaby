@@ -32,7 +32,7 @@ class CustomerVisAddIndex extends React.Component {
       labelCol:{ span: 3 },
       wrapperCol:{ span:20 }
     }
-    
+
     return (
       <div className="customer-comp-cent">
         <div>
