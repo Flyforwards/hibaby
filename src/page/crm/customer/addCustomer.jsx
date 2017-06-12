@@ -32,7 +32,8 @@ class addCustomer extends React.Component{
 
     const {editCustomer,isDetail}= this.props.users;
     const {addSuccess}= this.props.course;
-
+    const { getSuccess } =this.props.membershipcard;
+    // console.log("membershipcard>>>>",getSuccess)
     let TabPaneAry = [
       <TabPane className='tabsContent' tab="客户信息" key="1">
         {isDetail ? <CustomerDetails/> : <CustomerInformation/>}
@@ -42,17 +43,24 @@ class addCustomer extends React.Component{
       </TabPane>,
       <TabPane tab="套餐" key="3" disabled={!(this.props.users.expandData||addSuccess)}>
         <AddCourse />
+      </TabPane>,
+      <TabPane tab="会员卡" key="4">
+        <MembershipCard/>
       </TabPane>];
 
-    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess){
-      TabPaneAry.push(<TabPane tab="会员卡" key="4">
-        <MembershipCard/>
-      </TabPane>)
-    }
+    // if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess){
+    //   TabPaneAry.push(<TabPane tab="会员卡" key="4">
+    //     <MembershipCard/>
+    //   </TabPane>)
+    // }
     let defaultActiveKey = '1';
     if (addSuccess){
       defaultActiveKey = '3';
     }
+    if(getSuccess){
+      defaultActiveKey = '4';
+    }
+    console.log("defaultActiveKey>>>",defaultActiveKey)
     return(
       <div>
         <Tabs onChange={this.onChangeTabs.bind(this)} defaultActiveKey={defaultActiveKey} type="card">
@@ -69,7 +77,8 @@ function mapStateToProps(state) {
   return {
     users: state.addCustomer,
     course:state.addCourse,
-    activityKey: state.addCustomer.activityKey
+    activityKey: state.addCustomer.activityKey,
+    membershipcard:state.membershipcard
   };
 }
 export default connect(mapStateToProps)(addCustomer)

@@ -70,12 +70,11 @@ class MemberShipCard extends Component {
     do_print('print-content');
   }
   onBack() {
-    this.props.dispatch(routerRedux.push({
-      pathname:'/crm/customer/customerDetails',
-      query:{
-        dataId:this.props.user.dataDetailId,
-      }
-    }))
+    this.props.dispatch({
+      type: 'membershipcard/setAddCustomerTab',
+      payload: true 
+    })
+    history.go(-1)
   }
   render() {
     const { systemTime ,feeRecord,renewRecord,refundRecord} = this.props;
