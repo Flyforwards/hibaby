@@ -20,13 +20,19 @@ class ChargeBackFeeModal extends Component {
       value: [],
       InputValue:'',
      objValue:{},
-     num:0,
+     num:'',
      disabledValue:true,
 
      // fetching: false,
     }
   }
   handleCancel() {
+    this.setState({
+      InputValue:'',
+      objValue:{},
+      disabledValue:true,
+      num:'',
+    })
    this.props.dispatch({
      type:'membershipcard/switchChargeState'
    })
@@ -41,8 +47,8 @@ class ChargeBackFeeModal extends Component {
         this.setState({
           InputValue:'',
           objValue:{},
-          disabledValue:false,
-          num:0,
+          disabledValue:true,
+          num:'',
         })
       }
     })
@@ -81,6 +87,14 @@ class ChargeBackFeeModal extends Component {
   }
 
   fetchUser = (value) => {
+    this.props.dispatch({
+      type:'membershipcard/getGoodsList',
+      payload:{
+        "name":value
+      }
+    })
+  }
+  onFocu = (value) => {
     this.props.dispatch({
       type:'membershipcard/getGoodsList',
       payload:{
@@ -149,6 +163,7 @@ class ChargeBackFeeModal extends Component {
                     showSearch
                     onSearch={this.fetchUser.bind(this)}
                     onChange={this.handleChange.bind(this)}
+                     onFocus={this.onFocu.bind(this)}
                     style={{ width: '100%' }}
                   >
                     {goodsInfoList ?goodsInfoList.map(d => <Option key={d.id} title={d.price}>{d.name}</Option>):null}
@@ -164,7 +179,7 @@ class ChargeBackFeeModal extends Component {
                    initialValue: this.state.num ,
                   rules: [{validator:this.checkPrice, required: true, message: '' }],
                 })(
-                  <Input  placeholder=""  type="number" min={0} addonAfter="件" disabled={this.state.disabledValue} onChange={this.numHandleChange.bind(this)}/>
+                  <Input  placeholder="输入购买数量"  type="number" min={0} addonAfter="件" disabled={this.state.disabledValue} onChange={this.numHandleChange.bind(this)}/>
                 )}
               </FormItem>
             </Col>

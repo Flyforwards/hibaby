@@ -62,7 +62,7 @@ class OrganizationLefted extends React.Component {
     this.deleteDisplay = "block"
     if (value[0] != null) {
       this.nodes = node.selectedNodes[0].props.dataIndex
-      // console.log("node节点")
+      console.log("node节点")
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
         this.deleteDisplay = "none"
@@ -81,7 +81,8 @@ class OrganizationLefted extends React.Component {
           node: node.selectedNodes[0],
           parentId: node.selectedNodes[0].props.parentId,
           dataIndex: node.selectedNodes[0].props.dataIndex,
-          unfolded:value
+          unfolded:value,
+          TissueProperty:node.selectedNodes[0].props.dataIndex
         })
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.statusType(false,1)
@@ -100,7 +101,8 @@ class OrganizationLefted extends React.Component {
           ID: node.selectedNodes[0].key,
           node: node.selectedNodes[0],
           parentId: node.selectedNodes[0].props.parentId,
-          dataIndex: node.selectedNodes[0].props.dataIndex
+          dataIndex: node.selectedNodes[0].props.dataIndex,
+          unfolded:value
         })
       }
       this.props.dispatch({
@@ -121,6 +123,7 @@ class OrganizationLefted extends React.Component {
         this.addDisplay = "block"
       }
     }
+    console.log("this.state.unfolded",this.state.unfolded)
   }
 
   seeDetails() {
@@ -221,7 +224,8 @@ class OrganizationLefted extends React.Component {
       }
     })
     // $(".Organization-left li").find(".ant-tree-title").after("<span class='plus'>+</span>");
-    if (userInfo.categoryId != 0) {
+    
+    if (userInfo != null && userInfo.categoryId != 0) {
       $("li").find(".plus").eq(0).css('display', 'none');
     }
   }
@@ -266,6 +270,7 @@ class OrganizationLefted extends React.Component {
           onExpand={this.expandHandler.bind(this)}
           autoExpandParent = { true }
           defaultSelectedKeys = { this.state.unfolded }
+        
         >
           { loops }
         </Tree>
@@ -283,6 +288,7 @@ class OrganizationLefted extends React.Component {
           parentId={this.state.parentId}
           TissueProperty={this.props.TissueProperty}
           dataIndex={this.state.dataIndex}
+          parentTissueProperty={this.state.TissueProperty}
         />
         <SeeDtail
           visible={ this.state.SeeDtailNodeVisible }
@@ -301,7 +307,7 @@ class OrganizationLefted extends React.Component {
           onCancel={ this.handleDeleteNodeCancel.bind(this) }
           ID={this.state.ID}
           parentId={this.state.parentId}
-          TissueProperty={this.props.TissueProperty}
+          TissueProperty={this.state.TissueProperty}
           dataIndex={this.state.dataIndex}
         />
       </div>

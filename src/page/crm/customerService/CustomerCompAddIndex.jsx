@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'dva';
 import './CustomerCompIndex.scss';
-import { Card, Input, Button, Form, DatePicker,Select, Row, Col } from 'antd';
+import { Card, Input, Button, Form,Select, Row, Col } from 'antd';
 import DictionarySelect from 'common/dictionary_select';
 import { Link } from 'react-router';
 const FormItem = Form.Item;
@@ -14,7 +14,7 @@ const Option = Select.Option
 
 
 @createForm()
-class CustomerComplaintsAddIndex extends React.Component {
+class CustomerCompAddIndex extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -113,4 +113,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CustomerComplaintsAddIndex);
+export default connect(mapStateToProps)(CustomerCompAddIndex);
