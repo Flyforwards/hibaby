@@ -55,7 +55,7 @@ class addCustomer extends React.Component{
     }
     return(
       <div>
-        <Tabs onChange={this.onChangeTabs.bind(this)} activeKey={this.props.activityKey} type="card">
+        <Tabs onChange={this.onChangeTabs.bind(this)} defaultActiveKey={defaultActiveKey} type="card">
           {TabPaneAry}
         </Tabs>
       </div>
