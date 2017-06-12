@@ -1,0 +1,83 @@
+.roomStatusDiv{
+  width: 1000px;
+  padding: 10px 10px 10px 0;
+  .antCli{
+    width: 100%;
+    height: 40px;
+  }
+  p{
+    font: 13px "微软雅黑";
+  }
+  .ScreenBarDiv{
+    margin-left:10px;
+
+    .headDiv{
+      width: 100%;
+      height: 40px;
+      margin-bottom: 10px;
+      div{
+        float: left;
+        border-radius:5px;
+        .btn{
+          clear: both;
+          margin-right: 0px;
+        }
+      }
+      span{
+        font: 14px "微软雅黑";
+        span{
+          font: 18px "微软雅黑";
+        }
+      }
+      .statisticalDiv{
+        text-align: center;
+        background-color: dimgray;
+        color: white;
+        margin-left:20px;
+        height: 100%;
+        width: 530px;
+        span{
+          line-height: 40px;
+        }
+
+      }
+      .switchDiv{
+        margin-left:50px;
+        padding-top: 3px;
+        background-color: dimgray;
+        color: white;
+        width: 50px;
+        height: 100%;
+        text-align: center;
+
+      }
+    }
+    .SelectDiv{
+      label{
+        font: 14px "微软雅黑";
+      }
+    }
+    .radioDiv{
+
+    }
+  }
+  .cardArrayDiv{
+    margin-bottom:20px;
+    .smallCard{
+      float: left;
+      margin-left: 10px;
+      margin-top: 10px;
+      width: 188px;
+      height: 230px;
+      p{
+        line-height: 25px;
+      }
+      .bottomLine{
+        width: 100%;
+        line-height: 25px;
+        display: inline-block;
+        margin-top: 10px;
+      }
+    }
+  }
+}

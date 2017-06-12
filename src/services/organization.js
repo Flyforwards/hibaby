@@ -166,4 +166,3 @@ export function getEndemic(values) {
     body: JSON.stringify(values),
   })
 }
-

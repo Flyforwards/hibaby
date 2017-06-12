@@ -197,13 +197,21 @@ export default {
     },
     //根据节点id删除组织架构节点
     *deleteDepartment({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(organizationService.deleteDepartment, values);
+      console.log("删除该组织架构节点成功",values)
+      const { data: { data, code } } = yield call(organizationService.deleteDepartment, {dataId:values.dataId});
       if (code == 0) {
         message.success("删除该组织架构节点成功");
-        yield put({
-          type: 'getDepartmentNodes',
-          payload: {}
-        });
+        if(values.TissueProperty == 2){
+          yield put({
+            type:'layout/logout',
+            payload:{ }
+          })
+        }else{
+          yield put({
+            type: 'getDepartmentNodes',
+            payload: {}
+          });
+        }
       }
     },
     //根据节点id更新组织架构节点
@@ -311,6 +319,7 @@ export default {
     *saveDepartment({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.saveDepartment, values);
       if (code == 0) {
+        //刷新地方中心的菜单
         message.success("保存组织架构节点信息成功");
         yield put({
           type: 'getDepartmentNodes',

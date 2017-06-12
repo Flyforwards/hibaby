@@ -64,6 +64,10 @@ class CardModal extends Component {
       callback('不能为空');
       return;
     }
+    if(value.length > 9){
+      callback('必须小于9位数');
+      return;
+    }
     if(/^\d*$/g.test(value)){
       callback();
       return;

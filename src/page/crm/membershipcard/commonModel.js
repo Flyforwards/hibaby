@@ -58,6 +58,10 @@ class AlertModalFrom extends Component {
       callback('不能为空');
       return;
     }
+    if(value >100000000){
+      callback('输入数值需小于1亿');
+      return;
+    }
     if((/^\d*$/g)||(/^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/g).test(value)){
       callback();
       return;
