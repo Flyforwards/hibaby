@@ -74,9 +74,9 @@ function ScreenBar(props) {
         </div>
 
           <Row className="statisticalDiv">
-            <Col span={8}><span>计划入住 12 客人</span></Col>
-            <Col span={8}><span>计划离所 8 客人</span></Col>
-            <Col span={8}><span>今日在所 8 客人</span></Col>
+            <Col span={8}><span>计划入住 <span style={{color:'yellow'}}>12</span> 客人</span></Col>
+            <Col span={8}><span>计划离所 <span style={{color:'green'}}>8</span> 客人</span></Col>
+            <Col span={8}><span>今日在所 <span style={{color:'red'}}>8</span> 客人</span></Col>
           </Row>
         <Button className='btn' onClick={ onSearch} style={{width:'136px',height:'40px',lineHeight:'40px',backgroundColor:'rgba(255, 102, 0, 1)',color:'#ffffff'}}>查询</Button>
       </div>
@@ -104,12 +104,20 @@ function ScreenBar(props) {
 function CardArray() {
   function creatChiCard(index) {
     return(
-      <Card className="smallCard" title={1000+index} extra="空房">
+      <Card className="smallCard" bodyStyle={{padding:'10px'}} title={1000+index} extra="空房">
         <p>客户姓名：王妙春</p>
         <p>母婴护理师：朱禹桥</p>
         <p>会员卡种：铂金会员</p>
         <p>会员卡号：a12345</p>
         <p>离所日期：2017-04-05</p>
+        <Row className='bottomLine'>
+          <Col span={8}><p>房间状态</p></Col>
+          <Col offset={1} span={15}>
+            <Select className='antCli'  placeholder='请选择'>
+
+            </Select>
+          </Col>
+        </Row>
       </Card>
     )
   }
