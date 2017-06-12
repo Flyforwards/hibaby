@@ -18,6 +18,10 @@ class addCustomer extends React.Component{
 
   componentWillUnmount(){
     this.props.dispatch({type:'addCustomer/reductionState'})
+    this.props.dispatch({
+      type: 'membershipcard/setAddCustomerTab',
+      payload: false 
+    })
   }
 
   onChangeTabs(activityKey) {
@@ -57,7 +61,7 @@ class addCustomer extends React.Component{
     if(getSuccess){
       defaultActiveKey = '4';
     }
-    console.log("defaultActiveKey>>>",defaultActiveKey)
+    // console.log("defaultActiveKey>>>",defaultActiveKey)
     return(
       <div>
         <Tabs onChange={this.onChangeTabs.bind(this)} defaultActiveKey={defaultActiveKey} type="card">
