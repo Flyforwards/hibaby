@@ -84,7 +84,7 @@ class AlertModalFrom extends Component {
         <Col span={24} style={{width:'401px' }}>
           <FormItem label="自动升级卡级别" {...formItemLayout}>
             {getFieldDecorator('upgrade', {
-              rules: [{ required: true, message: '自动升级卡级别' }]
+              rules: [{ required: true, message: '选择自动升级卡级别' }]
             })(
               <RadioGroup >
                 <Radio value="1">是</Radio>

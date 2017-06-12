@@ -45,7 +45,11 @@ function ConclusionInformationDetail(props) {
 
   //返回
   function handleBack() {
-    dispatch(routerRedux.push('/crm/customer'));
+    const {dispatch} = props;
+    dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
   function handleEdit(){

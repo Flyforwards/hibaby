@@ -20,6 +20,14 @@ class addCustomer extends React.Component{
     this.props.dispatch({type:'addCustomer/reductionState'})
   }
 
+  onChangeTabs(activityKey) {
+    this.props.dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey }
+    })
+  }
+
+
   render(){
 
     const {editCustomer,isDetail}= this.props.users;
@@ -47,7 +55,7 @@ class addCustomer extends React.Component{
     }
     return(
       <div>
-        <Tabs  defaultActiveKey={defaultActiveKey} type="card">
+        <Tabs onChange={this.onChangeTabs.bind(this)} activeKey={this.props.activityKey} type="card">
           {TabPaneAry}
         </Tabs>
       </div>
@@ -60,7 +68,8 @@ class addCustomer extends React.Component{
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
-    course:state.addCourse
+    course:state.addCourse,
+    activityKey: state.addCustomer.activityKey
   };
 }
 export default connect(mapStateToProps)(addCustomer)

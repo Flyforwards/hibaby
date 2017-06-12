@@ -154,6 +154,14 @@ class MemberShipCard extends Component {
    })
   }
 
+  backTabs() {
+    this.props.dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
+  }
+
+
 
   render() {
     const { feeRecord,renewRecord,refundRecord,activeKey } = this.props;
@@ -180,7 +188,7 @@ class MemberShipCard extends Component {
           </Tabs>
         </Card>
         <div style={{textAlign:'right',marginTop:'20px'}}>
-          <Link to="/crm/customer"><Button className="cardBtn BackBtn">返回</Button></Link>
+          <Button onClick={this.backTabs.bind(this)} className="cardBtn BackBtn">返回</Button>
 
           <Button className="cardBtn PrintBtn"  onClick={this.onPrint.bind(this)}>打印</Button>
 

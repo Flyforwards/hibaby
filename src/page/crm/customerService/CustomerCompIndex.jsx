@@ -23,12 +23,12 @@ class CustomerComplaintsIndex extends React.Component {
       title: '编号',
       dataIndex: 'id',
       key: 'id',
-      width: '5%'
+      width: '7%'
     },{
       title: '客户名称',
       dataIndex: 'name',
       key: 'name',
-      width: '15%'
+      width: '18%'
     }, {
       title: '投诉内容',
       dataIndex: 'content',
@@ -48,7 +48,7 @@ class CustomerComplaintsIndex extends React.Component {
       }
     },{
       title: '处理状态',
-      width: '6%',
+      width: '7%',
       dataIndex: 'state',
       render: (record) => {
         return state[record];
@@ -154,7 +154,7 @@ class CustomerComplaintsIndex extends React.Component {
 
     const add = !this.props.permissionAlias.contains('CUSTOMERCOMP_ADD');
     return (
-      <div className = "activity-cent">
+      <div className = "customer-comp-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/customer-comp/add'>
             <Button disabled={add} className="button-add BackBtn"> 创建投诉 </Button>
