@@ -38,21 +38,18 @@ class addCustomer extends React.Component{
       <TabPane className='tabsContent' tab="客户信息" key="1">
         {isDetail ? <CustomerDetails/> : <CustomerInformation/>}
       </TabPane>,
-      <TabPane tab="健康档案" disabled={!(this.props.users.expandData||addSuccess)} key="2">
+      <TabPane tab="健康档案" disabled={!(this.props.users.expandData||addSuccess || getSuccess)} key="2">
         <UserHealthInformation/>
       </TabPane>,
-      <TabPane tab="套餐" key="3" disabled={!(this.props.users.expandData||addSuccess)}>
+      <TabPane tab="套餐" key="3" disabled={!(this.props.users.expandData||addSuccess || getSuccess)}>
         <AddCourse />
-      </TabPane>,
-      <TabPane tab="会员卡" key="4">
-        <MembershipCard/>
       </TabPane>];
 
-    // if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess){
-    //   TabPaneAry.push(<TabPane tab="会员卡" key="4">
-    //     <MembershipCard/>
-    //   </TabPane>)
-    // }
+    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess || getSuccess){
+      TabPaneAry.push(<TabPane tab="会员卡" key="4">
+        <MembershipCard/>
+      </TabPane>)
+    }
     let defaultActiveKey = '1';
     if (addSuccess){
       defaultActiveKey = '3';
