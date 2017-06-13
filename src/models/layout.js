@@ -5,6 +5,13 @@ import * as systemService from '../services/system';
 import { routerRedux } from 'dva/router'
 import { local, session } from 'common/util/storage.js'
 
+// 个人中心菜单
+const userModuleList = [
+  {"id":100,"name":"个人档案","path":"/user/information","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
+  {"id":101,"name":"我的消息","path":"/user/my-message","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
+  {"id":102,"name":"工作计划","path":"/user/work-plan","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
+  {"id":103,"name":"修改密码","path":"/user/reset-password","icon":"copyright","projectId":1,"permissionId":0,"children":[]}]
+
 export default {
   namespace: 'layout',
   state: {
@@ -175,7 +182,7 @@ export default {
       const { data: { data, code }} = yield call(usersService.getProjectAndModuleTree)
       if (code == 0) {
         const paths = location.pathname.split("/");
-        let projectInx = 0;
+        let projectInx = -1;
         if (paths.length >= 2) {
           const path1 = paths[1];
           if (data != null && data.length>0) {
@@ -187,6 +194,13 @@ export default {
           }
         }
         session.set("projectAndModuleTree", data);
+
+        // 更新头部主模块
+        yield put({
+          type: 'getProjectTreeSuccess',
+          payload: data,
+        });
+
         // 选择头部主模块
         yield put({
           type: 'updateSelectProject',
@@ -195,17 +209,22 @@ export default {
 
         // 更新左侧菜单
         if (data != null && data.length>0) {
-          const project = data[projectInx];
-          yield put({
-            type: 'changeMenu',
-            payload: { subMenu: project.moduleList || [] }
-          })
+          if (projectInx == -1) {
+            yield put({
+              type: 'changeMenu',
+              payload: { subMenu: userModuleList }
+            })
+          } else {
+            const project = data[projectInx];
+            yield put({
+              type: 'changeMenu',
+              payload: { subMenu: project.moduleList || [] }
+            })
+          }
+
         }
-        // 更新头部主模块
-        yield put({
-          type: 'getProjectTreeSuccess',
-          payload: data,
-        });
+
+
 
         // 添加白名单 先只对菜单目录做权限管理
         if (location.pathname != "/" && paths.length == 3) {
@@ -228,11 +247,16 @@ export default {
               });
             })
           }
+          // 个人中心不做权限控制
+          userModuleList.map(item=>{
+            if (location.pathname == item.path) {
+              havePer = true;
+            }
+          })
           if (!havePer) {
             yield put(routerRedux.replace("/noJurisdiction"))
           }
         }
-
       }
     },
     // 刷新菜单页面
@@ -264,14 +288,9 @@ export default {
         payload: { selectIndex: -1 }
       })
 
-      const moduleList = [
-        {"id":29,"name":"个人档案","path":"/user/information","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
-        {"id":29,"name":"我的消息","path":"/user/my-message","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
-        {"id":29,"name":"工作计划","path":"/user/work-plan","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
-        {"id":29,"name":"修改密码","path":"/user/reset-password","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]}]
       yield put({
         type: "changeMenu",
-        payload: { subMenu: moduleList || [] },
+        payload: { subMenu: userModuleList },
       })
 
       yield put(routerRedux.push('/user/information'));
