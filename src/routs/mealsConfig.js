@@ -15,6 +15,26 @@ export default (app) => [
       })
     }
   },
+  //预备调餐
+  {
+    path: '/meals/nutritionist/dinner',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/CustomerIndex.jsx'))
+      })
+    }
+  },
+  //循环界面
+  {
+    path: '/meals/nutritionist/cycle',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/meals/nutritionist/Dinner.jsx'))
+      })
+    }
+  },
   //创建菜品
   {
     path: '/meals/dishes/addDishes',
