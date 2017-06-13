@@ -1,4 +1,18 @@
 .customer-vis-cent{
+  padding: 10px 20px;
+  .button-wrapper{
+    padding:0 24px;
+  }
+  .ant-col-6{
+    text-align: end;
+  }
+  .button-add{
+    margin-left: 20px;
+    width: 150px;
+    background: #b67233;
+    border:none;
+    color: #fff;
+  }
   .left-time-btn {
     margin-left: 15px;
     margin-top: 15px;
@@ -12,4 +26,15 @@
   .left-time-span {
 
   }
+  .customer-vis-cent-add{
+    .ant-calendar-picker{
+      display: block;
+    }
+  }
+  .SaveBtn{
+    background: #f1e8df;
+    border-color: #dbb999;
+    color: #b67233;
+  }
+
 }

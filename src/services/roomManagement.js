@@ -13,6 +13,13 @@ export function addRoom(values) {
     body: JSON.stringify(values),
   })
 };
+//修改房间
+export function updateRoom(values) {
+  return request('/crm/api/v1/room/update', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
 //根据id查询房间
 export function findById(values) {
   return request('/crm/api/v1/room/findById', {

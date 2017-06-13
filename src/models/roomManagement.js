@@ -10,6 +10,10 @@ export default {
   state: {
     listData:[],
     detailData:'',
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+    },
     FloorAry:[],
     MainFloorAry:[],
     AreaAry:[],
@@ -18,11 +22,13 @@ export default {
 
   reducers: {
     setListData(state, { payload: todo }){
-      return {...state,listData:todo.data};
+      let pagination = state.pagination;
+      return {...state,listData:todo.list,pagination:{...pagination,...todo.pagination}};
     },
     setDetailData(state, { payload: todo }){
       return {...state,detailData:todo.data};
     },
+
     addMutDictData(state, { payload: todo }){
       if(todo.abName === 'LC'){
         return {...state,FloorAry:todo.data};
@@ -46,10 +52,8 @@ export default {
         abName:value.abName,
         softDelete: 0,
       };
-
       const { data: { code, data } } = yield call(addCustomerInformation.getDataDict,parameter);
       if (code == 0) {
-
         yield put({
           type: 'addMutDictData',
           payload: {
@@ -60,21 +64,50 @@ export default {
       }
     },
     *listByPage({ payload: values }, { call,put }) {
-      let size = 10;
-      let page = 1;
-
-      const dict = {page:page,size:size}
-
-      const { data: { data,code,err } } = yield call(roomManagement.listByPage, dict);
+      const dict = {page:1,size:10}
+      const param = parse(location.search.substr(1))
+      console.log(param);
+      const { data: { data, total, page, size, code} } = yield call(roomManagement.listByPage, {...dict,...param});
       if (code == 0) {
-        yield put({type: 'setListData',payload:{data}});
+
+          if(data.length == 0 && page > 1){
+            yield put(routerRedux.push(`roomManagement/listByPage?page=${page -1}&size=10`))
+          }else{
+            yield put({
+              type: 'setListData',
+              payload: {
+                list: data,
+                pagination: {
+                  current: Number(page) || 1,
+                  pageSize: Number(size) || 10,
+                  total: total,
+                },
+              },
+            })
+          }
       }
     },
     *addRoom({ payload: values }, { call,put }) {
+      console.log(values)
 
-      const { data: { code } } = yield call(roomManagement.addRoom, values);
+      const { data: { code,data } } = yield call(roomManagement.addRoom, values);
       if (code == 0) {
         message.success('添加成功')
+        console.log(data)
+        yield put(routerRedux.push({
+          pathname: '/chamber/room/roomdetail',
+          query: {dataId:values.id}
+        }))
+      }
+    },
+    *updateRoom({ payload: values }, { call,put }) {
+      const { data: { code } } = yield call(roomManagement.updateRoom, values);
+      if (code == 0) {
+        message.success('更新成功')
+        yield put(routerRedux.push({
+          pathname: '/chamber/room/roomdetail',
+          query: {dataId:values.id}
+        }))
       }
     },
     *delRoom({ payload: values }, { call,put }) {

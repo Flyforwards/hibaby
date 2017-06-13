@@ -15,14 +15,15 @@ const userModuleList = [
 export default {
   namespace: 'layout',
   state: {
-    clubs: [], // 地方中心数据
+    clubs: [], // 地方中心数据列表
     projectList: [],
     subMenu: [],
     projectTree: [],
-    userInfo: null,
+    userInfo: {},
     selectIndex: 0,
     permissionAlias: [],
     systemTime: 0,
+    endemic: {}, // 用户选择的地方中心
   },
 
   subscriptions: {
@@ -61,11 +62,15 @@ export default {
                 type: "currentUserPermissionAliasList"
               })
               session.set("endemic", selEndemic)
+              yield put({
+                type: 'selectEndemic',
+                payload: { endemic: selEndemic }
+              })
               if (location.pathname === '/login') {
                 yield put(routerRedux.push('/'))
               }
-              // 未选择地方中心则选择地方中心
             }
+            // 未选择地方中心则选择地方中心
           } catch (err) {
             if (clubs !== null && clubs.length === 1) {
               const endemic = clubs[0];
@@ -73,6 +78,10 @@ export default {
                 const {data: {code: code4}} = yield call(usersService.setEndemic, {endemicId: endemic.id});
                 if (code4 === 0) {
                   session.set("endemic", endemic)
+                  yield put({
+                    type: 'selectEndemic',
+                    payload: { endemic }
+                  })
                   // 获取按钮权限
                   yield put({
                     type: "currentUserPermissionAliasList"
@@ -101,6 +110,19 @@ export default {
         }
       }
     },
+
+    // 获取当前用户可以访问的地方中心列表
+    *getCurrentUserEndemicList ({  payload, }, {call, put}) {
+        const {data: {data: clubs, code : code}} = yield call(usersService.getCurrentUserEndemic)
+        if (code == 0) {
+          session.set("clubs", clubs);
+          yield put({
+            type: 'querySuccess',
+            payload: { clubs } ,
+          })
+        }
+    },
+
     // 获取当前用户当前选择地方中心的权限别名列表
     *currentUserPermissionAliasList({ payload }, {call, put}){
       const { data: { data: permissionAlias, code: code5, err: err5}} = yield call(usersService.currentUserPermissionAliasList)
@@ -144,6 +166,10 @@ export default {
       if (code == 0) {
         // 保存地方中心
         session.set("endemic", selClub);
+        yield put({
+          type: 'selectEndemic',
+          payload: { endemic: selClub }
+        })
         yield put(routerRedux.push("/"))
         // 设置地方中心成功刷新数据
         yield put({
@@ -185,6 +211,9 @@ export default {
         let projectInx = -1;
         if (paths.length >= 2) {
           const path1 = paths[1];
+          if (path1.length == 0) {
+            projectInx = 0;
+          }
           if (data != null && data.length>0) {
             data.map((record, index)=>{
               if (record.path == path1) {
@@ -192,6 +221,8 @@ export default {
               }
             });
           }
+        } else {
+          projectInx = 0;
         }
         session.set("projectAndModuleTree", data);
 
@@ -221,10 +252,7 @@ export default {
               payload: { subMenu: project.moduleList || [] }
             })
           }
-
         }
-
-
 
         // 添加白名单 先只对菜单目录做权限管理
         if (location.pathname != "/" && paths.length == 3) {
@@ -299,47 +327,33 @@ export default {
 
 
   reducers: {
+    // 设置地方中心
+    selectEndemic (state, { payload: { endemic } }) {
+      return { ...state, endemic, }
+    },
     changeMenu (state, { payload: { subMenu } }) {
-      return {
-        ...state,
-        subMenu,
-      }
+      return { ...state, subMenu, }
     },
     updateSelectProject (state, { payload: { selectIndex } }) {
       return { ...state, selectIndex, }
     },
     querySuccess (state, { payload: { clubs } }) {
-      return {
-        ...state,
-        clubs,
-      }
+      return { ...state, clubs, }
     },
     getProListSuccess (state, { payload: projectList }) {
-      return {
-        ...state,
-        projectList,
-      }
+      return { ...state, projectList, }
     },
     getMenuSuccess (state, { payload: subMenu }) {
-      return {
-        ...state,
-        subMenu,
-      }
+      return { ...state, subMenu, }
     },
     getUserInfoSuccess (state, { payload: { userInfo } }) {
       return {  ...state, userInfo, }
     },
     getProjectTreeSuccess (state, { payload: projectTree }) {
-      return {
-        ...state,
-        projectTree,
-      }
+      return { ...state, projectTree, }
     },
     permissionAliasSave (state, { payload: { permissionAlias } }) {
-      return {
-        ...state,
-        permissionAlias,
-      }
+      return { ...state, permissionAlias, }
     },
     getTimeSuccess (state, { payload: { systemTime } }) {
       return { ...state, systemTime }
