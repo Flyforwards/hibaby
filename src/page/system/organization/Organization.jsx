@@ -92,6 +92,7 @@ class Organization extends React.Component {
             roleId.map((data, index) => {
               local.get("rolSelectData").map((item) => {
                 if (item.id == Number(data)) {
+                  
                   if (len == index) {
                     list.push(item.name)
                   } else {
