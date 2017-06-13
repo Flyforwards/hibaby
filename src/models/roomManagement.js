@@ -77,6 +77,14 @@ export default {
         message.success('添加成功')
       }
     },
+    *delRoom({ payload: values }, { call,put }) {
+
+      const { data: { code } } = yield call(roomManagement.delRoom, values);
+      if (code == 0) {
+        message.success('删除成功')
+        yield put(routerRedux.push('/chamber/roomindex'))
+      }
+    },
     *findById({ payload: values }, { call,put }) {
 
       const { data: { code,data } } = yield call(roomManagement.findById, parse(location.search.substr(1)));
@@ -91,6 +99,8 @@ export default {
     {
       return history.listen(({ pathname, query }) => {
         if (pathname === '/chamber/roomindex') {
+          dispatch({type: 'listByPage'});
+
           dispatch({
             type: 'getDataDict',
             payload:{

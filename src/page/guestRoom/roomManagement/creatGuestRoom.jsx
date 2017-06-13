@@ -15,7 +15,7 @@ class creatGuestRoom extends React.Component {
   }
 
   componentDidMount(){
-    if(parse(location.search.substr(1))){
+    if(parse(location.search.substr(1)).dataId){
       this.props.dispatch({type:'roomManagement/findById'})
     }
   }

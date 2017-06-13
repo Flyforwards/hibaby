@@ -20,3 +20,10 @@ export function findById(values) {
     body: JSON.stringify(values),
   })
 };
+//根据id删除房间
+export function delRoom(values) {
+  return request('/crm/api/v1/room/delete', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};

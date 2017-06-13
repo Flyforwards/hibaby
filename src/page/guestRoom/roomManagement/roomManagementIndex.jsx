@@ -5,21 +5,25 @@ import {connect} from 'dva'
 import './roomManagementIndex.scss'
 import {Link,routerRedux} from 'react-router'
 import SearchBar from './SearchBar'
-import {Table,pagination} from 'antd'
-
+import {Table,pagination,Modal} from 'antd'
+const confirm = Modal.confirm;
 
 
 function ResultsTable(props) {
   const {loading,dispatch} = props.data;
-  const {listData,FloorAry,MainFloorAry,AreaAry,TowardAry} = props.data.users.listData;
-
+  const {listData,FloorAry,MainFloorAry,AreaAry,TowardAry} = props.data.users;
 
   function textforkey(array,value,valuekey = 'name') {
-    for (let i = 0 ;i<array.length ;i++){
-      let dict = array[i];
-      if(dict['id'] === value){
-        return  dict[valuekey];
+    if(array){
+      for (let i = 0 ;i<array.length ;i++){
+        let dict = array[i];
+        if(dict['id'] === value){
+          return  dict[valuekey];
+        }
       }
+    }
+    else {
+      return value
     }
   }
 
@@ -45,16 +49,13 @@ function ResultsTable(props) {
       }
       else {
         return(
-          {title:dict.title, dataIndex:dict.key, key:dict.key, width:dict.width?dict.width:'13%',render:(text, record, index)=>{
+          {title:dict.title, dataIndex:dict.key, key:dict.key, width:dict.width?dict.width:'13%',render:( record)=>{
             return(
-              <div>
-                {textforkey(text)}
-              </div>
+                textforkey(dict.dataArray,record)
             )
           }}
         )
       }
-
   }
 
   function onLook(record) {
@@ -65,10 +66,18 @@ function ResultsTable(props) {
   }
 
   function onDelete(record) {
-    dispatch({
-      type: 'roomManagement/listByPage',
-      payload:{dataId:record.id}
-    });
+      confirm({
+        title: '提示',
+        content: '是否确定删除此房间',
+        onOk() {
+          dispatch({
+            type: 'roomManagement/delRoom',
+            payload:{dataId:record.id}
+          })
+        },
+        onCancel() {
+        }
+      });
   }
 
   const columnAry = [
@@ -77,23 +86,15 @@ function ResultsTable(props) {
       {title: '楼层', key: 'floor',dataArray:FloorAry },
       {title: '区域', key: 'region',dataArray:AreaAry},
       {title: '朝向', key: 'orientation',dataArray:TowardAry},
-      {title: '套餐', key: 'name', width:'20%'}
-    {title: '套餐', key: 'name', width:'20%'}
+      {title: '套餐', key: 'name', width:'20%'},
+      {title: '操作'}
   ]
-
 
   const  columns = [];
 
   for(let i = 0;i<columnAry.length;i++){
     columns.push(creatColumn(columnAry[i]))
   }
-
-  columns.push(
-
-  )
-
-
-
 
   const tableProps = {
     loading: loading.effects['roomManagement/listByPage'] !== undefined ? loading.effects['roomManagement/listByPage']:false,
@@ -116,10 +117,6 @@ class roomManagementIndex extends React.Component {
     super(props);
   }
 
-  componentDidMount(){
-    this.props.dispatch({type: 'roomManagement/listByPage'});
-  }
-
   onSearch(){
     this.refs.creatRoom.validateFields((err, values) => {
       if (!err) {
@@ -130,8 +127,6 @@ class roomManagementIndex extends React.Component {
       }
     })
   }
-
-
 
   render() {
     return (
