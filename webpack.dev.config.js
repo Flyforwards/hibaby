@@ -28,13 +28,13 @@ var webpackConfig = {
         proxy: {
 
             // 开发环境
-              '/crm/api/*': {
-                  target: 'http://dev.hbbcare.com:8087/crm/api',
-                  pathRewrite: {
-                      '^/crm/api': ''
-                  },
-                  changeOrigin: true
-              },
+            '/crm/api/*': {
+                target: 'http://dev.hbbcare.com:8087/crm/api',
+                pathRewrite: {
+                    '^/crm/api': ''
+                },
+                changeOrigin: true
+            },
 
             // 测试环境
             // '/crm/api/*': {
