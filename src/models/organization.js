@@ -325,6 +325,9 @@ export default {
           type: 'getDepartmentNodes',
           payload: {}
         });
+        yield put({
+          type: 'layout/getCurrentUserEndemicList',
+        });
       }
     },
     //添加用户入职信息
