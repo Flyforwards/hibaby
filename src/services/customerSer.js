@@ -72,6 +72,16 @@ export function getCustomerVisById(values) {
   })
 }
 
+// 编辑保存预约参观信息
+export function saveCustomerVisEdit(values) {
+  return request('/crm/api/v1/customerVis/saveCustomerVisEdit', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
 
 
 

@@ -34,7 +34,7 @@ class CustomerVisAddIndex extends React.Component {
     }
 
     return (
-      <div className="customer-comp-cent">
+      <div className="customer-vis-cent">
         <div>
           <Card  title = "参观信息:">
             <Form >

@@ -48,12 +48,12 @@ class CustomerVisAddIndex extends React.Component {
 
 
     return (
-      <div className="customer-comp-cent">
+      <div className="customer-vis-cent">
         <div>
           <Card  title = "参观信息:">
             <Form >
               <FormItem {...formItemLayout} label="客户名称" >
-                {getFieldDecorator('name', {rules: [{ required: true, message: '请填写投诉者！', max: 10 }],
+                {getFieldDecorator('name', {rules: [{ required: true, message: '请填写客户名称，限10字！', max: 10 }],
                 })(
                   <Input className="input" />
                 )}
@@ -81,7 +81,7 @@ class CustomerVisAddIndex extends React.Component {
                 )}
               </FormItem>
               <FormItem {...formItemLayout} label={"预约备注"}>
-                {getFieldDecorator('remarks', {rules: [{ required: true, message: '请填写预约备注!'}],
+                {getFieldDecorator('remarks', {rules: [{ required: true, message: '请填写预约备注!限300字', max: 300}],
                 })(
                   <Input type="textarea" rows={6} className="input"/>
                 )}

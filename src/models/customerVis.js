@@ -13,6 +13,7 @@ export default {
     list: [],
     // departments: [],
     item: {},
+    date: moment()
     // editItem: null,
     // pagination: {
     //   showQuickJumper: true,
@@ -30,6 +31,16 @@ export default {
     getDetailSuccess(state, { payload: { item }}) {
       return {...state, item};
     },
+    changeDate(state, { payload: { date }}) {
+      return {...state, date };
+    },
+
+    removeItemFromList(state, { payload: { itemId }}) {
+      const list = state.list.filter(record => record.id != itemId);
+      console.log(list);
+      return {...state, list };
+    },
+
     // getDetailEditSuccess(state, { payload: { editItem }}) {
     //   return {...state, editItem};
     // },
@@ -63,6 +74,15 @@ export default {
         yield put(routerRedux.push('/crm/customer-vis'));
       }
     },
+
+    *saveCustomerVisEdit({payload: values}, { call, put }) {
+      const {data: { data, code} } = yield call(CustomerSerService.saveCustomerVisEdit, values);
+      if (code == 0) {
+        message.success("保存客户参观信息成功");
+        yield put(routerRedux.push('/crm/customer-vis'));
+      }
+    },
+
     //
     // *confirmTreatmentFinish({payload: values}, { call, put }) {
     //   const {data: { data, code} } = yield call(CustomerSerService.confirmTreatmentFinish, values);
@@ -130,9 +150,14 @@ export default {
 
 
 
-    *getCustomerVisByDate({ payload: values }, { call, put }) {
+    *getCustomerVisByDate({ payload: values }, { call, put, select }) {
+      const { visDate } = values;
+      if (!visDate) {
+        const date = yield select (state => (state.customerVis.date))
+        values =   { visDate: date.format('YYYY-MM-DD')}
+      }
+
       const { data: {data, code} } = yield call(CustomerSerService.getCustomerVisListByDate, values);
-      console.log(data);
       if (code == 0) {
         yield put({
           type: 'getCustomerVisSave',
@@ -148,11 +173,10 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
-
         if (pathname === '/crm/customer-vis') {
           dispatch({
             type: 'getCustomerVisByDate',
-            payload: { visDate: moment().format('YYYY-MM-DD')}
+            payload: {}
           });
 
         }
