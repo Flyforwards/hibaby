@@ -5,17 +5,25 @@ import * as systemService from '../services/system';
 import { routerRedux } from 'dva/router'
 import { local, session } from 'common/util/storage.js'
 
+// 个人中心菜单
+const userModuleList = [
+  {"id":100,"name":"个人档案","path":"/user/information","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
+  {"id":101,"name":"我的消息","path":"/user/my-message","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
+  {"id":102,"name":"工作计划","path":"/user/work-plan","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
+  {"id":103,"name":"修改密码","path":"/user/reset-password","icon":"copyright","projectId":1,"permissionId":0,"children":[]}]
+
 export default {
   namespace: 'layout',
   state: {
-    clubs: [], // 地方中心数据
+    clubs: [], // 地方中心数据列表
     projectList: [],
     subMenu: [],
     projectTree: [],
-    userInfo: null,
+    userInfo: {},
     selectIndex: 0,
     permissionAlias: [],
     systemTime: 0,
+    endemic: {}, // 用户选择的地方中心
   },
 
   subscriptions: {
@@ -54,11 +62,15 @@ export default {
                 type: "currentUserPermissionAliasList"
               })
               session.set("endemic", selEndemic)
+              yield put({
+                type: 'selectEndemic',
+                payload: { endemic: selEndemic }
+              })
               if (location.pathname === '/login') {
                 yield put(routerRedux.push('/'))
               }
-              // 未选择地方中心则选择地方中心
             }
+            // 未选择地方中心则选择地方中心
           } catch (err) {
             if (clubs !== null && clubs.length === 1) {
               const endemic = clubs[0];
@@ -66,6 +78,10 @@ export default {
                 const {data: {code: code4}} = yield call(usersService.setEndemic, {endemicId: endemic.id});
                 if (code4 === 0) {
                   session.set("endemic", endemic)
+                  yield put({
+                    type: 'selectEndemic',
+                    payload: { endemic }
+                  })
                   // 获取按钮权限
                   yield put({
                     type: "currentUserPermissionAliasList"
@@ -94,6 +110,19 @@ export default {
         }
       }
     },
+
+    // 获取当前用户可以访问的地方中心列表
+    *getCurrentUserEndemicList ({  payload, }, {call, put}) {
+        const {data: {data: clubs, code : code}} = yield call(usersService.getCurrentUserEndemic)
+        if (code == 0) {
+          session.set("clubs", clubs);
+          yield put({
+            type: 'querySuccess',
+            payload: { clubs } ,
+          })
+        }
+    },
+
     // 获取当前用户当前选择地方中心的权限别名列表
     *currentUserPermissionAliasList({ payload }, {call, put}){
       const { data: { data: permissionAlias, code: code5, err: err5}} = yield call(usersService.currentUserPermissionAliasList)
@@ -137,6 +166,10 @@ export default {
       if (code == 0) {
         // 保存地方中心
         session.set("endemic", selClub);
+        yield put({
+          type: 'selectEndemic',
+          payload: { endemic: selClub }
+        })
         yield put(routerRedux.push("/"))
         // 设置地方中心成功刷新数据
         yield put({
@@ -175,9 +208,12 @@ export default {
       const { data: { data, code }} = yield call(usersService.getProjectAndModuleTree)
       if (code == 0) {
         const paths = location.pathname.split("/");
-        let projectInx = 0;
+        let projectInx = -1;
         if (paths.length >= 2) {
           const path1 = paths[1];
+          if (path1.length == 0) {
+            projectInx = 0;
+          }
           if (data != null && data.length>0) {
             data.map((record, index)=>{
               if (record.path == path1) {
@@ -185,8 +221,17 @@ export default {
               }
             });
           }
+        } else {
+          projectInx = 0;
         }
         session.set("projectAndModuleTree", data);
+
+        // 更新头部主模块
+        yield put({
+          type: 'getProjectTreeSuccess',
+          payload: data,
+        });
+
         // 选择头部主模块
         yield put({
           type: 'updateSelectProject',
@@ -195,17 +240,19 @@ export default {
 
         // 更新左侧菜单
         if (data != null && data.length>0) {
-          const project = data[projectInx];
-          yield put({
-            type: 'changeMenu',
-            payload: { subMenu: project.moduleList || [] }
-          })
+          if (projectInx == -1) {
+            yield put({
+              type: 'changeMenu',
+              payload: { subMenu: userModuleList }
+            })
+          } else {
+            const project = data[projectInx];
+            yield put({
+              type: 'changeMenu',
+              payload: { subMenu: project.moduleList || [] }
+            })
+          }
         }
-        // 更新头部主模块
-        yield put({
-          type: 'getProjectTreeSuccess',
-          payload: data,
-        });
 
         // 添加白名单 先只对菜单目录做权限管理
         if (location.pathname != "/" && paths.length == 3) {
@@ -228,11 +275,16 @@ export default {
               });
             })
           }
+          // 个人中心不做权限控制
+          userModuleList.map(item=>{
+            if (location.pathname == item.path) {
+              havePer = true;
+            }
+          })
           if (!havePer) {
             yield put(routerRedux.replace("/noJurisdiction"))
           }
         }
-
       }
     },
     // 刷新菜单页面
@@ -264,14 +316,9 @@ export default {
         payload: { selectIndex: -1 }
       })
 
-      const moduleList = [
-        {"id":29,"name":"个人档案","path":"/user/information","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
-        {"id":29,"name":"我的消息","path":"/user/my-message","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
-        {"id":29,"name":"工作计划","path":"/user/work-plan","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]},
-        {"id":29,"name":"修改密码","path":"/user/reset-password","icon":"copyright","projectId":1,"permissionId":18,"parentId":0,"projectName":null,"permissionName":null,"parentName":null,"description":null,"orderBy":1,"permissionList":"16,17,18","children":[]}]
       yield put({
         type: "changeMenu",
-        payload: { subMenu: moduleList || [] },
+        payload: { subMenu: userModuleList },
       })
 
       yield put(routerRedux.push('/user/information'));
@@ -280,47 +327,33 @@ export default {
 
 
   reducers: {
+    // 设置地方中心
+    selectEndemic (state, { payload: { endemic } }) {
+      return { ...state, endemic, }
+    },
     changeMenu (state, { payload: { subMenu } }) {
-      return {
-        ...state,
-        subMenu,
-      }
+      return { ...state, subMenu, }
     },
     updateSelectProject (state, { payload: { selectIndex } }) {
       return { ...state, selectIndex, }
     },
     querySuccess (state, { payload: { clubs } }) {
-      return {
-        ...state,
-        clubs,
-      }
+      return { ...state, clubs, }
     },
     getProListSuccess (state, { payload: projectList }) {
-      return {
-        ...state,
-        projectList,
-      }
+      return { ...state, projectList, }
     },
     getMenuSuccess (state, { payload: subMenu }) {
-      return {
-        ...state,
-        subMenu,
-      }
+      return { ...state, subMenu, }
     },
     getUserInfoSuccess (state, { payload: { userInfo } }) {
       return {  ...state, userInfo, }
     },
     getProjectTreeSuccess (state, { payload: projectTree }) {
-      return {
-        ...state,
-        projectTree,
-      }
+      return { ...state, projectTree, }
     },
     permissionAliasSave (state, { payload: { permissionAlias } }) {
-      return {
-        ...state,
-        permissionAlias,
-      }
+      return { ...state, permissionAlias, }
     },
     getTimeSuccess (state, { payload: { systemTime } }) {
       return { ...state, systemTime }

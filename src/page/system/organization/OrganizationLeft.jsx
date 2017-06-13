@@ -76,14 +76,25 @@ class OrganizationLefted extends React.Component {
       }
       if (node.selectedNodes[0].key != 1) {
         // console.log("value>>>>>",node.selectedNodes[0])
-        this.setState({
-          ID: node.selectedNodes[0].key,
-          node: node.selectedNodes[0],
-          parentId: node.selectedNodes[0].props.parentId,
-          dataIndex: node.selectedNodes[0].props.dataIndex,
-          unfolded:value,
-          TissueProperty:node.selectedNodes[0].props.dataIndex
-        })
+        if(node.selectedNodes[0].props.dataIndex != 3){
+          this.setState({
+            ID: node.selectedNodes[0].key,
+            node: node.selectedNodes[0],
+            parentId: node.selectedNodes[0].props.parentId,
+            dataIndex: node.selectedNodes[0].props.dataIndex,
+            unfolded:value,
+            TissueProperty:node.selectedNodes[0].props.dataIndex
+          })
+        }else{
+          this.setState({
+            ID: node.selectedNodes[0].key,
+            node: node.selectedNodes[0],
+            parentId: node.selectedNodes[0].props.parentId,
+            dataIndex: node.selectedNodes[0].props.dataIndex,
+            TissueProperty:node.selectedNodes[0].props.dataIndex
+          })
+        }
+        
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.statusType(false,1)
         // console.log("this.state.current",node.selectedNodes[0].props.dataIndex)
@@ -147,7 +158,8 @@ class OrganizationLefted extends React.Component {
   DeleteNode() {
     // console.log("DeleteNode>>>>>",this.state.unfolded)
     this.setState({
-      DeleteNodeVisible: true
+      DeleteNodeVisible: true,
+      unfolded:this.state.unfolded
     })
   }
 
@@ -268,6 +280,7 @@ class OrganizationLefted extends React.Component {
     const add = !this.props.permissionAlias.contains('NODE_ADD');
     const detail = !this.props.permissionAlias.contains('NODE_DETAIL');
     const del = !this.props.permissionAlias.contains('NODE_DELETE');
+    // console.log("this.state.unfolded>>>>",this.state.unfolded)
     return (
       <div className="Organization-left">
         <Tree
@@ -276,6 +289,7 @@ class OrganizationLefted extends React.Component {
           onExpand={this.expandHandler.bind(this)}
           autoExpandParent = { true }
           defaultSelectedKeys = { this.state.unfolded }
+          expandedKeys = { this.state.unfolded }
         >
           { loops }
         </Tree>
