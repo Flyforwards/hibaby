@@ -86,16 +86,18 @@ class OrganizationLefted extends React.Component {
         })
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.statusType(false,1)
-        //console.log("this.state.current",this.props.current)
-        this.props.dispatch({
-          type: 'organization/organizationList',
-          payload: {
-            nodeid: Number(node.selectedNodes[0].key),
-            page: 1,
-            size: 10,
-            tissueProperty: node.selectedNodes[0].props.dataIndex
-          }
-        });
+        console.log("this.state.current",node.selectedNodes[0].props.dataIndex)
+        if(node.selectedNodes[0].props.dataIndex != 0){
+          this.props.dispatch({
+            type: 'organization/organizationList',
+            payload: {
+              nodeid: Number(node.selectedNodes[0].key),
+              page: 1,
+              size: 10,
+              tissueProperty: node.selectedNodes[0].props.dataIndex
+            }
+          });
+        }
       } else {
        // console.log("sdsssss>>>>",node.selectedNodes[0].key)
         this.setState({
