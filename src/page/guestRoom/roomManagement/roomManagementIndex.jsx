@@ -11,7 +11,7 @@ const confirm = Modal.confirm;
 
 function ResultsTable(props) {
   const {loading,dispatch} = props.data;
-  const {listData,FloorAry,MainFloorAry,AreaAry,TowardAry} = props.data.users;
+  const {listData,FloorAry,MainFloorAry,AreaAry,TowardAry,pagination} = props.data.users;
 
   function textforkey(array,value,valuekey = 'name') {
     if(array){
@@ -60,7 +60,7 @@ function ResultsTable(props) {
 
   function onLook(record) {
     dispatch(routerRedux.push({
-      pathname: '/chamber/roomdetail',
+      pathname: '/chamber/room/roomdetail',
       query: {dataId:record.id}
     }))
   }
@@ -95,7 +95,7 @@ function ResultsTable(props) {
   for(let i = 0;i<columnAry.length;i++){
     columns.push(creatColumn(columnAry[i]))
   }
-
+  console.log(pagination)
   const tableProps = {
     loading: loading.effects['roomManagement/listByPage'] !== undefined ? loading.effects['roomManagement/listByPage']:false,
     dataSource : listData,
@@ -120,9 +120,21 @@ class roomManagementIndex extends React.Component {
   onSearch(){
     this.refs.creatRoom.validateFields((err, values) => {
       if (!err) {
+        let param = {};
+        Object.keys(values).map((key) => {
+          const value = values[key];
+          if(value){
+            if(typeof value === 'object'){
+              param[key] = value.key;
+            }
+            else {
+              param[key] = value;
+            }
+          }
+        })
         this.props.dispatch(routerRedux.push({
           pathname: '/chamber/roomindex',
-          query: values
+          query: param
         }))
       }
     })
@@ -132,7 +144,7 @@ class roomManagementIndex extends React.Component {
     return (
         <div className='roomManagementDiv'>
           <main className="yt-admin-framework-Customer">
-            <SearchBar ref="creatRoom" isSearch={true} onSearch={()=>{this.onSearch}}/>
+            <SearchBar ref="creatRoom" isSearch={true} onSearch={this.onSearch.bind(this)}/>
             <ResultsTable data={this.props}/>
           </main>
         </div>
