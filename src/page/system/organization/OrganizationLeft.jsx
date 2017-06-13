@@ -31,7 +31,7 @@ class OrganizationLefted extends React.Component {
       ID: null,
       node: null,
       DeleteNodeVisible: false,
-      unfolded:["2"]
+      unfolded:["0"]
     }
     this.addDisplay = "block";
     this.nodes = null;
@@ -62,7 +62,7 @@ class OrganizationLefted extends React.Component {
     this.deleteDisplay = "block"
     if (value[0] != null) {
       this.nodes = node.selectedNodes[0].props.dataIndex
-      console.log("node节点")
+      console.log("node节点",node.selectedNodes[0].key)
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
         this.deleteDisplay = "none"
@@ -75,7 +75,7 @@ class OrganizationLefted extends React.Component {
         this.addDisplay = "block"
       }
       if (node.selectedNodes[0].key != 1) {
-        //console.log("value>>>>>",node.selectedNodes[0])
+        console.log("value>>>>>",node.selectedNodes[0])
         this.setState({
           ID: node.selectedNodes[0].key,
           node: node.selectedNodes[0],
@@ -97,6 +97,7 @@ class OrganizationLefted extends React.Component {
           }
         });
       } else {
+       // console.log("sdsssss>>>>",node.selectedNodes[0].key)
         this.setState({
           ID: node.selectedNodes[0].key,
           node: node.selectedNodes[0],
@@ -123,16 +124,26 @@ class OrganizationLefted extends React.Component {
         this.addDisplay = "block"
       }
     }
-    console.log("this.state.unfolded",this.state.unfolded)
+     console.log("this.state.unfolded",this.state.ID)
   }
 
   seeDetails() {
-    this.props.dispatch({
-      type: 'organization/getDepartment',
-      payload: {
-        "dataId": this.state.ID,
-      }
-    })
+    console.log("this.state.ID>>>>",this.state.unfolded)
+    if(this.state.ID){
+      this.props.dispatch({
+        type: 'organization/getDepartment',
+        payload: {
+          "dataId": this.state.ID,
+        }
+      })
+    }else{
+      this.props.dispatch({
+        type: 'organization/getDepartment',
+        payload: {
+          "dataId": this.state.ID,
+        }
+      })
+    }
     this.setState({
       SeeDtailNodeVisible: true
     })
