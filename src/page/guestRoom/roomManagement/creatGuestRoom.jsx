@@ -6,6 +6,7 @@ import './roomManagementIndex.scss'
 import SearchBar from './SearchBar'
 import {Button,Card} from 'antd'
 import { routerRedux } from 'dva/router';
+import { parse } from 'qs'
 
 class creatGuestRoom extends React.Component {
 
@@ -14,13 +15,17 @@ class creatGuestRoom extends React.Component {
   }
 
   componentDidMount(){
-
+    if(parse(location.search.substr(1)).dataId){
+      this.props.dispatch({type:'roomManagement/findById'})
+    }
   }
 
   handleSubmit(){
     this.refs.creatRoom.validateFields((err, values) => {
-
-    });
+      if (!err) {
+        this.props.dispatch({type:'roomManagement/addRoom',payload:values})
+      }
+    })
   }
 
   backBtnClick(){
@@ -31,7 +36,7 @@ class creatGuestRoom extends React.Component {
     return (
       <div className="creatGuestRoom">
         <Card title="建立房间"  style={{ width: '100%' }}>
-          <SearchBar ref="creatRoom" isSearch={false}/>
+          <SearchBar ref="creatRoom" isSearch={false} handleSubmit={()=>{handleSubmit}}/>
         </Card>
         <div className='saveDiv'>
           <Button className='backBtn SaveBtn' onClick={this.handleSubmit.bind(this)}>保存</Button>
