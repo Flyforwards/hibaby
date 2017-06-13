@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'dva';
 import './CustomerVisIndex.scss';
-import { Card, Input, Button, Form,Select, Row, DatePicker, Col } from 'antd';
+import { Card, Input, Button, Form,Select, Row, DatePicker, Col, Modal } from 'antd';
 import DictionarySelect from 'common/dictionary_select';
 import { Link } from 'react-router';
 const FormItem = Form.Item;
@@ -14,6 +14,7 @@ const Option = Select.Option
 import { VISIT_TIME } from 'common/constants.js'
 import {local, session} from 'common/util/storage.js';
 import moment from 'moment'
+const confirm = Modal.confirm;
 
 @createForm()
 class CustomerVisAddIndex extends React.Component {
@@ -22,6 +23,21 @@ class CustomerVisAddIndex extends React.Component {
   }
 
   delete(){
+    const { dispatch, item } = this.props;
+    confirm({
+      title: '提示',
+      content: '是否确定删除此参观信息？',
+      onOk() {
+        dispatch({
+          type: 'customerVis/deleteCustomerVis',
+          payload: { dataId: item.id }
+        })
+      },
+      onCancel() {
+      },
+    });
+
+
 
   }
 

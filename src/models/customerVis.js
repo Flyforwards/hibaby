@@ -75,6 +75,7 @@ export default {
       }
     },
 
+    // 保存用户参观编辑信息，传需要删除的id过去
     *saveCustomerVisEdit({payload: values}, { call, put }) {
       const {data: { data, code} } = yield call(CustomerSerService.saveCustomerVisEdit, values);
       if (code == 0) {
@@ -83,48 +84,17 @@ export default {
       }
     },
 
-    //
-    // *confirmTreatmentFinish({payload: values}, { call, put }) {
-    //   const {data: { data, code} } = yield call(CustomerSerService.confirmTreatmentFinish, values);
-    //   if (code == 0) {
-    //     message.success("投诉完成处理");
-    //     yield put({
-    //       type: 'getCustomerCompById',
-    //       payload: values,
-    //     });
-    //   }
-    // },
-    //
-    // // 删除投诉记录
-    // *deleteCustomerComp ({ payload: values}, { call, put }) {
-    //   const {data: {data,code}} = yield call(CustomerSerService.deleteCustomerComp, values);
-    //   if (code == 0) {
-    //     message.success("删除投诉信息成功");
-    //     yield put({
-    //       type: 'getCustomerCompPage',
-    //     });
-    //   }
-    // },
-    //
-    // // 部门负责人提交处理结果
-    // *submitTreatmentResult ({ payload: values}, { call, put }) {
-    //   const {data: {data,code}} = yield call(CustomerSerService.submitTreatmentResult, values);
-    //   if (code == 0) {
-    //     message.success("提交处理结果成功");
-    //     yield put(routerRedux.push('/crm/customer-comp'));
-    //   }
-    // },
-    //
-    //
-    // // 详情页删除
-    // *deleteCustomerCompFromDetail ({ payload: values}, { call, put }) {
-    //   const {data: {data,code}} = yield call(CustomerSerService.deleteCustomerComp, values);
-    //   if (code == 0) {
-    //     message.success("删除投诉信息成功");
-    //     yield put(routerRedux.push('/crm/customer-comp'));
-    //   }
-    // },
-    //
+
+    // 删除客户参观记录
+    *deleteCustomerVis ({ payload: values}, { call, put }) {
+      const {data: { code }} = yield call(CustomerSerService.deleteCustomerVis, values);
+      if (code == 0) {
+        message.success("删除客户参观信息成功");
+        yield put(routerRedux.push('/crm/customer-vis'));
+      }
+    },
+
+
     // 详情
     *getCustomerVisById({ payload: values}, { call, put }) {
       const {data: {data, code}} = yield call(CustomerSerService.getCustomerVisById, values);
@@ -135,17 +105,7 @@ export default {
         })
       }
     },
-    //
-    // // 获取当前地方中心的部门列表
-    // *getCurrentEndemicDeptList({ payload: values}, { call, put }) {
-    //   const {data: {data, code}} = yield call(systemService.getCurrentEndemicDeptList, values);
-    //   if (code == 0) {
-    //     yield put({
-    //       type: 'getDepartmentSuccess',
-    //       payload: { departments: data }
-    //     })
-    //   }
-    // },
+
 
 
 
@@ -178,22 +138,14 @@ export default {
             type: 'getCustomerVisByDate',
             payload: {}
           });
-
         }
 
-        // if (pathname === '/crm/customer-comp/add') {
-        //   dispatch({
-        //     type: 'getCurrentEndemicDeptList',
-        //   });
-        // }
         if (pathname === '/crm/customer-vis/detail') {
           dispatch({
             type: 'getCustomerVisById',
             payload: query
           });
-          // dispatch({
-          //   type: 'getCurrentEndemicDeptList',
-          // });
+
         }
       })
     }

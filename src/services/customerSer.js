@@ -64,13 +64,22 @@ export function getCustomerVisListByDate(values) {
   })
 }
 
-// 详情数据
+// 客户参观详情数据
 export function getCustomerVisById(values) {
   return request('/crm/api/v1/customerVis/getCustomerVisById', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
+// 删除客户参观信息
+export function deleteCustomerVis(values) {
+  return request('/crm/api/v1/customerVis/deleteCustomerVis', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 // 编辑保存预约参观信息
 export function saveCustomerVisEdit(values) {
