@@ -4,37 +4,40 @@ import React from 'react'
 import {connect} from 'dva'
 import './roomManagementIndex.scss'
 import {Link,routerRedux} from 'react-router'
-import {Button,Row, Col,pagination,Form,Select} from 'antd'
+import {Button,Row, Col,pagination,Form,Select,Input} from 'antd'
+import DictionarySelect from 'common/dictionary_select';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
-
 
 function SearchBar(props) {
 
   const { getFieldDecorator }= props.form;
-  const {isSearch} = props;
+  const {isSearch,onSearch} = props;
 
   const formItemLayout = {
     labelCol: { span: 7 },
     wrapperCol: { span: 17 },
   };
 
+
   function cusFromItem(dict) {
     return(
       <FormItem uid={dict.submitStr} {...formItemLayout} label={dict.title}>
-        {getFieldDecorator(dict.submitStr)(
-          <Select className='antCli' placeholder='请选择'>{dict.children}</Select>
+        {getFieldDecorator(dict.submitStr,{rules: [{ required: isSearch?false:true,  message: `请选择${dict.title}!`}],})(
+          <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
         )}
       </FormItem>
     )
   }
 
   const searchAry = [
-    {title:'主副楼',submitStr:'building'},
-    {title:'楼层',submitStr:'floor'},
-    {title:'区域',submitStr:'region'},
-    {title:'朝向',submitStr:'orientation'}
+    {title:'主副楼',submitStr:'building',selectName:'MainFloor'},
+    {title:'楼层',submitStr:'floor',selectName:'Floor'},
+    {title:'区域',submitStr:'region',selectName:'Area'},
+    {title:'朝向',submitStr:'orientation',selectName:'Toward'}
   ];
+
 
   let searchDiv = [];
 
@@ -42,26 +45,13 @@ function SearchBar(props) {
     searchDiv.push(<Col span={8}>{cusFromItem(searchAry[i])}</Col>  )
   }
 
-  function onSearch() {
-
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        props.dispatch(routerRedux.push({
-          pathname: '/chamber/roomindex',
-          query: values
-        }))
-      }
-    })
-  }
-
   function reset() {
     props.form.resetFields();
     onSearch();
   }
 
-  const divArray = [searchDiv[3]];
   if(isSearch){
-    divArray.push(
+    searchDiv.push(
       <Col span={16}>
         <Row>
           <Col offset={9} span={5}>
@@ -77,6 +67,17 @@ function SearchBar(props) {
       </Col>
     )
   }
+  else{
+    searchDiv.unshift(
+      <Col span={8}>
+        <FormItem {...formItemLayout} label='房间号'>
+          {getFieldDecorator('roomNo',{rules: [{ required: isSearch?false:true,  message: '请输入房间号！'}]})(
+            <Input className='antCli' placeholder="请填写"/>
+          )}
+        </FormItem>
+      </Col>
+    )
+  }
 
 
   return(
@@ -87,17 +88,15 @@ function SearchBar(props) {
         {searchDiv[2]}
       </Row>
       <Row style={{height: 50,overflow:'hidden'}}>
-        {divArray}
+        {searchDiv[3]}
+        {searchDiv[4]}
       </Row>
 
     </div>
   )
 }
 
-function mapStateToProps(state) {
-  return {
-    users: state.roomManagement,
-  };
-}
 
-export default connect(mapStateToProps)(Form.create()(SearchBar));
+const SearchDiv = Form.create()(SearchBar);
+
+export default (SearchDiv);
