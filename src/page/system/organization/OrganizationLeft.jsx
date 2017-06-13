@@ -62,7 +62,7 @@ class OrganizationLefted extends React.Component {
     this.deleteDisplay = "block"
     if (value[0] != null) {
       this.nodes = node.selectedNodes[0].props.dataIndex
-      console.log("node节点",node.selectedNodes[0].key)
+      // console.log("node节点",node.selectedNodes[0].key)
       let TissueProperty = node.selectedNodes[0].props.dataIndex
       if (TissueProperty == 0) {
         this.deleteDisplay = "none"
@@ -75,18 +75,29 @@ class OrganizationLefted extends React.Component {
         this.addDisplay = "block"
       }
       if (node.selectedNodes[0].key != 1) {
-        console.log("value>>>>>",node.selectedNodes[0])
-        this.setState({
-          ID: node.selectedNodes[0].key,
-          node: node.selectedNodes[0],
-          parentId: node.selectedNodes[0].props.parentId,
-          dataIndex: node.selectedNodes[0].props.dataIndex,
-          unfolded:value,
-          TissueProperty:node.selectedNodes[0].props.dataIndex
-        })
+        // console.log("value>>>>>",node.selectedNodes[0])
+        if(node.selectedNodes[0].props.dataIndex != 3){
+          this.setState({
+            ID: node.selectedNodes[0].key,
+            node: node.selectedNodes[0],
+            parentId: node.selectedNodes[0].props.parentId,
+            dataIndex: node.selectedNodes[0].props.dataIndex,
+            unfolded:value,
+            TissueProperty:node.selectedNodes[0].props.dataIndex
+          })
+        }else{
+          this.setState({
+            ID: node.selectedNodes[0].key,
+            node: node.selectedNodes[0],
+            parentId: node.selectedNodes[0].props.parentId,
+            dataIndex: node.selectedNodes[0].props.dataIndex,
+            TissueProperty:node.selectedNodes[0].props.dataIndex
+          })
+        }
+        
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
         this.props.statusType(false,1)
-        console.log("this.state.current",node.selectedNodes[0].props.dataIndex)
+        // console.log("this.state.current",node.selectedNodes[0].props.dataIndex)
         if(node.selectedNodes[0].props.dataIndex != 0){
           this.props.dispatch({
             type: 'organization/organizationList',
@@ -126,7 +137,7 @@ class OrganizationLefted extends React.Component {
         this.addDisplay = "block"
       }
     }
-     console.log("this.state.unfolded",this.state.ID)
+     // console.log("this.state.unfolded",this.state.ID)
   }
 
   seeDetails() {
@@ -147,7 +158,8 @@ class OrganizationLefted extends React.Component {
   DeleteNode() {
     // console.log("DeleteNode>>>>>",this.state.unfolded)
     this.setState({
-      DeleteNodeVisible: true
+      DeleteNodeVisible: true,
+      unfolded:this.state.unfolded
     })
   }
 
@@ -268,6 +280,7 @@ class OrganizationLefted extends React.Component {
     const add = !this.props.permissionAlias.contains('NODE_ADD');
     const detail = !this.props.permissionAlias.contains('NODE_DETAIL');
     const del = !this.props.permissionAlias.contains('NODE_DELETE');
+    // console.log("this.state.unfolded>>>>",this.state.unfolded)
     return (
       <div className="Organization-left">
         <Tree
@@ -276,7 +289,7 @@ class OrganizationLefted extends React.Component {
           onExpand={this.expandHandler.bind(this)}
           autoExpandParent = { true }
           defaultSelectedKeys = { this.state.unfolded }
-        
+          expandedKeys = { this.state.unfolded }
         >
           { loops }
         </Tree>

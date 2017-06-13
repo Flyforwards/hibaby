@@ -22,6 +22,16 @@ export default (app) => [
       })
     }
   },
+  //房间详情
+  {
+    path: '/chamber/roomdetail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/roomManagement'));
+        cb(null, require('page/guestRoom/roomManagement/creatGuestRoom'))
+      })
+    }
+  },
   // 房态管理
   {
     path: '/chamber/roomstatusindex',

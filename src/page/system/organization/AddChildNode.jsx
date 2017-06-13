@@ -82,7 +82,7 @@ class AddChildNodeed extends Component {
     }
      handleCreateModalCancel() {
         this.setState({
-          visible: false,
+          visible: false
         })
     }
     headelReturnTabal(data){

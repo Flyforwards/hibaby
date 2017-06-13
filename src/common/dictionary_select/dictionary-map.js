@@ -48,4 +48,25 @@ export const DictionaryArray = {
     abName: 'KSDJ',
     softDelete: 0
   },
+  // 楼层
+  'Floor': {
+    abName: 'LC',
+    softDelete: 0
+  },
+  // 主副楼
+  'MainFloor': {
+    abName: 'ZFL',
+    softDelete: 0
+  },
+  // 区域
+  'Area': {
+    abName: 'QY',
+    softDelete: 0
+  },
+  // 朝向
+  'Toward': {
+    abName: 'CX',
+    softDelete: 0
+  },
+
 }
