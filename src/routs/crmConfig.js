@@ -20,6 +20,7 @@ export default (app) => [
          registerModel(app, require('models/addCourse'));
         registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/healthInformation'));
+        registerModel(app, require('models/membershipcard'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
       })
     }
@@ -308,6 +309,16 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/customerVis'));
         cb(null, require('page/crm/customerService/CustomerVisAddIndex.jsx'))
+      })
+    }
+  },
+  //预约参观详情
+  {
+    path: '/crm/customer-vis/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/customerVis'));
+        cb(null, require('page/crm/customerService/CustomerVisDetailIndex.jsx'))
       })
     }
   },

@@ -10,9 +10,9 @@ import moment from 'moment'
 export default {
   namespace: 'customerVis',
   state: {
-    // list: [],
+    list: [],
     // departments: [],
-    // item: {},
+    item: {},
     // editItem: null,
     // pagination: {
     //   showQuickJumper: true,
@@ -24,12 +24,12 @@ export default {
 
   reducers: {
 
-    // getCustomerCompSave(state, { payload: { list, pagination }}) {
-    //   return {...state, list, pagination: {  ...state.pagination,...pagination }};
-    // },
-    // getDetailSuccess(state, { payload: { item }}) {
-    //   return {...state, item};
-    // },
+    getCustomerVisSave(state, { payload: { list }}) {
+      return {...state, list};
+    },
+    getDetailSuccess(state, { payload: { item }}) {
+      return {...state, item};
+    },
     // getDetailEditSuccess(state, { payload: { editItem }}) {
     //   return {...state, editItem};
     // },
@@ -105,16 +105,16 @@ export default {
     //   }
     // },
     //
-    // // 详情
-    // *getCustomerCompById({ payload: values}, { call, put }) {
-    //   const {data: {data, code}} = yield call(CustomerSerService.getCustomerCompById, values);
-    //   if (code == 0) {
-    //     yield put({
-    //       type: 'getDetailSuccess',
-    //       payload: { item: data},
-    //     })
-    //   }
-    // },
+    // 详情
+    *getCustomerVisById({ payload: values}, { call, put }) {
+      const {data: {data, code}} = yield call(CustomerSerService.getCustomerVisById, values);
+      if (code == 0) {
+        yield put({
+          type: 'getDetailSuccess',
+          payload: { item: data},
+        })
+      }
+    },
     //
     // // 获取当前地方中心的部门列表
     // *getCurrentEndemicDeptList({ payload: values}, { call, put }) {
@@ -131,15 +131,16 @@ export default {
 
 
     *getCustomerVisByDate({ payload: values }, { call, put }) {
-      const { data  } = yield call(CustomerSerService.getCustomerVisListByDate, values);
+      const { data: {data, code} } = yield call(CustomerSerService.getCustomerVisListByDate, values);
+      console.log(data);
       if (code == 0) {
-        // yield put({
-        //   type: 'getCustomerVisSave',
-        //   payload: {
-        //     list: data,
-        //   },
-        // })
-        console.log(data);
+        yield put({
+          type: 'getCustomerVisSave',
+          payload: {
+            list: data,
+          },
+        })
+
       }
     },
 
@@ -161,15 +162,15 @@ export default {
         //     type: 'getCurrentEndemicDeptList',
         //   });
         // }
-        // if (pathname === '/crm/customer-comp/detail') {
-        //   dispatch({
-        //     type: 'getCustomerCompById',
-        //     payload: query
-        //   });
-        //   dispatch({
-        //     type: 'getCurrentEndemicDeptList',
-        //   });
-        // }
+        if (pathname === '/crm/customer-vis/detail') {
+          dispatch({
+            type: 'getCustomerVisById',
+            payload: query
+          });
+          // dispatch({
+          //   type: 'getCurrentEndemicDeptList',
+          // });
+        }
       })
     }
   },
