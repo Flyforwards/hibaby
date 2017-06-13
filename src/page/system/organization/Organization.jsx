@@ -220,6 +220,7 @@ class Organization extends React.Component {
     this.setState({
       current: current
     })
+    console.log("current",current)
     if (this.state.statusType) {
       this.props.dispatch({
         type: 'organization/organizationList',

@@ -322,6 +322,16 @@ export default (app) => [
       })
     }
   },
+  //预约参观编辑
+  {
+    path: '/crm/customer-vis/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/customerVis'));
+        cb(null, require('page/crm/customerService/CustomerVisEditIndex.jsx'))
+      })
+    }
+  },
 
 
   //会员卡打印路由
