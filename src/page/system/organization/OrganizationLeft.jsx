@@ -128,7 +128,7 @@ class OrganizationLefted extends React.Component {
   }
 
   seeDetails() {
-    console.log("this.state.ID>>>>",this.state.unfolded)
+    //console.log("this.state.ID>>>>",this.state.unfolded)
     if(this.state.ID){
       this.props.dispatch({
         type: 'organization/getDepartment',
@@ -136,17 +136,10 @@ class OrganizationLefted extends React.Component {
           "dataId": this.state.ID,
         }
       })
-    }else{
-      this.props.dispatch({
-        type: 'organization/getDepartment',
-        payload: {
-          "dataId": this.state.ID,
-        }
+      this.setState({
+        SeeDtailNodeVisible: true
       })
     }
-    this.setState({
-      SeeDtailNodeVisible: true
-    })
   }
 
   DeleteNode() {
