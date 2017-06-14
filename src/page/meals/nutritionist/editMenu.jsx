@@ -182,7 +182,9 @@ class CustomerIndex extends React.Component {
       createModalVisible: true
     })
   }
-  
+  onBack(){
+    history.go(-1)
+  }
   onSearch() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -283,6 +285,25 @@ class CustomerIndex extends React.Component {
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
       <div className="CustomerConent">
+        <div className="button">
+          <Button  style={{
+            width: '15%',
+            height: '40px',
+            lineHeight: '40px',
+            marginLeft:'40px',
+            float:'right',
+            backgroundColor: 'rgba(255, 102, 0, 1)'
+          }}>导出</Button>
+          <Button  onClick={this.onBack.bind(this)} style={{
+            width: '15%',
+            height: '40px',
+            lineHeight: '40px',
+            marginLeft:'40px',
+            float:'right',
+            marginButtom:'20px',
+            backgroundColor: 'rgba(255, 102, 0, 1)'
+          }}>返回</Button>
+        </div>
         <main className="yt-admin-framework-Customer">
           <div className="CreateModaList-a">
             <Table bordered {...tableProps} rowKey={ record => record.id}/>
@@ -292,18 +313,6 @@ class CustomerIndex extends React.Component {
             visible={ this.state.createModalVisible }
             onCancel={ this.handleCreateModalCancel.bind(this) }
           />
-          <Button  style={{
-            width: '100%',
-            height: '40px',
-            lineHeight: '40px',
-            backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>返回</Button>
-          <Button  style={{
-            width: '100%',
-            height: '40px',
-            lineHeight: '40px',
-            backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>导出</Button>
         </main>
       </div>
     )

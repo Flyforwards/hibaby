@@ -1,6 +1,11 @@
 .CustomerConent {
   min-width: 1030px;
   margin: 10px;
+  .button{
+    overflow: hidden;
+    height:60px;
+    width:100%;
+  }
   .topSelect {
     //width: 1030px;
     height: 50px;

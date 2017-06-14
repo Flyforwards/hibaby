@@ -75,10 +75,6 @@ export default {
       if (code == 0) {
         message.success("创建健康档案成功");
         yield put({type:'setSaveDone',payload:{data}} );
-        if(values.type == 1){
-          const healthInfo = data.healthInfo?JSON.parse(data.healthInfo):null;
-          put({type:'setImgInputArrData',payload:{healthInfo:healthInfo}} );
-        }
       }
     },
     *updateHealthInformation({payload: values}, { call, put }) {

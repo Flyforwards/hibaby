@@ -90,10 +90,7 @@ class CustomerIndex extends React.Component {
     this.columns = [{
       title: '客户姓名',
       dataIndex: 'name',
-      key: 'name',
-      render: (text,record) => {
-        return <span><Icon type="smile" />{text}</span>
-      }
+      key: 'name'
     }, {
       title: '年龄',
       dataIndex: 'age',
@@ -135,15 +132,6 @@ class CustomerIndex extends React.Component {
         }
       }
     }, {
-      title: '餐单状态',
-      render: (record) => {
-        if (record.operator2 != null) {
-          return record.operator2;
-        } else {
-          return record.operator;
-        }
-      }
-    },{
       title: '操作',
       dataIndex: 'operating',
       render: (text, record, index) => {
@@ -151,8 +139,8 @@ class CustomerIndex extends React.Component {
         const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div>
-            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 编辑餐单 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 禁忌 </Link>
+            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
+            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
           </div>
         );
       }
@@ -164,12 +152,23 @@ class CustomerIndex extends React.Component {
   
   onLook(record) {
     const dispatch = this.props.dispatch;
-    dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
+    dispatch(routerRedux.push(`/crm/customer/customerDetails?dataId=${record.id}`))
   }
   
   onDelete(record) {
     const dispatch = this.props.dispatch;
-    dispatch(routerRedux.push(`/meals/nutritionist/taboo?dataId=${record.id}`))
+    confirm({
+      title: '提示',
+      content: '是否确定删除此用户',
+      onOk() {
+        dispatch({
+          type: 'customer/deleteCustomer',
+          payload: { dataId: record.id }
+        })
+      },
+      onCancel() {
+      }
+    });
   }
   
   handleCreateModalCancel() {
@@ -284,158 +283,26 @@ class CustomerIndex extends React.Component {
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
       <div className="CustomerConent">
+        <div className="button">
+          <Button  style={{
+            width: '15%',
+            height: '40px',
+            lineHeight: '40px',
+            marginLeft:'40px',
+            float:'right',
+            backgroundColor: 'rgba(255, 102, 0, 1)'
+          }}>导出</Button>
+          <Button  style={{
+            width: '15%',
+            height: '40px',
+            lineHeight: '40px',
+            marginLeft:'40px',
+            float:'right',
+            marginButtom:'20px',
+            backgroundColor: 'rgba(255, 102, 0, 1)'
+          }}>返回</Button>
+        </div>
         <main className="yt-admin-framework-Customer">
-          <Form>
-            <Row className="topSelect">
-              <Col className="search" span={9}>
-                <FormItem {...formChooseLayout} style={{ height: '40px', lineHeight: '40px' }}>
-                  {getFieldDecorator('sear', {
-                    rules: [{ required: false }]
-                  })(
-                    <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{ height: '40px', width: 700 }}/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col className="findBtn" span={12}>
-                <Row justify="end" type="flex" gutter={8}>
-                  <Col span={6}>
-                      <span>
-                        <Button onClick={ this.onSearch.bind(this)} style={{
-                          width: '100%',
-                          height: '40px',
-                          lineHeight: '40px',
-                          backgroundColor: 'rgba(255, 102, 0, 1)'
-                        }}>搜索</Button>
-                        </span>
-                  </Col>
-                  
-                  <Col span={6}>
-                  <span>
-                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{
-                          width: '100%',
-                          backgroundColor: 'rgba(182, 114, 51, 1)',
-                          height: '40px',
-                          lineHeight: '40px',
-                          color: '#ffffff'
-                        }}>筛选项</Button></Link>
-                      </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <Row gutter={16} style={{ height: 50 }}>
-              <Col span={5} >
-                <FormItem label="年龄" {...formChooseOneAge}>
-                  {getFieldDecorator('age1', {
-                    rules: [{ required: false }]
-                  })(
-                    <InputNumber min={1} max={100}/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={1} style={{ marginLeft: -100, marginRight: 100 }}>
-                <FormItem >
-                  {getFieldDecorator('age2', {
-                    rules: [{ required: false }]
-                  })(
-                    <InputNumber min={1} max={100}/>
-                  )}
-                </FormItem>
-              
-              </Col>
-              <Col span={6} className="delDisplan">
-                <FormItem label="预产期" {...formChooseOneAge}>
-                  {getFieldDecorator('time', {
-                    rules: [{ required: false }]
-                  })(
-                    <MonthPicker
-                      placeholder="请选择"
-                    />
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={6}>
-                <FormItem label="会员身份" {...formChooseOneAge}>
-                  {getFieldDecorator('member', {
-                    rules: [{ required: false }]
-                  })(
-                    <Select placeholder="请选择">
-                      {
-                        options
-                      }
-                    </Select>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={6}>
-                  <FormItem label="套餐状态" {...formChooseOneAge}>
-                    {getFieldDecorator('purchasePackage')(
-                      <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
-                    )}
-                  </FormItem>
-                </Col>
-            </Row>
-            <Row style={{ height: 50 }} gutter={16}>
-              <Col span={5}>
-                <FormItem label="籍贯" {...formChooseOneAge}>
-                  {getFieldDecorator('placeOrigin')(
-                    <Input max={40}/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={1}/>
-              <Col span={6}>
-                <FormItem label="第几胎" {...formChooseOneAge}>
-                  {getFieldDecorator('fetus', {
-                    rules: [{ required: false }]
-                  })(
-                    <DictionarySelect placeholder="请选择" selectName="FETUS"/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={6}>
-                <FormItem label="意向套餐" {...formChooseOneAge}>
-                  {getFieldDecorator('intentionPackage')(
-                    <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={6}>
-                <FormItem label="购买套餐" {...formChooseOneAge}>
-                  {getFieldDecorator('purchasePackage')(
-                    <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
-                  )}
-                </FormItem>
-              </Col>
-            </Row>
-            <Row style={{ height: 50 }} gutter={16}>
-              <Col span={5}>
-                <FormItem label="孕周" {...formChooseOneAge}>
-                  {getFieldDecorator('gestationalWeeks')(
-                    <InputNumber max={40} min={1}/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={1}/>
-              <Col span={6} className="delDisplan">
-                <FormItem label="宝宝生日"  {...formChooseOneAge}>
-                  {getFieldDecorator('productionDate')(
-                    <DatePicker placeholder="请选择"/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={6}>
-                <FormItem label="分娩医院" {...formChooseOneAge}>
-                  {getFieldDecorator('hospital', {
-                    rules: [{ required: false }]
-                  })(
-                    <DictionarySelect placeholder="请选择" selectName="Hospital"/>
-                  )}
-                </FormItem>
-              </Col>
-            
-            </Row>
-          </Form>
           <div className="CreateModaList-a">
             <Table bordered {...tableProps} rowKey={ record => record.id}/>
           </div>
