@@ -300,7 +300,7 @@ class CustomerIndex extends React.Component {
                 <Row justify="end" type="flex" gutter={8}>
                   <Col span={6}>
                       <span>
-                        <Button onClick={ this.onSearch.bind(this)} style={{
+                        <Button  style={{
                           width: '100%',
                           height: '40px',
                           lineHeight: '40px',

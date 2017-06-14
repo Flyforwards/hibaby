@@ -87,67 +87,11 @@ class Customer extends React.Component {
 class CustomerIndex extends React.Component {
   constructor(props) {
     super(props)
-    this.columns = [{
-      title: '客户姓名',
-      dataIndex: 'name',
-      key: 'name'
-    }, {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age'
-    }, {
-      title: '预产期',
-      dataIndex: 'dueDate',
-      render: (record) => {
-        return moment(record).format("YYYY-MM-DD")
-      }
-    }, {
-      title: '怀孕周期',
-      dataIndex: 'gestationalWeeks',
-      key: 'gestationalWeeks'
-      
-    }, {
-      title: '第几胎',
-      dataIndex: 'fetus',
-      key: 'fetus'
-    }, {
-      title: '联系方式',
-      dataIndex: 'contact',
-      key: 'contact'
-    }, {
-      title: '购买套餐',
-      dataIndex: 'purchasePackage',
-      key: 'purchasePackage'
-    }, {
-      title: '合同编号',
-      dataIndex: 'contractNumber',
-      key: 'contractNumber'
-    }, {
-      title: '添加人',
-      render: (record) => {
-        if (record.operator2 != null) {
-          return record.operator2;
-        } else {
-          return record.operator;
-        }
-      }
-    }, {
-      title: '操作',
-      dataIndex: 'operating',
-      render: (text, record, index) => {
-        const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
-        const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
-        return (
-          <div>
-            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
-          </div>
-        );
-      }
-    }];
     this.state = {
-      createModalVisible: false
+      createModalVisible: false,
+      addList:[]
     }
+    this.addIndex = 6
   }
   
   onLook(record) {
@@ -221,6 +165,23 @@ class CustomerIndex extends React.Component {
     }
     return value;
   }
+  addIngredients(formChooseOneAge,getFieldDecorator){
+    this.state.addList.push(
+      <Col span={8} className="delDisplan" key={this.addIndex}>
+        <FormItem label="禁忌食材" {...formChooseOneAge}>
+          {getFieldDecorator(`ingredients${this.addIndex}`, {
+            rules: []
+          })(
+            <Input/>
+          )}
+        </FormItem>
+      </Col>)
+    this.setState({
+      addList:this.state.addList
+    })
+    this.addIndex = this.addIndex+1
+    console.log("this.addIndex>>",this.addList)
+  }
   
   componentDidMount() {
     this.props.dispatch({ type: 'customer/getCustomerPage' });
@@ -271,10 +232,9 @@ class CustomerIndex extends React.Component {
       wrapperCol: { span: 13 }
     }
     const formChooseOneAge = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 }
+      labelCol: { span: 7 },
+      wrapperCol: { span: 17 }
     }
-    
     const formChooseTwoAge = {
       labelCol: { span: 4 },
       wrapperCol: { span: 20 }
@@ -282,16 +242,100 @@ class CustomerIndex extends React.Component {
     
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConent">
-        <div className="button">
+      <div className="Taboo">
+       <div className="TabooTital">
+        <p className="basicInformation"> 
+            <span>客户姓名:杨幂</span>
+            <span>客户年龄:32</span>
+            <span>第几胎:2</span>
+        </p>
+        <Form>
+          <Col span={6} className="delDisplan">
+            <FormItem label="糖" {...formChooseOneAge}>
+              {getFieldDecorator('sugar', {
+                rules: []
+              })(
+                <Select placeholder="请选择">
+                  <Option key={1} value={"1"}>有糖</Option>
+                  <Option key={0} value={"0"}>无糖</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={8} className="delDisplan">
+            <FormItem label="禁忌食材" {...formChooseOneAge}>
+              {getFieldDecorator('ingredients0', {
+                rules: []
+              })(
+                <Input/>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={8} className="delDisplan">
+            <FormItem label="禁忌食材" {...formChooseOneAge}>
+              {getFieldDecorator('ingredients1', {
+                rules: []
+              })(
+                <Input/>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={8} className="delDisplan">
+            <FormItem label="禁忌食材" {...formChooseOneAge}>
+              {getFieldDecorator('ingredients1', {
+                rules: []
+              })(
+                <Input/>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={8} className="delDisplan">
+            <FormItem label="禁忌食材" {...formChooseOneAge}>
+              {getFieldDecorator('ingredients1', {
+                rules: []
+              })(
+                <Input/>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={8} className="delDisplan">
+            <FormItem label="禁忌食材" {...formChooseOneAge}>
+              {getFieldDecorator('ingredients1', {
+                rules: []
+              })(
+                <Input/>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={8} className="delDisplan">
+            <FormItem label="禁忌食材" {...formChooseOneAge}>
+              {getFieldDecorator('ingredients1', {
+                rules: []
+              })(
+                <Input/>
+              )}
+            </FormItem>
+          </Col>
+          {
+            this.state.addList
+          }
+          <Col span={8} className="delDisplan">
+            <FormItem {...formChooseOneAge}>
+              <Icon type="plus-circle" onClick={ this.addIngredients.bind(this,formChooseOneAge,getFieldDecorator)}/>
+            </FormItem>
+          </Col>
+        </Form>
+       </div>
+        <div className="TabooButton">
           <Button  style={{
             width: '15%',
             height: '40px',
             lineHeight: '40px',
             marginLeft:'40px',
+            marginRight: '40px',
             float:'right',
             backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>导出</Button>
+          }}>保存</Button>
           <Button  style={{
             width: '15%',
             height: '40px',
@@ -302,16 +346,6 @@ class CustomerIndex extends React.Component {
             backgroundColor: 'rgba(255, 102, 0, 1)'
           }}>返回</Button>
         </div>
-        <main className="yt-admin-framework-Customer">
-          <div className="CreateModaList-a">
-            <Table bordered {...tableProps} rowKey={ record => record.id}/>
-          </div>
-          <CreateModal
-            handleOk={this.state.handleOk}
-            visible={ this.state.createModalVisible }
-            onCancel={ this.handleCreateModalCancel.bind(this) }
-          />
-        </main>
       </div>
     )
   }

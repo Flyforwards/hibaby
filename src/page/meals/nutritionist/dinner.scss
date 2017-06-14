@@ -282,3 +282,62 @@
   }
 
 }
+.Taboo{
+  .TabooTital{
+    width:80%;
+    height:400px;
+    border: 1px solid #999; 
+    border-bottom: none;
+    border-top-right-radius:5px; 
+    border-top-left-radius:5px;
+    margin-left:10%;
+    .basicInformation{
+      height: 64px;
+      background-color: rgba(102, 102, 102, 1);
+      border-radius: 5px;
+      line-height: 64px;
+      span{
+        display: inline-block;
+        color:#fff;
+        font-size:16px;
+        margin-right: 14%;
+        margin-left: 9%;   
+      }
+    }
+    .delDisplan{
+      margin-top:20px;
+    }
+  }
+  .ant-col-8 {
+    display: block;
+    width: 24.333333%;
+  }
+  .ant-form-item-label .label:after{
+    display: none;
+  }
+  .ant-select-lg .ant-select-selection--single {
+      width: 50%;
+  }
+  .ant-input {
+    width:50%;
+  }
+  .ant-btn {
+      border-radius: 5px;
+      border:none;
+      color:#fff;
+      font: 14px "微软雅黑";
+      margin-top: 20px;
+    }
+  .anticon-plus-circle:before {
+    font-size: 29px;
+  }
+  .TabooButton{
+    width:80%;
+    margin-left:10%; 
+    overflow: hidden;
+    height:80px;
+    border: 1px solid #999;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+}
