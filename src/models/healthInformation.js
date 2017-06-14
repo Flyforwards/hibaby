@@ -13,6 +13,7 @@ export default {
   namespace: 'healthInformation',
 
   state: {
+    excelValue:[],//表头值
     medicalHealthInformation : null,//医疗健康档案
     nutritionHealthInformation : null,//营养健康档案
     skinHealthInformation : null,//美妍中心
@@ -50,6 +51,19 @@ export default {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname,query }) => {
         if (pathname === '/crm/customer/customerDetails'){
+          if(query.dataId){
+            for(let i=1 ;i<5; i++){
+              dispatch({
+                type: 'getHealthInformationListByCustomerId',
+                payload:{
+                  customerId : query.dataId,
+                  type : i
+                }
+              });
+            }
+          }
+        };
+        if (pathname === '/crm/customer/printCustomerPage'){
           if(query.dataId){
             for(let i=1 ;i<5; i++){
               dispatch({
@@ -102,6 +116,10 @@ export default {
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
+    },
+    //选中的值
+    choiceExcelValue(state, {payload: {checkedValues}}) {
+      return {...state, checkedValues}
     },
     setHealthInformation(state, { payload: { data,type }}){
       if(type === 1){

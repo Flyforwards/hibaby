@@ -7,7 +7,7 @@ import PicturesWall from '../customer/fileUpload';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import BigImageModal from '../customer/BigImageModal';
-
+import ExcelTitleModel from './excelTitle';
 
 
 const FormItem = Form.Item
@@ -20,7 +20,7 @@ function HealthyhomeDetail(props) {
   let disabled = true;
   const type = 1;
   const medicalHealthInformation = props.healthInformation.medicalHealthInformation;
-  const healthInfo = JSON.parse(medicalHealthInformation.healthInfo);
+  const healthInfo = medicalHealthInformation ? JSON.parse(medicalHealthInformation.healthInfo):{};
 
 
 
@@ -58,7 +58,7 @@ function HealthyhomeDetail(props) {
       <FormItem
         label={dict.title}
         {...formItemLayout}
-        style={{height: '100%'}}
+        // style={{height: '100%'}}
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : dict.value,
@@ -377,7 +377,11 @@ function HealthyhomeDetail(props) {
       payload: { activityKey: "1" }
     })
   }
+  //打印
+  function handlePrint() {
+    const {dispatch} = props;
 
+  }
   //编辑
   function handleEdit (e) {
     const {dispatch} = props;
@@ -624,10 +628,25 @@ function HealthyhomeDetail(props) {
         onClose={handleImgDivCancel}
       />
 
-      <div className='bottomButton'>
-        <Button className='commitButton SaveBtn' type="primary" onClick={handleEdit}>编辑</Button>
-        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
-      </div>
+      {
+        (() => {
+          if(location.pathname !== '/crm/customer/printCustomerPage')
+          {
+            return <div>
+              <ExcelTitleModel>
+                <Button className='commitButton BackBtn'>打印</Button>
+              </ExcelTitleModel>
+              <div className='bottomButton'>
+                <Button className='commitButton SaveBtn' type="primary" onClick={handleEdit}>编辑</Button>
+                <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
+
+              </div>
+            </div>
+          }
+        })()
+
+      }
+
 
     </div>
   );

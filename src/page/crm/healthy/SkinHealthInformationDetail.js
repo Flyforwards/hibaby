@@ -7,7 +7,7 @@ import { connect } from 'dva'
 import { Form,Row,Col,Radio,Input,Button,message } from 'antd';
 import './SkinHealthInformation.scss';
 import { routerRedux } from 'dva/router';
-
+import ExcelTitleModel from './excelTitle';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const createForm = Form.create
@@ -101,7 +101,7 @@ class SkinHealthInformationDetail extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
-        const healthInfo_ = JSON.stringify(values);
+        const healthInfo_ = skinHealthInformation ? JSON.stringify(values):{};
         dispatch({
           type: 'healthInformation/updateHealthInformation',
           payload: {
@@ -142,7 +142,7 @@ class SkinHealthInformationDetail extends React.Component {
 
   render(){
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
-    this.healthInfo = JSON.parse(skinHealthInformation.healthInfo);
+    this.healthInfo =skinHealthInformation ? JSON.parse(skinHealthInformation.healthInfo):{};
     return (
       <div className="skinHealthInformationDiv">
           <Form className="tableForm">
@@ -329,10 +329,22 @@ class SkinHealthInformationDetail extends React.Component {
               </Col>
             </Row>
           </Form>
-        <div className='bottomButton'>
-          <Button className='commitButton SaveBtn' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</Button>
-          <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
 
+        <div className='bottomButton'>
+          {
+            (() => {
+              if(location.pathname !== '/crm/customer/printCustomerPage')
+              {
+                return <div>
+                  <Button className='commitButton SaveBtn' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</Button>
+                  <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
+                  <ExcelTitleModel>
+                    <Button className='commitButton BackBtn'>打印</Button>
+                  </ExcelTitleModel>
+                </div>
+              }
+            })()
+          }
 
         </div>
       </div>

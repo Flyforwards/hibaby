@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Button, Col, Form, Input, Row, Radio, Select } from 'antd';
 import "./NutritionHealth.scss"
 import { routerRedux } from 'dva/router';
-
+import ExcelTitleModel from './excelTitle';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
@@ -14,8 +14,8 @@ function NutritionHealthInformationDetail(props) {
   let disabled=true;
   const type = 2;
 
-  const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
-  const healthInfo = JSON.parse(nutritionHealthInformation.healthInfo);
+  const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation ;
+  const healthInfo = nutritionHealthInformation ? JSON.parse(nutritionHealthInformation.healthInfo):{};
   const formItemLayout = {
     labelCol: { span: 7 },
     wrapperCol: { span: 16 }
@@ -252,7 +252,11 @@ function NutritionHealthInformationDetail(props) {
       payload: { activityKey: "1" }
     })
   }
-
+  // //打印
+  // function handlePrint() {
+  //   const {dispatch} = props;
+  //
+  // }
 
   return (
     <div className="NutritionHealth">
@@ -349,8 +353,22 @@ function NutritionHealthInformationDetail(props) {
       </Form>
 
       <div className='bottomButton'>
-        <Button className='commitButton SaveBtn' onClick={handleEdit}>编辑</Button>
-        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
+        {
+          (() => {
+            if(location.pathname !== '/crm/customer/printCustomerPage')
+            {
+             return <div>
+              <Button className='commitButton SaveBtn' onClick={handleEdit}>编辑</Button>
+              <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
+               <ExcelTitleModel>
+                 <Button className='commitButton BackBtn'>打印</Button>
+               </ExcelTitleModel>
+              </div>
+            }
+              })()
+
+        }
+
       </div>
     </div>
   );
