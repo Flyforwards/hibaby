@@ -11,16 +11,38 @@ const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
+const statusDict = {0 :'空房',1: '维修', 2 :'脏房', 3 :'样板房', 4 :'住客房', 5 :'入所', 6 :'出所', 7 :'预约'}
+
+
 function ScreenBar(props) {
   const { getFieldDecorator }= props.form;
-  const {packageAry} = props.users;
+  const {dayStatusData,statusChange,packageAry,selectValue} = props;
 
-  function onSearch() {
+  function  onSearch(){
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        let param = {};
+        Object.keys(values).map((key) => {
+          const value = values[key];
+          if(value){
+            param[key] = value;
+          }
+        })
+        props.dispatch(routerRedux.push({
+          pathname: '/chamber/roomstatusindex',
+          query: param
+        }))
+      }
+    })
+  }
 
+  function reset() {
+    props.form.resetFields();
+    onSearch();
   }
 
   function onChange(e) {
-
+    statusChange(e)
   }
 
   let packageChi = [];
@@ -54,7 +76,6 @@ function ScreenBar(props) {
     )
   }
 
-
   const selectData = [
     {title:'主副楼',submitStr:'building',selectName:'MainFloor'},
     {title:'楼层',submitStr:'floor',selectName:'Floor'},
@@ -69,25 +90,19 @@ function ScreenBar(props) {
   for(let i = 0;i<selectData.length;i++){
     searchDiv.push(<Col span={8}>{cusFromItem(selectData[i])}</Col>)
   }
-
-  const options = [
-    { label: '全选', value: 'Apple' },
-    { label: '空房', value: 'Pear' },
-    { label: '维修', value: 'Orange' },
-    { label: '脏房', value: '1' },
-    { label: '样板房', value: '2' },
-    { label: '住客房', value: '3' },
-    { label: '入所', value: '4' },
-    { label: '离所', value: '5' },
-  ];
+  const options = [];
+  options.push({label:'全选',value:'all'})
+  Object.keys(statusDict).map((key)=>{
+    options.push({label:statusDict[key],value:key})
+  })
 
   return(
     <div className="ScreenBarDiv">
       <div className="headDiv">
         <Switch className='switchDiv' checkedChildren={'日房态'} unCheckedChildren={'月房态'} />
-        <span className="titlespan">计划入住 <span style={{color:'rgb(0,185,156)'}}>12</span> 客人</span>
-        <span className="titlespan">计划离所 <span style={{color:'rgb(247,171,63)'}}>8</span> 客人</span>
-        <span className="titlespan">今日在所 <span style={{color:'rgb(243,106,105)'}}>8</span> 客人</span>
+        <span className="titlespan">计划入住 <span style={{color:'rgb(0,185,156)'}}>{dayStatusData.beginCount}</span> 客人</span>
+        <span className="titlespan">计划离所 <span style={{color:'rgb(247,171,63)'}}>{dayStatusData.endCount}</span> 客人</span>
+        <span className="titlespan">今日在所 <span style={{color:'rgb(243,106,105)'}}>{dayStatusData.useCount}</span> 客人</span>
 
       </div>
 
@@ -103,34 +118,53 @@ function ScreenBar(props) {
             {searchDiv[5]}
           </Row>
         <Button className='btn' onClick={ onSearch}>查询</Button>
-
+        <Button className='btn' onClick={ reset}>重置</Button>
       </Card>
 
 
       <div className="radioDiv">
         <Card bodyStyle={{padding:'20px'}} style={{ width: '100%' }}>
           <h4>状态筛选</h4>
-          <CheckboxGroup size="large" options={options}  onChange={onChange} />
+          <CheckboxGroup value={selectValue} options={options}  onChange={onChange} />
         </Card>
       </div>
     </div>
   )
 }
 
-function CardArray() {
-  function creatChiCard(index) {
-    return(
-      <Card className="smallCard" bodyStyle={{padding:'10px'}} title={1000+index} extra="空房">
-        <p>客户姓名：王妙春</p>
-        <p>母婴护理师：朱禹桥</p>
-        <p>会员卡种：铂金会员</p>
-        <p>会员卡号：a12345</p>
-        <p>离所日期：2017-04-05</p>
-        <Row className='bottomLine'>
-          <Col span={8}><p>房间状态</p></Col>
-          <Col offset={1} span={15}>
-            <Select className='antCli'  placeholder='请选择'>
+function CardArray({roomList}) {
+  const chiAry = [1,2,3];
 
+  function creatChiCard(dict) {
+
+    let chiDivAry = [];
+
+    for (let i = 0; i < chiAry.length ; i++) {
+      chiDivAry.push(<Option key={i}>{statusDict[i]}</Option>);
+    }
+
+    let chiDiv = <div>
+      <h1>{statusDict[ dict.status]}</h1>
+    </div>
+
+    if(dict.status === 4 || dict.status === 6){
+      chiDiv = <div>
+        <p>客户姓名：{dict.customerConsume.customerName}</p>
+        <p>母婴护理师：朱禹桥</p>
+        <p>会员卡种：{dict.customerConsume.membershipCardName}</p>
+        <p>会员卡号：{dict.customerConsume.membershipCardId}</p>
+        <p>离所日期：{dict.endDate}</p>
+      </div>
+    }
+
+    return(
+      <Card className="smallCard" bodyStyle={{padding:'10px'}} title={dict.roomNo} extra={statusDict[ dict.status]}>
+        {chiDiv}
+        <Row className='bottomLine'>
+          <Col span={7}><p>房间状态</p></Col>
+          <Col span={17}>
+            <Select className='antCli'  placeholder='请选择'>
+              {chiDivAry}
             </Select>
           </Col>
         </Row>
@@ -139,10 +173,11 @@ function CardArray() {
   }
 
   let array = [];
-  for (let i = 1;i<=15;i++){
-    array.push(creatChiCard(i));
+  if(roomList){
+    for (let i = 0;i<roomList.length;i++){
+      array.push(creatChiCard(roomList[i]));
+    }
   }
-
 
 
   return(
@@ -152,18 +187,66 @@ function CardArray() {
   )
 }
 
+let isAll = false;
+
 class roomStatusIndex extends React.Component {
 
   constructor(props) {
     super(props);
   }
 
+  state = {
+    roomList:'',
+    selectValue:'',
+  }
+
+
+  statusChange(array){
+    if(isAll){
+      isAll = false;
+      if(array.indexOf('all') != -1){
+        array.map((value,index)=>{
+          if(value== 'all') {
+            array.splice(index, 1);
+          }
+        })
+
+      }
+      else{
+        array=''
+      }
+    }
+    else {
+      if(array.indexOf('all') != -1){
+        isAll = true;
+        array=['all',0,1,2,3,4,5,6,7]
+      }
+    }
+
+    let listArray = [];
+
+    for(let i = 0;i<this.props.users.dayStatusData.roomList.length;i++){
+      const dict = this.props.users.dayStatusData.roomList[i];
+      for(let j = 0 ;j< array.length;j++){
+        if(dict.status == array[j]){
+          listArray.push(dict);
+          break;
+        }
+      }
+    }
+
+    this.setState({
+      selectValue :array,
+      roomList :listArray
+    })
+  }
+
   render() {
     const ScreenBarDiv = Form.create()(ScreenBar)
     return (
       <div className="roomStatusDiv">
-        <ScreenBarDiv users = {this.props.users}></ScreenBarDiv>
-        <CardArray/>
+        <ScreenBarDiv selectValue={this.state.selectValue} statusChange={this.statusChange.bind(this)} dayStatusData={this.props.users.dayStatusData} packageAry={this.props.users.dayStatusData}></ScreenBarDiv>
+        <CardArray roomList={this.state.roomList||this.props.users.dayStatusData.roomList}/>
       </div>
     )
   }

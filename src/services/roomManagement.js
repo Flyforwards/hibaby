@@ -42,3 +42,17 @@ export function listByMain(values) {
     body: JSON.stringify(values),
   })
 }
+//日房态
+export function dayStatus(values) {
+  return request('/crm/api/v1/room/dayStatus', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+// 日房状态更新
+export function dayStatusUpdate(values) {
+  return request('/crm/api/v1/room/dayStatusUpdate', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
