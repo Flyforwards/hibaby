@@ -2,15 +2,18 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Button,Card,Checkbox,Row,Col,Form,Select} from 'antd'
+import {Button,Card,Checkbox,Row,Col,Form,DatePicker,Select,Switch} from 'antd'
 import { routerRedux } from 'dva/router';
+const { MonthPicker } = DatePicker;
 import './roomStatusManagementIndex.scss'
+import DictionarySelect from 'common/dictionary_select';
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 function ScreenBar(props) {
   const { getFieldDecorator }= props.form;
+  const {packageAry} = props.users;
 
   function onSearch() {
 
@@ -18,6 +21,12 @@ function ScreenBar(props) {
 
   function onChange(e) {
 
+  }
+
+  let packageChi = [];
+
+  for (let i = 0; i < packageAry.length ; i++) {
+    packageChi.push(<Option key={packageAry[i].id}>{packageAry[i].name}</Option>);
   }
 
   const formItemLayout = {
@@ -28,8 +37,18 @@ function ScreenBar(props) {
   function cusFromItem(dict) {
     return(
       <FormItem uid={dict.submitStr} {...formItemLayout} label={dict.title}>
-        {getFieldDecorator(dict.submitStr)(
-          <Select className='antCli' placeholder='请选择'>{dict.children}</Select>
+        {getFieldDecorator(dict.submitStr)
+        (
+          dict.selectName?
+            (dict.selectName === 'package' ?
+              <Select placeholder="请选择" className='antCli'>
+                {packageChi}
+              </Select>
+              :
+              <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+            )
+            :
+            <MonthPicker  style={{width: '100%' }}/>
         )}
       </FormItem>
     )
@@ -37,12 +56,12 @@ function ScreenBar(props) {
 
 
   const selectData = [
-    {title: '主副楼', submitStr: 'building', },
-    {title: '楼层', submitStr: 'floor', },
-    {title: '区域', submitStr: 'region',},
-    {title: '朝向', submitStr: 'orientation'},
-    {title: '套餐', submitStr: 'name'},
-    {title: '套餐', submitStr: 'date'},
+    {title:'主副楼',submitStr:'building',selectName:'MainFloor'},
+    {title:'楼层',submitStr:'floor',selectName:'Floor'},
+    {title:'区域',submitStr:'region',selectName:'Area'},
+    {title:'朝向',submitStr:'orientation',selectName:'Toward'},
+    {title: '套餐', submitStr: 'packageInfoId',selectName:'package'},
+    {title: '日期', submitStr: 'useDate'},
   ]
 
   let searchDiv = [];
@@ -65,36 +84,33 @@ function ScreenBar(props) {
   return(
     <div className="ScreenBarDiv">
       <div className="headDiv">
-        <div className="switchDiv">
-          <span>
-            月
-            <br/>
-            房态
-          </span>
-        </div>
+        <Switch className='switchDiv' checkedChildren={'日房态'} unCheckedChildren={'月房态'} />
+        <span className="titlespan">计划入住 <span style={{color:'rgb(0,185,156)'}}>12</span> 客人</span>
+        <span className="titlespan">计划离所 <span style={{color:'rgb(247,171,63)'}}>8</span> 客人</span>
+        <span className="titlespan">今日在所 <span style={{color:'rgb(243,106,105)'}}>8</span> 客人</span>
 
-          <Row className="statisticalDiv">
-            <Col span={8}><span>计划入住 <span style={{color:'yellow'}}>12</span> 客人</span></Col>
-            <Col span={8}><span>计划离所 <span style={{color:'green'}}>8</span> 客人</span></Col>
-            <Col span={8}><span>今日在所 <span style={{color:'red'}}>8</span> 客人</span></Col>
+      </div>
+
+      <Card className="SelectDiv" bodyStyle={{padding:'20px'}}>
+          <Row style={{height: 50,width:'800px', overflow:'hidden',float:'left'}}>
+            {searchDiv[0]}
+            {searchDiv[1]}
+            {searchDiv[2]}
           </Row>
-        <Button className='btn' onClick={ onSearch} style={{width:'136px',height:'40px',lineHeight:'40px',backgroundColor:'rgba(255, 102, 0, 1)',color:'#ffffff'}}>查询</Button>
-      </div>
-      <div className="SelectDiv">
-        <Row style={{height: 50,overflow:'hidden'}}>
-          {searchDiv[0]}
-          {searchDiv[1]}
-          {searchDiv[2]}
-        </Row>
-        <Row style={{height: 50,overflow:'hidden'}}>
-          {searchDiv[3]}
-          {searchDiv[4]}
-          {searchDiv[5]}
-        </Row>
-      </div>
+        <Row style={{height: 50,width:'800px', overflow:'hidden',float:'left'}}>
+            {searchDiv[3]}
+            {searchDiv[4]}
+            {searchDiv[5]}
+          </Row>
+        <Button className='btn' onClick={ onSearch}>查询</Button>
+
+      </Card>
+
+
       <div className="radioDiv">
-        <Card title="状态筛选"  style={{ width: '100%' }}>
-          <CheckboxGroup options={options}  onChange={onChange} />
+        <Card bodyStyle={{padding:'20px'}} style={{ width: '100%' }}>
+          <h4>状态筛选</h4>
+          <CheckboxGroup size="large" options={options}  onChange={onChange} />
         </Card>
       </div>
     </div>
@@ -146,7 +162,7 @@ class roomStatusIndex extends React.Component {
     const ScreenBarDiv = Form.create()(ScreenBar)
     return (
       <div className="roomStatusDiv">
-        <ScreenBarDiv></ScreenBarDiv>
+        <ScreenBarDiv users = {this.props.users}></ScreenBarDiv>
         <CardArray/>
       </div>
     )
@@ -155,7 +171,7 @@ class roomStatusIndex extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    users: state.roomManagement,
+    users: state.roomStatusManagement,
   };
 }
 
