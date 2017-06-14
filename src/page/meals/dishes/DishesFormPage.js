@@ -17,19 +17,29 @@ const createForm = Form.create
 class DishesFormPage extends React.Component{
   constructor(props){
     super(props);
-    this.state = {
-    }
   }
 
   handleSubmit(){
-
+    const {dispatch} = this.props;
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        const id = this.props.dishes.initialValue ? this.props.dishes.initialValue.id : null;
+        dispatch({
+          type: 'dishes/saveDishes',
+          payload: {
+            ...values,
+            id : id
+          }
+        });
+      }
+    });
   }
   //返回
   handleBack(){
     const {dispatch} = this.props;
-    dispatch(routerRedux.push(`/meals/dishes`))
-
+    dispatch(routerRedux.push(`/meals/dishes`));
   }
+
   render(){
     const _this = this;
     const {getFieldDecorator} = this.props.form;

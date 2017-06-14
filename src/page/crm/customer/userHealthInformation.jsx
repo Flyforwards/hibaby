@@ -33,9 +33,13 @@ class userHealthInformation extends React.Component {
   //页面生命周期结束时调用
   componentWillUnmount(){
     const {dispatch} = this.props;
-    dispatch({
-      type: 'healthInformation/clearAllHealthInformation'
-    })
+    if(location.pathname !== "/crm/customer/printCustomerPage") {
+      dispatch({
+        type: 'healthInformation/clearAllHealthInformation'
+      })
+    }else{
+    }
+
   }
 
   render() {
