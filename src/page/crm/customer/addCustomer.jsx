@@ -20,7 +20,11 @@ class addCustomer extends React.Component{
     this.props.dispatch({type:'addCustomer/reductionState'})
     this.props.dispatch({
       type: 'membershipcard/setAddCustomerTab',
-      payload: false 
+      payload: false
+    })
+    this.props.dispatch({
+      type: 'printCustomer/setAddCustomerTab',
+      payload: false
     })
   }
 
@@ -37,19 +41,20 @@ class addCustomer extends React.Component{
     const {editCustomer,isDetail}= this.props.users;
     const {addSuccess}= this.props.course;
     const { getSuccess } =this.props.membershipcard;
+    const { healthPrint } = this.props.printCustomer;
     // console.log("membershipcard>>>>",getSuccess)
     let TabPaneAry = [
       <TabPane className='tabsContent' tab="客户信息" key="1">
         {isDetail ? <CustomerDetails/> : <CustomerInformation/>}
       </TabPane>,
-      <TabPane tab="健康档案" disabled={!(this.props.users.expandData||addSuccess || getSuccess)} key="2">
+      <TabPane tab="健康档案" disabled={!(this.props.users.expandData||addSuccess || getSuccess||healthPrint)} key="2">
         <UserHealthInformation/>
       </TabPane>,
-      <TabPane tab="套餐" key="3" disabled={!(this.props.users.expandData||addSuccess || getSuccess)}>
+      <TabPane tab="套餐" key="3" disabled={!(this.props.users.expandData||addSuccess || getSuccess||healthPrint)}>
         <AddCourse />
       </TabPane>];
 
-    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess || getSuccess){
+    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess || getSuccess||healthPrint){
       TabPaneAry.push(<TabPane tab="会员卡" key="4">
         <MembershipCard/>
       </TabPane>)
@@ -57,6 +62,9 @@ class addCustomer extends React.Component{
     let defaultActiveKey = '1';
     if (addSuccess){
       defaultActiveKey = '3';
+    }
+    if(healthPrint){
+      defaultActiveKey='2';
     }
     if(getSuccess){
       defaultActiveKey = '4';
@@ -79,7 +87,8 @@ function mapStateToProps(state) {
     users: state.addCustomer,
     course:state.addCourse,
     activityKey: state.addCustomer.activityKey,
-    membershipcard:state.membershipcard
+    membershipcard:state.membershipcard,
+    printCustomer:state.printCustomer,
   };
 }
 export default connect(mapStateToProps)(addCustomer)
