@@ -7,10 +7,10 @@ import { local, session } from 'common/util/storage.js'
 
 // 个人中心菜单
 const userModuleList = [
-  {"id":100,"name":"个人档案","path":"/user/information","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
-  {"id":101,"name":"我的消息","path":"/user/my-message","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
-  {"id":102,"name":"工作计划","path":"/user/work-plan","icon":"copyright","projectId":1,"permissionId":0,"children":[]},
-  {"id":103,"name":"修改密码","path":"/user/reset-password","icon":"copyright","projectId":1,"permissionId":0,"children":[]}]
+  {"id":100,"name":"个人档案","path":"/user/information","icon":"user","projectId":1,"permissionId":0,"children":[]},
+  {"id":101,"name":"我的消息","path":"/user/my-message","icon":"file-text","projectId":1,"permissionId":0,"children":[]},
+  {"id":102,"name":"工作计划","path":"/user/work-plan","icon":"calculator","projectId":1,"permissionId":0,"children":[]},
+  {"id":103,"name":"修改密码","path":"/user/reset-password","icon":"key","projectId":1,"permissionId":0,"children":[]}]
 
 export default {
   namespace: 'layout',
