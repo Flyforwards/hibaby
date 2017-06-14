@@ -81,9 +81,9 @@ class DishesIndex extends React.Component{
   onLook(record){
     const {dispatch} = this.props;
     dispatch({
-      type: 'dishes/getHealthInformationListByCustomerId',
+      type: 'dishes/getDishesById',
       payload: {
-        dishesId : record.id
+        dataId : record.id
       }
     });
   }
@@ -95,8 +95,13 @@ class DishesIndex extends React.Component{
       okText: '确认',
       cancelText: '取消',
       onOk() {
-        console.log('OK');
-        message.info(record.id);
+        const {dispatch} = this.props;
+        dispatch({
+          type: 'dishes/deleteDishes',
+          payload: {
+            dataId : record.id
+          }
+        });
       }
     });
   }
@@ -104,7 +109,13 @@ class DishesIndex extends React.Component{
 
 
   componentDidMount(){
-
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'dishes/getDishesPageList',
+      payload: {
+        nodeId : 1
+      }
+    });
   }
 
   //表格上方筛选框

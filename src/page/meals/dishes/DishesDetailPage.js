@@ -34,7 +34,13 @@ class DishesDetailPage extends React.Component{
       okText: '确认',
       cancelText: '取消',
       onOk() {
-        message.info("删除记录id="+id);
+        const {dispatch} = this.props;
+        dispatch({
+          type: 'dishes/deleteDishes',
+          payload: {
+            dataId : id
+          }
+        });
       }
     });
   }
