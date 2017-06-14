@@ -14,7 +14,7 @@ const do_print = (id_str) =>
   doc = iframe.contentWindow.document;
 // 引入打印的专有CSS样式，www.111Cn.net根据实际修改
   doc.write('<LINK rel="stylesheet"   href="http://cdn.bootcss.com/antd/2.10.4/antd.min.css" />');
-  doc.write('<LINK rel="stylesheet"   href="http://192.168.199.81/health.css" />');
+  doc.write('<LINK rel="stylesheet"   href="http://dev.hbbcare.com/health.css" />');
   doc.write('<div>' + el.innerHTML + '</div>');
   doc.close();
   iframe.contentWindow.focus();
