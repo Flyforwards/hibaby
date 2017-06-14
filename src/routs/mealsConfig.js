@@ -35,6 +35,16 @@ export default (app) => [
       })
     }
   },
+  //添加禁忌页面
+  {
+    path: '/meals/nutritionist/taboo',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/Taboo.jsx'))
+      })
+    }
+  },
   //循环界面
   {
     path: '/meals/nutritionist/cycle',
