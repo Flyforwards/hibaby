@@ -14,7 +14,17 @@ export default (app) => [
   },
   // 创建房间
   {
-    path: '/chamber/creatroom',
+    path: '/chamber/room/creatroom',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/roomManagement'));
+        cb(null, require('page/guestRoom/roomManagement/creatGuestRoom'))
+      })
+    }
+  },
+  //房间详情
+  {
+    path: '/chamber/room/roomdetail',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/roomManagement'));

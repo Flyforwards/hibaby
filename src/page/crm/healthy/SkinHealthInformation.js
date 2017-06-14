@@ -65,7 +65,7 @@ class SkinHealthInformation extends React.Component {
   }
 
   handleBack() {
-    const {dispatch} = props;
+    const {dispatch} = this.props;
     dispatch({
       type: 'addCustomer/changeTabs',
       payload: { activityKey: "1" }

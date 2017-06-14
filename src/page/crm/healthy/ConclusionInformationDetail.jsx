@@ -45,7 +45,6 @@ function ConclusionInformationDetail(props) {
 
   //返回
   function handleBack() {
-    const {dispatch} = props;
     dispatch({
       type: 'addCustomer/changeTabs',
       payload: { activityKey: "1" }

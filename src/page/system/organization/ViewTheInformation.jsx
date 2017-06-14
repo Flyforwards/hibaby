@@ -190,12 +190,12 @@ class ViewTheInformationed extends React.Component {
             </div>
             { JobInformation }
 
-          <Button  className="disabledButton" onClick={this.headelDisabled}>禁用</Button>
+          <Button disabled={disable} className="disabledButton" onClick={this.headelDisabled}>禁用</Button>
           <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID} }}>
               <Button disabled={edit}  type="primary" className="editButton">编辑</Button>
           </Link>
           <Button disabled={add_position} className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>
-          <Link><Button disabled={disable} className="BackBtn" onClick={this.headelReturn.bind(this)}>返回</Button></Link>
+          <Link><Button className="BackBtn" onClick={this.headelReturn.bind(this)}>返回</Button></Link>
            <Disabled
               visible={ this.state.toViewVisible }
               handleOk={this.state.handleOk}

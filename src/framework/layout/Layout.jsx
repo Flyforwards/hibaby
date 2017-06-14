@@ -42,8 +42,7 @@ class Layout extends React.Component {
             'mini': this.state.mini,
             'yt-admin-framework': true
         });
-        const { projectTree, subMenu, userInfo, selectIndex } = this.props.layout;
-
+        const { subMenu} = this.props;
         return (
             <div className={ cls }>
                 <Spin key="yt-admin-framework-layout" spinning={ this.state.loading } size="large">
@@ -51,10 +50,6 @@ class Layout extends React.Component {
                         miniMode ={ this.state.mini }
                         onMiniChange = { this.handleMiniChange.bind(this) }
                         onSetLoading = { this.handleSetLoading.bind(this) }
-                        projectTree = { projectTree }
-                        userInfo = { userInfo }
-                        selectIndex = { selectIndex }
-                        dispatch = { this.props.dispatch }
                     />
                     <Sidebar miniMode={ this.state.mini } menuData={ subMenu } location={ this.props.location }/>
                     <Content>
@@ -70,4 +65,14 @@ class Layout extends React.Component {
     }
 }
 
-export default connect(( layout ) => ( layout ))(Layout);
+function mapStateToProps(state) {
+  const {
+    subMenu
+  } = state.layout;
+  return {
+    loading: state.loading,
+    subMenu
+  };
+}
+
+export default connect(mapStateToProps)(Layout);

@@ -84,7 +84,11 @@ class SelectTheNodeFrom extends Component {
           for(let n=0;n<roleIdData.length;n++){
             for(let i=0;i<roleData.length;i++){
               if(roleData[i]==Number(roleIdData[n])){
-                selectName.push(selectData[i].name+" ; ")
+                if(roleIdData.length == n+1){
+                  selectName.push(selectData[i].name)
+                }else{
+                  selectName.push(selectData[i].name+" ; ")
+                }
               }
             }
           }
@@ -160,7 +164,7 @@ class SelectTheNodeFrom extends Component {
     const  { selectedNodes } = e;
     if(selectedNodes[0]){
       const node = selectedNodes[0];
-      console.log("节点>>>>",node.props.nodeId)
+      //console.log("节点>>>>",node.props.nodeId)
       this.nodeId = node.props.nodeId;
       this.tissueProperty = node.props.tissueProperty;
       this.props.dispatch({
