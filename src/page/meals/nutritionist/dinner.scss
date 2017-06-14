@@ -1,0 +1,279 @@
+.CustomerConent {
+  min-width: 1030px;
+  margin: 10px;
+  .topSelect {
+    //width: 1030px;
+    height: 50px;
+    margin-top: 10px;
+    //padding-top:10px;
+    .search {
+      //width:500px;
+      //float:left;
+      .ant-form-item-control-wrapper {
+        //width:500px;
+        .ant-form-item-control {
+          //width: 500px;
+        }
+      }
+    }
+    .ant-btn {
+      border-radius: 5px;
+      font: 14px "微软雅黑";
+      //float:left;
+      //margin-left:10px;
+    }
+    .findBtn {
+      //float:left;
+      //margin-left: 20px;
+    }
+  }
+
+  .delDisplan {
+    .ant-calendar-picker {
+      display: block;
+    }
+  }
+  //.topAge{
+  //  //width: 1030px;
+  //  height: 50px;
+  //  margin-top:10px;
+  //  label{
+  //    font: 14px "微软雅黑";
+  //  }
+  //  //.age{
+  //  //  width: 130px;
+  //  //  height:30px;
+  //  //  float:left;
+  //  //}
+  //  .PreData{
+  //    .ant-form-item-control {
+  //      //width:116px;
+  //    }
+  //  }
+  //  .TireNum{
+  //    .ant-form-item-control {
+  //      //width:106px;
+  //    }
+  //  }
+  //  //.idCard{
+  //  //  .ant-form-item-label{
+  //  //    width: 80px;
+  //  //  }
+  //  //  .ant-form-item-control {
+  //  //    width:120px;
+  //  //  }
+  //  //}
+  //  .Operator{
+  //    .ant-form-item-label{
+  //      //width: 80px;
+  //    }
+  //    .ant-form-item-control {
+  //      //width:120px;
+  //    }
+  //  }
+  //  .intPackage{
+  //    .ant-form-item-label{
+  //      //width: 80px;
+  //    }
+  //  }
+  //  .Origin{
+  //    margin-left: 10px;
+  //    //width: 14%;
+  //     .ant-form-item-label{
+  //       //width:55px;
+  //     }
+  //    .ant-form-item-control {
+  //      //width:80px;
+  //    }
+  //  }
+  //  .bordData{
+  //    //width: 17%;
+  //    .ant-form-item-label{
+  //      //width:100px;
+  //    }
+  //    .ant-form-item-control {
+  //      //width:80px;
+  //    }
+  //  }
+  //  .Package{
+  //    .ant-form-item-control {
+  //      //width:80px;
+  //    }
+  //  }
+  //}
+
+  .ant-form-item {
+    margin-bottom: 0px;
+  }
+  .mini .yt-admin-framework-content {
+    transition: all .3s;
+    margin-left: 60px;
+  }
+  .yt-admin-framework-content {
+    transition: all .3s;
+    padding: 0 12px;
+    background-color: #eeeeee;
+  }
+  .Customer-title {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  @media (max-width: 767px) {
+    .mini .yt-admin-framework-content {
+      transition: all .3s;
+      margin-left: 0;
+    }
+  }
+
+  .ant-modal-title {
+    text-align: center;
+  }
+  .ant-btn {
+    background-color: #b67233;
+    color: #fff;
+    border: 0;
+    width: 150px;
+    border-radius: 4px;
+  }
+  .CreateList {
+    //width: 1030px;
+    span {
+      display: block;
+      float: left;
+      margin-left: 19px;
+      width: 21%;
+      height: 40px;
+      input {
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+    }
+  }
+  .ant-table-thead > tr > th {
+    background-color: dimgray;
+    font-weight: 500;
+    transition: background .3s ease;
+    text-align: center;
+    font: 14px "微软雅黑";
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .ant-table-tbody > tr > td {
+    text-align: center;
+    background-color: #fff;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    .anticon{
+      float:left;
+      margin-left:10px;
+      font-size:24px;
+    }
+    div {
+      width: 100%;
+      a {
+        margin-right: 9px;
+        margin-left: 13px;
+        color: #b67231;
+      }
+      .firstA:hover {
+        color: #0066ff;
+      }
+      .firstB:hover {
+        color: #ff0000;
+      }
+    }
+  }
+  .ant-modal-body {
+    height: 230px;
+    font-size: 14px;
+    line-height: 2.5;
+    margin-top: -10px;
+  }
+  .ant-modal-footer {
+    border-top: 0;
+    margin-top: 20px;
+    padding: 10px 16px 10px 10px;
+    text-align: right;
+  }
+  .editable-cell {
+    position: relative;
+  }
+
+  .editable-cell-input-wrapper,
+  .editable-cell-text-wrapper {
+    padding-right: 24px;
+  }
+
+  .editable-cell-text-wrapper {
+    padding: 5px 24px 5px 5px;
+  }
+
+  .editable-cell-icon,
+  .editable-cell-icon-check {
+    position: absolute;
+    right: 0;
+    width: 20px;
+    cursor: pointer;
+  }
+
+  .editable-cell-icon {
+    line-height: 18px;
+    display: none;
+  }
+
+  .editable-cell-icon-check {
+    line-height: 28px;
+  }
+
+  .editable-cell:hover .editable-cell-icon {
+    display: inline-block;
+  }
+
+  .editable-cell-icon:hover,
+  .editable-cell-icon-check:hover {
+    color: #108ee9;
+  }
+
+  .editable-add-btn {
+    margin-bottom: 8px;
+  }
+  .allList {
+    width: 400px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #999999;
+    text-align: left;
+    display: inline-block;
+    margin-top: -40px;
+    margin-left: 10px;
+    float: left;
+  }
+  .ant-table-paginations {
+    margin-right: 60px;
+  }
+  .alert-vertical-center-modal {
+    text-align: center;
+    white-space: nowrap;
+    .ant-modal {
+      display: inline-block;
+      vertical-align: middle;
+      top: 0;
+      text-align: center;
+    }
+  }
+
+  .alert-vertical-center-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+  }
+
+}
