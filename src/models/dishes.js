@@ -28,32 +28,32 @@ export default {
         //更新state
         yield put({type:'setDishesDetail',payload:{data}} );
       }
-      const data = {
-        id : 1,
-        name : '红烧鲫鱼',
-        mvType : 1,
-        vdType : 1,
-        nodeId : 1,
-        IngredientsDOs : [{
-          id : 1,
-          dishesId : 1,
-          type : 1,
-          name : '土豆',
-          volume : 50
-        },{
-          id : 2,
-          dishesId : 1,
-          type : 2,
-          name : '西红柿',
-          volume : 50
-        },{
-          id : 3,
-          dishesId : 1,
-          type : 2,
-          name : '鸡蛋',
-          volume : 50
-        }]
-      };
+      // const data = {
+      //   id : 1,
+      //   name : '红烧鲫鱼',
+      //   mvType : 1,
+      //   vdType : 1,
+      //   nodeId : 1,
+      //   IngredientsDOs : [{
+      //     id : 1,
+      //     dishesId : 1,
+      //     type : 1,
+      //     name : '土豆',
+      //     volume : 50
+      //   },{
+      //     id : 2,
+      //     dishesId : 1,
+      //     type : 2,
+      //     name : '西红柿',
+      //     volume : 50
+      //   },{
+      //     id : 3,
+      //     dishesId : 1,
+      //     type : 2,
+      //     name : '鸡蛋',
+      //     volume : 50
+      //   }]
+      // };
       put({type:'setDishesDetail',payload:{data}} );
     },
   },

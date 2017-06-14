@@ -38,7 +38,6 @@ class CustomerIndex extends React.Component {
       addList:[]
     }
     this.uuid = 5; 
-    this.edit = null;
   }
   
   addIngredients(){
@@ -51,8 +50,6 @@ class CustomerIndex extends React.Component {
     });
   }
   componentDidMount() {
-    this.edit = window.location.search.split("=")[1]
-    console.log("this.edit>>>>",this.edit)
     this.props.dispatch({ type: 'customer/getCustomerPage' });
     this.props.dispatch({ type: 'customer/listByMain' });
     this.props.dispatch({ type: 'customer/getMemberShipCard' });
@@ -87,7 +84,7 @@ class CustomerIndex extends React.Component {
                 validateTrigger: ['onChange', 'onBlur'],
                 rules: [],
               })(
-                <Input readOnly={true} />
+                <Input />
               )}
           </FormItem>
         </Col>
@@ -107,7 +104,7 @@ class CustomerIndex extends React.Component {
               {getFieldDecorator('sugar', {
                 rules: []
               })(
-                <Select placeholder="请选择" readOnly={true} >
+                <Select placeholder="请选择">
                   <Option key={1} value={"1"}>有糖</Option>
                   <Option key={0} value={"0"}>无糖</Option>
                 </Select>
@@ -115,11 +112,15 @@ class CustomerIndex extends React.Component {
             </FormItem>
           </Col>
           { formItems }
+          <Col span={8} className="delDisplan">
+            <FormItem {...formChooseOneAge}>
+              <Icon type="plus-circle" onClick={ this.addIngredients.bind(this)}/>
+            </FormItem>
+          </Col>
         </Form>
        </div>
         <div className="TabooButton">
-        <Link to={{pathname:'/meals/nutritionist/taboo/edittaboo',query:{ dataId:`${this.edit}`}}}>
-          <Button   style={{
+          <Button  onClick={this.addHeadel.bind(this)} style={{
             width: '15%',
             height: '40px',
             lineHeight: '40px',
@@ -127,8 +128,7 @@ class CustomerIndex extends React.Component {
             marginRight: '40px',
             float:'right',
             backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>编辑</Button>
-         </Link>
+          }}>保存</Button>
           <Button  onClick={this.onBack.bind(this)} style={{
             width: '15%',
             height: '40px',

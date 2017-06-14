@@ -1,5 +1,5 @@
 import React from 'react'
-import './dinner.scss'
+import './export.scss'
 import { connect } from 'dva'
 import {
   Select,
@@ -30,67 +30,13 @@ const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const createForm = Form.create
 
-//这是表单的数据操作
-class Customer extends React.Component {
-  state = {
-    value: this.props.value,
-    editable: false
-  }
-  handleChange = (e) => {
-    const value = e.target.value;
-    this.setState({ value });
-  }
-  check = () => {
-    this.setState({ editable: false });
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-  }
-  edit = () => {
-    this.setState({ editable: true });
-  }
-  
-  render() {
-    const { value, editable } = this.state;
-    return (
-      <div className="editable-cell">
-        {
-          editable ?
-            <div className="editable-cell-input-wrapper">
-              <Input
-                value={value}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-              />
-              <Icon
-                type="check"
-                className="editable-cell-icon-check"
-                onClick={this.check}
-              />
-            </div>
-            :
-            <div className="editable-cell-text-wrapper">
-              {value || ' '}
-              <Icon
-                type="edit"
-                className="editable-cell-icon"
-                onClick={this.edit}
-              />
-            </div>
-        }
-      </div>
-    );
-  }
-}
-
 @createForm()
 class CustomerIndex extends React.Component {
   constructor(props) {
     super(props)
-    
-  }
-  onBack(){
-    history.go(-1)
+    this.state = {
+      createModalVisible: false
+    }
   }
   componentDidMount() {
     this.props.dispatch({ type: 'customer/getCustomerPage' });
@@ -103,7 +49,6 @@ class CustomerIndex extends React.Component {
     const columns = this.columns;
     const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
     const { getFieldDecorator } = form;
-    
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
@@ -128,28 +73,27 @@ class CustomerIndex extends React.Component {
     
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConent">
-        <div className="button">
-        <Link to={{pathname:'/meals/nutritionist/taboo/export',query:{ dataId:`${this.edit}`}}}>
+      <div className="export">
+        <div className="exportButton">
           <Button  style={{
             width: '15%',
             height: '40px',
             lineHeight: '40px',
-            marginLeft:'40px',
-            float:'right',
-            backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>导出</Button></Link>
-          <Button  onClick={this.onBack.bind(this)} style={{
-            width: '15%',
-            height: '40px',
-            lineHeight: '40px',
-            marginLeft:'40px',
+            marginRight:'50%',
             float:'right',
             marginButtom:'20px',
             backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>返回</Button>
+          }}>打印</Button>
+          <Select defaultValue="lucy" 
+            style={{ width: 300 }}
+            allowClear={true}
+          >
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+            <Option value="disabled" disabled>Disabled</Option>
+            <Option value="Yiminghe">yiminghe</Option>
+          </Select>
         </div>
-        
       </div>
     )
   }

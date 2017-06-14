@@ -1,0 +1,29 @@
+.export{
+  width:100%;
+  height:100%;
+  .exportButton{
+    height:80px;
+    overflow: hidden;
+    padding-left: 40px;
+  }
+  .ant-btn {
+    border-radius: 5px;
+    border:none;
+    color:#fff;
+    font: 14px "微软雅黑";
+    margin-top: 20px;
+  }
+  .ant-select-selection--single {
+    height: 40px;
+    position: relative;
+    cursor: pointer;
+    margin-top: 23px;
+  }
+  .ant-select-dropdown .ant-select-dropdown--single .ant-select-dropdown-placement-bottomLeft{
+    margin-left:40px;
+  }
+  .ant-select-selection__rendered {
+    display: block;
+    line-height: 40px;
+  }
+}

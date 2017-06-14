@@ -21,7 +21,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
-        cb(null, require('page/meals/nutritionist/CustomerIndex.jsx'))
+        cb(null, require('page/meals/nutritionist/dinnerList.jsx'))
       })
     }
   },
@@ -42,6 +42,26 @@ export default (app) => [
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
         cb(null, require('page/meals/nutritionist/Taboo.jsx'))
+      })
+    }
+  },
+   //编辑禁忌页面
+  {
+    path: '/meals/nutritionist/taboo/edittaboo',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/editTaboo.jsx'))
+      })
+    }
+  },
+  //导出餐单页面
+  {
+    path: '/meals/nutritionist/taboo/export',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/export.jsx'))
       })
     }
   },
