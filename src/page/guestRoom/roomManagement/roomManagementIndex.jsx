@@ -33,6 +33,16 @@ function ResultsTable(props) {
           {title:dict.title, dataIndex:dict.key, key:dict.key, width:dict.width?dict.width:'13%'}
         )
       }
+      else if(dict.title === '套餐'){
+
+        return(
+          {title:dict.title, dataIndex:dict.key, key:dict.key, width:dict.width,render:( record)=>{
+            return(
+              record?record.toString():''
+            )
+          }}
+        )
+      }
       else if(dict.title === '操作'){
         return(
           {title: '操作',width:'15%', dataIndex: 'operating',
@@ -86,7 +96,7 @@ function ResultsTable(props) {
       {title: '楼层', key: 'floor',dataArray:FloorAry },
       {title: '区域', key: 'region',dataArray:AreaAry},
       {title: '朝向', key: 'orientation',dataArray:TowardAry},
-      {title: '套餐', key: 'name', width:'20%'},
+      {title: '套餐', key: 'packageInfoNameList', width:'20%'},
       {title: '操作'}
   ]
 
