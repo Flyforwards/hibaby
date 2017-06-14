@@ -22,18 +22,6 @@ class DishesIndex extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      dataSource : [{
-        id : 1,
-        name : '红烧鲫鱼',
-        mvType : 1,
-        vdType : 1,
-        nodeId : 1
-      }],
-      pagination : {
-        current : 1,
-        showQuickJumper: true,
-        pageSize: 10
-      },
     }
     this.columns = [{
       title: '序号',
@@ -109,11 +97,27 @@ class DishesIndex extends React.Component{
 
 
   componentDidMount(){
+    this.getTableData({
+      nodeId : 1,
+      page : this.props.dishes.page,
+      size : this.props.dishes.size
+    });
+  }
+
+  onTableChange = (pageNumber) =>{
+    this.getTableData({
+      nodeId : 1,
+      page : pageNumber,
+      size : this.props.dishes.size
+    });
+  }
+
+  getTableData(params = {}){
     const {dispatch} = this.props;
     dispatch({
       type: 'dishes/getDishesPageList',
       payload: {
-        nodeId : 1
+        ...params
       }
     });
   }
@@ -121,7 +125,6 @@ class DishesIndex extends React.Component{
   //表格上方筛选框
   initTableSearch(){
     return (
-      <div className="Dishes-right">
         <div className="Dishes-nav">
           <Form layout="inline">
             <Row  justify="space-between">
@@ -163,18 +166,38 @@ class DishesIndex extends React.Component{
             <span className="Dishes-add" >查询</span>
           </div>
         </div>
-      </div>
     );
   }
 
 
   render(){
+    const dataSource = this.props.dishes.dishesPageList;
+    const pagination = {
+      total: this.props.dishes.total,
+      showQuickJumper: true,
+      current: this.props.dishes.page,
+      pageSize: this.props.dishes.size,
+      onChange: this.onTableChange.bind(this)
+    };
     return(
       <div className="dishesConnet">
         <main className="yt-admin-framework-Customer-a">
           <DishesLeft/>
-          {this.initTableSearch()}
-          <Table dataSource={this.state.dataSource} columns={this.columns} pagination={this.state.pagination}/>
+          <div className="Dishes-right">
+            {this.initTableSearch()}
+            <div className="CreateModaList">
+              <Table
+                bordered
+                dataSource={dataSource}
+                columns={this.columns}
+                pagination={pagination}/>
+              <Current
+                page={this.props.dishes.page}
+                total={ this.props.dishes.total}
+                range={this.props.dishes.range}
+              />
+            </div>
+          </div>
         </main>
       </div>
     );
