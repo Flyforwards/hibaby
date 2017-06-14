@@ -24,23 +24,25 @@ class DishesDetailPage extends React.Component{
   //编辑点击事件
   handleEdit(){
     const {dispatch} = this.props;
-    dispatch(routerRedux.push(`/meals/dishes/addOrEditDishes`));
+    dispatch(routerRedux.push(`/meals/dishes/editDishes`));
   }
   //删除点击事件
   handleDelate(id){
+    const _this = this;
     Modal.confirm({
       title: '提示',
       content: '是否确定删除此菜品?',
       okText: '确认',
       cancelText: '取消',
       onOk() {
-        const {dispatch} = this.props;
+        const {dispatch} = _this.props;
         dispatch({
           type: 'dishes/deleteDishes',
           payload: {
             dataId : id
           }
         });
+        _this.handleBack();
       }
     });
   }
@@ -200,7 +202,7 @@ class DishesDetailPage extends React.Component{
         </Form>
         <div>
           <Button className='commitButton SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>
-          <Button className='commitButton RemoveBtn'onClick={this.handleDelate.bind(this,initialValue.id)}>删除</Button>
+          <Button className='commitButton RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>
           <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </div>

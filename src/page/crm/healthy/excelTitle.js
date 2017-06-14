@@ -13,6 +13,7 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 import {routerRedux} from 'dva/router';
 import {local,session} from 'common/util/storage.js';
+import './excelTitle.scss';
 
 @createForm()
 class ExcelTitleModel extends Component {
@@ -101,7 +102,7 @@ class ExcelTitleModel extends Component {
       wrapperCol:{ span:15 }
     }
     let visible = this.state.visible;
-
+    const iValue = 5;
     return (
       <span>
          <span onClick={this.showModel.bind(this)}>{this.props.children}</span>
@@ -113,41 +114,41 @@ class ExcelTitleModel extends Component {
         cancelText = { cancel || "取消" }
         onCancel = { this.handleCancel.bind(this) }
         onOk = { this.handleOk.bind(this) }
-        width = { 400 }
+        width = { 700 }
         style={{height:'300px'}}
         maskClosable={false}
-        wrapClassName = { "alert-vertical-center-modal" }
+        // wrapClassName = { "alert-vertical-center-modal" }
       >
         <Checkbox.Group onChange={this.onChange.bind(this)}>
           <Row style={{textAlign:'left'}}>
-            <Col span={8}><Checkbox value="name">客户姓名</Checkbox></Col>
-            <Col span={8}><Checkbox value="contact">联系电话</Checkbox></Col>
-            <Col span={8}><Checkbox value="birthTime">出生日期</Checkbox></Col>
-            <Col span={8}><Checkbox value="age">年龄</Checkbox></Col>
-            <Col span={8}><Checkbox value="dueDate">预产期</Checkbox></Col>
-            <Col span={8}><Checkbox value="gestationalWeeks">孕周</Checkbox></Col>
-            <Col span={8}><Checkbox value="hospital">生产医院</Checkbox></Col>
-            <Col span={8}><Checkbox value="fetus">第几胎</Checkbox></Col>
-            <Col span={8}><Checkbox value="resourceCustomer">客资来源</Checkbox></Col>
-            <Col span={8}><Checkbox value="focus">关注点</Checkbox></Col>
-            <Col span={8}><Checkbox value="intentionPackage">意向套餐</Checkbox></Col>
-            <Col span={8}><Checkbox value="webSearchTerm">网路搜索词</Checkbox></Col>
-            <Col span={8}><Checkbox value="detailed">现住址</Checkbox></Col>
-            <Col span={8}><Checkbox value="operator"></Checkbox>操作者1</Col>
-            <Col span={8}><Checkbox value="idcard"></Checkbox>身份证</Col>
-            <Col span={8}><Checkbox value="placeOrigin"></Checkbox>籍贯</Col>
-            <Col span={8}><Checkbox value="nation"></Checkbox>民族</Col>
-            <Col span={8}><Checkbox value="purchasePackage"></Checkbox>购买套餐</Col>
-            <Col span={8}><Checkbox value="insuranceSituation"></Checkbox>保险情况</Col>
-            <Col span={8}><Checkbox value="contact1"></Checkbox>联系人电话</Col>
-            <Col span={8}><Checkbox value="member"></Checkbox>会员身份</Col>
-            <Col span={8}><Checkbox value="specialIdentity"></Checkbox>特殊身份</Col>
-            <Col span={8}><Checkbox value="productionDate"></Checkbox>宝宝生产日期</Col>
-            <Col span={8}><Checkbox value="contractNumber"></Checkbox>合同编号</Col>
-            <Col span={8}><Checkbox value="associatedRooms"></Checkbox>关联客房</Col>
-            <Col span={8}><Checkbox value="memberNumber"></Checkbox>会员编号</Col>
-            <Col span={8}><Checkbox value="operator2"></Checkbox>操作者2</Col>
-            <Col span={8}><Checkbox value="detailedPermanent"></Checkbox>户籍地址</Col>
+            <Col span={iValue}><Checkbox value="name">客户姓名</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="contact">联系电话</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="birthTime">出生日期</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="age">年龄</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="dueDate">预产期</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="gestationalWeeks">孕周</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="hospital">生产医院</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="fetus">第几胎</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="resourceCustomer">客资来源</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="focus">关注点</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="intentionPackage">意向套餐</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="webSearchTerm">网路搜索词</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="detailed">现住址</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="operator">操作者1</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="idcard">身份证</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="placeOrigin">籍贯</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="nation">民族</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="purchasePackage">购买套餐</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="insuranceSituation">保险情况</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="contact1">联系人电话</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="member">会员身份</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="specialIdentity">特殊身份</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="productionDate">宝宝生产日期</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="contractNumber">合同编号</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="associatedRooms">关联客房</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="memberNumber">会员编号</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="operator2">操作者2</Checkbox></Col>
+            <Col span={iValue}><Checkbox value="detailedPermanent">户籍地址</Checkbox></Col>
           </Row>
         </Checkbox.Group>,
       </Modal>
