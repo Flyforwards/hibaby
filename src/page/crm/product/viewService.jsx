@@ -81,6 +81,10 @@ class AddServiceed extends Component {
         payload: { }
       });
       this.props.dispatch({
+          type: 'packageInfo/getCardLevel',
+          payload: { }
+      });
+      this.props.dispatch({
         type: 'packageInfo/getDictionary',
         payload: {
           "abName":"TCLX" ,
@@ -97,6 +101,8 @@ class AddServiceed extends Component {
         let loadingName = true
         let type = ''
         let suiteId = ''
+        let levels = []
+        let gradeList = []
         const columns = this.columns;
         const { getFieldDecorator } = this.props.form;
         if(this.props.findById != null){
@@ -128,7 +134,13 @@ class AddServiceed extends Component {
             }
           })
         }
+        if(this.props.grade != null){
+          gradeList = this.props.grade.map((item)=>{
+            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
+          })
+        }
         if(this.props.selectData != null && this.props.findById != null){
+          levels.push(String(this.props.findById.levels))
           this.props.selectData.map((item)=>{
             if(item.id == this.props.findById.suiteId){
               suiteId = item.name
@@ -207,6 +219,22 @@ class AddServiceed extends Component {
                     </Select>
                     )}
                   </FormItem>
+                  <FormItem
+                   label="套餐等级"
+                   className="packageLevel"
+                  >
+                    {getFieldDecorator('packageLevel', {
+                      initialValue:levels,
+                      rules: [],
+                    })(
+                      <Select disabled={true}
+                    >
+                     {
+                      gradeList
+                     }
+                    </Select>
+                    )}
+                  </FormItem>
                 </Form>
                 </div>:null
                 }
@@ -229,6 +257,7 @@ function mapStateToProps(state) {
   const {
     findById,
     getDictionary,
+    grade,
     selectData
   } = state.packageInfo;
   const { permissionAlias } = state.layout;
@@ -237,6 +266,7 @@ function mapStateToProps(state) {
     findById,
     getDictionary,
     selectData,
+    grade,
     permissionAlias
     };
 }

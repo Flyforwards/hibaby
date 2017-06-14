@@ -84,6 +84,10 @@ class AddServiceed extends Component {
             type: 'packageInfo/roomList',
             payload: { }
         });
+        this.props.dispatch({
+            type: 'packageInfo/getCardLevel',
+            payload: { }
+        });
     }
     handleSubmit = ()=>{
       history.go(-1)
@@ -113,7 +117,8 @@ class AddServiceed extends Component {
                         "price": fields.price,
                         "serviceInfoList":serviceInfoList,
                         "suiteId": fields.room,
-                        "type": fields.type
+                        "type": fields.type,
+                        "levels":fields.packageLevel
                       }
                   });
                 }else{
@@ -142,6 +147,7 @@ class AddServiceed extends Component {
         let ListLnformation = []
         let roomList = []
         let selectData = []
+        let gradeList = []
         if(this.props.selectData != null){
           selectData = this.props.selectData.map((item)=>{
              return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
@@ -156,6 +162,11 @@ class AddServiceed extends Component {
         }
         if(this.props.selectData != null){
           selectData = this.props.selectData.map((item)=>{
+            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
+          })
+        }
+        if(this.props.grade != null){
+          gradeList = this.props.grade.map((item)=>{
             return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
         }
@@ -248,6 +259,21 @@ class AddServiceed extends Component {
                     </Select>
                     )}
                   </FormItem>
+                  <FormItem
+                   label="套餐等级"
+                   className="packageLevel"
+                  >
+                    {getFieldDecorator('packageLevel', {
+                       rules: [],
+                    })(
+                      <Select
+                    >
+                     {
+                      gradeList
+                     }
+                    </Select>
+                    )}
+                  </FormItem>
                 </Form>
                 </div>
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
@@ -261,6 +287,7 @@ function AddService({
   serviceListByPage,
   roomData,
   selectData,
+  grade,
   getDictionary
 }) {
   return ( < div >
@@ -279,6 +306,9 @@ function AddService({
      getDictionary = {
       getDictionary
      }
+    grade = {
+      grade
+    }
     /></div>
   )
 }
@@ -287,14 +317,16 @@ function mapStateToProps(state) {
     serviceListByPage,
     roomData,
     selectData,
-    getDictionary
+    getDictionary,
+    grade
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
     serviceListByPage,
     roomData,
     selectData,
-    getDictionary
+    getDictionary,
+    grade
     };
 }
 const addService = Form.create()(AddServiceed);
