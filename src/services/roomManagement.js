@@ -34,3 +34,11 @@ export function delRoom(values) {
     body: JSON.stringify(values),
   })
 };
+
+// 主套餐列表
+export function listByMain(values) {
+  return request('/crm/api/v1/packageInfo/listByMain', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

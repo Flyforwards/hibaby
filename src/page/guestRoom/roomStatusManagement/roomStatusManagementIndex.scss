@@ -1,6 +1,5 @@
 .roomStatusDiv{
-  width: 1000px;
-  padding: 10px 10px 10px 0;
+  padding: 10px;
   .antCli{
     width: 100%;
     height: 40px;
@@ -12,49 +11,56 @@
     margin-left:10px;
     .headDiv{
       width: 100%;
-      height: 40px;
+      line-height: 40px;
       div{
         border-radius:5px;
       }
-      .switchDiv{
-        float: left;
-        margin-left:50px;
-        padding-top: 3px;
-        background-color: dimgray;
-        color: white;
-        width: 50px;
-        height: 100%;
-        text-align: center;
-      }
-      .statisticalDiv{
-        float: left;
-        text-align: center;
-        background-color: dimgray;
-        color: white;
-        margin-left:20px;
-        height: 100%;
-        width: 530px;
+      .titlespan{
+        margin-left: 60px;
+        line-height: 40px;
+        font: 10px "微软雅黑";
         span{
-          line-height: 40px;
-          font: 14px "微软雅黑";
-          span{
-            font: 18px "微软雅黑";
-          }
+          font: 18px "微软雅黑";
         }
       }
-      .btn{
-        float: right;
+      .switchDiv{
+        margin-top:9px;
+        float: left;
+        background-color: rgb(247,165,50);
       }
+      .ant-switch{
+        border-radius: 0;
+      }
+      .ant-switch:after{
+        border-radius: 0;
+      }
+
     }
     .SelectDiv{
-      clear: both;
-      margin-top: -20px;
+      margin-top: 10px;
       label{
         font: 14px "微软雅黑";
       }
+      .btn{
+        background:#f1e8df;
+        border-color:#bb7c41;
+        color:#b67233;
+        font:14px "微软雅黑";
+        height: 30px;
+        width: 120px;
+        float: right;
+      }
     }
     .radioDiv{
-
+      margin-top:10px;
+      h4{
+        font: 14px "微软雅黑";
+        color: #b67233;
+      }
+      .ant-checkbox-group-item{
+        margin-left:40px;
+        margin-top: 15px;
+      }
     }
   }
   .cardArrayDiv{
@@ -63,8 +69,19 @@
       float: left;
       margin-left: 10px;
       margin-top: 10px;
-      width: 188px;
-      height: 230px;
+      width: 230px;
+      height: 250px;
+      .ant-card-head{
+        padding: 0 10px;
+        .ant-card-head-title{
+          font-size: 14px;
+          color: #b67233;
+        }
+      }
+      .ant-card-extra{
+        right: 10px;
+        font: 13px "微软雅黑";
+      }
       p{
         line-height: 25px;
       }
