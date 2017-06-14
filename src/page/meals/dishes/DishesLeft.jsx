@@ -1,3 +1,7 @@
+/**
+ * 菜品管理左侧菜品库树
+ * Created by yangjingjing on 2017/6/12.
+ */
 import React from 'react'
 import {connect} from 'dva'
 import "./DishesLeft.scss"

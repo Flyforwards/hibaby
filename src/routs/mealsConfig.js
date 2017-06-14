@@ -57,7 +57,7 @@ export default (app) => [
   },
   //创建菜品
   {
-    path: '/meals/dishes/addDishes',
+    path: '/meals/dishes/addOrEditDishes',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/dishes'));
@@ -65,4 +65,14 @@ export default (app) => [
       })
     }
   },
+  //菜品详情
+  {
+    path: '/meals/dishes/dishesDetail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/dishes'));
+        cb(null, require('page/meals/dishes/DishesDetailPage.js'))
+      })
+    }
+  }
 ]
