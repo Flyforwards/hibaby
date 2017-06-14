@@ -66,12 +66,14 @@ export default {
     *listByPage({ payload: values }, { call,put }) {
       const dict = {page:1,size:10}
       const param = parse(location.search.substr(1))
-      console.log(param);
       const { data: { data, total, page, size, code} } = yield call(roomManagement.listByPage, {...dict,...param});
       if (code == 0) {
 
           if(data.length == 0 && page > 1){
-            yield put(routerRedux.push(`roomManagement/listByPage?page=${page -1}&size=10`))
+            yield put(routerRedux.push({
+              pathname: '/chamber/roomindex',
+              query: {page:page-1,size:10}
+            }))
           }else{
             yield put({
               type: 'setListData',
@@ -88,12 +90,10 @@ export default {
       }
     },
     *addRoom({ payload: values }, { call,put }) {
-      console.log(values)
 
       const { data: { code,data } } = yield call(roomManagement.addRoom, values);
       if (code == 0) {
         message.success('添加成功')
-        console.log(data)
         yield put(routerRedux.push({
           pathname: '/chamber/room/roomdetail',
           query: {dataId:values.id}
@@ -115,7 +115,13 @@ export default {
       const { data: { code } } = yield call(roomManagement.delRoom, values);
       if (code == 0) {
         message.success('删除成功')
-        yield put(routerRedux.push('/chamber/roomindex'))
+        const param = parse(location.search.substr(1))
+
+        yield put(routerRedux.push({
+          pathname:'/chamber/roomindex',
+          query: param
+        }))
+
       }
     },
     *findById({ payload: values }, { call,put }) {

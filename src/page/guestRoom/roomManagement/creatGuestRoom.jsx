@@ -4,9 +4,10 @@ import React from 'react'
 import {connect} from 'dva'
 import './roomManagementIndex.scss'
 import SearchBar from './SearchBar'
-import {Button,Card} from 'antd'
+import {Button,Card,Modal} from 'antd'
 import { routerRedux, } from 'dva/router';
 import { parse } from 'qs'
+const confirm = Modal.confirm;
 
 class creatGuestRoom extends React.Component {
 
@@ -54,9 +55,22 @@ class creatGuestRoom extends React.Component {
     this.props.dispatch(routerRedux.push('/chamber/roomindex'))
   }
 
-  onDelete(){
-
+  onDelete() {
+    const that = this;
+    confirm({
+      title: '提示',
+      content: '是否确定删除此房间',
+      onOk() {
+        that.props.dispatch({
+          type: 'roomManagement/delRoom',
+          payload:{dataId:that.state.dataId}
+        })
+      },
+      onCancel() {
+      }
+    });
   }
+
 
   editBtnClick(){
     this.props.dispatch(routerRedux.push({

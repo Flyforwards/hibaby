@@ -5,7 +5,7 @@ import {connect} from 'dva'
 import './roomManagementIndex.scss'
 import {Link,routerRedux} from 'react-router'
 import SearchBar from './SearchBar'
-import {Table,pagination,Modal} from 'antd'
+import {Table,Modal} from 'antd'
 const confirm = Modal.confirm;
 
 
@@ -95,12 +95,21 @@ function ResultsTable(props) {
   for(let i = 0;i<columnAry.length;i++){
     columns.push(creatColumn(columnAry[i]))
   }
-  console.log(pagination)
   const tableProps = {
     loading: loading.effects['roomManagement/listByPage'] !== undefined ? loading.effects['roomManagement/listByPage']:false,
     dataSource : listData,
     pagination,
     columns,
+    onChange (page) {
+      const { pathname } = location
+      dispatch(routerRedux.push({
+        pathname,
+        query: {
+          page: page.current,
+          size: page.pageSize
+        }
+      }))
+    }
   }
 
   return(
