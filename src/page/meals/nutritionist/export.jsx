@@ -25,7 +25,8 @@ import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
 import Current from '../../Current'
 import PrintPageList from './printPageList';
-import { do_print } from 'common/util/print.js';
+import { do_print } from 'common/util/dinner.js';
+
 
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker

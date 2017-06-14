@@ -7,7 +7,7 @@ import { connect } from 'dva';
 import {Card,DatePicker,Table } from 'antd';
 import { Link } from 'react-router';
 
-import './printPage.scss';
+import './printPage.css';
 import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY-MM-DD';
