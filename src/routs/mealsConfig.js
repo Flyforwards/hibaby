@@ -25,6 +25,16 @@ export default (app) => [
       })
     }
   },
+  //编辑餐单界面
+  {
+    path: '/meals/nutritionist/editmenu',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/editMenu.jsx'))
+      })
+    }
+  },
   //循环界面
   {
     path: '/meals/nutritionist/cycle',

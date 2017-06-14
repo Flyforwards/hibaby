@@ -144,27 +144,6 @@ export default {
           dispatch({type: 'getMemberShipCard',});
           dispatch({ type: 'getDataDict',payload:{"abName": 'YCC',}});
         }
-        // if (pathname === '/crm/customer/detail') {
-        //   dispatch({
-        //     type: 'getActivityById',
-        //     payload: query
-        //   });
-        //   dispatch({
-        //     type: 'getActivityCustomerPageList',
-        //     payload: { activityId: query.dataId }
-        //   })
-        // }
-        // if (pathname === '/crm/customer/edit') {
-        //   dispatch({
-        //     type: 'getActivityByIdEdit',
-        //     payload: query
-        //   });
-        //
-        //   dispatch({
-        //     type: 'getActivityCustomerPageListEdit',
-        //     payload: { activityId: query.dataId }
-        //   })
-        // }
       })
     }
   },
