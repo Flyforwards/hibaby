@@ -92,6 +92,7 @@ class Organization extends React.Component {
             roleId.map((data, index) => {
               local.get("rolSelectData").map((item) => {
                 if (item.id == Number(data)) {
+                  
                   if (len == index) {
                     list.push(item.name)
                   } else {
@@ -219,6 +220,7 @@ class Organization extends React.Component {
     this.setState({
       current: current
     })
+    // console.log("current",current)
     if (this.state.statusType) {
       this.props.dispatch({
         type: 'organization/organizationList',

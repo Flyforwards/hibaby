@@ -1,34 +1,45 @@
+/**
+ * Created by wang on 2017/6/13.
+ */
+
 import React from 'react'
 import { connect } from 'dva'
 import './CustomerVisIndex.scss'
-import { Table, Input, Row, Col, Icon, Button, Popconfirm, Modal, DatePicker, Card, Timeline } from 'antd'
+import { Table, Input, Icon, Button, Popconfirm, Modal, DatePicker, Card, Timeline, Row, Col } from 'antd'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import moment from 'moment'
 import { VISIT_TIME } from 'common/constants.js'
 const confirm = Modal.confirm;
 const TimeItem = Timeline.Item
-class CustomerVisIndex extends React.Component {
+
+class CustomerVisEditIndex extends React.Component {
   
   constructor(props) {
     super(props);
+    this.removeIds = [];
   }
   
-  
-  // 查看
-  pushDetail(item) {
-    this.selectRecord = item;
-    this.props.dispatch(routerRedux.push({
-      pathname: '/crm/customer-vis/detail',
-      query: {
-        dataId: item.id
+  deleteCustomerComp(record) {
+    const { dispatch } = this.props;
+    confirm({
+      title: '提示',
+      content: '是否确定删除此投诉？',
+      onOk() {
+        dispatch({
+          type: 'customerComp/deleteCustomerComp',
+          payload: { dataId: record.id }
+        })
+      },
+      onCancel() {
       }
-    }))
-    
+    });
   }
+  
   
   onChangeDate(date) {
     const { dispatch } = this.props;
+    this.removeIds = [];
     dispatch({
       type: 'customerVis/changeDate',
       payload: { date }
@@ -39,39 +50,40 @@ class CustomerVisIndex extends React.Component {
     })
   }
   
-  edit() {
-    this.props.dispatch(routerRedux.push('/crm/customer-vis/edit'))
+  save() {
+    let ids = '';
+    this.removeIds.map((record, index) => {
+      if (index == 0) {
+        ids = String(record);
+      } else {
+        ids = ids + ',' + String(record);
+      }
+    })
+    console.log(ids);
+    this.props.dispatch({
+      type: 'customerVis/saveCustomerVisEdit',
+      payload: { ids }
+    })
+  }
+  
+  remove(item) {
+    if (!this.removeIds.contains(item.id)) {
+      this.removeIds.push(item.id);
+    }
+    this.props.dispatch({
+      type: 'customerVis/removeItemFromList',
+      payload: { itemId: item.id }
+    })
   }
   
   render() {
     const { list, dispatch, date } = this.props;
-    // const tableProps = {
-    //   loading: loading.effects['activity/getActivityPage'],
-    //   dataSource : list ,
-    //   pagination,
-    //   onChange (page) {
-    //     const { pathname } = location
-    //     dispatch(routerRedux.push({
-    //       pathname,
-    //       query: {
-    //         page: page.current,
-    //         size: page.pageSize,
-    //       },
-    //     }))
-    //   },
-    // }
-    // let btns = []
-    // for (let i=0; i< 100; i++) {
-    //   btns.push(<Button className="left-time-btn" key={i}>范冰冰</Button>)
-    // }
-    // console.log(list);
     const times = VISIT_TIME.map((record, index) => {
       let btns = []
-      // console.log(record);
       list.map((item) => {
         if (index + 1 == item.visitTimeId) {
           btns.push(
-            <Button onClick={this.pushDetail.bind(this, item)} className="left-time-btn" key={item.id}>{ item.name }</Button>)
+            <span key={item.id} className="left-time-div"><span className="left-time-span" key={item.id}>{ item.name }</span><Icon onClick={ this.remove.bind(this, item)} type="close-circle"/></span>)
         }
       })
       
@@ -93,7 +105,6 @@ class CustomerVisIndex extends React.Component {
             <Col span={20}>
               <span>预约日期：</span>
               <DatePicker style={{ width: 200 }} format="YYYY-MM-DD" defaultValue={ date } onChange={this.onChangeDate.bind(this)}/>
-            
             </Col>
             <Col span={4}>
               <Button disabled={add} className="button-add">
@@ -108,13 +119,19 @@ class CustomerVisIndex extends React.Component {
               times
             }
           </Timeline>
+        </Card>
+        <div style={{marginTop:20}}>
           <Row>
-            <Col span={20}/>
+            <Col offset={16} span={4}>
+              <Link to='/crm/customer-vis'>
+                <Button className="button-add"> 返回 </Button>
+              </Link>
+            </Col>
             <Col span={4}>
-              <Button onClick={this.edit.bind(this)} className="button-add">编辑</Button>
+              <Button className="SaveBtn" onClick={ this.save.bind(this) }> 保存 </Button>
             </Col>
           </Row>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -134,4 +151,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CustomerVisIndex);
+export default connect(mapStateToProps)(CustomerVisEditIndex);

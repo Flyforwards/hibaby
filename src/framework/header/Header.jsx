@@ -8,6 +8,7 @@ import UpdateModal from './UpdateModal.jsx'
 import Logo from './logo.png'
 import UserImg from './user.jpg'
 import { positionDict } from 'common/constants';
+import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 const MenuItem = Menu.Item;
 
@@ -79,24 +80,21 @@ class Header extends React.Component {
 
     render() {
 
-        let userName = "凯贝姆";
-        let userPosition = "凯贝姆";
-        let userImg = UserImg;
-        if (this.props.userInfo != null) {
-          userName = this.props.userInfo.name;
-          userImg = this.props.userInfo.imgURL;
-          const entrys = this.props.userInfo.entrys;
-          if ( entrys != null && entrys.length > 0) {
-            const entry = entrys[0];
-            // console.log(entry);
-            // userPosition = positionDict[entry.id];
-          }
+      const { projectTree, clubs: endemicMenu, endemic: selectEndemic, userInfo, selectIndex } = this.props;
+
+        const userPosition = "凯贝姆";
+        const userName = userInfo.name || "凯贝姆";
+        const userImg = userInfo.imgURL || UserImg;
+        const entrys = userInfo.entrys;
+        if ( entrys && entrys.length > 0) {
+          const entry = entrys[0];
+          // console.log(entry);
+          // userPosition = positionDict[entry.id];
         }
-        const endemicMenu = session.get("clubs");
-        const selectEndemic = session.get("endemic");
+
         let leftMenu = [];
 
-        if (endemicMenu != null && endemicMenu.length > 1) {
+        if (endemicMenu.length > 1) {
           const menuItems = endemicMenu.map((record, index)=>{
             return (
               <div key = { index } >
@@ -109,19 +107,17 @@ class Header extends React.Component {
           leftMenu = (
             <Dropdown overlay={ menu } placement="bottomCenter" trigger={['click']}>
               <a className="ant-dropdown-link">
-                <span className="nav-two">{ selectEndemic ? selectEndemic.name: "凯贝姆" }</span>
+                <span className="nav-two">{  selectEndemic.name || "凯贝姆" }</span>
                 <Icon type="caret-down" />
               </a>
             </Dropdown>)
         } else {
-          leftMenu = (<span className="nav-two">{ selectEndemic ? selectEndemic.name: "凯贝姆" }</span>)
+          leftMenu = (<span className="nav-two">{  selectEndemic.name || "凯贝姆" }</span>)
         }
-
-        let projectTree = this.props.projectTree;
 
         const subNodes =  projectTree.map((item, index) => {
           let className="menu-item"
-          if ( this.props.selectIndex === index ) {
+          if ( selectIndex === index ) {
             className="menu-item-select"
           }
           //
@@ -172,4 +168,24 @@ class Header extends React.Component {
     }
 }
 
-export default Header
+
+function mapStateToProps(state) {
+  const {
+    projectTree,
+    clubs,
+    endemic,
+    userInfo,
+    selectIndex
+  } = state.layout;
+  return {
+    loading: state.loading,
+    projectTree,
+    clubs,
+    endemic,
+    userInfo,
+    selectIndex
+  };
+}
+
+export default connect(mapStateToProps)(Header);
+
