@@ -57,7 +57,17 @@ export default (app) => [
   },
   //创建菜品
   {
-    path: '/meals/dishes/addOrEditDishes',
+    path: '/meals/dishes/addDishes',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/dishes'));
+        cb(null, require('page/meals/dishes/DishesFormPage.js'))
+      })
+    }
+  },
+  //修改菜品
+  {
+    path: '/meals/dishes/editDishes',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/dishes'));

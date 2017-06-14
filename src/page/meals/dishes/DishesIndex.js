@@ -68,22 +68,18 @@ class DishesIndex extends React.Component{
   //查看
   onLook(record){
     const {dispatch} = this.props;
-    dispatch({
-      type: 'dishes/getDishesById',
-      payload: {
-        dataId : record.id
-      }
-    });
+    dispatch(routerRedux.push(`/meals/dishes/dishesDetail?dataId=${record.id}`));
   }
   //删除
   onDelete(record){
+    const _this = this;
     Modal.confirm({
       title: '提示',
       content: '是否确定删除此菜品?',
       okText: '确认',
       cancelText: '取消',
       onOk() {
-        const {dispatch} = this.props;
+        const {dispatch} = _this.props;
         dispatch({
           type: 'dishes/deleteDishes',
           payload: {
@@ -162,7 +158,7 @@ class DishesIndex extends React.Component{
             </Row>
           </Form>
           <div className="btn">
-            <span className="Dishes-Inquire"><Link to="/meals/dishes/addOrEditDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
+            <span className="Dishes-Inquire"><Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
             <span className="Dishes-add" >查询</span>
           </div>
         </div>

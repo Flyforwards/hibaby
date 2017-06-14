@@ -21,7 +21,22 @@ export default {
   },
   //加载页面
   subscriptions: {
-
+    setup({ dispatch, history }) {  // eslint-disable-line
+      return history.listen(({ pathname,query }) => {
+        if (pathname === '/meals/dishes/dishesDetail'){
+          if(query.dataId){
+            dispatch({
+              type: 'getDishesById',
+              payload:{
+                dataId : query.dataId
+              }
+            });
+          }
+        }else if(pathname === '/meals/dishes/addDishes'){
+          dispatch({type : 'clearDishesDetail'});
+        }
+      });
+    }
   },
   //调用服务器端接口
   effects: {
@@ -51,13 +66,19 @@ export default {
       }
     },
     //删除菜品信息
-    *deleteDishes({payload : values}, { call, put }){
+    *deleteDishes({payload : values}, { call, put,select }){
       const {data: { data, code,err} } = yield call(dishesService.deleteDishes, values);
       if (code == 0) {
         //更新state
-        message.success("删除客户成功");
+        message.success("删除菜品信息成功");
+        const state = yield select(state => state.dishes);
         yield put({
           type: 'getDishesPageList',
+          payload : {
+            nodeId : 1,
+            page : state.page,
+            size : state.size
+          }
         });
       }
     },
@@ -80,8 +101,7 @@ export default {
       }
       return {...dishesdata,range}
     },
-    setDishesDetail(state, { payload: dishesInfo }){
-      message.info("111111111111");
+    setDishesDetail(state, { payload: {dishesInfo} }){
       return {...state,initialValue: dishesInfo}
     },
     clearDishesDetail(state){
