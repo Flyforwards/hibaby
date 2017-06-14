@@ -140,7 +140,7 @@ function CardArray({roomList}) {
     let chiDivAry = [];
 
     for (let i = 0; i < chiAry.length ; i++) {
-      chiDivAry.push(<Option key={i}>{statusDict[i]}</Option>);
+      chiDivAry.push(<Option key={chiAry[i]}>{statusDict[chiAry[i]]}</Option>);
     }
 
     let chiDiv = <div>
