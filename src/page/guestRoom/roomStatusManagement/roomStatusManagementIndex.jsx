@@ -2,33 +2,55 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Button,Card,Checkbox,Row,Col,Form,DatePicker,Select,Switch} from 'antd'
+import {Button,Card,Checkbox,Row,Col,Form,DatePicker,Select,Switch,Spin} from 'antd'
 import { routerRedux } from 'dva/router';
-const { MonthPicker } = DatePicker;
 import './roomStatusManagementIndex.scss'
 import DictionarySelect from 'common/dictionary_select';
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
+import moment from 'moment';
+import { parse } from 'qs'
 
 const statusDict = {0 :'空房',1: '维修', 2 :'脏房', 3 :'样板房', 4 :'住客房', 5 :'入所', 6 :'出所', 7 :'预约'}
 
-
 function ScreenBar(props) {
   const { getFieldDecorator }= props.form;
-  const {dayStatusData,statusChange,packageAry,selectValue} = props;
+  const { statusChange,selectValue} = props;
+  const {dispatch} = props.supProps;
+  const { dayStatusData,packageAry,FloorAry,MainFloorAry,AreaAry,TowardAry} = props.supProps.users;
 
-  function  onSearch(){
+
+  function textforkey(array,value,valuekey = 'name') {
+    if(array){
+      for (let i = 0 ;i<array.length ;i++){
+        let dict = array[i];
+        if(dict.id == value){
+          return  dict[valuekey];
+        }
+      }
+    }
+    else {
+      return value
+    }
+  }
+
+  function onSearch(){
     props.form.validateFields((err, values) => {
       if (!err) {
         let param = {};
         Object.keys(values).map((key) => {
           const value = values[key];
           if(value){
-            param[key] = value;
+            if(typeof value === 'object'){
+              param[key] = value.key?value.key:value.format();
+            }
+            else {
+              param[key] = value;
+            }
           }
         })
-        props.dispatch(routerRedux.push({
+        dispatch(routerRedux.push({
           pathname: '/chamber/roomstatusindex',
           query: param
         }))
@@ -37,8 +59,9 @@ function ScreenBar(props) {
   }
 
   function reset() {
-    props.form.resetFields();
-    onSearch();
+    dispatch(routerRedux.push({
+      pathname: '/chamber/roomstatusindex',
+    }))
   }
 
   function onChange(e) {
@@ -58,38 +81,59 @@ function ScreenBar(props) {
 
   function cusFromItem(dict) {
     return(
-      <FormItem uid={dict.submitStr} {...formItemLayout} label={dict.title}>
-        {getFieldDecorator(dict.submitStr)
+      <FormItem key={dict.submitStr} {...formItemLayout} label={dict.title} >
+        {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})
         (
           dict.selectName?
             (dict.selectName === 'package' ?
-              <Select placeholder="请选择" className='antCli'>
+              <Select labelInValue={true}  placeholder="请选择"  className='antCli'>
                 {packageChi}
               </Select>
               :
-              <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+              <DictionarySelect labelInValue={true}  className='antCli' placeholder="请选择" selectName={dict.selectName}/>
             )
             :
-            <MonthPicker  style={{width: '100%' }}/>
+            <DatePicker  style={{width: '100%' }}/>
         )}
       </FormItem>
     )
   }
 
+
   const selectData = [
-    {title:'主副楼',submitStr:'building',selectName:'MainFloor'},
-    {title:'楼层',submitStr:'floor',selectName:'Floor'},
-    {title:'区域',submitStr:'region',selectName:'Area'},
-    {title:'朝向',submitStr:'orientation',selectName:'Toward'},
-    {title: '套餐', submitStr: 'packageInfoId',selectName:'package'},
-    {title: '日期', submitStr: 'useDate'},
+    {title:'主副楼',submitStr:'building',selectName:'MainFloor',dataArray:MainFloorAry},
+    {title:'楼层',submitStr:'floor',selectName:'Floor',dataArray:FloorAry},
+    {title:'区域',submitStr:'region',selectName:'Area',dataArray:AreaAry},
+    {title:'朝向',submitStr:'orientation',selectName:'Toward',dataArray:TowardAry},
+    {title: '套餐', submitStr: 'packageInfoId',selectName:'package',dataArray:packageAry},
+    {title: '日期', submitStr: 'useDate',initValue:moment()},
   ]
 
-  let searchDiv = [];
+
+  let oneDiv = [];
+  let twoDiv = [];
+
+  const netParam = parse(location.search.substr(1))
 
   for(let i = 0;i<selectData.length;i++){
-    searchDiv.push(<Col span={8}>{cusFromItem(selectData[i])}</Col>)
+    let dict = selectData[i];
+      if (netParam){
+        if(netParam[dict.submitStr]){
+          if(dict.title === '日期') {
+            dict.initValue = moment(netParam[dict.submitStr]);
+          }else {
+            dict.initValue = {key: netParam[dict.submitStr], label: textforkey(dict.dataArray,netParam[dict.submitStr])};
+          }
+        }
+      }
+
+    if(i<3){
+      oneDiv.push(<Col span={8}>{cusFromItem(dict)}</Col>)
+    }else{
+      twoDiv.push(<Col span={8}>{cusFromItem(dict)}</Col>)
+    }
   }
+
   const options = [];
   options.push({label:'全选',value:'all'})
   Object.keys(statusDict).map((key)=>{
@@ -97,7 +141,9 @@ function ScreenBar(props) {
   })
 
   return(
+
     <div className="ScreenBarDiv">
+
       <div className="headDiv">
         <Switch className='switchDiv' checkedChildren={'日房态'} unCheckedChildren={'月房态'} />
         <span className="titlespan">计划入住 <span style={{color:'rgb(0,185,156)'}}>{dayStatusData.beginCount}</span> 客人</span>
@@ -108,14 +154,10 @@ function ScreenBar(props) {
 
       <Card className="SelectDiv" bodyStyle={{padding:'20px'}}>
           <Row style={{height: 50,width:'800px', overflow:'hidden',float:'left'}}>
-            {searchDiv[0]}
-            {searchDiv[1]}
-            {searchDiv[2]}
+            {oneDiv}
           </Row>
-        <Row style={{height: 50,width:'800px', overflow:'hidden',float:'left'}}>
-            {searchDiv[3]}
-            {searchDiv[4]}
-            {searchDiv[5]}
+          <Row style={{height: 50,width:'800px', overflow:'hidden',float:'left'}}>
+           {twoDiv}
           </Row>
         <Button className='btn' onClick={ onSearch}>查询</Button>
         <Button className='btn' onClick={ reset}>重置</Button>
@@ -132,10 +174,10 @@ function ScreenBar(props) {
   )
 }
 
-function CardArray({roomList}) {
+function CardArray({roomList,dispatch}) {
   const chiAry = [1,2,3];
 
-  function creatChiCard(dict) {
+  function creatChiCard(dict,key) {
 
     let chiDivAry = [];
 
@@ -148,7 +190,7 @@ function CardArray({roomList}) {
     </div>
 
     if(dict.status === 4 || dict.status === 6){
-      chiDiv = <div>
+      chiDiv = <div >
         <p>客户姓名：{dict.customerConsume.customerName}</p>
         <p>母婴护理师：朱禹桥</p>
         <p>会员卡种：{dict.customerConsume.membershipCardName}</p>
@@ -158,12 +200,12 @@ function CardArray({roomList}) {
     }
 
     return(
-      <Card className="smallCard" bodyStyle={{padding:'10px'}} title={dict.roomNo} extra={statusDict[ dict.status]}>
+      <Card className="smallCard" bodyStyle={{padding:'10px'}} key={key} title={dict.roomNo} extra={statusDict[ dict.status]}>
         {chiDiv}
         <Row className='bottomLine'>
           <Col span={7}><p>房间状态</p></Col>
           <Col span={17}>
-            <Select className='antCli'  placeholder='请选择'>
+            <Select  onChange={(index)=>{handleChange(index,dict)}} className='antCli'  placeholder='请选择'>
               {chiDivAry}
             </Select>
           </Col>
@@ -172,10 +214,20 @@ function CardArray({roomList}) {
     )
   }
 
+  function handleChange(index,dict) {
+    const webparam = parse(location.search.substr(1))
+    let param = {"roomId": dict.roomId,"status": index};
+    if(webparam.useDate){
+      param.useDate = webparam.useDate;
+    }
+    dispatch({type:'roomStatusManagement/dayStatusUpdate',
+      payload:param})
+  }
+
   let array = [];
   if(roomList){
     for (let i = 0;i<roomList.length;i++){
-      array.push(creatChiCard(roomList[i]));
+      array.push(creatChiCard(roomList[i],i));
     }
   }
 
@@ -197,7 +249,7 @@ class roomStatusIndex extends React.Component {
 
   state = {
     roomList:'',
-    selectValue:'',
+    selectValue:['all',0,1,2,3,4,5,6,7],
   }
 
 
@@ -221,6 +273,13 @@ class roomStatusIndex extends React.Component {
         isAll = true;
         array=['all',0,1,2,3,4,5,6,7]
       }
+      else {
+
+        if(array.length === 8){
+          isAll = true;
+          array.push('all')
+        }
+      }
     }
 
     let listArray = [];
@@ -241,12 +300,20 @@ class roomStatusIndex extends React.Component {
     })
   }
 
+  componentDidMount() {
+    this.props.dispatch({type: 'roomStatusManagement/listByMain'});
+  }
+
   render() {
-    const ScreenBarDiv = Form.create()(ScreenBar)
+    const ScreenBarDiv = Form.create()(ScreenBar);
+    const {loading} = this.props;
+
     return (
       <div className="roomStatusDiv">
-        <ScreenBarDiv selectValue={this.state.selectValue} statusChange={this.statusChange.bind(this)} dayStatusData={this.props.users.dayStatusData} packageAry={this.props.users.dayStatusData}></ScreenBarDiv>
-        <CardArray roomList={this.state.roomList||this.props.users.dayStatusData.roomList}/>
+        <ScreenBarDiv selectValue={this.state.selectValue} supProps = {this.props} statusChange={this.statusChange.bind(this)} ></ScreenBarDiv>
+        <Spin spinning={loading.effects['roomStatusManagement/dayStatus'] !== undefined ? loading.effects['roomStatusManagement/dayStatus']:false}>
+          <CardArray dispatch={this.props.dispatch} roomList={this.state.roomList||this.props.users.dayStatusData.roomList}/>
+        </Spin>
       </div>
     )
   }
@@ -255,6 +322,7 @@ class roomStatusIndex extends React.Component {
 function mapStateToProps(state) {
   return {
     users: state.roomStatusManagement,
+    loading: state.loading,
   };
 }
 

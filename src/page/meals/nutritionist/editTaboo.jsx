@@ -73,38 +73,62 @@ class CustomerIndex extends React.Component {
       labelCol: { span: 7 },
       wrapperCol: { span: 17 }
     }
+    const formChooseOneSugar = {
+      labelCol: { span: 3},
+      wrapperCol: { span: 21 }
+    }
     const formItems= keys.map((k, index) => {
+      if(k>5){
         return (
-        <Col span={8} className="delDisplan" key={k}>
+        <Col span={6} className="delDisplan" key={k}>
           <FormItem
             label="禁忌食材"
             {...formChooseOneAge}
           >
-              {getFieldDecorator(`ingredients${k}`, {
-                validateTrigger: ['onChange', 'onBlur'],
-                rules: [],
-              })(
-                <Input />
-              )}
+          {getFieldDecorator(`ingredients${k}`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            rules: [],
+          })(
+            <Input />
+          )}
           </FormItem>
         </Col>
         );
-      });
+      }else{
+        return (
+        <Col span={6} className="delDisplan" key={k}>
+          <FormItem
+            label="禁忌食材"
+            {...formChooseOneAge}
+          >
+          {getFieldDecorator(`ingredients${k}`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            initialValue:"禁忌食材",
+            rules: [],
+          })(
+            <Input />
+          )}
+          </FormItem>
+        </Col>
+        );
+    }
+  });
     return (
       <div className="Taboo">
        <div className="TabooTital">
         <p className="basicInformation"> 
-            <span>客户姓名:杨幂</span>
-            <span>客户年龄:32</span>
-            <span>第几胎:2</span>
+            <span>客户姓名 : 杨幂</span>
+            <span>客户年龄 : 32</span>
+            <span>第几胎 : 2</span>
         </p>
         <Form>
           <Col span={6} className="delDisplan">
-            <FormItem label="糖" {...formChooseOneAge}>
+            <FormItem label="糖" {...formChooseOneSugar}>
               {getFieldDecorator('sugar', {
+                initialValue:["1"],
                 rules: []
               })(
-                <Select placeholder="请选择">
+                <Select placeholder="请选择" allowClear={ true }>
                   <Option key={1} value={"1"}>有糖</Option>
                   <Option key={0} value={"0"}>无糖</Option>
                 </Select>
@@ -112,7 +136,7 @@ class CustomerIndex extends React.Component {
             </FormItem>
           </Col>
           { formItems }
-          <Col span={8} className="delDisplan">
+          <Col span={6} className="delDisplan">
             <FormItem {...formChooseOneAge}>
               <Icon type="plus-circle" onClick={ this.addIngredients.bind(this)}/>
             </FormItem>

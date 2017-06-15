@@ -23,6 +23,7 @@ import  CreateModal from './CreateModal.jsx'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
+import Current from '../../Current'
 import PrintPageList from './printPageList';
 import { do_print } from 'common/util/dinner.js';
 
@@ -40,7 +41,7 @@ class CustomerIndex extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      exportValue: 1
+      createModalVisible: false
     }
   }
   componentDidMount() {
@@ -55,19 +56,33 @@ class CustomerIndex extends React.Component {
   onPrint() {
     do_print('print-content');
   }
-  onSelect(value,options) {
-    console.log("onSelect",value)
-    this.setState({
-      exportValue:value
-    })
-  }
   render() {
     const columns = this.columns;
-    const { loading, pagination, dispatch, form, shipCards } = this.props;
+    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
     const { getFieldDecorator } = form;
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
+    
+    const formChooseLayout = {
+      labelCol: { span: 10 },
+      wrapperCol: { span: 14 }
+    }
+    const formChooseOneLayout = {
+      labelCol: { span: 9 },
+      wrapperCol: { span: 13 }
+    }
+    const formChooseOneAge = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 }
+    }
+    
+    const formChooseTwoAge = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 }
+    }
+    const { systemTime, feeRecord, renewRecord, refundRecord } = this.props;
+    const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
       <div className="export">
         <div className="exportButton">
@@ -92,7 +107,6 @@ class CustomerIndex extends React.Component {
           <Select defaultValue="1" 
             style={{ width: 300 }}
             allowClear={true}
-            onSelect={ this.onSelect.bind(this) }
           >
             <Option value="1">当日餐单</Option>
             <Option value="2">早餐</Option>
@@ -105,7 +119,7 @@ class CustomerIndex extends React.Component {
         </div>
         <div className="card" style={{ overflow: 'hidden' }}>
         <div id="print-content">
-          <PrintPageList  exportValue={ this.state.exportValue }/>
+          <PrintPageList />
         </div>
       
       </div>
@@ -117,12 +131,12 @@ class CustomerIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-    list,
-    pagination,
-    shipCards,
-    fetusAry,
-    packageList
-  } = state.customer;
+          list,
+          pagination,
+          shipCards,
+          fetusAry,
+          packageList
+        } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,

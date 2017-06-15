@@ -76,6 +76,10 @@ class CustomerIndex extends React.Component {
       labelCol: { span: 7 },
       wrapperCol: { span: 17 }
     }
+    const formChooseOneSugar = {
+      labelCol: { span: 3},
+      wrapperCol: { span: 21 }
+    }
     const formItems= keys.map((k, index) => {
         return (
         <Col span={8} className="delDisplan" key={k}>
@@ -85,6 +89,7 @@ class CustomerIndex extends React.Component {
           >
               {getFieldDecorator(`ingredients${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
+                initialValue:"禁忌食材",
                 rules: [],
               })(
                 <Input readOnly={true} />
@@ -97,14 +102,15 @@ class CustomerIndex extends React.Component {
       <div className="Taboo">
        <div className="TabooTital">
         <p className="basicInformation"> 
-            <span>客户姓名:杨幂</span>
-            <span>客户年龄:32</span>
-            <span>第几胎:2</span>
+            <span>客户姓名 : 杨幂</span>
+            <span>客户年龄 : 32</span>
+            <span>第几胎 : 2</span>
         </p>
         <Form>
           <Col span={6} className="delDisplan">
-            <FormItem label="糖" {...formChooseOneAge}>
+            <FormItem label="糖" {...formChooseOneSugar}>
               {getFieldDecorator('sugar', {
+                initialValue:["1"],
                 rules: []
               })(
                 <Select placeholder="请选择" readOnly={true} >
@@ -147,12 +153,12 @@ class CustomerIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          pagination,
-          shipCards,
-          fetusAry,
-          packageList
-        } = state.customer;
+    list,
+    pagination,
+    shipCards,
+    fetusAry,
+    packageList
+  } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,

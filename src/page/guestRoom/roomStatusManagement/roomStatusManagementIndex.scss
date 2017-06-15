@@ -36,6 +36,15 @@
       }
 
     }
+    .ant-checkbox-group-item {
+      span{
+        font: 14px "微软雅黑";
+      }
+    }
+    .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner{
+      background-color: #b67233;
+      border-color: #b67233;
+    }
     .SelectDiv{
       margin-top: 10px;
       label{
