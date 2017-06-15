@@ -23,6 +23,8 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
 import Current from '../../Current'
+import PrepareMeals from '../prepareMeals/prepareMeals.js'
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -149,7 +151,7 @@ class CustomerIndex extends React.Component {
             backgroundColor: 'rgba(255, 102, 0, 1)'
           }}>返回</Button>
         </div>
-        
+        <PrepareMeals/>
       </div>
     )
   }

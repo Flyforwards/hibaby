@@ -237,6 +237,12 @@
     }
     .delDisplan{
       margin-top:20px;
+      .ant-form-item-control {
+      .anticon-plus-circle:before {
+        content: "\E626";
+        margin-left: 80px;
+      }
+    }
     }
   }
   .ant-col-8 {
@@ -245,9 +251,10 @@
   }
   .ant-form-item-label .label:after{
     display: none;
+    text-align: left;
   }
   .ant-input {
-    width:50%;
+    width:100%;
   }
   .ant-btn {
       border-radius: 5px;
@@ -258,6 +265,7 @@
     }
   .anticon-plus-circle:before {
     font-size: 29px;
+    margin-right: 200%;
   }
   .TabooButton{
     width:80%;

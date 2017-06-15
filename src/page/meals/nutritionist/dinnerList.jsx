@@ -340,6 +340,15 @@ class CustomerIndex extends React.Component {
                 </FormItem>
               </Col>
               <Col span={6}>
+                <FormItem label="操作者2" {...formChooseOneAge}>
+                  {getFieldDecorator('operator2', {
+                    rules: [{ required: false }]
+                  })(
+                    <Input max={40}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
                 <FormItem label="会员身份" {...formChooseOneAge}>
                   {getFieldDecorator('member', {
                     rules: [{ required: false }]
@@ -352,13 +361,7 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={6}>
-                  <FormItem label="套餐状态" {...formChooseOneAge}>
-                    {getFieldDecorator('purchaseStatus')(
-                      <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
-                    )}
-                  </FormItem>
-                </Col>
+            
             </Row>
             <Row style={{ height: 50 }} gutter={16}>
               <Col span={5}>

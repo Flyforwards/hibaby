@@ -52,13 +52,10 @@
     width:96%;
     margin-left:2%;
     height:100px;
-    margin-bottom:0px; 
   }
 .menuCount{
 height:60px;
 overflow: hidden;
-margin-bottom:0px; 
-margin-top:0px; 
 }
 .menuName{
       background-color: rgba(102, 102, 102, 1);
