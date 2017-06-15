@@ -78,22 +78,41 @@ class CustomerIndex extends React.Component {
       wrapperCol: { span: 21 }
     }
     const formItems= keys.map((k, index) => {
+      if(k>5){
         return (
         <Col span={6} className="delDisplan" key={k}>
           <FormItem
             label="禁忌食材"
             {...formChooseOneAge}
           >
-              {getFieldDecorator(`ingredients${k}`, {
-                validateTrigger: ['onChange', 'onBlur'],
-                rules: [],
-              })(
-                <Input />
-              )}
+          {getFieldDecorator(`ingredients${k}`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            rules: [],
+          })(
+            <Input />
+          )}
           </FormItem>
         </Col>
         );
-      });
+      }else{
+        return (
+        <Col span={6} className="delDisplan" key={k}>
+          <FormItem
+            label="禁忌食材"
+            {...formChooseOneAge}
+          >
+          {getFieldDecorator(`ingredients${k}`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            initialValue:"禁忌食材",
+            rules: [],
+          })(
+            <Input />
+          )}
+          </FormItem>
+        </Col>
+        );
+    }
+  });
     return (
       <div className="Taboo">
        <div className="TabooTital">
@@ -106,6 +125,7 @@ class CustomerIndex extends React.Component {
           <Col span={6} className="delDisplan">
             <FormItem label="糖" {...formChooseOneSugar}>
               {getFieldDecorator('sugar', {
+                initialValue:["1"],
                 rules: []
               })(
                 <Select placeholder="请选择" allowClear={ true }>

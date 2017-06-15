@@ -89,6 +89,7 @@ class CustomerIndex extends React.Component {
           >
               {getFieldDecorator(`ingredients${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
+                initialValue:"禁忌食材",
                 rules: [],
               })(
                 <Input readOnly={true} />
@@ -109,6 +110,7 @@ class CustomerIndex extends React.Component {
           <Col span={6} className="delDisplan">
             <FormItem label="糖" {...formChooseOneSugar}>
               {getFieldDecorator('sugar', {
+                initialValue:["1"],
                 rules: []
               })(
                 <Select placeholder="请选择" readOnly={true} >
