@@ -87,7 +87,7 @@ class DishesFormPage extends React.Component{
                   }
                 ],
               })(
-                <Input disabled={_this.state.disabled}  />
+                <Input />
               )}
             </FormItem>
           </Col>
@@ -96,7 +96,7 @@ class DishesFormPage extends React.Component{
               label="食材用量"
               {...formItemLayout}
             >
-              {getFieldDecorator('name', {
+              {getFieldDecorator('volume', {
                 initialValue: (record==null ? '' : record.volume),
                 rules: [
                   {
@@ -105,7 +105,7 @@ class DishesFormPage extends React.Component{
                   }
                 ],
               })(
-                <Input disabled={_this.state.disabled}  suffix="g" />
+                <Input suffix="g" />
               )}
             </FormItem>
           </Col>
@@ -152,8 +152,9 @@ class DishesFormPage extends React.Component{
                     ],
                   })(
                     <Select placeholder="请选择" allowClear={true}>
-                      <Option value="0">正常</Option>
-                      <Option value="1">禁用</Option>
+                      <Option value="0">荤</Option>
+                      <Option value="1">素</Option>
+                      <Option value="2">半荤</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -173,8 +174,10 @@ class DishesFormPage extends React.Component{
                     ],
                   })(
                     <Select placeholder="请选择" allowClear={true}>
-                      <Option value="0">正常</Option>
-                      <Option value="1">禁用</Option>
+                      <Option value="0">主食</Option>
+                      <Option value="1">配菜</Option>
+                      <Option value="2">点心</Option>
+                      <Option value="3">水果</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -182,7 +185,7 @@ class DishesFormPage extends React.Component{
             </Row>
           </div>
 
-          <div style={{border:"solid"}}>
+          <div>
             <Row><Col><div>食材信息</div></Col></Row>
             <Row>
               <Col span={1}>

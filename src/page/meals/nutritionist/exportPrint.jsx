@@ -1,5 +1,5 @@
 import React from 'react'
-import './dinner.scss'
+import './export.scss'
 import { connect } from 'dva'
 import {
   Select,
@@ -15,7 +15,8 @@ import {
   Col,
   Row,
   InputNumber,
-  Modal
+  Modal,
+  Card
 } from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
@@ -23,76 +24,25 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
 import Current from '../../Current'
-import PrepareMeals from './prepareMeals.js'
+import PrintPageList from './printPageList';
+import { do_print } from 'common/util/dinner.js';
+
 
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
-const monthFormat = 'YYYY'
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const createForm = Form.create
-
-//这是表单的数据操作
-class Customer extends React.Component {
-  state = {
-    value: this.props.value,
-    editable: false
-  }
-  handleChange = (e) => {
-    const value = e.target.value;
-    this.setState({ value });
-  }
-  check = () => {
-    this.setState({ editable: false });
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-  }
-  edit = () => {
-    this.setState({ editable: true });
-  }
-  
-  render() {
-    const { value, editable } = this.state;
-    return (
-      <div className="editable-cell">
-        {
-          editable ?
-            <div className="editable-cell-input-wrapper">
-              <Input
-                value={value}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-              />
-              <Icon
-                type="check"
-                className="editable-cell-icon-check"
-                onClick={this.check}
-              />
-            </div>
-            :
-            <div className="editable-cell-text-wrapper">
-              {value || ' '}
-              <Icon
-                type="edit"
-                className="editable-cell-icon"
-                onClick={this.edit}
-              />
-            </div>
-        }
-      </div>
-    );
-  }
-}
+const dateFormat = 'YYYY-MM-DD';
+const monthFormat = 'YYYY-MM';
 
 @createForm()
 class CustomerIndex extends React.Component {
   constructor(props) {
     super(props)
-    
-  }
-  onBack(){
-    history.go(-1)
+    this.state = {
+      createModalVisible: false
+    }
   }
   componentDidMount() {
     this.props.dispatch({ type: 'customer/getCustomerPage' });
@@ -100,12 +50,16 @@ class CustomerIndex extends React.Component {
     this.props.dispatch({ type: 'customer/getMemberShipCard' });
     this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
   }
-  
+  onBack() {
+    history.go(-1)
+  }
+  onPrint() {
+    do_print('print-content');
+  }
   render() {
     const columns = this.columns;
     const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
     const { getFieldDecorator } = form;
-    
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
@@ -127,33 +81,48 @@ class CustomerIndex extends React.Component {
       labelCol: { span: 4 },
       wrapperCol: { span: 20 }
     }
-    
+    const { systemTime, feeRecord, renewRecord, refundRecord } = this.props;
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConent">
-        <div className="button">
-        <Link to={{pathname:'/meals/nutritionist/taboo/export',query:{ dataId:`${this.edit}`}}}>
-          <Button  style={{
+      <div className="export">
+        <div className="exportButton">
+          <Button  onClick={this.onPrint.bind(this)} style={{
             width: '15%',
             height: '40px',
             lineHeight: '40px',
-            marginLeft:'40px',
+            marginRight:'38%',
             float:'right',
+            marginButtom:'20px',
             backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>导出</Button></Link>
-          <Button  onClick={this.onBack.bind(this)} style={{
+          }}>打印</Button>
+          <Button  onClick={this.onBack} style={{
             width: '15%',
             height: '40px',
             lineHeight: '40px',
-            marginLeft:'40px',
+            marginRight:'20px',
             float:'right',
             marginButtom:'20px',
             backgroundColor: 'rgba(255, 102, 0, 1)'
           }}>返回</Button>
+          <Select defaultValue="1" 
+            style={{ width: 300 }}
+            allowClear={true}
+          >
+            <Option value="1">当日餐单</Option>
+            <Option value="2">早餐</Option>
+            <Option value="3">早加</Option>
+            <Option value="4">午餐</Option>
+            <Option value="5">午加</Option>
+            <Option value="6">晚餐</Option>
+            <Option value="7">晚加</Option>
+          </Select>
         </div>
-        <div className="editmeuntMeals">
-         <PrepareMeals/>
+        <div className="card" style={{ overflow: 'hidden' }}>
+        <div id="print-content">
+          <PrintPageList />
         </div>
+      
+      </div>
       </div>
     )
   }

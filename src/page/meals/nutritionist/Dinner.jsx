@@ -185,23 +185,24 @@ class CustomerIndex extends React.Component {
   }
   
   onSearch() {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        if (values.time != undefined) {
-          values.year = values.time.get('year');
-          values.month = values.time.get('month') + 1;
-        }
+    console.log("search>>>>>")
+    // this.props.form.validateFields((err, values) => {
+    //   if (!err) {
+    //     if (values.time != undefined) {
+    //       values.year = values.time.get('year');
+    //       values.month = values.time.get('month') + 1;
+    //     }
         
-        if (values.productionDate != undefined) {
-          values.productionDate = values.productionDate.format("YYYY-MM-DD")
-        }
+    //     if (values.productionDate != undefined) {
+    //       values.productionDate = values.productionDate.format("YYYY-MM-DD")
+    //     }
         
-        this.props.dispatch(routerRedux.push({
-          pathname: "/crm/customer",
-          query: values
-        }))
-      }
-    })
+    //     this.props.dispatch(routerRedux.push({
+    //       pathname: "/crm/customer",
+    //       query: values
+    //     }))
+    //   }
+    // })
   }
   
   reset() {
@@ -300,7 +301,7 @@ class CustomerIndex extends React.Component {
                 <Row justify="end" type="flex" gutter={8}>
                   <Col span={6}>
                       <span>
-                        <Button onClick={ this.onSearch.bind(this)} style={{
+                        <Button onClick={this.onSearch.bind(this)} style={{
                           width: '100%',
                           height: '40px',
                           lineHeight: '40px',
@@ -311,14 +312,14 @@ class CustomerIndex extends React.Component {
                   
                   <Col span={6}>
                   <span>
-                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{
-                          width: '100%',
-                          backgroundColor: 'rgba(182, 114, 51, 1)',
-                          height: '40px',
-                          lineHeight: '40px',
-                          color: '#ffffff'
-                        }}>筛选项</Button></Link>
-                      </span>
+                    <Button style={{
+                      width: '100%',
+                      backgroundColor: 'rgba(182, 114, 51, 1)',
+                      height: '40px',
+                      lineHeight: '40px',
+                      color: '#ffffff'
+                    }}>筛选项</Button>
+                  </span>
                   </Col>
                 </Row>
               </Col>

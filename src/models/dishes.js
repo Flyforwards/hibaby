@@ -17,14 +17,38 @@ export default {
     total : 0,
     page : 1,
     size : 5,
-    initialValue : null
+    initialValue : null,
+    dishesLibraryNodes : null,
   },
   //加载页面
   subscriptions: {
-
+    setup({ dispatch, history }) {  // eslint-disable-line
+      return history.listen(({ pathname,query }) => {
+        if (pathname === '/meals/dishes/dishesDetail'){
+          if(query.dataId){
+            dispatch({
+              type: 'getDishesById',
+              payload:{
+                dataId : query.dataId
+              }
+            });
+          }
+        }else if(pathname === '/meals/dishes/addDishes'){
+          dispatch({type : 'clearDishesDetail'});
+        }
+      });
+    }
   },
   //调用服务器端接口
   effects: {
+    //获取左侧菜品库列表数据
+    *getDishesLibraryNodes({payload : values}, { call, put,select }){
+      const {data: { data,code,err} } = yield call(dishesService.getDishesLibraryNodes, values);
+      if (code == 0) {
+        //更新state
+        yield put({type:'setDishesLibraryNodes',payload:{data}} );
+      }
+    },
     //获取菜品信息分页数据
     *getDishesPageList({payload : values}, { call, put }){
       const {data: { data, total, page, size, code,err} } = yield call(dishesService.getDishesPageList, values);
@@ -51,13 +75,19 @@ export default {
       }
     },
     //删除菜品信息
-    *deleteDishes({payload : values}, { call, put }){
+    *deleteDishes({payload : values}, { call, put,select }){
       const {data: { data, code,err} } = yield call(dishesService.deleteDishes, values);
       if (code == 0) {
         //更新state
-        message.success("删除客户成功");
+        message.success("删除菜品信息成功");
+        const state = yield select(state => state.dishes);
         yield put({
           type: 'getDishesPageList',
+          payload : {
+            nodeId : 1,
+            page : state.page,
+            size : state.size
+          }
         });
       }
     },
@@ -65,6 +95,9 @@ export default {
   },
   //同步请求，更新state
   reducers: {
+    setDishesLibraryNodes(state, { payload: {data: data} }){
+      return {...state,dishesLibraryNodes: data}
+    },
     setDishesPageList(state, { payload: {data: dishesPageList, total, page, size} }){
       let dishesdata = {
         ...state,
@@ -80,8 +113,7 @@ export default {
       }
       return {...dishesdata,range}
     },
-    setDishesDetail(state, { payload: dishesInfo }){
-      message.info("111111111111");
+    setDishesDetail(state, { payload: {dishesInfo} }){
       return {...state,initialValue: dishesInfo}
     },
     clearDishesDetail(state){
