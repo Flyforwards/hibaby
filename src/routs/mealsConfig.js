@@ -114,5 +114,15 @@ export default (app) => [
         cb(null, require('page/meals/dishes/DishesDetailPage.js'))
       })
     }
-  }
+  },
+  //基础餐单
+  {
+    path: '/meals/dishes/prepareMeals',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/prepareMeals'));
+        cb(null, require('page/meals/prepareMeals/prepareMeals.js'))
+      })
+    }
+  },
 ]

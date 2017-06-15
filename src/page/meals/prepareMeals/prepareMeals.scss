@@ -1,0 +1,37 @@
+.prepareMeals {
+  padding: 10px;
+  .Row {
+    background: #fff;
+    border: 1px solid #dddddd;
+    .colLeft {
+      padding: 30px;
+      border-right: 1px solid #dddddd;
+      .day.ant-radio-button-wrapper {
+        transition: inherit;
+        width: 60px;
+        text-align: center;
+        line-height: 60px;
+        height: 60px;
+        border: 1px solid #fff;
+      }
+      .ant-radio-button-wrapper:last-child{
+        border-radius: inherit;
+      }
+      .ant-radio-button-wrapper-checked{
+        color: #b67233;
+        border:1px solid #b67233!important;
+        box-shadow: none !important;
+      }
+      .ant-radio-button-wrapper-checked:hover{
+        color: #b67233;
+        border:1px solid #b67233!important;
+      }
+      .week {
+        width: 80px;
+        background: #fff;
+        color: #b67233;
+        border: none;
+      }
+    }
+  }
+}
