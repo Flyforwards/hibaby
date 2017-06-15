@@ -279,20 +279,21 @@ export default {
       let dinner = [];
       let dinnerAdd = [];
       let heightFood = [];
-      let heightFoodInfo = {};
       data.map((v, k) => {
         switch (v.type) {
           case 0:
             heightFood.push(v);
-            heightFoodInfo = { title: '高档食材', heightFood }
+            menuInfo[0] = { title: '高档食材', info: heightFood };
+            //heightFood.push(v);
+            //heightFoodInfo = { title: '高档食材', heightFood }
             break;
           case 1:
             breakfast.push(v);
-            menuInfo[0] = { title: '午餐', info: breakfast };
+            menuInfo[0] = { title: '早餐', info: breakfast };
             break;
           case 2:
             breakfastAdd.push(v);
-            menuInfo[1] = { title: '午中', info: breakfastAdd };
+            menuInfo[1] = { title: '早加', info: breakfastAdd };
             break;
           case 3:
             lunch.push(v);
@@ -314,7 +315,7 @@ export default {
             return menuInfo;
         }
       })
-      return { ...state, heightFoodInfo,menuInfo }
+      return { ...state,menuInfo }
     }
   },
   effects: {
