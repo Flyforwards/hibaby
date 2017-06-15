@@ -220,8 +220,7 @@ function CardArray({roomList,dispatch}) {
     if(webparam.useDate){
       param.useDate = webparam.useDate;
     }
-    dispatch({type:'roomStatusManagement/dayStatusUpdate',
-      payload:param})
+    dispatch({type:'roomStatusManagement/dayStatusUpdate', payload:param})
   }
 
   let array = [];
@@ -239,19 +238,13 @@ function CardArray({roomList,dispatch}) {
   )
 }
 
-let isAll = false;
+let isAll = true;
 
 class roomStatusIndex extends React.Component {
 
   constructor(props) {
     super(props);
   }
-
-  state = {
-    roomList:'',
-    selectValue:['all',0,1,2,3,4,5,6,7],
-  }
-
 
   statusChange(array){
     if(isAll){
@@ -269,12 +262,12 @@ class roomStatusIndex extends React.Component {
       }
     }
     else {
+
       if(array.indexOf('all') != -1){
         isAll = true;
         array=['all',0,1,2,3,4,5,6,7]
       }
       else {
-
         if(array.length === 8){
           isAll = true;
           array.push('all')
@@ -294,10 +287,8 @@ class roomStatusIndex extends React.Component {
       }
     }
 
-    this.setState({
-      selectValue :array,
-      roomList :listArray
-    })
+    this.props.dispatch({type:'roomStatusManagement/setRoomList', payload:{data:listArray}})
+    this.props.dispatch({type:'roomStatusManagement/setSelectValue', payload:{data:array}})
   }
 
   componentDidMount() {
@@ -307,12 +298,13 @@ class roomStatusIndex extends React.Component {
   render() {
     const ScreenBarDiv = Form.create()(ScreenBar);
     const {loading} = this.props;
+    const {selectValue,roomList} = this.props.users;
 
     return (
       <div className="roomStatusDiv">
-        <ScreenBarDiv selectValue={this.state.selectValue} supProps = {this.props} statusChange={this.statusChange.bind(this)} ></ScreenBarDiv>
+        <ScreenBarDiv selectValue={selectValue} supProps = {this.props} statusChange={this.statusChange.bind(this)} ></ScreenBarDiv>
         <Spin spinning={loading.effects['roomStatusManagement/dayStatus'] !== undefined ? loading.effects['roomStatusManagement/dayStatus']:false}>
-          <CardArray dispatch={this.props.dispatch} roomList={this.state.roomList||this.props.users.dayStatusData.roomList}/>
+          <CardArray dispatch={this.props.dispatch} roomList={roomList||this.props.users.dayStatusData.roomList}/>
         </Spin>
       </div>
     )

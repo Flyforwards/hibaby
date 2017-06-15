@@ -647,6 +647,9 @@ class customerInformation extends React.Component{
         }
       });
     }
+    else {
+      this.refs.extensionForm.resetFields();
+    }
 
     if (!baseDict) return;
     if (exErr) return;

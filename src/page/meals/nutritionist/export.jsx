@@ -23,7 +23,6 @@ import  CreateModal from './CreateModal.jsx'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
-import Current from '../../Current'
 import PrintPageList from './printPageList';
 import { do_print } from 'common/util/dinner.js';
 
@@ -41,7 +40,7 @@ class CustomerIndex extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      createModalVisible: false
+      exportValue: 1
     }
   }
   componentDidMount() {
@@ -58,33 +57,17 @@ class CustomerIndex extends React.Component {
   }
   onSelect(value,options) {
     console.log("onSelect",value)
+    this.setState({
+      exportValue:value
+    })
   }
-  getNowFormatDate() {
-    var date = new Date();
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var currentYears = date.getFullYear() +"年" + month + "月" + strDate + "日"
-    var currentData = date.getHours() + seperator2 + date.getMinutes()+ seperator2 + date.getSeconds();
-    var dataTime = {currentYears:currentYears,currentData:currentData}
-    return dataTime;
-}
   render() {
     const columns = this.columns;
-    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
+    const { loading, pagination, dispatch, form, shipCards } = this.props;
     const { getFieldDecorator } = form;
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
-    let {currentYears,currentData} = this.getNowFormatDate()
-    console.log("time>>>>",currentYears)
     return (
       <div className="export">
         <div className="exportButton">
@@ -122,7 +105,7 @@ class CustomerIndex extends React.Component {
         </div>
         <div className="card" style={{ overflow: 'hidden' }}>
         <div id="print-content">
-          <PrintPageList />
+          <PrintPageList  exportValue={ this.state.exportValue }/>
         </div>
       
       </div>
@@ -134,12 +117,12 @@ class CustomerIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          pagination,
-          shipCards,
-          fetusAry,
-          packageList
-        } = state.customer;
+    list,
+    pagination,
+    shipCards,
+    fetusAry,
+    packageList
+  } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
