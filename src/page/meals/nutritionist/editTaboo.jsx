@@ -74,38 +74,58 @@ class CustomerIndex extends React.Component {
       wrapperCol: { span: 17 }
     }
     const formChooseOneSugar = {
-      labelCol: { span: 5},
-      wrapperCol: { span: 19 }
+      labelCol: { span: 3},
+      wrapperCol: { span: 21 }
     }
     const formItems= keys.map((k, index) => {
+      if(k>5){
         return (
         <Col span={6} className="delDisplan" key={k}>
           <FormItem
             label="禁忌食材"
             {...formChooseOneAge}
           >
-              {getFieldDecorator(`ingredients${k}`, {
-                validateTrigger: ['onChange', 'onBlur'],
-                rules: [],
-              })(
-                <Input />
-              )}
+          {getFieldDecorator(`ingredients${k}`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            rules: [],
+          })(
+            <Input />
+          )}
           </FormItem>
         </Col>
         );
-      });
+      }else{
+        return (
+        <Col span={6} className="delDisplan" key={k}>
+          <FormItem
+            label="禁忌食材"
+            {...formChooseOneAge}
+          >
+          {getFieldDecorator(`ingredients${k}`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            initialValue:"禁忌食材",
+            rules: [],
+          })(
+            <Input />
+          )}
+          </FormItem>
+        </Col>
+        );
+    }
+  });
     return (
       <div className="Taboo">
        <div className="TabooTital">
         <p className="basicInformation"> 
-            <span>客户姓名:杨幂</span>
-            <span>客户年龄:32</span>
-            <span>第几胎:2</span>
+            <span>客户姓名 : 杨幂</span>
+            <span>客户年龄 : 32</span>
+            <span>第几胎 : 2</span>
         </p>
         <Form>
           <Col span={6} className="delDisplan">
             <FormItem label="糖" {...formChooseOneSugar}>
               {getFieldDecorator('sugar', {
+                initialValue:["1"],
                 rules: []
               })(
                 <Select placeholder="请选择" allowClear={ true }>

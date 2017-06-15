@@ -12,7 +12,15 @@ class PrepareMeals extends React.Component {
       visible: false
     }
   }
-  
+  componentDidMount() {
+    this.props.dispatch({ 
+      type: 'prepareMeals/getMenuByDay',
+      payload:{
+        'day': '1',
+        'week': '1'
+      }
+    });
+  }
   onChange = (e) => {
     const { dispatch } = this.props;
     const postDate = JSON.parse(e.target.value);

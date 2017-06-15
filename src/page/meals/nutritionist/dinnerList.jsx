@@ -22,7 +22,7 @@ import  CreateModal from './CreateModal.jsx'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
-import Current from '../../Current'
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -151,20 +151,20 @@ class CustomerIndex extends React.Component {
         const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div>
-            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 编辑餐单 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 禁忌 </Link>
+            <Link disabled={detail} className="firstA" onClick={ this.editMenu.bind(this, record)}> 编辑餐单 </Link>
+            <Link disabled={del} className="firstB" onClick={ this.optionTaboo.bind(this, record)}> 禁忌 </Link>
           </div>
         );
       }
     }]; 
   }
   
-  onLook(record) {
+  editMenu(record) {
     const dispatch = this.props.dispatch;
     dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
   }
   
-  onDelete(record) {
+  optionTaboo(record) {
     const dispatch = this.props.dispatch;
     dispatch(routerRedux.push(`/meals/nutritionist/taboo?dataId=${record.id}`))
   }
@@ -353,7 +353,7 @@ class CustomerIndex extends React.Component {
                   {getFieldDecorator('member', {
                     rules: [{ required: false }]
                   })(
-                    <Select placeholder="请选择">
+                    <Select placeholder="请选择" allowClear={ true }>
                       {
                         options
                       }
@@ -436,12 +436,12 @@ class CustomerIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          pagination,
-          shipCards,
-          fetusAry,
-          packageList
-        } = state.customer;
+    list,
+    pagination,
+    shipCards,
+    fetusAry,
+    packageList
+  } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
