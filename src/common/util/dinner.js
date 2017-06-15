@@ -10,7 +10,7 @@ const do_print = (id_str) =>
   document.body.appendChild(iframe);
   doc = iframe.contentWindow.document;
   // 引入打印的专有CSS样式，www.111Cn.net根据实际修改
-  doc.write('<LINK rel="stylesheet" type="text/css" media="print" href="http://192.168.199.81/printPage.css" />');
+  doc.write('<LINK rel="stylesheet" type="text/css" media="print" href="http://dev.hbbcare.com/printPage.css" />');
   doc.write('<div>' + el.innerHTML + '</div>');
   doc.close();
   iframe.contentWindow.focus();
