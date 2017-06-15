@@ -31,3 +31,10 @@ export function deleteDishes(values){
     body: JSON.stringify(values),
   })
 }
+//获取菜品库列表数据
+export function getDishesLibraryNodes(values){
+  return request('/crm/api/v1/dishesLibrary/getDishesLibraryNodes',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
