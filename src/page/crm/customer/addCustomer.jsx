@@ -37,7 +37,6 @@ class addCustomer extends React.Component{
 
 
   render(){
-
     const {editCustomer,isDetail}= this.props.users;
     const {addSuccess}= this.props.course;
     const { getSuccess } =this.props.membershipcard;
