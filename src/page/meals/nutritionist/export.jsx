@@ -40,7 +40,7 @@ class CustomerIndex extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      createModalVisible: false
+      exportValue: 1
     }
   }
   componentDidMount() {
@@ -57,6 +57,9 @@ class CustomerIndex extends React.Component {
   }
   onSelect(value,options) {
     console.log("onSelect",value)
+    this.setState({
+      exportValue:value
+    })
   }
   render() {
     const columns = this.columns;
@@ -102,7 +105,7 @@ class CustomerIndex extends React.Component {
         </div>
         <div className="card" style={{ overflow: 'hidden' }}>
         <div id="print-content">
-          <PrintPageList />
+          <PrintPageList  exportValue={ this.state.exportValue }/>
         </div>
       
       </div>
