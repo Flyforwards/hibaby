@@ -33,5 +33,37 @@
         border: none;
       }
     }
+    .colRight{
+      padding: 30px;
+      .menuInfo{
+        margin-bottom: 20px;
+        p{
+          color: #b67233;
+          margin-bottom: 10px;
+        }
+        ul{
+          width: 100%;
+          padding-left: 40px;
+          li{
+            display: inline-block;
+            width: 30%;
+            margin-left: 3%;
+            border:1px solid #dddddd;
+            line-height: 30px;
+            text-align: center;
+            color: #000000;
+            margin-bottom: 10px;
+          }
+          li:last-child{
+            border: 1px solid #b67233;
+           .lastBtn{
+             width: 100%;
+             border: none;
+             color: #b67233;
+           }
+          }
+        }
+      }
+    }
   }
 }

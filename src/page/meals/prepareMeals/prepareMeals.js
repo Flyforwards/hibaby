@@ -1,11 +1,18 @@
 import React from 'react';
 import { connect } from 'dva';
 import './prepareMeals.scss'
-import { message, Radio, Icon, Table, Form, Row, Col, Input, Select } from 'antd';
+import { message, Button, Radio, Icon, Modal, Form, Row, Col, Input, Select } from 'antd';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
 class PrepareMeals extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visible: false
+    }
+  }
+  
   onChange = (e) => {
     const { dispatch } = this.props;
     const postDate = JSON.parse(e.target.value);
@@ -19,11 +26,27 @@ class PrepareMeals extends React.Component {
       payload: postDate
     })
   }
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  }
+  handleOk = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
   
   render() {
     const { prepareMeals } = this.props;
-    const { dayInfo, defaultValueRadio, menuInfo, heightFoodInfo } = prepareMeals;
-    console.log(prepareMeals, 'height')
+    const { dayInfo, defaultValueRadio, menuInfo } = prepareMeals;
     return (
       <div className="prepareMeals">
         <Row className="Row">
@@ -53,12 +76,38 @@ class PrepareMeals extends React.Component {
               }
             </RadioGroup>
           </Col>
-          <Col span={12}>
-            {heightFoodInfo.heightFood ?
-              <div>
-                <p>{heightFoodInfo.heightFood.title}</p>
-                {heightFoodInfo.heightFood.map}
-              </div> : console.log('222')}
+          <Col span={12} className="colRight">
+            {
+              menuInfo.length != 0 && menuInfo.map((v, k) => {
+                return (
+                  <div key={k} className="menuInfo">
+                    <p>{v.title}：</p>
+                    <ul>
+                      {
+                        v.info.map((vv, kk) => {
+                          return (
+                            <li key={kk}>{vv.dishesName}</li>
+                          )
+                        })
+                      }
+                      <li>
+                        <Button className="lastBtn" onClick={this.showModal}>编辑/添加</Button>
+                        <Modal
+                          title="编辑餐单"
+                          visible={this.state.visible}
+                          onOk={this.handleOk}
+                          onCancel={this.handleCancel}
+                        >
+                          <p>Some contents...</p>
+                          <p>Some contents...</p>
+                          <p>Some contents...</p>
+                        </Modal>
+                      </li>
+                    </ul>
+                  </div>
+                )
+              })
+            }
           </Col>
         </Row>
       </div>
