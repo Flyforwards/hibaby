@@ -58,8 +58,24 @@ class CustomerIndex extends React.Component {
   }
   onSelect(value,options) {
     console.log("onSelect",value)
-
   }
+  getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentYears = date.getFullYear() +"年" + month + "月" + strDate + "日"
+    var currentData = date.getHours() + seperator2 + date.getMinutes()+ seperator2 + date.getSeconds();
+    var dataTime = {currentYears:currentYears,currentData:currentData}
+    return dataTime;
+}
   render() {
     const columns = this.columns;
     const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
@@ -67,6 +83,8 @@ class CustomerIndex extends React.Component {
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
+    let {currentYears,currentData} = this.getNowFormatDate()
+    console.log("time>>>>",currentYears)
     return (
       <div className="export">
         <div className="exportButton">

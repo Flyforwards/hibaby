@@ -90,18 +90,35 @@ class MemberShipCard extends Component {
       </table>
    )
  }
-
+getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentYears = date.getFullYear() +seperator1 + month + seperator1 + strDate 
+    var currentData = date.getHours() + seperator2 + date.getMinutes()+ seperator2 + date.getSeconds();
+    var dataTime = {currentYears:currentYears,currentData:currentData}
+    return dataTime;
+}
 
 
   render() {
     const { loading, printBaseMsg, systemTime,times ,printList} = this.props;
     const danTime = printBaseMsg ? new Date(printBaseMsg.billTime).format('yyyy-MM-dd HH:mm:ss') : '';
-
+    let {currentYears,currentData} = this.getNowFormatDate()
+    console.log("time>>>>",currentYears)
     return (
       <div className="printList">
         <div className="print_all">
           <p className="time">2017年04月20日餐单 </p>
-          <p className="timeOut">出单时间:<span className="span2">2017-04-12</span><span className="span1">17:37:32</span> </p>
+          <p className="timeOut">出单时间:<span className="span2">{ currentYears }</span><span className="span1">{ currentData }</span> </p>
           <p className="userList">
             <span className="name">客户姓名 : 杨幂</span>
             <span className="roomNumber">房间号码 : 1001</span>
