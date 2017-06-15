@@ -95,7 +95,7 @@ class CustomerIndex extends React.Component {
             marginButtom:'20px',
             backgroundColor: 'rgba(255, 102, 0, 1)'
           }}>打印</Button>
-          <Button  style={{
+          <Button  onClick={this.onBack} style={{
             width: '15%',
             height: '40px',
             lineHeight: '40px',
