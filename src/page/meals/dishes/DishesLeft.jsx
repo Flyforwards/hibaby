@@ -5,13 +5,16 @@
 import React from 'react'
 import {connect} from 'dva'
 import "./DishesLeft.scss"
-import {Tree,message,Modal} from 'antd';
+import {Tree,message,Modal,Form,Input} from 'antd';
 import {routerRedux} from 'dva/router'
 import {local, session} from 'common/util/storage.js';
 
 
 const TreeNode = Tree.TreeNode;
 let plusEnter = false;
+const FormItem = Form.Item;
+const createForm = Form.create
+@createForm()
 class DishesLeft extends React.Component {
   constructor(props) {
     super(props)
@@ -22,7 +25,12 @@ class DishesLeft extends React.Component {
       selectedNode: null,
       selectedNodeParentId : null,
       selectedNodeLevel : null,
-      unfolded:["0"]
+      unfolded:["0"],
+      nodeFormOrDetailModalVisible:false,
+      nodeFormOrDetailModalTitle : null,
+      isNodeDetail : false,
+      isNodeEdit : false,
+      initialValue : {},
     }
     this.addDisplay = "block";
     this.deleteDisplay = "block";
@@ -145,6 +153,101 @@ class DishesLeft extends React.Component {
       $("li").find(".plus").eq(0).css('display', 'none');
     }
   }
+  //添加子节点
+  handlerCreate(){
+    this.setState({
+      nodeFormOrDetailModalVisible : true,
+      nodeFormOrDetailModalTitle : "创建食材",
+      initialValue : null
+    });
+  }
+
+  //查看节点详情
+  handlerDetail(){
+    this.setState({
+      nodeFormOrDetailModalVisible : true,
+      nodeFormOrDetailModalTitle : "食材详情",
+      isNodeDetail : true,
+      initialValue : {
+        id : this.state.ID,
+        name : this.state.selectedNode.props.title
+      }
+    });
+  }
+  //删除节点
+  handlerRemove(){
+    const {dispatch} = this.props;
+    const _this = this;
+    Modal.confirm({
+      title: '提示',
+      content: '是否确定删除此菜品库节点?',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        dispatch({
+          type: 'dishes/deleteDishesLibraryNodes',
+          payload: {
+            dataId : _this.state.ID
+          }
+        });
+      }
+    });
+  }
+
+  initNodeFormOrDetailModal=()=>{
+    const {getFieldDecorator} = this.props.form;
+    const formItemLayout = {
+      labelCol: {span: 6},
+      wrapperCol: {span: 14},
+    }
+    const idInput = this.state.isNodeDetail || this.state.isNodeEdit ?
+      <FormItem label="ID"  {...formItemLayout}>
+        {getFieldDecorator('id', {
+          initialValue: (this.state.initialValue==null ? '' : this.state.initialValue.id)
+        })(
+        <Input disabled={true} style={{height:33}} />
+        )}
+      </FormItem> : null;
+    return (
+      <Modal
+        key={this.state.nodeFormOrDetailModalVisible}
+        visible={this.state.nodeFormOrDetailModalVisible}
+        title={this.state.nodeFormOrDetailModalTitle}
+        okText="确定"
+        cancelText="取消"
+        onCancel={
+          (e)=>{
+            this.setState({
+              nodeFormOrDetailModalVisible : false,
+              isNodeDetail : false,
+              isNodeEdit: false,
+              initialValue : null
+            });
+          }
+        }
+        // onOk={}
+      >
+        <Form layout='horizontal'>
+          {idInput}
+          <FormItem label="食材名称"  {...formItemLayout}>
+            {getFieldDecorator('name', {
+              initialValue: (this.state.initialValue==null ? '' : this.state.initialValue.name),
+              rules: [
+                {
+                  required: true,
+                  message: '食材名称不能为空'
+                }
+              ],
+            })(
+              <Input disabled={this.state.isNodeDetail} style={{height:33}}  />
+            )}
+          </FormItem>
+        </Form>
+      </Modal>
+    );
+  }
+
+
 
   render() {
     const {dishesLibraryNodes} = this.props.dishes;
@@ -163,11 +266,12 @@ class DishesLeft extends React.Component {
           {treeNodes}
         </Tree>
         <ul className="nameList" style={{ top: this.state.ulTop, display: this.state.upblock }}>
-          <li className="li" style={{ display: this.addDisplay }}>添加子节点</li>
-          <li className="li">查看详情</li>
-          <li className="li" style={{ display: this.deleteDisplay }}>删除</li>
+          <li className="li" onClick={this.handlerCreate.bind(this)} style={{ display: this.addDisplay }}>添加子节点</li>
+          <li className="li" onClick={this.handlerDetail.bind(this)}>查看详情</li>
+          <li className="li" onClick={this.handlerRemove.bind(this)} style={{ display: this.deleteDisplay }}>删除</li>
           <li className="fourLi">ID {this.state.ID}</li>
         </ul>
+        {this.initNodeFormOrDetailModal()}
       </div>
     );
   }

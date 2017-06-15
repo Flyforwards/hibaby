@@ -49,6 +49,13 @@ export default {
         yield put({type:'setDishesLibraryNodes',payload:{data}} );
       }
     },
+    //删除菜品库节点信息
+    *deleteDishesLibraryNodes({payload : values}, { call, put,select }){
+      const {data: { data,code,err} } = yield call(dishesService.deleteDishesLibrary, values);
+      if (code == 0) {
+        yield put({type:'getDishesLibraryNodes'} );
+      }
+    },
     //获取菜品信息分页数据
     *getDishesPageList({payload : values}, { call, put }){
       const {data: { data, total, page, size, code,err} } = yield call(dishesService.getDishesPageList, values);
