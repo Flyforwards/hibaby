@@ -436,7 +436,7 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${data}`))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${data||dict.id}`))
 
         }
       }
