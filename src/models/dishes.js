@@ -17,7 +17,8 @@ export default {
     total : 0,
     page : 1,
     size : 5,
-    initialValue : null
+    initialValue : null,
+    dishesLibraryNodes : null,
   },
   //加载页面
   subscriptions: {
@@ -40,6 +41,14 @@ export default {
   },
   //调用服务器端接口
   effects: {
+    //获取左侧菜品库列表数据
+    *getDishesLibraryNodes({payload : values}, { call, put,select }){
+      const {data: { data,code,err} } = yield call(dishesService.getDishesLibraryNodes, values);
+      if (code == 0) {
+        //更新state
+        yield put({type:'setDishesLibraryNodes',payload:{data}} );
+      }
+    },
     //获取菜品信息分页数据
     *getDishesPageList({payload : values}, { call, put }){
       const {data: { data, total, page, size, code,err} } = yield call(dishesService.getDishesPageList, values);
@@ -86,6 +95,9 @@ export default {
   },
   //同步请求，更新state
   reducers: {
+    setDishesLibraryNodes(state, { payload: {data: data} }){
+      return {...state,dishesLibraryNodes: data}
+    },
     setDishesPageList(state, { payload: {data: dishesPageList, total, page, size} }){
       let dishesdata = {
         ...state,

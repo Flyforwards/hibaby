@@ -17,24 +17,37 @@ class DishesLeft extends React.Component {
     super(props)
     this.state = {
     }
-
+  }
+  //递归函数生成树
+  nodesIteration = (nodes) => {
+    const _this = this;
+    if(nodes.nodes){
+      return nodes.nodes.map(function (child,index) {
+        return <TreeNode title={child.name} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
+      });
+    }
+    return <TreeNode title={nodes.name} key={nodes.id} parentId={nodes.parentId} />;
   }
   render() {
-
+    const {dishesLibraryNodes} = this.props.dishes;
+    let treeNodes = dishesLibraryNodes?this.nodesIteration(dishesLibraryNodes):null;
+    treeNodes =dishesLibraryNodes?<TreeNode key={dishesLibraryNodes.id} title={dishesLibraryNodes.name} parentId={dishesLibraryNodes.parentId}>{treeNodes}</TreeNode>:null;
     return (
       <div className="Dishes-left">
       <Tree
         className="draggable-tree"
         draggable
       >
-        <TreeNode title="parent 1" key="0-0">
-        </TreeNode>
+        {treeNodes}
       </Tree>
       </div>
     );
-
-
-
   }
 }
-export default DishesLeft;
+
+function mapStateToProps(state) {
+  return {
+    dishes: state.dishes
+  };
+}
+export default connect(mapStateToProps)(DishesLeft);

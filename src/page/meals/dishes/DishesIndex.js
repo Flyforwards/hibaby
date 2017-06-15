@@ -93,6 +93,10 @@ class DishesIndex extends React.Component{
 
 
   componentDidMount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'dishes/getDishesLibraryNodes'
+    });
     this.getTableData({
       nodeId : 1,
       page : this.props.dishes.page,
@@ -158,8 +162,8 @@ class DishesIndex extends React.Component{
             </Row>
           </Form>
           <div className="btn">
-            <span className="Dishes-Inquire"><Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
-            <span className="Dishes-add" >查询</span>
+            <span className="Dishes-add"><Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
+            <span className="Dishes-Inquire" >查询</span>
           </div>
         </div>
     );
