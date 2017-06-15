@@ -108,7 +108,7 @@ class CustomerIndex extends React.Component {
               {getFieldDecorator('sugar', {
                 rules: []
               })(
-                <Select placeholder="请选择">
+                <Select placeholder="请选择" allowClear={ true }>
                   <Option key={1} value={"1"}>有糖</Option>
                   <Option key={0} value={"0"}>无糖</Option>
                 </Select>
