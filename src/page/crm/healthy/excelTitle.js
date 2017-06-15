@@ -120,7 +120,7 @@ class ExcelTitleModel extends Component {
         // wrapClassName = { "alert-vertical-center-modal" }
       >
         <Checkbox.Group onChange={this.onChange.bind(this)}>
-          <Row style={{textAlign:'left'}}>
+          <Row style={{textAlign:'left'}} className="excelTitle">
             <Col span={iValue}><Checkbox value="name">客户姓名</Checkbox></Col>
             <Col span={iValue}><Checkbox value="contact">联系电话</Checkbox></Col>
             <Col span={iValue}><Checkbox value="birthTime">出生日期</Checkbox></Col>
