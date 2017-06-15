@@ -8,6 +8,8 @@ export default {
   namespace: 'roomStatusManagement',
   state: {
     packageAry:[],
+    roomList:'',
+    selectValue:['all',0,1,2,3,4,5,6,7],
     dayStatusData:'',
     FloorAry:'',
     MainFloorAry:'',
@@ -16,6 +18,12 @@ export default {
   },
 
   reducers: {
+    setRoomList(state, { payload: todo }){
+      return {...state,roomList:todo.data};
+    },
+    setSelectValue(state, { payload: todo }){
+      return {...state,selectValue:todo.data};
+    },
     setPackageAry(state, { payload: todo }){
       return {...state,packageAry:todo.data};
     },
@@ -51,6 +59,8 @@ export default {
       const defData = {useDate:moment().format()}
       const { data: { code,data } } = yield call(roomManagement.dayStatus,{...defData,...param});
       if (code == 0) {
+        yield put({type: 'setRoomList',payload:{data:''}});
+        yield put({type: 'setSelectValue',payload:{data:['all',0,1,2,3,4,5,6,7]}});
         yield put({type: 'setDayStatusData',payload:{data}});
       }
     },

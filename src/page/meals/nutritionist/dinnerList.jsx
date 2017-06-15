@@ -92,7 +92,7 @@ class CustomerIndex extends React.Component {
       dataIndex: 'name',
       key: 'name',
       render: (text,record) => {
-        return <span><Icon type="smile" />{text}</span>
+        return <span><Icon type="user" />{text}</span>
       }
     }, {
       title: '年龄',

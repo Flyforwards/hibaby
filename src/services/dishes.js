@@ -38,3 +38,10 @@ export function getDishesLibraryNodes(values){
     body: JSON.stringify(values),
   })
 }
+//删除菜品库节点数据
+export function deleteDishesLibrary(values){
+  return request('/crm/api/v1/dishesLibrary/deleteDishesLibrary',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

@@ -36,12 +36,13 @@ const createForm = Form.create
 class CustomerIndex extends React.Component {
   constructor(props) {
     super(props)
-    
+    this.edit = null
   }
   onBack(){
     history.go(-1)
   }
   componentDidMount() {
+    this.edit = window.location.search.split("=")[1]
     this.props.dispatch({ type: 'customer/getCustomerPage' });
     this.props.dispatch({ type: 'customer/listByMain' });
     this.props.dispatch({ type: 'customer/getMemberShipCard' });

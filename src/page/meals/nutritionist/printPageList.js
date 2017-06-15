@@ -13,7 +13,7 @@ const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY-MM-DD';
 const monthFormat = 'YYYY-MM';
 import { format } from '../../../utils/index.js';
-//import './print.css';
+
 
 class MemberShipCard extends Component {
   constructor(props) {
@@ -82,9 +82,8 @@ getNowFormatDate() {
             <span>菜单7</span>
           </p>
         </div>
-        
         <div className="menu">
-          <p className="menuName">早加 : </p>
+          <p className="menuName">午餐 : </p>
           <p className="menuCount">
             <span>菜单1</span>
             <span>菜单2</span>
@@ -93,6 +92,18 @@ getNowFormatDate() {
             <span>菜单5</span>
             <span>菜单6</span>
             <span>菜单7</span>
+          </p>
+        </div>
+        <div className="menu">
+          <p className="menuName">午加 : </p>
+          <p className="menuCount">
+            <span>菜单1</span>
+            <span>菜单1</span>
+            <span>菜单1</span>
+            <span>菜单1</span>
+            <span>菜单1</span>
+            <span>菜单1</span>
+            <span>菜单1</span>
           </p>
         </div>
         </div>
