@@ -65,6 +65,16 @@ export default (app) => [
       })
     }
   },
+   //打印餐单的单独页面
+  {
+    path: '/exportPrint',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/exportPrint.jsx'))
+      })
+    }
+  },
   //循环界面
   {
     path: '/meals/nutritionist/cycle',

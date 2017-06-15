@@ -9,8 +9,8 @@ const do_print = (id_str) =>
   iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;');
   document.body.appendChild(iframe);
   doc = iframe.contentWindow.document;
-// 引入打印的专有CSS样式，www.111Cn.net根据实际修改
-  doc.write('<LINK rel="stylesheet" type="text/css" media="print" href="page/meals/nutritionist/printPage.css" />');
+  // 引入打印的专有CSS样式，www.111Cn.net根据实际修改
+  //doc.write('<LINK rel="stylesheet" type="text/css" media="print" href="page/meals/nutritionist/printPage.css" />');
   doc.write('<div>' + el.innerHTML + '</div>');
   doc.close();
   iframe.contentWindow.focus();
