@@ -31,6 +31,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
+         registerModel(app, require('models/prepareMeals'));
         cb(null, require('page/meals/nutritionist/editMenu.jsx'))
       })
     }
@@ -62,6 +63,16 @@ export default (app) => [
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
         cb(null, require('page/meals/nutritionist/export.jsx'))
+      })
+    }
+  },
+   //打印餐单的单独页面
+  {
+    path: '/exportPrint',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/exportPrint.jsx'))
       })
     }
   },
@@ -104,5 +115,15 @@ export default (app) => [
         cb(null, require('page/meals/dishes/DishesDetailPage.js'))
       })
     }
-  }
+  },
+  //基础餐单
+  {
+    path: '/meals/dishes/prepareMeals',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/prepareMeals'));
+        cb(null, require('page/meals/prepareMeals/prepareMeals.js'))
+      })
+    }
+  },
 ]

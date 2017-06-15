@@ -73,9 +73,13 @@ class CustomerIndex extends React.Component {
       labelCol: { span: 7 },
       wrapperCol: { span: 17 }
     }
+    const formChooseOneSugar = {
+      labelCol: { span: 5},
+      wrapperCol: { span: 19 }
+    }
     const formItems= keys.map((k, index) => {
         return (
-        <Col span={8} className="delDisplan" key={k}>
+        <Col span={6} className="delDisplan" key={k}>
           <FormItem
             label="禁忌食材"
             {...formChooseOneAge}
@@ -100,7 +104,7 @@ class CustomerIndex extends React.Component {
         </p>
         <Form>
           <Col span={6} className="delDisplan">
-            <FormItem label="糖" {...formChooseOneAge}>
+            <FormItem label="糖" {...formChooseOneSugar}>
               {getFieldDecorator('sugar', {
                 rules: []
               })(
@@ -112,7 +116,7 @@ class CustomerIndex extends React.Component {
             </FormItem>
           </Col>
           { formItems }
-          <Col span={8} className="delDisplan">
+          <Col span={6} className="delDisplan">
             <FormItem {...formChooseOneAge}>
               <Icon type="plus-circle" onClick={ this.addIngredients.bind(this)}/>
             </FormItem>

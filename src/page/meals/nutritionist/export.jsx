@@ -56,6 +56,10 @@ class CustomerIndex extends React.Component {
   onPrint() {
     do_print('print-content');
   }
+  onSelect(value,options) {
+    console.log("onSelect",value)
+
+  }
   render() {
     const columns = this.columns;
     const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
@@ -63,26 +67,6 @@ class CustomerIndex extends React.Component {
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
-    
-    const formChooseLayout = {
-      labelCol: { span: 10 },
-      wrapperCol: { span: 14 }
-    }
-    const formChooseOneLayout = {
-      labelCol: { span: 9 },
-      wrapperCol: { span: 13 }
-    }
-    const formChooseOneAge = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 }
-    }
-    
-    const formChooseTwoAge = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 }
-    }
-    const { systemTime, feeRecord, renewRecord, refundRecord } = this.props;
-    const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
       <div className="export">
         <div className="exportButton">
@@ -107,6 +91,7 @@ class CustomerIndex extends React.Component {
           <Select defaultValue="1" 
             style={{ width: 300 }}
             allowClear={true}
+            onSelect={ this.onSelect.bind(this) }
           >
             <Option value="1">当日餐单</Option>
             <Option value="2">早餐</Option>

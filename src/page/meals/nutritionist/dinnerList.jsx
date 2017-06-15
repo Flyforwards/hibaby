@@ -156,10 +156,7 @@ class CustomerIndex extends React.Component {
           </div>
         );
       }
-    }];
-    this.state = {
-      createModalVisible: false
-    }
+    }]; 
   }
   
   onLook(record) {
@@ -172,17 +169,6 @@ class CustomerIndex extends React.Component {
     dispatch(routerRedux.push(`/meals/nutritionist/taboo?dataId=${record.id}`))
   }
   
-  handleCreateModalCancel() {
-    this.setState({
-      createModalVisible: false
-    })
-  }
-  
-  showCreateModal() {
-    this.setState({
-      createModalVisible: true
-    })
-  }
   
   onSearch() {
     this.props.form.validateFields((err, values) => {
@@ -191,15 +177,14 @@ class CustomerIndex extends React.Component {
           values.year = values.time.get('year');
           values.month = values.time.get('month') + 1;
         }
-        
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
-        
-        this.props.dispatch(routerRedux.push({
-          pathname: "/crm/customer",
-          query: values
-        }))
+        console.log("search>>>>",values)
+        // this.props.dispatch(routerRedux.push({
+        //   pathname: "/crm/customer",
+        //   query: values
+        // }))
       }
     })
   }
@@ -300,7 +285,7 @@ class CustomerIndex extends React.Component {
                 <Row justify="end" type="flex" gutter={8}>
                   <Col span={6}>
                       <span>
-                        <Button  style={{
+                        <Button  onClick={this.onSearch.bind(this)}style={{
                           width: '100%',
                           height: '40px',
                           lineHeight: '40px',
@@ -355,6 +340,15 @@ class CustomerIndex extends React.Component {
                 </FormItem>
               </Col>
               <Col span={6}>
+                <FormItem label="操作者2" {...formChooseOneAge}>
+                  {getFieldDecorator('operator2', {
+                    rules: [{ required: false }]
+                  })(
+                    <Input max={40}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
                 <FormItem label="会员身份" {...formChooseOneAge}>
                   {getFieldDecorator('member', {
                     rules: [{ required: false }]
@@ -367,13 +361,7 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={6}>
-                  <FormItem label="套餐状态" {...formChooseOneAge}>
-                    {getFieldDecorator('purchasePackage')(
-                      <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
-                    )}
-                  </FormItem>
-                </Col>
+            
             </Row>
             <Row style={{ height: 50 }} gutter={16}>
               <Col span={5}>
@@ -439,11 +427,6 @@ class CustomerIndex extends React.Component {
           <div className="CreateModaList-a">
             <Table bordered {...tableProps} rowKey={ record => record.id}/>
           </div>
-          <CreateModal
-            handleOk={this.state.handleOk}
-            visible={ this.state.createModalVisible }
-            onCancel={ this.handleCreateModalCancel.bind(this) }
-          />
         </main>
       </div>
     )
