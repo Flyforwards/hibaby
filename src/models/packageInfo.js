@@ -147,7 +147,7 @@ export default {
 	      }} = yield call(packageInfoService.add, values);
 			if (code == 0) {
 				message.success("添加套餐成功");
-				yield put(routerRedux.push("/crm/serviceinfo"));
+				yield put(routerRedux.push("/crm/service-info"));
 			}
 		},
 		//修改套房信息
@@ -449,7 +449,7 @@ export default {
 			const { data: { data, code, err }} = yield call(packageInfoService.del, values);
 			if (code == 0) {
 				message.success("删除成功");
-				yield put(routerRedux.push("/crm/serviceinfo"));
+				yield put(routerRedux.push("/crm/service-info"));
 			}
 		},
 	},
@@ -468,7 +468,7 @@ export default {
 	            payload: query
 	          });
 	        }
-	        if (pathname === '/crm/serviceinfo') {
+	        if (pathname === '/crm/service-info') {
 		         dispatch({
 		            type: 'listByPage',
 		            payload: query

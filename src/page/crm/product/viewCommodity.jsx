@@ -131,7 +131,7 @@ class ViewCommodityed extends Component {
                 </div>
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
                 <Button disabled={del} className="delBtn" onClick={this.delete.bind(this)}>删除</Button>
-                <Link to={{ pathname: '/crm/commodity/editcommodity', query:{ commodity:ID } }}><Button disabled={edit} className="SaveBtn">编辑</Button></Link>
+                <Link to={{ pathname: '/crm/commodity/edit', query:{ commodity:ID } }}><Button disabled={edit} className="SaveBtn">编辑</Button></Link>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }

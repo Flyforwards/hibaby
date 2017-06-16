@@ -44,7 +44,7 @@ class CustomerCompAddIndex extends React.Component {
     });
     return (
       <div className="customer-comp-cent">
-        <div className="add-activity">
+        <div className="add-customer-comp">
           <Card className="CustomerComplaints"  title = "客户投诉:">
             <Form >
               <FormItem {...formItemLayout} label="投诉者" >

@@ -210,19 +210,18 @@ export default {
           type: "getDeptByEndemicSuccess",
           payload: { data }
         })
-        if (data.nodes && data.nodes.length > 0) {
-          const dept = data.nodes[0];
-          const { id: nodeid , tissueProperty } = dept
-          // 默认选择第一个部门，将这个部门的信息保存起来
-          yield put({
-            type: "setDefaultDepatInfo",
-            payload: { nodeid, tissueProperty }
-          })
-          yield put({
-            type: "getUserPageListByUserRole",
-            payload: { roleId, nodeid, tissueProperty, page : 1, pageSize: 10 },
-          })
-        }
+        console.log(data);
+
+        // 默认选择第一个部门，将这个部门的信息保存起来
+        yield put({
+          type: "setDefaultDepatInfo",
+          payload: { nodeid: data.id, tissueProperty: data.tissueProperty }
+        })
+        yield put({
+          type: "getUserPageListByUserRole",
+          payload: { roleId, nodeid: data.id, tissueProperty:data.tissueProperty, page : 1, pageSize: 10 },
+        })
+
 
       }
     },
