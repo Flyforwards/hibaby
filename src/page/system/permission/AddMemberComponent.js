@@ -103,7 +103,7 @@ class AddMemberComponent extends Component {
 
 
   render() {
-    let { currentDeptTree ,undisUserList, undisUserTotal, loading } = this.props;
+    let { currentDeptTree ,undisUserList, undisUserTotal, loading ,nodeid, tissueProperty } = this.props;
     let  endemicTree = [];
     if (currentDeptTree != null) {
       endemicTree = [ currentDeptTree  ];
@@ -111,9 +111,9 @@ class AddMemberComponent extends Component {
     undisUserList.map((record)=>{
       record.key = record.id;
     })
-    if (this.nodeId === null && this.tissueProperty === null) {
-      this.nodeId = this.props.nodeid;
-      this.tissueProperty = this.props.tissueProperty;
+    if (this.nodeId == null && this.tissueProperty == null) {
+      this.nodeId = nodeid;
+      this.tissueProperty = tissueProperty;
     }
 
     const pagination = {
@@ -161,7 +161,7 @@ class AddMemberComponent extends Component {
                 onExpand={ this.expandHandler.bind(this) }
                 onSelect={ this.onSelect.bind(this) }
                 defaultExpandedKeys = { ["0"] }
-                defaultSelectedKeys = { ["10"] }
+                defaultSelectedKeys = { ["0"] }
                 selectedKeys = { this.state.selectedKeys }
               >{
                 loops

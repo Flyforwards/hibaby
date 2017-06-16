@@ -89,7 +89,7 @@ class CustomerCompDetailIndex extends React.Component {
       if (save) {
         buttons = (
           <div className="button-wrapper">
-            <Button disabled={!save} className="editBtn SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.handleSubmit.bind(this) }>保存</Button>
+            <Button disabled={!save} className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.handleSubmit.bind(this) }>保存</Button>
             <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
             <Button className="BackBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
           </div>)
@@ -97,7 +97,7 @@ class CustomerCompDetailIndex extends React.Component {
           <Card className="ComplaintHandle" title = "投诉处理:">
             <Form >
               <FormItem {...formItemLayout} label={"处理结果"}>
-                {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
+                {getFieldDecorator('treatmentResult', {rules: [{ required: true, message: '请填写处理结果!' }],initialValue:item.treatmentResult,
                 })(<Input type="textarea" rows={6} className="input"/>
                 )}
               </FormItem>
@@ -111,9 +111,9 @@ class CustomerCompDetailIndex extends React.Component {
       if (finish) {
         buttons = (
           <div className="button-wrapper">
-            <Button disabled={!finish} className="editBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.finish.bind(this) }>已处理</Button>
+            <Button disabled={!finish} className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.finish.bind(this) }>已处理</Button>
             <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
-            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+            <Button className="BackBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
           </div>)
       }
       card = (
@@ -145,9 +145,8 @@ class CustomerCompDetailIndex extends React.Component {
 
     return (
       <div className="customer-comp-cent">
-        <div className="add-activity">
+        <div className="add-customer-comp">
           <Card className="CustomerComplaints" title = "客户投诉:">
-            <Form >
               <FormItem {...formItemLayout} label="投诉者" >
                 {getFieldDecorator('name', {
                   initialValue:item.name,
@@ -186,7 +185,6 @@ class CustomerCompDetailIndex extends React.Component {
                   </Select>
                 )}
               </FormItem>
-            </Form>
           </Card>
           {
             card

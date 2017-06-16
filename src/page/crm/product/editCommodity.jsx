@@ -180,8 +180,8 @@ class EditCommodityed extends Component {
                   </FormItem>
                 </Form>
                 </div>
-                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button className="SaveBtn" onClick={this.handleAdd.bind(this,this.props.code)}>保存</Button>
+                <Button style={{ float:"right", marginRight: "20px" }} className="save-btn" onClick={this.handleAdd.bind(this,this.props.code)}>保存</Button>
+                <Button style={{ float:"right", marginRight: "20px" }} className="back-btn" onClick={this.handleSubmit}>返回</Button>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
