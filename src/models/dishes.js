@@ -56,6 +56,22 @@ export default {
         yield put({type:'getDishesLibraryNodes'} );
       }
     },
+    //新增菜品库节点信息
+    *saveDishesLibrary({payload : values}, { call, put,select }){
+      const {data: { data,code,err} } = yield call(dishesService.saveDishesLibrary, values);
+      if (code == 0) {
+        message.info("信息保存成功");
+        yield put({type:'getDishesLibraryNodes'} );
+      }
+    },
+    //修改菜品库节点信息
+    *updateDishesLibrary({payload : values}, { call, put,select }){
+      const {data: { data,code,err} } = yield call(dishesService.updateDishesLibrary, values);
+      if (code == 0) {
+        message.info("信息修改成功");
+        yield put({type:'getDishesLibraryNodes'} );
+      }
+    },
     //获取菜品信息分页数据
     *getDishesPageList({payload : values}, { call, put }){
       const {data: { data, total, page, size, code,err} } = yield call(dishesService.getDishesPageList, values);
