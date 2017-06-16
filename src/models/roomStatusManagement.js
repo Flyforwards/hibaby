@@ -58,7 +58,6 @@ export default {
       return {...state};
     },
     setRoomViewState(state, {payload: todo}){
-      console.log(todo.data);
       return {...state, roomState: todo.data};
     },
   }
@@ -112,7 +111,6 @@ export default {
       }
     },
     *roomViewStateChange({payload: value}, {call, put}){
-      console.log(1);
       yield put({
         type: 'setRoomViewState',
         payload: {

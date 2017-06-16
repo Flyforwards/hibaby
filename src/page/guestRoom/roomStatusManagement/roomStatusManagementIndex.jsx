@@ -14,6 +14,7 @@ import {parse} from 'qs'
 
 const statusDict = {0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
 
+
 function ScreenBar(props) {
   const {getFieldDecorator} = props.form;
   const {statusChange, selectValue} = props;
@@ -142,6 +143,7 @@ function ScreenBar(props) {
     }
   });
 
+
   const roomViewStateChange = (checked) => {
     dispatch({type: 'roomStatusManagement/roomViewStateChange', payload: checked});
   };
@@ -269,6 +271,48 @@ function CardArray({roomList, dispatch}) {
   )
 }
 
+const monthStateView = (props) => {
+
+  const {dispatch} = props;
+  const roomViewStateChange = (checked) => {
+    dispatch({type: 'roomStatusManagement/roomViewStateChange', payload: checked});
+  };
+
+  const monthMainView = () => {
+    return (
+      <div className="main">
+        <Switch className='switch'
+                onChange={roomViewStateChange}
+                checkedChildren={'日房态'}
+                unCheckedChildren={'月房态'}
+                defaultChecked={true}/>
+
+
+      </div>
+    )
+
+  };
+
+  const monthSidebarView = () => {
+    return (
+      <div className="sidebar">
+
+      </div>
+    )
+  };
+
+  return (
+    <div className="monthStateDiv">
+      {
+        monthMainView()
+      }
+      {
+        monthSidebarView()
+      }
+    </div>
+  )
+};
+
 let isAll = true;
 
 class roomStatusIndex extends React.Component {
@@ -330,9 +374,7 @@ class roomStatusIndex extends React.Component {
               </Spin>
             </div>
             :
-            <div>
-              月房态
-            </div>
+            monthStateView(this.props)
         }
 
       </div>
