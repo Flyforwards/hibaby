@@ -12,7 +12,7 @@ const Option = Select.Option;
 import moment from 'moment';
 import { parse } from 'qs'
 
-const statusDict = {0 :'空房',1: '维修', 2 :'脏房', 3 :'样板房', 4 :'住客房', 5 :'入所', 6 :'出所', 7 :'预约'}
+const statusDict = {0 :'空房',1: '维修', 2 :'脏房', 3 :'样板房', 4 :'住客房', 5 :'入所', 6 :'出所', 7 :'预约',8:'取消维修'}
 
 function ScreenBar(props) {
   const { getFieldDecorator }= props.form;
@@ -137,7 +137,9 @@ function ScreenBar(props) {
   const options = [];
   options.push({label:'全选',value:'all'})
   Object.keys(statusDict).map((key)=>{
-    options.push({label:statusDict[key],value:key})
+    if(key != 8){
+      options.push({label:statusDict[key],value:key})
+    }
   })
 
   return(
@@ -179,10 +181,20 @@ function CardArray({roomList,dispatch}) {
   function creatChiCard(dict,key) {
 
     let chiAry = [1];
+    if(dict.status === 0||dict.status === 2||dict.status === 3){
+      chiAry = [0,1,2,3]
+      chiAry.map((index)=>{
+        if(chiAry[index] === dict.status){
+          chiAry.splice(index,1)
+        }
+      })
+    }
     if(dict.status === 0){
       chiAry = [...chiAry,2,3]
     }
-
+    if(dict.status === 1){
+      chiAry = [8]
+    }
 
     let chiDivAry = [];
 
@@ -210,7 +222,7 @@ function CardArray({roomList,dispatch}) {
         <Row className='bottomLine'>
           <Col span={7}><p>房间状态</p></Col>
           <Col span={17}>
-            <Select value={statusDict[dict.status]} onChange={(index)=>{handleChange(index,dict)}} className='antCli'  placeholder='请选择'>
+            <Select value={statusDict[dict.status]} key={key} onChange={(index)=>{handleChange(index,dict)}} className='antCli'  placeholder='请选择'>
               {chiDivAry}
             </Select>
           </Col>
@@ -280,19 +292,6 @@ class roomStatusIndex extends React.Component {
       }
     }
 
-    let listArray = [];
-
-    for(let i = 0;i<this.props.users.dayStatusData.roomList.length;i++){
-      const dict = this.props.users.dayStatusData.roomList[i];
-      for(let j = 0 ;j< array.length;j++){
-        if(dict.status == array[j]){
-          listArray.push(dict);
-          break;
-        }
-      }
-    }
-
-    this.props.dispatch({type:'roomStatusManagement/setRoomList', payload:{data:listArray}})
     this.props.dispatch({type:'roomStatusManagement/setSelectValue', payload:{data:array}})
   }
 

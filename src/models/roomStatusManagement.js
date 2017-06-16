@@ -18,11 +18,22 @@ export default {
   },
 
   reducers: {
-    setRoomList(state, { payload: todo }){
-      return {...state,roomList:todo.data};
-    },
+
     setSelectValue(state, { payload: todo }){
-      return {...state,selectValue:todo.data};
+      let listArray = [];
+      if(state.dayStatusData){
+        for(let i = 0;i<state.dayStatusData.roomList.length;i++){
+          const dict = state.dayStatusData.roomList[i];
+          for(let j = 0 ;j< todo.data.length;j++){
+            if(dict.status == todo.data[j]){
+              listArray.push(dict);
+              break;
+            }
+          }
+        }
+      }
+
+      return {...state,selectValue:todo.data,roomList:listArray};
     },
     setPackageAry(state, { payload: todo }){
       return {...state,packageAry:todo.data};
@@ -54,14 +65,15 @@ export default {
         yield put({type: 'setPackageAry',payload:{data}});
       }
     },
-    *dayStatus({ payload: values }, { call,put }) {
+    *dayStatus({ payload: values }, { call,put ,select}) {
+      const state = yield select(state => state.roomStatusManagement);
       const param = parse(location.search.substr(1))
       const defData = {useDate:moment().format()}
       const { data: { code,data } } = yield call(roomManagement.dayStatus,{...defData,...param});
       if (code == 0) {
-        yield put({type: 'setRoomList',payload:{data:''}});
-        yield put({type: 'setSelectValue',payload:{data:['all',0,1,2,3,4,5,6,7]}});
         yield put({type: 'setDayStatusData',payload:{data}});
+
+        yield put({type: 'setSelectValue',payload:{data:state.selectValue,}});
       }
     },
     *dayStatusUpdate({ payload: values }, { call,put }) {
