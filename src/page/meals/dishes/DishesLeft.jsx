@@ -5,16 +5,14 @@
 import React from 'react'
 import {connect} from 'dva'
 import "./DishesLeft.scss"
-import {Tree,message,Modal,Form,Input} from 'antd';
+import {Tree,message} from 'antd';
 import {routerRedux} from 'dva/router'
 import {local, session} from 'common/util/storage.js';
+import DishesLibraryFormOrDetailModal from './DishesLibraryFormOrDetailModal';
 
 
 const TreeNode = Tree.TreeNode;
 let plusEnter = false;
-const FormItem = Form.Item;
-const createForm = Form.create
-@createForm()
 class DishesLeft extends React.Component {
   constructor(props) {
     super(props)
@@ -174,6 +172,16 @@ class DishesLeft extends React.Component {
       }
     });
   }
+
+  handleNodeCancel=(values)=>{
+    this.setState({
+      nodeFormOrDetailModalVisible : false,
+      isNodeDetail : false,
+      isNodeEdit: false,
+      initialValue : null
+    });
+  }
+
   //删除节点
   handlerRemove(){
     const {dispatch} = this.props;
@@ -193,61 +201,6 @@ class DishesLeft extends React.Component {
       }
     });
   }
-
-  initNodeFormOrDetailModal=()=>{
-    const {getFieldDecorator} = this.props.form;
-    const formItemLayout = {
-      labelCol: {span: 6},
-      wrapperCol: {span: 14},
-    }
-    const idInput = this.state.isNodeDetail || this.state.isNodeEdit ?
-      <FormItem label="ID"  {...formItemLayout}>
-        {getFieldDecorator('id', {
-          initialValue: (this.state.initialValue==null ? '' : this.state.initialValue.id)
-        })(
-        <Input disabled={true} style={{height:33}} />
-        )}
-      </FormItem> : null;
-    return (
-      <Modal
-        key={this.state.nodeFormOrDetailModalVisible}
-        visible={this.state.nodeFormOrDetailModalVisible}
-        title={this.state.nodeFormOrDetailModalTitle}
-        okText="确定"
-        cancelText="取消"
-        onCancel={
-          (e)=>{
-            this.setState({
-              nodeFormOrDetailModalVisible : false,
-              isNodeDetail : false,
-              isNodeEdit: false,
-              initialValue : null
-            });
-          }
-        }
-        // onOk={}
-      >
-        <Form layout='horizontal'>
-          {idInput}
-          <FormItem label="食材名称"  {...formItemLayout}>
-            {getFieldDecorator('name', {
-              initialValue: (this.state.initialValue==null ? '' : this.state.initialValue.name),
-              rules: [
-                {
-                  required: true,
-                  message: '食材名称不能为空'
-                }
-              ],
-            })(
-              <Input disabled={this.state.isNodeDetail} style={{height:33}}  />
-            )}
-          </FormItem>
-        </Form>
-      </Modal>
-    );
-  }
-
-
 
   render() {
     const {dishesLibraryNodes} = this.props.dishes;
@@ -271,7 +224,15 @@ class DishesLeft extends React.Component {
           <li className="li" onClick={this.handlerRemove.bind(this)} style={{ display: this.deleteDisplay }}>删除</li>
           <li className="fourLi">ID {this.state.ID}</li>
         </ul>
-        {this.initNodeFormOrDetailModal()}
+
+        <DishesLibraryFormOrDetailModal
+          nodeFormOrDetailModalVisible={this.state.nodeFormOrDetailModalVisible}
+          nodeFormOrDetailModalTitle={this.state.nodeFormOrDetailModalTitle}
+          initialValue={this.state.initialValue}
+          isNodeDetail={this.state.isNodeDetail}
+          isNodeEdit={this.state.isNodeEdit}
+          handleCancel={this.handleNodeCancel.bind(this)}
+        />
       </div>
     );
   }
