@@ -89,6 +89,16 @@ export function saveCustomerVisEdit(values) {
   })
 }
 
+// 获取当前用户的呼叫中心配置信息
+export function getByCurrentUser(values) {
+  return request('/crm/api/v1/customerServiceConfig/getByCurrentUser', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
 
 
 
