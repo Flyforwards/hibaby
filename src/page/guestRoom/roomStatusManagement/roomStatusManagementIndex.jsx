@@ -351,6 +351,36 @@ const monthStateView = (props) => {
   };
 
   /**
+   * 状态说明视图
+   */
+  const statusExplainView = () => {
+    let statuses = [
+      {name: "预定", color: "#29C1A6"},
+      {name: "入住", color: "#F57777"},
+      {name: "重叠", color: "#F9EBCC"},
+      {name: "出所", color: "#E3E3E3"},
+      {name: "空房", color: "#fff"},
+      {name: "维修", color: "#63C3E6"},
+    ];
+
+    return (
+      <Row className="statusExplainBox" type="flex" align="middle">
+        {
+          statuses.map(item => {
+            return (
+              <span>
+                <div style={{float: 'left'}}>{item.name}</div>
+                <div className="statusItem" style={{background: item.color}}/>
+              </span>
+
+            )
+          })
+        }
+      </Row>
+    );
+  };
+
+  /**
    * 月房态主视图区
    */
   const monthMainView = () => {
@@ -367,8 +397,13 @@ const monthStateView = (props) => {
         {
           monthSelectView()
         }
+
         {
           queryView()
+        }
+
+        {
+          statusExplainView()
         }
       </div>
     )

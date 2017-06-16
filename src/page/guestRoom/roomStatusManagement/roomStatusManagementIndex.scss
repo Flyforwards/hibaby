@@ -152,7 +152,7 @@
 
       .queryBox {
         background: #fff;
-        height: 90px;
+        height: 100px;
         border: 1px solid #d9d9d9;
         border-top: none;
 
@@ -185,6 +185,19 @@
           width: 150px;
           background-color: #B67233;
           color: #f8f1ea;
+        }
+      }
+
+      .statusExplainBox {
+        height: 70px;
+
+        .statusItem {
+          float: left;
+          width: 30px;
+          height: 20px;
+          margin-right: 20px;
+          border: 1px solid #d9d9d9;
+          margin-left: 7px;
         }
       }
 
