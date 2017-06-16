@@ -140,8 +140,8 @@ class EditSuiteed extends Component {
                     roomInformation
                   }
                 </div>
-                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button className="SaveBtn" onClick={this.handleAdd.bind(this)}>保存</Button>
+                <Button style={{ float:"right", marginRight: "20px" }} className="save-btn" onClick={this.handleAdd.bind(this)}>保存</Button>
+                <Button style={{ float:"right", marginRight: "20px" }} className="back-btn" onClick={this.handleSubmit}>返回</Button>
             </div>
         )
     }

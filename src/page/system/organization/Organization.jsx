@@ -92,7 +92,7 @@ class Organization extends React.Component {
             roleId.map((data, index) => {
               local.get("rolSelectData").map((item) => {
                 if (item.id == Number(data)) {
-                  
+
                   if (len == index) {
                     list.push(item.name)
                   } else {
@@ -136,7 +136,7 @@ class Organization extends React.Component {
           Forbidden = "已禁用"
           disable = true;
         }
-        
+
         return (
           <span>
                   <Link disabled={ detail} to={{
@@ -166,7 +166,7 @@ class Organization extends React.Component {
     }
     this.query = false
   }
-  
+
   onDrop = (info) => {
     const loop = (data, key, callback) => {
       data.forEach((item, index, arr) => {
@@ -179,7 +179,7 @@ class Organization extends React.Component {
       });
     };
   }
-  
+
   componentDidMount() {
     let endemic = session.get("endemic")
     this.props.dispatch({
@@ -207,7 +207,7 @@ class Organization extends React.Component {
       payload: {}
     });
   }
-  
+
   //禁止
   disabled(record) {
     this.setState({
@@ -215,7 +215,7 @@ class Organization extends React.Component {
       ID: record.id
     })
   }
-  
+
   onChange(current) {
     this.setState({
       current: current
@@ -249,7 +249,7 @@ class Organization extends React.Component {
       });
     }
   }
-  
+
   //按条件查询用户
   OrganizationInquire() {
     const fields = this.props.form.getFieldsValue();
@@ -274,33 +274,33 @@ class Organization extends React.Component {
       }
     });
   }
-  
+
   showCreateModal() {
     this.setState({
       createModalVisible: true
     })
   }
-  
+
   handleCreateModalCancel() {
     this.setState({
       toViewVisible: false
     })
   }
-  
+
   ObtainOrganization(nodeid, tissueProperty) {
     this.setState({
       nodeid: nodeid,
       tissueProperty: tissueProperty
     })
   }
-  
+
   statusType(status) {
     this.setState({
       statusType: status,
       current: 1
     })
   }
-  
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const fields = this.props.form.getFieldsValue();
@@ -330,7 +330,7 @@ class Organization extends React.Component {
       })
     }
     const traversalRoleIdData = traversalRoleId(roleId);
-    
+
     const add = this.props.permissionAlias.contains('EMPLOYEE_ADD')
     return (
       <div className="organizationConnet">
@@ -386,18 +386,14 @@ class Organization extends React.Component {
                     </FormItem>
                   </Col>
                 </Row>
-              
+
               </Form>
               <div className="btn">
                 {this.state.tissueProperty == 3 ?
-                  <span className="Organization-Inquire"><Link to={{
-                    pathname: '/system/organization/addUser',
-                    query: { nodeid: this.state.nodeid }
-                  }}><Button className="SaveBtn" disabled={!add}>新增员工</Button></Link></span> :
-                  <span className="Organization-Inquire"><Link to="/system/organization/addUser"><Button className="SaveBtn" disabled={!add}>新增员工</Button></Link></span>
+                 <Link to={{ pathname: '/system/organization/addUser', query: { nodeid: this.state.nodeid } }}><Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button></Link>:
+                  <Link to="/system/organization/addUser"><Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button></Link>
                 }
-                
-                <span className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</span>
+                <Button className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</Button>
               </div>
             </div>
             {this.props.list ?
