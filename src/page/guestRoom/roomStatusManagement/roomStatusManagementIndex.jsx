@@ -293,14 +293,14 @@ const monthStateView = (props) => {
 
     return (
       <Row type="flex" justify="center" align="middle" className="timeSelectBox">
-        <Col span={4}>
+        <Col span={5} className="yearSelectBox">
           <Select className="yearSelect" defaultValue={currentYear}>
             {years}
           </Select>
           <span style={{margin: '10px'}}>年</span>
         </Col>
 
-        <Col offset={1} span={13} style={{height: "100%"}}>
+        <Col offset={1} span={12} style={{height: "100%"}}>
           <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
             <Col span={4}><Checkbox>1月</Checkbox></Col>
             <Col span={4}><Checkbox>2月</Checkbox></Col>
@@ -326,6 +326,30 @@ const monthStateView = (props) => {
     )
   };
 
+  const queryView = () => {
+    return (
+      <Row type="flex" justify="center" align="middle" className="queryBox">
+        <Col span={5}>
+          <div className="occupancyRateBox">
+            <div>
+              <div className="rateTitle">入住率</div>
+              <div className="rateNumber">85.69%</div>
+            </div>
+          </div>
+        </Col>
+
+        <Col offset={1} span={12}>
+          <span>楼层</span>
+          <Select className="floorSelect"/>
+        </Col>
+
+        <Col span={5} offset={1}>
+          <Button className="queryBtn">查询</Button>
+        </Col>
+      </Row>
+    );
+  };
+
   /**
    * 月房态主视图区
    */
@@ -342,6 +366,9 @@ const monthStateView = (props) => {
 
         {
           monthSelectView()
+        }
+        {
+          queryView()
         }
       </div>
     )
