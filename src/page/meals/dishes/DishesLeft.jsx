@@ -5,7 +5,7 @@
 import React from 'react'
 import {connect} from 'dva'
 import "./DishesLeft.scss"
-import {Tree,message} from 'antd';
+import {Tree,message,Modal} from 'antd';
 import {routerRedux} from 'dva/router'
 import {local, session} from 'common/util/storage.js';
 import DishesLibraryFormOrDetailModal from './DishesLibraryFormOrDetailModal';
@@ -173,17 +173,8 @@ class DishesLeft extends React.Component {
     });
   }
 
-  handleNodeCancel=(values)=>{
-    this.setState({
-      nodeFormOrDetailModalVisible : false,
-      isNodeDetail : false,
-      isNodeEdit: false,
-      initialValue : null
-    });
-  }
-
   //删除节点
-  handlerRemove(){
+  handlerRemove = () =>{
     const {dispatch} = this.props;
     const _this = this;
     Modal.confirm({
@@ -201,6 +192,57 @@ class DishesLeft extends React.Component {
       }
     });
   }
+
+  //节点表单/详情页取消按钮点击事件
+  handleNodeCancel = () =>{
+    this.setState({
+      nodeFormOrDetailModalVisible : false,
+      isNodeDetail : false,
+      isNodeEdit: false,
+      initialValue : null
+    });
+  }
+
+  //节点表单/详情确认按钮点击事件
+  handleNodeOk = (values) =>{
+    const{dispatch} = this.props;
+    dispatch({
+      type: 'dishes/saveDishesLibrary',
+      payload: {
+        ...values
+      }
+    });
+  }
+  //节点表单/详情编辑按钮点击事件
+  handleNodeEdit = (value) =>{
+    this.setState({
+      isNodeEdit : true,
+      isNodeDetail : false,
+      nodeFormOrDetailModalTitle : "修改食材"
+    });
+  }
+
+  handlerNodeRemove = (value) =>{
+    const {dispatch} = this.props;
+    const _this = this;
+    Modal.confirm({
+      title: '提示',
+      content: '是否确定删除此菜品库节点?',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        dispatch({
+          type: 'dishes/deleteDishesLibraryNodes',
+          payload: {
+            dataId : _this.state.ID
+          }
+        });
+        _this.handleNodeCancel();
+      }
+    });
+  }
+
+
 
   render() {
     const {dishesLibraryNodes} = this.props.dishes;
@@ -232,6 +274,9 @@ class DishesLeft extends React.Component {
           isNodeDetail={this.state.isNodeDetail}
           isNodeEdit={this.state.isNodeEdit}
           handleCancel={this.handleNodeCancel.bind(this)}
+          handleOk={this.handleNodeOk.bind(this)}
+          handleEdit={this.handleNodeEdit.bind(this)}
+          handleRemove={this.handlerNodeRemove.bind(this)}
         />
       </div>
     );

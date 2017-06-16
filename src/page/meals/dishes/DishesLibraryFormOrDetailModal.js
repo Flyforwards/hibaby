@@ -5,7 +5,7 @@
 import React from 'react'
 import {connect} from 'dva'
 import "./DishesLeft.scss"
-import {message,Modal,Form,Input} from 'antd';
+import {message,Modal,Form,Input,Button} from 'antd';
 import {routerRedux} from 'dva/router'
 import {local, session} from 'common/util/storage.js';
 
@@ -20,6 +20,26 @@ class DishesLibraryFormOrDetailModal extends React.Component{
 
   handleCancel(){
     this.props.handleCancel();
+  }
+
+  handleOk(values){
+    if(this.props.isNodeDetail){
+      this.handleCancel();
+      return;
+    }
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.handleOk(values);
+      }
+    });
+  }
+
+  handleEdit(){
+    this.props.handleEdit();
+  }
+
+  handleRemove(){
+    this.props.handleRemove();
   }
 
 
@@ -38,6 +58,15 @@ class DishesLibraryFormOrDetailModal extends React.Component{
           <Input disabled={true} style={{height:33}} />
         )}
       </FormItem> : null;
+
+
+
+    const buttonsDiv = isNodeDetail ? (<div>
+      <Button className='commitButton SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</Button>
+      <Button className='commitButton RemoveBtn' onClick={this.handleRemove.bind(this)}>删除</Button>
+      <Button className='commitButton BackBtn' onClick={this.handleCancel.bind(this)}>返回</Button>
+    </div>):null;
+
     return (
       <Modal
         key={nodeFormOrDetailModalVisible}
@@ -46,24 +75,27 @@ class DishesLibraryFormOrDetailModal extends React.Component{
         okText="确定"
         cancelText="取消"
         onCancel={this.handleCancel.bind(this)}
-        // onOk={}
+        onOk={this.handleOk.bind(this)}
       >
-        <Form layout='horizontal'>
-          {idInput}
-          <FormItem label="食材名称"  {...formItemLayout}>
-            {getFieldDecorator('name', {
-              initialValue: (initialValue==null ? '' : initialValue.name),
-              rules: [
-                {
-                  required: true,
-                  message: '食材名称不能为空'
-                }
-              ],
-            })(
-              <Input disabled={isNodeDetail} style={{height:33}}  />
-            )}
-          </FormItem>
-        </Form>
+        <div>
+          <Form layout='horizontal'>
+            {idInput}
+            <FormItem label="食材名称"  {...formItemLayout}>
+              {getFieldDecorator('name', {
+                initialValue: (initialValue==null ? '' : initialValue.name),
+                rules: [
+                  {
+                    required: true,
+                    message: '食材名称不能为空'
+                  }
+                ],
+              })(
+                <Input disabled={isNodeDetail} style={{height:33}}  />
+              )}
+            </FormItem>
+          </Form>
+        </div>
+        {buttonsDiv}
       </Modal>
     );
   }
