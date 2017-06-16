@@ -42,6 +42,14 @@ class DishesLibraryFormOrDetailModal extends React.Component{
     this.props.handleRemove();
   }
 
+  componentDidMount() {
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(this.props.isNodeDetail){
+      $(".DishesLibrary-Node .ant-modal-footer").hide();
+    }
+  }
 
   render(){
     const {getFieldDecorator} = this.props.form;
@@ -69,6 +77,7 @@ class DishesLibraryFormOrDetailModal extends React.Component{
 
     return (
       <Modal
+        className="DishesLibrary-Node"
         key={nodeFormOrDetailModalVisible}
         visible={nodeFormOrDetailModalVisible}
         title={nodeFormOrDetailModalTitle}
