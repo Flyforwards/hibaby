@@ -1,10 +1,10 @@
 .export{
   width:100%;
   height:100%;
+  padding:10px;
   .exportButton{
     height:80px;
     overflow: hidden;
-    padding-left: 40px;
   }
   .ant-btn {
     border-radius: 5px;
@@ -25,5 +25,41 @@
   .ant-select-selection__rendered {
     display: block;
     line-height: 40px;
+  }
+  .cardBtn{
+    color: #333;
+    height:40px;
+    line-height: 40px;
+    border:1px solid #d9d9d9;
+
+  }
+  .ant-tabs{
+    background: #FFFFFF;
+    .ant-tabs-bar{
+      background:#f7f6f2;
+     // margin-bottom: 0px;
+      .ant-tabs-nav-container{
+        line-height: 40px;
+        height:auto;
+      }
+    }
+    .ant-tabs-content{
+      padding:0px 30px ;
+    }
+    .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab{
+      padding:5px 66px 4px !important;
+    }
+    .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active{
+      padding:5px 66px 4px !important;
+    }
+  }
+  .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab{
+    padding:5px 66px 4px !important;
+  }
+}
+
+.exportCard{
+  .ant-card-body{
+    padding:0px 30px 0px 30px;
   }
 }

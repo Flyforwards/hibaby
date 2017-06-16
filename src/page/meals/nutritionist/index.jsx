@@ -134,10 +134,10 @@ class PrepareMealPage extends React.Component {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
         console.log("search>>>>",values)
-        // this.props.dispatch(routerRedux.push({
-        //   pathname: "/crm/customer",
-        //   query: values
-        // }))
+        this.props.dispatch(routerRedux.push({
+          pathname: "/meals/nutritionist/dinner",
+          query: values
+        }))
       }
     })
   }
