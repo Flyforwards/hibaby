@@ -274,29 +274,84 @@ function CardArray({roomList, dispatch}) {
 const monthStateView = (props) => {
 
   const {dispatch} = props;
+
+  /**
+   * 房态切换 (日/月)
+   * @param checked
+   */
   const roomViewStateChange = (checked) => {
     dispatch({type: 'roomStatusManagement/roomViewStateChange', payload: checked});
   };
 
+  const monthSelectView = () => {
+
+    let years = [];
+    let currentYear = new Date().getFullYear();
+    for (let i = 2000; i < 2099; i++) {
+      years.push(<Option key={i} value={`${i}`}>{`${i}`}</Option>)
+    }
+
+    return (
+      <Row type="flex" justify="center" align="middle" className="timeSelectBox">
+        <Col span={4}>
+          <Select className="yearSelect" defaultValue={currentYear}>
+            {years}
+          </Select>
+          <span style={{margin: '10px'}}>年</span>
+        </Col>
+
+        <Col offset={1} span={13} style={{height: "100%"}}>
+          <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
+            <Col span={4}><Checkbox>1月</Checkbox></Col>
+            <Col span={4}><Checkbox>2月</Checkbox></Col>
+            <Col span={4}><Checkbox>3月</Checkbox></Col>
+            <Col span={4}><Checkbox>4月</Checkbox></Col>
+            <Col span={4}><Checkbox>5月</Checkbox></Col>
+            <Col span={4}><Checkbox>6月</Checkbox></Col>
+          </Row>
+          <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
+            <Col span={4}><Checkbox>7月</Checkbox></Col>
+            <Col span={4}><Checkbox>8月</Checkbox></Col>
+            <Col span={4}><Checkbox>9月</Checkbox></Col>
+            <Col span={4}><Checkbox>10月</Checkbox></Col>
+            <Col span={4}><Checkbox>11月</Checkbox></Col>
+            <Col span={4}><Checkbox>12月</Checkbox></Col>
+          </Row>
+        </Col>
+
+        <Col span={5} offset={1}>
+          <Button className="addBtn">添加</Button>
+        </Col>
+      </Row>
+    )
+  };
+
+  /**
+   * 月房态主视图区
+   */
   const monthMainView = () => {
     return (
       <div className="main">
-        <Switch className='switch'
-                onChange={roomViewStateChange}
-                checkedChildren={'日房态'}
-                unCheckedChildren={'月房态'}
-                defaultChecked={true}/>
+        <div className="headDiv">
+          <Switch className='switch'
+                  onChange={roomViewStateChange}
+                  checkedChildren={'日房态'}
+                  unCheckedChildren={'月房态'}
+                  defaultChecked={true}/>
+        </div>
 
-
+        {
+          monthSelectView()
+        }
       </div>
     )
-
   };
+
 
   const monthSidebarView = () => {
     return (
       <div className="sidebar">
-
+        <h3>客户列表</h3>
       </div>
     )
   };
@@ -304,9 +359,11 @@ const monthStateView = (props) => {
   return (
     <div className="monthStateDiv">
       {
+        /** 主视图 **/
         monthMainView()
       }
       {
+        /** 侧边栏 **/
         monthSidebarView()
       }
     </div>
@@ -362,7 +419,7 @@ class roomStatusIndex extends React.Component {
     return (
       <div className="roomStatusDiv">
         {
-          this.props.users.roomState === "day"
+          this.props.users.roomState === "month"
             ?
             <div>
               <ScreenBarDiv selectValue={selectValue} supProps={this.props}

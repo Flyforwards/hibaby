@@ -110,19 +110,49 @@
   }
 
   .monthStateDiv {
+    overflow: hidden;
     .main {
       margin-left: 10px;
-      .ant-switch {
-        border-radius: 0;
+      float: left;
+      width: 85%;
+      .headDiv {
+        width: 100%;
+        height: 40px;
+        .ant-switch {
+          border-radius: 0;
+        }
+        .ant-switch:after {
+          border-radius: 0;
+        }
+        .switch {
+          margin-top: 9px;
+          float: left;
+          background-color: rgb(247, 165, 50);
+        }
       }
-      .ant-switch:after {
-        border-radius: 0;
+
+      .timeSelectBox {
+        background: #fff;
+        height: 90px;
+        border: 1px solid #d9d9d9;
+        padding-left: 10px;
+
+        .yearSelect{
+          width: 110px;
+        }
+
+        .addBtn{
+          width: 150px;
+          background-color: #B67233;
+        }
       }
-      .switch {
-        margin-top: 9px;
-        float: left;
-        background-color: rgb(247, 165, 50);
-      }
+
+    }
+
+    .sidebar {
+      float: right;
+      width: 12%;
+      height: 100%;
     }
 
   }
