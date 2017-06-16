@@ -21,7 +21,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
-        cb(null, require('page/meals/nutritionist/dinnerList.jsx'))
+        cb(null, require('page/meals/nutritionist/index.jsx'))
       })
     }
   },

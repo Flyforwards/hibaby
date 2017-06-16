@@ -36,7 +36,7 @@ const dateFormat = 'YYYY-MM-DD';
 const monthFormat = 'YYYY-MM';
 
 @createForm()
-class CustomerIndex extends React.Component {
+class ExportMenu extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -89,7 +89,7 @@ class CustomerIndex extends React.Component {
             marginButtom:'20px',
             backgroundColor: 'rgba(255, 102, 0, 1)'
           }}>返回</Button>
-          <Select defaultValue="1" 
+          <Select defaultValue="1"
             style={{ width: 300 }}
             allowClear={true}
             onSelect={ this.onSelect.bind(this) }
@@ -107,7 +107,7 @@ class CustomerIndex extends React.Component {
         <div id="print-content">
           <PrintPageList  exportValue={ this.state.exportValue }/>
         </div>
-      
+
       </div>
       </div>
     )
@@ -134,4 +134,4 @@ function mapStateToProps(state) {
     packageList
   };
 }
-export default connect(mapStateToProps)(CustomerIndex)
+export default connect(mapStateToProps)(ExportMenu)
