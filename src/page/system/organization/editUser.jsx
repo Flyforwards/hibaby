@@ -275,7 +275,7 @@ class EditUsered extends React.Component {
             }else{
               leaderId.push(<Option value={entryContent.leaderId+""} key={ entryContent.leaderId * 1000 }>{entryContent.leaderName}</Option>)
             }
-            
+
             EntryInformationList.push(
               <div className="AddChildNode" key={ i }>
                  <div className="entryInformation">入职信息{i}
@@ -468,28 +468,19 @@ class EditUsered extends React.Component {
                 <Input disabled = {true}/>
               )}
             </FormItem>
-            <FormItem
-             label="编号"
-             className="Numbering"
-            >
-              {getFieldDecorator('Numbering', {
-                initialValue: this.state.identifier
-              })(
-                <Input disabled = { true }/>
-              )}
-            </FormItem>
-            <br/>
+
             <FormItem
              label="性别"
-             className="gender"
+             className="Numbering"
             >
               {getFieldDecorator('gender', {
               })(
                 <span className="Two">{SEX}</span>
               )}
             </FormItem>
+              <br/>
             { time !="NaN-NaN-NaN"?
-              <p className="gmt_entry">
+              <p className="gender">
               <span>入职日期:</span>
               <DatePicker allowClear={ false } defaultValue={moment(time)} format={dateFormat} onChange={this.onChange.bind(this)}/>
             </p>:null

@@ -175,9 +175,14 @@ function ScreenBar(props) {
 }
 
 function CardArray({roomList,dispatch}) {
-  const chiAry = [1,2,3];
 
   function creatChiCard(dict,key) {
+
+    let chiAry = [1];
+    if(dict.status === 0){
+      chiAry = [...chiAry,2,3]
+    }
+
 
     let chiDivAry = [];
 
@@ -205,7 +210,7 @@ function CardArray({roomList,dispatch}) {
         <Row className='bottomLine'>
           <Col span={7}><p>房间状态</p></Col>
           <Col span={17}>
-            <Select  onChange={(index)=>{handleChange(index,dict)}} className='antCli'  placeholder='请选择'>
+            <Select value={statusDict[dict.status]} onChange={(index)=>{handleChange(index,dict)}} className='antCli'  placeholder='请选择'>
               {chiDivAry}
             </Select>
           </Col>

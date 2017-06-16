@@ -239,21 +239,11 @@ class AddUsered extends React.Component {
                 <Input/>
               )}
             </FormItem>
-            <FormItem
-             label="编号"
-             className="Numbering"
-            >
-              {getFieldDecorator('Numbering', {
-                initialValue: this.props.data,
-              })(
-                <Input disabled = { true }/>
-              )}
-            </FormItem>
-            <br/>
+
             <FormItem
              label="性别"
              required
-             className="gender"
+             className="Numbering"
             >
               {getFieldDecorator('gender', {
               })(
@@ -263,9 +253,11 @@ class AddUsered extends React.Component {
               </RadioGroup>
               )}
             </FormItem>
+            <br/>
+
             <FormItem
              label="入职日期"
-             className="entryTime"
+             className="gender"
              required
             >
               {getFieldDecorator('entryTime', {

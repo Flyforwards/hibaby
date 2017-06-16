@@ -54,9 +54,7 @@
 		.Numbering{
 			margin-left:65px;
 			margin-top: 20px;
-			input{
-				width:310px;
-			}
+
 		}
 		.userName{
 			margin-left:3px;
@@ -67,7 +65,10 @@
 		}
 		.gender{
 			margin-left: 255px;
-    		margin-top: -40px;
+      margin-top: -40px;
+      input{
+        width:310px;
+      }
 		}
 		.entryTime{
 			float:left;
