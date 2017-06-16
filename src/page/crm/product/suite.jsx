@@ -58,7 +58,7 @@ class Suiteed extends Component {
             const del = !this.props.permissionAlias.contains('SUITE_DELETE');
             return (
                 <span>
-                  <Link disabled={detail} to={{ pathname: '/crm/serviceinfo/viewSuite', query: { suite:record.id } }}>查看</Link>
+                  <Link disabled={detail} to={{ pathname: '/crm/suite/detail', query: { suite:record.id } }}>查看</Link>
                   <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
                 </span>
             );
@@ -113,7 +113,7 @@ class Suiteed extends Component {
         const add = !this.props.permissionAlias.contains('SUITE_ADD');
         return (
             <div className="serviceinfo">
-                <div className="serviceinfoButton"><Link to="/crm/serviceinfo/addSuite"><Button disabled={add} type="primary">添加</Button></Link></div>
+                <div className="serviceinfoButton"><Link to="/crm/suite/add"><Button disabled={add} type="primary">添加</Button></Link></div>
                 <div className="serviceinfoTabal">
                     <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ suiteListByPage } columns={ columns } />
                 </div>

@@ -240,7 +240,7 @@ class AddServiceed extends Component {
                 }
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
                 <Button disabled={del} className="delet" onClick={this.delete.bind(this)}>删除</Button>
-                <Link to={{ pathname: '/crm/serviceinfo/editservice', query: { data:this.state.ID } }}><Button disabled={edit} className="editBtn" type="primary">编辑</Button></Link>
+                <Link to={{ pathname: '/crm/service-info/edit', query: { data:this.state.ID } }}><Button disabled={edit} className="editBtn" type="primary">编辑</Button></Link>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }

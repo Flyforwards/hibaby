@@ -1,105 +1,105 @@
-.roomStatusDiv{
+.roomStatusDiv {
   padding: 10px;
-  .antCli{
+  .antCli {
     width: 100%;
     height: 40px;
   }
-  p{
+  p {
     font: 13px "微软雅黑";
   }
-  .ScreenBarDiv{
-    margin-left:10px;
-    .headDiv{
+  .ScreenBarDiv {
+    margin-left: 10px;
+    .headDiv {
       width: 100%;
       line-height: 40px;
-      div{
-        border-radius:5px;
+      div {
+        border-radius: 5px;
       }
-      .titlespan{
+      .titlespan {
         margin-left: 60px;
         line-height: 40px;
         font: 10px "微软雅黑";
-        span{
+        span {
           font: 18px "微软雅黑";
         }
       }
-      .switchDiv{
-        margin-top:9px;
+      .switchDiv {
+        margin-top: 9px;
         float: left;
-        background-color: rgb(247,165,50);
+        background-color: rgb(247, 165, 50);
       }
-      .ant-switch{
+      .ant-switch {
         border-radius: 0;
       }
-      .ant-switch:after{
+      .ant-switch:after {
         border-radius: 0;
       }
 
     }
     .ant-checkbox-group-item {
-      span{
+      span {
         font: 14px "微软雅黑";
       }
     }
-    .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner{
+    .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner {
       background-color: #b67233;
       border-color: #b67233;
     }
-    .SelectDiv{
+    .SelectDiv {
       margin-top: 10px;
-      label{
+      label {
         font: 14px "微软雅黑";
       }
-      .btn{
-        background:#f1e8df;
-        border-color:#bb7c41;
-        color:#b67233;
-        font:14px "微软雅黑";
+      .btn {
+        background: #f1e8df;
+        border-color: #bb7c41;
+        color: #b67233;
+        font: 14px "微软雅黑";
         height: 30px;
         width: 120px;
         margin-right: 10px;
         float: right;
       }
     }
-    .radioDiv{
-      margin-top:10px;
-      h4{
+    .radioDiv {
+      margin-top: 10px;
+      h4 {
         font: 14px "微软雅黑";
         color: #b67233;
       }
-      .ant-checkbox-group-item{
-        margin-left:40px;
+      .ant-checkbox-group-item {
+        margin-left: 40px;
         margin-top: 15px;
       }
     }
   }
-  .cardArrayDiv{
-    margin-bottom:20px;
-    .smallCard{
+  .cardArrayDiv {
+    margin-bottom: 20px;
+    .smallCard {
       float: left;
       margin-left: 10px;
       margin-top: 10px;
       width: 230px;
       height: 250px;
-      .ant-card-head{
+      .ant-card-head {
         padding: 0 10px;
-        .ant-card-head-title{
+        .ant-card-head-title {
           font-size: 14px;
           color: #b67233;
         }
       }
-      .ant-card-extra{
+      .ant-card-extra {
         right: 10px;
         font: 13px "微软雅黑";
       }
-      p{
+      p {
         line-height: 25px;
       }
-      h1{
-        line-height:145px;
+      h1 {
+        line-height: 145px;
         text-align: center;
       }
-      .bottomLine{
+      .bottomLine {
         position: absolute;
         bottom: 0;
         left: 10px;
@@ -108,4 +108,24 @@
       }
     }
   }
+
+  .monthStateDiv {
+    .main {
+      margin-left: 10px;
+      .ant-switch {
+        border-radius: 0;
+      }
+      .ant-switch:after {
+        border-radius: 0;
+      }
+      .switch {
+        margin-top: 9px;
+        float: left;
+        background-color: rgb(247, 165, 50);
+      }
+    }
+
+  }
 }
+
+

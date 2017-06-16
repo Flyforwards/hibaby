@@ -109,21 +109,27 @@
 			background-color: #999;
 		}
 	}
-	.BackBtn {
-		margin-left:54%;
-		height:30px;
-		font:14px "微软雅黑";
-	}
-	.SaveBtn{
-    	margin-left:10px;
-    	height:30px;
-			font:14px "微软雅黑";
-	}
-	.delBtn{
-		margin-left:10px;
-		height:30px;
-		color:#fff;
-	}
+
+  .back-btn{
+    margin-top:10px;
+    background:#b67233;
+    font:14px "微软雅黑";
+    color:#fff;
+  }
+  .save-btn{
+    margin-top:10px;
+    background:#f1e8df;
+    border-color:#bb7c41 ;
+    font: 14px "微软雅黑";
+    color:#bb7c41;
+  }
+  .del-btn{
+    margin-top:10px;
+    background:#f75555;
+    border-color: #f75555;
+    color:#fff;
+    font: 14px "微软雅黑";
+  }
 }
 .editSuite{
 	height:100%;
@@ -229,14 +235,17 @@
 			background-color: #999;
 		}
 	}
-	.BackBtn {
-		margin-left:69%;
-		height:30px;
-		font:14px "微软雅黑";
-	}
-	.SaveBtn{
-    	margin-left:10px;
-    	height:30px;
-			font:14px "微软雅黑";
-	}
+  .back-btn{
+    margin-top:10px;
+    background:#b67233;
+    font:14px "微软雅黑";
+    color:#fff;
+  }
+  .save-btn{
+    margin-top:10px;
+    background:#f1e8df;
+    border-color:#bb7c41 ;
+    font: 14px "微软雅黑";
+    color:#bb7c41;
+  }
 }

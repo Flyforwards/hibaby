@@ -36,7 +36,6 @@ export default {
 
     headIconSpin:false,
 
-    memberNumberValue:'',
     purchasePackageValue:'',
 
     //下拉框所需数据
@@ -161,7 +160,6 @@ export default {
 
         editCustomer:false,
 
-        memberNumberValue:'',
         purchasePackageValue:'',
 
         //下拉框所需数据
@@ -248,9 +246,6 @@ export default {
       return {...state, headIcon:todo.name, headIconUrl:todo.url};
     },
 
-    setMemberNumberValue(state, { payload: todo }){
-      return {...state,memberNumberValue:todo.data};
-    },
     setPurchasePackageValue(state, { payload: todo }){
       return {...state,purchasePackageValue:todo};
     },
@@ -397,19 +392,6 @@ export default {
       }
     },
 
-    *getMemberSerial({ payload: value },{ call, put }){
-      const { data: { code, data } } = yield call(addCustomerInformation.getMemberSerial,value);
-      if (code == 0) {
-        yield put({
-          type: 'setMemberNumberValue',
-          payload: {
-            data,
-          }
-        });
-      }
-    },
-
-
     *savaBaseInfo({ payload: values},{ call, put ,select}) {
 
       const {baseDict,exDict} = values;
@@ -483,7 +465,6 @@ export default {
         "idcardScan": caridStr,
         "insuranceSituation": values.insuranceSituation,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
-        "memberNumber": values.memberNumber,
         "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,
@@ -765,8 +746,4 @@ function defDis(dispatch) {
       "dataId": 2,
     }
   });
-  dispatch({
-    type: 'getMemberSerial',
-  });
-
 }

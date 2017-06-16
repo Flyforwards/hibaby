@@ -46,7 +46,7 @@ export default {
 		*saveData({payload: values}, { call, put }) {
 			const {data: { data, code} } = yield call(saveService.saveData, values);
 			if (code == 0) {
-				message.success("添加用户信息成功");
+				message.success("添加集团字段成功");
 				yield put(routerRedux.push("/system/group-char"));
 
 			}

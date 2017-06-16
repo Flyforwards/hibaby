@@ -77,6 +77,14 @@ var webpackConfig = {
           //   },
           //   changeOrigin: true
           // },
+          //杨晶晶
+          // '/crm/api/*': {
+          //   target: 'http://192.168.199.176:8087/crm/api',
+          //   pathRewrite: {
+          //     '^/crm/api': ''
+          //   },
+          //   changeOrigin: true
+          // },
 
         }
     },
