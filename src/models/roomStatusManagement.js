@@ -17,6 +17,7 @@ export default {
     TowardAry: '',
     roomState: 'day',
     monthStateCustomers: [],
+    monthRoomList: [],
   },
 
   reducers: {
@@ -63,6 +64,9 @@ export default {
     },
     setMonthStatusCustomers(state, {payload: todo}){
       return {...state, monthStateCustomers: todo.data};
+    },
+    setMonthRoomList(state, {payload: todo}){
+      return {...state, monthRoomList: todo.data};
     },
   }
   ,
@@ -132,6 +136,19 @@ export default {
           }
         });
       }
+    },
+    *monthRoomList({payload: value}, {call, put}){
+      let param = [{
+        year: value.year,
+        monthList: value.monthList,
+      }]
+      const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
+      yield put({
+        type: 'setMonthRoomList',
+        payload: {
+          data: data.list,
+        }
+      });
     },
   },
 

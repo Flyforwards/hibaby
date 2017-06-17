@@ -2,7 +2,19 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Button, Card, Checkbox, Row, Col, Form, DatePicker, Select, Switch, Spin} from 'antd'
+import {
+  Button,
+  Card,
+  Checkbox,
+  Row,
+  Col,
+  Form,
+  DatePicker,
+  Select,
+  Switch,
+  Spin,
+  message,
+} from 'antd'
 import {routerRedux} from 'dva/router';
 import './roomStatusManagementIndex.scss'
 import DictionarySelect from 'common/dictionary_select';
@@ -280,47 +292,89 @@ const monthStateView = (props) => {
    * @param checked
    */
   const roomViewStateChange = (checked) => {
-    dispatch({type: 'roomStatusManagement/roomViewStateChange', payload: checked});
+    dispatch({
+      type: 'roomStatusManagement/roomViewStateChange',
+      payload: checked
+    });
   };
 
   const monthSelectView = () => {
-
     let years = [];
-    let currentYear = new Date().getFullYear();
+    let defaultYear = new Date().getFullYear();
+    let selectedYear = defaultYear;
+    let selectedMonth = [];
+
     for (let i = 2000; i < 2099; i++) {
       years.push(<Option key={i} value={`${i}`}>{`${i}`}</Option>)
+    }
+
+    const addBtnClickHandler = () => {
+      if (!selectedYear) {
+        message.warn('请选择年份');
+        return;
+      }
+      if (!selectedMonth || !selectedMonth.length) {
+        message.warn('请选择月份');
+        return;
+      }
+      if (selectedMonth.length > 3) {
+        message.warn('最多只能选择3个月份');
+        return;
+      }
+      dispatch({
+        type: 'roomStatusManagement/monthRoomList',
+        payload: {
+          year: selectedYear,
+          monthList: selectedMonth,
+        }
+      });
+
+    };
+
+    const yearSelectChangeHandler = (value) => {
+      selectedYear = value;
+    };
+
+    const checkboxChangeHandler = (value) => {
+      selectedMonth = value;
     }
 
     return (
       <Row type="flex" justify="center" align="middle" className="timeSelectBox">
         <Col span={5} className="yearSelectBox">
-          <Select className="yearSelect" defaultValue={currentYear}>
+          <Select className="yearSelect"
+                  defaultValue={defaultYear}
+                  onChange={yearSelectChangeHandler}
+          >
             {years}
           </Select>
           <span style={{margin: '10px'}}>年</span>
         </Col>
 
         <Col offset={1} span={12} style={{height: "100%"}}>
-          <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
-            <Col span={4}><Checkbox>1月</Checkbox></Col>
-            <Col span={4}><Checkbox>2月</Checkbox></Col>
-            <Col span={4}><Checkbox>3月</Checkbox></Col>
-            <Col span={4}><Checkbox>4月</Checkbox></Col>
-            <Col span={4}><Checkbox>5月</Checkbox></Col>
-            <Col span={4}><Checkbox>6月</Checkbox></Col>
-          </Row>
-          <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
-            <Col span={4}><Checkbox>7月</Checkbox></Col>
-            <Col span={4}><Checkbox>8月</Checkbox></Col>
-            <Col span={4}><Checkbox>9月</Checkbox></Col>
-            <Col span={4}><Checkbox>10月</Checkbox></Col>
-            <Col span={4}><Checkbox>11月</Checkbox></Col>
-            <Col span={4}><Checkbox>12月</Checkbox></Col>
-          </Row>
+          <Checkbox.Group onChange={checkboxChangeHandler}>
+            <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
+              <Col span={4}><Checkbox value="1">1月</Checkbox></Col>
+              <Col span={4}><Checkbox value="2">2月</Checkbox></Col>
+              <Col span={4}><Checkbox value="3">3月</Checkbox></Col>
+              <Col span={4}><Checkbox value="4">4月</Checkbox></Col>
+              <Col span={4}><Checkbox value="5">5月</Checkbox></Col>
+              <Col span={4}><Checkbox value="6">6月</Checkbox></Col>
+            </Row>
+            <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
+              <Col span={4}><Checkbox value="7">7月</Checkbox></Col>
+              <Col span={4}><Checkbox value="8">8月</Checkbox></Col>
+              <Col span={4}><Checkbox value="9">9月</Checkbox></Col>
+              <Col span={4}><Checkbox value="10">10月</Checkbox></Col>
+              <Col span={4}><Checkbox value="11">11月</Checkbox></Col>
+              <Col span={4}><Checkbox value="12">12月</Checkbox></Col>
+            </Row>
+          </Checkbox.Group>,
+
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="addBtn">添加</Button>
+          <Button className="addBtn" onClick={addBtnClickHandler}>添加</Button>
         </Col>
       </Row>
     )
@@ -364,7 +418,6 @@ const monthStateView = (props) => {
     ];
 
 
-
     return (
       <Row className="statusExplainBox" type="flex" align="middle">
         {
@@ -381,6 +434,10 @@ const monthStateView = (props) => {
       </Row>
     );
   };
+
+  const monthRoomListView = () => {
+    console.log(props.users.monthRoomList);
+  }
 
   /**
    * 月房态主视图区
@@ -407,6 +464,10 @@ const monthStateView = (props) => {
         {
           statusExplainView()
         }
+
+        {
+          monthRoomListView()
+        }
       </div>
     )
   };
@@ -423,16 +484,16 @@ const monthStateView = (props) => {
         {
           customers.map(costomer => {
             return (
-              <div className="customerItem">
+              <div className="customerItem" draggable="true">
                 {costomer.customerName}
               </div>
             )
           })
         }
 
-        <div style={{textAlign:'center'}}>
+        <div style={{textAlign: 'center'}}>
 
-        <Button className="addCustomerBtn">+ 添加客户</Button>
+          <Button className="addCustomerBtn">+ 添加客户</Button>
         </div>
       </div>
     )

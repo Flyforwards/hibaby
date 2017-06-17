@@ -67,3 +67,14 @@ export function getMonthStatusCustomers(values) {
     body: JSON.stringify(values),
   })
 }
+/**
+ *
+ * @param values
+ * @returns {Object}
+ */
+export function getMonthRoomList(values) {
+  return request('/crm/api/v1/room/monthRoomList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
