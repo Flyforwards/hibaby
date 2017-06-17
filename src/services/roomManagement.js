@@ -56,3 +56,14 @@ export function dayStatusUpdate(values) {
     body: JSON.stringify(values),
   })
 }
+/**
+ *
+ * @param values
+ * @returns {Object}
+ */
+export function getMonthStatusCustomers(values) {
+  return request('/crm/api/v1/room/monthRoomStatusCustomerList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

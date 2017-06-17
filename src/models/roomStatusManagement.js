@@ -16,6 +16,7 @@ export default {
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
+    monthStateCustomers: [],
   },
 
   reducers: {
@@ -60,6 +61,9 @@ export default {
     setRoomViewState(state, {payload: todo}){
       return {...state, roomState: todo.data};
     },
+    setMonthStatusCustomers(state, {payload: todo}){
+      return {...state, monthStateCustomers: todo.data};
+    },
   }
   ,
   effects: {
@@ -71,7 +75,7 @@ export default {
     },
     *dayStatus({payload: values}, {call, put, select}) {
       const state = yield select(state => state.roomStatusManagement);
-      const param = parse(location.search.substr(1))
+      const param = parse(location.search.substr(1));
       const defData = {useDate: moment().format()}
       const {data: {code, data}} = yield call(roomManagement.dayStatus, {...defData, ...param});
       if (code == 0) {
@@ -81,12 +85,12 @@ export default {
       }
     },
     *dayStatusUpdate({payload: values}, {call, put}) {
-      const defData = {useDate: moment().format()}
-      const {data: {code, data}} = yield call(roomManagement.dayStatusUpdate, {...defData, ...values});
+      const defData = {useDate: moment().format()};
+      const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers, {...defData, ...values});
       if (code == 0) {
-        const param = parse(location.search.substr(1))
+        const param = parse(location.search.substr(1));
 
-        message.success('修改成功')
+        message.success('修改成功');
         yield put(routerRedux.push({
             pathname: '/chamber/roomstatusindex',
             query: param
@@ -117,6 +121,17 @@ export default {
           data: !value ? 'day' : 'month',
         }
       });
+
+      if (value) {
+        const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers);
+
+        yield put({
+          type: 'setMonthStatusCustomers',
+          payload: {
+            data: data,
+          }
+        });
+      }
     },
   },
 

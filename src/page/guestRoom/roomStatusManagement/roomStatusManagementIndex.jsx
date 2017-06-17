@@ -363,6 +363,8 @@ const monthStateView = (props) => {
       {name: "维修", color: "#63C3E6"},
     ];
 
+
+
     return (
       <Row className="statusExplainBox" type="flex" align="middle">
         {
@@ -411,9 +413,27 @@ const monthStateView = (props) => {
 
 
   const monthSidebarView = () => {
+
+    const customers = props.users.monthStateCustomers;
+
     return (
       <div className="sidebar">
         <h3>客户列表</h3>
+
+        {
+          customers.map(costomer => {
+            return (
+              <div className="customerItem">
+                {costomer.customerName}
+              </div>
+            )
+          })
+        }
+
+        <div style={{textAlign:'center'}}>
+
+        <Button className="addCustomerBtn">+ 添加客户</Button>
+        </div>
       </div>
     )
   };
@@ -481,7 +501,7 @@ class roomStatusIndex extends React.Component {
     return (
       <div className="roomStatusDiv">
         {
-          this.props.users.roomState === "month"
+          this.props.users.roomState === "day"
             ?
             <div>
               <ScreenBarDiv selectValue={selectValue} supProps={this.props}
