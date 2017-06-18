@@ -112,7 +112,7 @@
   .monthStateDiv {
     display: flex;
     .main {
-      flex:1;
+      flex: 1;
       margin-left: 10px;
       .headDiv {
         width: 100%;
@@ -142,7 +142,7 @@
           }
         }
 
-        .ant-checkbox-group{
+        .ant-checkbox-group {
           height: 100%;
         }
 
@@ -204,6 +204,61 @@
         }
       }
 
+      .monthRoomListBox {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+
+        .monthRoomBox {
+          display: flex;
+          height: 60px;
+          margin-bottom: 10px;
+          align-items: center;
+          .monthRoomNumberBox {
+            width: 84px;
+            text-align: center;
+
+            .number {
+              font-size: 14px;
+            }
+
+            .level {
+              width: 18px;
+              height: 18px;
+              border-radius: 50%;
+              background-color: #F89D2D;
+              color: #fff;
+              margin: 0 auto;
+            }
+          }
+
+          .dayRoom {
+            float: left;
+            height: 100%;
+            width: 9px;
+            background-color: #eee;
+            position: relative;
+            padding:0 1px;
+            .stateBox {
+              width: 7px;
+              height: 21px;
+              position: absolute;
+              bottom: 6px;
+            }
+            .empty {
+
+            }
+            .reserve {
+              background-color: #29C1A6;
+            }
+            .overlap {
+              background-color: #B67233;
+            }
+          }
+
+        }
+      }
+
     }
 
     .sidebar {
@@ -221,7 +276,7 @@
         color: #B67233;
       }
 
-      .customerItem{
+      .customerItem {
         width: 100px;
         height: 30px;
         margin: 0 auto 10px;
@@ -236,7 +291,7 @@
         height: 30px;
         margin: 0 auto;
         background-color: #F8F1EA;
-        border:1px solid #B67233;
+        border: 1px solid #B67233;
         border-radius: 3px;
       }
     }

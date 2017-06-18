@@ -18,6 +18,7 @@ export default {
     roomState: 'day',
     monthStateCustomers: [],
     monthRoomList: [],
+    dragUserIndex: 0,
   },
 
   reducers: {
@@ -67,6 +68,31 @@ export default {
     },
     setMonthRoomList(state, {payload: todo}){
       return {...state, monthRoomList: todo.data};
+    },
+    userDrop(state, {payload: data}){
+      let monthRoomList = state.monthRoomList.concat();
+      let dragUser = state.monthStateCustomers[state.dragUserIndex];
+      for (let i = 0; i < 28; i++) {
+        let allDays = monthRoomList[parseInt(data.roomIndex)].useAndBookingList;
+        let currentDay = allDays[parseInt(data.dayIndex) + i];
+
+        if(!currentDay){
+          break;
+        }
+
+        if(currentDay.customerList){
+          currentDay.customerList.push(dragUser);
+        }
+
+      }
+
+      return {...state, monthRoomList: monthRoomList};
+    },
+    userDragStart(state, {payload: data}){
+      return {
+        ...state,
+        dragUserIndex: data.userIndex
+      }
     },
   }
   ,
