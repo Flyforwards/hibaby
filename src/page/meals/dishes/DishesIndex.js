@@ -22,6 +22,9 @@ class DishesIndex extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
+      name : null,
+      mvType : null,
+      vdType : null
     }
     this.columns = [{
       title: '序号',
@@ -98,7 +101,16 @@ class DishesIndex extends React.Component{
       type: 'dishes/getDishesLibraryNodes'
     });
     this.getTableData({
-      nodeId : 1,
+      nodeId : this.props.dishes.nodeId,
+      page : this.props.dishes.page,
+      size : this.props.dishes.size
+    });
+  }
+
+  handleSearch  = () =>{
+    this.getTableData({
+      nodeId : this.props.dishes.nodeId,
+
       page : this.props.dishes.page,
       size : this.props.dishes.size
     });
@@ -117,8 +129,27 @@ class DishesIndex extends React.Component{
     dispatch({
       type: 'dishes/getDishesPageList',
       payload: {
-        ...params
+        ...params,
+        name : this.state.name,
+        mvType : this.state.mvType,
+        vdType : this.state.vdType
       }
+    });
+  }
+
+  handleNameChange=(e)=>{
+    this.setState({
+      name: e.target.value
+    });
+  }
+  handleMvTypeChange=(value)=>{
+    this.setState({
+      mvType: value
+    });
+  }
+  handleVdTypeChange=(value)=>{
+    this.setState({
+      vdType: value
     });
   }
 
@@ -130,9 +161,16 @@ class DishesIndex extends React.Component{
             <Row  justify="space-between">
               <Col span={8}>
                 <FormItem
+                  label="菜品名"
+                >
+                  <Input style={{ width: 180 }} onChange={this.handleNameChange.bind(this)}/>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
                   label="荤素类型"
                 >
-                  <Select placeholder="请选择" style={{ width: 180 }} allowClear={true}>
+                  <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
@@ -143,13 +181,13 @@ class DishesIndex extends React.Component{
                 <FormItem
                   label="菜品类型"
                 >
-                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true}>
+                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
                       <Option value="0">正常</Option>
                       <Option value="1">禁用</Option>
                     </Select>
                 </FormItem>
               </Col>
-              <Col span={8}>
+              {/*<Col span={8}>
                 <FormItem
                   label="使用状态"
                 >
@@ -158,12 +196,12 @@ class DishesIndex extends React.Component{
                       <Option value="1">禁用</Option>
                     </Select>
                 </FormItem>
-              </Col>
+              </Col>*/}
             </Row>
           </Form>
           <div className="btn">
             <span className="Dishes-add"><Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
-            <span className="Dishes-Inquire" >查询</span>
+            <Button className="Dishes-Inquire" onClick={this.handleSearch.bind(this)}>查询</Button>
           </div>
         </div>
     );

@@ -41,6 +41,7 @@ class addCustomer extends React.Component{
     const {addSuccess}= this.props.course;
     const { getSuccess } =this.props.membershipcard;
     const { healthPrint } = this.props.printCustomer;
+    const activityKey = this.props.activityKey;
     // console.log("membershipcard>>>>",getSuccess)
     let TabPaneAry = [
       <TabPane className='tabsContent' tab="客户信息" key="1">
@@ -71,7 +72,7 @@ class addCustomer extends React.Component{
     // console.log("defaultActiveKey>>>",defaultActiveKey)
     return(
       <div>
-        <Tabs onChange={this.onChangeTabs.bind(this)} defaultActiveKey={defaultActiveKey} type="card">
+        <Tabs onChange={this.onChangeTabs.bind(this)} activeKey={activityKey||defaultActiveKey} type="card">
           {TabPaneAry}
         </Tabs>
       </div>
