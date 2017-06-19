@@ -3,14 +3,14 @@ import request from '../utils/request';
 
 //  添加地方数据
 export function AddPlaceData(values) {
-  return request('/crm/api/v1/dictionary/saveDictionary', {
+  return request('/crm/api/v1/dictionary/saveLocalDictionary', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
 //  地方数据查看
 export function PlaceFind(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainAndSide', {
+  return request('/crm/api/v1/dictionary/getLocalDictionaryMainAndSide', {
     method: 'POST',
     body: JSON.stringify(values),
   })

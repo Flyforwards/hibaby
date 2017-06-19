@@ -29,7 +29,7 @@ export default {
     loading:false,
     headIcon:'',
     headIconUrl:'',
-    activityKey: "1",
+    activityKey: '',
     operator:'',
 
     editCustomer:false,
@@ -154,6 +154,7 @@ export default {
         nationalData:[],
         modal:false,
         headIcon:'',
+        activityKey: '',
         headIconUrl:'',
 
         operator:'',

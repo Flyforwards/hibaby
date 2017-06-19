@@ -51,7 +51,7 @@ class SettingPermissionFrom extends Component {
                   let selectValues = [];
                   if (subRec.children != null) {
                     subRec.children.map((sub) => {
-                      sub.label = sub.name;
+                      sub.label = sub.name + String(sub.id);
                       sub.key = sub.id;
                       sub.value = sub.id;
                       if (sub.isHave) {

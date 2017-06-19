@@ -239,7 +239,7 @@ const monthStateView = (props) => {
               </div>
             </div>
           )
-        })
+        });
 
         const UNIT_WIDTH = 9;
         for (let i = 0; i < users.length; i++) {
@@ -261,7 +261,7 @@ const monthStateView = (props) => {
 
         return result;
 
-      }
+      };
 
 
       return (
@@ -337,7 +337,7 @@ const monthStateView = (props) => {
           userIndex: index
         }
       });
-    }
+    };
 
     return (
       <div className="sidebar">
