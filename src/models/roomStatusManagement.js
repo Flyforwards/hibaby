@@ -66,27 +66,55 @@ export default {
       return {...state, roomState: todo.data};
     },
     setMonthStatusCustomers(state, {payload: todo}){
-      return {...state, monthStateCustomers: todo.data};
+      return {
+        ...state,
+        monthStateCustomers: todo.data
+      };
     },
     setMonthRoomList(state, {payload: todo}){
       return {...state, monthRoomList: todo.data};
     },
     userDrop(state, {payload: data}){
+      // 复制数组
       let monthRoomList = state.monthRoomList.concat();
-      let dragUser = state.monthStateCustomers[state.dragUserIndex];
-      for (let i = 0; i < 28; i++) {
-        let allDays = monthRoomList[parseInt(data.roomIndex)].useAndBookingList;
-        let currentDay = allDays[parseInt(data.dayIndex) + i];
 
-        if (!currentDay) {
+      // 获取当前操作的用户
+      let dragUser = state.monthStateCustomers[state.dragUserIndex];
+
+      let allDays = monthRoomList[parseInt(data.roomIndex)].useAndBookingList;
+
+      for (let i = 0; i < dragUser.reserveDays; i++) {
+        let dayIndex = parseInt(data.dayIndex) + i;
+
+        let currentDay = allDays[dayIndex];
+
+        if (!currentDay || !currentDay.customerList) {
           break;
         }
 
-        if (currentDay.customerList) {
-          currentDay.customerList.push(dragUser);
+        // 判断是否是连续时间
+        if (dayIndex !== 0) {
+          if(allDays[dayIndex].date - allDays[dayIndex-1].date > 86400000){
+            break;
+          }
         }
 
+        // 如果该用户在当前房间内不存在, 则进行添加
+
+        let isExit = false;
+
+        for (let customer of currentDay.customerList) {
+          if (customer.customerId === dragUser.customerId) {
+            isExit = true;
+            break;
+          }
+        }
+
+        if (!isExit) {
+          currentDay.customerList.push(dragUser);
+        }
       }
+
 
       return {...state, monthRoomList: monthRoomList};
     },
@@ -172,7 +200,12 @@ export default {
         yield put({
           type: 'setMonthStatusCustomers',
           payload: {
-            data: data,
+            data: data.map((item) => {
+              return {
+                ...item,
+                reserveDays: 28,
+              }
+            })
           }
         });
       }
