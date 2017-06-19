@@ -246,6 +246,9 @@ export default {
       return {...state, headIcon:todo.name, headIconUrl:todo.url};
     },
 
+    setMemberNumberValue(state, { payload: todo }){
+      return {...state,memberNumberValue:todo.data};
+    },
     setPurchasePackageValue(state, { payload: todo }){
       return {...state,purchasePackageValue:todo};
     },
@@ -391,6 +394,19 @@ export default {
         });
       }
     },
+
+    *getMemberSerial({ payload: value },{ call, put }){
+      const { data: { code, data } } = yield call(addCustomerInformation.getMemberSerial,value);
+      if (code == 0) {
+        yield put({
+          type: 'setMemberNumberValue',
+          payload: {
+            data,
+          }
+        });
+      }
+    },
+
 
     *savaBaseInfo({ payload: values},{ call, put ,select}) {
 
@@ -746,4 +762,8 @@ function defDis(dispatch) {
       "dataId": 2,
     }
   });
+  dispatch({
+    type: 'getMemberSerial',
+  });
+
 }
