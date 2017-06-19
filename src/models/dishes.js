@@ -16,7 +16,7 @@ export default {
     dishesPageList : [],//菜品信息分页数据
     total : 0,
     page : 1,
-    size : 5,
+    size : 10,
     initialValue : null,
     dishesLibraryNodes : null,
     nodeId : 1,
@@ -95,7 +95,7 @@ export default {
       if (code == 0) {
         //更新state
         message.info("菜品信息保存成功");
-        yield put({type:'setDishesDetail',payload:{dishesInfo : data}} );
+        yield put(routerRedux.push(`/meals/dishes/dishesDetail?dataId=${data.id}`))
       }
     },
     //删除菜品信息
@@ -108,7 +108,7 @@ export default {
         yield put({
           type: 'getDishesPageList',
           payload : {
-            nodeId : 1,
+            nodeId : state.nodeId,
             page : state.page,
             size : state.size
           }

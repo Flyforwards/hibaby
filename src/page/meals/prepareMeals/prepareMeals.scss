@@ -6,64 +6,120 @@
     .colLeft {
       padding: 30px;
       border-right: 1px solid #dddddd;
-      .day.ant-radio-button-wrapper {
-        transition: inherit;
-        width: 60px;
-        text-align: center;
-        line-height: 60px;
-        height: 60px;
-        border: 1px solid #fff;
-      }
-      .ant-radio-button-wrapper:last-child{
-        border-radius: inherit;
-      }
-      .ant-radio-button-wrapper-checked{
-        color: #b67233;
-        border:1px solid #b67233!important;
-        box-shadow: none !important;
-      }
-      .ant-radio-button-wrapper-checked:hover{
-        color: #b67233;
-        border:1px solid #b67233!important;
-      }
-      .week {
-        width: 80px;
-        background: #fff;
-        color: #b67233;
-        border: none;
+
+      .ant-radio-group {
+        .timeInfo {
+          .weekName {
+            display: inline-block;
+            width: 60px;
+            color: #b67233;
+            text-align: center;
+          }
+          .changeBorder {
+            border-color: red !important;
+          }
+        }
+        .ant-radio-button-wrapper {
+          transition: inherit;
+          width: 60px;
+          text-align: center;
+          line-height: 60px;
+          height: 60px;
+          border: 1px solid #fff;
+        }
+        .ant-radio-button-wrapper:last-child {
+          border-radius: inherit;
+        }
+        .ant-radio-button-wrapper-checked {
+          color: #b67233;
+          border: 1px solid #b67233 !important;
+          box-shadow: none !important;
+        }
+        .ant-radio-button-wrapper-checked:hover {
+          color: #b67233;
+          border: 1px solid #b67233 !important;
+        }
       }
     }
-    .colRight{
+    .colRight {
       padding: 30px;
-      .menuInfo{
+      .menuInfo {
         margin-bottom: 20px;
-        p{
+        p {
           color: #b67233;
           margin-bottom: 10px;
         }
-        ul{
+        ul {
           width: 100%;
           padding-left: 40px;
-          li{
+          li {
             display: inline-block;
             width: 30%;
             margin-left: 3%;
-            border:1px solid #dddddd;
+            border: 1px solid #dddddd;
             line-height: 30px;
             text-align: center;
             color: #000000;
             margin-bottom: 10px;
           }
-          li:last-child{
+          li:last-child {
             border: 1px solid #b67233;
-           .lastBtn{
-             width: 100%;
-             border: none;
-             color: #b67233;
-           }
+            .lastBtn {
+              width: 100%;
+              border: none;
+              color: #b67233;
+            }
+
           }
         }
       }
     }
   }
+
+}
+
+.lowModel {
+  h3 {
+    width: 100%;
+    line-height: 30px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #FFFFFF;
+    background: #666666;
+    padding-left: 10px;
+
+  }
+  .standardFood {
+    margin-bottom: 30px;
+  }
+  .foodCol {
+    height: 60px;
+    .ant-form-explain {
+      padding-left: 25%;
+    }
+  }
+  .btnCenter {
+    text-align: center;
+    .addBtn {
+      width: 100px;
+      background: #ff0000;
+      border-color: #ff0000;
+      color: #fff;
+    }
+    .saveBtn {
+      width: 100px;
+      background: #b67233;
+      border-color: #b67233;
+      color: #fff;
+    }
+    .cancelBtn {
+      width: 100px;
+      background: #f1e8df;
+      border-color: #d4ad89;
+      color: #b67233;
+    }
+  }
+
 }

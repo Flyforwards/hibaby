@@ -157,11 +157,10 @@ class MemberShipCard extends Component {
 
   backTabs() {
 
-    this.dispatch(routerRedux.push("/crm/customer"))
-    // this.props.dispatch({
-    //   type: 'addCustomer/changeTabs',
-    //   payload: { activityKey: "1" }
-    // })
+    this.props.dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
 

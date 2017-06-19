@@ -70,7 +70,7 @@ class DishesFormPage extends React.Component{
       wrapperCol:{ span:18 }
     }
     const {initialValue} = this.props.dishes;
-    const IngredientsDOs = initialValue ? initialValue.IngredientsDOs : [];
+    const IngredientsDOs = initialValue ? initialValue.ingredientsDOs : [];
     let mainIngredients = null; //主食材
     const auxiliaryArr = new Array();
     const IngredientsDOsRows = [];
