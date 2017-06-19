@@ -62,7 +62,7 @@ class addCustomer extends React.Component{
     if (addSuccess){
       defaultActiveKey = '3';
     }
-    if(healthPrint){
+    if(healthPrint){  
       defaultActiveKey='2';
     }
     if(getSuccess){

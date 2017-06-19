@@ -157,14 +157,14 @@ class CustomerCompDetailIndex extends React.Component {
 
               <FormItem {...formItemLayout} label={ "客诉名称"}>
                 {getFieldDecorator('complaint', {
-                  initialValue:item.complaint,
+                  initialValue:String(item.complaint),
                 })(
                   <DictionarySelect disabled placeholder="请选择" selectName="KSMC" />
                 )}
               </FormItem>
               <FormItem {...formItemLayout} label={ "客诉等级"}>
                 {getFieldDecorator('complaintGrade', {
-                  initialValue:item.complaintGrade,
+                  initialValue:String(item.complaintGrade)  ,
                 })(
                   <DictionarySelect disabled placeholder="请选择" selectName="KSDJ" />
                 )}
