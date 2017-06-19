@@ -24,7 +24,8 @@ class DishesIndex extends React.Component{
     this.state = {
       name : null,
       mvType : null,
-      vdType : null
+      vdType : null,
+      status : null,
     }
     this.columns = [{
       title: '序号',
@@ -139,7 +140,8 @@ class DishesIndex extends React.Component{
         ...params,
         name : this.state.name,
         mvType : this.state.mvType,
-        vdType : this.state.vdType
+        vdType : this.state.vdType,
+        status : this.state.status
       }
     });
   }
@@ -157,6 +159,11 @@ class DishesIndex extends React.Component{
   handleVdTypeChange=(value)=>{
     this.setState({
       vdType: value
+    });
+  }
+  handleStatus=(value)=>{
+    this.setState({
+      status: value
     });
   }
 
@@ -198,7 +205,7 @@ class DishesIndex extends React.Component{
                 <FormItem
                   label="使用状态"
                 >
-                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true}>
+                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)}>
                       <Option value="0">未使用</Option>
                       <Option value="1">已使用</Option>
                     </Select>
