@@ -16,7 +16,7 @@ export default {
     dishesPageList : [],//菜品信息分页数据
     total : 0,
     page : 1,
-    size : 5,
+    size : 10,
     initialValue : null,
     dishesLibraryNodes : null,
     nodeId : 1,
@@ -108,7 +108,7 @@ export default {
         yield put({
           type: 'getDishesPageList',
           payload : {
-            nodeId : 1,
+            nodeId : state.nodeId,
             page : state.page,
             size : state.size
           }
