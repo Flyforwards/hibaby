@@ -11,8 +11,9 @@ class PermissionButton extends Component {
   render() {
     const { permissionAlias, testKey} = this.props;
     const disabled = !permissionAlias.contains(testKey);
+    const props = _.omit(this.props, 'testKey', 'permissionAlias', 'dispatch');
     return (
-      <Button disabled={disabled} {...this.props}>
+      <Button disabled={disabled} {...props}>
       </Button>
     )
   }
