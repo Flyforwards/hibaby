@@ -39,7 +39,7 @@ export default {
         }
       }
 
-      return {...state, selectValue: todo.data, roomList: listArray};
+      return {...state, selectValue: todo.data, roomList: listArray || ''};
     },
     setPackageAry(state, {payload: todo}){
       return {...state, packageAry: todo.data};
