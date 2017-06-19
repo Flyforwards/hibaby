@@ -57,7 +57,11 @@ class DishesFormPage extends React.Component{
   //返回
   handleBack(){
     const {dispatch} = this.props;
-    dispatch(routerRedux.push(`/meals/dishes`));
+    if(this.props.dishes.initialValue){
+      dispatch(routerRedux.push(`/meals/dishes/dishesDetail?dataId=${this.props.dishes.initialValue.id}`));
+    }else{
+      dispatch(routerRedux.push(`/meals/dishes`));
+    }
   }
 
   render(){
