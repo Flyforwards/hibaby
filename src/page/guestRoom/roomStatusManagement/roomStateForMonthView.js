@@ -16,20 +16,31 @@ const monthStateView = (props) => {
 
   document.ondragover = function (event) {
     event.preventDefault();
-  }
+  };
 
   document.ondrop = function (event) {
     event.preventDefault();
+
+    let roomIndex = 0;
+    let dayIndex = 0;
     if (event.target.className === "dayRoom") {
-      dispatch({
-        type: 'roomStatusManagement/userDrop',
-        payload: {
-          roomIndex: event.target.dataset.roomIndex,
-          dayIndex: event.target.dataset.dayIndex,
-        }
-      });
+      roomIndex = event.target.dataset.roomIndex;
+      dayIndex = event.target.dataset.dayIndex;
+    } else if (event.target.parentNode.className === "dayRoom") {
+      roomIndex = event.target.parentNode.dataset.roomIndex;
+      dayIndex = event.target.parentNode.dataset.dayIndex;
+    } else {
+      return;
     }
-  }
+
+    dispatch({
+      type: 'roomStatusManagement/userDrop',
+      payload: {
+        roomIndex: roomIndex,
+        dayIndex: dayIndex,
+      }
+    });
+  };
 
 
   /**
@@ -45,44 +56,38 @@ const monthStateView = (props) => {
 
   const renderMonthSelectView = () => {
     let years = [];
-    let defaultYear = new Date().getFullYear();
-    let selectedYear = defaultYear;
-    let selectedMonth = [];
+    let defaultYear = props.users.selectedYear;
 
     for (let i = 2000; i < 2099; i++) {
       years.push(<Option key={i} value={`${i}`}>{`${i}`}</Option>)
     }
 
     const addBtnClickHandler = () => {
-      if (!selectedYear) {
-        message.warn('请选择年份');
-        return;
-      }
-      if (!selectedMonth || !selectedMonth.length) {
-        message.warn('请选择月份');
-        return;
-      }
-      if (selectedMonth.length > 3) {
-        message.warn('最多只能选择3个月份');
-        return;
-      }
+
       dispatch({
         type: 'roomStatusManagement/monthRoomList',
-        payload: {
-          year: selectedYear,
-          monthList: selectedMonth,
-        }
+        payload: {}
       });
 
     };
 
     const yearSelectChangeHandler = (value) => {
-      selectedYear = value;
+      dispatch({
+        type: 'roomStatusManagement/selectedYearChange',
+        payload: {
+          selectedYear: value,
+        }
+      });
     };
 
     const checkboxChangeHandler = (value) => {
-      selectedMonth = value;
-    }
+      dispatch({
+        type: 'roomStatusManagement/selectedMonthChange',
+        payload: {
+          selectedMonthList: value,
+        }
+      });
+    };
 
     return (
       <Row type="flex" justify="center" align="middle" className="timeSelectBox">
