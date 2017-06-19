@@ -14,12 +14,12 @@ const confirm = Modal.confirm;
 const TimeItem = Timeline.Item
 
 class CustomerVisEditIndex extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.removeIds = [];
   }
-  
+
   deleteCustomerComp(record) {
     const { dispatch } = this.props;
     confirm({
@@ -35,8 +35,8 @@ class CustomerVisEditIndex extends React.Component {
       }
     });
   }
-  
-  
+
+
   onChangeDate(date) {
     const { dispatch } = this.props;
     this.removeIds = [];
@@ -49,9 +49,10 @@ class CustomerVisEditIndex extends React.Component {
       payload: { visDate: date.format('YYYY-MM-DD') }
     })
   }
-  
+
   save() {
     let ids = '';
+
     this.removeIds.map((record, index) => {
       if (index == 0) {
         ids = String(record);
@@ -59,13 +60,16 @@ class CustomerVisEditIndex extends React.Component {
         ids = ids + ',' + String(record);
       }
     })
-    console.log(ids);
+    if (ids.length <= 0 ) {
+      this.props.dispatch(routerRedux.push('/crm/customer-vis'));
+      return;
+    }
     this.props.dispatch({
       type: 'customerVis/saveCustomerVisEdit',
       payload: { ids }
     })
   }
-  
+
   remove(item) {
     if (!this.removeIds.contains(item.id)) {
       this.removeIds.push(item.id);
@@ -75,7 +79,7 @@ class CustomerVisEditIndex extends React.Component {
       payload: { itemId: item.id }
     })
   }
-  
+
   render() {
     const { list, dispatch, date } = this.props;
     const times = VISIT_TIME.map((record, index) => {
@@ -86,7 +90,7 @@ class CustomerVisEditIndex extends React.Component {
             <span key={item.id} className="left-time-div"><span className="left-time-span" key={item.id}>{ item.name }</span><Icon onClick={ this.remove.bind(this, item)} type="close-circle"/></span>)
         }
       })
-      
+
       return (<TimeItem key={index}><span>{record}</span>
         <div>
           {
@@ -95,8 +99,8 @@ class CustomerVisEditIndex extends React.Component {
         </div>
       </TimeItem>)
     })
-    
-    
+
+
     const add = !this.props.permissionAlias.contains('CUSTOMERCOMP_ADD');
     return (
       <div className="customer-vis-cent">
@@ -119,19 +123,20 @@ class CustomerVisEditIndex extends React.Component {
               times
             }
           </Timeline>
+          <div style={{marginTop:20}}>
+            <Row>
+              <Col offset={16} span={4}>
+                <Link to='/crm/customer-vis'>
+                  <Button className="button-add"> 返回 </Button>
+                </Link>
+              </Col>
+              <Col span={4}>
+                <Button className="SaveBtn" onClick={ this.save.bind(this) }> 保存 </Button>
+              </Col>
+            </Row>
+          </div>
         </Card>
-        <div style={{marginTop:20}}>
-          <Row>
-            <Col offset={16} span={4}>
-              <Link to='/crm/customer-vis'>
-                <Button className="button-add"> 返回 </Button>
-              </Link>
-            </Col>
-            <Col span={4}>
-              <Button className="SaveBtn" onClick={ this.save.bind(this) }> 保存 </Button>
-            </Col>
-          </Row>
-        </div>
+
       </div>
     );
   }
