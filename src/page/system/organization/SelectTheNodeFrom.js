@@ -105,7 +105,8 @@ class SelectTheNodeFrom extends Component {
       },
     }];
     this.state = {
-      selectedRows:[]
+      selectedRows:[],
+      current : 1,
     }
   }
 
@@ -153,18 +154,14 @@ class SelectTheNodeFrom extends Component {
     });
 
   }
-  callback() {
 
-  }
-
-  expandHandler() {
-
-  }
   onSelect(selectedKeys, e) {
     const  { selectedNodes } = e;
     if(selectedNodes[0]){
+      this.setState({
+        current: 1
+      })
       const node = selectedNodes[0];
-      //console.log("节点>>>>",node.props.nodeId)
       this.nodeId = node.props.nodeId;
       this.tissueProperty = node.props.tissueProperty;
       this.props.dispatch({
@@ -176,6 +173,7 @@ class SelectTheNodeFrom extends Component {
       });
     }
   }
+
   render() {
     const { visible, treeData, list,total } = this.props;
     let endemic = session.get("endemic")
@@ -211,16 +209,19 @@ class SelectTheNodeFrom extends Component {
       total: total, //数据总条数
       showQuickJumper: true,
       pageSize: 10,
+      current: this.state.current,
       onChange: (current) => {
-         let endemic  = session.get("endemic");
+        this.setState({
+          current : current
+        });
          let nodeId = this.nodeId
          let tissueProperty = this.tissueProperty
-        this.props.dispatch({
+         this.props.dispatch({
           type: "organization/organizationList",
           payload: {
             nodeid:nodeId?nodeId:endemic.id,
             tissueProperty:tissueProperty?tissueProperty:endemic.tissueProperty,
-            page:current,
+            page: current,
             size: 10,
           }
         });
@@ -239,7 +240,7 @@ class SelectTheNodeFrom extends Component {
              afterClose = {this.handleAfterClose.bind(this)}
              onOk = {this.handleOk.bind(this)}
              closable = { false }
-             width = { 800 }
+             width = { 1000 }
       >
       <div className="SelectTheNodeFromConennt">
         <div className="SelectTheNodeFrom">
@@ -247,7 +248,6 @@ class SelectTheNodeFrom extends Component {
             <Col className="gutter-row" span={5}>
               <Tree
                 className="draggable-tree"
-                onExpand={ this.expandHandler.bind(this) }
                 onSelect={ this.onSelect.bind(this,) }
                 defaultExpandedKeys = { [String(endemic.id)] }
               >
@@ -257,7 +257,7 @@ class SelectTheNodeFrom extends Component {
               </Tree>
             </Col>
             <Col className="gutter-row" span={19}>
-               <Table bordered   rowSelection={rowSelection} columns={ this.columns} dataSource={ list }  pagination = {pagination} key="w" />
+               <Table bordered   rowSelection={rowSelection} columns={ this.columns} dataSource={ list }  pagination = {pagination} />
             </Col>
           </Row>
         </div>

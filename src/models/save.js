@@ -52,7 +52,7 @@ export default {
 			}
 		},
 
-		//查看集团列表数据
+    //查看集团字段详情信息
 		*checkData({payload: values}, { call, put }) {
 			const {data: {code,data,err}} = yield call(saveService.checkData, values);
 			if (code == 0 && err == null) {
@@ -73,6 +73,7 @@ export default {
         });
       }
     },
+
 		//编辑集团列表数据
 		*editData({payload: values}, { call, put }) {
 			const {data: {data,code}} = yield call(saveService.editData, values);
@@ -83,6 +84,7 @@ export default {
 			}
 		},
 
+    //查看集团字段分页信息
     *groupChar({ payload: values }, { call, put }) {
       values = parse(location.search.substr(1))
       if (values.page === undefined) {

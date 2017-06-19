@@ -201,24 +201,52 @@ const monthStateView = (props) => {
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房',5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
 
           let roomState = 0;
-
-          if (day.customerList.length === 1) {
+          let dayCustomerList = day.customerList;
+          if (dayCustomerList.length === 1) {
             let hasUser = false;
+            roomState = dayCustomerList[0].status || 7;
+
             for (let i = 0; i < users.length; i++) {
-              if (users[i].customerId == day.customerList[0].customerId) {
+              if (users[i].customerId === dayCustomerList[0].customerId) {
                 hasUser = true;
                 users[i].dayCount++;
+                users[i].lastIndex = dayindex;
+                break;
               }
             }
+
             if (!hasUser) {
               users.push({
                 startIndex: dayindex,
+                lastIndex: dayindex,
                 dayCount: 1,
-                ...day.customerList[0],
+                ...dayCustomerList[0],
               })
             }
-            roomState = 7;
-          } else if (day.customerList.length >= 1) {
+
+          } else if (dayCustomerList.length >= 1) {
+            for (let j = 0; j < dayCustomerList.length; j++) {
+              let hasUser = false;
+
+              for (let i = 0; i < users.length; i++) {
+                if (users[i].customerId === dayCustomerList[j].customerId) {
+                  hasUser = true;
+                  users[i].dayCount++;
+                  users[i].lastIndex = dayindex;
+                  break;
+                }
+              }
+
+              if (!hasUser) {
+                users.push({
+                  startIndex: dayindex,
+                  lastIndex: dayindex,
+                  dayCount: 1,
+                  ...dayCustomerList[j],
+                })
+              }
+            }
+
             roomState = 8;
           }
 
@@ -227,7 +255,8 @@ const monthStateView = (props) => {
             'empty': roomState == 0,
             'reserve': roomState == 7,
             'overlap': roomState == 8,
-          })
+            'checkingIn': roomState == 5,
+          });
 
 
           return (
@@ -239,29 +268,66 @@ const monthStateView = (props) => {
               </div>
             </div>
           )
-        })
+        });
+
+        let zIndexCount = 100;
+        const userBoxClickHandler = (e) => {
+          let userBoxes = e.target.parentNode.querySelectorAll(".userBox");
+
+          for (let i = 0; i < userBoxes.length; i++) {
+            userBoxes[i].classList.remove("active");
+            if (userBoxes[i].querySelector(".userBoxConfirm")) {
+              userBoxes[i].removeChild(userBoxes[i].querySelector(".userBoxConfirm"))
+            }
+          }
+
+          e.target.classList.add("active");
+          e.target.style.zIndex = ++zIndexCount;
+        };
+
+        const userBoxDbClickHandler = (e) => {
+          let btn = document.createElement("div");
+          btn.innerHTML = "确认入住";
+          btn.className = "userBoxConfirm";
+          btn.addEventListener("click", (e) => {
+            let parentNode = e.target.parentNode;
+            dispatch({
+              type: 'roomStatusManagement/updateUserState',
+              payload: {
+                roomIndex: parentNode.dataset.roomIndex,
+                customerId: parentNode.dataset.customerId,
+                startIndex: parentNode.dataset.startIndex,
+                endIndex: parentNode.dataset.endIndex,
+              }
+            });
+          });
+          e.target.appendChild(btn);
+        };
 
         const UNIT_WIDTH = 9;
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           result.push(
-            <div style={{
-              height: "100%",
-              width: width,
-              position: "absolute",
-              left: users[i].startIndex * UNIT_WIDTH,
-              textAlign: "center",
-              boxSizing: "border-box",
-              paddingTop: "10px",
-            }}>
+            <div className="userBox"
+                 style={{
+                   width: width,
+                   left: users[i].startIndex * UNIT_WIDTH,
+                 }}
+                 draggable="true"
+                 data-room-index={roomIndex}
+                 data-customer-id={users[i].customerId}
+                 data-start-index={users[i].startIndex}
+                 data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                 onClick={userBoxClickHandler}
+                 onDoubleClick={userBoxDbClickHandler}
+            >
               {users[i].customerName}
             </div>
           )
         }
 
         return result;
-
-      }
+      };
 
 
       return (
@@ -281,7 +347,7 @@ const monthStateView = (props) => {
           </div>
         </div>
       )
-    }
+    };
 
     return (
       <div className="monthRoomListBox">
@@ -290,7 +356,7 @@ const monthStateView = (props) => {
         }
       </div>
     )
-  }
+  };
 
   /**
    * 月房态主视图区
@@ -337,7 +403,7 @@ const monthStateView = (props) => {
           userIndex: index
         }
       });
-    }
+    };
 
     return (
       <div className="sidebar">

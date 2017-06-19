@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { connect } from 'dva'
 import './CustomerVisIndex.scss'
@@ -6,15 +7,16 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import moment from 'moment'
 import { VISIT_TIME } from 'common/constants.js'
+import PermissionButton from 'common/PermissionButton';
 const confirm = Modal.confirm;
 const TimeItem = Timeline.Item
 class CustomerVisIndex extends React.Component {
-  
+
   constructor(props) {
     super(props);
   }
-  
-  
+
+
   // 查看
   pushDetail(item) {
     this.selectRecord = item;
@@ -24,9 +26,9 @@ class CustomerVisIndex extends React.Component {
         dataId: item.id
       }
     }))
-    
+
   }
-  
+
   onChangeDate(date) {
     const { dispatch } = this.props;
     dispatch({
@@ -38,11 +40,11 @@ class CustomerVisIndex extends React.Component {
       payload: { visDate: date.format('YYYY-MM-DD') }
     })
   }
-  
+
   edit() {
     this.props.dispatch(routerRedux.push('/crm/customer-vis/edit'))
   }
-  
+
   render() {
     const { list, dispatch, date } = this.props;
     // const tableProps = {
@@ -71,10 +73,10 @@ class CustomerVisIndex extends React.Component {
       list.map((item) => {
         if (index + 1 == item.visitTimeId) {
           btns.push(
-            <Button onClick={this.pushDetail.bind(this, item)} className="left-time-btn" key={item.id}>{ item.name }</Button>)
+            <PermissionButton testKey='CUSTOMERVIS_DETAIL' onClick={this.pushDetail.bind(this, item)} className="left-time-btn" key={item.id}>{ item.name }</PermissionButton>)
         }
       })
-      
+
       return (<TimeItem key={index}><span>{record}</span>
         <div>
           {
@@ -83,9 +85,9 @@ class CustomerVisIndex extends React.Component {
         </div>
       </TimeItem>)
     })
-    
-    
-    const add = !this.props.permissionAlias.contains('CUSTOMERCOMP_ADD');
+
+
+    const add = !this.props.permissionAlias.contains('');
     return (
       <div className="customer-vis-cent">
         <div className="button-wrapper">
@@ -93,12 +95,12 @@ class CustomerVisIndex extends React.Component {
             <Col span={20}>
               <span>预约日期：</span>
               <DatePicker style={{ width: 200 }} format="YYYY-MM-DD" defaultValue={ date } onChange={this.onChangeDate.bind(this)}/>
-            
+
             </Col>
             <Col span={4}>
-              <Button disabled={add} className="button-add">
+              <PermissionButton testKey='CUSTOMERVIS_ADD' className="button-add">
                 <Link to='/crm/customer-vis/add'> 预约参观 </Link>
-              </Button >
+              </PermissionButton >
             </Col>
           </Row>
         </div>
@@ -111,7 +113,7 @@ class CustomerVisIndex extends React.Component {
           <Row>
             <Col span={20}/>
             <Col span={4}>
-              <Button onClick={this.edit.bind(this)} className="button-add">编辑</Button>
+              <PermissionButton testKey='CUSTOMERVIS_EDIT' onClick={this.edit.bind(this)} className="button-add">编辑</PermissionButton>
             </Col>
           </Row>
         </Card>

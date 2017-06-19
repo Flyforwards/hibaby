@@ -9,6 +9,8 @@ import AppointmentMemberFrom from './appointmentMemberFrom'
 import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
 import moment from 'moment'
 import AlertModalFrom from 'common/AlertModalFrom'
+import PermissionButton from 'common/PermissionButton';
+import PermissionLink from 'common/PermissionLink';
 
 class ActivityIndex extends React.Component {
 
@@ -64,14 +66,13 @@ class ActivityIndex extends React.Component {
       dataIndex: 'operation',
       width: '13%',
       render: (text, record, index) => {
-        const detail = !this.props.permissionAlias.contains('ACTIVITY_DETAIL');
         const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
         const appoint = !this.props.permissionAlias.contains('ACTIVITY_APPOINT');
         // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况服务删除活动
         if (record.activityTime < this.props.systemTime || record.appointments > 0 ) {
           return (
             <div key = { index }>
-              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <PermissionLink testKey='ACTIVITY_DETAIL' className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </PermissionLink>
               <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
             </div>
           )
@@ -172,7 +173,7 @@ class ActivityIndex extends React.Component {
       <div className = "activity-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/activity/add'>
-            <Button disabled={add} className="button-add"> 添加 </Button>
+            <PermissionButton testKey='ACTIVITY_ADD' className="button-add"> 添加 </PermissionButton>
           </Link >
         </div>
         <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>

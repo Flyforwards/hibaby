@@ -39,7 +39,7 @@ class DishesLeft extends React.Component {
     const _this = this;
     if(root.nodes){
       return root.nodes.map(function (child,index) {
-        return <TreeNode title={child.name} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
+        return <TreeNode title={child.name+"("+child.dishesCount+")"} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
       });
     }
     return <TreeNode title={root.name} level={root.level} key={root.id} parentId={root.parentId} />;

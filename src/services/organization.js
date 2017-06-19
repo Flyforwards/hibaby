@@ -9,7 +9,7 @@ export function getDepartmentNodes(values) {
     body: JSON.stringify(values),
   })
 }
-//组织架构用户列表页数据                                                                                                                           
+//组织架构用户列表页数据
 export function organizationPage(values) {
   return request('/crm/api/v1/user/getUserPageListByDeptId', {
     method: 'POST',
@@ -37,6 +37,7 @@ export function getEmpSerial(values) {
     body: JSON.stringify(values),
   })
 }
+
 //根据部门id获取下属职位
 export function getPositionByDeptId(values) {
   return request('/crm/api/v1/position/getPositionByDeptId', {
@@ -44,6 +45,7 @@ export function getPositionByDeptId(values) {
     body: JSON.stringify(values),
   })
 }
+
 //根据地方中心id查询下属部门
 export function getDeptListByEndemicId(values) {
   return request('/crm/api/v1/department/getDeptListByEndemicId', {
@@ -67,7 +69,7 @@ export function saveDepartment(values) {
 }
 //根据用户id禁用用户
 export function forbiddenUser(values) {
-  return request('/crm/api/v1/user/forbiddenUser', {
+  return request('/crm/api/v1/user/27forbiddenUser', {
     method: 'POST',
     body: JSON.stringify(values),
   })
