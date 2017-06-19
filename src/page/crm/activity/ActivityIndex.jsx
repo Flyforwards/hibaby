@@ -9,6 +9,7 @@ import AppointmentMemberFrom from './appointmentMemberFrom'
 import AppointmentNotMemberFrom from './appointmentNotMemberFrom'
 import moment from 'moment'
 import AlertModalFrom from 'common/AlertModalFrom'
+import PermissionButton from 'common/permission_button';
 
 class ActivityIndex extends React.Component {
 
@@ -172,7 +173,7 @@ class ActivityIndex extends React.Component {
       <div className = "activity-cent">
         <div className = "button-wrapper">
           <Link to = '/crm/activity/add'>
-            <Button disabled={add} className="button-add"> 添加 </Button>
+            <PermissionButton testKey='ACTIVITY_ADD' className="button-add"> 添加 </PermissionButton>
           </Link >
         </div>
         <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
