@@ -107,16 +107,17 @@ export default {
       const state = yield select(state => state.roomStatusManagement);
       const param = parse(location.search.substr(1));
       const defData = {useDate: moment().format()}
-      const {data: {code, data}} = yield call(roomManagement.dayStatus, {...defData, ...param});
+      const {data: {code, data,err}} = yield call(roomManagement.dayStatus, {...defData, ...param});
+      console.log(err);
       if (code == 0) {
         yield put({type: 'setDayStatusData', payload: {data}});
-
         yield put({type: 'setSelectValue', payload: {data: state.selectValue,}});
       }
     },
     *dayStatusUpdate({payload: values}, {call, put}) {
       const defData = {useDate: moment().format()};
-      const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers, {...defData, ...values});
+      console.log(values)
+      const {data: {code, data}} = yield call(roomManagement.dayStatusUpdate, {...defData, ...values});
       if (code == 0) {
         const param = parse(location.search.substr(1));
 
@@ -184,30 +185,33 @@ export default {
       return history.listen(({pathname, query}) => {
         if (pathname === '/chamber/roomstatusindex') {
           dispatch({type: 'dayStatus'});
-          dispatch({
-            type: 'getDataDict',
-            payload: {
-              "abName": 'LC',
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload: {
-              "abName": 'ZFL',
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload: {
-              "abName": 'QY',
-            }
-          });
-          dispatch({
-            type: 'getDataDict',
-            payload: {
-              "abName": 'CX',
-            }
-          });
+          if(!query){
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'LC',
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'ZFL',
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'QY',
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'CX',
+              }
+            });
+          }
+
         }
 
       })
