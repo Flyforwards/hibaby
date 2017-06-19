@@ -8,6 +8,7 @@ import React from 'react';
 import {connect} from 'dva';
 import {message, Button, Icon,Form,Row,Col,Input,Select,Tag,Modal } from 'antd';
 import { routerRedux } from 'dva/router';
+import DishesDetailPageCss from './DishesDetailPage.css'
 
 
 const FormItem = Form.Item;
@@ -130,10 +131,10 @@ class DishesDetailPage extends React.Component{
 
 
     return (
-      <div>
+      <div className="dishesDiv">
         <Form>
-          <div>
-            <Row key="1"><Col><div>菜品信息</div></Col></Row>
+          <div className="dishes-info-div">
+            <Row key="1"><Col><h3>菜品信息</h3></Col></Row>
             <Row key="2">
               <Col span={8}>
                 <FormItem
@@ -201,8 +202,8 @@ class DishesDetailPage extends React.Component{
             </Row>
           </div>
 
-          <div>
-            <Row key="3"><Col><div>食材信息</div></Col></Row>
+          <div className="dishes-info-div">
+            <Row key="3"><Col><h3 className="ingredients-info-div">食材信息</h3></Col></Row>
             <Row key="4">
               <Col span={1}>
                 <Tag color="#f50">主食材</Tag>
@@ -248,9 +249,9 @@ class DishesDetailPage extends React.Component{
           </div>
         </Form>
         <div>
-          <Button className='commitButton SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>
-          <Button className='commitButton RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>
-          <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
+          <Button className='myBtn SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>
+          <Button className='myBtn RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>
+          <Button className='myBtn BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </div>
     );

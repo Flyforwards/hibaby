@@ -232,6 +232,17 @@
             }
           }
 
+          .userBox{
+            height: 100%;
+            position: absolute;
+            text-align: center;
+            box-sizing: border-box;
+            padding-top: 10px;
+          }
+          .userBox.active{
+            border:1px solid red;
+          }
+
           .dayRoom {
             float: left;
             height: 100%;

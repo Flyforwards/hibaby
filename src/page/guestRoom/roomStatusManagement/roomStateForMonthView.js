@@ -201,24 +201,52 @@ const monthStateView = (props) => {
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房',5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
 
           let roomState = 0;
-
-          if (day.customerList.length === 1) {
+          let dayCustomerList = day.customerList;
+          if (dayCustomerList.length === 1) {
             let hasUser = false;
+            roomState = dayCustomerList[0].status || 7;
+
             for (let i = 0; i < users.length; i++) {
-              if (users[i].customerId == day.customerList[0].customerId) {
+              if (users[i].customerId === dayCustomerList[0].customerId) {
                 hasUser = true;
                 users[i].dayCount++;
+                users[i].lastIndex = dayindex;
+                break;
               }
             }
+
             if (!hasUser) {
               users.push({
                 startIndex: dayindex,
+                lastIndex: dayindex,
                 dayCount: 1,
-                ...day.customerList[0],
+                ...dayCustomerList[0],
               })
             }
-            roomState = 7;
-          } else if (day.customerList.length >= 1) {
+
+          } else if (dayCustomerList.length >= 1) {
+            for (let j = 0; j < dayCustomerList.length; j++) {
+              let hasUser = false;
+
+              for (let i = 0; i < users.length; i++) {
+                if (users[i].customerId === dayCustomerList[j].customerId) {
+                  hasUser = true;
+                  users[i].dayCount++;
+                  users[i].lastIndex = dayindex;
+                  break;
+                }
+              }
+
+              if (!hasUser) {
+                users.push({
+                  startIndex: dayindex,
+                  lastIndex: dayindex,
+                  dayCount: 1,
+                  ...dayCustomerList[j],
+                })
+              }
+            }
+
             roomState = 8;
           }
 
@@ -227,7 +255,7 @@ const monthStateView = (props) => {
             'empty': roomState == 0,
             'reserve': roomState == 7,
             'overlap': roomState == 8,
-          })
+          });
 
 
           return (
@@ -241,19 +269,26 @@ const monthStateView = (props) => {
           )
         });
 
+        let zIndexCount = 100;
+        const userBoxClickHandler = (e) => {
+          let userBoxes = e.target.parentNode.querySelectorAll(".userBox");
+
+          for (let i = 0; i < userBoxes.length; i++) {
+            userBoxes[i].classList.remove("active");
+          }
+
+          e.target.classList.add("active");
+          e.target.style.zIndex = ++zIndexCount;
+        };
+
         const UNIT_WIDTH = 9;
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           result.push(
-            <div style={{
-              height: "100%",
+            <div className="userBox" style={{
               width: width,
-              position: "absolute",
               left: users[i].startIndex * UNIT_WIDTH,
-              textAlign: "center",
-              boxSizing: "border-box",
-              paddingTop: "10px",
-            }}>
+            }} draggable="true" onClick={userBoxClickHandler}>
               {users[i].customerName}
             </div>
           )
