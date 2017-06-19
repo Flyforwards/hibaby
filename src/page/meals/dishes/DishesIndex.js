@@ -46,12 +46,19 @@ class DishesIndex extends React.Component{
       dataIndex: 'vdType',
       key:'vdType',
       width: '10%',
-    },/*{
+    },{
       title: '使用状态',
       dataIndex: 'status',
       key:'status',
       width: '10%',
-    },*/{
+      render: (text, record, index) => {
+        if(text === 0){
+          return <span>未使用</span>
+        }else if(text === 1){
+          return <span>已使用</span>
+        }
+      }
+    },{
       title: '操作',
       dataIndex: 'operating',
       key:'operating',
@@ -159,14 +166,14 @@ class DishesIndex extends React.Component{
         <div className="Dishes-nav">
           <Form layout="inline">
             <Row  justify="space-between">
-              <Col span={8}>
+              <Col span={5}>
                 <FormItem
                   label="菜品名"
                 >
                   <Input style={{ width: 180 }} onChange={this.handleNameChange.bind(this)}/>
                 </FormItem>
               </Col>
-              <Col span={8}>
+              <Col span={5}>
                 <FormItem
                   label="荤素类型"
                 >
@@ -177,7 +184,7 @@ class DishesIndex extends React.Component{
 
                 </FormItem>
               </Col>
-              <Col span={8}>
+              <Col span={5}>
                 <FormItem
                   label="菜品类型"
                 >
@@ -187,16 +194,16 @@ class DishesIndex extends React.Component{
                     </Select>
                 </FormItem>
               </Col>
-              {/*<Col span={8}>
+              <Col span={5}>
                 <FormItem
                   label="使用状态"
                 >
                     <Select placeholder="请选择" style={{ width: 180 }} allowClear={true}>
-                      <Option value="0">正常</Option>
-                      <Option value="1">禁用</Option>
+                      <Option value="0">未使用</Option>
+                      <Option value="1">已使用</Option>
                     </Select>
                 </FormItem>
-              </Col>*/}
+              </Col>
             </Row>
           </Form>
           <div className="btn">
