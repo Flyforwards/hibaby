@@ -158,7 +158,6 @@ export default {
       }
     },
     deleteUser(state, {payload: data}){
-      console.log("delete");
       let monthRoomList = state.monthRoomList.concat();
       let room = monthRoomList[data.roomIndex].useAndBookingList;
 

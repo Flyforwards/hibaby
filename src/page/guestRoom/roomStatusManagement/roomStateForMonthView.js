@@ -10,6 +10,17 @@ import {
   message,
 } from 'antd'
 
+const UNIT_WIDTH = 9;
+
+const statusExplain = [
+  {name: "预定", color: "#29C1A6"},
+  {name: "入住", color: "#F57777"},
+  {name: "重叠", color: "#F9EBCC"},
+  {name: "出所", color: "#E3E3E3"},
+  {name: "空房", color: "#fff"},
+  {name: "维修", color: "#63C3E6"},
+];
+
 const monthStateView = (props) => {
 
   const {dispatch} = props;
@@ -157,20 +168,11 @@ const monthStateView = (props) => {
    * 状态说明视图
    */
   const renderStatusExplainView = () => {
-    let statuses = [
-      {name: "预定", color: "#29C1A6"},
-      {name: "入住", color: "#F57777"},
-      {name: "重叠", color: "#F9EBCC"},
-      {name: "出所", color: "#E3E3E3"},
-      {name: "空房", color: "#fff"},
-      {name: "维修", color: "#63C3E6"},
-    ];
-
 
     return (
       <Row className="statusExplainBox" type="flex" align="middle">
         {
-          statuses.map(item => {
+          statusExplain.map(item => {
             return (
               <span>
                 <div style={{float: 'left'}}>{item.name}</div>
@@ -186,7 +188,6 @@ const monthStateView = (props) => {
   const renderMonthRoomListView = () => {
     const roomList = props.users.monthRoomList;
 
-    console.log(roomList);
     const renderMonthRoom = (room, roomIndex) => {
 
       let users = [];
@@ -313,6 +314,9 @@ const monthStateView = (props) => {
         const userBoxRightClickHandler = (e) => {
           e.preventDefault();
           e.stopPropagation();
+          if (!e.target.classList.contains("userBox")) {
+            return;
+          }
 
           let deleteBtn = document.createElement("div");
           deleteBtn.innerHTML = "删除";
@@ -336,7 +340,30 @@ const monthStateView = (props) => {
           return false;
         };
 
-        const UNIT_WIDTH = 9;
+        /**
+         * 调整入住天数
+         * @param e
+         */
+        const resizeBarMouseDownHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          let pageX = e.pageX;
+          let target = e.target.parentNode;
+          let targetWidth = target.offsetWidth;
+
+          document.onmousemove = (ee) => {
+            let offsetX = ee.pageX - pageX;
+            let unit = parseInt(offsetX / UNIT_WIDTH);
+
+            target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
+          };
+          document.onmouseup = () => {
+            document.onmousemove = null;
+          }
+        };
+
+
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           result.push(
@@ -350,13 +377,13 @@ const monthStateView = (props) => {
                  data-customer-id={users[i].customerId}
                  data-start-index={users[i].startIndex}
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                 data-user-dayCount={users[i].dayCount}
                  onClick={userBoxClickHandler}
                  onDoubleClick={userBoxDbClickHandler}
                  onContextMenu={userBoxRightClickHandler}
             >
               {users[i].customerName}
-
-              <div style={{height: "100%", width: "2px", background: "transparent"}}/>
+              <div className="resizeBar" onMouseDown={resizeBarMouseDownHandler}/>
             </div>
           )
         }
