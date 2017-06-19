@@ -19,6 +19,7 @@ export default {
     size : 5,
     initialValue : null,
     dishesLibraryNodes : null,
+    nodeId : 1,
   },
   //加载页面
   subscriptions: {
@@ -77,7 +78,7 @@ export default {
       const {data: { data, total, page, size, code,err} } = yield call(dishesService.getDishesPageList, values);
       if (code == 0) {
         //更新state
-        yield put({type:'setDishesPageList',payload:{data,total,page,size}} );
+        yield put({type:'setDishesPageList',payload:{data,total,page,size,nodeId:values.nodeId}} );
       }
     },
     //获取菜品详情
@@ -121,20 +122,21 @@ export default {
     setDishesLibraryNodes(state, { payload: {data: data} }){
       return {...state,dishesLibraryNodes: data}
     },
-    setDishesPageList(state, { payload: {data: dishesPageList, total, page, size} }){
-      let dishesdata = {
+    setDishesPageList(state, { payload: {data: dishesPageList, total, page, size,nodeId} }){
+      let dishesData = {
         ...state,
         dishesPageList,
         total,
         page,
         size,
+        nodeId
       };
       let range = {
         start: page == 1 ? 1 : (page - 1) * size + 1,
         end: page == 1 ? dishesPageList.length : (page - 1) * 10 + dishesPageList.length,
         totalpage: Math.ceil(total / size)
       }
-      return {...dishesdata,range}
+      return {...dishesData,range}
     },
     setDishesDetail(state, { payload: {dishesInfo} }){
       return {...state,initialValue: dishesInfo}

@@ -152,7 +152,7 @@ class DishesDetailPage extends React.Component{
                   label="荤素类型"
                   {...formItemLayout0}
                 >
-                  {getFieldDecorator('name', {
+                  {getFieldDecorator('mvType', {
                     initialValue: (initialValue==null ? '' : initialValue.mvType+""),
                     rules: [
                       {
@@ -174,7 +174,7 @@ class DishesDetailPage extends React.Component{
                   label="菜品类型"
                   {...formItemLayout0}
                 >
-                  {getFieldDecorator('name', {
+                  {getFieldDecorator('vdType', {
                     initialValue: (initialValue==null ? '' : initialValue.vdType+""),
                     rules: [
                       {
