@@ -19,6 +19,8 @@ export default {
     monthStateCustomers: [],
     monthRoomList: [],
     dragUserIndex: 0,
+    selectedYear: new Date().getFullYear(),
+    selectedMonthList: [],
   },
 
   reducers: {
@@ -76,11 +78,11 @@ export default {
         let allDays = monthRoomList[parseInt(data.roomIndex)].useAndBookingList;
         let currentDay = allDays[parseInt(data.dayIndex) + i];
 
-        if(!currentDay){
+        if (!currentDay) {
           break;
         }
 
-        if(currentDay.customerList){
+        if (currentDay.customerList) {
           currentDay.customerList.push(dragUser);
         }
 
@@ -92,6 +94,18 @@ export default {
       return {
         ...state,
         dragUserIndex: data.userIndex
+      }
+    },
+    selectedYearChange(state, {payload: data}){
+      return {
+        ...state,
+        selectedYear: data.selectedYear,
+      }
+    },
+    selectedMonthChange(state, {payload: data}){
+      return {
+        ...state,
+        selectedMonthList: data.selectedMonthList,
       }
     },
   }
@@ -164,11 +178,31 @@ export default {
         });
       }
     },
-    *monthRoomList({payload: value}, {call, put}){
+    *monthRoomList({payload: value}, {call, put, select}){
+      const state = yield select(state => state.roomStatusManagement);
+      const selectedYear = state.selectedYear;
+      const selectedMonthList = state.selectedMonthList;
+
+      if (!selectedYear) {
+        message.warn('请选择年份');
+        return;
+      }
+
+      if (!selectedMonthList || !selectedMonthList.length) {
+        message.warn('请选择月份');
+        return;
+      }
+
+      if (selectedMonthList.length > 3) {
+        message.warn('最多只能选择3个月份');
+        return;
+      }
+
       let param = [{
-        year: value.year,
-        monthList: value.monthList,
-      }]
+        year: selectedYear,
+        monthList: selectedMonthList,
+      }];
+
       const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
       yield put({
         type: 'setMonthRoomList',

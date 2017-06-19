@@ -20,15 +20,33 @@ class DishesFormPage extends React.Component{
   }
 
   handleSubmit(){
-    const {dispatch} = this.props;
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    const {dispatch,form} = this.props;
+    form.validateFieldsAndScroll((err, values) => {
+
       if (!err) {
         const id = this.props.dishes.initialValue ? this.props.dishes.initialValue.id : null;
+        //菜品信息
+        const dishes = {
+          id : id,
+          name : values.name,
+          mvType : values.mvType,
+          vdType : values.vdType,
+          nodeId : this.props.dishes.nodeId
+        };
+        //食材信息
+        const ingredientsDOJson = [];
+        for(let i=0;i<5;i++){
+          ingredientsDOJson.push({
+            name : values["name"+i],
+            volume : values["volume"+i],
+            type : i==0 ? 1:2
+          });
+        }
         dispatch({
           type: 'dishes/saveDishes',
           payload: {
-            ...values,
-            id : id
+            ...dishes,
+            ingredientsDOJson : JSON.stringify(ingredientsDOJson)
           }
         });
       }
@@ -52,7 +70,7 @@ class DishesFormPage extends React.Component{
       wrapperCol:{ span:18 }
     }
     const {initialValue} = this.props.dishes;
-    const IngredientsDOs = initialValue ? initialValue.IngredientsDOs : [];
+    const IngredientsDOs = initialValue ? initialValue.ingredientsDOs : [];
     let mainIngredients = null; //主食材
     const auxiliaryArr = new Array();
     const IngredientsDOsRows = [];
@@ -69,7 +87,7 @@ class DishesFormPage extends React.Component{
     for(let i = 0; i < 4; i++){
       record = auxiliaryArr[i];
       IngredientsDOsRows.push(
-        <Row>
+        <Row key={(i+5)+""}>
           <Col span={1}>
             <Tag color="#f50">辅食材</Tag>
           </Col>
@@ -78,7 +96,7 @@ class DishesFormPage extends React.Component{
               label="食材名称"
               {...formItemLayout}
             >
-              {getFieldDecorator('name', {
+              {getFieldDecorator(`${"name"+(i+1)}`, {
                 initialValue: (record==null ? '' : record.name),
                 rules: [
                   {
@@ -96,7 +114,7 @@ class DishesFormPage extends React.Component{
               label="食材用量"
               {...formItemLayout}
             >
-              {getFieldDecorator('volume', {
+              {getFieldDecorator(`${"volume"+(i+1)}`, {
                 initialValue: (record==null ? '' : record.volume),
                 rules: [
                   {
@@ -117,8 +135,8 @@ class DishesFormPage extends React.Component{
       <div>
         <Form>
           <div>
-            <Row><Col><div>菜品信息</div></Col></Row>
-            <Row>
+            <Row key="1"><Col><div>菜品信息</div></Col></Row>
+            <Row key="2">
               <Col span={8}>
                 <FormItem
                   label="菜品名称"
@@ -142,7 +160,7 @@ class DishesFormPage extends React.Component{
                   label="荤素类型"
                   {...formItemLayout0}
                 >
-                  {getFieldDecorator('name', {
+                  {getFieldDecorator('mvType', {
                     initialValue: (initialValue==null ? '' : initialValue.mvType+""),
                     rules: [
                       {
@@ -164,7 +182,7 @@ class DishesFormPage extends React.Component{
                   label="菜品类型"
                   {...formItemLayout0}
                 >
-                  {getFieldDecorator('name', {
+                  {getFieldDecorator('vdType', {
                     initialValue: (initialValue==null ? '' : initialValue.vdType+""),
                     rules: [
                       {
@@ -186,8 +204,8 @@ class DishesFormPage extends React.Component{
           </div>
 
           <div>
-            <Row><Col><div>食材信息</div></Col></Row>
-            <Row>
+            <Row key="3"><Col><div>食材信息</div></Col></Row>
+            <Row key="4">
               <Col span={1}>
                 <Tag color="#f50">主食材</Tag>
               </Col>
@@ -196,7 +214,7 @@ class DishesFormPage extends React.Component{
                   label="食材名称"
                   {...formItemLayout}
                 >
-                  {getFieldDecorator('name', {
+                  {getFieldDecorator('name0', {
                     initialValue: (mainIngredients==null ? '' : mainIngredients.name),
                     rules: [
                       {
@@ -214,7 +232,7 @@ class DishesFormPage extends React.Component{
                   label="食材用量"
                   {...formItemLayout}
                 >
-                  {getFieldDecorator('name', {
+                  {getFieldDecorator('volume0', {
                     initialValue: (mainIngredients==null ? '' : mainIngredients.volume),
                     rules: [
                       {

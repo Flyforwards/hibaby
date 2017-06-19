@@ -63,28 +63,33 @@ class DishesLeft extends React.Component {
 
   //点击树节点触发
   onSelect = (value, node)=>{
-    console.log(value,node);
-    this.addDisplay = "block";
-    this.deleteDisplay = "block";
-    if(value[0]){
+    if(value[0]){//选中树节点
       this.selectNodeLevel = node.selectedNodes[0].props.level;
       if(this.selectNodeLevel == 0){//根目录
         this.deleteDisplay = "none";//设置删除按钮隐藏
       }else{
         this.deleteDisplay = "block";
       }
-      if(this.selectNodeLevel > 1){//二级菜单
+      if(this.selectNodeLevel > 2){//二级菜单
         this.addDisplay = "none"//设置添加按钮隐藏
       }else{
         this.addDisplay = "block"
       }
       //将选中节点信息放入state中
+      const selectedNodeId = node.selectedNodes[0].key;
       this.setState({
-        ID: node.selectedNodes[0].key,
+        ID: selectedNodeId,
         selectedNode: node.selectedNodes[0],
         selectedNodeParentId: node.selectedNodes[0].props.parentId,
         selectedNodeLevel:this.selectNodeLevel,
         unfolded : value
+      });
+      //获取节点下的分页菜品信息
+      this.props.dispatch({
+        type: 'dishes/getDishesPageList',
+        payload: {
+          nodeId : selectedNodeId
+        }
       });
 
     }
@@ -232,7 +237,7 @@ class DishesLeft extends React.Component {
       nodeFormOrDetailModalTitle : "修改食材"
     });
   }
-
+  //节点表单/详情删除按钮点击事件
   handlerNodeRemove = (value) =>{
     const {dispatch} = this.props;
     const _this = this;
