@@ -15,7 +15,7 @@ import { VISIT_TIME } from 'common/constants.js'
 import {local, session} from 'common/util/storage.js';
 import moment from 'moment'
 const confirm = Modal.confirm;
-import PermissionButton from 'common/permission_button';
+import PermissionButton from 'common/PermissionButton';
 
 @createForm()
 class CustomerVisAddIndex extends React.Component {

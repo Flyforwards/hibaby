@@ -7,7 +7,7 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import moment from 'moment'
 import { VISIT_TIME } from 'common/constants.js'
-import PermissionButton from 'common/permission_button';
+import PermissionButton from 'common/PermissionButton';
 const confirm = Modal.confirm;
 const TimeItem = Timeline.Item
 class CustomerVisIndex extends React.Component {

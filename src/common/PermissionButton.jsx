@@ -1,6 +1,3 @@
-/**
- * Created by UI on 2017/5/24.
- */
 
 import React, {Component} from 'react';
 import { Button } from 'antd';
@@ -11,7 +8,6 @@ class PermissionButton extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     const { permissionAlias, testKey} = this.props;
     const disabled = !permissionAlias.contains(testKey);
@@ -22,10 +18,13 @@ class PermissionButton extends Component {
   }
 }
 
+
+
 PermissionButton.propTypes = {
   testKey: PropTypes.string.isRequired,
   permissionAlias: PropTypes.array,
 }
+
 
 function mapStateToProps(state) {
   const { permissionAlias } = state.layout;
@@ -33,4 +32,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(PermissionButton);
-
