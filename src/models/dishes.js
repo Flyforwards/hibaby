@@ -95,7 +95,7 @@ export default {
       if (code == 0) {
         //更新state
         message.info("菜品信息保存成功");
-        yield put({type:'setDishesDetail',payload:{dishesInfo : data}} );
+        yield put(routerRedux.push(`/meals/dishes/dishesDetail?dataId=${data.id}`))
       }
     },
     //删除菜品信息
