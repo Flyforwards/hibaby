@@ -121,7 +121,6 @@ export default {
     },
 
     *listByMain({ payload: value },{ call, put }){
-
       const { data: { code, data } } = yield call(customerService.listByMain);
       if (code == 0) {
         yield put({
@@ -132,17 +131,24 @@ export default {
         });
       }
     },
+
+    //获取服务器时间
+
+
   },
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
 
-        if (pathname === '/crm/customer') {
-
+        if (pathname === '/meals/nutritionist/dinner') {
           dispatch({type: 'getCustomerPage',});
           dispatch({type: 'listByMain',});
           dispatch({type: 'getMemberShipCard',});
           dispatch({ type: 'getDataDict',payload:{"abName": 'YCC',}});
+        }
+        if(pathname === '/meals/nutritionist/taboo/export') {
+
+
         }
       })
     }

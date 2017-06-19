@@ -22,30 +22,12 @@ class MemberShipCard extends Component {
         time:'',
     }
   }
-getNowFormatDate() {
-    var date = new Date();
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var currentYears = date.getFullYear() +seperator1 + month + seperator1 + strDate
-    var currentData = date.getHours() + seperator2 + date.getMinutes()+ seperator2 + date.getSeconds();
-    var dataTime = {currentYears:currentYears,currentData:currentData}
-    return dataTime;
-}
 
 
   render() {
     let menuList = []
     const { loading, printBaseMsg, systemTime,times ,printList, exportValue} = this.props;
     const danTime = printBaseMsg ? new Date(printBaseMsg.billTime).format('yyyy-MM-dd HH:mm:ss') : '';
-    let {currentYears,currentData} = this.getNowFormatDate()
     console.log("exportValue>>>>",exportValue)
     return (
       <div className="printList">
@@ -56,7 +38,7 @@ getNowFormatDate() {
             <span className="memberLevel">会员级别 :  白金会员</span>
             <span className="roomNumber">房间号码 : 1001</span>
             <span className="status">菜单状态 :  基础菜单</span>
-            <span className="timeOut">出单时间 : { currentYears }   { currentData } </span>
+            <span className="timeOut">出单时间 :{new Date().format('yyyy-MM-dd HH:mm:ss')} </span>
           </p>
           <div className="menu">
           <p className="menuName">早餐 : </p>

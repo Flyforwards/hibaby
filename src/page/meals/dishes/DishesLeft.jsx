@@ -205,13 +205,24 @@ class DishesLeft extends React.Component {
 
   //节点表单/详情确认按钮点击事件
   handleNodeOk = (values) =>{
+    const params = values;
+    let path = null;
+    if(!params.id){//创建
+      params.parentId = this.state.ID;
+      params.level = this.state.selectedNodeLevel + 1;
+      path = 'dishes/saveDishesLibrary';
+    }else{//修改
+      path = 'dishes/updateDishesLibrary';
+    }
+
     const{dispatch} = this.props;
     dispatch({
-      type: 'dishes/saveDishesLibrary',
+      type: path,
       payload: {
-        ...values
+        ...params
       }
     });
+    this.handleNodeCancel();
   }
   //节点表单/详情编辑按钮点击事件
   handleNodeEdit = (value) =>{

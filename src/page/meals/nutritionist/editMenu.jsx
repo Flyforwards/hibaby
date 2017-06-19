@@ -33,7 +33,7 @@ const createForm = Form.create
 
 
 @createForm()
-class CustomerIndex extends React.Component {
+class EditMenu extends React.Component {
   constructor(props) {
     super(props)
     this.edit = null
@@ -48,10 +48,10 @@ class CustomerIndex extends React.Component {
     this.props.dispatch({ type: 'customer/getMemberShipCard' });
     this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
   }
-  
+
   render() {
     const columns = this.columns;
-    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props 
+    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
@@ -103,4 +103,4 @@ function mapStateToProps(state) {
     packageList
   };
 }
-export default connect(mapStateToProps)(CustomerIndex)
+export default connect(mapStateToProps)(EditMenu)

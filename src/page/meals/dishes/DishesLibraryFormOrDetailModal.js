@@ -48,6 +48,8 @@ class DishesLibraryFormOrDetailModal extends React.Component{
   componentDidUpdate(prevProps, prevState){
     if(this.props.isNodeDetail){
       $(".DishesLibrary-Node .ant-modal-footer").hide();
+    }else{
+      $(".DishesLibrary-Node .ant-modal-footer").show();
     }
   }
 

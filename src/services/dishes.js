@@ -45,3 +45,17 @@ export function deleteDishesLibrary(values){
     body: JSON.stringify(values),
   })
 }
+//新增菜品库节点信息
+export function saveDishesLibrary(values) {
+  return request('/crm/api/v1/dishesLibrary/saveDishesLibrary',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//修改菜品库节点信息
+export function updateDishesLibrary(values) {
+  return request('/crm/api/v1/dishesLibrary/updateDishesLibrary',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
