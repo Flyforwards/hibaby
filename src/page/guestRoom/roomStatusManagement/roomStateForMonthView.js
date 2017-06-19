@@ -186,8 +186,8 @@ const monthStateView = (props) => {
   const renderMonthRoomListView = () => {
     const roomList = props.users.monthRoomList;
 
+    console.log(roomList);
     const renderMonthRoom = (room, roomIndex) => {
-
 
       let users = [];
 
@@ -252,7 +252,8 @@ const monthStateView = (props) => {
 
 
           let stateBox = classNames('stateBox', {
-            'empty': roomState == 0,
+            'empty': roomState == 0, // 空房
+            'repair': roomState == 1, // 维修
             'reserve': roomState == 7,
             'overlap': roomState == 8,
             'checkingIn': roomState == 5,
@@ -272,7 +273,7 @@ const monthStateView = (props) => {
 
         let zIndexCount = 100;
         const userBoxClickHandler = (e) => {
-          let userBoxes = e.target.parentNode.querySelectorAll(".userBox");
+          let userBoxes = document.querySelectorAll(".userBox");
 
           for (let i = 0; i < userBoxes.length; i++) {
             userBoxes[i].classList.remove("active");
@@ -286,10 +287,14 @@ const monthStateView = (props) => {
         };
 
         const userBoxDbClickHandler = (e) => {
+          if (!e.target.classList.contains("userBox")) {
+            return;
+          }
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
           btn.className = "userBoxConfirm";
           btn.addEventListener("click", (e) => {
+            e.stopPropagation();
             let parentNode = e.target.parentNode;
             dispatch({
               type: 'roomStatusManagement/updateUserState',
@@ -300,8 +305,35 @@ const monthStateView = (props) => {
                 endIndex: parentNode.dataset.endIndex,
               }
             });
+            parentNode.removeChild(e.target);
           });
           e.target.appendChild(btn);
+        };
+
+        const userBoxRightClickHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          let deleteBtn = document.createElement("div");
+          deleteBtn.innerHTML = "删除";
+          deleteBtn.className = "userBoxConfirm";
+          deleteBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            let parentNode = e.target.parentNode;
+            dispatch({
+              type: 'roomStatusManagement/deleteUser',
+              payload: {
+                roomIndex: parentNode.dataset.roomIndex,
+                customerId: parentNode.dataset.customerId,
+                startIndex: parentNode.dataset.startIndex,
+                endIndex: parentNode.dataset.endIndex,
+              }
+            });
+            parentNode.removeChild(e.target);
+          });
+          e.target.appendChild(deleteBtn);
+
+          return false;
         };
 
         const UNIT_WIDTH = 9;
@@ -320,8 +352,11 @@ const monthStateView = (props) => {
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
                  onClick={userBoxClickHandler}
                  onDoubleClick={userBoxDbClickHandler}
+                 onContextMenu={userBoxRightClickHandler}
             >
               {users[i].customerName}
+
+              <div style={{height: "100%", width: "2px", background: "transparent"}}/>
             </div>
           )
         }
