@@ -94,7 +94,7 @@ export default {
 
         // 判断是否是连续时间
         if (dayIndex !== 0) {
-          if(allDays[dayIndex].date - allDays[dayIndex-1].date > 86400000){
+          if (allDays[dayIndex].date - allDays[dayIndex - 1].date > 86400000) {
             break;
           }
         }
@@ -136,6 +136,27 @@ export default {
         selectedMonthList: data.selectedMonthList,
       }
     },
+    updateUserState(state, {payload: data}){
+
+      let monthRoomList = state.monthRoomList.concat();
+      for (let i = 0; i < monthRoomList[data.roomIndex].useAndBookingList.length; i++) {
+        let room = monthRoomList[data.roomIndex].useAndBookingList;
+        for (let j = data.startIndex; j < data.endIndex; j++) {
+          let customerList = room[j].customerList;
+          for (let k = 0; k < customerList.length; k++) {
+            if (customerList[k].customerId == data.customerId) {
+              customerList[k].status = 5;// 确认入住
+            }
+          }
+        }
+      }
+
+
+      return {
+        ...state,
+        monthRoomList: monthRoomList
+      }
+    }
   }
   ,
   effects: {
@@ -149,7 +170,7 @@ export default {
       const state = yield select(state => state.roomStatusManagement);
       const param = parse(location.search.substr(1));
       const defData = {useDate: moment().format()}
-      const {data: {code, data,err}} = yield call(roomManagement.dayStatus, {...defData, ...param});
+      const {data: {code, data, err}} = yield call(roomManagement.dayStatus, {...defData, ...param});
       console.log(err);
       if (code == 0) {
         yield put({type: 'setDayStatusData', payload: {data}});
@@ -252,7 +273,7 @@ export default {
       return history.listen(({pathname, query}) => {
         if (pathname === '/chamber/roomstatusindex') {
           dispatch({type: 'dayStatus'});
-          if(!query){
+          if (!query) {
             dispatch({
               type: 'getDataDict',
               payload: {

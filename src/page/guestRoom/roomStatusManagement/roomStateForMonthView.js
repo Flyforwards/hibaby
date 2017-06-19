@@ -255,6 +255,7 @@ const monthStateView = (props) => {
             'empty': roomState == 0,
             'reserve': roomState == 7,
             'overlap': roomState == 8,
+            'checkingIn': roomState == 5,
           });
 
 
@@ -275,27 +276,57 @@ const monthStateView = (props) => {
 
           for (let i = 0; i < userBoxes.length; i++) {
             userBoxes[i].classList.remove("active");
+            if (userBoxes[i].querySelector(".userBoxConfirm")) {
+              userBoxes[i].removeChild(userBoxes[i].querySelector(".userBoxConfirm"))
+            }
           }
 
           e.target.classList.add("active");
           e.target.style.zIndex = ++zIndexCount;
         };
 
+        const userBoxDbClickHandler = (e) => {
+          let btn = document.createElement("div");
+          btn.innerHTML = "确认入住";
+          btn.className = "userBoxConfirm";
+          btn.addEventListener("click", (e) => {
+            let parentNode = e.target.parentNode;
+            dispatch({
+              type: 'roomStatusManagement/updateUserState',
+              payload: {
+                roomIndex: parentNode.dataset.roomIndex,
+                customerId: parentNode.dataset.customerId,
+                startIndex: parentNode.dataset.startIndex,
+                endIndex: parentNode.dataset.endIndex,
+              }
+            });
+          });
+          e.target.appendChild(btn);
+        };
+
         const UNIT_WIDTH = 9;
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           result.push(
-            <div className="userBox" style={{
-              width: width,
-              left: users[i].startIndex * UNIT_WIDTH,
-            }} draggable="true" onClick={userBoxClickHandler}>
+            <div className="userBox"
+                 style={{
+                   width: width,
+                   left: users[i].startIndex * UNIT_WIDTH,
+                 }}
+                 draggable="true"
+                 data-room-index={roomIndex}
+                 data-customer-id={users[i].customerId}
+                 data-start-index={users[i].startIndex}
+                 data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                 onClick={userBoxClickHandler}
+                 onDoubleClick={userBoxDbClickHandler}
+            >
               {users[i].customerName}
             </div>
           )
         }
 
         return result;
-
       };
 
 
@@ -316,7 +347,7 @@ const monthStateView = (props) => {
           </div>
         </div>
       )
-    }
+    };
 
     return (
       <div className="monthRoomListBox">
@@ -325,7 +356,7 @@ const monthStateView = (props) => {
         }
       </div>
     )
-  }
+  };
 
   /**
    * 月房态主视图区
