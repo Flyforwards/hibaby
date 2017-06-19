@@ -53,6 +53,7 @@ class DishesDetailPage extends React.Component{
   }
 
   render(){
+
     const formItemLayout0 = {
       labelCol:{ span: 4 },
       wrapperCol:{ span:15 }
@@ -64,60 +65,65 @@ class DishesDetailPage extends React.Component{
     const _this = this;
     const {getFieldDecorator} = this.props.form;
     const {initialValue} = this.props.dishes;
-    const IngredientsDOs = initialValue ? initialValue.IngredientsDOs : [];
-    let IngredientsDOsRows = [];
-    let title = "";
+    const IngredientsDOs = initialValue ? initialValue.ingredientsDOs : [];
+    let mainIngredients = null; //主食材
+    const auxiliaryArr = new Array();
+    const IngredientsDOsRows = [];
     if(IngredientsDOs && IngredientsDOs.length > 0){
-      IngredientsDOs.map(function(item,index){
+      IngredientsDOs.map(function (item,index) {
         if(item.type === 1){
-          title = "主食材";
+          mainIngredients =  item;
         }else{
-          title = "辅食材";
+          auxiliaryArr.push(item);
         }
-        IngredientsDOsRows.push(
-          <Row>
-            <Col span={1}>
-              <Tag color="#f50">{title}</Tag>
-            </Col>
-            <Col span={12}>
-              <FormItem
-                label="食材名称"
-                {...formItemLayout}
-              >
-                {getFieldDecorator('name', {
-                  initialValue: (item==null ? '' : item.name),
-                  rules: [
-                    {
-                      required: true,
-                      message: '食材名称不能为空'
-                    }
-                  ],
-                })(
-                  <Input disabled={_this.state.disabled}  />
-                )}
-              </FormItem>
-            </Col>
-            <Col span={10}>
-              <FormItem
-                label="食材用量"
-                {...formItemLayout}
-              >
-                {getFieldDecorator('name', {
-                  initialValue: (item==null ? '' : item.volume),
-                  rules: [
-                    {
-                      required: true,
-                      message: '食材用量不能为空'
-                    }
-                  ],
-                })(
-                  <Input disabled={_this.state.disabled}  suffix="g" />
-                )}
-              </FormItem>
-            </Col>
-          </Row>
-        );
       });
+    }
+    let record = null;
+    for(let i = 0; i < 4; i++){
+      record = auxiliaryArr[i];
+      IngredientsDOsRows.push(
+        <Row key={(i+5)+""}>
+          <Col span={1}>
+            <Tag color="#f50">辅食材</Tag>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              label="食材名称"
+              {...formItemLayout}
+            >
+              {getFieldDecorator(`${"name"+(i+1)}`, {
+                initialValue: (record==null ? '' : record.name),
+                rules: [
+                  {
+                    required: true,
+                    message: '食材名称不能为空'
+                  }
+                ],
+              })(
+                <Input disabled={this.state.disabled}/>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={10}>
+            <FormItem
+              label="食材用量"
+              {...formItemLayout}
+            >
+              {getFieldDecorator(`${"volume"+(i+1)}`, {
+                initialValue: (record==null ? '' : record.volume),
+                rules: [
+                  {
+                    required: true,
+                    message: '食材用量不能为空'
+                  }
+                ],
+              })(
+                <Input suffix="g" disabled={this.state.disabled}/>
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+      );
     }
 
 
@@ -127,8 +133,8 @@ class DishesDetailPage extends React.Component{
       <div>
         <Form>
           <div>
-            <Row><Col><div>菜品信息</div></Col></Row>
-            <Row>
+            <Row key="1"><Col><div>菜品信息</div></Col></Row>
+            <Row key="2">
               <Col span={8}>
                 <FormItem
                   label="菜品名称"
@@ -196,7 +202,48 @@ class DishesDetailPage extends React.Component{
           </div>
 
           <div>
-            <Row><Col><div>食材信息</div></Col></Row>
+            <Row key="3"><Col><div>食材信息</div></Col></Row>
+            <Row key="4">
+              <Col span={1}>
+                <Tag color="#f50">主食材</Tag>
+              </Col>
+              <Col span={12}>
+                <FormItem
+                  label="食材名称"
+                  {...formItemLayout}
+                >
+                  {getFieldDecorator('name0', {
+                    initialValue: (mainIngredients==null ? '' : mainIngredients.name),
+                    rules: [
+                      {
+                        required: true,
+                        message: '食材名称不能为空'
+                      }
+                    ],
+                  })(
+                    <Input disabled={this.state.disabled} />
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={10}>
+                <FormItem
+                  label="食材用量"
+                  {...formItemLayout}
+                >
+                  {getFieldDecorator('volume0', {
+                    initialValue: (mainIngredients==null ? '' : mainIngredients.volume),
+                    rules: [
+                      {
+                        required: true,
+                        message: '食材用量不能为空'
+                      }
+                    ],
+                  })(
+                    <Input suffix="g" disabled={this.state.disabled} />
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
             {IngredientsDOsRows}
           </div>
         </Form>
