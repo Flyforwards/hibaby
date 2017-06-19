@@ -16,6 +16,9 @@ export default {
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
+    monthStateCustomers: [],
+    monthRoomList: [],
+    dragUserIndex: 0,
   },
 
   reducers: {
@@ -58,8 +61,38 @@ export default {
       return {...state};
     },
     setRoomViewState(state, {payload: todo}){
-      console.log(todo.data);
       return {...state, roomState: todo.data};
+    },
+    setMonthStatusCustomers(state, {payload: todo}){
+      return {...state, monthStateCustomers: todo.data};
+    },
+    setMonthRoomList(state, {payload: todo}){
+      return {...state, monthRoomList: todo.data};
+    },
+    userDrop(state, {payload: data}){
+      let monthRoomList = state.monthRoomList.concat();
+      let dragUser = state.monthStateCustomers[state.dragUserIndex];
+      for (let i = 0; i < 28; i++) {
+        let allDays = monthRoomList[parseInt(data.roomIndex)].useAndBookingList;
+        let currentDay = allDays[parseInt(data.dayIndex) + i];
+
+        if(!currentDay){
+          break;
+        }
+
+        if(currentDay.customerList){
+          currentDay.customerList.push(dragUser);
+        }
+
+      }
+
+      return {...state, monthRoomList: monthRoomList};
+    },
+    userDragStart(state, {payload: data}){
+      return {
+        ...state,
+        dragUserIndex: data.userIndex
+      }
     },
   }
   ,
@@ -72,7 +105,7 @@ export default {
     },
     *dayStatus({payload: values}, {call, put, select}) {
       const state = yield select(state => state.roomStatusManagement);
-      const param = parse(location.search.substr(1))
+      const param = parse(location.search.substr(1));
       const defData = {useDate: moment().format()}
       const {data: {code, data}} = yield call(roomManagement.dayStatus, {...defData, ...param});
       if (code == 0) {
@@ -82,12 +115,12 @@ export default {
       }
     },
     *dayStatusUpdate({payload: values}, {call, put}) {
-      const defData = {useDate: moment().format()}
-      const {data: {code, data}} = yield call(roomManagement.dayStatusUpdate, {...defData, ...values});
+      const defData = {useDate: moment().format()};
+      const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers, {...defData, ...values});
       if (code == 0) {
-        const param = parse(location.search.substr(1))
+        const param = parse(location.search.substr(1));
 
-        message.success('修改成功')
+        message.success('修改成功');
         yield put(routerRedux.push({
             pathname: '/chamber/roomstatusindex',
             query: param
@@ -112,11 +145,34 @@ export default {
       }
     },
     *roomViewStateChange({payload: value}, {call, put}){
-      console.log(1);
       yield put({
         type: 'setRoomViewState',
         payload: {
           data: !value ? 'day' : 'month',
+        }
+      });
+
+      if (value) {
+        const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers);
+
+        yield put({
+          type: 'setMonthStatusCustomers',
+          payload: {
+            data: data,
+          }
+        });
+      }
+    },
+    *monthRoomList({payload: value}, {call, put}){
+      let param = [{
+        year: value.year,
+        monthList: value.monthList,
+      }]
+      const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
+      yield put({
+        type: 'setMonthRoomList',
+        payload: {
+          data: data.list,
         }
       });
     },

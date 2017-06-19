@@ -2,7 +2,19 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Button, Card, Checkbox, Row, Col, Form, DatePicker, Select, Switch, Spin} from 'antd'
+import {
+  Button,
+  Card,
+  Checkbox,
+  Row,
+  Col,
+  Form,
+  DatePicker,
+  Select,
+  Switch,
+  Spin,
+  message,
+} from 'antd'
 import {routerRedux} from 'dva/router';
 import './roomStatusManagementIndex.scss'
 import DictionarySelect from 'common/dictionary_select';
@@ -10,9 +22,11 @@ const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
 import moment from 'moment';
-import {parse} from 'qs'
+import {parse} from 'qs';
+import roomStateForMonthView from "./roomStateForMonthView.js";
 
 const statusDict = {0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
+
 
 function ScreenBar(props) {
   const {getFieldDecorator} = props.form;
@@ -141,6 +155,7 @@ function ScreenBar(props) {
       options.push({label: statusDict[key], value: key})
     }
   });
+
 
   const roomViewStateChange = (checked) => {
     dispatch({type: 'roomStatusManagement/roomViewStateChange', payload: checked});
@@ -330,9 +345,7 @@ class roomStatusIndex extends React.Component {
               </Spin>
             </div>
             :
-            <div>
-              月房态
-            </div>
+            roomStateForMonthView(this.props)
         }
 
       </div>
