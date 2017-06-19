@@ -54,11 +54,21 @@ class AddServiceed extends Component {
         this.state = {
           selectedRows: [],
           loading: false,
+          isNess: false
         };
     }
     componentWillMount() {
     }
     onSelect(value, option){
+      let isNess = false;
+      if (option && option.props.title == "月子套餐") {
+        isNess = true;
+      }
+      this.setState({
+        isNess
+      })
+
+
 
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
@@ -172,7 +182,7 @@ class AddServiceed extends Component {
         }
         if(this.props.getDictionary != null){
           roomList = this.props.getDictionary.map((item)=>{
-            return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
+            return (<Option value={item.id+""} title={item.name} key={item.id}>{item.name}</Option>)
           })
           if(roomList.length>10){
             len = 10
@@ -185,6 +195,43 @@ class AddServiceed extends Component {
             selectedRows,
             onChange: this.onSelectChange,
         };
+
+        const botton_div = (
+          <div className="addServiceinfoSuite">
+            <p>选择套房<span className="roomVist">(只有月子套餐才可以选择套房)</span>:</p>
+            <Form layout="inline">
+              <FormItem
+                label="套房"
+                className="room"
+              >
+                {getFieldDecorator('room', {
+                  rules: [],
+                })(
+                  <Select
+                  >
+                    {
+                      selectData
+                    }
+                  </Select>
+                )}
+              </FormItem>
+              <FormItem
+                label="套餐等级"
+                className="packageLevel"
+              >
+                {getFieldDecorator('packageLevel', {
+                  rules: [],
+                })(
+                  <Select
+                  >
+                    {
+                      gradeList
+                    }
+                  </Select>
+                )}
+              </FormItem>
+            </Form>
+          </div>)
         return (
             <div className="addServiceinfo">
                 <div className="addServiceinfoList">
@@ -241,41 +288,7 @@ class AddServiceed extends Component {
                     loading = { loadingName }
                   />
                 </div>
-                <div className="addServiceinfoSuite">
-                <p>选择套房<span className="roomVist">(只有月子套餐才可以选择套房)</span>:</p>
-                <Form layout="inline">
-                  <FormItem
-                   label="套房"
-                   className="room"
-                  >
-                    {getFieldDecorator('room', {
-                       rules: [],
-                    })(
-                      <Select
-                    >
-                     {
-                      selectData
-                     }
-                    </Select>
-                    )}
-                  </FormItem>
-                  <FormItem
-                   label="套餐等级"
-                   className="packageLevel"
-                  >
-                    {getFieldDecorator('packageLevel', {
-                       rules: [],
-                    })(
-                      <Select
-                    >
-                     {
-                      gradeList
-                     }
-                    </Select>
-                    )}
-                  </FormItem>
-                </Form>
-                </div>
+                { this.state.isNess ? botton_div : null }
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
                 <Button className="SaveBtn" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>

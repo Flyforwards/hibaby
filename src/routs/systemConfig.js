@@ -48,7 +48,7 @@ export default (app) => [
     },
     //查看用户信息
     {
-      path: '/system/organization/ViewTheInformation',
+      path: '/system/organization/view-info',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/organization'));
