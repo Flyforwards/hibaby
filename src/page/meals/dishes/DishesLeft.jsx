@@ -92,6 +92,17 @@ class DishesLeft extends React.Component {
         }
       });
 
+    }else{
+      if(this.selectNodeLevel == 0){//根目录
+        this.deleteDisplay = "none";//设置删除按钮隐藏
+      }else{
+        this.deleteDisplay = "block";
+      }
+      if(this.selectNodeLevel > 2){//二级菜单
+        this.addDisplay = "none"//设置添加按钮隐藏
+      }else{
+        this.addDisplay = "block"
+      }
     }
   }
 
