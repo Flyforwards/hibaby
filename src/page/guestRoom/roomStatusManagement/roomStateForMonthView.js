@@ -351,15 +351,57 @@ const monthStateView = (props) => {
           let pageX = e.pageX;
           let target = e.target.parentNode;
           let targetWidth = target.offsetWidth;
+          let unit = 0;
+          let oldEndIndex = parseInt(target.dataset.endIndex);
+          let roomIndex = target.dataset.roomIndex;
+          let customerId = parseInt(target.dataset.customerId);
+          let customerName = target.dataset.customerName;
 
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
-            let unit = parseInt(offsetX / UNIT_WIDTH);
+            if (offsetX + targetWidth < UNIT_WIDTH) {
+              return;
+            }
 
-            target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
+            unit = parseInt(offsetX / UNIT_WIDTH);
+
+            if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
+              target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
+            }
           };
+
           document.onmouseup = () => {
             document.onmousemove = null;
+
+            if (!unit) {
+              return;
+            }
+
+            let type = "";
+            let startIndex, endIndex;
+            if (unit > 0) {
+              type = "add";
+              startIndex = oldEndIndex;
+              endIndex = oldEndIndex + unit;
+            } else {
+              type = "remove";
+              startIndex = oldEndIndex + unit;
+              endIndex = oldEndIndex;
+            }
+
+            dispatch({
+              type: 'roomStatusManagement/updateReserveDays',
+              payload: {
+                type,
+                startIndex,
+                endIndex,
+                roomIndex,
+                customerId,
+                customerName,
+              }
+            });
+
+            document.onmouseup = null;
           }
         };
 
@@ -375,6 +417,7 @@ const monthStateView = (props) => {
                  draggable="true"
                  data-room-index={roomIndex}
                  data-customer-id={users[i].customerId}
+                 data-customer-name={users[i].customerName}
                  data-start-index={users[i].startIndex}
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
                  data-user-dayCount={users[i].dayCount}
