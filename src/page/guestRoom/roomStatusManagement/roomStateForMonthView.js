@@ -29,26 +29,36 @@ const monthStateView = (props) => {
     event.preventDefault();
   };
 
-  document.ondrop = function (event) {
+  document.ondrop = (event) => {
     event.preventDefault();
 
-    let roomIndex = 0;
-    let dayIndex = 0;
+    let target = null;
+
     if (event.target.className === "dayRoom") {
-      roomIndex = event.target.dataset.roomIndex;
-      dayIndex = event.target.dataset.dayIndex;
+      target = event.target;
     } else if (event.target.parentNode.className === "dayRoom") {
-      roomIndex = event.target.parentNode.dataset.roomIndex;
-      dayIndex = event.target.parentNode.dataset.dayIndex;
+      target = event.target.parentNode;
     } else {
+      return;
+    }
+
+    let date = target.dataset.date;
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+    let day = today.getDate();
+    let tomorrow = new Date(year, month, day + 1);
+
+    // 过去的时间
+    if (date < tomorrow.getTime()) {
       return;
     }
 
     dispatch({
       type: 'roomStatusManagement/userDrop',
       payload: {
-        roomIndex: roomIndex,
-        dayIndex: dayIndex,
+        roomIndex: target.dataset.roomIndex,
+        dayIndex: target.dataset.dayIndex,
       }
     });
   };
@@ -263,8 +273,11 @@ const monthStateView = (props) => {
           });
 
           return (
-            <div className="dayRoom" data-room-index={roomIndex}
-                 data-day-index={dayindex}>
+            <div className="dayRoom"
+                 data-room-index={roomIndex}
+                 data-day-index={dayindex}
+                 data-date={day.date}
+            >
               <div className={stateBox}/>
             </div>
           )
@@ -276,8 +289,9 @@ const monthStateView = (props) => {
 
           for (let i = 0; i < userBoxes.length; i++) {
             userBoxes[i].classList.remove("active");
-            if (userBoxes[i].querySelector(".userBoxConfirm")) {
-              userBoxes[i].removeChild(userBoxes[i].querySelector(".userBoxConfirm"))
+            let btns = userBoxes[i].querySelectorAll(".userBoxConfirm");
+            for (let j = 0; j < btns.length; j++) {
+              userBoxes[i].removeChild(btns[j]);
             }
           }
 
