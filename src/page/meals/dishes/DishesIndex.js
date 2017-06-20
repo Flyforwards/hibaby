@@ -22,6 +22,10 @@ class DishesIndex extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
+      name : null,
+      mvType : null,
+      vdType : null,
+      status : null,
     }
     this.columns = [{
       title: '序号',
@@ -43,12 +47,19 @@ class DishesIndex extends React.Component{
       dataIndex: 'vdType',
       key:'vdType',
       width: '10%',
-    },/*{
+    },{
       title: '使用状态',
       dataIndex: 'status',
       key:'status',
       width: '10%',
-    },*/{
+      render: (text, record, index) => {
+        if(text === 0){
+          return <span>未使用</span>
+        }else if(text === 1){
+          return <span>已使用</span>
+        }
+      }
+    },{
       title: '操作',
       dataIndex: 'operating',
       key:'operating',
@@ -68,22 +79,18 @@ class DishesIndex extends React.Component{
   //查看
   onLook(record){
     const {dispatch} = this.props;
-    dispatch({
-      type: 'dishes/getDishesById',
-      payload: {
-        dataId : record.id
-      }
-    });
+    dispatch(routerRedux.push(`/meals/dishes/dishesDetail?dataId=${record.id}`));
   }
   //删除
   onDelete(record){
+    const _this = this;
     Modal.confirm({
       title: '提示',
       content: '是否确定删除此菜品?',
       okText: '确认',
       cancelText: '取消',
       onOk() {
-        const {dispatch} = this.props;
+        const {dispatch} = _this.props;
         dispatch({
           type: 'dishes/deleteDishes',
           payload: {
@@ -97,8 +104,21 @@ class DishesIndex extends React.Component{
 
 
   componentDidMount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'dishes/getDishesLibraryNodes'
+    });
     this.getTableData({
-      nodeId : 1,
+      nodeId : this.props.dishes.nodeId,
+      page : this.props.dishes.page,
+      size : this.props.dishes.size
+    });
+  }
+
+  handleSearch  = () =>{
+    this.getTableData({
+      nodeId : this.props.dishes.nodeId,
+
       page : this.props.dishes.page,
       size : this.props.dishes.size
     });
@@ -117,8 +137,33 @@ class DishesIndex extends React.Component{
     dispatch({
       type: 'dishes/getDishesPageList',
       payload: {
-        ...params
+        ...params,
+        name : this.state.name,
+        mvType : this.state.mvType,
+        vdType : this.state.vdType,
+        status : this.state.status
       }
+    });
+  }
+
+  handleNameChange=(e)=>{
+    this.setState({
+      name: e.target.value
+    });
+  }
+  handleMvTypeChange=(value)=>{
+    this.setState({
+      mvType: value
+    });
+  }
+  handleVdTypeChange=(value)=>{
+    this.setState({
+      vdType: value
+    });
+  }
+  handleStatus=(value)=>{
+    this.setState({
+      status: value
     });
   }
 
@@ -128,42 +173,49 @@ class DishesIndex extends React.Component{
         <div className="Dishes-nav">
           <Form layout="inline">
             <Row  justify="space-between">
-              <Col span={8}>
+              <Col span={5}>
+                <FormItem
+                  label="菜品名"
+                >
+                  <Input style={{ width: 180 }} onChange={this.handleNameChange.bind(this)}/>
+                </FormItem>
+              </Col>
+              <Col span={5}>
                 <FormItem
                   label="荤素类型"
                 >
-                  <Select placeholder="请选择" style={{ width: 180 }} allowClear={true}>
+                  <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
                     <Option value="0">正常</Option>
                     <Option value="1">禁用</Option>
                   </Select>
 
                 </FormItem>
               </Col>
-              <Col span={8}>
+              <Col span={5}>
                 <FormItem
                   label="菜品类型"
                 >
-                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true}>
+                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
                       <Option value="0">正常</Option>
                       <Option value="1">禁用</Option>
                     </Select>
                 </FormItem>
               </Col>
-              <Col span={8}>
+              <Col span={5}>
                 <FormItem
                   label="使用状态"
                 >
-                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true}>
-                      <Option value="0">正常</Option>
-                      <Option value="1">禁用</Option>
+                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)}>
+                      <Option value="0">未使用</Option>
+                      <Option value="1">已使用</Option>
                     </Select>
                 </FormItem>
               </Col>
             </Row>
           </Form>
           <div className="btn">
-            <span className="Dishes-Inquire"><Link to="/meals/dishes/addOrEditDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
-            <span className="Dishes-add" >查询</span>
+            <span className="Dishes-add"><Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
+            <Button className="Dishes-Inquire" onClick={this.handleSearch.bind(this)}>查询</Button>
           </div>
         </div>
     );

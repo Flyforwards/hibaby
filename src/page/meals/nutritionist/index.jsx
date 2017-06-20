@@ -22,7 +22,7 @@ import  CreateModal from './CreateModal.jsx'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
-import Current from '../../Current'
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -30,61 +30,8 @@ const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const createForm = Form.create
 
-//这是表单的数据操作
-class Customer extends React.Component {
-  state = {
-    value: this.props.value,
-    editable: false
-  }
-  handleChange = (e) => {
-    const value = e.target.value;
-    this.setState({ value });
-  }
-  check = () => {
-    this.setState({ editable: false });
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-  }
-  edit = () => {
-    this.setState({ editable: true });
-  }
-  
-  render() {
-    const { value, editable } = this.state;
-    return (
-      <div className="editable-cell">
-        {
-          editable ?
-            <div className="editable-cell-input-wrapper">
-              <Input
-                value={value}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-              />
-              <Icon
-                type="check"
-                className="editable-cell-icon-check"
-                onClick={this.check}
-              />
-            </div>
-            :
-            <div className="editable-cell-text-wrapper">
-              {value || ' '}
-              <Icon
-                type="edit"
-                className="editable-cell-icon"
-                onClick={this.edit}
-              />
-            </div>
-        }
-      </div>
-    );
-  }
-}
-
 @createForm()
-class CustomerIndex extends React.Component {
+class PrepareMealPage extends React.Component {
   constructor(props) {
     super(props)
     this.columns = [{
@@ -92,7 +39,7 @@ class CustomerIndex extends React.Component {
       dataIndex: 'name',
       key: 'name',
       render: (text,record) => {
-        return <span><Icon type="smile" />{text}</span>
+        return <span><Icon type="user" />{text}</span>
       }
     }, {
       title: '年龄',
@@ -108,7 +55,7 @@ class CustomerIndex extends React.Component {
       title: '怀孕周期',
       dataIndex: 'gestationalWeeks',
       key: 'gestationalWeeks'
-      
+
     }, {
       title: '第几胎',
       dataIndex: 'fetus',
@@ -151,39 +98,31 @@ class CustomerIndex extends React.Component {
         const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div>
-            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 编辑餐单 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 禁忌 </Link>
+            <Link disabled={detail} className="firstA" onClick={ this.editMenu.bind(this, record)}> 编辑餐单 </Link>
+            <Link disabled={del} className="firstB" onClick={ this.optionTaboo.bind(this, record)}> 禁忌 </Link>
           </div>
         );
       }
     }];
-    this.state = {
-      createModalVisible: false
-    }
   }
-  
-  onLook(record) {
+
+  editMenu(record) {
     const dispatch = this.props.dispatch;
     dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
   }
-  
-  onDelete(record) {
+
+  optionTaboo(record) {
     const dispatch = this.props.dispatch;
     dispatch(routerRedux.push(`/meals/nutritionist/taboo?dataId=${record.id}`))
   }
-  
-  handleCreateModalCancel() {
-    this.setState({
-      createModalVisible: false
-    })
+
+  onReset() {
+    const { pathname } = location;
+    this.props.dispatch(routerRedux.push({
+      pathname
+    }))
+    this.props.form.resetFields()
   }
-  
-  showCreateModal() {
-    this.setState({
-      createModalVisible: true
-    })
-  }
-  
   onSearch() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -191,19 +130,18 @@ class CustomerIndex extends React.Component {
           values.year = values.time.get('year');
           values.month = values.time.get('month') + 1;
         }
-        
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
-        
+        console.log("search>>>>",values)
         this.props.dispatch(routerRedux.push({
-          pathname: "/crm/customer",
+          pathname: "/meals/nutritionist/dinner",
           query: values
         }))
       }
     })
   }
-  
+
   reset() {
     const { pathname } = location;
     this.props.dispatch(routerRedux.push({
@@ -211,8 +149,8 @@ class CustomerIndex extends React.Component {
     }))
     this.props.form.resetFields()
   }
-  
-  
+
+
   textforkey(array, value, valuekey = 'name') {
     for (let i = 0; i < array.length; i++) {
       let dict = array[i];
@@ -222,25 +160,25 @@ class CustomerIndex extends React.Component {
     }
     return value;
   }
-  
+
   componentDidMount() {
     this.props.dispatch({ type: 'customer/getCustomerPage' });
     this.props.dispatch({ type: 'customer/listByMain' });
     this.props.dispatch({ type: 'customer/getMemberShipCard' });
     this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
   }
-  
+
   render() {
     const columns = this.columns;
     const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
-    
+
     for (let i = 0; i < list.length; i++) {
       let dict = list[i];
       dict.fetus = this.textforkey(fetusAry, dict.fetus)
       dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
     }
-    
-    
+
+
     const { getFieldDecorator } = form;
     const tableProps = {
       loading: loading.effects['customer/getCustomerPage'],
@@ -258,11 +196,11 @@ class CustomerIndex extends React.Component {
         }))
       }
     }
-    
+
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
     });
-    
+
     const formChooseLayout = {
       labelCol: { span: 10 },
       wrapperCol: { span: 14 }
@@ -275,12 +213,12 @@ class CustomerIndex extends React.Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
     }
-    
+
     const formChooseTwoAge = {
       labelCol: { span: 4 },
       wrapperCol: { span: 20 }
     }
-    
+
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
       <div className="CustomerConent">
@@ -300,7 +238,7 @@ class CustomerIndex extends React.Component {
                 <Row justify="end" type="flex" gutter={8}>
                   <Col span={6}>
                       <span>
-                        <Button onClick={ this.onSearch.bind(this)} style={{
+                        <Button  onClick={this.onSearch.bind(this)}style={{
                           width: '100%',
                           height: '40px',
                           lineHeight: '40px',
@@ -308,21 +246,22 @@ class CustomerIndex extends React.Component {
                         }}>搜索</Button>
                         </span>
                   </Col>
-                  
+
                   <Col span={6}>
                   <span>
-                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{
-                          width: '100%',
-                          backgroundColor: 'rgba(182, 114, 51, 1)',
-                          height: '40px',
-                          lineHeight: '40px',
-                          color: '#ffffff'
-                        }}>筛选项</Button></Link>
-                      </span>
+                    <Button disabled={add} style={{
+                        width: '100%',
+                        backgroundColor: 'rgba(182, 114, 51, 1)',
+                        height: '40px',
+                        lineHeight: '40px',
+                        color: '#ffffff'
+                      }} onClick={this.onReset.bind(this)}>重置</Button>
+                    </span>
                   </Col>
                 </Row>
               </Col>
             </Row>
+
             <Row gutter={16} style={{ height: 50 }}>
               <Col span={5} >
                 <FormItem label="年龄" {...formChooseOneAge}>
@@ -341,7 +280,7 @@ class CustomerIndex extends React.Component {
                     <InputNumber min={1} max={100}/>
                   )}
                 </FormItem>
-              
+
               </Col>
               <Col span={6} className="delDisplan">
                 <FormItem label="预产期" {...formChooseOneAge}>
@@ -355,11 +294,20 @@ class CustomerIndex extends React.Component {
                 </FormItem>
               </Col>
               <Col span={6}>
+                <FormItem label="操作者2" {...formChooseOneAge}>
+                  {getFieldDecorator('operator2', {
+                    rules: [{ required: false }]
+                  })(
+                    <Input max={40}/>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={6}>
                 <FormItem label="会员身份" {...formChooseOneAge}>
                   {getFieldDecorator('member', {
                     rules: [{ required: false }]
                   })(
-                    <Select placeholder="请选择">
+                    <Select placeholder="请选择" allowClear={ true }>
                       {
                         options
                       }
@@ -367,13 +315,7 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-              <Col span={6}>
-                  <FormItem label="套餐状态" {...formChooseOneAge}>
-                    {getFieldDecorator('purchasePackage')(
-                      <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
-                    )}
-                  </FormItem>
-                </Col>
+
             </Row>
             <Row style={{ height: 50 }} gutter={16}>
               <Col span={5}>
@@ -414,6 +356,8 @@ class CustomerIndex extends React.Component {
                   {getFieldDecorator('gestationalWeeks')(
                     <InputNumber max={40} min={1}/>
                   )}
+
+
                 </FormItem>
               </Col>
               <Col span={1}/>
@@ -433,17 +377,12 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-            
+
             </Row>
           </Form>
           <div className="CreateModaList-a">
             <Table bordered {...tableProps} rowKey={ record => record.id}/>
           </div>
-          <CreateModal
-            handleOk={this.state.handleOk}
-            visible={ this.state.createModalVisible }
-            onCancel={ this.handleCreateModalCancel.bind(this) }
-          />
         </main>
       </div>
     )
@@ -453,12 +392,12 @@ class CustomerIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          pagination,
-          shipCards,
-          fetusAry,
-          packageList
-        } = state.customer;
+    list,
+    pagination,
+    shipCards,
+    fetusAry,
+    packageList
+  } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
@@ -470,4 +409,4 @@ function mapStateToProps(state) {
     packageList
   };
 }
-export default connect(mapStateToProps)(CustomerIndex)
+export default connect(mapStateToProps)(PrepareMealPage)

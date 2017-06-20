@@ -8,7 +8,7 @@ import './AddCourse.scss';
 import AddCourseModel from './AddCourseModel.jsx'
 import UserServiceinfo from './userServiceinfo.jsx'
 import {keyToText} from '../../../utils';
-
+import PermissionButton from 'common/PermissionButton';
 let TYPENAME = [];
 
 class AddCourse extends Component {
@@ -143,7 +143,7 @@ class AddCourse extends Component {
             addCourseList.map((item)=>{
               item.key=item.id
             })
-            loadingName = false     
+            loadingName = false
              dataKey++
              dataKey2++
              const { getDictionary } = this.props
@@ -173,7 +173,7 @@ class AddCourse extends Component {
       }
         return (
             <div className="addCourse">
-              <Button className="AddBtn" type="primary" onClick={this.addCourse.bind(this)}>添加套餐</Button>
+              <PermissionButton testKey='CUSTOMER_PACKAGE_ADD' className="AddBtn" type="primary" onClick={this.addCourse.bind(this)}>添加套餐</PermissionButton>
               {
                 dataList
               }

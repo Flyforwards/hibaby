@@ -1,0 +1,52 @@
+.printList{
+height:auto;
+margin-bottom: 100px;
+}
+.print_all{
+    height:auto;
+}
+.print_all .time{
+  margin-top:40px;
+  font-size:20px;
+  margin-bottom:20px;
+  color:#b67233;
+  font-weight: bolder;
+}
+.userList{
+    width: 96%;
+    height: 45px;
+    border-bottom: 1px solid #999;
+    margin-bottom: 10px;
+}
+.userList span{
+  display: inline-block;
+  float:left;
+  color:#b67233;
+  margin-right:60px;
+  font-size:14px;
+}
+.userList .timeOut{
+  float:right;
+  margin-right: 30px;
+}
+.menu{
+  height:90px;
+  width: 96%;
+  border-bottom: 1px solid #999;
+}
+.menu .menuName{
+  height:40px;
+  line-height:40px;
+  font-size:14px;
+  color:#b67233;
+}
+.menu .menuCount{
+  height:50px;
+  line-height:50px;
+  font-size:14px;
+}
+.menu .menuCount span{
+  display: inline-block;
+  height:100%;
+  margin-left:7%;
+}

@@ -99,6 +99,10 @@ class AddServiceed extends Component {
             type: 'packageInfo/selectData',
             payload: { }
         });
+         this.props.dispatch({
+            type: 'packageInfo/getCardLevel',
+            payload: { }
+        });
         this.props.dispatch({
             type: 'packageInfo/getDictionary',
             payload: {
@@ -158,7 +162,8 @@ class AddServiceed extends Component {
                     "price": fields.price,
                     "serviceInfoList":serviceInfoList,
                     "suiteId": fields.room,
-                    "type": fields.type
+                    "type": fields.type,
+                    "levels":fields.packageLevel
                   }
                 });
               }else{
@@ -180,6 +185,7 @@ class AddServiceed extends Component {
     }
     render() {
         let loadingName = true
+        let levels = []
         let rowSelection = {}
         const { getFieldDecorator } = this.props.form;
         const { loading, selectedRows,selectedRowKeys} = this.state;
@@ -188,6 +194,7 @@ class AddServiceed extends Component {
         let selectData = []
         let roomList = []
         let type = []
+        let gradeList = []
         let suiteId = null
         if(this.props.serviceListByPage != null){
             ListLnformation = this.props.serviceListByPage;
@@ -196,6 +203,11 @@ class AddServiceed extends Component {
             });
             loadingName = false
 
+        }
+        if(this.props.grade != null){
+          gradeList = this.props.grade.map((item)=>{
+            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
+          })
         }
         if(this.props.selectData != null && this.props.findById){
           selectData = this.props.selectData.map((item)=>{
@@ -216,7 +228,7 @@ class AddServiceed extends Component {
         }
         if(this.props.findById){
           let data = [];
-         // console.log("this.props.findById>>>",this.props.findById)
+        levels.push(String(this.props.findById.levels))
           if(this.props.findById.isUse == 1){
               this.TableEdit = true
           }else{
@@ -311,6 +323,22 @@ class AddServiceed extends Component {
                     </Select>
                     )}
                   </FormItem>
+                  <FormItem
+                   label="套餐等级"
+                   className="packageLevel"
+                  >
+                    {getFieldDecorator('packageLevel', {
+                      initialValue:levels,
+                      rules: [],
+                    })(
+                      <Select 
+                    >
+                     {
+                      gradeList
+                     }
+                    </Select>
+                    )}
+                  </FormItem>
                 </Form>
                 </div>
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
@@ -324,6 +352,7 @@ function AddService({
   serviceListByPage,
   selectData,
   findById,
+  grade,
   getDictionary
 }) {
   return ( < div >
@@ -341,6 +370,9 @@ function AddService({
     }
     getDictionary = {
       getDictionary
+    } 
+    grade = {
+      grade
     }
     /></div>
   )
@@ -350,6 +382,7 @@ function mapStateToProps(state) {
     serviceListByPage,
     selectData,
     findById,
+    grade,
     getDictionary
   } = state.packageInfo;
   return {
@@ -357,6 +390,7 @@ function mapStateToProps(state) {
     serviceListByPage,
     selectData,
     findById,
+    grade,
     getDictionary
     };
 }

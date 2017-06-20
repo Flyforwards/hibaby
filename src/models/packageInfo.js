@@ -22,6 +22,7 @@ export default {
 		roomFindById:null,
 		commodityListByPage:[],
 		chineseToPinyin:null,
+		grade:null,
 		pagination: {
 	      showQuickJumper: true,
 	      showTotal: total => `共 ${total} 条`,
@@ -60,6 +61,10 @@ export default {
 	    roomListSave(state,{payload:{ data:roomData,code }}){
 	      let roomListSavedata = {...state,roomData,code};
 	      return roomListSavedata
+	    },
+	    getCardLevelSave(state,{payload:{ data:grade,code }}){
+	      let getCardLevelSavedata = {...state,grade,code};
+	      return getCardLevelSavedata
 	    },
 	    findByIdSave(state,{payload:{ data:findById,code }}){
 	      let findByIdSavedata = {...state,findById,code};
@@ -142,7 +147,7 @@ export default {
 	      }} = yield call(packageInfoService.add, values);
 			if (code == 0) {
 				message.success("添加套餐成功");
-				yield put(routerRedux.push("/crm/serviceinfo"));
+				yield put(routerRedux.push("/crm/service-info"));
 			}
 		},
 		//修改套房信息
@@ -334,6 +339,22 @@ export default {
 				});
 			}
 		},
+		//获取套餐等级下拉数据
+		*getCardLevel({payload: values}, { call, put }) {
+			const {
+				data: {
+		      		data,
+		      		code
+	      }} = yield call(packageInfoService.getCardLevel, values);
+			if (code == 0) {
+				yield put({
+					type: 'getCardLevelSave',
+					payload: {
+						data
+					}
+				});
+			}
+		},
 		//根据套餐ID查询套餐详情
 		*findById({payload: values}, { call, put }) {
 			const {
@@ -428,7 +449,7 @@ export default {
 			const { data: { data, code, err }} = yield call(packageInfoService.del, values);
 			if (code == 0) {
 				message.success("删除成功");
-				yield put(routerRedux.push("/crm/serviceinfo"));
+				yield put(routerRedux.push("/crm/service-info"));
 			}
 		},
 	},
@@ -447,7 +468,7 @@ export default {
 	            payload: query
 	          });
 	        }
-	        if (pathname === '/crm/serviceinfo') {
+	        if (pathname === '/crm/service-info') {
 		         dispatch({
 		            type: 'listByPage',
 		            payload: query

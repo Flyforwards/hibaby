@@ -21,6 +21,7 @@ export default (app) => [
         registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/healthInformation'));
         registerModel(app, require('models/membershipcard'));
+        registerModel(app, require('models/printCustomer'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
       })
     }
@@ -64,7 +65,7 @@ export default (app) => [
 
     // 套餐
     {
-      path: '/crm/serviceinfo',
+      path: '/crm/service-info',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
@@ -74,7 +75,7 @@ export default (app) => [
     },
     // 添加套餐
     {
-      path: '/crm/serviceinfo/addservice',
+      path: '/crm/service-info/add',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
@@ -82,29 +83,9 @@ export default (app) => [
         })
       }
     },
-     // 添加套房
-    {
-      path: '/crm/serviceinfo/addsuite',
-      getComponent: (location, cb) => {
-        require.ensure([], (require) => {
-          registerModel(app, require('models/packageInfo'));
-          cb(null, require('page/crm/product/addSuite.jsx'))
-        })
-      }
-    },
-    //查看套房
-    {
-      path: '/crm/serviceinfo/viewsuite',
-      getComponent: (location, cb) => {
-        require.ensure([], (require) => {
-          registerModel(app, require('models/packageInfo'));
-          cb(null, require('page/crm/product/viewSuite.jsx'))
-        })
-      }
-    },
     //查看套餐
     {
-      path: '/crm/serviceinfo/viewservice',
+      path: '/crm/service-info/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
@@ -114,21 +95,11 @@ export default (app) => [
     },
     //编辑套餐
     {
-      path: '/crm/serviceinfo/editservice',
+      path: '/crm/service-info/edit',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
           cb(null, require('page/crm/product/editService.jsx'))
-        })
-      }
-    },
-    //编辑套房
-    {
-      path: '/crm/serviceinfo/editsuite',
-      getComponent: (location, cb) => {
-        require.ensure([], (require) => {
-          registerModel(app, require('models/packageInfo'));
-          cb(null, require('page/crm/product/editSuite.jsx'))
         })
       }
     },
@@ -139,6 +110,36 @@ export default (app) => [
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
           cb(null, require('page/crm/product/suite.jsx'))
+        })
+      }
+    },
+    // 添加套房
+    {
+      path: '/crm/suite/add',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/addSuite.jsx'))
+        })
+      }
+  },
+    //编辑套房
+    {
+      path: '/crm/suite/edit',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/editSuite.jsx'))
+        })
+      }
+    },
+    //查看套房
+    {
+      path: '/crm/suite/detail',
+      getComponent: (location, cb) => {
+        require.ensure([], (require) => {
+          registerModel(app, require('models/packageInfo'));
+          cb(null, require('page/crm/product/viewSuite.jsx'))
         })
       }
     },
@@ -154,7 +155,7 @@ export default (app) => [
     },
     // 添加商品
     {
-      path: '/crm/commodity/addcommodity',
+      path: '/crm/commodity/add',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
@@ -164,7 +165,7 @@ export default (app) => [
     },
     // 查看商品详情
     {
-      path: '/crm/commodity/viewcommodity',
+      path: '/crm/commodity/detail',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
@@ -174,7 +175,7 @@ export default (app) => [
     },
      // 编辑商品
     {
-      path: '/crm/commodity/editcommodity',
+      path: '/crm/commodity/edit',
       getComponent: (location, cb) => {
         require.ensure([], (require) => {
           registerModel(app, require('models/packageInfo'));
@@ -333,6 +334,17 @@ export default (app) => [
       })
     }
   },
+
+  // // 客户电话系统
+  // {
+  //   path: '/crm/phone-system',
+  //   getComponent: (location, cb) => {
+  //     require.ensure([], (require) => {
+  //       registerModel(app, require('models/phoneSystem'));
+  //       cb(null, require('page/crm/customerService/PhoneSystemIndex.jsx'))
+  //     })
+  //   }
+  // },
 
 
   //会员卡打印路由

@@ -15,6 +15,7 @@ import { VISIT_TIME } from 'common/constants.js'
 import {local, session} from 'common/util/storage.js';
 import moment from 'moment'
 const confirm = Modal.confirm;
+import PermissionButton from 'common/PermissionButton';
 
 @createForm()
 class CustomerVisAddIndex extends React.Component {
@@ -94,7 +95,7 @@ class CustomerVisAddIndex extends React.Component {
                 </Link>
               </Col>
               <Col span={4}>
-                <Button className="SaveBtn" onClick={ this.delete.bind(this) }> 删除 </Button>
+                <PermissionButton testKey='CUSTOMERVIS_DELETE' className="SaveBtn" onClick={ this.delete.bind(this) }> 删除 </PermissionButton>
               </Col>
             </Row>
           </div>

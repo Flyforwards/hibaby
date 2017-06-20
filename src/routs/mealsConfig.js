@@ -21,7 +21,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
-        cb(null, require('page/meals/nutritionist/CustomerIndex.jsx'))
+        cb(null, require('page/meals/nutritionist/index.jsx'))
       })
     }
   },
@@ -31,6 +31,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
+         registerModel(app, require('models/prepareMeals'));
         cb(null, require('page/meals/nutritionist/editMenu.jsx'))
       })
     }
@@ -42,6 +43,36 @@ export default (app) => [
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
         cb(null, require('page/meals/nutritionist/Taboo.jsx'))
+      })
+    }
+  },
+   //编辑禁忌页面
+  {
+    path: '/meals/nutritionist/taboo/edittaboo',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/editTaboo.jsx'))
+      })
+    }
+  },
+  //导出餐单页面
+  {
+    path: '/meals/nutritionist/taboo/export',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/export.jsx'))
+      })
+    }
+  },
+   //打印餐单的单独页面
+  {
+    path: '/exportPrint',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+         registerModel(app, require('models/dinner'));
+        cb(null, require('page/meals/nutritionist/exportPrint.jsx'))
       })
     }
   },
@@ -57,7 +88,17 @@ export default (app) => [
   },
   //创建菜品
   {
-    path: '/meals/dishes/addOrEditDishes',
+    path: '/meals/dishes/addDishes',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/dishes'));
+        cb(null, require('page/meals/dishes/DishesFormPage.js'))
+      })
+    }
+  },
+  //修改菜品
+  {
+    path: '/meals/dishes/editDishes',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/dishes'));
@@ -74,5 +115,15 @@ export default (app) => [
         cb(null, require('page/meals/dishes/DishesDetailPage.js'))
       })
     }
-  }
+  },
+  //基础餐单
+  {
+    path: '/meals/dishes/prepareMeals',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/prepareMeals'));
+        cb(null, require('page/meals/prepareMeals/prepareMeals.js'))
+      })
+    }
+  },
 ]

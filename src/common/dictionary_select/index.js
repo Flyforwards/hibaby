@@ -57,7 +57,7 @@ class DictionarySelect extends Component {
 
     // const {onChange, onSelect, defaultValue, placeholers} = this.props;
     return (
-      <Select {...this.props}>
+      <Select {...this.props} allowClear={ true }>
         {options}
       </Select>
     )

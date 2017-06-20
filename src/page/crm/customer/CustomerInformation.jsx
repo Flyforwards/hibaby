@@ -383,7 +383,7 @@ function BaseInfo(props) {
 
 function ExtensionInfo(props) {
 
-  const {lookCardIDDLC,lookContractDLC,operator,memberNumberValue,purchasePackageValue,memberAry,specialIdentityAry,
+  const {lookCardIDDLC,lookContractDLC,operator,memberAry,specialIdentityAry,
     headIconUrl,provinceData,permanentCityData,nationalData,headIconSpin} = props.users;
 
   const {dispatch} = props;
@@ -487,7 +487,6 @@ function ExtensionInfo(props) {
     {title:'关联客房',component:'InputNumber',submitStr:'associatedRooms'},
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
-    {title:'会员编号',component:'Input',submitStr:'memberNumber',disabled:true,initValue:memberNumberValue},
     {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},
     {title:'户籍地址',component:'Select',submitStr:'provincePermanent',fun:PermanentProvinceSelect,children:provinceDataChis,span:6},
     {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
@@ -646,6 +645,9 @@ class customerInformation extends React.Component{
           exDict = values;
         }
       });
+    }
+    else {
+      this.refs.extensionForm.resetFields();
     }
 
     if (!baseDict) return;

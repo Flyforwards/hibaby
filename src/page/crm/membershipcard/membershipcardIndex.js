@@ -19,6 +19,8 @@ import RenewRecord from './renewRecord';
 import RefundRecord from './refundRecord';
 import AlertModalFrom from './commonModel';
 import ChargeBackFeeModal from './chargeBackFeeModal'
+import PermissionButton from 'common/PermissionButton';
+
 class MemberShipCard extends Component {
   constructor(props) {
     super(props);
@@ -157,11 +159,10 @@ class MemberShipCard extends Component {
 
   backTabs() {
 
-    this.dispatch(routerRedux.push("/crm/customer"))
-    // this.props.dispatch({
-    //   type: 'addCustomer/changeTabs',
-    //   payload: { activityKey: "1" }
-    // })
+    this.props.dispatch({
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
+    })
   }
 
 
@@ -193,7 +194,7 @@ class MemberShipCard extends Component {
         <div style={{textAlign:'right',marginTop:'20px'}}>
           <Button onClick={this.backTabs.bind(this)} className="cardBtn BackBtn">返回</Button>
 
-          <Button className="cardBtn PrintBtn"  onClick={this.onPrint.bind(this)}>打印</Button>
+          <PermissionButton testKey='CARD_PRINT' className="cardBtn PrintBtn"  onClick={this.onPrint.bind(this)}>打印</PermissionButton>
 
           <AlertModalFrom
             modalTitle="会员销卡"
@@ -204,7 +205,7 @@ class MemberShipCard extends Component {
             onOk={this.handleCancelCard.bind(this)}
             type="DELETE"
           >
-            <Button className="cardBtn clearBtn">销卡</Button>
+            <PermissionButton testKey='CARD_CANCEL' className="cardBtn clearBtn">销卡</PermissionButton>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -216,7 +217,7 @@ class MemberShipCard extends Component {
             onOk={this.handleRefundCard.bind(this)}
             type="REFUND"
           >
-            <Button className="cardBtn RefundBtn">退费</Button>
+            <PermissionButton testKey='CARD_REFUND' className="cardBtn RefundBtn">退费</PermissionButton>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -228,13 +229,13 @@ class MemberShipCard extends Component {
             onOk={this.handleRenewFee.bind(this)}
             type="CHARGE"
           >
-            <Button className="cardBtn renewBtn" >续费</Button>
+            <PermissionButton testKey='CARD_RENEWAL' className="cardBtn renewBtn" >续费</PermissionButton>
           </AlertModalFrom>
 
           <ChargeBackFeeModal
             onOk={this.onCharge.bind(this)}
           >
-            <Button className="cardBtn decBtn">扣费</Button>
+            <PermissionButton testKey='CARD_DEDUCTION' className="cardBtn decBtn">扣费</PermissionButton>
           </ChargeBackFeeModal>
 
         </div>

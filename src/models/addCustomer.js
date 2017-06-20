@@ -29,14 +29,13 @@ export default {
     loading:false,
     headIcon:'',
     headIconUrl:'',
-    activityKey: "1",
+    activityKey: '',
     operator:'',
 
     editCustomer:false,
 
     headIconSpin:false,
 
-    memberNumberValue:'',
     purchasePackageValue:'',
 
     //下拉框所需数据
@@ -155,13 +154,13 @@ export default {
         nationalData:[],
         modal:false,
         headIcon:'',
+        activityKey: '',
         headIconUrl:'',
 
         operator:'',
 
         editCustomer:false,
 
-        memberNumberValue:'',
         purchasePackageValue:'',
 
         //下拉框所需数据
@@ -436,7 +435,7 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${data}`))
+          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${data||dict.id}`))
 
         }
       }
@@ -483,7 +482,6 @@ export default {
         "idcardScan": caridStr,
         "insuranceSituation": values.insuranceSituation,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
-        "memberNumber": values.memberNumber,
         "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,

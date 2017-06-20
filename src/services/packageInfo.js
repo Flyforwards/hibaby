@@ -44,13 +44,13 @@ export function findById(values) {
     body: JSON.stringify(values),
   })
 }
-//根据套餐ID查询套餐是否可编辑
-// export function findById(values) {
-//   return request('/crm/api/v1/packageInfo/findById', {
-//     method: 'POST',
-//     body: JSON.stringify(values),
-//   })
-// }
+//获取套餐等级列表
+export function getCardLevel(values) {
+  return request('/crm/api/v1/membershipcard/getCardLevel', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 //服务项目分页列表
 export function serviceListByPage(values) {
   return request('/crm/api/v1/serviceInfo/listByPage', {

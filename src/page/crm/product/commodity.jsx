@@ -48,7 +48,7 @@ class Commodityed extends Component {
             const del = !this.props.permissionAlias.contains('COMMODITY_DELETE');
             return (
                 <span>
-                  <Link disabled={detail} to={{ pathname: '/crm/commodity/viewCommodity', query: { commodity:record.id } }} className="twoB">查看</Link>
+                  <Link disabled={detail} to={{ pathname: '/crm/commodity/detail', query: { commodity:record.id } }} className="twoB">查看</Link>
                   <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
                 </span>
             );
@@ -96,7 +96,7 @@ class Commodityed extends Component {
         const add = !this.props.permissionAlias.contains('COMMODITY_ADD');
         return (
             <div className="commodity">
-                <div className="commodityButton"><Link to="/crm/commodity/addcommodity"><Button disabled={add} type="primary">添加</Button></Link></div>
+                <div className="commodityButton"><Link to="/crm/commodity/add"><Button disabled={add} type="primary">添加</Button></Link></div>
                 <div className="commodityTabal">
                   <Table {...tableProps} rowKey = { record=>record.id } bordered columns={ columns } />
                 </div>

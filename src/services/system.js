@@ -9,13 +9,6 @@ export function getSystemTime(values) {
   })
 }
 
-//集团保存接口
-export function systemsave(values) {
-  return request('/crm/api/v1/dictionary/saveDictionary', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
 
 //添加权限
 export function permissionAdd(values) {
@@ -79,18 +72,7 @@ export function customer(values) {
     body: JSON.stringify(values),
   })
 }
-export function LogView(values) {
-  return request('/crm/api/v1/dictionary/getDictionaryMainPageLists', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
-export function add(values) {
-  return request('/crm/api/v1/dictionary/saveDictionary', {
-    method: 'POST',
-    body: JSON.stringify(values),
-  })
-}
+
 export function checkData(values) {
   return request('/crm/api/v1/dictionary/getDictionaryMainAndSide', {
     method: 'POST',
