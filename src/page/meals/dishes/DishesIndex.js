@@ -173,14 +173,14 @@ class DishesIndex extends React.Component{
         <div className="Dishes-nav">
           <Form layout="inline">
             <Row  justify="space-between">
-              <Col span={5}>
+              {/*<Col span={5}>
                 <FormItem
                   label="菜品名"
                 >
                   <Input style={{ width: 180 }} onChange={this.handleNameChange.bind(this)}/>
                 </FormItem>
-              </Col>
-              <Col span={5}>
+              </Col>*/}
+              <Col span={8}>
                 <FormItem
                   label="荤素类型"
                 >
@@ -191,7 +191,7 @@ class DishesIndex extends React.Component{
 
                 </FormItem>
               </Col>
-              <Col span={5}>
+              <Col span={8}>
                 <FormItem
                   label="菜品类型"
                 >
@@ -201,7 +201,7 @@ class DishesIndex extends React.Component{
                     </Select>
                 </FormItem>
               </Col>
-              <Col span={5}>
+              <Col span={8}>
                 <FormItem
                   label="使用状态"
                 >
