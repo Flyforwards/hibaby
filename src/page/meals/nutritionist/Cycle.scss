@@ -1,0 +1,81 @@
+
+.MealCycle {
+
+  .headerDate {
+    width: 100%;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-style: normal;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .cardSubtitle {
+    height: 50px;
+    line-height: 50px;
+    margin-left: 20px;
+  }
+
+  .tabooUser-content {
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+  }
+
+  .ant-row {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  .ant-row > div {
+    padding: 0 8px;
+  }
+
+  .ant-card-body {
+    padding: 0;
+  }
+
+  .ant-card-head {
+    height: 48px;
+    line-height: 48px;
+    background: #f6f6f6;
+    border-bottom: 1px solid #e9e9e9;
+    padding: 0 24px;
+  }
+
+  .ant-card {
+    background: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    position: relative;
+    overflow: hidden;
+    height: 330px;
+    transition: all .3s;
+  }
+
+  .ant-tabs-nav .ant-tabs-tab {
+    display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+    padding: 8px 8px 9px 8px;
+    transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0 auto;
+    width: 136px;
+    text-align: center;
+  }
+
+  .cycle-tabs {
+    margin: 8px auto;
+  }
+
+  .ant-tabs-bar {
+    border-bottom: none;
+    outline: none;
+    width: 200px;
+    margin: 0 auto;
+  }
+}
+

@@ -8,6 +8,7 @@ import { Form,Row,Col,Radio,Input,Button,message } from 'antd';
 import './SkinHealthInformation.scss';
 import { routerRedux } from 'dva/router';
 import ExcelTitleModel from './excelTitle';
+import PermissionButton from 'common/PermissionButton';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const createForm = Form.create
@@ -336,10 +337,10 @@ class SkinHealthInformationDetail extends React.Component {
               if(location.pathname !== '/crm/customer/printCustomerPage')
               {
                 return <div>
-                  <Button className='commitButton SaveBtn' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</Button>
+                  <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
                   <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
                   <ExcelTitleModel>
-                    <Button className='commitButton BackBtn'>打印</Button>
+                    <PermissionButton testKey="HEALTHINFO_PRINT" className='commitButton BackBtn'>打印</PermissionButton>
                   </ExcelTitleModel>
                 </div>
               }

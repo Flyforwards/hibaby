@@ -202,7 +202,10 @@ const monthStateView = (props) => {
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房',5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
 
           let roomState = 0;
+          // 一天中的用户列表
           let dayCustomerList = day.customerList;
+
+          // 如果该天只有一个用户, 直接显示相应状态
           if (dayCustomerList.length === 1) {
             let hasUser = false;
             roomState = dayCustomerList[0].status || 7;
@@ -248,26 +251,21 @@ const monthStateView = (props) => {
               }
             }
 
-            roomState = 8;
+            roomState = 9;
           }
-
 
           let stateBox = classNames('stateBox', {
             'empty': roomState == 0, // 空房
             'repair': roomState == 1, // 维修
-            'reserve': roomState == 7,
-            'overlap': roomState == 8,
-            'checkingIn': roomState == 5,
+            'reserve': roomState == 7, // 预约
+            'overlap': roomState == 9, // 重叠
+            'checkingIn': roomState == 5, // 入住
           });
-
 
           return (
             <div className="dayRoom" data-room-index={roomIndex}
                  data-day-index={dayindex}>
-
-              <div className={stateBox}>
-
-              </div>
+              <div className={stateBox}/>
             </div>
           )
         });
@@ -294,11 +292,12 @@ const monthStateView = (props) => {
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
           btn.className = "userBoxConfirm";
+
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             let parentNode = e.target.parentNode;
             dispatch({
-              type: 'roomStatusManagement/updateUserState',
+              type: 'roomStatusManagement/confirmCheckIn',
               payload: {
                 roomIndex: parentNode.dataset.roomIndex,
                 customerId: parentNode.dataset.customerId,
@@ -351,15 +350,77 @@ const monthStateView = (props) => {
           let pageX = e.pageX;
           let target = e.target.parentNode;
           let targetWidth = target.offsetWidth;
+          let unit = 0;
+          let oldStartIndex = parseInt(target.dataset.startIndex);
+          let oldEndIndex = parseInt(target.dataset.endIndex);
+          let roomIndex = target.dataset.roomIndex;
+          let customerId = parseInt(target.dataset.customerId);
+          let customerName = target.dataset.customerName;
+          let reserveDays = 0;
+
+          console.log(roomList, roomIndex);
+          let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
+
+          // 左端在入住状态下不可操作
+          for (let i = 0; i < customerList.length; i++) {
+            let customer = customerList[i];
+            if (customer.customerId == customerId) {
+              if (customer.status == 5) {
+                return;
+              }
+            }
+          }
 
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
-            let unit = parseInt(offsetX / UNIT_WIDTH);
 
-            target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
+            // 用户入住时间最短为1天
+            if (offsetX + targetWidth < UNIT_WIDTH) {
+              return;
+            }
+
+            unit = parseInt(offsetX / UNIT_WIDTH);
+
+            if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
+              target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
+            }
           };
+
           document.onmouseup = () => {
             document.onmousemove = null;
+
+            if (!unit) {
+              return;
+            }
+
+            let type = "";
+            let startIndex, endIndex;
+            if (unit > 0) {
+              type = "add";
+              startIndex = oldEndIndex;
+              endIndex = oldEndIndex + unit;
+              reserveDays = endIndex - oldStartIndex + 1;
+            } else {
+              type = "remove";
+              startIndex = oldEndIndex + unit;
+              endIndex = oldEndIndex;
+              reserveDays = startIndex - oldStartIndex + 1;
+            }
+
+            dispatch({
+              type: 'roomStatusManagement/updateReserveDays',
+              payload: {
+                type,
+                startIndex,
+                endIndex,
+                roomIndex,
+                customerId,
+                customerName,
+                reserveDays,
+              }
+            });
+
+            document.onmouseup = null;
           }
         };
 
@@ -375,6 +436,7 @@ const monthStateView = (props) => {
                  draggable="true"
                  data-room-index={roomIndex}
                  data-customer-id={users[i].customerId}
+                 data-customer-name={users[i].customerName}
                  data-start-index={users[i].startIndex}
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
                  data-user-dayCount={users[i].dayCount}
@@ -383,7 +445,10 @@ const monthStateView = (props) => {
                  onContextMenu={userBoxRightClickHandler}
             >
               {users[i].customerName}
-              <div className="resizeBar" onMouseDown={resizeBarMouseDownHandler}/>
+              <a href="javascript:void(0)"
+                 className="resizeBar"
+                 title={users[i].reserveDays + '天'}
+                 onMouseDown={resizeBarMouseDownHandler}/>
             </div>
           )
         }

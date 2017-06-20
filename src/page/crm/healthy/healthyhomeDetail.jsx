@@ -8,7 +8,7 @@ import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import BigImageModal from '../customer/BigImageModal';
 import ExcelTitleModel from './excelTitle';
-
+import PermissionButton from 'common/PermissionButton';
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
@@ -630,23 +630,21 @@ function HealthyhomeDetail(props) {
 
       {
         (() => {
-          if(location.pathname !== '/crm/customer/printCustomerPage')
-          {
+          if (location.pathname !== '/crm/customer/printCustomerPage') {
             return <div>
               <ExcelTitleModel>
-                <Button className='commitButton BackBtn'>打印</Button>
+                <PermissionButton testKey="HEALTHINFO_PRINT" className='commitButton BackBtn'>打印</PermissionButton>
               </ExcelTitleModel>
               <div className='bottomButton'>
-                <Button className='commitButton SaveBtn' type="primary" onClick={handleEdit}>编辑</Button>
+                <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' type="primary"
+                                  onClick={handleEdit}>编辑</PermissionButton>
                 <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
 
               </div>
             </div>
           }
         })()
-
       }
-
 
     </div>
   );

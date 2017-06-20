@@ -7,7 +7,7 @@ import FileUpload from './fileUpload';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import BigImageModal from '../customer/BigImageModal';
-
+import PermissionButton from 'common/PermissionButton';
 
 
 const FormItem = Form.Item
@@ -74,7 +74,7 @@ function ConclusionInformationDetail(props) {
       </Form>
       <div className='bottomButton'>
         <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
-        <Button className='commitButton SaveBtn' type="primary" onClick={handleEdit}>编辑</Button>
+        <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' type="primary" onClick={handleEdit}>编辑</PermissionButton>
       </div>
 
       <BigImageModal

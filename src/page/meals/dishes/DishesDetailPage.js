@@ -8,7 +8,8 @@ import React from 'react';
 import {connect} from 'dva';
 import {message, Button, Icon,Form,Row,Col,Input,Select,Tag,Modal } from 'antd';
 import { routerRedux } from 'dva/router';
-import DishesDetailPageCss from './DishesDetailPage.css'
+import DishesDetailPageCss from './DishesDetailPage.css';
+import PermissionButton from '../../../common/PermissionButton';
 
 
 const FormItem = Form.Item;
@@ -249,8 +250,10 @@ class DishesDetailPage extends React.Component{
           </div>
         </Form>
         <div>
-          <Button className='myBtn SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>
-          <Button className='myBtn RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>
+          <PermissionButton testKey="DISHES_EDIT" className='myBtn SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
+          <PermissionButton testKey="DISHES_DELETE" className='myBtn RemoveBtn' onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</PermissionButton>
+          {/*<Button className='myBtn SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>*/}
+          {/*<Button className='myBtn RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>*/}
           <Button className='myBtn BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </div>

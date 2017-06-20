@@ -81,8 +81,8 @@ export default (app) => [
     path: '/meals/nutritionist/cycle',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/addCustomer'));
-        cb(null, require('page/meals/nutritionist/Dinner.jsx'))
+        //registerModel(app, require('models/addCustomer'));
+        cb(null, require('page/meals/nutritionist/cycle.jsx'))
       })
     }
   },
