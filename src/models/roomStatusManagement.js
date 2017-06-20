@@ -211,7 +211,14 @@ export default {
       }
 
 
-      console.log(monthRoomList);
+      // 更新入住天数
+      let customersList = state.monthStateCustomers;
+      for (let i = 0; i < customersList.length; i++) {
+        let customer = customersList[i];
+        if (customer.customerId == customerId) {
+          customer.reserveDays = data.reserveDays;
+        }
+      }
       return {
         ...state,
         monthRoomList: monthRoomList

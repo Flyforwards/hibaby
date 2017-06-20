@@ -202,7 +202,10 @@ const monthStateView = (props) => {
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房',5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
 
           let roomState = 0;
+          // 一天中的用户列表
           let dayCustomerList = day.customerList;
+
+          // 如果该天只有一个用户, 直接显示相应状态
           if (dayCustomerList.length === 1) {
             let hasUser = false;
             roomState = dayCustomerList[0].status || 7;
@@ -248,26 +251,21 @@ const monthStateView = (props) => {
               }
             }
 
-            roomState = 8;
+            roomState = 9;
           }
-
 
           let stateBox = classNames('stateBox', {
             'empty': roomState == 0, // 空房
             'repair': roomState == 1, // 维修
-            'reserve': roomState == 7,
-            'overlap': roomState == 8,
-            'checkingIn': roomState == 5,
+            'reserve': roomState == 7, // 预约
+            'overlap': roomState == 9, // 重叠
+            'checkingIn': roomState == 5, // 入住
           });
-
 
           return (
             <div className="dayRoom" data-room-index={roomIndex}
                  data-day-index={dayindex}>
-
-              <div className={stateBox}>
-
-              </div>
+              <div className={stateBox}/>
             </div>
           )
         });
@@ -358,7 +356,9 @@ const monthStateView = (props) => {
           let roomIndex = target.dataset.roomIndex;
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
+          let reserveDays = 0;
 
+          console.log(roomList, roomIndex);
           let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
 
           // 左端在入住状态下不可操作
@@ -399,10 +399,12 @@ const monthStateView = (props) => {
               type = "add";
               startIndex = oldEndIndex;
               endIndex = oldEndIndex + unit;
+              reserveDays = endIndex - oldStartIndex + 1;
             } else {
               type = "remove";
               startIndex = oldEndIndex + unit;
               endIndex = oldEndIndex;
+              reserveDays = startIndex - oldStartIndex + 1;
             }
 
             dispatch({
@@ -414,6 +416,7 @@ const monthStateView = (props) => {
                 roomIndex,
                 customerId,
                 customerName,
+                reserveDays,
               }
             });
 
@@ -442,7 +445,10 @@ const monthStateView = (props) => {
                  onContextMenu={userBoxRightClickHandler}
             >
               {users[i].customerName}
-              <div className="resizeBar" onMouseDown={resizeBarMouseDownHandler}/>
+              <a href="javascript:void(0)"
+                 className="resizeBar"
+                 title={users[i].reserveDays + '天'}
+                 onMouseDown={resizeBarMouseDownHandler}/>
             </div>
           )
         }
