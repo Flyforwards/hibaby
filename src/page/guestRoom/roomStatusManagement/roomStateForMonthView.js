@@ -294,11 +294,12 @@ const monthStateView = (props) => {
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
           btn.className = "userBoxConfirm";
+
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             let parentNode = e.target.parentNode;
             dispatch({
-              type: 'roomStatusManagement/updateUserState',
+              type: 'roomStatusManagement/confirmCheckIn',
               payload: {
                 roomIndex: parentNode.dataset.roomIndex,
                 customerId: parentNode.dataset.customerId,
@@ -352,13 +353,28 @@ const monthStateView = (props) => {
           let target = e.target.parentNode;
           let targetWidth = target.offsetWidth;
           let unit = 0;
+          let oldStartIndex = parseInt(target.dataset.startIndex);
           let oldEndIndex = parseInt(target.dataset.endIndex);
           let roomIndex = target.dataset.roomIndex;
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
 
+          let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
+
+          // 左端在入住状态下不可操作
+          for (let i = 0; i < customerList.length; i++) {
+            let customer = customerList[i];
+            if (customer.customerId == customerId) {
+              if (customer.status == 5) {
+                return;
+              }
+            }
+          }
+
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
+
+            // 用户入住时间最短为1天
             if (offsetX + targetWidth < UNIT_WIDTH) {
               return;
             }

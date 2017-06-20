@@ -136,13 +136,13 @@ export default {
         selectedMonthList: data.selectedMonthList,
       }
     },
-    updateUserState(state, {payload: data}){
+    confirmCheckIn(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
       let room = monthRoomList[data.roomIndex].useAndBookingList;
-
       let startIndex = parseInt(data.startIndex);
       let endIndex = parseInt(data.endIndex);
-      for (let j = startIndex; j < endIndex; j++) {
+
+      for (let j = startIndex; j <= endIndex; j++) {
         let customerList = room[j].customerList;
         for (let k = 0; k < customerList.length; k++) {
           if (customerList[k].customerId == data.customerId) {
