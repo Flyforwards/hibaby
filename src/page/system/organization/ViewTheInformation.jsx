@@ -179,7 +179,7 @@ class ViewTheInformationed extends React.Component {
       let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
       let edit = !this.props.permissionAlias.contains('EMPLOYEE_EDIT');
       return(
-        <div className="viewTheInformation">
+        <div className="view-info">
           <div className="basicInformation">基本信息</div>
             <div className="basicInformationContent">
               <img className="img" src={ imageUrl } onError={ this.onError.bind(this) }/>

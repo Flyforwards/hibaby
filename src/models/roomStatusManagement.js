@@ -39,7 +39,7 @@ export default {
         }
       }
 
-      return {...state, selectValue: todo.data, roomList: listArray};
+      return {...state, selectValue: todo.data, roomList: listArray || ''};
     },
     setPackageAry(state, {payload: todo}){
       return {...state, packageAry: todo.data};
@@ -137,26 +137,48 @@ export default {
       }
     },
     updateUserState(state, {payload: data}){
-
       let monthRoomList = state.monthRoomList.concat();
-      for (let i = 0; i < monthRoomList[data.roomIndex].useAndBookingList.length; i++) {
-        let room = monthRoomList[data.roomIndex].useAndBookingList;
-        for (let j = data.startIndex; j < data.endIndex; j++) {
-          let customerList = room[j].customerList;
-          for (let k = 0; k < customerList.length; k++) {
-            if (customerList[k].customerId == data.customerId) {
-              customerList[k].status = 5;// 确认入住
-            }
+      let room = monthRoomList[data.roomIndex].useAndBookingList;
+
+      let startIndex = parseInt(data.startIndex);
+      let endIndex = parseInt(data.endIndex);
+      for (let j = startIndex; j < endIndex; j++) {
+        let customerList = room[j].customerList;
+        for (let k = 0; k < customerList.length; k++) {
+          if (customerList[k].customerId == data.customerId) {
+            customerList[k].status = 5;// 确认入住
+            break;
           }
         }
       }
-
 
       return {
         ...state,
         monthRoomList: monthRoomList
       }
-    }
+    },
+    deleteUser(state, {payload: data}){
+      let monthRoomList = state.monthRoomList.concat();
+      let room = monthRoomList[data.roomIndex].useAndBookingList;
+
+      let startIndex = parseInt(data.startIndex);
+      let endIndex = parseInt(data.endIndex);
+      for (let j = startIndex; j <= endIndex; j++) {
+        let customerList = room[j].customerList;
+        for (let k = 0; k < customerList.length; k++) {
+          if (customerList[k].customerId == data.customerId) {
+            delete customerList[k].status;
+            customerList.splice(k, 1);
+            break;
+          }
+        }
+      }
+
+      return {
+        ...state,
+        monthRoomList: monthRoomList
+      }
+    },
   }
   ,
   effects: {
