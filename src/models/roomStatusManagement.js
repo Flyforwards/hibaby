@@ -136,13 +136,13 @@ export default {
         selectedMonthList: data.selectedMonthList,
       }
     },
-    updateUserState(state, {payload: data}){
+    confirmCheckIn(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
       let room = monthRoomList[data.roomIndex].useAndBookingList;
-
       let startIndex = parseInt(data.startIndex);
       let endIndex = parseInt(data.endIndex);
-      for (let j = startIndex; j < endIndex; j++) {
+
+      for (let j = startIndex; j <= endIndex; j++) {
         let customerList = room[j].customerList;
         for (let k = 0; k < customerList.length; k++) {
           if (customerList[k].customerId == data.customerId) {
@@ -174,6 +174,51 @@ export default {
         }
       }
 
+      return {
+        ...state,
+        monthRoomList: monthRoomList
+      }
+    },
+    updateReserveDays(state, {payload: data}){
+      let monthRoomList = state.monthRoomList.concat();
+
+      let room = monthRoomList[data.roomIndex].useAndBookingList;
+      let startIndex = parseInt(data.startIndex);
+      let endIndex = parseInt(data.endIndex);
+      let customerId = data.customerId;
+      let customerName = data.customerName;
+      let type = data.type;
+
+      if (type == "add") {
+        for (let j = startIndex + 1; j <= endIndex; j++) {
+          let customerList = room[j].customerList;
+          customerList.push({
+            customerId,
+            customerName,
+          })
+        }
+      } else {
+        for (let j = startIndex + 1; j <= endIndex; j++) {
+          let customerList = room[j].customerList;
+          for (let k = 0; k < customerList.length; k++) {
+            if (customerList[k].customerId == customerId) {
+              delete customerList[k].status;
+              customerList.splice(k, 1);
+              break;
+            }
+          }
+        }
+      }
+
+
+      // 更新入住天数
+      let customersList = state.monthStateCustomers;
+      for (let i = 0; i < customersList.length; i++) {
+        let customer = customersList[i];
+        if (customer.customerId == customerId) {
+          customer.reserveDays = data.reserveDays;
+        }
+      }
       return {
         ...state,
         monthRoomList: monthRoomList
