@@ -1,5 +1,5 @@
 import React from 'react'
-import './dinner.scss'
+import './index.scss'
 import { connect } from 'dva'
 import {
   Select,
@@ -186,23 +186,23 @@ class CustomerIndex extends React.Component {
 
   onSearch() {
     console.log("search>>>>>")
-    // this.props.form.validateFields((err, values) => {
-    //   if (!err) {
-    //     if (values.time != undefined) {
-    //       values.year = values.time.get('year');
-    //       values.month = values.time.get('month') + 1;
-    //     }
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        if (values.time != undefined) {
+          values.year = values.time.get('year');
+          values.month = values.time.get('month') + 1;
+        }
 
-    //     if (values.productionDate != undefined) {
-    //       values.productionDate = values.productionDate.format("YYYY-MM-DD")
-    //     }
+        if (values.productionDate != undefined) {
+          values.productionDate = values.productionDate.format("YYYY-MM-DD")
+        }
 
-    //     this.props.dispatch(routerRedux.push({
-    //       pathname: "/crm/customer",
-    //       query: values
-    //     }))
-    //   }
-    // })
+        this.props.dispatch(routerRedux.push({
+          pathname: "/crm/customer",
+          query: values
+        }))
+      }
+    })
   }
 
   reset() {

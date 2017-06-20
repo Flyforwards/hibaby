@@ -22,7 +22,14 @@ class MemberShipCard extends Component {
         time:'',
     }
   }
-
+ // menuList(data) {
+ //    data ? data.map(function(elem,index){
+ //      let menuArray = [];
+ //      menuArray.push(
+ //
+ //      )
+ //    }):null;
+ // }
 
   render() {
     let menuList = []
@@ -30,7 +37,7 @@ class MemberShipCard extends Component {
     const danTime = printBaseMsg ? new Date(printBaseMsg.billTime).format('yyyy-MM-dd HH:mm:ss') : '';
     console.log("exportValue>>>>",exportValue)
     return (
-      <div className="printList">
+      <div className="printList" style={{padding:'0px 30px'}}>
         <div className="print_all">
           <p className="time">2017年04月20日餐单 </p>
           <p className="userList">
@@ -40,6 +47,7 @@ class MemberShipCard extends Component {
             <span className="status">菜单状态 :  基础菜单</span>
             <span className="timeOut">出单时间 :{new Date().format('yyyy-MM-dd HH:mm:ss')} </span>
           </p>
+         {/*this.menuList(data);*/}
           <div className="menu">
           <p className="menuName">早餐 : </p>
           <p className="menuCount">
