@@ -10,6 +10,17 @@ import {
   message,
 } from 'antd'
 
+const UNIT_WIDTH = 9;
+
+const statusExplain = [
+  {name: "预定", color: "#29C1A6"},
+  {name: "入住", color: "#F57777"},
+  {name: "重叠", color: "#F9EBCC"},
+  {name: "出所", color: "#E3E3E3"},
+  {name: "空房", color: "#fff"},
+  {name: "维修", color: "#63C3E6"},
+];
+
 const monthStateView = (props) => {
 
   const {dispatch} = props;
@@ -157,20 +168,11 @@ const monthStateView = (props) => {
    * 状态说明视图
    */
   const renderStatusExplainView = () => {
-    let statuses = [
-      {name: "预定", color: "#29C1A6"},
-      {name: "入住", color: "#F57777"},
-      {name: "重叠", color: "#F9EBCC"},
-      {name: "出所", color: "#E3E3E3"},
-      {name: "空房", color: "#fff"},
-      {name: "维修", color: "#63C3E6"},
-    ];
-
 
     return (
       <Row className="statusExplainBox" type="flex" align="middle">
         {
-          statuses.map(item => {
+          statusExplain.map(item => {
             return (
               <span>
                 <div style={{float: 'left'}}>{item.name}</div>
@@ -187,7 +189,6 @@ const monthStateView = (props) => {
     const roomList = props.users.monthRoomList;
 
     const renderMonthRoom = (room, roomIndex) => {
-
 
       let users = [];
 
@@ -252,7 +253,8 @@ const monthStateView = (props) => {
 
 
           let stateBox = classNames('stateBox', {
-            'empty': roomState == 0,
+            'empty': roomState == 0, // 空房
+            'repair': roomState == 1, // 维修
             'reserve': roomState == 7,
             'overlap': roomState == 8,
             'checkingIn': roomState == 5,
@@ -272,7 +274,7 @@ const monthStateView = (props) => {
 
         let zIndexCount = 100;
         const userBoxClickHandler = (e) => {
-          let userBoxes = e.target.parentNode.querySelectorAll(".userBox");
+          let userBoxes = document.querySelectorAll(".userBox");
 
           for (let i = 0; i < userBoxes.length; i++) {
             userBoxes[i].classList.remove("active");
@@ -286,10 +288,14 @@ const monthStateView = (props) => {
         };
 
         const userBoxDbClickHandler = (e) => {
+          if (!e.target.classList.contains("userBox")) {
+            return;
+          }
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
           btn.className = "userBoxConfirm";
           btn.addEventListener("click", (e) => {
+            e.stopPropagation();
             let parentNode = e.target.parentNode;
             dispatch({
               type: 'roomStatusManagement/updateUserState',
@@ -300,11 +306,64 @@ const monthStateView = (props) => {
                 endIndex: parentNode.dataset.endIndex,
               }
             });
+            parentNode.removeChild(e.target);
           });
           e.target.appendChild(btn);
         };
 
-        const UNIT_WIDTH = 9;
+        const userBoxRightClickHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (!e.target.classList.contains("userBox")) {
+            return;
+          }
+
+          let deleteBtn = document.createElement("div");
+          deleteBtn.innerHTML = "删除";
+          deleteBtn.className = "userBoxConfirm";
+          deleteBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            let parentNode = e.target.parentNode;
+            dispatch({
+              type: 'roomStatusManagement/deleteUser',
+              payload: {
+                roomIndex: parentNode.dataset.roomIndex,
+                customerId: parentNode.dataset.customerId,
+                startIndex: parentNode.dataset.startIndex,
+                endIndex: parentNode.dataset.endIndex,
+              }
+            });
+            parentNode.removeChild(e.target);
+          });
+          e.target.appendChild(deleteBtn);
+
+          return false;
+        };
+
+        /**
+         * 调整入住天数
+         * @param e
+         */
+        const resizeBarMouseDownHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          let pageX = e.pageX;
+          let target = e.target.parentNode;
+          let targetWidth = target.offsetWidth;
+
+          document.onmousemove = (ee) => {
+            let offsetX = ee.pageX - pageX;
+            let unit = parseInt(offsetX / UNIT_WIDTH);
+
+            target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
+          };
+          document.onmouseup = () => {
+            document.onmousemove = null;
+          }
+        };
+
+
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           result.push(
@@ -318,10 +377,13 @@ const monthStateView = (props) => {
                  data-customer-id={users[i].customerId}
                  data-start-index={users[i].startIndex}
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                 data-user-dayCount={users[i].dayCount}
                  onClick={userBoxClickHandler}
                  onDoubleClick={userBoxDbClickHandler}
+                 onContextMenu={userBoxRightClickHandler}
             >
               {users[i].customerName}
+              <div className="resizeBar" onMouseDown={resizeBarMouseDownHandler}/>
             </div>
           )
         }

@@ -14,9 +14,7 @@ import { keyToText } from '../../../utils';
 
 
 const Option = Select.Option
-const { MonthPicker, RangePicker } = DatePicker
-const monthFormat = 'YYYY'
-const TreeNode = Tree.TreeNode;
+
 let POSITION = [];
 let DEPTEMENT = [];
 let endemic = session.get("endemic")
@@ -140,7 +138,7 @@ class Organization extends React.Component {
         return (
           <span>
                   <Link disabled={ detail} to={{
-                    pathname: '/system/organization/ViewTheInformation',
+                    pathname: '/system/organization/view-info',
                     query: { data: record.id }
                   }}>查看</Link>
                   <Link className="twoA" disabled={ disable } onClick={this.disabled.bind(this, record)}>{ Forbidden }</Link>

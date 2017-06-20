@@ -251,6 +251,19 @@
               right: 0;
               color: #FFFFFF;
             }
+
+            .resizeBar {
+              height: 100%;
+              width: 4px;
+              position: absolute;
+              right: 0;
+              top: 0;
+              background: transparent;
+            }
+
+            .resizeBar:hover {
+              cursor: w-resize;
+            }
           }
           .userBox.active {
             border: 1px solid red;
@@ -278,8 +291,11 @@
             .overlap {
               background-color: #B67233;
             }
-            .checkingIn{
+            .checkingIn {
               background-color: #F57777;
+            }
+            .repair {
+              background: #63C3E6;
             }
           }
 
