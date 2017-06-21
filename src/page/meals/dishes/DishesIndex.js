@@ -187,8 +187,9 @@ class DishesIndex extends React.Component{
                   label="荤素类型"
                 >
                   <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
-                    <Option value="0">正常</Option>
-                    <Option value="1">禁用</Option>
+                    <Option value="0">荤</Option>
+                    <Option value="1">素</Option>
+                    <Option value="2">半荤</Option>
                   </Select>
 
                 </FormItem>
@@ -198,8 +199,10 @@ class DishesIndex extends React.Component{
                   label="菜品类型"
                 >
                     <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
-                      <Option value="0">正常</Option>
-                      <Option value="1">禁用</Option>
+                      <Option value="0">主食</Option>
+                      <Option value="1">配菜</Option>
+                      <Option value="2">点心</Option>
+                      <Option value="3">水果</Option>
                     </Select>
                 </FormItem>
               </Col>
