@@ -1,16 +1,6 @@
 
 .MealCycle {
 
-  .headerDate {
-    width: 100%;
-    font-family: '微软雅黑 Regular', '微软雅黑';
-    font-style: normal;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
-  }
-
   .cardSubtitle {
     height: 50px;
     line-height: 50px;
@@ -20,6 +10,12 @@
   .tabooUser-content {
     height: 30px;
     line-height: 30px;
+    font-size: 12px;
+  }
+
+  .tabooUser-detail-content {
+    height: 40px;
+    line-height: 40px;
     font-size: 12px;
   }
 
@@ -76,6 +72,22 @@
     outline: none;
     width: 200px;
     margin: 0 auto;
+  }
+
+  .bottomButton {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+
+  .commitButton {
+    float: right;
+    margin-right: 10px;
+    font:14px "微软雅黑";
+  }
+  .BackBtn{
+    background:#b67233;
+    border-color:#b67233;
+    color:#fff;
   }
 }
 

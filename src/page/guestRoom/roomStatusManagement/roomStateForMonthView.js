@@ -32,24 +32,41 @@ const monthStateView = (props) => {
   document.ondrop = (event) => {
     event.preventDefault();
 
-    let target = null;
+    let roomIndex = null;
+    let dayIndex = null;
+    let date = 0;
 
     if (event.target.className === "dayRoom") {
-      target = event.target;
+      roomIndex = event.target.dataset.roomIndex;
+      dayIndex = event.target.dataset.dayIndex;
+      date = event.target.dataset.date
     } else if (event.target.parentNode.className === "dayRoom") {
-      target = event.target.parentNode;
+      roomIndex = event.target.parentNode.dataset.roomIndex;
+      dayIndex = event.target.parentNode.dataset.dayIndex;
+      date = event.target.parentNode.dataset.date
+    } else if (event.target.classList.contains("userBox")) {
+      // 拖到了另外一个用户上面
+      // 这种情况最恶心了
+      // 需要根据位置判断在哪一天
+      // 简直不想做....
+
+      // 偏移天数
+      let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
+      date = new Date(event.target.dataset.date + offsetDays * 86400000);
+
+      roomIndex = event.target.dataset.roomIndex;
+      dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
       return;
     }
 
-    let date = target.dataset.date;
     let today = new Date();
     let year = today.getFullYear();
     let month = today.getMonth();
     let day = today.getDate();
     let tomorrow = new Date(year, month, day + 1);
 
-    // 过去的时间
+    // 过去的时间, 不可放置, 今天即过去
     if (date < tomorrow.getTime()) {
       return;
     }
@@ -57,8 +74,8 @@ const monthStateView = (props) => {
     dispatch({
       type: 'roomStatusManagement/userDrop',
       payload: {
-        roomIndex: target.dataset.roomIndex,
-        dayIndex: target.dataset.dayIndex,
+        roomIndex,
+        dayIndex,
       }
     });
   };
@@ -168,6 +185,7 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
+          <Button className="queryBtn">一键排房</Button>
           <Button className="queryBtn">查询</Button>
         </Col>
       </Row>
@@ -208,9 +226,7 @@ const monthStateView = (props) => {
         }
 
         let result = dayList.map((day, dayindex) => {
-
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房',5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
-
           let roomState = 0;
           // 一天中的用户列表
           let dayCustomerList = day.customerList;
@@ -231,13 +247,13 @@ const monthStateView = (props) => {
 
             if (!hasUser) {
               users.push({
+                ...dayCustomerList[0],
+                startDate: day.date,
                 startIndex: dayindex,
                 lastIndex: dayindex,
                 dayCount: 1,
-                ...dayCustomerList[0],
-              })
+              });
             }
-
           } else if (dayCustomerList.length >= 1) {
             for (let j = 0; j < dayCustomerList.length; j++) {
               let hasUser = false;
@@ -253,15 +269,16 @@ const monthStateView = (props) => {
 
               if (!hasUser) {
                 users.push({
+                  ...dayCustomerList[j],
+                  startDate: day.date,
                   startIndex: dayindex,
                   lastIndex: dayindex,
                   dayCount: 1,
-                  ...dayCustomerList[j],
                 })
               }
             }
 
-            roomState = 9;
+            roomState = 9; // 重叠
           }
 
           let stateBox = classNames('stateBox', {
@@ -334,6 +351,8 @@ const monthStateView = (props) => {
           let deleteBtn = document.createElement("div");
           deleteBtn.innerHTML = "删除";
           deleteBtn.className = "userBoxConfirm";
+          e.target.appendChild(deleteBtn);
+
           deleteBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             let parentNode = e.target.parentNode;
@@ -348,7 +367,6 @@ const monthStateView = (props) => {
             });
             parentNode.removeChild(e.target);
           });
-          e.target.appendChild(deleteBtn);
 
           return false;
         };
@@ -370,9 +388,7 @@ const monthStateView = (props) => {
           let roomIndex = target.dataset.roomIndex;
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
-          let reserveDays = 0;
 
-          console.log(roomList, roomIndex);
           let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
 
           // 左端在入住状态下不可操作
@@ -409,6 +425,8 @@ const monthStateView = (props) => {
 
             let type = "";
             let startIndex, endIndex;
+            let reserveDays = 0;
+
             if (unit > 0) {
               type = "add";
               startIndex = oldEndIndex;
@@ -438,6 +456,21 @@ const monthStateView = (props) => {
           }
         };
 
+        const dragStart = (user) => {
+          dispatch({
+            type: 'roomStatusManagement/userDragStart',
+            payload: {
+              dragUser: {
+                customerId: user.customerId,
+                customerName: user.customerName,
+                reserveDays: user.dayCount,
+                startIndex: user.startIndex,
+                endIndex: user.startIndex + user.dayCount - 1,
+                roomIndex: roomIndex,
+              },
+            }
+          });
+        };
 
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
@@ -448,12 +481,14 @@ const monthStateView = (props) => {
                    left: users[i].startIndex * UNIT_WIDTH,
                  }}
                  draggable="true"
+                 onDragStart={() => dragStart(users[i])}
                  data-room-index={roomIndex}
                  data-customer-id={users[i].customerId}
                  data-customer-name={users[i].customerName}
                  data-start-index={users[i].startIndex}
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
                  data-user-dayCount={users[i].dayCount}
+                 data-start-date={users[i].startDate}
                  onClick={userBoxClickHandler}
                  onDoubleClick={userBoxDbClickHandler}
                  onContextMenu={userBoxRightClickHandler}
@@ -461,7 +496,7 @@ const monthStateView = (props) => {
               {users[i].customerName}
               <a href="javascript:void(0)"
                  className="resizeBar"
-                 title={users[i].reserveDays + '天'}
+                 title={users[i].dayCount + '天'}
                  onMouseDown={resizeBarMouseDownHandler}/>
             </div>
           )
@@ -537,11 +572,11 @@ const monthStateView = (props) => {
 
     const customers = props.users.monthStateCustomers;
 
-    const dragStart = (index) => {
+    const dragStart = (dragUser) => {
       dispatch({
         type: 'roomStatusManagement/userDragStart',
         payload: {
-          userIndex: index
+          dragUser,
         }
       });
     };
@@ -551,9 +586,9 @@ const monthStateView = (props) => {
         <h3>客户列表</h3>
 
         {
-          customers.map((costomer, index) => {
+          customers.map((costomer) => {
             return (
-              <div className="customerItem" draggable="true" onDragStart={() => dragStart(index)}>
+              <div className="customerItem" draggable="true" onDragStart={() => dragStart(costomer)}>
                 {costomer.customerName}
               </div>
             )
