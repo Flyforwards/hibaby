@@ -253,10 +253,11 @@
             }
 
             .resizeBar {
+              display: block;
               height: 100%;
-              width: 4px;
+              width: 6px;
               position: absolute;
-              right: 0;
+              right: -3px;
               top: 0;
               background: transparent;
             }

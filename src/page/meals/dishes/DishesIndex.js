@@ -13,6 +13,10 @@ import Current from '../../Current';
 import DishesDetailPage from './DishesDetailPage';
 import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
+import PermissionLink from '../../../common/PermissionLink';
+import PermissionButton from '../../../common/PermissionButton';
+
+
 
 const FormItem = Form.Item;
 const Option = Select.Option
@@ -65,12 +69,10 @@ class DishesIndex extends React.Component{
       key:'operating',
       width: '10%',
       render: (text, record, index) => {
-        // const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
-        // const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div>
-            <Link disabled={false} className="firstA" onClick={ this.onLook.bind(this, record)}  > 查看 </Link>
-            <Link disabled={false} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+            <PermissionLink testKey='DISHES_DETAIL' className="firstA" onClick={ this.onLook.bind(this, record)}> 查看 </PermissionLink>
+            <PermissionLink testKey='DISHES_DELETE' className="firstA"  onClick={ this.onDelete.bind(this, record)}> 删除 </PermissionLink>
           </div>
         );
       },
@@ -214,7 +216,12 @@ class DishesIndex extends React.Component{
             </Row>
           </Form>
           <div className="btn">
-            <span className="Dishes-add"><Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link></span>
+            <span className="Dishes-add">
+              <PermissionLink testKey='DISHES_ADD' to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></PermissionLink>
+{/*
+              <Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link>
+*/}
+            </span>
             <Button className="Dishes-Inquire" onClick={this.handleSearch.bind(this)}>查询</Button>
           </div>
         </div>

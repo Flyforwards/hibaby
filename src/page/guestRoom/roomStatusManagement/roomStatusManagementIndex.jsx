@@ -242,6 +242,14 @@ function CardArray({roomList, dispatch}) {
       </div>
     }
 
+    let disabled = false;
+    const webparam = parse(location.search.substr(1))
+    if (webparam.useDate) {
+      if(moment(webparam.useDate).format('YYYYMMDD') !== moment().format('YYYYMMDD')){
+        disabled = true;
+      }
+    }
+
     return (
       <Card className="smallCard" bodyStyle={{padding: '10px'}} key={key} title={dict.roomNo}
             extra={statusDict[dict.status]}>
@@ -249,7 +257,7 @@ function CardArray({roomList, dispatch}) {
         <Row className='bottomLine'>
           <Col span={7}><p>房间状态</p></Col>
           <Col span={17}>
-            <Select value={statusDict[dict.status]} key={key} onChange={(index) => {
+            <Select disabled={disabled} value={statusDict[dict.status]} key={key} onChange={(index) => {
               handleChange(index, dict)
             }} className='antCli' placeholder='请选择'>
               {chiDivAry}

@@ -10,11 +10,1077 @@
         window.location.href='http://myqianlan.qiniudn.com/upgrade-your-browser.html?refer='+location.href;
     </script>
     <![endif]-->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+        //动态引入JS文件
+        var version1 = new Date().getTime();
+        //TINET_TOOLBAR_URL定义工具条地址, 变量名称不能改
+        var CCIC2_TOOLBAR_URL = "http://agent.clink.cn";
+        document.write("<script src='"+CCIC2_TOOLBAR_URL+"/jws/sourceCode/ccic2Toolbar.js?version="+version1+"' charset='UTF-8'><\/script>");
+    </script>
+    <style>
+          .list_Div{position:absolute; right:20px; top:15px; left:20px;}
+          .list_title{height:24px; position:relative;}
+          .list_title_titleSpan{position:absolute;left:0; top:5px;color:#666666;font-weight:bold;}
+          .list_title_numSpan{position:absolute;left:60px; top:5px;color:#9a9a9a;}
+          .list_title_hrSpan{position:absolute;left:160px; right:30px;top:5px;}
+          .list_title_hrSpan_hr{height:1px;overflow:hidden;}
+          .list_title_imgSpan{position:absolute;right:0;top:3px;cursor:pointer;}
+
+          .list_content{margin:10px 30px 15px 0;}
+          .list_content_title_tr{font-weight:bold; background-color: #7ca9f7; height:26px;}
+
+          .list_content_list_trBg{background-color:#f5f8f8;}
+          .list_content_list_tr{height:24px;}
+          .list_content_list_Td{border:0;border-bottom:2px solid #eef1f1;}
+
+    .telephone-system-content{
+       background-color: white;
+       z-index: 10;
+       width:1000px;
+       height:800px;
+       position:absolute;
+       left:50%;
+       top:50%;
+       margin-left:-500px;
+       margin-top:-400px;
+       display: none;
+    }
+    .telephone-system-content-min {
+      background-color: white;
+      z-index: 10;
+      width:200px;
+      height:100px;
+      position:absolute;
+      left: 50px;
+      bottom: 20px;
+      display: block;
+    }
+    .system-close {
+
+    }
+
+    </style>
+
+
 </head>
 <body>
+
+<div class='telephone-system-content'>
+<button style="float: right; margin-right: 5px;" class='system-close' id='phone-system-close'>关闭</button>
+<button style="float: right; margin-right: 5px;" class='system-close' id='phone-system-minimize'>最小化</button>
+  <div style="top:0; left:0; width:400px; height:200px; border:1px solid #000; background-color:#FFF;">
+  <table border="0" cellspacing="0" cellpadding="0" style="min-width:380px; margin:0;">
+     <tr>
+      <td style='margin-right: 20px'>登录时间</td>
+      <td align="center"><span id="cnoTime"></span></td>
+     </tr>
+     <tr>
+      <td style='margin-right: 20px'>登录状态</td>
+      <td align="center" id="status" width="40" style="text-align:left;padding-left:2px;">离线</td>
+     </tr>
+      <td align="left" id="toolbarButton">
+        <input type="button" id="pause" style="border:none;width:57px;height:33px;display:none;" value="置忙"/>
+        <input type="button" id="online" style="border:none;width:57px;height:33px;display:none;" value="置闲"/>
+        <input type="button" id="answer" style="border:none;width:57px;height:33px;display:none;" value="接听"/>
+        <input type="button" id="unLink" style="border:none;width:57px;height:33px;display:none;" value="挂断"/>
+        <input type="button" id="refused"  style="border:none;width:57px;height:33px;display:none;" value="拒接"/>
+        <input type="button" id="hold" style="border:none;width:57px;height:33px;display:none;" value="保持"/>
+        <input type="button" id="unHold"  style="border:none;width:80px;height:33px;display:none;" value="保持接回"/>
+        <input type="button" id="consult" style="border:none;width:57px;height:33px;display:none;" value="咨询"/>
+        <input type="button" id="consultBack"  style="border:none;width:80px;height:33px;display:none;" value="咨询接回"/>
+        <input type="button" id="consultTransfer"  style="border:none;width:80px;height:33px;display:none;" value="咨询转接"/>
+        <input type="button" id="consultThreeway"  style="border:none;width:80px;height:33px;display:none;" value="咨询三方"/>
+        <input type="button" id="transfer"  style="border:none;width:57px;height:33px;display:none;" value="转移"/>
+        <input type="text"   id="phoneCallText" value="" maxlength="12" style="display:none;width:100px;height:28px;line-height:28px;font-family:verdana;border:solid 1px #ddd;vertical-align:top;margin-top:2px;"/>
+        <input type="button" id="phoneCallout"  style="border:none;width:80px;height:33px;display:none;" value="呼叫"/>
+        <input type="button" id="phoneCallCancel" style="border:none;width:80px;height:33px;display:none;" value="呼叫取消"/>
+        <select id="consultInput" style="display:none;">
+          <option value="0">普通电话</option>
+          <option value="1">座席号</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  <div align="center" style='margin-top: 10px;' >
+     <span id='call_phone' style='display: none'></span>
+  </div>
+</div>
+<br/>
+  <div  style="position:absolute; border:1px solid #000;  top:210px; left:0; width:750px; height:500px;">
+    <div class="list_Div" style="min-width:700px;">
+      <div class="list_title">
+        <span class="list_title_titleSpan">呼叫列表</span>
+        <span class="list_title_numSpan">(共<span id="callNumber">0</span>条呼叫信息)</span>
+        <span class="list_title_hrSpan"><hr class="list_title_hrSpan_hr" size="2" color="f0f0f0"/></span>
+        <span class="list_title_imgSpan"><span id="callList">收起</span></span>
+      </div>
+      <div class="list_content" id="callContent">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr class="list_content_title_tr">
+            <td align="center" width="15%">主叫号码</td>
+            <td align="center" width="15%">来电时间</td>
+            <td align="center" width="15%">进入队列时间</td>
+            <td align="center" width="10%">排队等待时长</td>
+            <td align="center" width="10%">呼叫状态</td>
+            <td align="center" width="10%">溢出次数</td>
+            <td align="center" width="10%">排队位置</td>
+          </tr>
+        </table>
+        <div style="height:170px; overflow:auto;">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" id="callTable">
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class='telephone-system-content-min'>
+<button style="float: right; margin-right: 5px;" class='system-close' id='phone-system-minimize-max'>最大化</button>
+</div>
+
 <div id="root"></div>
 <% for (var asset in htmlWebpackPlugin.options.externalsAssets) { %>
 <script src="<%= htmlWebpackPlugin.options.externalsAssets[asset] %>"></script>
 <% } %>
+
+<script>
+
+    function change_max() {
+        $(".telephone-system-content").show();
+        $(".telephone-system-content-min").hide();
+    }
+
+    var agentNumber = "";
+    var orderCallbackCount = 0;
+    function callout(tel){
+    	var params = {};
+
+    	params.tel = document.getElementById('tel').value;
+    	params.callType = '3'; //3点击外呼
+    	window.executeAction("doPreviewOutCall", params);
+    }
+    function login(){//登录
+
+        var params = {};
+        params.hotLine = document.getElementById('hotLine').value;
+        params.cno =  document.getElementById('cno').value;
+        params.pwd =  document.getElementById('pwd').value;
+        params.bindTel =  document.getElementById('bindTel').value;
+        params.bindType = document.getElementById('bindType').value;
+        params.initStatus =  document.getElementById('initStatus').value;
+    	if(params.bindType == "3"){
+    		params.sipIp = document.getElementById('sipIp').value;
+    		params.sipPwd = document.getElementById('sipPwd').value;
+    	}
+    	window.executeAction('doLogin',  params);//执行登陆 ccic2里面的js类
+    	agentNumber = params.cno;
+
+    }
+    function logout(){//登出
+    	var params = {};
+    	params.type=1;
+    	window.executeAction('doLogout', params);
+    }
+
+    function readyLoad(d){
+    	//在这里登录
+    	//login();
+    }
+
+    //----------- 回调函数 ------------
+    /**
+     * 登录回调 cbLogin
+     * 返回json对象token:  {"type":"response","code":"0","msg":"ok","reqType":"login",
+    	"sessionId":"812c16f96fa7f4bf34d75e07de4950bb", "hotline":"4006006001",
+    	"enterpriseId":"3000000","cno":"2002", "cname":"test","bindTel":"01041005975","bindType":"1"}
+     * code描述
+    0 ：登录成功
+    4 ：座席不在任何一个队列
+    29 ：在线座席数超过并发限制
+    23 ：默认自定义置忙状态配置错误
+     * hotline 热线号码
+     * enterpriseId 企业号
+     * cno 座席工号
+     * cname 座席姓名
+     * bindTel 绑定电话
+     * bindType 绑定电话类型
+    */
+    function cbLogin(token){//登陆
+    	if(token.code == "0"){
+    		alert("登录成功");
+
+    		orderCallbackCount = token.allCallBackCount;
+    		window.executeAction('doQueueStatus');//获取队列数据
+
+    	}else{
+    		alert("登录失败！" + token.msg);
+    	}
+    }
+
+    /**
+     * 外呼回调 cbPreviewOutCall
+     * 返回json对象token:  "type":"response","code":"0","msg":"ok","reqType":"previewOutCall"
+     * code描述
+    0  ：成功
+    6  ：外呼失败，参数错误
+    13 ：外呼失败，外呼号码格式错误
+    20 ：外呼失败，呼叫范围受限
+    25 ：外呼失败，此号码为黑名单
+    26 ：外呼失败，座席没有外呼权限，请联系管理员
+    27 ：外呼失败，余额不足
+    28 ：外呼失败，没有路由
+    */
+    function cbPreviewOutCall(token) {  //外呼回调
+
+    }
+
+    /**
+     * 有预约回呼
+    */
+    function cbOrderCallBack(token) {
+    	if(token.addORReduce == 1) {
+    		orderCallbackCount++;
+    	}
+    	if(token.addORReduce == -1) {
+    		orderCallbackCount--;
+    	}
+    }
+
+    function cbLogout(token) {//退出
+        if(buttType){
+            token=JSON.parse(token);
+        }
+        if(token.code == "0"){
+            alert("已退出");
+            typeButton.buttonDisabled();
+            $('#status').text("离线");
+            clearInterval(document.getElementById('cnoTime').setIntervalCnoTimeId);
+            document.getElementById('cnoTime').innerHTML="";
+        }
+    }
+
+    var events = {
+        list_title_imgSpan : function(){
+            $(".list_title_imgSpan span").unbind("mouseenter mouseleave mousedown");
+            $(".list_title_imgSpan span").attr("title","收起");
+            $("#callContent, #qStatusContent").show();
+            $(".list_title_imgSpan span").bind({
+                mousedown : function(){
+                    var spanSrc = $(this).text();
+                    console.log(spanSrc)
+                    if(spanSrc == '收起'){
+                        $(this).text('放开');
+                    } else{
+                        $(this).text('收起');
+                    }
+                    var id = $(this).attr("id");
+                    if(id == 'callList'){
+                        if($("#callContent").css("display") == "none"){
+                            $("#callContent").show();
+                        }else{
+                            $("#callContent").hide();
+                        }
+                    } else if(id == 'qStatus'){
+                        if($("#qStatusContent").css("display") == "none"){
+                            $("#qStatusContent").show();
+                        }else{
+                            $("#qStatusContent").hide();
+                        }
+                    }
+                }
+            });
+        },
+        init : function(){
+            this.list_title_imgSpan();
+        }
+    }
+    var setIntlId= new Array();
+
+    function queue(data, qid){
+
+        $(this+"input[type='checkbox']").attr("checked",true);
+        for(var i=0;i<setIntlId.length;i++){
+            clearInterval(setIntlId[i]);
+        }
+        setIntlId.length=0;
+        $("#callTable").empty();
+        var showData="";
+        if(showData == ""){
+            showData = data.queueStatus[0];
+        }
+
+        var online=0;
+
+        for(var i=0;i<showData.memberStatus.length; i++){
+
+            var ms = showData.memberStatus[i];
+            var status = window.deviceStatus.deviceStatusLoginStatus(ms.deviceStatus+ms.loginStatus, ms.pauseDescription, ms.busyDescription);
+
+            if(status != "离线"){
+                online+=1;
+            }
+            var customerNumber =showData.memberStatus[i].customerNumber;
+            var callstaken = showData.memberStatus[i].callstaken;
+            var loginTime = showData.memberStatus[i].loginTime;
+            var cno = showData.memberStatus[i].cid.substring(7,showData.memberStatus[i].cid.length);
+
+            if(callstaken == undefined){
+                callstaken = "--";
+            }
+            if(loginTime == undefined ){
+                loginTime = "--";
+            } else{
+                loginTime = millisecondToDate(parseInt(loginTime,10));
+            }
+
+            if(customerNumber == undefined){
+                customerNumber = "--";
+            }
+
+            if(status != '离线' && 2000 == cno) {
+                window.document.getElementById('cnoTime').innerHTML = loginTime;
+                var setIntervalCnoTimeId = setInterval("timerCount('cnoTime')", 1000);
+                setIntlId.push(setIntervalCnoTimeId);
+                window.document.getElementById('cnoTime').setIntervalCnoTimeId=setIntervalCnoTimeId;
+            }
+        }
+
+        $("#onlineCno").text(online);
+
+        $("#serviceLevel").text(showData.queueParams.serviceLevelPerf+"%");
+
+        if(showData.queueEntry.length > 6){
+            $("#callTable").attr("style","height:170px; overflow:auto;");
+        }else{
+            $("#callTable").height("");
+        }
+        for(var i=0; i<showData.queueEntry.length; i++){
+            var queueEntryTr = "<tr class='list_content_list_tr list_content_list_trBg' id='#{uniqueId}'>"+
+                "<td align='center' class='list_content_list_Td' width='15%'>#{customerNumber}</td>"+
+                "<td align='center' class='list_content_list_Td' width='15%'>#{startTime}</td>"+
+                "<td align='center' class='list_content_list_Td' width='15%'>#{joinTime}</td>"+
+                "<td align='center' class='list_content_list_Td' width='10%' id='#{waitTimeId}'>#{waitTime}</td>"+
+                "<td align='center' class='list_content_list_Td' width='10%'>#{callStatus}</td>"+
+                "<td align='center' class='list_content_list_Td' width='10%'>#{overflow}</td>"+
+                "<td align='center' class='list_content_list_Td' width='10%'>#{position}</td>"+
+                "</tr>";
+            var customerNumber = showData.queueEntry[i].customerNumber;
+
+            var startTime = showData.queueEntry[i].startTime;
+            var joinTime = showData.queueEntry[i].joinTime;
+            var waitTime = showData.queueEntry[i].waitTime;
+            var overflow = showData.queueEntry[i].overflow;
+            var callStatus = showData.queueEntry[i].call_status;
+            if(callStatus == undefined){
+                callStatus = "排队";
+            }else{
+                callStatus = "响铃";
+            }
+            var uniqueId = showData.queueEntry[i].uniqueId.replace(".",'');;
+            var waitTimeId = uniqueId+"_waitTime";
+            if(overflow == null)overflow = "0";
+            var position = showData.queueEntry[i].position;
+            queueEntryTr = queueEntryTr.replace(/#\{callStatus\}/g, callStatus);
+            queueEntryTr = queueEntryTr.replace(/#\{uniqueId\}/g, uniqueId);
+            queueEntryTr = queueEntryTr.replace(/#\{customerNumber\}/g, customerNumber);
+            queueEntryTr = queueEntryTr.replace(/#\{startTime\}/g, startTime);
+            queueEntryTr = queueEntryTr.replace(/#\{joinTime\}/g, joinTime);
+            queueEntryTr = queueEntryTr.replace(/#\{waitTime\}/g, millisecondToDate(waitTime));
+            queueEntryTr = queueEntryTr.replace(/#\{waitTimeId\}/g, waitTimeId);
+            queueEntryTr = queueEntryTr.replace(/#\{overflow\}/g, overflow);
+            queueEntryTr = queueEntryTr.replace(/#\{position\}/g, position);
+            $("#callTable").append(queueEntryTr);
+
+            var setIntervalwaitTimeId = setInterval("timerCount('"+waitTimeId+"')", 1000);
+            setIntlId.push(setIntervalwaitTimeId);
+        }
+        $("#waitNormal").text(showData.queueEntry.length);
+        $("#callNumber").text(showData.queueEntry.length);
+        events.init();
+    }
+
+    function joinQueue(json){
+
+        $("#waitNormal").text(parseInt($("#waitNormal").text(),10)+1);
+        $("#callNumber").text(parseInt($("#callNumber").text(),10)+1);
+
+        var queueEntryTr = "<tr class='list_content_list_tr list_content_list_trBg' id='#{uniqueId}'>"+
+            "<td align='center' class='list_content_list_Td' width='15%'>#{customerNumber}</td>"+
+            "<td align='center' class='list_content_list_Td' width='15%'>#{startTime}</td>"+
+            "<td align='center' class='list_content_list_Td' width='15%'>#{joinTime}</td>"+
+            "<td align='center' class='list_content_list_Td' width='10%' id='#{waitTimeId}'>#{waitTime}</td>"+
+            "<td align='center' class='list_content_list_Td' width='10%'>排队</td>"+
+            "<td align='center' class='list_content_list_Td' width='10%'>#{overflow}</td>"+
+            "<td align='center' class='list_content_list_Td' width='10%'>#{position}</td>"+
+            "</tr>";
+        var customerNumber = json.customerNumber;
+
+        var startTime = json.startTime;
+        var joinTime = json.joinTime;
+        var waitTime = json.waitTime;
+        if(waitTime == undefined)waitTime=0;
+        var overflow = json.overflow;
+        var uniqueId = json.uniqueId.replace(".",'');
+        var waitTimeId = uniqueId+"_waitTime";
+        if(overflow == null)overflow = "0";
+        var position = json.position;
+        queueEntryTr = queueEntryTr.replace(/#\{uniqueId\}/g, uniqueId);
+        queueEntryTr = queueEntryTr.replace(/#\{customerNumber\}/g, customerNumber);
+        queueEntryTr = queueEntryTr.replace(/#\{startTime\}/g, startTime);
+        queueEntryTr = queueEntryTr.replace(/#\{joinTime\}/g, joinTime);
+        queueEntryTr = queueEntryTr.replace(/#\{waitTime\}/g, millisecondToDate(waitTime));
+        queueEntryTr = queueEntryTr.replace(/#\{waitTimeId\}/g, waitTimeId);
+        queueEntryTr = queueEntryTr.replace(/#\{overflow\}/g, overflow);
+        queueEntryTr = queueEntryTr.replace(/#\{position\}/g, position);
+        $("#callTable").append(queueEntryTr);
+
+        var setIntervalwaitTimeId = setInterval("timerCount('"+waitTimeId+"')", 1000);
+        setIntlId.push(setIntervalwaitTimeId);
+        $("#"+uniqueId).attr("settimeId",setIntervalwaitTimeId);
+    }
+    function queueCall(json){
+        var uniqueId = json.uniqueId.replace(".",'');
+        $("#"+uniqueId).find("td").eq(5).text("响铃");
+    }
+    function leaveQueue(json){
+        $("#callNumber").text(parseInt($("#callNumber").text(),10)-1);
+        $("#waitNormal").text(parseInt($("#waitNormal").text(),10)-1);
+        var uniqueId = json.uniqueId.replace(".",'');
+        clearInterval($("#"+uniqueId).attr("settimeId"));
+        var cm = $("#"+uniqueId).find('td').eq(7).text();
+        $("#"+uniqueId).remove();
+
+        $('#callTable tr').each(function(){
+            var tt = $(this).find('td').eq(7).text();
+            if(tt != '排队位置'){
+                if(tt > cm){
+                    $(this).find('td').eq(7).text(parseInt(tt,10)-1);
+                }
+            }
+        });
+    }
+    function queueMonitoringStatus(json){
+        var status = window.deviceStatus.deviceStatusLoginStatus(json.deviceStatus+json.loginStatus, json.pauseDescription, json.busyDescription);
+
+    }
+
+
+    function timerCount(id){
+        var timeId = $("#"+id);
+        var theDay = timeId.text();
+        if(id == "cnoTime") {
+            timeId = window.document.getElementById('cnoTime');
+            theDay = timeId.innerHTML;
+        }
+
+
+        var theDayStr = theDay.split(':');
+        var second = parseInt(theDayStr[2],10);
+        var minute = parseInt(theDayStr[1],10);
+        var hour = parseInt(theDayStr[0],10);
+        second++;
+        if(second >= 60){
+            minute = minute+1;
+            second = 0;
+        }
+        if(minute >= 60){
+            hour = hour+1;
+            minute = 0;
+        }
+        if(second.toString().length <2 )second = "0"+second;
+        if(minute.toString().length <2)minute = "0"+minute;
+        if(hour.toString().length <2)hour = "0"+hour;
+        var timeWrite = hour+":"+minute+":"+second;
+        if(id == "cnoTime") {
+            if(theDay == "" || theDay == null) {
+            } else {
+                timeId.innerHTML = timeWrite;
+            }
+        } else {
+            timeId.text(timeWrite);
+        }
+    }
+
+    function millisecondToDate(msd) {
+        var time = minute = hour = second = 0;
+        if(msd == 0){
+            time = '00:00:00';
+            return time;
+        }
+        if(msd <= 60){
+            if(msd < 10) msd = "0"+msd
+            time = '00:00:'+msd;
+            return time;
+        }else{
+            second = parseInt(msd -parseInt(60 * parseInt((msd / 60))));
+            minute = parseInt(msd / 60);
+            if(minute > 60){
+                hour = parseInt(minute / 60);
+                minute =parseInt(minute -parseInt(60 * parseInt((minute / 60))));
+
+            }
+        }
+        if(hour < 10)hour = "0"+hour;
+        if(minute < 10)minute = "0"+minute;
+        if(second < 10)second = "0"+second;
+        time = hour+":"+minute+":"+second;
+        return time;
+    }
+
+    //状态回调：来电弹屏等
+
+    function cbThisStatus(token){
+        if(buttType){
+            token=JSON.parse(token);
+        }
+        if(token.cno == 2000){
+            //callType：
+            //1：呼入，2：网上400,3：点击外呼，4：预览外呼，5：IVR外呼，6：分机直接外呼
+            if(token.eventName == "comeRinging"&&token.name == "ringing"){	//呼入响铃
+                alert("来电号码：" + token.customerNumber);
+                //var call_id = token.uniqueId;		//获取录音编号
+            }
+            if(token.eventName == "normalBusy"&&token.name == "status"){ // 呼入接听
+                alert("来电号码：" + token.customerNumber + "已接听");
+            }
+
+            if(token.eventName == "consultLink"&&token.name == "consultLink"){	//咨询接听
+                alert("咨询号码" + token.consultObject + "已接听");
+            }
+
+            if(token.eventName == "normalBusy"&&token.name == "consultError"){	//咨询失败
+                alert("咨询失败");
+            }
+            if(token.eventName == "neatenStart"){	//客户挂断，整理开始：呼入、空闲时外呼
+                alert("已挂机，开始整理");
+            }
+            if(token.eventName == "neatenEnd"){	//客户挂断，整理结束：呼入、空闲时外呼
+                alert("整理结束");
+            }
+            if(token.eventName == "outRinging"&&token.name == "ringing"&&token.callType == "3"){	//外呼时座席响铃: 3、点击外呼
+                 // alert("外呼号码：" + token.customerNumber);
+                //var call_id = token.uniqueId;		//获取录音编号
+            }
+            if(token.eventName == "waitLink"&&token.callType == "3"){	//座席接听后外呼客户:3、点击外呼
+                alert("座席接听，开始呼叫客户");
+            }
+            if(token.eventName == "outBusy"&&token.name == "previewOutcallBridge"&&token.callType == "3"){	//外呼客户:3、点击外呼
+                alert("外呼号码：" + token.customerNumber + "已接听");
+            }
+            if(token.eventName == "onlineUnlink"){	//空闲时外呼，客户无应答，座席挂机
+                alert("已挂机");
+            }
+            if(token.eventName == "pauseUnlink"){	//置忙时外呼，客户挂断或无应答，座席挂机
+                alert("已挂机");
+            }
+
+            console.log(token);
+            change_max();
+        }
+
+        switch(token.eventName){
+            case 'outRinging' : //外呼座席响铃
+                if(token.name == "ringing"){"ringing"
+                    //$("#phoneCallout").hide();
+                    typeButton.phoneCallCancel();
+                    //第三方代码
+                    top.CTI_ID = token.uniqueId;//获取录音编号
+                }
+                break;
+            case 'comeRinging' : //呼入座席响铃
+                if(token.name == "ringing"){
+                    typeButton.buttonDisabled();
+                    typeButton.answer(token);
+                    typeButton.refused();
+                }
+                break;
+            case 'normalBusy' : //呼入座席接听
+                typeButton.buttonDisabled();
+                typeButton.unLink();
+                typeButton.hold();
+                typeButton.consult();
+                //typeButton.consultThreeway();
+                //typeButton.consultTransfer();
+                typeButton.transfer();
+                $("#phoneCallText").show().attr("disabled", false);
+                break;
+            case 'outBusy' : //外呼客户接听 客户和座席通话
+                typeButton.buttonDisabled();
+                typeButton.unLink();
+                typeButton.hold();
+                typeButton.consult();
+                //typeButton.consultThreeway();
+                //typeButton.consultTransfer();
+                typeButton.transfer();
+                $("#phoneCallText").show().attr("disabled", false);
+                break;
+            case 'online' : //置闲
+                typeButton.buttonDisabled();
+                typeButton.phoneCallout();
+                typeButton.phoneCallText();
+                typeButton.pause();
+                //$("#phoneCallCancel").hide();
+                break;
+            case 'pause' : //置忙
+                typeButton.buttonDisabled();
+                typeButton.phoneCallout();
+                typeButton.phoneCallText();
+                typeButton.online();
+                //$("#phoneCallCancel").hide();
+                break;
+            case 'waitLink' : //外呼座席接听等待客户接听
+
+                break;
+            case 'neatenStart' : //整理开始（座席挂断）
+                typeButton.buttonDisabled();
+                typeButton.online();
+                typeButton.pause();
+                break;
+            case 'neatenEnd' : //整理结束
+                typeButton.buttonDisabled();
+                typeButton.phoneCallout();
+                typeButton.phoneCallText();
+                var s = deviceStatus.deviceStatusLoginStatus(token.deviceStatus+token.loginStatus, token.pauseDescription, token.busyDescription);
+                if(s == '空闲'){
+                    typeButton.pause();
+                }else{
+                    typeButton.online();
+                }
+                break;
+            case 'hold' : //保持开始
+                typeButton.buttonDisabled();
+                //$("#hold").hide();
+                typeButton.unLink();
+                typeButton.unHold();
+                break;
+            case 'unHold' : //保持结束
+                typeButton.buttonDisabled();
+                //$("#unHold").hide();
+                typeButton.unLink();
+                typeButton.hold();
+
+                typeButton.consult();
+                //typeButton.consultThreeway();
+                //typeButton.consultTransfer();
+                //typeButton.transfer();
+
+                break;
+            case 'onlineUnlink' : //挂断后置闲
+                typeButton.buttonDisabled();
+                typeButton.phoneCallout();
+                typeButton.phoneCallText();
+                typeButton.pause();
+                break;
+            case 'pauseUnlink' : //挂断后置忙
+                typeButton.buttonDisabled();
+                typeButton.phoneCallout();
+                typeButton.phoneCallText();
+                typeButton.online();
+                break;
+            case 'consultLink' : //咨询成功
+                $("#consult").hide();
+                typeButton.consultBack();
+                typeButton.consultThreeway();
+                typeButton.consultTransfer();
+                typeButton.transfer();
+                break;
+            case 'consulterOrTransferBusy' : //被咨询转接或转移的通话
+                typeButton.buttonDisabled();
+                typeButton.unLink();
+                typeButton.hold();
+                break;
+
+
+        }
+        var str = deviceStatus.deviceStatusLoginStatus(token.deviceStatus+token.loginStatus, token.pauseDescription, token.busyDescription);
+        if(str != ""){
+            $("#status").text(str);
+        }
+
+        //============================================================
+        //第三方代码写在下面
+        if(token.eventName=="outRinging"){//外呼座席响铃
+            //top.CTI_ID = token.uniqueId;//获取录音编号
+            $('#call_phone').show();
+            $('#call_phone').text('外呼号码: ' + token.customerNumber)
+        }else if(token.eventName=="comeRinging"){//呼入座席响铃
+          $('#call_phone').show();
+          $('#call_phone').text('来电号码: ' + token.customerNumber)
+        }else if(token.eventName=="normalBusy"){//呼入座席接听
+          $('#call_phone').show();
+          $('#call_phone').text('来电号码: ' + token.customerNumber)
+        }else if(token.eventName=="outBusy"){//外呼客户接听
+            //if(top.CTI_ID == "") {
+            //	top.CTI_ID = token.uniqueId;
+            //}
+            $('#call_phone').show();
+            $('#call_phone').text('外呼号码: ' + token.customerNumber)
+        }else if(token.eventName=="online"){//置闲
+            $('#call_phone').text('');
+            $('#call_phone').hide();
+        }else if(token.eventName=="pause"){//置忙
+
+        }else if(token.eventName=="waitLink"){//座席接听 等待客户接听
+
+        }else if(token.eventName=="neatenStart"){//整理开始（座席挂断）
+
+        }else if(token.eventName=="neatenEnd"){//整理结束
+
+        }else if(token.eventName=="hold"){//保持开始
+
+        }else if(token.eventName=="unHold"){//保持结束
+
+        }else if(token.eventName=="consultLink"){//咨询成功
+            $('#call_phone').show();
+            $('#call_phone').text('咨询号码: ' + '席位号:' + token.consultObject)
+        }else if(token.eventName=="consulterOrTransferBusy"){//被咨询转接或转移的通话
+
+        }
+        //============================================================
+    }
+
+    function consult(){
+    	var consultText = document.getElementById("consultText").value;
+    	if(consultText == ''){
+    		alert("号码不能为空");
+    	}else{
+    		var obj = {};
+    		obj.consultObject = consultText;
+    		obj.objectType = document.getElementById("consultType").value;
+    		window.executeAction('doConsult',  obj);
+    	}
+    }
+
+    function transfer(){
+    	var transferText = document.getElementById("transferText").value;
+    	var obj = {};
+    	obj.transferObject = transferText;
+    	obj.objectType = document.getElementById("transferType").value;
+    	window.executeAction('doTransfer', obj);
+    }
+
+    function consultCancel(){
+    	window.executeAction('doConsultCancel');
+    }
+
+    var us='0';
+    function cbQueueStatus(data){//得到队列数据
+    	window.queue(data,us);
+    }
+    function cbStatus(json){//改变队列座席状态
+    	window.queueMonitoringStatus(json);
+    }
+    function qMonitoring(qid){//获取队列数据
+    	us = qid;
+    	window.executeAction('doQueueStatus');
+    }
+
+    function cbQueue(json){
+    	if(json.customerNumber != undefined && json.customerNumber == 'unknown_number'){//转义未知号码
+    		json.customerNumber ='未知号码';
+    	}
+    	if(json.name == 'joinQueue'){
+            window.joinQueue(json);
+    	}
+    	if(json.name == 'leaveQueue'){
+            window.leaveQueue(json);
+    	}
+    	if(json.name == 'queueCall'){
+            window.queueCall(json);
+    	}
+    }
+
+    var typeButton = {
+        phoneCallout : function(){//外呼
+            $("#phoneCallout").show().attr("disabled", false);
+            $("#phoneCallout").unbind("mouseover mouseout click");
+            $("#phoneCallout").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    var params = {};
+                    params.tel = $('#phoneCallText').val();
+                    params.callType = '3'; //3点击外呼
+                    executeAction('doPreviewOutCall', params);
+                }
+            });
+        },
+        phoneCallText : function(){
+            $("#phoneCallText").attr("disabled", false);
+            $("#phoneCallText").show();
+            $("#consultInput").show();
+        },
+        phoneCallCancel : function(){//外呼取消
+            $("#phoneCallCancel").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#phoneCallCancel").unbind("mouseover mouseout click");
+            $("#phoneCallCancel").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doPreviewOutcallCancel');
+                }
+            });
+        },
+        refused : function(){//拒接
+            $("#refused").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#refused").unbind("mouseover mouseout click");
+            $("#refused").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doRefuse');
+                }
+            });
+        },
+        unLink : function(){//挂断
+
+            $("#unLink").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#unLink").unbind("mouseover mouseout click");
+            $("#unLink").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doUnLink');
+                }
+            });
+        },
+        hold : function(){//保持
+            $("#hold").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#hold").unbind("mouseover mouseout click");
+            $("#hold").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doHold');
+                }
+            });
+        },
+        unHold : function(){//保持接回
+
+            $("#unHold").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#unHold").unbind("mouseover mouseout click");
+            $("#unHold").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doUnhold');
+                }
+            });
+        },
+        online : function(){//空闲
+
+            $("#online").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#online").unbind("mouseover mouseout click");
+            $("#online").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doUnpause');
+                }
+            });
+        },
+        pause : function(){//置忙
+
+            $("#pause").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#pause").unbind("mouseover mouseout click");
+            $("#pause").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    var param={};
+                    param.description="置忙";
+                    executeAction('doPause', param);
+
+                }
+            });
+        },
+        buttonDisabled : function(){//按钮恢复状态
+            $("#toolbarButton input").hide();
+            $("#toolbarButton input").css({"backgroundPosition":"0px 0px"});
+            $("#toolbarButton input").attr("disabled", true);
+            $("#toolbarButton input").unbind("mouseover mouseout click");
+
+        },
+        consult : function(){//咨询
+            $("#consult").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#consult").unbind("mouseover mouseout click");
+            $("#consult").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    var type = $("#consultInput").val();
+                    var number = $("#phoneCallText").val();
+                    var object = {};
+                    object.consultObject = number;
+                    object.objectType = type;
+                    executeAction('doConsult', object);
+                }
+            });
+        },
+        consultBack : function(){//咨询接回
+            $("#consultBack").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#consultBack").unbind("mouseover mouseout click");
+            $("#consultBack").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doUnconsult');
+                }
+            });
+        },
+        consultTransfer : function(){//咨询转接
+            $("#consultTransfer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#consultTransfer").unbind("mouseover mouseout click");
+            $("#consultTransfer").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doConsultTransfer');
+                }
+            });
+        },
+        consultThreeway : function(){//咨询三方
+            $("#consultThreeway").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#consultThreeway").unbind("mouseover mouseout click");
+            $("#consultThreeway").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                      $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    executeAction('doConsultThreeway');
+
+                }
+            });
+        },
+        transfer : function(){//转移
+            $("#transfer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+            $("#transfer").unbind("mouseover mouseout click");
+            $("#transfer").bind({
+                mouseover : function(){
+                    $(this).css({"backgroundPosition":"0px -66px"});
+                },
+                mouseout : function(){
+                    $(this).css({"backgroundPosition":"0px -33px"});
+                },
+                click : function(){
+                    var type = $("#consultInput").val();
+                    var number = $("#phoneCallText").val();
+                    var object = {};
+                    object.transferObject = number;
+                    object.objectType = type;
+                    executeAction('doTransfer', object);
+                }
+            });
+        },
+        answer : function(){//接听 软电话功能
+            if(userBasic.getBindType() == '3'){
+                $("#answer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
+                $("#answer").unbind("mouseover mouseout click");
+                $("#answer").bind({
+                    mouseover : function(){
+                        $(this).css({"backgroundPosition":"0px -66px"});
+                    },
+                    mouseout : function(){
+                        $(this).css({"backgroundPosition":"0px -33px"});
+                    },
+                    click : function(){
+                        executeAction('doLink');
+                    }
+                });
+            }
+
+        }
+    }
+
+
+    function cbWelcome(token) {//连接成功
+
+    }
+
+
+
+   function change_window () {
+       if($(".telephone-system-content").css("display") == "none"){
+           $(".telephone-system-content").show();
+       } else{
+           $(".telephone-system-content").hide();
+       }
+       if($(".telephone-system-content-min").css("display") == "none"){
+           $(".telephone-system-content-min").show();
+       } else{
+           $(".telephone-system-content-min").hide();
+       }
+   }
+    // 关闭
+   $('#phone-system-close').bind("click", function(){
+      if($(".telephone-system-content").css("display") == "none"){
+          $(".telephone-system-content").show();
+      } else{
+          $(".telephone-system-content").hide();
+      }
+   });
+
+   // 最小化
+   $('#phone-system-minimize').bind("click", function(){
+     $(".telephone-system-content-min").show();
+     $(".telephone-system-content").hide();
+   });
+   // 最大化
+   $('#phone-system-minimize-max').bind("click", function(){
+        change_max();
+    });
+
+
+</script>
 </body>
 </html>

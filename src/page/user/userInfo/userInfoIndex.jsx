@@ -130,7 +130,7 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
         return (
           <div  className="bottomDiv">
             <p>{props?`${moment(props.createTime).format('YYYY年MM月DD日')}入职`:''}<br/></p>
-            <p className="twoLine">你与凯贝姆已经一起成长 <span>{props? `${moment().diff(props.createTime, 'days')}天`:''} </span> 了</p>
+            <p className="twoLine">你与凯贝姆已经一起成长 <span>{props? `${moment().diff(moment(props.createTime).format('YYYYMMDD'), 'days')}天`:''} </span> 了</p>
           </div>
         )
       }
