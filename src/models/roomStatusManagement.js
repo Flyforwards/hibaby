@@ -18,7 +18,7 @@ export default {
     roomState: 'day',
     monthStateCustomers: [],
     monthRoomList: [],
-    dragUserIndex: 0,
+    dragUser: null,
     selectedYear: new Date().getFullYear(),
     selectedMonthList: [],
   },
@@ -74,12 +74,13 @@ export default {
     setMonthRoomList(state, {payload: todo}){
       return {...state, monthRoomList: todo.data};
     },
-    userDrop(state, {payload: data}){
+
+    userDropReducer(state, {payload: data}){
       // 复制数组
       let monthRoomList = state.monthRoomList.concat();
 
       // 获取当前操作的用户
-      let dragUser = state.monthStateCustomers[state.dragUserIndex];
+      let dragUser = state.dragUser;
 
       let allDays = monthRoomList[parseInt(data.roomIndex)].useAndBookingList;
 
@@ -100,7 +101,6 @@ export default {
         }
 
         // 如果该用户在当前房间内不存在, 则进行添加
-
         let isExit = false;
 
         for (let customer of currentDay.customerList) {
@@ -115,27 +115,33 @@ export default {
         }
       }
 
-
-      return {...state, monthRoomList: monthRoomList};
+      return {
+        ...state,
+        monthRoomList: monthRoomList
+      };
     },
+
     userDragStart(state, {payload: data}){
       return {
         ...state,
-        dragUserIndex: data.userIndex
+        dragUser: data.dragUser,
       }
     },
+
     selectedYearChange(state, {payload: data}){
       return {
         ...state,
         selectedYear: data.selectedYear,
       }
     },
+
     selectedMonthChange(state, {payload: data}){
       return {
         ...state,
         selectedMonthList: data.selectedMonthList,
       }
     },
+
     confirmCheckIn(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
       let room = monthRoomList[data.roomIndex].useAndBookingList;
@@ -157,6 +163,7 @@ export default {
         monthRoomList: monthRoomList
       }
     },
+
     deleteUser(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
       let room = monthRoomList[data.roomIndex].useAndBookingList;
@@ -179,6 +186,7 @@ export default {
         monthRoomList: monthRoomList
       }
     },
+
     updateReserveDays(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
 
@@ -189,7 +197,7 @@ export default {
       let customerName = data.customerName;
       let type = data.type;
 
-      if (type == "add") {
+      if (type === "add") {
         for (let j = startIndex + 1; j <= endIndex; j++) {
           let customerList = room[j].customerList;
           customerList.push({
@@ -210,7 +218,6 @@ export default {
         }
       }
 
-
       // 更新入住天数
       let customersList = state.monthStateCustomers;
       for (let i = 0; i < customersList.length; i++) {
@@ -224,8 +231,8 @@ export default {
         monthRoomList: monthRoomList
       }
     },
-  }
-  ,
+  },
+
   effects: {
     *listByMain({payload: values}, {call, put}) {
       const {data: {code, data}} = yield call(roomManagement.listByMain);
@@ -238,7 +245,6 @@ export default {
       const param = parse(location.search.substr(1));
       const defData = {useDate: moment().format()}
       const {data: {code, data, err}} = yield call(roomManagement.dayStatus, {...defData, ...param});
-      console.log(err);
       if (code == 0) {
         yield put({type: 'setDayStatusData', payload: {data}});
         yield put({type: 'setSelectValue', payload: {data: state.selectValue,}});
@@ -246,7 +252,6 @@ export default {
     },
     *dayStatusUpdate({payload: values}, {call, put}) {
       const defData = {useDate: moment().format()};
-      console.log(values)
       const {data: {code, data}} = yield call(roomManagement.dayStatusUpdate, {...defData, ...values});
       if (code == 0) {
         const param = parse(location.search.substr(1));
@@ -299,6 +304,7 @@ export default {
         });
       }
     },
+
     *monthRoomList({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
       const selectedYear = state.selectedYear;
@@ -332,6 +338,29 @@ export default {
         }
       });
     },
+    *userDrop({payload: value}, {call, put, select}){
+      const state = yield select(state => state.roomStatusManagement);
+
+      // 删除之前的
+      yield put({
+        type: 'deleteUser',
+        payload: {
+          ...value,
+          startIndex: state.dragUser.startIndex,
+          endIndex: state.dragUser.endIndex,
+          customerId: state.dragUser.customerId,
+          roomIndex: state.dragUser.roomIndex,
+        }
+      });
+
+      // 添加新的
+      yield put({
+        type: 'userDropReducer',
+        payload: {
+          ...value,
+        }
+      });
+    }
   },
 
   subscriptions: {
