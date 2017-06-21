@@ -19,6 +19,14 @@ const createForm = Form.create
 class DishesFormPage extends React.Component{
   constructor(props){
     super(props);
+    this.state = {
+      volume0Required : false,
+      volume1Required : false,
+      volume2Required : false,
+      volume3Required : false,
+      volume4Required : false,
+      volume5Required : false
+    }
   }
 
   handleSubmit(){
@@ -38,11 +46,13 @@ class DishesFormPage extends React.Component{
         //食材信息
         const ingredientsDOJson = [];
         for(let i=0;i<5;i++){
-          ingredientsDOJson.push({
-            name : values["name"+i],
-            volume : values["volume"+i],
-            type : i==0 ? 1:2
-          });
+          if(values["name"+i] && values["volume"+i]){
+            ingredientsDOJson.push({
+              name : values["name"+i],
+              volume : values["volume"+i],
+              type : i==0 ? 1:2
+            });
+          }
         }
         dispatch({
           type: 'dishes/saveDishes',
@@ -63,6 +73,41 @@ class DishesFormPage extends React.Component{
       dispatch(routerRedux.push(`/meals/dishes`));
     }
   }
+  ingredientsChange(event){
+    const dataIndex = parseInt(event.target.getAttribute("data-index"));
+    let requiredFlag = false;
+    const {form} = this.props;
+    if(event.target.value){
+      requiredFlag = true;
+    }
+    switch (dataIndex){
+      case 0:
+        this.updateInputRequired({volume0Required:requiredFlag});
+        break;
+      case 1:
+        this.updateInputRequired({volume1Required:requiredFlag});
+        break;
+      case 2:
+        this.updateInputRequired({volume2Required:requiredFlag});
+        break;
+      case 3:
+        this.updateInputRequired({volume3Required:requiredFlag});
+        break;
+      case 4:
+        this.updateInputRequired({volume4Required:requiredFlag});
+        break;
+      case 5:
+        this.updateInputRequired({volume5Required:requiredFlag});
+        break;
+    }
+  }
+  updateInputRequired(values){
+      this.setState({
+      ...values
+    });
+  }
+
+
 
   render(){
     const _this = this;
@@ -91,6 +136,27 @@ class DishesFormPage extends React.Component{
     }
     let record = null;
     for(let i = 0; i < 4; i++){
+      let volumeRequired = false;
+      switch (i+1){
+        case 0:
+          volumeRequired = this.state.volume0Required;
+          break;
+        case 1:
+          volumeRequired = this.state.volume1Required;
+          break;
+        case 2:
+          volumeRequired = this.state.volume2Required;
+          break;
+        case 3:
+          volumeRequired = this.state.volume3Required;
+          break;
+        case 4:
+          volumeRequired = this.state.volume4Required;
+          break;
+        case 5:
+          volumeRequired = this.state.volume5Required;
+          break;
+      }
       record = auxiliaryArr[i];
       IngredientsDOsRows.push(
         <Row key={(i+5)+""}>
@@ -106,12 +172,12 @@ class DishesFormPage extends React.Component{
                 initialValue: (record==null ? '' : record.name),
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '食材名称不能为空'
                   }
                 ],
               })(
-                <Input />
+                <Input data-index={i+1} onChange={this.ingredientsChange.bind(this)} />
               )}
             </FormItem>
           </Col>
@@ -124,7 +190,7 @@ class DishesFormPage extends React.Component{
                 initialValue: (record==null ? '' : record.volume),
                 rules: [
                   {
-                    required: true,
+                    required: volumeRequired,
                     message: '食材用量不能为空'
                   }
                 ],

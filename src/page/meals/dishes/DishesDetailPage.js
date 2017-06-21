@@ -97,7 +97,7 @@ class DishesDetailPage extends React.Component{
                 initialValue: (record==null ? '' : record.name),
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '食材名称不能为空'
                   }
                 ],
@@ -115,7 +115,7 @@ class DishesDetailPage extends React.Component{
                 initialValue: (record==null ? '' : record.volume),
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '食材用量不能为空'
                   }
                 ],
