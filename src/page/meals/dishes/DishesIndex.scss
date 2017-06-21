@@ -150,15 +150,12 @@ overflow: hidden;
 	font-family: '微软雅黑 Regular', '微软雅黑';
     font-weight: 400;
     font-size: 14px;
-	span{
+	div{
 		width:100%;
-		.firstA{
-			color: #0066FF;
-			text-decoration: none;
-		}
 		a{
-			margin: 0 3px;
-			color:#b87638;
+      margin-right: 9px;
+      margin-left: 13px;
+      color: #b67231;
 		}
     a:hover{
 			color:#0066ff;

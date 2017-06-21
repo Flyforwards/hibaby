@@ -161,7 +161,7 @@ class DishesFormPage extends React.Component{
       IngredientsDOsRows.push(
         <Row key={(i+5)+""}>
           <Col span={1}>
-            <Tag color="#f50">辅食材</Tag>
+            <Tag className="myTag">辅食材</Tag>
           </Col>
           <Col span={12}>
             <FormItem
@@ -279,7 +279,7 @@ class DishesFormPage extends React.Component{
             <Row key="3"><Col><h3 className="ingredients-info-div">食材信息</h3></Col></Row>
             <Row key="4">
               <Col span={1}>
-                <Tag color="#f50">主食材</Tag>
+                <Tag className="myTag">主食材</Tag>
               </Col>
               <Col span={12}>
                 <FormItem
