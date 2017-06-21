@@ -5,7 +5,8 @@ export default {
   namespace: 'cyclePage',
   state: {
     isShowDetail: false,
-    curTabsIndex: '1'
+    curTabsIndex: '1',
+    curDetailTabsIndex: '1'
   },
   reducers: {
 
@@ -13,6 +14,12 @@ export default {
       let index = Number(state.curTabsIndex) + status;
       let indexStr = index+'';
       return {...state, curTabsIndex: indexStr};
+    },
+
+    changedDetailTabActivity(state, { payload: { status} }) {
+      let index = Number(state.curDetailTabsIndex) + status;
+      let indexStr = index+'';
+      return {...state, curDetailTabsIndex: indexStr};
     },
 
     changedShowStatus(state, {}) {

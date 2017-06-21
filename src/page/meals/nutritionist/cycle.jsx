@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import styles from './Cycle.scss';
+import CycleDetail from './cycleDetail.jsx';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button } from 'antd'
-
-const FormItem = Form.Item;
 
 const  tabooUsers = [
   {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
@@ -20,22 +19,15 @@ const  tabooUsers = [
   {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
   {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'}
 ];
-//<div className="headerDate">2017-06-12 周一</div>
-// 头部
+
 
 // 主页面
 function mealCycle (props) {
     function headerComponent (){
       return (
         <div>
-          <Row style={{height: '30px'}}>
-            <Col span="21">
-              {headerDateTabs()}
-            </Col>
-            <Col span="3">
-              <p style={{marginTop: '25px'}}>今日用餐客户共计<font color="#ac672c">40</font>人</p>
-            </Col>
-          </Row>
+          <div style={{marginLeft: '85%' ,marginTop: '20px'}}><p style={{marginTop: '10px'}}>今日用餐客户共计<font color="#ac672c">40</font>人</p></div>
+          <div style={{marginTop: '-40px'}}>{headerDateTabs()}</div>
         </div>
       )
     }
@@ -65,13 +57,13 @@ function mealCycle (props) {
 
       return (
         <div>
-          <Card title="周期一" bordered={true} style={{marginBottom: '20px'}} onClick={() => { handleChangedState() }}>
+          <Card title="周期一" bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleChangedState() }}>
             <Row>
               <div className="cardSubtitle">标准用户14人</div>
               <div style={{background: '#e9e9e9', marginLeft: '20px', marginRight: '20px',height: '1px'}}></div>
             </Row>
             <Row>
-              <div className="cardSubtitle" style={{height:'30px',lineHeight: '30px',marginTop: '10px'}}>禁忌用户:</div>
+              <div className="cardSubtitle" style={{color:'#a5a5a5', height:'30px',lineHeight: '30px',marginTop: '10px'}}>禁忌用户:</div>
             </Row>
             <Row>
               <div style={{marginLeft: '20px', marginRight: '20px'}}>
@@ -160,7 +152,6 @@ function mealCycle (props) {
       const {dispatch} = props;
       dispatch({
         type: 'cyclePage/changedShowStatus',
-        payload: { status: 1 }
       })
     }
 
@@ -191,7 +182,7 @@ function mealCycle (props) {
 
     return (
       <div className="MealCycle">
-        { props.isShowDetail ?  '' :headerComponent()}
+        { props.isShowDetail ?  <CycleDetail/> :headerComponent()}
       </div>
 
     )
