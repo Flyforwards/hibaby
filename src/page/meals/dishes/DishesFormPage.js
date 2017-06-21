@@ -8,7 +8,7 @@ import React from 'react';
 import {connect} from 'dva';
 import {message, Button, Icon,Form,Row,Col,Input,Select,Tag } from 'antd';
 import { routerRedux } from 'dva/router';
-import DishesDetailPageCss from './DishesDetailPage.css'
+import DishesDetailPageCss from './DishesDetailPage.scss'
 
 
 
