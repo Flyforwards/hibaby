@@ -78,3 +78,11 @@ export function getMonthRoomList(values) {
     body: JSON.stringify(values),
   })
 }
+
+//一键排房
+export function arrangeRoom(values) {
+  return request('/crm/api/v1/room/arrangeRoom', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

@@ -1,5 +1,3 @@
-
-import * as activityService from '../services/activity';
 import * as customerService from '../services/customer';
 import * as addCustomerInformation from '../services/addCustomerInformation';
 import { routerRedux } from 'dva/router';

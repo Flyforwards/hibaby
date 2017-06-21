@@ -344,3 +344,28 @@
 }
 
 
+.RowHouses{
+  width: 1000px;
+  padding: 10px;
+  .antCli {
+    width: 100%;
+    height: 40px;
+  }
+  .cardCli{
+    width: 100%;
+    height: 50px;
+    margin-top:10px;
+  }
+  .btn {
+    background: #f1e8df;
+    border-color: #bb7c41;
+    color: #b67233;
+    font: 14px "微软雅黑";
+    height: 30px;
+    width: 120px;
+  }
+}
+
+.addCustomer{
+
+}
