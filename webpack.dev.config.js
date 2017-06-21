@@ -121,38 +121,38 @@ var webpackConfig = {
     },
     module: {
         loaders: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                loader: 'babel',
-            }, {
-                test: /\.css$/,
-                loader: 'style-loader!css-loader!postcss-loader',
-                // loader: ExtractTextPlugin.extract(['css', 'postcss'])
-            }, {
-                test: /\.scss$/,
-                loader: 'style-loader!css-loader!postcss-loader!sass-loader',
-                // loader: ExtractTextPlugin.extract(['css', 'postcss', 'sass'])
-            }, {
-                test: /\.less$/,
-                loader: 'style-loader!css-loader!postcss-loader!less-loader',
-                // loader: ExtractTextPlugin.extract(['css', 'postcss', 'less'])
-            }, {
-                test: /\.(png|jpg|jpeg|gif)$/i,
-                loader: 'url?name=[hash:8].[ext]&limit=8192',
-            }, {
-                //html模板加载器，可以处理引用的静态资源，默认配置参数attrs=img:src，处理图片的src引用的资源
-                //比如你配置，attrs=img:src img:data-src就可以一并处理data-src引用的资源了，就像下面这样
-                test: /\.html$/,
-                loader: "html?attrs=img:src img:data-src"
-            }, {
-                //文件加载器，处理文件静态资源
-                test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'file-loader?name=./fonts/[name].[ext]'
-            }, {
-                test: /\.json$/,
-                loader: 'json'
-            }
+          {
+              test: /\.(js|jsx)$/,
+              exclude: /node_modules/,
+              loader: 'babel',
+          }, {
+              test: /\.css$/,
+              loader: 'style-loader!css-loader!postcss-loader',
+              // loader: ExtractTextPlugin.extract(['css', 'postcss'])
+          }, {
+              test: /\.scss$/,
+              loader: 'style-loader!css-loader!postcss-loader!sass-loader',
+              // loader: ExtractTextPlugin.extract(['css', 'postcss', 'sass'])
+          }, {
+              test: /\.less$/,
+              loader: 'style-loader!css-loader!postcss-loader!less-loader',
+              // loader: ExtractTextPlugin.extract(['css', 'postcss', 'less'])
+          }, {
+              test: /\.(png|jpg|jpeg|gif)$/i,
+              loader: 'url?name=[hash:8].[ext]&limit=8192',
+          }, {
+              //html模板加载器，可以处理引用的静态资源，默认配置参数attrs=img:src，处理图片的src引用的资源
+              //比如你配置，attrs=img:src img:data-src就可以一并处理data-src引用的资源了，就像下面这样
+              test: /\.html$/,
+              loader: "html?attrs=img:src img:data-src"
+          }, {
+              //文件加载器，处理文件静态资源
+              test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+              loader: 'file-loader?name=./fonts/[name].[ext]'
+          }, {
+              test: /\.json$/,
+              loader: 'json'
+          }
 
         ]
     },
