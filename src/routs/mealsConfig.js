@@ -61,7 +61,7 @@ export default (app) => [
     path: '/meals/nutritionist/taboo/export',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-         registerModel(app, require('models/dinner'));
+        registerModel(app, require('models/dinner'));
         cb(null, require('page/meals/nutritionist/export.jsx'))
       })
     }
@@ -71,7 +71,7 @@ export default (app) => [
     path: '/exportPrint',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-         registerModel(app, require('models/dinner'));
+        registerModel(app, require('models/dinner'));
         cb(null, require('page/meals/nutritionist/exportPrint.jsx'))
       })
     }
@@ -81,7 +81,7 @@ export default (app) => [
     path: '/meals/nutritionist/cycle',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        //registerModel(app, require('models/addCustomer'));
+        registerModel(app, require('models/cyclePage'));
         cb(null, require('page/meals/nutritionist/cycle.jsx'))
       })
     }

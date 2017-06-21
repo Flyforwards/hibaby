@@ -162,7 +162,7 @@ function HealthyhomeDetail(props) {
             style={{ width: 100 }}
             placeholder="请选择"
             optionFilterProp="children"
-            readOnly
+            disabled={ true }
             filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           >
             {optionItemDivs}

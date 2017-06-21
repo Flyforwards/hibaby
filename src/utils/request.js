@@ -1,6 +1,7 @@
 
 import fetch from 'dva/fetch';
 import { session } from 'common/util/storage.js';
+import { message } from 'antd';
 
 function parseJSON(response) {
   return response.json();
@@ -32,8 +33,16 @@ function checkCode(data) {
   const { code, err } = data;
   // const whiteList = [6];
   if (code != 0) {
-    const error = new Error(err || "请求错误" );
-    throw error;
+    if (code == 5) { // 未登陆
+      message
+      if (location.pathname != '/login') {
+        location.href = '/login'
+      }
+    } else {
+      const error = new Error(err || "请求错误" );
+      throw error;
+    }
+
   }
   return { data };
 }
