@@ -168,6 +168,7 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
+          <Button className="queryBtn">一键排房</Button>
           <Button className="queryBtn">查询</Button>
         </Col>
       </Row>

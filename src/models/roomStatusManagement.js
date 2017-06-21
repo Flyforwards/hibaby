@@ -1,4 +1,5 @@
 import * as roomManagement from '../services/roomManagement';
+import * as customerService from '../services/customer';
 import * as addCustomerInformation from '../services/addCustomerInformation';
 import {message} from 'antd'
 import {routerRedux} from 'dva/router';
@@ -10,6 +11,7 @@ export default {
     packageAry: [],
     roomList: '',
     selectValue: ['all', 0, 1, 2, 3, 4, 5, 6, 7],
+    resultsRowHouses: '',
     dayStatusData: '',
     FloorAry: '',
     MainFloorAry: '',
@@ -21,10 +23,20 @@ export default {
     dragUserIndex: 0,
     selectedYear: new Date().getFullYear(),
     selectedMonthList: [],
+    allCusList:'',
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
+
   },
 
   reducers: {
-
+    setCustomerPageSave(state, { payload: { list, pagination }}) {
+      return {...state, allCusList:list, pagination: {  ...state.pagination,...pagination }};
+    },
     setSelectValue(state, {payload: todo}){
       let listArray = [];
       if (state.dayStatusData) {
@@ -62,6 +74,9 @@ export default {
       }
       return {...state};
     },
+    setResultsRowHouses(state, {payload: todo}){
+      return {...state, resultsRowHouses: todo.data};
+    },
     setRoomViewState(state, {payload: todo}){
       return {...state, roomState: todo.data};
     },
@@ -74,6 +89,8 @@ export default {
     setMonthRoomList(state, {payload: todo}){
       return {...state, monthRoomList: todo.data};
     },
+
+
     userDrop(state, {payload: data}){
       // 复制数组
       let monthRoomList = state.monthRoomList.concat();
@@ -275,6 +292,57 @@ export default {
         });
       }
     },
+    *arrangeRoom({payload: value}, {call, put}){
+      const defData = {useDate: moment().format()}
+
+      value = {
+        "beginDate": "2017-06-21T02:29:28.617Z",
+        "customerId": 140,
+        "customerName": 0,
+        "days": 28,
+        "jumpNo": 3,
+        "packageInfoId": 32
+      }
+
+      const {data: {code, data}} = yield call(roomManagement.arrangeRoom,{...defData,...value});
+      if (code == 0) {
+        yield put({
+          type: 'setResultsRowHouses',
+          payload: {
+            data: data,
+          }
+        });
+        console.log(data)
+      }
+    },
+
+    // 获取用户列表
+    *getCustomerPage({ payload: values }, { call, put }) {
+
+      const tt = {page:1,size:10}
+
+      const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, tt);
+      if (code == 0) {
+        if(data.length == 0 && page > 1){
+          yield put({type:'getCustomerPage',payload:{page:page -1,size:10}})
+
+        }else{
+          yield put({
+            type: 'setCustomerPageSave',
+            payload: {
+              list: data,
+              pagination: {
+                current: Number(page) || 1,
+                pageSize: Number(size) || 10,
+                total: total,
+              },
+            },
+          })
+        }
+
+      }
+    },
+
     *roomViewStateChange({payload: value}, {call, put}){
       yield put({
         type: 'setRoomViewState',

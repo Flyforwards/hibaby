@@ -24,6 +24,7 @@ const Option = Select.Option;
 import moment from 'moment';
 import {parse} from 'qs';
 import roomStateForMonthView from "./roomStateForMonthView.js";
+import {AddCustomerModal,RowHousesModal} from './roomStateForMonthModal';
 
 const statusDict = {0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
 
