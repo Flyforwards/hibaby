@@ -185,7 +185,6 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="queryBtn">一键排房</Button>
           <Button className="queryBtn">查询</Button>
         </Col>
       </Row>
@@ -525,10 +524,33 @@ const monthStateView = (props) => {
       )
     };
 
+    const renderBottomBar = () => {
+
+      const saveReserveClickHandler = () => {
+        dispatch({
+          type: 'roomStatusManagement/monthRoomUpdate',
+          payload: {
+
+          }
+        });
+      };
+
+      return(
+        <div className="bottomBar">
+          <Button className="oneKeyBtn">一键排房</Button>
+          <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
+        </div>
+      )
+    };
+
     return (
       <div className="monthRoomListBox">
         {
           roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
+        }
+
+        {
+          renderBottomBar()
         }
       </div>
     )

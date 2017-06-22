@@ -57,7 +57,7 @@ export function dayStatusUpdate(values) {
   })
 }
 /**
- *
+ * 获取月房态用户列表
  * @param values
  * @returns {Object}
  */
@@ -68,7 +68,7 @@ export function getMonthStatusCustomers(values) {
   })
 }
 /**
- *
+ * 获取月房态房间列表
  * @param values
  * @returns {Object}
  */
@@ -86,3 +86,21 @@ export function arrangeRoom(values) {
     body: JSON.stringify(values),
   })
 }
+
+// 确认入住
+export function confirmReside(values) {
+  return request('/crm/api/v1/room/confirmReside', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 月房状态更新
+export function monthRoomUpdate(values) {
+  return request('/crm/api/v1/room/monthRoomUpdate', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+

@@ -206,7 +206,6 @@
 
       .monthRoomListBox {
         width: 100%;
-        height: 100%;
         background-color: #fff;
 
         .monthRoomBox {
@@ -274,7 +273,6 @@
             float: left;
             height: 100%;
             width: 9px;
-            background-color: #eee;
             position: relative;
             padding: 0 1px;
             .stateBox {
@@ -300,6 +298,39 @@
             }
           }
 
+          .dayRoom:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            width: 5px;
+            height: 5px;
+            background-color: #eee;
+            border-radius: 50%;
+          }
+        }
+
+        .bottomBar {
+          height: 80px;
+          line-height:80px;
+          text-align: right;
+          .oneKeyBtn {
+            width: 150px;
+            background-color: #f8f1ea;
+            color: #B67233;
+          }
+
+          .saveReserveBtn {
+            width: 150px;
+            background-color: #B67233;
+            color: #f8f1ea;
+            margin-left: 20px;
+            margin-right: 30px;
+          }
         }
       }
 
@@ -343,18 +374,17 @@
   }
 }
 
-
-.RowHouses{
+.RowHouses {
   width: 1000px;
   padding: 10px;
   .antCli {
     width: 100%;
     height: 40px;
   }
-  .cardCli{
+  .cardCli {
     width: 100%;
     height: 50px;
-    margin-top:10px;
+    margin-top: 10px;
   }
   .btn {
     background: #f1e8df;
@@ -366,6 +396,6 @@
   }
 }
 
-.addCustomer{
+.addCustomer {
 
 }
