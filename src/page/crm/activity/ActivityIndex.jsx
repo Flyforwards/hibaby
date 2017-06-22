@@ -79,7 +79,7 @@ class ActivityIndex extends React.Component {
         } else {
           return (
             <div key = { index }>
-              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <PermissionLink testKey='ACTIVITY_DETAIL' className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </PermissionLink>
               <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
               <Link disabled={del} className="firstB" onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
             </div>

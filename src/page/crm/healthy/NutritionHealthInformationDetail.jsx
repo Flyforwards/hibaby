@@ -7,6 +7,7 @@ import ExcelTitleModel from './excelTitle';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
+import PermissionButton from 'common/PermissionButton';
 /**
  * 客户信息》健康档案》营养部健康档案
  */
@@ -358,10 +359,10 @@ function NutritionHealthInformationDetail(props) {
             if(location.pathname !== '/crm/customer/printCustomerPage')
             {
              return <div>
-              <Button className='commitButton SaveBtn' onClick={handleEdit}>编辑</Button>
+              <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' onClick={handleEdit}>编辑</PermissionButton>
               <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
                <ExcelTitleModel>
-                 <Button className='commitButton BackBtn'>打印</Button>
+                 <PermissionButton testKey="HEALTHINFO_PRINT" className='commitButton BackBtn'>打印</PermissionButton>
                </ExcelTitleModel>
               </div>
             }

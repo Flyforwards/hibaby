@@ -8,7 +8,8 @@ import React from 'react';
 import {connect} from 'dva';
 import {message, Button, Icon,Form,Row,Col,Input,Select,Tag,Modal } from 'antd';
 import { routerRedux } from 'dva/router';
-import DishesDetailPageCss from './DishesDetailPage.css'
+import DishesDetailPageCss from './DishesDetailPage.scss';
+import PermissionButton from '../../../common/PermissionButton';
 
 
 const FormItem = Form.Item;
@@ -85,7 +86,7 @@ class DishesDetailPage extends React.Component{
       IngredientsDOsRows.push(
         <Row key={(i+5)+""}>
           <Col span={1}>
-            <Tag color="#f50">辅食材</Tag>
+            <Tag className="myTag">辅食材</Tag>
           </Col>
           <Col span={12}>
             <FormItem
@@ -96,7 +97,7 @@ class DishesDetailPage extends React.Component{
                 initialValue: (record==null ? '' : record.name),
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '食材名称不能为空'
                   }
                 ],
@@ -114,7 +115,7 @@ class DishesDetailPage extends React.Component{
                 initialValue: (record==null ? '' : record.volume),
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '食材用量不能为空'
                   }
                 ],
@@ -206,7 +207,7 @@ class DishesDetailPage extends React.Component{
             <Row key="3"><Col><h3 className="ingredients-info-div">食材信息</h3></Col></Row>
             <Row key="4">
               <Col span={1}>
-                <Tag color="#f50">主食材</Tag>
+                <Tag className="myTag">主食材</Tag>
               </Col>
               <Col span={12}>
                 <FormItem
@@ -249,8 +250,10 @@ class DishesDetailPage extends React.Component{
           </div>
         </Form>
         <div>
-          <Button className='myBtn SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>
-          <Button className='myBtn RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>
+          <PermissionButton testKey="DISHES_EDIT" className='myBtn SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
+          <PermissionButton testKey="DISHES_DELETE" className='myBtn RemoveBtn' onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</PermissionButton>
+          {/*<Button className='myBtn SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>*/}
+          {/*<Button className='myBtn RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>*/}
           <Button className='myBtn BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </div>

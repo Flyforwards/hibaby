@@ -92,6 +92,17 @@ class DishesLeft extends React.Component {
         }
       });
 
+    }else{
+      if(this.selectNodeLevel == 0){//根目录
+        this.deleteDisplay = "none";//设置删除按钮隐藏
+      }else{
+        this.deleteDisplay = "block";
+      }
+      if(this.selectNodeLevel > 2){//二级菜单
+        this.addDisplay = "none"//设置添加按钮隐藏
+      }else{
+        this.addDisplay = "block"
+      }
     }
   }
 
@@ -261,6 +272,11 @@ class DishesLeft extends React.Component {
 
 
   render() {
+    const add = !this.props.permissionAlias.contains('NODE_ADD');
+    const detail = !this.props.permissionAlias.contains('NODE_DETAIL');
+    const del = !this.props.permissionAlias.contains('NODE_DELETE');
+
+
     const {dishesLibraryNodes} = this.props.dishes;
     let treeNodes = dishesLibraryNodes?this.nodesIteration(dishesLibraryNodes):null;
     treeNodes =dishesLibraryNodes?<TreeNode key={dishesLibraryNodes.id} level={dishesLibraryNodes.level} title={dishesLibraryNodes.name} parentId={dishesLibraryNodes.parentId}>{treeNodes}</TreeNode>:null;
@@ -277,9 +293,9 @@ class DishesLeft extends React.Component {
           {treeNodes}
         </Tree>
         <ul className="nameList" style={{ top: this.state.ulTop, display: this.state.upblock }}>
-          <li className="li" onClick={this.handlerCreate.bind(this)} style={{ display: this.addDisplay }}>添加子节点</li>
-          <li className="li" onClick={this.handlerDetail.bind(this)}>查看详情</li>
-          <li className="li" onClick={this.handlerRemove.bind(this)} style={{ display: this.deleteDisplay }}>删除</li>
+          <li disabled={add} className="li" onClick={this.handlerCreate.bind(this)} style={{ display: this.addDisplay }}>添加子节点</li>
+          <li disabled={detail} className="li" onClick={this.handlerDetail.bind(this)}>查看详情</li>
+          <li disabled={del} className="li" onClick={this.handlerRemove.bind(this)} style={{ display: this.deleteDisplay }}>删除</li>
           <li className="fourLi">ID {this.state.ID}</li>
         </ul>
 
@@ -300,8 +316,10 @@ class DishesLeft extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const { permissionAlias } = state.layout;
   return {
-    dishes: state.dishes
+    dishes: state.dishes,
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(DishesLeft);

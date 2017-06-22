@@ -23,6 +23,8 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
 import Current from '../../Current'
+import PermissionButton from 'common/PermissionButton';
+
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
 const monthFormat = 'YYYY'
@@ -128,7 +130,7 @@ class CustomerIndex extends React.Component {
         if (record.operator2 != null) {
           return record.operator2;
         } else {
-          return record.operator;
+          return record.operator;CUSTOMER_DELETE
         }
       }
     }, {
@@ -319,13 +321,19 @@ class CustomerIndex extends React.Component {
                   </Col>
                   <Col span={6}>
                   <span>
-                        <Link to="/crm/customer/AddCustomerInformation"><Button disabled={add} style={{
-                          width: '100%',
-                          backgroundColor: 'rgba(182, 114, 51, 1)',
-                          height: '40px',
-                          lineHeight: '40px',
-                          color: '#ffffff'
-                        }}>新增客户</Button></Link>
+
+                        <Link to="/crm/customer/AddCustomerInformation">
+                          <PermissionButton
+                            testKey='CUSTOMER_ADD'
+                            style={{
+                            width: '100%',
+                            backgroundColor: 'rgba(182, 114, 51, 1)',
+                            height: '40px',
+                            lineHeight: '40px',
+                            color: '#ffffff'
+                          }}
+                          >新增客户</PermissionButton>
+                        </Link>
                       </span>
                   </Col>
                 </Row>
