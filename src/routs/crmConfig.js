@@ -345,6 +345,16 @@ export default (app) => [
       })
     }
   },
+  // 客户电话系统
+  {
+    path: '/crm/phone-system/add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/phoneSystem'));
+        cb(null, require('page/crm/customerService/PhoneSystemAddIndex.jsx'))
+      })
+    }
+  },
 
   //会员卡打印路由
   {

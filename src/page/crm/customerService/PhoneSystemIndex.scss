@@ -1,3 +1,208 @@
 .customer-phone-system-cent{
+  width:98%;
+  margin:0 1%;
+  .add-activity{
+    padding: 10px 10px 0 10px;
+    label{font: 12px "微软雅黑";}
+    label:before{
+      content: '';
+      display: none;
+    }
+  }
+  .topTitleInfo{
+    .ant-col-10{
+      width: 600px;
+      margin-right: 20px;
+    }
+    .ant-form-item{
+      width: 600px;
+      .ant-form-item-control {
+        width:600px;
+      }
+    }
+    button{
+      font:14px "微软雅黑";
+    }
+  }
+  .titleInfo{
+    label{
+      font: 12px "微软雅黑";
+    }
+    .ant-form-item-control {
+      width: 110px;
+    }
+    .TireNum{
+      .ant-form-item-control {
+        width: 100px;
+      }
+    }
+  }
+  .activityTitle{
+    margin-top:10px;
+  }
+  .card-title {
+    h3{
+      font-size: 14px;
+      display: inline-block;
+      text-overflow: ellipsis;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+    }
+  }
 
+  .name{
+    margin:10px 0px 10px 10px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color:#333;
+    span{
+      display:inline-block;
+      color: #FFFFFF;
+      width: 140px;
+      height: 40px;
+      margin-left:10px;
+      text-align: center;
+      line-height: 40px;
+      background: inherit;
+      background-color: rgba(255, 102, 0, 1);
+      border: none;
+      border-radius: 5px;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+    }
+  }
+
+  //.ant-input{
+  //  width:220px;
+  //  height:40px;
+  //  margin-left:40px;
+  //}
+
+  .card-span{
+    position: relative;
+    border-collapse: separate;
+    border: 1px solid #d9d9d9;
+    border-spacing: 0;
+    width: 100%;
+    span{
+      padding: 4px 7px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1;
+      color: rgba(0,0,0,.65);
+      text-align: center;
+      background-color: #eee;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      position: relative;
+      transition: all .3s;
+    }
+  }
+
+  .ant-table-thead > tr > th {
+    background-color: rgba(102, 102, 102, 1);
+    font-weight: 500;
+    transition: background .3s ease;
+    text-align: center;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #FFFFFF;
+  }
+  .ant-table-tbody > tr > td {
+    text-align:center;
+    background-color: #fff;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-size: 14px;
+    div{
+      width:100%;
+      a{
+        margin: 0 2px;
+        color:#b67231;
+      }
+      .firstA:hover{
+        color:#0066ff;
+      }
+      .firstB:hover{
+        color:#ff0000;
+      }
+    }
+  }
+
+  .button-wrapper {
+    width: 100%;
+    height: 40px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .button-add {
+    background-color: #b67233;
+    width: 150px;
+    height: 100%;
+    color: #fff;
+    float: right;
+
+  }
+
+  .button-add:hover {
+    background-color: #f89d2d;
+    border-color:#f89d2 ;
+    font:14px "微软雅黑";
+    color: #fff;
+  }
+  .ant-card{
+    width: 100%;
+  }
+
+  .ant-card-body{
+    padding: 10px;
+  }
+  .ant-btn{
+    height: 30px;
+    width: 150px;
+    font: 14px "微软雅黑";
+  }
+  .ant-btn:hover{
+    background: #f99d2e;
+    border-color: #f99d2e;
+  }
+  .backBtn{
+    background:#b67233;
+    border-color:#b67233;
+    color: #fff;
+    font:14px "微软雅黑";
+  }
+  .subscribeBtn{
+    background: #ff6600;
+    color:#fff;
+  }
+  .editBtn{
+    background: #169bd5;
+    color:#fff;
+  }
+  .delBtn{
+    background: #ff4a4a;
+    color:#fff;
+  }
+  .saveBtn{
+    background: #f1e8df;
+    border-color:#d4ad89;
+    color:#b67233;
+  }
+  .saveBtn:hover{
+    color:#fff;
+  }
+  .SaveBtn:hover{
+    color:#fff;
+  }
 }

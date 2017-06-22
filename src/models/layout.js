@@ -69,6 +69,14 @@ export default {
               if (location.pathname === '/login') {
                 yield put(routerRedux.push('/'))
               }
+              try {
+                const {data: {code: code5, data}} = yield call(usersService.getByCurrentUser,);
+                if (code5 == 0) {
+                  window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
+                }
+              } catch (err) {
+
+              }
             }
             // 未选择地方中心则选择地方中心
           } catch (err) {
@@ -87,6 +95,14 @@ export default {
                     type: "currentUserPermissionAliasList"
                   })
                   yield put(routerRedux.push('/'));
+                  try {
+                    const {data: {code: code5, data}} = yield call(usersService.getByCurrentUser,);
+                    if (code5 == 0) {
+                      window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
+                    }
+                  } catch (err) {
+
+                  }
                 }
               } catch (err) {
                 yield put(routerRedux.push('/club'));

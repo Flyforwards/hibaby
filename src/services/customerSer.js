@@ -89,13 +89,33 @@ export function saveCustomerVisEdit(values) {
   })
 }
 
-// 获取当前用户的呼叫中心配置信息
-export function getByCurrentUser(values) {
-  return request('/crm/api/v1/customerServiceConfig/getByCurrentUser', {
+// 获取当前地方中心配置的客服列表
+export function listByPage(values) {
+  return request('/crm/api/v1/customerServiceConfig/listByPage', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
+// 获取当前地方中心可设置员工列表
+export function listByUserPage(values) {
+  return request('/crm/api/v1/customerServiceConfig/listByUserPage', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 编辑保存预约参观信息
+export function phoneSystemSave(values) {
+  return request('/crm/api/v1/customerServiceConfig/add', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
+
 
 
 
