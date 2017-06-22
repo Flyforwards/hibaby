@@ -1,10 +1,10 @@
-.CustomerConent {
+.CustomerConents {
   min-width: 1030px;
-  margin: 10px;
   .button{
     overflow: hidden;
     height:60px;
     width:100%;
+    padding-top:10px;
   }
   .topSelect {
     //width: 1030px;
@@ -68,7 +68,6 @@
     text-align: center;
   }
   .ant-btn {
-    background-color: #b67233;
     color: #fff;
     border: 0;
     width: 150px;
@@ -215,24 +214,27 @@
 }
 .Taboo{
   .TabooTital{
-    width:80%;
-    height:400px;
-    border: 1px solid #999; 
+    width:98%;
+    min-height:400px;
+    border: 1px solid #d9d9d9;
     border-bottom: none;
-    border-top-right-radius:5px; 
+    border-top-right-radius:5px;
     border-top-left-radius:5px;
-    margin-left:10%;
+    margin:15px auto;
+    background: #FFFFFF;
+    .formPadding{
+      padding:20px;
+    }
     .basicInformation{
       height: 64px;
-      background-color: rgba(102, 102, 102, 1);
-      border-radius: 5px;
+      background-color:#b67233;
       line-height: 64px;
       span{
         display: inline-block;
         color:#fff;
         font-size:16px;
         margin-right: 14%;
-        margin-left: 9%;   
+        margin-left: 9%;
       }
     }
     .delDisplan{
@@ -247,7 +249,15 @@
   }
   .ant-col-8 {
     display: block;
-    width: 24.333333%;
+   // width: 24.333333%;
+    .ant-form-item{
+      .ant-form-item-control-wrapper{
+        .ant-form-item{
+          display: flex;
+        }
+      }
+
+    }
   }
   .ant-form-item-label .label:after{
     display: none;
@@ -268,11 +278,11 @@
     margin-right: 200%;
   }
   .TabooButton{
-    width:80%;
-    margin-left:10%; 
+    width:98%;
+    //margin-left:10%;
     overflow: hidden;
+    text-align: right;
     height:80px;
-    border: 1px solid #999;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
   }

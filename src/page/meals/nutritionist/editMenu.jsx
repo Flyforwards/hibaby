@@ -1,64 +1,53 @@
-import React from 'react'
-import './dinner.scss'
-import { connect } from 'dva'
-import {
-  Select,
-  Button,
-  Table,
-  Input,
-  Form,
-  Icon,
-  Popconfirm,
-  Pagination,
-  Cascader,
-  Col,
-  Row,
-  InputNumber,
-  Modal
-} from 'antd'
-import moment from 'moment'
-import  CreateModal from './CreateModal.jsx'
-import { routerRedux } from 'dva/router'
-import { Link } from 'react-router'
-import DictionarySelect from 'common/dictionary_select';
-import Current from '../../Current'
-import PrepareMeals from './prepareMeals.js'
-
-const Option = Select.Option
-const monthFormat = 'YYYY'
+import React from 'react';
+import './index.scss';
+import { connect } from 'dva';
+import {Select, Button, Table, Input, Form, Icon, Pagination, Col, Row, InputNumber, Modal} from 'antd';
+import moment from 'moment';
+import { routerRedux } from 'dva/router';
+import { Link } from 'react-router';
+import PrepareMeals from './prepareMeals.js';
+import { queryURL } from '../../../utils/index.js';
+const Option = Select.Option;
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
-const createForm = Form.create
-
+const createForm = Form.create;
 
 
 @createForm()
 class EditMenu extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.edit = null
   }
   onBack(){
-    history.go(-1)
+    this.props.dispatch(routerRedux.push({
+        pathname:'/meals/nutritionist/dinner'
+      })
+    )
   }
   componentDidMount() {
-    this.edit = window.location.search.split("=")[1]
-    this.props.dispatch({ type: 'customer/getCustomerPage' });
-    this.props.dispatch({ type: 'customer/listByMain' });
-    this.props.dispatch({ type: 'customer/getMemberShipCard' });
-    this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
+    this.edit = window.location.search.split("=")[1];
+    // this.props.dispatch({ type: 'customer/getCustomerPage' });
+    // this.props.dispatch({ type: 'customer/listByMain' });
+    // this.props.dispatch({ type: 'customer/getMemberShipCard' });
+    // this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
   }
-
+  //点击导出
+  onExport() {
+    const { dispatch } = this.props;
+    const dataId = queryURL("dataId");
+    dispatch(routerRedux.push({
+      pathname: '/meals/nutritionist/taboo/export',
+      query: {
+        dataId:dataId,
+      },
+    }))
+  }
   render() {
-    const columns = this.columns;
-    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props
-    const options = shipCards.map((record) => {
-      return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
-    });
+    const { loading, dispatch, form} = this.props
     return (
-      <div className="CustomerConent">
+      <div className="CustomerConents">
         <div className="button">
-        <Link to={{pathname:'/meals/nutritionist/taboo/export',query:{ dataId:`${this.edit}`}}}>
           <Button  style={{
             width: '15%',
             height: '40px',
@@ -66,7 +55,7 @@ class EditMenu extends React.Component {
             marginLeft:'40px',
             float:'right',
             backgroundColor: 'rgba(255, 102, 0, 1)'
-          }}>导出</Button></Link>
+          }} onClick={this.onExport.bind(this)}>导出</Button>
           <Button  onClick={this.onBack.bind(this)} style={{
             width: '15%',
             height: '40px',
@@ -85,22 +74,7 @@ class EditMenu extends React.Component {
   }
 }
 function mapStateToProps(state) {
-  const {
-    list,
-    pagination,
-    shipCards,
-    fetusAry,
-    packageList
-  } = state.customer;
-  const { permissionAlias } = state.layout;
   return {
-    loading: state.loading,
-    list,
-    fetusAry,
-    pagination,
-    shipCards,
-    permissionAlias,
-    packageList
   };
 }
 export default connect(mapStateToProps)(EditMenu)

@@ -1,5 +1,5 @@
 import React from 'react'
-import './dinner.scss'
+import './index.scss'
 import { connect } from 'dva'
 import {
   Select,
@@ -186,23 +186,23 @@ class CustomerIndex extends React.Component {
 
   onSearch() {
     console.log("search>>>>>")
-    // this.props.form.validateFields((err, values) => {
-    //   if (!err) {
-    //     if (values.time != undefined) {
-    //       values.year = values.time.get('year');
-    //       values.month = values.time.get('month') + 1;
-    //     }
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        if (values.time != undefined) {
+          values.year = values.time.get('year');
+          values.month = values.time.get('month') + 1;
+        }
 
-    //     if (values.productionDate != undefined) {
-    //       values.productionDate = values.productionDate.format("YYYY-MM-DD")
-    //     }
+        if (values.productionDate != undefined) {
+          values.productionDate = values.productionDate.format("YYYY-MM-DD")
+        }
 
-    //     this.props.dispatch(routerRedux.push({
-    //       pathname: "/crm/customer",
-    //       query: values
-    //     }))
-    //   }
-    // })
+        this.props.dispatch(routerRedux.push({
+          pathname: "/crm/customer",
+          query: values
+        }))
+      }
+    })
   }
 
   reset() {
@@ -284,7 +284,7 @@ class CustomerIndex extends React.Component {
 
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConent">
+      <div className="CustomerConents">
         <main className="yt-admin-framework-Customer">
           <Form>
             <Row className="topSelect">
@@ -459,7 +459,7 @@ function mapStateToProps(state) {
           shipCards,
           fetusAry,
           packageList
-        } = state.customer;
+        } = state.dinner;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
