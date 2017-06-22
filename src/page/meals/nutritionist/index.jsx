@@ -3,7 +3,6 @@ import './index.scss';
 import { connect } from 'dva';
 import {Select, Button, DatePicker, Table, Input, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal} from 'antd';
 import moment from 'moment';
-import  CreateModal from './CreateModal.jsx';
 import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import DictionarySelect from 'common/dictionary_select';
@@ -200,7 +199,7 @@ class PrepareMealPage extends React.Component {
     };
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConents">
+      <div className="CustomerConents dinnerConnet">
         <main className="yt-admin-framework-Customer">
           <Form>
             <Row className="topSelect">
