@@ -1,34 +1,18 @@
-import React from 'react'
-import './dinner.scss'
-import { connect } from 'dva'
-import {
-  Select,
-  Button,
-  DatePicker,
-  Table,
-  Input,
-  Form,
-  Icon,
-  Popconfirm,
-  Pagination,
-  Cascader,
-  Col,
-  Row,
-  InputNumber,
-  Modal
-} from 'antd'
-import moment from 'moment'
-import  CreateModal from './CreateModal.jsx'
-import { routerRedux } from 'dva/router'
-import { Link } from 'react-router'
+import React from 'react';
+import './index.scss';
+import { connect } from 'dva';
+import {Select, Button, DatePicker, Table, Input, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal,message} from 'antd';
+import moment from 'moment';
+import { routerRedux } from 'dva/router';
+import { Link } from 'react-router';
 import DictionarySelect from 'common/dictionary_select';
-
-const Option = Select.Option
-const { MonthPicker, RangePicker } = DatePicker
-const monthFormat = 'YYYY'
+import { queryURL } from '../../../utils/index.js';
+const Option = Select.Option;
+const { MonthPicker, RangePicker } = DatePicker;
+const monthFormat = 'YYYY';
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
-const createForm = Form.create
+const createForm = Form.create;
 
 @createForm()
 class PrepareMealPage extends React.Component {
@@ -98,24 +82,37 @@ class PrepareMealPage extends React.Component {
         const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div>
-            <Link disabled={detail} className="firstA" onClick={ this.editMenu.bind(this, record)}> 编辑餐单 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.optionTaboo.bind(this, record)}> 禁忌 </Link>
+            <Link disabled={detail} className="firstA" onClick={ this.onEdit.bind(this, record)}> 编辑餐单 </Link>
+            <Link disabled={del} className="firstB" onClick={ this.onTaboo.bind(this, record)}> 禁忌 </Link>
           </div>
         );
       }
     }];
   }
-
-  editMenu(record) {
-    const dispatch = this.props.dispatch;
-    dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
+  //点击编辑餐单
+  onEdit(record) {
+    message.warn("暂不可编辑")
+    // const dispatch = this.props.dispatch;
+    // dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
   }
-
-  optionTaboo(record) {
+  //点击禁忌
+  onTaboo(record) {
     const dispatch = this.props.dispatch;
+    dispatch({
+      type:'dinner/getTabooFood',
+      payload:{
+        "dataId":record.id,
+      }
+    });
+    dispatch({
+      type:'dinner/getCustomerMsg',
+      payload:{
+        "dataId":record.id,
+      }
+    });
     dispatch(routerRedux.push(`/meals/nutritionist/taboo?dataId=${record.id}`))
   }
-
+  //点击重置
   onReset() {
     const { pathname } = location;
     this.props.dispatch(routerRedux.push({
@@ -123,6 +120,7 @@ class PrepareMealPage extends React.Component {
     }))
     this.props.form.resetFields()
   }
+  //点击查询
   onSearch() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -133,7 +131,12 @@ class PrepareMealPage extends React.Component {
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
-        console.log("search>>>>",values)
+        this.props.dispatch({
+          type:'dinner/getCustomerList',
+          payload:{
+            values,
+          }
+        })
         this.props.dispatch(routerRedux.push({
           pathname: "/meals/nutritionist/dinner",
           query: values
@@ -141,16 +144,6 @@ class PrepareMealPage extends React.Component {
       }
     })
   }
-
-  reset() {
-    const { pathname } = location;
-    this.props.dispatch(routerRedux.push({
-      pathname
-    }))
-    this.props.form.resetFields()
-  }
-
-
   textforkey(array, value, valuekey = 'name') {
     for (let i = 0; i < array.length; i++) {
       let dict = array[i];
@@ -160,33 +153,29 @@ class PrepareMealPage extends React.Component {
     }
     return value;
   }
-
   componentDidMount() {
-    this.props.dispatch({ type: 'customer/getCustomerPage' });
-    this.props.dispatch({ type: 'customer/listByMain' });
-    this.props.dispatch({ type: 'customer/getMemberShipCard' });
-    this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
+    this.props.dispatch({ type: 'dinner/listByMain' });
+    this.props.dispatch({ type: 'dinner/getMemberShipCard' });
+    this.props.dispatch({ type: 'dinner/getDataDict', payload: { "abName": 'YCC' } });
   }
 
   render() {
     const columns = this.columns;
-    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
+    const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList,tabooData } = this.props;
 
     for (let i = 0; i < list.length; i++) {
       let dict = list[i];
-      dict.fetus = this.textforkey(fetusAry, dict.fetus)
+      dict.fetus = this.textforkey(fetusAry, dict.fetus);
       dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
     }
-
-
     const { getFieldDecorator } = form;
     const tableProps = {
-      loading: loading.effects['customer/getCustomerPage'],
+      loading: loading.effects['dinner/getCustomerList'],
       dataSource: list,
       pagination,
       columns,
       onChange (page) {
-        const { pathname } = location
+        const { pathname } = location;
         dispatch(routerRedux.push({
           pathname,
           query: {
@@ -195,7 +184,7 @@ class PrepareMealPage extends React.Component {
           }
         }))
       }
-    }
+    };
 
     const options = shipCards.map((record) => {
       return (<Option key={record.id+""} value={record.id+""}>{record.name}</Option>)
@@ -204,24 +193,14 @@ class PrepareMealPage extends React.Component {
     const formChooseLayout = {
       labelCol: { span: 10 },
       wrapperCol: { span: 14 }
-    }
-    const formChooseOneLayout = {
-      labelCol: { span: 9 },
-      wrapperCol: { span: 13 }
-    }
+    };
     const formChooseOneAge = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
-    }
-
-    const formChooseTwoAge = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 }
-    }
-
+    };
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConent">
+      <div className="CustomerConents dinnerConnet">
         <main className="yt-admin-framework-Customer">
           <Form>
             <Row className="topSelect">
@@ -251,7 +230,7 @@ class PrepareMealPage extends React.Component {
                   <span>
                     <Button disabled={add} style={{
                         width: '100%',
-                        backgroundColor: 'rgba(182, 114, 51, 1)',
+                        backgroundColor: 'rgb(255, 0, 0)',
                         height: '40px',
                         lineHeight: '40px',
                         color: '#ffffff'
@@ -396,8 +375,9 @@ function mapStateToProps(state) {
     pagination,
     shipCards,
     fetusAry,
-    packageList
-  } = state.customer;
+    packageList,
+    tabooData,
+  } = state.dinner;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
@@ -406,7 +386,8 @@ function mapStateToProps(state) {
     pagination,
     shipCards,
     permissionAlias,
-    packageList
+    packageList,
+    tabooData,
   };
 }
 export default connect(mapStateToProps)(PrepareMealPage)

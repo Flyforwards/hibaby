@@ -42,40 +42,40 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
          registerModel(app, require('models/dinner'));
-        cb(null, require('page/meals/nutritionist/Taboo.jsx'))
+        cb(null, require('page/meals/nutritionist/editTaboos.js'))
       })
     }
   },
-   //编辑禁忌页面
-  {
-    path: '/meals/nutritionist/taboo/edittaboo',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-         registerModel(app, require('models/dinner'));
-        cb(null, require('page/meals/nutritionist/editTaboo.jsx'))
-      })
-    }
-  },
+  //  //编辑禁忌页面
+  // {
+  //   path: '/meals/nutritionist/taboo/edittaboo',
+  //   getComponent: (location, cb) => {
+  //     require.ensure([], (require) => {
+  //        registerModel(app, require('models/dinner'));
+  //       cb(null, require('page/meals/nutritionist/editTaboos.js'))
+  //     })
+  //   }
+  // },
   //导出餐单页面
   {
     path: '/meals/nutritionist/taboo/export',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/dinner'));
+         registerModel(app, require('models/dinner'));
         cb(null, require('page/meals/nutritionist/export.jsx'))
       })
     }
   },
    //打印餐单的单独页面
-  {
-    path: '/exportPrint',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/dinner'));
-        cb(null, require('page/meals/nutritionist/exportPrint.jsx'))
-      })
-    }
-  },
+  // {
+  //   path: '/exportPrint',
+  //   getComponent: (location, cb) => {
+  //     require.ensure([], (require) => {
+  //        registerModel(app, require('models/dinner'));
+  //       cb(null, require('page/meals/nutritionist/exportPrint.jsx'))
+  //     })
+  //   }
+  // },
   //循环界面
   {
     path: '/meals/nutritionist/cycle',

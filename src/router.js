@@ -87,6 +87,16 @@ let routes = [
             })
         }
     },
+  {
+    path: '/print',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/membershipcard'));
+        registerModel(app, require('models/dinner'));
+        cb(null, require('./page/meals/nutritionist/printPageList.js'))
+      })
+    }
+  },
     {
         path: '*',
         indexRoute: {

@@ -1,6 +1,14 @@
 
 .MealCycle {
 
+  label{
+    font-family: "微软雅黑";
+  }
+  label:before{
+    content: '';
+    display: none;
+  }
+
   .cardSubtitle {
     height: 50px;
     line-height: 50px;
