@@ -316,9 +316,10 @@ class DishesLeft extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const { permissionAlias } = state.layout;
   return {
     dishes: state.dishes,
-    permissionAlias : state.layout
+    permissionAlias
   };
 }
 export default connect(mapStateToProps)(DishesLeft);
