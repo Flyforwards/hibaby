@@ -49,7 +49,7 @@ class Customer extends React.Component {
   edit = () => {
     this.setState({ editable: true });
   }
-  
+
   render() {
     const { value, editable } = this.state;
     return (
@@ -105,7 +105,7 @@ class CustomerIndex extends React.Component {
       title: '怀孕周期',
       dataIndex: 'gestationalWeeks',
       key: 'gestationalWeeks'
-      
+
     }, {
       title: '第几胎',
       dataIndex: 'fetus',
@@ -149,12 +149,12 @@ class CustomerIndex extends React.Component {
       createModalVisible: false
     }
   }
-  
+
   onLook(record) {
     const dispatch = this.props.dispatch;
     dispatch(routerRedux.push(`/crm/customer/customerDetails?dataId=${record.id}`))
   }
-  
+
   onDelete(record) {
     const dispatch = this.props.dispatch;
     confirm({
@@ -170,19 +170,19 @@ class CustomerIndex extends React.Component {
       }
     });
   }
-  
+
   handleCreateModalCancel() {
     this.setState({
       createModalVisible: false
     })
   }
-  
+
   showCreateModal() {
     this.setState({
       createModalVisible: true
     })
   }
-  
+
   onSearch() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -190,11 +190,11 @@ class CustomerIndex extends React.Component {
           values.year = values.time.get('year');
           values.month = values.time.get('month') + 1;
         }
-        
+
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
-        
+
         this.props.dispatch(routerRedux.push({
           pathname: "/crm/customer",
           query: values
@@ -202,7 +202,7 @@ class CustomerIndex extends React.Component {
       }
     })
   }
-  
+
   reset() {
     const { pathname } = location;
     this.props.dispatch(routerRedux.push({
@@ -210,8 +210,8 @@ class CustomerIndex extends React.Component {
     }))
     this.props.form.resetFields()
   }
-  
-  
+
+
   textforkey(array, value, valuekey = 'name') {
     for (let i = 0; i < array.length; i++) {
       let dict = array[i];
@@ -221,25 +221,25 @@ class CustomerIndex extends React.Component {
     }
     return value;
   }
-  
+
   componentDidMount() {
     this.props.dispatch({ type: 'customer/getCustomerPage' });
     this.props.dispatch({ type: 'customer/listByMain' });
     this.props.dispatch({ type: 'customer/getMemberShipCard' });
     this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
   }
-  
+
   render() {
     const columns = this.columns;
     const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
-    
+
     for (let i = 0; i < list.length; i++) {
       let dict = list[i];
       dict.fetus = this.textforkey(fetusAry, dict.fetus)
       dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
     }
-    
-    
+
+
     const { getFieldDecorator } = form;
     const tableProps = {
       loading: loading.effects['customer/getCustomerPage'],
@@ -257,11 +257,11 @@ class CustomerIndex extends React.Component {
         }))
       }
     }
-    
+
     const options = shipCards.map((record) => {
       return (<Option key={record.id} value={record.id}>{record.name}</Option>)
     });
-    
+
     const formChooseLayout = {
       labelCol: { span: 10 },
       wrapperCol: { span: 14 }
@@ -274,15 +274,15 @@ class CustomerIndex extends React.Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
     }
-    
+
     const formChooseTwoAge = {
       labelCol: { span: 4 },
       wrapperCol: { span: 20 }
     }
-    
+
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConent">
+      <div className="CustomerConents">
         <main className="yt-admin-framework-Customer">
           <Form>
             <Row className="topSelect">
@@ -349,7 +349,7 @@ class CustomerIndex extends React.Component {
                     <InputNumber min={1} max={100}/>
                   )}
                 </FormItem>
-              
+
               </Col>
               <Col span={6} className="delDisplan">
                 <FormItem label="预产期" {...formChooseOneAge}>
@@ -384,7 +384,7 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-            
+
             </Row>
             <Row style={{ height: 50 }} gutter={16}>
               <Col span={5}>
@@ -444,7 +444,7 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-            
+
             </Row>
           </Form>
           <div className="CreateModaList-a">

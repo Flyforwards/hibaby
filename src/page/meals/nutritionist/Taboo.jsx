@@ -26,7 +26,7 @@ class TabooList extends React.Component {
     history.go(-1)
   }
   render() {
-    const { loading, pagination, dispatch, form,} = this.props;
+    const { loading, pagination, dispatch, form,tabooData} = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     getFieldDecorator('keys', {initialValue: [0,1,2,3,4,5]});
     const keys = getFieldValue('keys');
@@ -68,12 +68,12 @@ class TabooList extends React.Component {
           <Col span={8} className="delDisplan">
             <FormItem label="糖" {...formChooseOneSugar}>
               {getFieldDecorator('sugar', {
-                initialValue:["1"],
+                initialValue:"无糖"+" ",
                 rules: []
               })(
                 <Select placeholder="请选择" disabled={true} >
-                  <Option key={1} value={"1"}>有糖</Option>
-                  <Option key={0} value={"0"}>无糖</Option>
+                  <Option key={1} value="有糖">有糖</Option>
+                  <Option key={0} value="无糖">无糖</Option>
                 </Select>
               )}
             </FormItem>
@@ -110,7 +110,9 @@ class TabooList extends React.Component {
 
 
 function mapStateToProps(state) {
+   const{ tabooData } = state.dinner;
   return {
+    tabooData,
     loading: state.loading,
   };
 }

@@ -8,17 +8,20 @@ import { Link } from 'react-router';
 import DictionarySelect from 'common/dictionary_select';
 import PrintPageList from './printPageList';
 import { do_print } from 'common/util/dinner.js';
-const Option = Select.Option
-const createForm = Form.create
+const Option = Select.Option;
+const FormItem = Form.Item;
+const createForm = Form.create;
 const TabPane = Tabs.TabPane;
 import { queryURL } from '../../../utils/index.js';
 
 @createForm()
 class ExportMenu extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       exportValue: 1,
+      initValue:"1",
+      clickState:false,
     }
   }
   // componentDidMount() {
@@ -44,31 +47,53 @@ class ExportMenu extends React.Component {
   onTab(key) {
     console.log("key",key)
   }
+  handleChange(value) {
+    console.log("select Accept",value)
+    if(value.length <=0) {
+      console.log("小于0了")
+       this.setState({
+         initValue:"1",
+         clickState:true,
+       })
+    }else{
+      this.setState({
+        clickState:false,
+      })
+    }
+  }
   render() {
-    const { loading, dispatch, } = this.props;
+    const { loading, dispatch,form } = this.props;
+    const { getFieldDecorator } =form;
+    const tabKeys =
+      <formItem>
+        <Select defaultValue={this.state.initValue} mode="multiple" style={{ width: 200 }} placeholder="请选择导出的餐单" onChange={this.handleChange.bind(this)}   data-actions-box="true">
+          <Option value="1">当日餐单</Option>
+          <Option value="2">早餐</Option>
+          <Option value="3">早加</Option>
+          <Option value="4">午餐</Option>
+          <Option value="5">午加</Option>
+          <Option value="6">晚餐</Option>
+          <Option value="7">晚加</Option>
+        </Select>
+      </formItem>
     return (
       <div className="export">
         <Tabs type="card" onChange={this.onTab.bind(this)}>
-          <TabPane tab="当日餐单" key="1">
+          <TabPane tab={tabKeys} key="1">
             <div id="print-content">
               <PrintPageList  exportValue={ this.state.exportValue }/>
             </div>
           </TabPane>
-          <TabPane tab="全部餐单" key="2">
-            <div id="print-content">
-              <PrintPageList  exportValue={ this.state.exportValue } />
-            </div>
-          </TabPane>
         </Tabs>
-        <div className="card" style={{ overflow: 'hidden' }}>
+        <div className="" style={{ overflow: 'hidden' }}>
           <div className="exportButton">
-            <Button  onClick={this.onPrint.bind(this)} style={{
+            <Button  onClick={this.onPrint.bind(this)} disabled={this.state.clickState} style={{
               width: '15%',
               height: '40px',
               lineHeight: '40px',
               float:'right',
               marginButtom:'20px',
-              backgroundColor: 'rgba(255, 102, 0, 1)'
+              backgroundColor: this.state.clickState ? '#d9d9d9':'rgba(255, 102, 0, 1)',
             }}>打印</Button>
             <Button  onClick={this.onBack} style={{
               width: '15%',

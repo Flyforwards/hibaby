@@ -13,7 +13,7 @@ class DynamicFieldSet extends Component {
       uuid: 1,
     }
   }
-  
+
   remove = (k) => {
     const { form } = this.props;
     const keys = form.getFieldValue('keys');
@@ -21,7 +21,7 @@ class DynamicFieldSet extends Component {
       keys: keys.filter(key => key !== k)
     });
   }
-  
+
   add = () => {
     this.setState({
       uuid: this.state.uuid + 1
@@ -39,7 +39,7 @@ class DynamicFieldSet extends Component {
       message.error('菜品不能超过7道！')
     }
   }
-  
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -57,7 +57,7 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  
+
   render() {
     const { form, menuInfoByType } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
@@ -70,7 +70,7 @@ class DynamicFieldSet extends Component {
     };
     getFieldDecorator('keys', { initialValue: [] });
     const keys = getFieldValue('keys');
-    
+    console.log("keys",keys)
     const formItems = keys.map((k, index) => {
       return (
         <Col key={k} span={8} className="foodCol">
@@ -99,7 +99,7 @@ class DynamicFieldSet extends Component {
         </Col>
       );
     })
-    
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <Row >
@@ -156,7 +156,7 @@ class LowMOdel extends Component {
       visible: true
     }
   }
-  
+
   handleOk = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -191,7 +191,7 @@ class LowMOdel extends Component {
       }
     })
   }
-  
+
   render() {
     const { info, prepareMeals, dispatch } = this.props;
     const { visible, menuInfoByType } = prepareMeals;
@@ -216,7 +216,7 @@ class LowMOdel extends Component {
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals
   };

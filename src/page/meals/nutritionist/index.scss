@@ -1,6 +1,5 @@
-.CustomerConent {
+.CustomerConents {
   min-width: 1030px;
-  margin: 10px;
   .button{
     overflow: hidden;
     height:60px;
@@ -69,7 +68,6 @@
     text-align: center;
   }
   .ant-btn {
-    //background-color: #b67233;
     color: #fff;
     border: 0;
     width: 150px;
@@ -251,7 +249,15 @@
   }
   .ant-col-8 {
     display: block;
-    width: 24.333333%;
+   // width: 24.333333%;
+    .ant-form-item{
+      .ant-form-item-control-wrapper{
+        .ant-form-item{
+          display: flex;
+        }
+      }
+
+    }
   }
   .ant-form-item-label .label:after{
     display: none;
@@ -272,9 +278,10 @@
     margin-right: 200%;
   }
   .TabooButton{
-    width:80%;
-    margin-left:10%;
+    width:98%;
+    //margin-left:10%;
     overflow: hidden;
+    text-align: right;
     height:80px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;

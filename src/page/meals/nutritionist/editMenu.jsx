@@ -20,7 +20,10 @@ class EditMenu extends React.Component {
     this.edit = null
   }
   onBack(){
-    history.go(-1)
+    this.props.dispatch(routerRedux.push({
+        pathname:'/meals/nutritionist/dinner'
+      })
+    )
   }
   componentDidMount() {
     this.edit = window.location.search.split("=")[1];
@@ -43,7 +46,7 @@ class EditMenu extends React.Component {
   render() {
     const { loading, dispatch, form} = this.props
     return (
-      <div className="CustomerConent">
+      <div className="CustomerConents">
         <div className="button">
           <Button  style={{
             width: '15%',

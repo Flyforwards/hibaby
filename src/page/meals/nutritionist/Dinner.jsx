@@ -284,7 +284,7 @@ class CustomerIndex extends React.Component {
 
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
-      <div className="CustomerConent">
+      <div className="CustomerConents">
         <main className="yt-admin-framework-Customer">
           <Form>
             <Row className="topSelect">
@@ -459,7 +459,7 @@ function mapStateToProps(state) {
           shipCards,
           fetusAry,
           packageList
-        } = state.customer;
+        } = state.dinner;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
