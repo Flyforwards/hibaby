@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
 import { connect } from 'dva';
-import {Select, Button, DatePicker, Table, Input, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal} from 'antd';
+import {Select, Button, DatePicker, Table, Input, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal,message} from 'antd';
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
@@ -91,8 +91,9 @@ class PrepareMealPage extends React.Component {
   }
   //点击编辑餐单
   onEdit(record) {
-    const dispatch = this.props.dispatch;
-    dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
+    message.warn("暂不可编辑")
+    // const dispatch = this.props.dispatch;
+    // dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
   }
   //点击禁忌
   onTaboo(record) {
