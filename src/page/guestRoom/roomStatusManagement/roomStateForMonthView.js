@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal,RowHousesModal} from './roomStateForMonthModal';
+import {AddCustomerModal, RowHousesModal} from './roomStateForMonthModal';
 import {
   Button,
   Checkbox,
@@ -46,9 +46,6 @@ const monthStateView = (props) => {
       date = event.target.parentNode.dataset.date
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
-      // 这种情况最恶心了
-      // 需要根据位置判断在哪一天
-      // 简直不想做....
 
       // 偏移天数
       let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
@@ -212,6 +209,7 @@ const monthStateView = (props) => {
     );
   };
 
+  /* 月房态列表 */
   const renderMonthRoomListView = () => {
     const roomList = props.users.monthRoomList;
 
@@ -225,7 +223,7 @@ const monthStateView = (props) => {
         }
 
         let result = dayList.map((day, dayindex) => {
-          //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房',5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
+          //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
           let roomState = 0;
           // 一天中的用户列表
           let dayCustomerList = day.customerList;
@@ -282,10 +280,10 @@ const monthStateView = (props) => {
 
           let stateBox = classNames('stateBox', {
             'empty': roomState == 0, // 空房
-            'repair': roomState == 1, // 维修
+            'checkingIn': roomState == 4, // 入住
             'reserve': roomState == 7, // 预约
+            'repair': roomState == 1, // 维修
             'overlap': roomState == 9, // 重叠
-            'checkingIn': roomState == 5, // 入住
           });
 
           return (
@@ -392,15 +390,17 @@ const monthStateView = (props) => {
 
           let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
 
+
           // 左端在入住状态下不可操作
           for (let i = 0; i < customerList.length; i++) {
             let customer = customerList[i];
             if (customer.customerId == customerId) {
-              if (customer.status == 5) {
+              if (customer.status == 4) {
                 return;
               }
             }
           }
+
 
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
@@ -410,7 +410,18 @@ const monthStateView = (props) => {
               return;
             }
 
-            unit = parseInt(offsetX / UNIT_WIDTH);
+            let tempUnit = parseInt(offsetX / UNIT_WIDTH);
+
+            if (tempUnit > 0) {
+              let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
+              let dragDate = parseInt(target.dataset.startDate) + ((oldEndIndex + tempUnit + 2) * 86400000);
+
+              if (roomDate > dragDate) {
+                return;
+              }
+            }
+
+            unit = tempUnit;
 
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
@@ -542,7 +553,7 @@ const monthStateView = (props) => {
         });
       }
 
-      return(
+      return (
         <div className="bottomBar">
           <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
           <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
@@ -590,6 +601,7 @@ const monthStateView = (props) => {
         }
 
         {
+          /* 月房态列表 */
           renderMonthRoomListView()
         }
       </div>

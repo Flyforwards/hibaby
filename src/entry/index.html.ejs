@@ -98,7 +98,7 @@
     <button style="float: right; margin-right: 5px;" class='system-button' id='phone-system-minimize'>最小化</button>
   </div>
 
-  <div  style="position:absolute; border-top:1px solid #000;  top:50px; left:0; width:100%; height:500px;">
+  <div style="position:absolute; border:1px solid #000;  top:50px; left:0; width:100%; height:300px;">
     <div class="list_Div" style="min-width:700px;">
       <div class="list_title">
         <span class="list_title_titleSpan">呼叫列表</span>
@@ -125,11 +125,29 @@
       </div>
     </div>
   </div>
-    <div id='call_div' align="center" style='position: absolute; right: 150px; height: 40px; width: 50%; top:0;display: none' >
-       <span id='call_phone' style='line-height:40px;'></span>
-       <span style='margin-left:10px'>通话时长</span>
-       <span id='call_time'></span>
+
+  <div id='call_history'  style="position:absolute; border:1px solid #000;  top:350px; left:0; width:100%; height:200px;display: none">
+    <div>
+      <span>通话内容</span>
+      <table width='100%' id='contentTable'></table>
     </div>
+  </div>
+
+  <div id='call_input'  style="position:absolute; border:1px solid #000;  top:550px; left:0; width:100%; height:100px;display: none">
+      <div>
+        <span>本次通话内容</span>
+        <div>
+          <textarea id='call_input_content' style='width: 100%; height:80px' ></textarea>
+        </div>
+      </div>
+      <button style="float: right; margin-right: 5px;" class='system-button' id='submit_call_content'>提交</button>
+  </div>
+
+  <div id='call_div' align="center" style='position: absolute; right: 150px; height: 40px; width: 50%; top:0;display: none' >
+     <span id='call_phone' style='line-height:40px;'></span>
+     <span style='margin-left:10px'>通话时长</span>
+     <span id='call_time'></span>
+  </div>
 
   <div style="position:absolute; width:100%; bottom:2px; ">
       <table border="0" cellspacing="0" cellpadding="0" style="min-width:380px; margin:0;">
@@ -171,7 +189,7 @@
 <% } %>
 
 <script>
-
+    var customerNumber = ''
     var agentNumber = "";
     var orderCallbackCount = 0;
     function callout(tel){
@@ -229,7 +247,7 @@
     */
     function cbLogin(token){//登陆
     	if(token.code == "0"){
-    		alert("登录成功");
+    		// alert("登录成功");
 
     		orderCallbackCount = token.allCallBackCount;
     		window.executeAction('doQueueStatus');//获取队列数据
@@ -724,10 +742,15 @@
             $('#call_phone').text('外呼号码: ' + token.customerNumber)
         }else if(token.eventName=="comeRinging"){//呼入座席响铃
           $('#call_div').show();
+          customerNumber = token.customerNumber;
           getCustomerInfo(token.customerNumber, '来电号码: ' + token.customerNumber);
         }else if(token.eventName=="normalBusy"){//呼入座席接听
           $('#call_div').show();
+          $('#call_input').show();
+          $('#call_history').show();
+
           getCustomerInfo(token.customerNumber, '来电号码: ' + token.customerNumber);
+          customerNumber = token.customerNumber;
           window.document.getElementById('call_time').innerHTML = millisecondToDate(0);
           var setIntervaldurationId = setInterval("timerCount('call_time')", 1000);
           setIntlId.push(setIntervaldurationId);
@@ -741,6 +764,8 @@
         }else if(token.eventName=="online"){//置闲
             $('#call_phone').text('');
             $('#call_div').hide();
+            $('#call_input').hide();
+            $('#call_history').hide();
         }else if(token.eventName=="pause"){//置忙
 
         }else if(token.eventName=="waitLink"){//座席接听 等待客户接听
@@ -748,6 +773,8 @@
         }else if(token.eventName=="neatenStart"){//整理开始（座席挂断）
             $('#call_phone').text('');
             $('#call_div').hide();
+            $('#call_input').hide();
+            $('#call_history').hide();
             clearInterval(document.getElementById('call_time').setIntervalCnoTimeId);
             document.getElementById('call_time').innerHTML="";
         }else if(token.eventName=="neatenEnd"){//整理结束
@@ -766,23 +793,6 @@
         //============================================================
     }
 
-    function getCustomerInfo(mobile, text) {
-        var strValue = sessionStorage.getItem('__yt__admin__token')
-        $.ajax({
-          type:'post',
-          url:'/crm/api/v1/customer/getCustomerByMobile',
-          headers: { "Content-Type":"application/json", "USER-Token":JSON.parse(strValue) },
-          dataType: 'json',
-          data: JSON.stringify({ "mobile": mobile }),
-          success:function(data){
-            if (data.code == 0) {
-              $('#call_phone').text(text + '，姓名：' + data.data.name)
-            } else {
-              $('#call_phone').text(text + '，未知用户')
-            }
-          }
-        });
-    }
     function consult(){
     	var consultText = document.getElementById("consultText").value;
     	if(consultText == ''){
@@ -1105,6 +1115,62 @@
    $('#phone-system-minimize-show').bind("click", function(){
       change_show();
    });
+
+   $('#submit_call_content').bind("click", function(){
+
+      var strValue = JSON.parse(sessionStorage.getItem('__yt__admin__token')) 
+      var userId = JSON.parse(sessionStorage.getItem('__yt__admin__userInfo')).id
+      var content = $("#call_input_content").val()
+      // 查询来电备注记录 
+      $.ajax({ 
+      type:'post', 
+        url:'/crm/api/v1/callRecords/add', 
+        headers: { "Content-Type":"application/json", "USER-Token":strValue }, 
+        dataType: 'json', 
+        data: JSON.stringify({ "userId": userId, 'number': customerNumber, 'content': content || ''}), 
+        success:function(data){ 
+         if (data.code == 0) { 
+          console.log('成功')
+         } else { 
+         } 
+       } });
+
+   });
+
+
+   function getCustomerInfo(mobile, text) {
+       var strValue = sessionStorage.getItem('__yt__admin__token')
+       // 查询来电用户信息
+       $.ajax({
+         type:'post',
+         url:'/crm/api/v1/customer/getCustomerByMobile',
+         headers: { "Content-Type":"application/json", "USER-Token":JSON.parse(strValue) },
+         dataType: 'json',
+         data: JSON.stringify({ "mobile": mobile }),
+         success:function(data){
+           if (data.code == 0) {
+             $('#call_phone').text(text + '，姓名：' + data.data.name)
+           } else {
+             $('#call_phone').text(text + '，未知用户')
+           }
+         }
+       });
+       // 查询来电备注记录
+       $.ajax({
+         type:'post',
+         url:'/crm/api/v1/callRecords/listByPage',
+         headers: { "Content-Type":"application/json", "USER-Token":JSON.parse(strValue) },
+         dataType: 'json',
+         data: JSON.stringify({ "mobile": mobile }),
+         success:function(data){
+           if (data.code == 0) {
+             console.log(data);
+           } else {
+           }
+         }
+       });
+   }
+
 
    function change_max() {
      $(".telephone-system-content-min").hide();
