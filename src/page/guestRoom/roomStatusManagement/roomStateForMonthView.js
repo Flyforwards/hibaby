@@ -326,6 +326,7 @@ const monthStateView = (props) => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             let parentNode = e.target.parentNode;
+
             dispatch({
               type: 'roomStatusManagement/confirmCheckIn',
               payload: {
@@ -333,6 +334,7 @@ const monthStateView = (props) => {
                 customerId: parentNode.dataset.customerId,
                 startIndex: parentNode.dataset.startIndex,
                 endIndex: parentNode.dataset.endIndex,
+                startDate: parentNode.dataset.startDate,
               }
             });
             parentNode.removeChild(e.target);
@@ -529,9 +531,7 @@ const monthStateView = (props) => {
       const saveReserveClickHandler = () => {
         dispatch({
           type: 'roomStatusManagement/monthRoomUpdate',
-          payload: {
-
-          }
+          payload: {}
         });
       };
 

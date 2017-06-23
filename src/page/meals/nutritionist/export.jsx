@@ -20,8 +20,9 @@ class ExportMenu extends React.Component {
     super(props);
     this.state = {
       exportValue: 1,
-      initValue:"1",
+      initValue:"0",
       clickState:false,
+      choiceValue:0,
     }
   }
   // componentDidMount() {
@@ -34,7 +35,8 @@ class ExportMenu extends React.Component {
     history.go(-1)
   }
   onPrint() {
-    do_print('print-content');
+    const dataId = queryURL("dataId");
+    do_print('print-content',dataId,this.state.choiceValue);
   }
   // onSelect(value,options) {
   //   console.log("onSelect",value)
@@ -45,18 +47,32 @@ class ExportMenu extends React.Component {
 
   //tab切换
   onTab(key) {
-    console.log("key",key)
+
   }
   handleChange(value) {
-    console.log("select Accept",value)
+    const { dispatch } = this.props;
+    console.log("select Accept",value);
+    const dataId = queryURL("dataId");
+    dispatch({
+      type:'dinner/getPrintMsg',
+      payload:{
+        "customerId":dataId,
+        "type":value,
+      }
+    })
+    //更新出单时间
+    // this.props.dispatch({
+    //   type:'dinner/getSystemTime',
+    // })
     if(value.length <=0) {
-      console.log("小于0了")
        this.setState({
-         initValue:"1",
+         initValue:"0",
          clickState:true,
+         choiceValue:'0'
        })
     }else{
       this.setState({
+        choiceValue:value,
         clickState:false,
       })
     }
@@ -66,14 +82,14 @@ class ExportMenu extends React.Component {
     const { getFieldDecorator } =form;
     const tabKeys =
       <formItem>
-        <Select defaultValue={this.state.initValue} mode="multiple" style={{ width: 200 }} placeholder="请选择导出的餐单" onChange={this.handleChange.bind(this)}   data-actions-box="true">
-          <Option value="1">当日餐单</Option>
-          <Option value="2">早餐</Option>
-          <Option value="3">早加</Option>
-          <Option value="4">午餐</Option>
-          <Option value="5">午加</Option>
-          <Option value="6">晚餐</Option>
-          <Option value="7">晚加</Option>
+        <Select defaultValue={this.state.initValue}  style={{ width: 200 ,textAlign:'center',fontSzie:'16px',color:'#333333'}} placeholder="请选择导出的餐单" onChange={this.handleChange.bind(this)} >
+          <Option value="0">当日餐单</Option>
+          <Option value="1">早餐</Option>
+          <Option value="2">早加</Option>
+          <Option value="3">午餐</Option>
+          <Option value="4">午加</Option>
+          <Option value="5">晚餐</Option>
+          <Option value="6">晚加</Option>
         </Select>
       </formItem>
     return (

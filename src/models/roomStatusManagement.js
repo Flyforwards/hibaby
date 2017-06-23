@@ -198,7 +198,7 @@ export default {
       }
     },
 
-    confirmCheckIn(state, {payload: data}){
+    confirmCheckInReducer(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
       let room = monthRoomList[data.roomIndex].useAndBookingList;
       let startIndex = parseInt(data.startIndex);
@@ -213,6 +213,9 @@ export default {
           }
         }
       }
+
+      // 深拷贝, 保留初始的数据, 用于保存预约状态时和当前状态比较
+      state.oldMonthRoomList = JSON.parse(JSON.stringify(monthRoomList));
 
       return {
         ...state,
@@ -432,17 +435,6 @@ export default {
 
       const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
 
-      // 初始化更新集合
-      let monthRoomUpdateList = state.monthRoomUpdateList = [];
-
-      for (let i = 0; i < data.list.length; i++) {
-        monthRoomUpdateList.push([]);
-        for (let j = 0; j < data.list[i].useAndBookingList.length; j++) {
-          monthRoomUpdateList[i].push([]);
-        }
-        // monthRoomUpdateList[i] = new Array(data.list[i].useAndBookingList.length).fill([]);
-      }
-
       yield put({
         type: 'setMonthRoomList',
         payload: {
@@ -474,24 +466,45 @@ export default {
       });
     },
 
-    // *confirmCheckIn({payload: value}, {call, put, select}){
-    //   const {data: {code, data}} = yield call(roomManagement.confirmReside);
-    // },
+    *confirmCheckIn({payload: value}, {call, put, select}){
+
+      let param = {
+        customerId: value.customerId,
+        date: timeToDate(value.startDate),
+      };
+      //
+      const {data: {code, data}} = yield call(roomManagement.confirmReside, param);
+
+      if (code == 0) {
+        yield put({
+          type: 'confirmCheckInReducer',
+          payload: {
+            customerId: value.customerId,
+            endIndex: value.endIndex,
+            roomIndex: value.roomIndex,
+            startIndex: value.startIndex,
+          }
+        })
+      }
+    },
 
     *monthRoomUpdate({payload: value}, {call, put, select}){
 
       const state = yield select(state => state.roomStatusManagement);
 
-      let monthRoomUpdateList = state.monthRoomUpdateList;
+      let monthRoomUpdateList = state.monthRoomUpdateList = [];
       let oldMonthRoomList = state.oldMonthRoomList;
       let monthRoomList = state.monthRoomList;
 
       // 第一层, 循环房间
       for (let i = 0; i < oldMonthRoomList.length; i++) {
+        monthRoomUpdateList[i] = [];
+
         let oldRoom = oldMonthRoomList[i].useAndBookingList;
         let room = monthRoomList[i].useAndBookingList;
         // 第二层, 循环日期
         for (let j = 0; j < oldRoom.length; j++) {
+          monthRoomUpdateList[i][j] = [];
 
           let oldUserList = oldRoom[j].customerList;
           let userList = room[j].customerList;
@@ -500,52 +513,77 @@ export default {
             continue;
           }
 
-          // 如果是已入住状态, 则跳过, 不处理
+          let copyOldUserList = JSON.parse(JSON.stringify(oldUserList));
+          let copyUserList = JSON.parse(JSON.stringify(userList));
 
+          // 先去除已入住的, 此接口不关注已入住的状态
+          for (let k = 0; k < copyOldUserList.length; k++) {
+            if (copyOldUserList[k].status == 5) {
+              copyOldUserList.splice(k--, 1);
+            }
+          }
+
+          for (let k = 0; k < copyUserList.length; k++) {
+            if (copyUserList[k].status == 5) {
+              copyUserList.splice(k--, 1);
+            }
+          }
+
+          // 如果两个集合中都存在, 则说明没有变化, 在集合中删掉
+          for (let m = 0; m < copyOldUserList.length; m++) {
+            for (let n = 0; n < copyUserList.length; n++) {
+              if (copyOldUserList[m].customerId == copyUserList[n].customerId) {
+                copyOldUserList.splice(m--, 1);
+                copyUserList.splice(n--, 1);
+                break;
+              }
+            }
+          }
 
           // 如果原始集合里有, 新集合里没有, 则是删除
-          if (userList.length === 0) {
-            for (let k = 0; k < oldUserList.length; k++) {
-              // 已入住, 不处理
-              if (oldUserList[k].status == 5) {
-                continue;
-              }
-
-              monthRoomUpdateList[i][j].push({
-                customerId: oldUserList[k].customerId,
-                customerName: oldUserList[k].customerName,
-                date: timeToDate(oldRoom[j].date),
-                roomId: oldMonthRoomList[i].roomId,
-                roomNo: oldMonthRoomList[i].roomNo,
-                status: 7, // 预约
-              })
-            }
+          for (let k = 0; k < copyOldUserList.length; k++) {
+            monthRoomUpdateList[i][j].push({
+              customerId: copyOldUserList[k].customerId,
+              customerName: copyOldUserList[k].customerName,
+              date: timeToDate(oldRoom[j].date),
+              roomId: oldMonthRoomList[i].roomId,
+              roomNo: oldMonthRoomList[i].roomNo,
+              status: 0, // 删除
+            })
           }
 
           // 如果原始集合没有, 新集合里有, 则是新增
-          if (oldUserList.length === 0) {
-            for (let k = 0; k < userList.length; k++) {
-
-              // 已入住, 不处理
-              if (userList[k].status == 5) {
-                continue;
-              }
-
-              monthRoomUpdateList[i][j].push({
-                customerId: userList[k].customerId,
-                customerName: userList[k].customerName,
-                date: timeToDate(oldRoom[j].date),
-                roomId: oldMonthRoomList[i].roomId,
-                roomNo: oldMonthRoomList[i].roomNo,
-                status: 7, // 预约
-              })
-            }
+          for (let k = 0; k < copyUserList.length; k++) {
+            monthRoomUpdateList[i][j].push({
+              customerId: copyUserList[k].customerId,
+              customerName: copyUserList[k].customerName,
+              date: timeToDate(oldRoom[j].date),
+              roomId: oldMonthRoomList[i].roomId,
+              roomNo: oldMonthRoomList[i].roomNo,
+              status: 7, // 预约
+            })
           }
-
         }
       }
 
-      // const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
+      // 将[房间][日期][用户]的结构转为[用户,用户]的结构
+      let param = [];
+
+      for (let i = 0; i < monthRoomUpdateList.length; i++) {
+        for (let j = 0; j < monthRoomUpdateList[i].length; j++) {
+          for (let k = 0; k < monthRoomUpdateList[i][j].length; k++) {
+            param.push(monthRoomUpdateList[i][j][k]);
+          }
+        }
+      }
+
+      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
+
+      if (code == 0) {
+        // 更新原始集合的状态
+        state.oldMonthRoomList = JSON.parse(JSON.stringify(state.monthRoomList));
+      }
+
     },
   },
 
