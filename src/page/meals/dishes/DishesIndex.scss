@@ -42,35 +42,20 @@ overflow: hidden;
     height:30px;
   }
 	.Dishes-Inquire{
-		float:right;
-		font-size: 14px;
-		color: #b67233;
-		cursor: pointer;
-		margin-right:50px;
-		margin-top:15px;
-		display: inline-block;
-		border:1px solid #b67233;
-		border-radius: 3px;
-		line-height: 30px;
-		text-align:center;
-		width: 15%;
-	    height: 30px;
-	    background: inherit;
-	    background-color:#f7f2e9;
-	    a{
-	    	width:100%;
-        color: #b57332;
-        float: left;
-	    	display:block;
-        height: 26px;
-        .SaveBtn{
-          color: #b57332;
-          font: 14px "微软雅黑";
-          background: #f7f2e9;
-          height: 26px;
-          width: 124px;
-        }
-	    }
+    float:right;
+    font-size: 14px;
+    color: #b67233;
+    cursor: pointer;
+    margin-right:2%;
+    margin-top:15px;
+    display: inline-block;
+    border-radius: 3px;
+    line-height: 30px;
+    text-align:center;
+    width: 15%;
+    height: 30px;
+    background: inherit;
+    background-color:#f7f2e9;
 	}
 	.Dishes-add{
 		float:right;
@@ -84,9 +69,9 @@ overflow: hidden;
 		line-height: 30px;
 		text-align:center;
 		width: 15%;
-	    height: 30px;
-	    background: inherit;
-	    background-color:#b57332;
+    height: 30px;
+    background: inherit;
+    background-color:#b57332;
 	}
 }
 @media (max-width: 767px) {
@@ -97,9 +82,6 @@ overflow: hidden;
 }
 .ant-modal-title{
 	text-align:center;
-}
-.ant-btn .ant-btn-lg{
-
 }
 .ant-btn {
 	background-color:#b67233;
@@ -112,7 +94,6 @@ overflow: hidden;
     color: #fff;
     background-color: #b67233;
     border:0;
-    width:150px;
 }
 .ant-calendar{
 	top:32px;

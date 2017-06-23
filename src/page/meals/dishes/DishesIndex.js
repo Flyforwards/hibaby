@@ -225,7 +225,7 @@ class DishesIndex extends React.Component{
               <Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link>
 */}
             </span>
-            <Button className="Dishes-Inquire" onClick={this.handleSearch.bind(this)}>查询</Button>
+            <Link><Button className="Dishes-Inquire" onClick={this.handleSearch.bind(this)}>查询</Button></Link>
           </div>
         </div>
     );
