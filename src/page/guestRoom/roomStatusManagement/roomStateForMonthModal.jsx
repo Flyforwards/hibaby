@@ -91,22 +91,40 @@ class addCustomer extends React.Component {
 
   constructor(props) {
     super(props);
+
   }
 
   componentDidMount(){
     this.props.dispatch({type: 'roomStatusManagement/getCustomerPage'});
   }
 
+  handleOk(){
+    this.props.dispatch({
+      type: 'roomStatusManagement/setCustomerVisible',
+      payload: false
+    });
+  }
+
+  handleCancel(){
+    this.props.dispatch({
+      type: 'roomStatusManagement/setCustomerVisible',
+      payload: false
+    });
+  }
+
   render(){
+    const {CustomerVisible} = this.props.users;
+
+
     return(
       <Modal
 
         className="RowHouses"
         width="1000px"
-        visible={true}
+        visible={CustomerVisible}
         title="预约"
-        // onOk={this.handleOk}
-        // onCancel={this.handleCancel}
+        onOk={this.handleOk.bind(this)}
+        onCancel={this.handleCancel.bind(this)}
       >
         <CustomerTable loading={this.props.loading} props={this.props.users}/>
       </Modal>
@@ -125,9 +143,24 @@ function SearchForm(props){
   function onSearch() {
     props.form.validateFields((err, values) => {
       if (!err) {
+
+
+        let param = {};
+        Object.keys(values).map((key) => {
+          const value = values[key];
+          if(value){
+            if(typeof value === 'object'){
+              param[key] = value.format();
+            }
+            else {
+              param[key] = value;
+            }
+          }
+        })
+
         dispatch({
           type: 'roomStatusManagement/arrangeRoom',
-          payload: { values },
+          payload: param,
         });
       }
     })
@@ -230,6 +263,7 @@ class RowHouses extends React.Component{
 
   constructor(props) {
     super(props);
+
     this.state={
       currSelect:''
     }
@@ -242,18 +276,32 @@ class RowHouses extends React.Component{
     })
   }
 
+  handleOk(){
+    this.props.dispatch({
+      type: 'roomStatusManagement/setRowHousesVisible',
+      payload: false
+    });
+  }
+
+  handleCancel(){
+    this.props.dispatch({
+      type: 'roomStatusManagement/setRowHousesVisible',
+      payload: false
+    });
+  }
+
   render(){
-    const {packageAry,resultsRowHouses} = this.props.users;
+    const {packageAry,resultsRowHouses, RowHousesVisible} = this.props.users;
     const SearchFormDiv = Form.create()(SearchForm)
     return(
       <Modal
 
         className="RowHouses"
         width="1000px"
-        visible={true}
+        visible={RowHousesVisible}
         title="一键排房"
-        // onOk={this.handleOk}
-        // onCancel={this.handleCancel}
+        onOk={this.handleOk.bind(this)}
+        onCancel={this.handleCancel.bind(this)}
       >
         <SearchFormDiv packageAry={packageAry} dispatch={this.props.dispatch}/>
         <SearResults selectFun={this.selectFun.bind(this)} currSelect={this.state.currSelect} resultsRowHouses={resultsRowHouses}/>

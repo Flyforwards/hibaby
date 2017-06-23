@@ -48,8 +48,12 @@ export default {
     dragUser: null,
     selectedYear: new Date().getFullYear(),
     selectedMonthList: [],
-    allCusList: '',
     monthRoomUpdateList: [],// 保存状态有更新的用户
+    //弹出的modal数据控制
+
+    CustomerVisible:false,
+    RowHousesVisible:false,
+    allCusList: '',
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -59,6 +63,13 @@ export default {
   },
 
   reducers: {
+    setCustomerVisible(state, {payload: data}) {
+      return {...state, CustomerVisible:data};
+    },
+    setRowHousesVisible(state, {payload: data}) {
+      return {...state, RowHousesVisible:data};
+    },
+
     setCustomerPageSave(state, {payload: {list, pagination}}) {
       return {...state, allCusList: list, pagination: {...state.pagination, ...pagination}};
     },
@@ -329,16 +340,7 @@ export default {
       }
     },
     *arrangeRoom({payload: value}, {call, put}){
-      const defData = {useDate: moment().format()}
-
-      value = {
-        "beginDate": "2017-06-21T02:29:28.617Z",
-        "customerId": 140,
-        "customerName": 0,
-        "days": 28,
-        "jumpNo": 3,
-        "packageInfoId": 32
-      }
+      const defData = {"customerId": -1, "customerName": ''}
 
       const {data: {code, data}} = yield call(roomManagement.arrangeRoom, {...defData, ...value});
       if (code == 0) {
@@ -348,7 +350,6 @@ export default {
             data: data,
           }
         });
-        console.log(data)
       }
     },
 
