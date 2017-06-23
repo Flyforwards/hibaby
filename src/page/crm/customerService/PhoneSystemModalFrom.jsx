@@ -16,12 +16,10 @@ class PhoneSystemModalFrom extends Component {
       title: 'id',
       dataIndex: 'id',
       key: 'id',
-      width: '10%'
     }, {
       title: '姓名',
       dataIndex: 'name',
       key: 'name',
-      width: '10%'
     },];
     this.state = {
       selectedRowKeys: [],

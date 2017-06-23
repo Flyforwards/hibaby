@@ -364,9 +364,9 @@ export default {
     // 获取用户列表
     *getCustomerPage({payload: values}, {call, put}) {
 
-      const tt = {page: 1, size: 10}
+      const defParam = {page: 1, size: 10}
 
-      const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, tt);
+      const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, {...defParam,...values});
       if (code == 0) {
         if (data.length == 0 && page > 1) {
           yield put({type: 'getCustomerPage', payload: {page: page - 1, size: 10}})
