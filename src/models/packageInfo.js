@@ -13,7 +13,7 @@ export default {
 		list:null,
 		page:null,
 		size:null,
-		serviceListByPage:null,
+		serviceList: [],
 		roomData:null,
 		findById:null,
 		selectDataSave:null,
@@ -93,23 +93,12 @@ export default {
 	    suiteListByPageSave(state,{payload:{suiteListByPage,suitepagination}}){
 	      return {...state, suiteListByPage, suitepagination: {  ...state.suitepagination,...suitepagination }};
 	    },
-	    commodityListByPageSave(state,{payload:{ commodityListByPage,commoditypagination }}){
-			return {...state, commodityListByPage, commoditypagination: {  ...state.commoditypagination,...commoditypagination}};
+	    commodityListByPageSave(state, { payload:{ commodityListByPage,commoditypagination }}){
+			  return {...state, commodityListByPage, commoditypagination: {  ...state.commoditypagination,...commoditypagination}};
 	    },
-	    serviceListByPageSave(state,{payload:{data:serviceListByPage,total,page,size,code}}){
-	      let serviceListByPagedata = {...state,
-				serviceListByPage,
-				total,
-				page,
-				size,
-				code,
-			};
-			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? serviceListByPage.length : (page - 1) * 3 + serviceListByPage.length,
-				totalpage:Math.ceil(total/size),
-			}
-			return {...serviceListByPagedata,range};
+
+      serviceListSave(state,{payload:{ serviceList }}){
+			  return {...state, serviceList,};
 	    },
 	},
 	effects: {
@@ -139,12 +128,7 @@ export default {
 		},
 		//添加套餐
 		*add({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.add, values);
+			const { data: { data, code, err }} = yield call(packageInfoService.add, values);
 			if (code == 0) {
 				message.success("添加套餐成功");
 				yield put(routerRedux.push("/crm/service-info"));
@@ -152,12 +136,7 @@ export default {
 		},
 		//修改套房信息
 		*roomEdit({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.roomEdit, values);
+			const { data: { data, code, err }} = yield call(packageInfoService.roomEdit, values);
 			if (code == 0) {
 				message.success("修改套房信息成功");
 				history.go(-1)
@@ -165,12 +144,7 @@ export default {
 		},
 		//删除套房
 		*roomDel({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.roomDel, values);
+			const { data: { data, 	code, err }} = yield call(packageInfoService.roomDel, values);
 			if (code == 0) {
 				message.success("删除套房成功");
 				yield put(routerRedux.push("/crm/suite"));
@@ -178,12 +152,7 @@ export default {
 		},
 		//添加套房
 		*roomAdd({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.roomAdd, values);
+			const { data: { data, code, err  }} = yield call(packageInfoService.roomAdd, values);
 			if (code == 0) {
 				message.success("添加套房成功");
 				yield put(routerRedux.push("/crm/suite"));
@@ -192,11 +161,7 @@ export default {
 		//修改商品信息
 		*commodityFindEdit({payload: values}, { call, put }) {
 			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.commodityFindEdit, values);
+				data: { data, code, err }} = yield call(packageInfoService.commodityFindEdit, values);
 			if (code == 0) {
 				message.success("修改商品信息成功");
 				history.go(-1)
@@ -205,11 +170,7 @@ export default {
 		//删除商品
 		*commodityDel({payload: values}, { call, put }) {
 			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.commodityDel, values);
+				data: { data, code, err }} = yield call(packageInfoService.commodityDel, values);
 			if (code == 0) {
 				message.success("删除商品成功");
 				yield put(routerRedux.push("/crm/commodity"));
@@ -218,11 +179,7 @@ export default {
 		//添加商品
 		*commodityAdd({payload: values}, { call, put }) {
 			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.commodityAdd, values);
+				data: { data, code, err }} = yield call(packageInfoService.commodityAdd, values);
 			if (code == 0) {
 				message.success("添加商品成功");
 				yield put(routerRedux.push("/crm/commodity"));
@@ -312,12 +269,7 @@ export default {
 		},
 		//修改套餐
 		*edit({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code,
-		      		err
-	      }} = yield call(packageInfoService.edit, values);
+			const { data: { data, code, err }} = yield call(packageInfoService.edit, values);
 			if (code == 0) {
 				message.success("修改套餐成功");
 				history.go(-1)
@@ -325,11 +277,7 @@ export default {
 		},
 		//获取套房下拉数据
 		*selectData({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code
-	      }} = yield call(packageInfoService.selectData, values);
+			const { data: { data, code }} = yield call(packageInfoService.selectData, values);
 			if (code == 0) {
 				yield put({
 					type: 'selectDataSave',
@@ -341,11 +289,7 @@ export default {
 		},
 		//获取套餐等级下拉数据
 		*getCardLevel({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code
-	      }} = yield call(packageInfoService.getCardLevel, values);
+			const { data: { data, code }} = yield call(packageInfoService.getCardLevel, values);
 			if (code == 0) {
 				yield put({
 					type: 'getCardLevelSave',
@@ -357,11 +301,7 @@ export default {
 		},
 		//根据套餐ID查询套餐详情
 		*findById({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code
-	      }} = yield call(packageInfoService.findById, values);
+			const { data: { data, code  }} = yield call(packageInfoService.findById, values);
 			if (code == 0) {
 				yield put({
 					type: 'findByIdSave',
@@ -373,11 +313,7 @@ export default {
 		},
 		//根据ID查询商品信息
 		*commodityFindById({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code
-	      }} = yield call(packageInfoService.commodityFindById, values);
+			const { data: { data, code  }} = yield call(packageInfoService.commodityFindById, values);
 			if (code == 0) {
 				yield put({
 					type: 'commodityFindByIdSave',
@@ -389,11 +325,7 @@ export default {
 		},
 		//根据套房ID查询套房详情
 		*roomFindById({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code
-	      }} = yield call(packageInfoService.roomFindById, values);
+			const { data: { data, code }} = yield call(packageInfoService.roomFindById, values);
 			if (code == 0) {
 				yield put({
 					type: 'roomFindByIdSave',
@@ -406,11 +338,7 @@ export default {
 
 		//获取房间分页的列表
 		*roomList({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		code
-	      }} = yield call(packageInfoService.roomList, values);
+			const { data: { data, code }} = yield call(packageInfoService.roomList, values);
 			if (code == 0) {
 				yield put({
 					type: 'roomListSave',
@@ -420,25 +348,19 @@ export default {
 				});
 			}
 		},
-	    //服务项目分页列表
-	    *serviceListByPage({payload: values}, { call, put }) {
-			const {
-				data: {
-		      		data,
-		      		total,
-		      		page,
-		      		size,
-		      		code
-	      }} = yield call(packageInfoService.serviceListByPage, values);
+	    // 服务项目 列表
+    *getServiceList({payload: values}, { call, put }) {
+			const { data: { data, code }} = yield call(packageInfoService.serviceListByPage, values);
 			if (code == 0) {
+			  if (data && data.length > 0) {
+			    data.map((record)=>{
+			      record.usageCount = 1;
+          })
+        }
 				yield put({
-					type: 'serviceListByPageSave',
+					type: 'serviceListSave',
 					payload: {
-						data,
-						total,
-						page,
-						size,
-						code
+            serviceList: data,
 					}
 				});
 			}

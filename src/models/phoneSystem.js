@@ -47,7 +47,7 @@ export default {
     },
 
     getListByUserPageSave(state, { payload: { users, userPagination }}) {
-      return {...state, users, pagination: {  ...state.userPagination,...userPagination }};
+      return {...state, users, userPagination: {  ...state.userPagination,...userPagination }};
     },
 
     getDetailSuccess(state, { payload: { item }}) {
@@ -56,15 +56,37 @@ export default {
     getDetailEditSuccess(state, { payload: { editItem }}) {
       return {...state, editItem};
     },
+    getPhoneSystemByIdSuccess(state, { payload: { item }}) {
+      return {...state, item};
+    },
 
   },
   effects: {
 
+    *getPhoneSystemById({payload: values}, { call, put }) {
+      const { data: { data, code} } = yield call(CustomerSerService.getPhoneSystemById, values);
+      if (code == 0) {
+        yield put({
+          type: 'getPhoneSystemByIdSuccess',
+          payload: { item: data }
+        })
+      }
+    },
+
+
     *phoneSystemSave({payload: values}, { call, put }) {
       const {data: { data, code} } = yield call(CustomerSerService.phoneSystemSave, values);
       if (code == 0) {
-        message.success('保存客服信息成功');
-        yield call(routerRedux.push('/crm/phone-system')  )
+        message.success('客服信息保存成功');
+        yield put(routerRedux.push('/crm/phone-system')  )
+      }
+    },
+
+    *phoneSystemEditSave({payload: values}, { call, put }) {
+      const {data: { data, code} } = yield call(CustomerSerService.phoneSystemEditSave, values);
+      if (code == 0) {
+        message.success('编辑客服信息保存成功');
+        yield put(routerRedux.push('/crm/phone-system')  )
       }
     },
 
@@ -101,6 +123,7 @@ export default {
         values.size = 10;
       }
       const { data: { data, total, page, size, code } } = yield call(CustomerSerService.listByUserPage, values);
+      console.log(total);
       if (code == 0) {
         yield put({
           type: 'getListByUserPageSave',
@@ -125,6 +148,13 @@ export default {
           dispatch({
             type: 'listByPage'
           })
+        }
+
+        if (pathname === '/crm/phone-system/edit') {
+          dispatch({
+            type: 'getPhoneSystemById',
+            payload: query
+          });
         }
       })
     }

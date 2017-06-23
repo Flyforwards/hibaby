@@ -79,10 +79,10 @@ class CustomerVisIndex extends React.Component {
       dataIndex: 'operation',
       width: '15%',
       render: (text, record, index) => {
-        <div key={ index }>
-          <Link className="firstA" to={{ pathname: '/crm/commodity/edit', query:{ dataId:record.id }  }}> 编辑 </Link>
-          <Link className="firstA" onClick={ this.del.bind(this, record) }> 删除 </Link>
-        </div>
+        return (<div key={ index }>
+          <Link to={{ pathname: '/crm/phone-system/edit', query:{ dataId:record.id }  }}> 编辑 </Link>
+          <Link onClick={ this.del.bind(this, record) }> 删除 </Link>
+        </div>)
       }
     }];
   }
