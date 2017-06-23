@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import styles from './Cycle.scss';
-import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button } from 'antd'
+import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
 
 const  normalUsers = [
   {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
@@ -70,6 +70,15 @@ function mainCycleDetail(props) {
     return (
       <div style={{marginLeft: '10px', marginTop: '20px'}}>
         <Card title="周期一" bordered={true} style={{marginBottom: '20px', height: '100%', paddingBottom: '10px'}}>
+          <Row style={{display: 'flex',justifyContent: 'flex-end'}}>
+            <Badge count={3} style={{
+              backgroundColor: '#fff',
+              color: '#999',
+              boxShadow: '0 0 0 1px #d9d9d9 inset',
+              marginRight: '20px',
+              marginTop: '-35px' }}
+            />
+          </Row>
           <Row>
             <div className="cardSubtitle" style={{color:'#a5a5a5'}}>标准用户14人</div>
           </Row>
@@ -164,6 +173,10 @@ function mainCycleDetail(props) {
     dispatch({
       type: 'cyclePage/changedShowStatus',
     })
+    dispatch({
+      type: 'cyclePage/changedDetailTabActivity',
+      payload: { status: 0 }
+    })
   }
 
   return (
@@ -172,7 +185,7 @@ function mainCycleDetail(props) {
         { headerComponent() }
       </Row>
       <Row>
-        <div className='bottomButton' style={{marginRight: '20px'}}>
+        <div className='bottomButton' style={{marginRight: '20px',marginBottom:'80px'}}>
           <Button style={{width: '160px'}} className='commitButton BackBtn' onClick={handleChangedState}>返回</Button>
         </div>
       </Row>
