@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import {AddCustomerModal,RowHousesModal} from './roomStateForMonthModal';
 import {
   Button,
   Checkbox,
@@ -22,7 +23,6 @@ const statusExplain = [
 ];
 
 const monthStateView = (props) => {
-
   const {dispatch} = props;
 
   document.ondragover = function (event) {
@@ -185,7 +185,6 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="queryBtn">一键排房</Button>
           <Button className="queryBtn">查询</Button>
         </Col>
       </Row>
@@ -525,10 +524,40 @@ const monthStateView = (props) => {
       )
     };
 
+    const renderBottomBar = () => {
+
+      const saveReserveClickHandler = () => {
+        dispatch({
+          type: 'roomStatusManagement/monthRoomUpdate',
+          payload: {
+
+          }
+        });
+      };
+
+      const oneKeyClicked = () => {
+        dispatch({
+          type: 'roomStatusManagement/setRowHousesVisible',
+          payload: true
+        });
+      }
+
+      return(
+        <div className="bottomBar">
+          <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
+          <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
+        </div>
+      )
+    };
+
     return (
       <div className="monthRoomListBox">
         {
           roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
+        }
+
+        {
+          renderBottomBar()
         }
       </div>
     )
@@ -581,6 +610,13 @@ const monthStateView = (props) => {
       });
     };
 
+    const addCustomer = () => {
+      dispatch({
+        type: 'roomStatusManagement/setCustomerVisible',
+        payload: true
+      });
+    };
+
     return (
       <div className="sidebar">
         <h3>客户列表</h3>
@@ -596,7 +632,7 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          <Button className="addCustomerBtn">+ 添加客户</Button>
+          <Button className="addCustomerBtn" onClick={addCustomer}>+ 添加客户</Button>
         </div>
       </div>
     )
@@ -613,6 +649,8 @@ const monthStateView = (props) => {
         /** 侧边栏 **/
         monthSidebarView()
       }
+      <AddCustomerModal/>
+      <RowHousesModal/>
     </div>
   )
 };

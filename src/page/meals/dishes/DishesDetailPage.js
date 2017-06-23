@@ -134,8 +134,8 @@ class DishesDetailPage extends React.Component{
     return (
       <div className="dishesDiv">
         <Form>
-          <div className="dishes-info-div">
-            <Row key="1"><Col><h3>菜品信息</h3></Col></Row>
+          <div className="dishes-info-div dishes-info-div1">
+            <Row key="1" style={{height:"30px"}}><Col><h3>菜品信息</h3></Col></Row>
             <Row key="2">
               <Col span={8}>
                 <FormItem
@@ -204,7 +204,7 @@ class DishesDetailPage extends React.Component{
           </div>
 
           <div className="dishes-info-div">
-            <Row key="3"><Col><h3 className="ingredients-info-div">食材信息</h3></Col></Row>
+            <Row key="3"><Col><h3 className="ingredients-h3">食材信息</h3></Col></Row>
             <Row key="4">
               <Col span={1}>
                 <Tag className="myTag">主食材</Tag>

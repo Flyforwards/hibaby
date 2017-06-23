@@ -53,9 +53,9 @@
       width:200px;
       height:100px;
       position:absolute;
-      left: 50px;
-      bottom: 20px;
-      display: block;
+      left: 5px;
+      bottom: 45px;
+      display: none;
     }
     .system-close {
 
@@ -71,6 +71,15 @@
     }
     .system-button3{
       border:none;width:80px;height:33px;display:none;
+    }
+    .telephone-system-content-button{
+      z-index: 10;
+      position: absolute;
+      left: 5px;
+      bottom: 45px;
+      height: 40px;
+      width: 60px;
+      display: none;
     }
 
     </style>
@@ -154,6 +163,7 @@
 <div class='telephone-system-content-min'>
 <button style="float: right; margin-right: 5px;" class='system-close' id='phone-system-minimize-max'>最大化</button>
 </div>
+<button class='telephone-system-content-button' id='phone-system-minimize-show'> 显示 </button>
 
 <div id="root"></div>
 <% for (var asset in htmlWebpackPlugin.options.externalsAssets) { %>
@@ -161,11 +171,6 @@
 <% } %>
 
 <script>
-
-    function change_max() {
-        $(".telephone-system-content").show();
-        $(".telephone-system-content-min").hide();
-    }
 
     var agentNumber = "";
     var orderCallbackCount = 0;
@@ -353,8 +358,6 @@
             if(customerNumber == undefined){
                 customerNumber = "--";
             }
-
-
 
             if(status != '离线' && 2000 == cno) {
                 window.document.getElementById('cnoTime').innerHTML = loginTime;
@@ -1085,38 +1088,46 @@
 
     }
 
-
-
-   function change_window () {
-       if($(".telephone-system-content").css("display") == "none"){
-           $(".telephone-system-content").show();
-       } else{
-           $(".telephone-system-content").hide();
-       }
-       if($(".telephone-system-content-min").css("display") == "none"){
-           $(".telephone-system-content-min").show();
-       } else{
-           $(".telephone-system-content-min").hide();
-       }
-   }
-    // 关闭
+    // 隐藏
    $('#phone-system-close').bind("click", function(){
-      if($(".telephone-system-content").css("display") == "none"){
-          $(".telephone-system-content").show();
-      } else{
-          $(".telephone-system-content").hide();
-      }
+      change_hide();
    });
 
    // 最小化
    $('#phone-system-minimize').bind("click", function(){
-     $(".telephone-system-content-min").show();
-     $(".telephone-system-content").hide();
+      change_min();
    });
    // 最大化
    $('#phone-system-minimize-max').bind("click", function(){
-        change_max();
-    });
+      change_max();
+   });
+   // 显示
+   $('#phone-system-minimize-show').bind("click", function(){
+      change_show();
+   });
+
+   function change_max() {
+     $(".telephone-system-content-min").hide();
+     $(".telephone-system-content").show();
+     $(".telephone-system-content-button").hide();
+   }
+   function change_min() {
+      $(".telephone-system-content-min").show();
+      $(".telephone-system-content").hide();
+      $(".telephone-system-content-button").hide();
+   }
+   function change_show() {
+      $(".telephone-system-content-min").hide();
+      $(".telephone-system-content").show();
+      $(".telephone-system-content-button").hide();
+   }
+   function change_hide() {
+      $(".telephone-system-content-min").hide();
+      $(".telephone-system-content").hide();
+      $(".telephone-system-content-button").show();
+   }
+
+
 
 
 </script>
