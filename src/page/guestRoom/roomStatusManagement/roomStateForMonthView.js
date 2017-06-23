@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import {AddCustomerModal,RowHousesModal} from './roomStateForMonthModal';
 import {
   Button,
   Checkbox,
@@ -22,7 +23,6 @@ const statusExplain = [
 ];
 
 const monthStateView = (props) => {
-
   const {dispatch} = props;
 
   document.ondragover = function (event) {
@@ -535,9 +535,16 @@ const monthStateView = (props) => {
         });
       };
 
-      return (
+      const oneKeyClicked = () => {
+        dispatch({
+          type: 'roomStatusManagement/setRowHousesVisible',
+          payload: true
+        });
+      }
+
+      return(
         <div className="bottomBar">
-          <Button className="oneKeyBtn">一键排房</Button>
+          <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
           <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
         </div>
       )
@@ -603,6 +610,13 @@ const monthStateView = (props) => {
       });
     };
 
+    const addCustomer = () => {
+      dispatch({
+        type: 'roomStatusManagement/setCustomerVisible',
+        payload: true
+      });
+    };
+
     return (
       <div className="sidebar">
         <h3>客户列表</h3>
@@ -618,7 +632,7 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          <Button className="addCustomerBtn">+ 添加客户</Button>
+          <Button className="addCustomerBtn" onClick={addCustomer}>+ 添加客户</Button>
         </div>
       </div>
     )
@@ -635,6 +649,8 @@ const monthStateView = (props) => {
         /** 侧边栏 **/
         monthSidebarView()
       }
+      <AddCustomerModal/>
+      <RowHousesModal/>
     </div>
   )
 };

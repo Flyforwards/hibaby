@@ -91,9 +91,9 @@ class PrepareMealPage extends React.Component {
   }
   //点击编辑餐单
   onEdit(record) {
-    message.warn("暂不可编辑")
-    // const dispatch = this.props.dispatch;
-    // dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
+   // message.warn("暂不可编辑")
+    const dispatch = this.props.dispatch;
+    dispatch(routerRedux.push(`/meals/nutritionist/editmenu?dataId=${record.id}`))
   }
   //点击禁忌
   onTaboo(record) {
