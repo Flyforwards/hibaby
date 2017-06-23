@@ -44,8 +44,13 @@ class AddServiceed extends Component {
           render: (text, record, index) => {
             return (
                 <span className="span">
-                  <InputNumber defaultValue={record.usageCount} onChange={(event)=>{
-                    record.usageCount = event.target.value
+                  <InputNumber defaultValue={record.usageCount} max={999} min={1} onChange={(number)=>{
+                    this.state.selectedRows.map(item=> {
+                      if (item.id == record.id) {
+                        item.usageCount = number;
+                      }
+                    });
+                    record.usageCount = number
                   }}/>
                 </span>
             );
@@ -57,8 +62,7 @@ class AddServiceed extends Component {
           isNess: false
         };
     }
-    componentWillMount() {
-    }
+
     onSelect(value, option){
       let isNess = false;
       if (option && option.props.title == "月子套餐") {
@@ -68,12 +72,13 @@ class AddServiceed extends Component {
         isNess
       })
     }
-    onSelectChange = (selectedRowKeys,selectedRows) => {
+    onSelectChange = ( selectedRowKeys, selectedRows) => {
       this.setState({ selectedRows });
     }
+
     componentDidMount() {
         this.props.dispatch({
-            type: 'packageInfo/serviceListByPage',
+            type: 'packageInfo/getServiceList',
             payload: { }
         });
         this.props.dispatch({
@@ -102,8 +107,6 @@ class AddServiceed extends Component {
     handleAdd(){
       this.props.form.validateFields((err, values) => {
         if(!err){
-
-
           let serviceInfoList = [];
           const { selectedRows} = this.state;
           if(selectedRows && selectedRows.length>=1){
@@ -114,10 +117,6 @@ class AddServiceed extends Component {
             message.error('至少选择一个服务项目!');
             return;
           }
-
-          console.log(values)
-          console.log(serviceInfoList)
-          return;
 
           // 是月子套餐
           if (this.state.isNess) {
@@ -148,33 +147,26 @@ class AddServiceed extends Component {
       })
     }
     render() {
-        let loadingName = true
+        const { form, serviceList, selectData, grade } = this.props;
+        const { getFieldDecorator } = form;
         let len = 1
-        const { getFieldDecorator } = this.props.form;
         const columns = this.columns;
-        let ListLnformation = []
         let roomList = []
-        let selectData = []
+        let roomOption = []
         let gradeList = []
-        if(this.props.selectData != null){
-          selectData = this.props.selectData.map((item)=>{
+        if(selectData){
+          roomOption = selectData.map((item)=>{
              return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
           })
         }
-        if(this.props.serviceListByPage != null){
-            ListLnformation = this.props.serviceListByPage;
-            ListLnformation.map((record)=>{
-                record.key = record.id;
-            });
-            loadingName = false
-        }
-        if(this.props.selectData != null){
-          selectData = this.props.selectData.map((item)=>{
-            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
-          })
-        }
-        if(this.props.grade != null){
-          gradeList = this.props.grade.map((item)=>{
+
+        const ListLnformation = serviceList.map((record)=>{
+          record.key = record.id;
+          return record;
+        });;
+
+        if(grade){
+          gradeList = grade.map((item)=>{
             return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
         }
@@ -188,6 +180,7 @@ class AddServiceed extends Component {
             len = roomList.length
           }
         }
+
         const { selectedRows } = this.state;
         const rowSelection = {
             selectedRows,
@@ -204,7 +197,7 @@ class AddServiceed extends Component {
               >
                 { getFieldDecorator('room', { rules: [],
                 })( <Select >
-                    { selectData }
+                    { roomOption }
                   </Select>
                 )}
               </FormItem>
@@ -259,12 +252,11 @@ class AddServiceed extends Component {
                 </div>
                 <div className="addServiceinfoTable">
                   <Table bordered
-                    rowSelection={rowSelection}
+                    rowSelection={ rowSelection }
                     columns={ columns }
                     dataSource={ListLnformation}
                     pagination = { false }
                     scroll={{ y: 470 }}
-                    loading = { loadingName }
                   />
                 </div>
                 { this.state.isNess ? botton_div : null }
@@ -277,7 +269,7 @@ class AddServiceed extends Component {
 
 function mapStateToProps(state) {
   const {
-    serviceListByPage,
+    serviceList,
     roomData,
     selectData,
     getDictionary,
@@ -285,7 +277,7 @@ function mapStateToProps(state) {
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
-    serviceListByPage,
+    serviceList,
     roomData,
     selectData,
     getDictionary,
