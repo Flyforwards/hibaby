@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form ,message} from 'antd'
+import { Icon, Card, Button,Table, Input,Select,Form ,InputNumber, message} from 'antd'
 import { Link} from 'react-router'
 import './serviceinfo.scss'
 import Current from '../../Current'
@@ -44,7 +44,7 @@ class AddServiceed extends Component {
           render: (text, record, index) => {
             return (
                 <span className="span">
-                  <Input defaultValue ={1} onChange={(event)=>{
+                  <InputNumber defaultValue={record.usageCount} onChange={(event)=>{
                     record.usageCount = event.target.value
                   }}/>
                 </span>
@@ -67,9 +67,6 @@ class AddServiceed extends Component {
       this.setState({
         isNess
       })
-
-
-
     }
     onSelectChange = (selectedRowKeys,selectedRows) => {
       this.setState({ selectedRows });
@@ -103,49 +100,50 @@ class AddServiceed extends Component {
       history.go(-1)
     }
     handleAdd(){
-      const fields = this.props.form.getFieldsValue();
-      this.props.form.validateFields((err, fieldsValue) => {
+      this.props.form.validateFields((err, values) => {
         if(!err){
-          let serviceInfoList =[]
-          if(this.state.selectedRows.length>=1){
-            this.state.selectedRows.map((item)=>{
-              if(item.usageCount){
-                serviceInfoList.push({"serviceInfoId":item.id,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
-              }else{
-                serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
-              }
+
+
+          let serviceInfoList = [];
+          const { selectedRows} = this.state;
+          if(selectedRows && selectedRows.length>=1){
+            serviceInfoList = selectedRows.map((item)=>{
+              return {"serviceInfoId":item.id,"usageCount":Number(item.usageCount),}
             })
+          } else {
+            message.error('至少选择一个服务项目!');
+            return;
           }
-          if(fields.name){
-            if(fields.price){
-              if(fields.type){
-                if(serviceInfoList.length>=1){
-                  this.props.dispatch({
-                      type: 'packageInfo/add',
-                      payload: {
-                        "name": fields.name,
-                        "price": fields.price,
-                        "serviceInfoList":serviceInfoList,
-                        "suiteId": fields.room,
-                        "type": fields.type,
-                        "levels":fields.packageLevel
-                      }
-                  });
-                }else{
-                  message.warning("请选择服务项目");
-                }
 
-              }else{
-                message.warning("请选择套餐的类型");
-              }
+          console.log(values)
+          console.log(serviceInfoList)
+          return;
 
-            }else{
-              message.warning("请输入套餐的价格");
+          // 是月子套餐
+          if (this.state.isNess) {
+            if (!values.packageLevel) {
+              message.error('请选择套餐级别!')
+              return;
             }
-
-          }else{
-            message.warning("请输入套餐的名称");
+            if (!values.room) {
+              message.error('请选择套房!');
+              return;
+            }
+          } else {
+            values.packageLevel = undefined;
+            values.room = undefined;
           }
+          this.props.dispatch({
+            type: 'packageInfo/add',
+            payload: {
+              "name": values.name,
+              "price": values.price,
+              "serviceInfoList":serviceInfoList,
+              "suiteId": values.room,
+              "type": values.type,
+              "levels":values.packageLevel
+            }
+          });
         }
       })
     }
@@ -165,7 +163,7 @@ class AddServiceed extends Component {
         }
         if(this.props.serviceListByPage != null){
             ListLnformation = this.props.serviceListByPage;
-              ListLnformation.map((record)=>{
+            ListLnformation.map((record)=>{
                 record.key = record.id;
             });
             loadingName = false
@@ -190,7 +188,7 @@ class AddServiceed extends Component {
             len = roomList.length
           }
         }
-        const { loading, selectedRows } = this.state;
+        const { selectedRows } = this.state;
         const rowSelection = {
             selectedRows,
             onChange: this.onSelectChange,
@@ -204,14 +202,9 @@ class AddServiceed extends Component {
                 label="套房"
                 className="room"
               >
-                {getFieldDecorator('room', {
-                  rules: [],
-                })(
-                  <Select
-                  >
-                    {
-                      selectData
-                    }
+                { getFieldDecorator('room', { rules: [],
+                })( <Select >
+                    { selectData }
                   </Select>
                 )}
               </FormItem>
@@ -219,14 +212,9 @@ class AddServiceed extends Component {
                 label="套餐等级"
                 className="packageLevel"
               >
-                {getFieldDecorator('packageLevel', {
-                  rules: [],
-                })(
-                  <Select
-                  >
-                    {
-                      gradeList
-                    }
+                {getFieldDecorator('packageLevel', { rules: [],
+                })( <Select>
+                    { gradeList  }
                   </Select>
                 )}
               </FormItem>
@@ -241,8 +229,7 @@ class AddServiceed extends Component {
                    label="套餐名称"
                    className="name"
                   >
-                    {getFieldDecorator('name', {
-                       rules: [],
+                    {getFieldDecorator('name', { rules: [{ required: true, message: '请填写套餐名称！限30字',max: 30 }],
                     })(
                       <Input />
                     )}
@@ -251,25 +238,17 @@ class AddServiceed extends Component {
                      label="套餐价格"
                      className="price"
                   >
-                  {getFieldDecorator('price', {
-                  rules: [{
-                    pattern: /^\d{0,7}$/, message: '请输入0-7位数字'
-                  }],
+                  {getFieldDecorator('price', {  rules: [{ required: true,pattern: /^\d{0,7}$/, message: '请输入0-7位数字' }],
                     })(
-                    <Input
-                      addonBefore="￥"
-                    />
+                    <Input addonBefore="￥" />
                     )}
                   </FormItem>
                    <FormItem
                    label="套餐类型"
                    >
-                    {getFieldDecorator('type', {
-                      rules: [],
+                    {getFieldDecorator('type', { rules: [{ required: true, message: '请选择套餐类型！' }],
                     })(
-                    <Select dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}}
-                    onSelect = {this.onSelect.bind(this)}
-                    >
+                    <Select dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}} onSelect = {this.onSelect.bind(this)} >
                      {
                       roomList
                      }
@@ -295,36 +274,7 @@ class AddServiceed extends Component {
         )
     }
 }
-function AddService({
-  dispatch,
-  serviceListByPage,
-  roomData,
-  selectData,
-  grade,
-  getDictionary
-}) {
-  return ( < div >
-    <AddServiceed dispatch = {
-      dispatch
-    }
-    selectData = {
-      selectData
-    }
-    serviceListByPage = {
-      serviceListByPage
-    }
-     roomData = {
-       roomData
-     }
-     getDictionary = {
-      getDictionary
-     }
-    grade = {
-      grade
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     serviceListByPage,
