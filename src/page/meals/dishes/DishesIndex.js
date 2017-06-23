@@ -72,7 +72,7 @@ class DishesIndex extends React.Component{
         return (
           <div>
             <PermissionLink testKey='DISHES_DETAIL' className="firstA" onClick={ this.onLook.bind(this, record)}> 查看 </PermissionLink>
-            <PermissionLink testKey='DISHES_DELETE' className="firstA"  onClick={ this.onDelete.bind(this, record)}> 删除 </PermissionLink>
+            <PermissionLink testKey='DISHES_DELETE' className="firstB"  onClick={ this.onDelete.bind(this, record)}> 删除 </PermissionLink>
           </div>
         );
       },
