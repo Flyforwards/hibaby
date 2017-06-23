@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import {AddCustomerModal, RowHousesModal} from './roomStateForMonthModal';
 import {
   Button,
   Checkbox,
@@ -22,7 +23,6 @@ const statusExplain = [
 ];
 
 const monthStateView = (props) => {
-
   const {dispatch} = props;
 
   document.ondragover = function (event) {
@@ -46,9 +46,6 @@ const monthStateView = (props) => {
       date = event.target.parentNode.dataset.date
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
-      // 这种情况最恶心了
-      // 需要根据位置判断在哪一天
-      // 简直不想做....
 
       // 偏移天数
       let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
@@ -185,7 +182,6 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="queryBtn">一键排房</Button>
           <Button className="queryBtn">查询</Button>
         </Col>
       </Row>
@@ -213,6 +209,7 @@ const monthStateView = (props) => {
     );
   };
 
+  /* 月房态列表 */
   const renderMonthRoomListView = () => {
     const roomList = props.users.monthRoomList;
 
@@ -226,7 +223,7 @@ const monthStateView = (props) => {
         }
 
         let result = dayList.map((day, dayindex) => {
-          //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房',5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
+          //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
           let roomState = 0;
           // 一天中的用户列表
           let dayCustomerList = day.customerList;
@@ -283,10 +280,10 @@ const monthStateView = (props) => {
 
           let stateBox = classNames('stateBox', {
             'empty': roomState == 0, // 空房
-            'repair': roomState == 1, // 维修
+            'checkingIn': roomState == 4, // 入住
             'reserve': roomState == 7, // 预约
+            'repair': roomState == 1, // 维修
             'overlap': roomState == 9, // 重叠
-            'checkingIn': roomState == 5, // 入住
           });
 
           return (
@@ -327,6 +324,7 @@ const monthStateView = (props) => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             let parentNode = e.target.parentNode;
+
             dispatch({
               type: 'roomStatusManagement/confirmCheckIn',
               payload: {
@@ -334,6 +332,7 @@ const monthStateView = (props) => {
                 customerId: parentNode.dataset.customerId,
                 startIndex: parentNode.dataset.startIndex,
                 endIndex: parentNode.dataset.endIndex,
+                startDate: parentNode.dataset.startDate,
               }
             });
             parentNode.removeChild(e.target);
@@ -391,15 +390,17 @@ const monthStateView = (props) => {
 
           let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
 
+
           // 左端在入住状态下不可操作
           for (let i = 0; i < customerList.length; i++) {
             let customer = customerList[i];
             if (customer.customerId == customerId) {
-              if (customer.status == 5) {
+              if (customer.status == 4) {
                 return;
               }
             }
           }
+
 
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
@@ -409,7 +410,18 @@ const monthStateView = (props) => {
               return;
             }
 
-            unit = parseInt(offsetX / UNIT_WIDTH);
+            let tempUnit = parseInt(offsetX / UNIT_WIDTH);
+
+            if (tempUnit > 0) {
+              let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
+              let dragDate = parseInt(target.dataset.startDate) + ((oldEndIndex + tempUnit + 2) * 86400000);
+
+              if (roomDate > dragDate) {
+                return;
+              }
+            }
+
+            unit = tempUnit;
 
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
@@ -525,10 +537,38 @@ const monthStateView = (props) => {
       )
     };
 
+    const renderBottomBar = () => {
+
+      const saveReserveClickHandler = () => {
+        dispatch({
+          type: 'roomStatusManagement/monthRoomUpdate',
+          payload: {}
+        });
+      };
+
+      const oneKeyClicked = () => {
+        dispatch({
+          type: 'roomStatusManagement/setRowHousesVisible',
+          payload: true
+        });
+      }
+
+      return (
+        <div className="bottomBar">
+          <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
+          <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
+        </div>
+      )
+    };
+
     return (
       <div className="monthRoomListBox">
         {
           roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
+        }
+
+        {
+          renderBottomBar()
         }
       </div>
     )
@@ -561,6 +601,7 @@ const monthStateView = (props) => {
         }
 
         {
+          /* 月房态列表 */
           renderMonthRoomListView()
         }
       </div>
@@ -581,6 +622,13 @@ const monthStateView = (props) => {
       });
     };
 
+    const addCustomer = () => {
+      dispatch({
+        type: 'roomStatusManagement/setCustomerVisible',
+        payload: true
+      });
+    };
+
     return (
       <div className="sidebar">
         <h3>客户列表</h3>
@@ -596,7 +644,7 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          <Button className="addCustomerBtn">+ 添加客户</Button>
+          <Button className="addCustomerBtn" onClick={addCustomer}>+ 添加客户</Button>
         </div>
       </div>
     )
@@ -613,6 +661,8 @@ const monthStateView = (props) => {
         /** 侧边栏 **/
         monthSidebarView()
       }
+      <AddCustomerModal/>
+      <RowHousesModal/>
     </div>
   )
 };

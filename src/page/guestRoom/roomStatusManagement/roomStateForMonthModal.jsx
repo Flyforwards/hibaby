@@ -2,11 +2,12 @@
 
 import React from 'react'
 import {connect} from 'dva'
+import DictionarySelect from 'common/dictionary_select';
 import {
   Button,
   Card,
-  InputNumber,
-  Checkbox,
+  Input,
+  Tag,
   Row,
   Col,
   Form,
@@ -15,6 +16,7 @@ import {
   Modal,
   Table,
   message,
+  InputNumber
 } from 'antd'
 import {routerRedux} from 'dva/router';
 import './roomStatusManagementIndex.scss'
@@ -23,15 +25,152 @@ const Option = Select.Option;
 import moment from 'moment';
 import {parse} from 'qs';
 
-function customerSearch() {
+
+const formItemLayout = {
+  labelCol: {span: 7},
+  wrapperCol: {span: 17},
+};
+
+function CustomerSearch(props) {
+  const {getFieldDecorator} = props.form;
+  const {dispatch} = props;
+
+  const searchAry = [
+    [{title:'年龄',component:'Input',submitStr:'age1'},
+      {component:'Input',submitStr:'age2'}],
+    {title:'预产期',component:'Date',submitStr:'dueDate'},
+    {title:'操作者2',component:'Input',submitStr:'operator'},
+    {title:'会员身份',component:'Select',submitStr:'member',selectName:'MEMBER'},
+    {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
+    {title:'第几胎',component:'Select',submitStr:'fetus',selectName:'FETUS'},
+    {title:'意向套餐',component:'Select',submitStr:'intentionPackage',selectName:'IntentionPackage'},
+    {title:'购买套餐',component:'Select',submitStr:'purchasePackage',selectName:'IntentionPackage'},
+    {title:'孕周',component:'Input',submitStr:'gestationalWeeks'},
+    {title:'宝宝生日',component:'Date',submitStr:'productionDate'},
+    {title:'分娩医院',component:'Select',submitStr:'hospital',selectName:'Hospital'},
+  ]
+
+  function creatComponent(dict) {
+
+    let formItemLayout = dict.title ? {labelCol: {span: 7},wrapperCol: {span: 17}} : {labelCol: {span: 0},wrapperCol: {span: 24}}
+
+    return(
+      <FormItem key={dict.submitStr} {...formItemLayout} label={dict.title}>
+        {getFieldDecorator(dict.submitStr)
+        (
+          dict.selectName?
+            <Select className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+            :
+            ( dict.component  === 'Date'?
+                <DatePicker style={{width: '100%'}}/>:
+                <Input min={1} max={365} placeholder="请填写" className='antCli'/>
+            )
+        )}
+      </FormItem>
+    )
+  }
+
+
+  let searchChiAry = [];
+  let tempChiAry = [];
+
+  for(let i = 0;i<searchAry.length;i++){
+    const dict = searchAry[i];
+    if((i%4) === 0){
+      searchChiAry.push(<Row>{tempChiAry}</Row>)
+      tempChiAry = [];
+    }
+
+    if(i === 0){
+
+      tempChiAry.push (
+        <Col span={4}>
+          {creatComponent(dict[0])}
+        </Col>,
+        <Col span={2}>
+          {creatComponent(dict[1])}
+        </Col>
+      )
+    }
+    else {
+      tempChiAry.push (
+        <Col span={6}>
+          {creatComponent(dict)}
+        </Col>
+      )
+    }
+  }
+  if(tempChiAry.length < 4){
+    searchChiAry.push(<Row>{tempChiAry}</Row>)
+  }
+
+
+  function reset() {
+
+  }
+
+  function onSearch(e) {
+    e.preventDefault();
+
+    props.form.validateFields((err, values) => {
+      if (!err) {
+
+        let param = {};
+        Object.keys(values).map((key) => {
+          const value = values[key];
+          if(value){
+            if(typeof value === 'object'){
+              param[key] = value.format();
+            }
+            else {
+              param[key] = value;
+            }
+          }
+        })
+
+        dispatch({
+          type: 'roomStatusManagement/getCustomerPage',
+          payload: param,
+        });
+      }
+    })
+  }
+
+
+  function HeadSrarch() {
+    return(
+      <Row>
+        <Col span={16}>{creatComponent({component:'Input',submitStr:'sear'})}</Col>
+        <Col span={4}>
+          <Button onClick={ reset} style={{
+            width: '100%',
+            height: '40px',
+            lineHeight: '40px',
+            backgroundColor: 'rgba(255, 0, 0, 1)'
+          }}>重置</Button>
+        </Col>
+        <Col span={4}>
+          <Button onClick={ onSearch} style={{
+          width: '100%',
+          height: '40px',
+          lineHeight: '40px',
+          backgroundColor: 'rgba(255, 102, 0, 1)'}}>
+            查询
+          </Button>
+        </Col>
+      </Row>
+    )
+  }
+
   return(
     <div>
-
+      <HeadSrarch/>
+      {searchChiAry}
     </div>
   )
 }
 
-function CustomerTable({props,loading}) {
+function CustomerTable({props,loading,selectCustomer,selectCustomerFun}) {
   const {allCusList,pagination} = props
   const columns = [{title: '客户姓名', dataIndex: 'name',key: 'name'},
     {title: '年龄',dataIndex: 'age',key: 'age'},
@@ -73,15 +212,24 @@ function CustomerTable({props,loading}) {
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      selectCustomerFun(selectedRows);
     },
-    getCheckboxProps: record => ({
-      disabled: record.name === 'Disabled User',    // Column configuration not to be checked
-    }),
   };
 
+  let tags = [];
+
+  for(let i = 0;i<selectCustomer.length;i++){
+    const dict = selectCustomer[i];
+    tags.push(<Tag closable onClose={dict.name.id}>{dict.name}</Tag>)
+  }
+
   return(
-    <Table rowSelection={rowSelection} {...tableProps}/>
+    <Card bodyStyle={{padding:'10px'}} title="预约客户">
+      <Card bodyStyle={{padding:'10px'}}>
+        {tags}
+      </Card>
+      <Table rowSelection={rowSelection} {...tableProps}/>
+    </Card>
   )
 
 }
@@ -91,29 +239,52 @@ class addCustomer extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state={
+      selectCustomer:[]
+    }
   }
 
   componentDidMount(){
     this.props.dispatch({type: 'roomStatusManagement/getCustomerPage'});
   }
 
+  handleOk(){
+    this.props.dispatch({
+      type: 'roomStatusManagement/setCustomerVisible',
+      payload: false
+    });
+  }
+
+  handleCancel(){
+    this.props.dispatch({
+      type: 'roomStatusManagement/setCustomerVisible',
+      payload: false
+    });
+  }
+
+  selectCustomerFun(array){
+    console.log(array)
+    this.setState({selectCustomer:array})
+  }
+
   render(){
+    const {CustomerVisible} = this.props.users;
+    const SearchFormDiv = Form.create()(CustomerSearch)
     return(
       <Modal
-
-        className="RowHouses"
+        className="addCustomer"
         width="1000px"
-        visible={true}
+        visible={CustomerVisible}
         title="预约"
-        // onOk={this.handleOk}
-        // onCancel={this.handleCancel}
+        onOk={this.handleOk.bind(this)}
+        onCancel={this.handleCancel.bind(this)}
       >
-        <CustomerTable loading={this.props.loading} props={this.props.users}/>
+        <SearchFormDiv dispatch={this.props.dispatch}/>
+        <CustomerTable selectCustomer={this.state.selectCustomer} selectCustomerFun={(array)=>{this.selectCustomerFun(array)}} loading={this.props.loading} props={this.props.users}/>
       </Modal>
     )
   }
 }
-
 
 
 
@@ -125,20 +296,30 @@ function SearchForm(props){
   function onSearch() {
     props.form.validateFields((err, values) => {
       if (!err) {
+
+
+        let param = {};
+        Object.keys(values).map((key) => {
+          const value = values[key];
+          if(value){
+            if(typeof value === 'object'){
+              param[key] = value.format();
+            }
+            else {
+              param[key] = value;
+            }
+          }
+        })
+
         dispatch({
           type: 'roomStatusManagement/arrangeRoom',
-          payload: { values },
+          payload: param,
         });
       }
     })
   }
 
   function cusFromItem(dict) {
-
-    const formItemLayout = {
-      labelCol: {span: 7},
-      wrapperCol: {span: 17},
-    };
 
     let packageChi = [];
     for (let i = 0; i < packageAry.length; i++) {
@@ -230,6 +411,7 @@ class RowHouses extends React.Component{
 
   constructor(props) {
     super(props);
+
     this.state={
       currSelect:''
     }
@@ -242,18 +424,29 @@ class RowHouses extends React.Component{
     })
   }
 
+  handleOk(){
+    handleCancel()
+  }
+
+  handleCancel(){
+    this.props.dispatch({
+      type: 'roomStatusManagement/setRowHousesVisible',
+      payload: false
+    });
+  }
+
   render(){
-    const {packageAry,resultsRowHouses} = this.props.users;
+    const {packageAry,resultsRowHouses, RowHousesVisible} = this.props.users;
     const SearchFormDiv = Form.create()(SearchForm)
     return(
       <Modal
 
         className="RowHouses"
         width="1000px"
-        visible={true}
+        visible={RowHousesVisible}
         title="一键排房"
-        // onOk={this.handleOk}
-        // onCancel={this.handleCancel}
+        onOk={this.handleOk.bind(this)}
+        onCancel={this.handleCancel.bind(this)}
       >
         <SearchFormDiv packageAry={packageAry} dispatch={this.props.dispatch}/>
         <SearResults selectFun={this.selectFun.bind(this)} currSelect={this.state.currSelect} resultsRowHouses={resultsRowHouses}/>

@@ -14,68 +14,128 @@ export default {
   namespace: 'phoneSystem',
   state: {
     list: [],
-    item: null,
-    editItem: null,
-    signUserList: [], // 预约用户列表
+    item: {},
+    modalVisible: false,
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
 
+    users:[],
+    userPagination:{
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+    },
   },
 
   reducers: {
 
-    getActivityPageSave(state, { payload: { list, pagination }}) {
+    showModal (state, { payload }) {
+      return { ...state, ...{ payload }, modalVisible: true }
+    },
+
+    hideModal (state) {
+      return { ...state, modalVisible: false }
+    },
+
+    getListByPageSave(state, { payload: { list, pagination }}) {
       return {...state, list, pagination: {  ...state.pagination,...pagination }};
     },
+
+    getListByUserPageSave(state, { payload: { users, userPagination }}) {
+      return {...state, users, userPagination: {  ...state.userPagination,...userPagination }};
+    },
+
     getDetailSuccess(state, { payload: { item }}) {
       return {...state, item};
     },
     getDetailEditSuccess(state, { payload: { editItem }}) {
       return {...state, editItem};
     },
+    getPhoneSystemByIdSuccess(state, { payload: { item }}) {
+      return {...state, item};
+    },
 
   },
   effects: {
 
-    // // 获取会员身份下拉选项， 也是卡种列表
-    // *getMemberShipCard({payload: values}, { call, put }) {
-    //   const {data: { data, code} } = yield call(systemService.getMemberShipCard, values);
-    //   if (code == 0) {
-    //     yield put({
-    //       type: 'memberShipCardSave',
-    //       payload: { shipCards: data}
-    //     })
-    //   }
-    // },
-    //
-    // // 预约会员用户
-    // *saveMemberCustomer({ payload: values}, { call, put }) {
-    //   const {data: {data,code}} = yield call(activityService.saveMemberCustomer, values);
-    //   if (code == 0) {
-    //     message.success("预约会员用户成功");
-    //     if (values.from ) {
-    //       yield put({
-    //         type: 'getActivityPage',
-    //       });
-    //     } else {
-    //       yield put({
-    //         type: 'getActivityById',
-    //         payload: { dataId: values.activityId}
-    //       });
-    //       yield put({
-    //         type: 'getActivityCustomerPageList',
-    //         payload: { activityId: values.activityId}
-    //       })
-    //
-    //     }
-    //   }
-    // },
-
-    *getByCurrentUser({payload: values}, { call, put }) {
-      const {data: { data, code} } = yield call(CustomerSerService.getByCurrentUser, values);
+    *getPhoneSystemById({payload: values}, { call, put }) {
+      const { data: { data, code} } = yield call(CustomerSerService.getPhoneSystemById, values);
       if (code == 0) {
-        // yield put({
-        //   type: 'memberShipCardSave',
-        // })
-        console.log(data);
+        yield put({
+          type: 'getPhoneSystemByIdSuccess',
+          payload: { item: data }
+        })
+      }
+    },
+
+
+    *phoneSystemSave({payload: values}, { call, put }) {
+      const {data: { data, code} } = yield call(CustomerSerService.phoneSystemSave, values);
+      if (code == 0) {
+        message.success('客服信息保存成功');
+        yield put(routerRedux.push('/crm/phone-system')  )
+      }
+    },
+
+    *phoneSystemEditSave({payload: values}, { call, put }) {
+      const {data: { data, code} } = yield call(CustomerSerService.phoneSystemEditSave, values);
+      if (code == 0) {
+        message.success('编辑客服信息保存成功');
+        yield put(routerRedux.push('/crm/phone-system')  )
+      }
+    },
+
+
+    *listByPage({ payload: values }, { call, put }) {
+      values = parse(location.search.substr(1))
+      if (values.page === undefined) {
+        values.page = 1;
+      }
+      if (values.size === undefined) {
+        values.size = 10;
+      }
+      const { data: { data, total, page, size, code } } = yield call(CustomerSerService.listByPage, values);
+      if (code == 0) {
+        yield put({
+          type: 'getListByPageSave',
+          payload: {
+            list: data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
+      }
+    },
+
+    *getUserListByPage({ payload: values }, { call, put }) {
+      if (!values.page) {
+        values.page = 1;
+      }
+      if (!values.size) {
+        values.size = 10;
+      }
+      const { data: { data, total, page, size, code } } = yield call(CustomerSerService.listByUserPage, values);
+      console.log(total);
+      if (code == 0) {
+        yield put({
+          type: 'getListByUserPageSave',
+          payload: {
+            users: data,
+            userPagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
       }
     },
 
@@ -84,13 +144,17 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
-
         if (pathname === '/crm/phone-system') {
           dispatch({
-            type: 'getByCurrentUser',
+            type: 'listByPage'
+          })
+        }
+
+        if (pathname === '/crm/phone-system/edit') {
+          dispatch({
+            type: 'getPhoneSystemById',
+            payload: query
           });
-
-
         }
       })
     }

@@ -29,7 +29,6 @@ export default {
       current: 1,
       total: null,
     },
-
   },
 
   reducers: {
@@ -269,11 +268,25 @@ export default {
         if(pathname === '/meals/nutritionist/taboo/export') {
           dispatch({
             type:'getSystemTime',
+          });
+          dispatch({
+            type:'getPrintMsg',
+            payload:{
+              "customerId":query.dataId,
+              "type":0,
+            }
           })
         }
         if(pathname === '/print'){
           dispatch({
             type:'getSystemTime',
+          })
+          dispatch({
+            type:'getPrintMsg',
+            payload:{
+              "customerId":query.dataId,
+              "type":query.choiceValue,
+            }
           })
         }
         if(pathname === '/meals/nutritionist/taboo'){

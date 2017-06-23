@@ -89,13 +89,49 @@ export function saveCustomerVisEdit(values) {
   })
 }
 
-// 获取当前用户的呼叫中心配置信息
-export function getByCurrentUser(values) {
-  return request('/crm/api/v1/customerServiceConfig/getByCurrentUser', {
+// 获取当前地方中心配置的客服列表
+export function listByPage(values) {
+  return request('/crm/api/v1/customerServiceConfig/listByPage', {
     method: 'POST',
     body: JSON.stringify(values),
   })
 }
+
+// 获取当前地方中心可设置员工列表
+export function listByUserPage(values) {
+  return request('/crm/api/v1/customerServiceConfig/listByUserPage', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 添加客服信息
+export function phoneSystemSave(values) {
+  return request('/crm/api/v1/customerServiceConfig/add', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 编辑客服信息
+export function phoneSystemEditSave(values) {
+  return request('/crm/api/v1/customerServiceConfig/edit', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 获取400电话配置信息
+export function getPhoneSystemById(values) {
+  return request('/crm/api/v1/customerServiceConfig/findById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
+
 
 
 
