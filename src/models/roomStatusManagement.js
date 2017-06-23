@@ -53,6 +53,7 @@ export default {
 
     CustomerVisible:false,
     RowHousesVisible:false,
+    RowHousesWayVisible:false,
     allCusList: '',
     pagination: {
       showQuickJumper: true,
@@ -64,12 +65,19 @@ export default {
 
   reducers: {
     setCustomerVisible(state, {payload: data}) {
-      return {...state, CustomerVisible:data};
+      let dict = {CustomerVisible:data};
+      return {...state, ...dict};
     },
     setRowHousesVisible(state, {payload: data}) {
-      return {...state, RowHousesVisible:data};
+      let dict = {RowHousesVisible:data};
+      if(data === false){
+        dict.resultsRowHouses = ''
+      }
+      return {...state, ...dict};
     },
-
+    setRowHousesWayVisible(state, {payload: data}) {
+      return {...state, RowHousesWayVisible:data};
+    },
     setCustomerPageSave(state, {payload: {list, pagination}}) {
       return {...state, allCusList: list, pagination: {...state.pagination, ...pagination}};
     },
@@ -347,6 +355,7 @@ export default {
 
       const {data: {code, data}} = yield call(roomManagement.arrangeRoom, {...defData, ...value});
       if (code == 0) {
+        console.log(data)
         yield put({
           type: 'setResultsRowHouses',
           payload: {
@@ -577,7 +586,7 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
+      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, value||param);
 
       if (code == 0) {
         // 更新原始集合的状态

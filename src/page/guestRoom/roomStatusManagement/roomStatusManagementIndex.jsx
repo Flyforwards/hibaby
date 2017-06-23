@@ -14,6 +14,7 @@ import {
   Switch,
   Spin,
   message,
+  Modal
 } from 'antd'
 import {routerRedux} from 'dva/router';
 import './roomStatusManagementIndex.scss'

@@ -394,6 +394,9 @@
     height: 30px;
     width: 120px;
   }
+  .ant-modal-header{
+    text-align: center;
+  }
 }
 
 .addCustomer {
@@ -403,5 +406,19 @@
   .antCli {
     width: 100%;
     height: 40px;
+  }
+  .ant-modal-header{
+    text-align: center;
+  }
+}
+
+.RowHousesWay{
+  text-align: center;
+  .backBtn{
+    margin: 0 auto;
+  }
+  Button{
+    margin-top: 20px;
+    margin-left:20px;
   }
 }

@@ -26,6 +26,8 @@ import moment from 'moment';
 import {parse} from 'qs';
 
 
+let SELECT_CUSTOMER = ''
+
 const formItemLayout = {
   labelCol: {span: 7},
   wrapperCol: {span: 17},
@@ -59,7 +61,7 @@ function CustomerSearch(props) {
         {getFieldDecorator(dict.submitStr)
         (
           dict.selectName?
-            <Select className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+            <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
             :
             ( dict.component  === 'Date'?
                 <DatePicker style={{width: '100%'}}/>:
@@ -234,6 +236,8 @@ function CustomerTable({props,loading,selectCustomer,selectCustomerFun}) {
 
 }
 
+const CusSearchFormDiv = Form.create()(CustomerSearch);
+
 //添加客户
 class addCustomer extends React.Component {
 
@@ -249,10 +253,7 @@ class addCustomer extends React.Component {
   }
 
   handleOk(){
-    this.props.dispatch({
-      type: 'roomStatusManagement/setCustomerVisible',
-      payload: false
-    });
+    this.handleCancel()
   }
 
   handleCancel(){
@@ -263,13 +264,11 @@ class addCustomer extends React.Component {
   }
 
   selectCustomerFun(array){
-    console.log(array)
     this.setState({selectCustomer:array})
   }
 
   render(){
     const {CustomerVisible} = this.props.users;
-    const SearchFormDiv = Form.create()(CustomerSearch)
     return(
       <Modal
         className="addCustomer"
@@ -279,7 +278,7 @@ class addCustomer extends React.Component {
         onOk={this.handleOk.bind(this)}
         onCancel={this.handleCancel.bind(this)}
       >
-        <SearchFormDiv dispatch={this.props.dispatch}/>
+        <CusSearchFormDiv dispatch={this.props.dispatch}/>
         <CustomerTable selectCustomer={this.state.selectCustomer} selectCustomerFun={(array)=>{this.selectCustomerFun(array)}} loading={this.props.loading} props={this.props.users}/>
       </Modal>
     )
@@ -294,11 +293,18 @@ function SearchForm(props){
 
 
   function onSearch() {
+
+
+
     props.form.validateFields((err, values) => {
       if (!err) {
-
-
         let param = {};
+
+        if (SELECT_CUSTOMER){
+          param.customerId = SELECT_CUSTOMER.customerId;
+          param.customerName = SELECT_CUSTOMER.customerName;
+        }
+
         Object.keys(values).map((key) => {
           const value = values[key];
           if(value){
@@ -381,6 +387,9 @@ function SearchForm(props){
   )
 }
 
+const SearchFormDiv = Form.create()(SearchForm)
+
+
 function SearResults({resultsRowHouses,selectFun,currSelect}) {
 
   function creatCard() {
@@ -418,17 +427,36 @@ class RowHouses extends React.Component{
   }
 
   selectFun(index){
-    console.log(index)
     this.setState({
       currSelect:index
     })
   }
 
   handleOk(){
-    handleCancel()
+    const {resultsRowHouses} = this.props.users;
+
+    if(this.state.currSelect === ''){
+      message.error('请先选择一个方案')
+      return;
+    }
+
+    if(!SELECT_CUSTOMER){
+      message.error('请先选择一个客户')
+      return;
+    }
+
+    this.handleCancel()
+
+    this.props.dispatch({
+      type: 'roomStatusManagement/monthRoomUpdate',
+      payload: resultsRowHouses[this.state.currSelect].monthRoomUpdateList
+    });
+
+
   }
 
   handleCancel(){
+    SELECT_CUSTOMER = '';
     this.props.dispatch({
       type: 'roomStatusManagement/setRowHousesVisible',
       payload: false
@@ -437,7 +465,6 @@ class RowHouses extends React.Component{
 
   render(){
     const {packageAry,resultsRowHouses, RowHousesVisible} = this.props.users;
-    const SearchFormDiv = Form.create()(SearchForm)
     return(
       <Modal
 
@@ -455,6 +482,43 @@ class RowHouses extends React.Component{
   }
 }
 
+function RowHousesWay(props) {
+  const {RowHousesWayVisible} = props.users;
+  const selectCuntomer = props.selectCuntomer;
+  SELECT_CUSTOMER = selectCuntomer;
+  function handleCancel(){
+    props.dispatch({
+      type: 'roomStatusManagement/setRowHousesWayVisible',
+      payload: false
+    });
+  }
+
+  function autoRowHouses(){
+    handleCancel()
+    props.dispatch({
+      type: 'roomStatusManagement/setRowHousesVisible',
+      payload: true
+    });
+  }
+
+  return(
+    <Modal
+      title="提示"
+      className="RowHousesWay"
+      visible={RowHousesWayVisible}
+      closable={false}
+      maskClosable
+      footer={[
+        <Button className='backBtn' key="back" onClick={handleCancel}>取消</Button>,
+      ]}
+    >
+      <h3>请选择此客户的排房方式</h3>
+      <Button type="primary" onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" onClick={()=>autoRowHouses()}>自动排房</Button>
+    </Modal>
+  )
+}
+
 function mapStateToProps(state) {
   return {
     users: state.roomStatusManagement,
@@ -462,5 +526,6 @@ function mapStateToProps(state) {
   };
 }
 
+export const RowHousesWayModal = connect(mapStateToProps)(RowHousesWay) ;
 export const AddCustomerModal = connect(mapStateToProps)(addCustomer) ;
 export const RowHousesModal = connect(mapStateToProps)(RowHouses) ;

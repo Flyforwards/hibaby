@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal,RowHousesModal} from './roomStateForMonthModal';
+import {AddCustomerModal,RowHousesModal,RowHousesWayModal} from './roomStateForMonthModal';
 import {
   Button,
   Checkbox,
@@ -9,9 +9,12 @@ import {
   Select,
   Switch,
   message,
+  Modal
 } from 'antd'
 
 const UNIT_WIDTH = 9;
+
+let SELECT_CUSTOMER = ''
 
 const statusExplain = [
   {name: "预定", color: "#29C1A6"},
@@ -617,6 +620,14 @@ const monthStateView = (props) => {
       });
     };
 
+    function onClicked(e) {
+      SELECT_CUSTOMER = e;
+      dispatch({
+        type: 'roomStatusManagement/setRowHousesWayVisible',
+        payload: true
+      });
+    }
+
     return (
       <div className="sidebar">
         <h3>客户列表</h3>
@@ -624,7 +635,7 @@ const monthStateView = (props) => {
         {
           customers.map((costomer) => {
             return (
-              <div className="customerItem" draggable="true" onDragStart={() => dragStart(costomer)}>
+              <div className="customerItem" onClick={()=>{onClicked(costomer)}} draggable="true" onDragStart={() => dragStart(costomer)}>
                 {costomer.customerName}
               </div>
             )
@@ -651,6 +662,7 @@ const monthStateView = (props) => {
       }
       <AddCustomerModal/>
       <RowHousesModal/>
+      <RowHousesWayModal selectCuntomer={SELECT_CUSTOMER}/>
     </div>
   )
 };
