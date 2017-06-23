@@ -208,7 +208,7 @@ export default {
         let customerList = room[j].customerList;
         for (let k = 0; k < customerList.length; k++) {
           if (customerList[k].customerId == data.customerId) {
-            customerList[k].status = 5; // 确认入住
+            customerList[k].status = 4; // 确认入住
             break;
           }
         }
@@ -258,6 +258,11 @@ export default {
 
       if (type === "add") {
         for (let j = startIndex + 1; j <= endIndex; j++) {
+          // 不连续的时间
+          if (room[j].date - room[j - 1].date > 86400000) {
+            break;
+          }
+
           let customerList = room[j].customerList;
           customerList.push({
             customerId,
@@ -518,13 +523,13 @@ export default {
 
           // 先去除已入住的, 此接口不关注已入住的状态
           for (let k = 0; k < copyOldUserList.length; k++) {
-            if (copyOldUserList[k].status == 5) {
+            if (copyOldUserList[k].status == 4) {
               copyOldUserList.splice(k--, 1);
             }
           }
 
           for (let k = 0; k < copyUserList.length; k++) {
-            if (copyUserList[k].status == 5) {
+            if (copyUserList[k].status == 4) {
               copyUserList.splice(k--, 1);
             }
           }
