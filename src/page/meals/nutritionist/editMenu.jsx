@@ -36,6 +36,13 @@ class EditMenu extends React.Component {
   onExport() {
     const { dispatch } = this.props;
     const dataId = queryURL("dataId");
+    dispatch({
+      type:'dinner/getPrintMsg',
+      payload:{
+        "customerId":dataId,
+        "type":0
+      }
+    })
     dispatch(routerRedux.push({
       pathname: '/meals/nutritionist/taboo/export',
       query: {
