@@ -69,7 +69,7 @@ export function saveDepartment(values) {
 }
 //根据用户id禁用用户
 export function forbiddenUser(values) {
-  return request('/crm/api/v1/user/27forbiddenUser', {
+  return request('/crm/api/v1/user/forbiddenUser', {
     method: 'POST',
     body: JSON.stringify(values),
   })

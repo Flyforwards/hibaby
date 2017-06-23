@@ -154,7 +154,7 @@ class EditUsered extends React.Component {
               "positionId": fields[`position${i}`],//职位
               "id":entrys[i].id,
               "roles": roleIdData,
-              "identifier": fields.Numbering//编号//fields.Numbering
+              "identifier": this.state.identifier//编号//fields.Numbering
           })
         }else{
           entrysData.push({

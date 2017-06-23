@@ -13,6 +13,7 @@ const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY-MM-DD';
 const monthFormat = 'YYYY-MM';
 import { format } from '../../../utils/index.js';
+import testData from './test';
 
 
 class PrintPageList extends Component {
@@ -32,105 +33,52 @@ class PrintPageList extends Component {
  // }
   getName(i) {
     switch(i){
-      case 2:return "早餐";
+      case 1:return "早餐";
       break;
-      case 3:return "早加";
+      case 2:return "早加";
       break;
-      case 4:return "午餐";
+      case 3:return "午餐";
       break;
-      case 5:return "午加";
+      case 4:return "午加";
       break;
-      case 6:return "晚餐";
+      case 5:return "晚餐";
       break;
-      case 7:return "晚加";
+      case 6:return "晚加";
       break;
     }
   }
 
-  getPrintList(data,menu){
+  getPrintList(data) {
     let menuItem = [];
     data.map((elem,index) => {
       menuItem.push(
-        <div key={elem} className="menu">
-          <p className="menuName">{this.getName(elem)}</p>
+        <div key={index} className="menu">
+          <p className="menuName">{this.getName(elem.type)}</p>
           <p className="menuCount">
-            {menu.split(',').map((v,i) => {
-             return <span key={i}>{v}</span>
+            {elem.dishes.map((v,i) => {
+                return <span key={i}>{v.dishesName}</span>
             })}
           </p>
         </div>);
-     });
+    });
     return menuItem;
   }
 
-
-
   render() {
-    let menuList = []
-    const { loading, printBaseMsg, systemTime,times ,printList, exportValue} = this.props;
+    const { loading, systemTime ,printMsg} = this.props;
     const danTime = systemTime ? new Date(systemTime).format('yyyy-MM-dd HH:mm:ss') : '';
-    const data = [2,3,4,5,6,7];
-    const menu ="菜单1,菜单2,菜单3,菜单4,菜单5,菜单6,菜单7"
+    const dayTime = systemTime ? new Date(systemTime).format('yyyy年MM月dd日') : '';
     return (
       <div className="printList" style={{padding:'0px 30px'}}>
         <div className="print_all">
-          <p className="time">2017年04月20日餐单 </p>
+          <p className="time">{dayTime}餐单 </p>
           <p className="userList">
-            <span className="name">客户姓名 : 杨幂</span>
-            <span className="roomNumber">房间号码 : 1001</span>
-            <span className="status">菜单状态 :  基础菜单</span>
+            <span className="name">客户姓名 : {testData ? testData.name : ''}</span>
+            <span className="roomNumber">房间号码 : {testData ? testData.room : ''}</span>
+            <span className="status">菜单状态 :  {testData ? (testData.menuStatus == 0 ?"标准餐单":"禁忌餐单"):''}</span>
             <span className="timeOut">出单时间 :{danTime} </span>
           </p>
-         {/*this.menuList(data);*/}
-          {this.getPrintList(data,menu)}
-          {/*<div className="menu">*/}
-          {/*<p className="menuName">早餐 : </p>*/}
-          {/*<p className="menuCount">*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单2</span>*/}
-            {/*<span>菜单3</span>*/}
-            {/*<span>菜单4</span>*/}
-            {/*<span>菜单5</span>*/}
-            {/*<span>菜单6</span>*/}
-            {/*<span>菜单7</span>*/}
-          {/*</p>*/}
-        {/*</div>*/}
-        {/*<div className="menu">*/}
-          {/*<p className="menuName">早加 : </p>*/}
-          {/*<p className="menuCount">*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单2</span>*/}
-            {/*<span>菜单3</span>*/}
-            {/*<span>菜单4</span>*/}
-            {/*<span>菜单5</span>*/}
-            {/*<span>菜单6</span>*/}
-            {/*<span>菜单7</span>*/}
-          {/*</p>*/}
-        {/*</div>*/}
-        {/*<div className="menu">*/}
-          {/*<p className="menuName">午餐 : </p>*/}
-          {/*<p className="menuCount">*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单2</span>*/}
-            {/*<span>菜单3</span>*/}
-            {/*<span>菜单4</span>*/}
-            {/*<span>菜单5</span>*/}
-            {/*<span>菜单6</span>*/}
-            {/*<span>菜单7</span>*/}
-          {/*</p>*/}
-        {/*</div>*/}
-        {/*<div className="menu">*/}
-          {/*<p className="menuName">午加 : </p>*/}
-          {/*<p className="menuCount">*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单1</span>*/}
-            {/*<span>菜单1</span>*/}
-          {/*</p>*/}
-        {/*</div>*/}
+          {this.getPrintList(testData ? testData.adjustlist:'')}
         </div>
       </div>
     )
@@ -139,9 +87,10 @@ class PrintPageList extends Component {
 
 
 function mapStateToProps(state) {
-  const { systemTime } = state.dinner;
+  const { systemTime,printMsg } = state.dinner;
   return {
     systemTime,
+    printMsg,
    loading: state.loading.models.dainer
   };
 }

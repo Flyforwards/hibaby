@@ -126,4 +126,5 @@ export default (app) => [
       })
     }
   },
+
 ]
