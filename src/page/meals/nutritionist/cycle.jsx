@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import styles from './Cycle.scss';
 import CycleDetail from './cycleDetail.jsx';
-import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button } from 'antd'
+import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
 
 const  tabooUsers = [
   {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
@@ -58,6 +58,15 @@ function mealCycle (props) {
     return (
       <div>
         <Card title="周期一" bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleChangedState() }}>
+          <Row style={{display: 'flex',justifyContent: 'flex-end'}}>
+            <Badge count={1} style={{
+              backgroundColor: '#fff',
+              color: '#999',
+              boxShadow: '0 0 0 1px #d9d9d9 inset',
+              marginRight: '20px',
+              marginTop: '-35px' }}
+            />
+          </Row>
           <Row>
             <div className="cardSubtitle">标准用户14人</div>
             <div style={{background: '#e9e9e9', marginLeft: '20px', marginRight: '20px',height: '1px'}}></div>
@@ -192,6 +201,7 @@ function mealCycle (props) {
 function mapStateToProps(state) {
 
   return {
+    loading: state.loading,
     isShowDetail: state.cyclePage.isShowDetail,
     curTabsIndex: state.cyclePage.curTabsIndex
   };
