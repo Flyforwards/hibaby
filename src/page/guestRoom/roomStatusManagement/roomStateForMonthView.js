@@ -229,14 +229,14 @@ const monthStateView = (props) => {
 
         let result = dayList.map((day, dayindex) => {
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
-          let roomState = 0;
+          let status = 0;
           // 一天中的用户列表
           let dayCustomerList = day.customerList;
 
           // 如果该天只有一个用户, 直接显示相应状态
           if (dayCustomerList.length === 1) {
             let hasUser = false;
-            roomState = dayCustomerList[0].status || 7;
+            status = dayCustomerList[0].status || 7;
 
             for (let i = 0; i < users.length; i++) {
               if (users[i].customerId === dayCustomerList[0].customerId) {
@@ -280,15 +280,15 @@ const monthStateView = (props) => {
               }
             }
 
-            roomState = 9; // 重叠
+            status = 9; // 重叠
           }
 
           let stateBox = classNames('stateBox', {
-            'empty': roomState == 0, // 空房
-            'checkingIn': roomState == 4, // 入住
-            'reserve': roomState == 7, // 预约
-            'repair': roomState == 1, // 维修
-            'overlap': roomState == 9, // 重叠
+            'empty': status == 0, // 空房
+            'checkingIn': status == 4, // 入住
+            'reserve': status == 7, // 预约
+            'repair': status == 1, // 维修
+            'overlap': status == 9, // 重叠
           });
 
           return (
@@ -327,12 +327,8 @@ const monthStateView = (props) => {
           }
 
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          // 直接判断第一天的状态即可
-          let userList = dayList[e.target.dataset.startIndex].customerList;
-          for (let i = 0; i < userList.length; i++) {
-            if(userList[i].customerId == e.target.dataset.customerId && userList[i].status == 4){
-              return;
-            }
+          if (e.target.dataset.status == 4) {
+            return;
           }
 
           let btn = document.createElement("div");
@@ -361,7 +357,15 @@ const monthStateView = (props) => {
         const userBoxRightClickHandler = (e) => {
           e.preventDefault();
           e.stopPropagation();
+
+          // 首先要排除不是在确认入住或删除按钮上双击的
+          // 因为以上两个按钮也是在这个容器内, 事件会冒泡
           if (!e.target.classList.contains("userBox")) {
+            return;
+          }
+
+          // 如果是已入住状态, 是不能再次确认入住和删除的
+          if (e.target.dataset.status == 4) {
             return;
           }
 
@@ -522,6 +526,7 @@ const monthStateView = (props) => {
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
                  data-user-dayCount={users[i].dayCount}
                  data-start-date={users[i].startDate}
+                 data-status={users[i].status}
                  onClick={userBoxClickHandler}
                  onDoubleClick={userBoxDbClickHandler}
                  onContextMenu={userBoxRightClickHandler}
