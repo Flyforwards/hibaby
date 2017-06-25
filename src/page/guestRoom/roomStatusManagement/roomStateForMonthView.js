@@ -504,6 +504,7 @@ const monthStateView = (props) => {
                 startIndex: user.startIndex,
                 endIndex: user.startIndex + user.dayCount - 1,
                 status: user.status,
+                startDate: user.startDate,
                 roomIndex: roomIndex,
               },
             }

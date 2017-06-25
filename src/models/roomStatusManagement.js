@@ -459,34 +459,85 @@ export default {
     *userDrop({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
 
-      // 删除之前的
-      yield put({
-        type: 'deleteUser',
-        payload: {
-          ...value,
-          startIndex: state.dragUser.startIndex,
-          endIndex: state.dragUser.endIndex,
-          customerId: state.dragUser.customerId,
-          roomIndex: state.dragUser.roomIndex,
-          status: state.dragUser.status,
-        }
-      });
 
-      let payload = {
-        ...value,
-        status: state.dragUser.status,
-      }
       // 如果已入住, 开始的时间保持不变
       if (state.dragUser.status == 4) {
-        payload.dayIndex = state.dragUser.startIndex
-      }
-      // 添加新的
-      yield put({
-        type: 'userDropReducer',
-        payload: {
-          ...payload,
+        // 先调用平移接口
+        let param = {
+          customerInfoList: [
+            {
+              customerId: state.dragUser.customerId,
+              customerName: state.dragUser.customerName,
+              useDate: timeToDate(state.dragUser.startDate),
+            }
+          ],
+          fromRoomId: state.monthRoomList[state.dragUser.roomIndex].roomId,
+          fromRoomName: state.monthRoomList[state.dragUser.roomIndex].roomNo,
+          toRoomId: state.monthRoomList[value.roomIndex].roomId,
+          toRoomName: state.monthRoomList[value.roomIndex].roomNo,
         }
-      });
+        const {data: {code, data}} = yield call(roomManagement.resideMove, param);
+
+
+        payload.dayIndex = state.dragUser.startIndex;
+
+        if (code != 0) {
+          return;
+        }
+
+        // 删除之前的
+        yield put({
+          type: 'deleteUser',
+          payload: {
+            ...value,
+            startIndex: state.dragUser.startIndex,
+            endIndex: state.dragUser.endIndex,
+            customerId: state.dragUser.customerId,
+            roomIndex: state.dragUser.roomIndex,
+            status: state.dragUser.status,
+          }
+        });
+
+        let payload = {
+          ...value,
+          status: state.dragUser.status,
+        }
+
+        // 添加新的
+        yield put({
+          type: 'userDropReducer',
+          payload: {
+            ...payload,
+          }
+        });
+      } else {
+        // 删除之前的
+        yield put({
+          type: 'deleteUser',
+          payload: {
+            ...value,
+            startIndex: state.dragUser.startIndex,
+            endIndex: state.dragUser.endIndex,
+            customerId: state.dragUser.customerId,
+            roomIndex: state.dragUser.roomIndex,
+            status: state.dragUser.status,
+          }
+        });
+
+        let payload = {
+          ...value,
+          status: state.dragUser.status,
+        }
+
+        // 添加新的
+        yield put({
+          type: 'userDropReducer',
+          payload: {
+            ...payload,
+          }
+        });
+      }
+
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){
