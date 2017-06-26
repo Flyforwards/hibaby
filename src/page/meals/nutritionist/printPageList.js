@@ -73,12 +73,12 @@ class PrintPageList extends Component {
         <div className="print_all">
           <p className="time">{dayTime}餐单 </p>
           <p className="userList">
-            <span className="name">客户姓名 : {testData ? testData.name : ''}</span>
-            <span className="roomNumber">房间号码 : {testData ? testData.room : ''}</span>
-            <span className="status">菜单状态 :  {testData ? (testData.menuStatus == 0 ?"标准餐单":"禁忌餐单"):''}</span>
+            <span className="name">客户姓名 : {printMsg ? printMsg.name : ''}</span>
+            <span className="roomNumber">房间号码 : {printMsg ? printMsg.room : ''}</span>
+            <span className="status">菜单状态 :  {printMsg ? (printMsg.menuStatus == 0 ?"标准餐单":"禁忌餐单"):''}</span>
             <span className="timeOut">出单时间 :{danTime} </span>
           </p>
-          {this.getPrintList(testData ? testData.adjustlist:'')}
+          {printMsg ? this.getPrintList(printMsg.adjustlist):''}
         </div>
       </div>
     )

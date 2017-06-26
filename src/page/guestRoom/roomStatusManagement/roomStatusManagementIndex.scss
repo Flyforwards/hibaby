@@ -208,6 +208,13 @@
         width: 100%;
         background-color: #fff;
 
+        .daysRulerBox {
+          display: flex;
+          height: 60px;
+          align-items: center;
+          margin-left: 84px;
+        }
+
         .monthRoomBox {
           display: flex;
           height: 60px;
@@ -316,7 +323,7 @@
 
         .bottomBar {
           height: 80px;
-          line-height:80px;
+          line-height: 80px;
           text-align: right;
           .oneKeyBtn {
             width: 150px;
@@ -394,7 +401,7 @@
     height: 30px;
     width: 120px;
   }
-  .ant-modal-header{
+  .ant-modal-header {
     text-align: center;
   }
   .noResults{
@@ -405,14 +412,14 @@
 }
 
 .addCustomer {
-  Button{
+  Button {
     color: white;
   }
   .antCli {
     width: 100%;
     height: 40px;
   }
-  .ant-modal-header{
+  .ant-modal-header {
     text-align: center;
   }
   .CustomerTable{
@@ -420,13 +427,13 @@
   }
 }
 
-.RowHousesWay{
+.RowHousesWay {
   text-align: center;
-  .backBtn{
+  .backBtn {
     margin: 0 auto;
   }
-  Button{
+  Button {
     margin-top: 20px;
-    margin-left:20px;
+    margin-left: 20px;
   }
 }
