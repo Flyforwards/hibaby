@@ -481,13 +481,16 @@ export default {
       let years = {};
 
       for (let dateSelect of dateSelectList) {
-        years[dateSelect.year] = {};
+        if (!years[dateSelect.year]) {
+          years[dateSelect.year] = {};
+        }
 
         for (let month of dateSelect.monthList) {
           years[dateSelect.year][month] = "";
         }
       }
 
+      console.log(years);
       // 扁平化
       let param = [];
 
