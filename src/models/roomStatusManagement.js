@@ -39,14 +39,11 @@ export default {
     dayStatusData: '',
     FloorAry: '',
     MainFloorAry: '',
+    fetusAry:'',
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
     monthStateCustomers: [],
-    //可编辑的  添加客户  加入的
-    editMonthStateCustomers:[],
-    defSelectCustomers:[],
-
     oldMonthRoomList: [],
     monthRoomList: [],
     dragUser: null,
@@ -83,18 +80,7 @@ export default {
       return {...state, RowHousesWayVisible: data};
     },
     setCustomerPageSave(state, {payload: {list, pagination}}) {
-      let ary = [];
-      for(let i = 0;i< state.monthStateCustomers.length;i++){
-        const dict = state.monthStateCustomers[i];
-        for(let j = 0;j< list.length;j++) {
-          const subDict = list[j];
-          if (subDict.id == dict.customerId){
-            ary.push(j);
-            break;
-          }
-        }
-      }
-      return {...state, allCusList: list,defSelectCustomers:ary, pagination: {...state.pagination, ...pagination}};
+      return {...state, allCusList: list, pagination: {...state.pagination, ...pagination}};
     },
     setSelectValue(state, {payload: todo}){
       let listArray = [];
@@ -131,6 +117,9 @@ export default {
       else if (todo.abName === 'CX') {
         return {...state, TowardAry: todo.data};
       }
+      else if(todo.abName === 'YCC'){
+          return {...state,fetusAry:todo.data};
+      }
       return {...state};
     },
     setResultsRowHouses(state, {payload: todo}){
@@ -142,7 +131,7 @@ export default {
     setMonthStatusCustomers(state, {payload: todo}){
       return {
         ...state,
-        monthStateCustomers: todo.data
+        monthStateCustomers: todo.data,
       };
     },
 
@@ -681,7 +670,9 @@ export default {
       return history.listen(({pathname, query}) => {
         if (pathname === '/chamber/roomstatusindex') {
           dispatch({type: 'dayStatus'});
-          if (!query) {
+
+          if (Object.keys(query).length == 0) {
+
             dispatch({
               type: 'getDataDict',
               payload: {
@@ -704,6 +695,12 @@ export default {
               type: 'getDataDict',
               payload: {
                 "abName": 'CX',
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'YCC',
               }
             });
           }
