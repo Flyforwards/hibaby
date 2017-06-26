@@ -87,10 +87,14 @@ function CustomerSearch(props) {
 
       tempChiAry.push (
         <Col span={4}>
-          {creatComponent(dict[0])}
+          <Row><Col span={22} offset={2}>
+            {creatComponent(dict[0])}
+          </Col></Row>
         </Col>,
         <Col span={2}>
-          {creatComponent(dict[1])}
+          <Row><Col span={23} offset={1}>
+            {creatComponent(dict[1])}
+          </Col></Row>
         </Col>
       )
     }
@@ -108,11 +112,11 @@ function CustomerSearch(props) {
 
 
   function reset() {
-
+    props.form.resetFields();
+    onSearch()
   }
 
   function onSearch(e) {
-    e.preventDefault();
 
     props.form.validateFields((err, values) => {
       if (!err) {
@@ -142,23 +146,29 @@ function CustomerSearch(props) {
   function HeadSrarch() {
     return(
       <Row>
-        <Col span={16}>{creatComponent({component:'Input',submitStr:'sear'})}</Col>
+        <Col offset={1} span={15}>{creatComponent({component:'Input',submitStr:'sear'})}</Col>
         <Col span={4}>
-          <Button onClick={ reset} style={{
+          <Row><Col span={23} offset={1}>
+            <Button onClick={ reset} style={{
+              width: '100%',
+              height: '40px',
+              lineHeight: '40px',
+              backgroundColor: 'rgba(255, 0, 0, 1)'
+            }}>重置</Button>
+          </Col></Row>
+
+        </Col>
+        <Col span={4}>
+          <Row><Col span={23} offset={1}>
+            <Button onClick={ onSearch} style={{
             width: '100%',
             height: '40px',
             lineHeight: '40px',
-            backgroundColor: 'rgba(255, 0, 0, 1)'
-          }}>重置</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={ onSearch} style={{
-          width: '100%',
-          height: '40px',
-          lineHeight: '40px',
-          backgroundColor: 'rgba(255, 102, 0, 1)'}}>
-            查询
-          </Button>
+            backgroundColor: 'rgba(255, 102, 0, 1)'}}>
+              查询
+            </Button>
+          </Col></Row>
+
         </Col>
       </Row>
     )
