@@ -205,24 +205,19 @@
       }
 
       .monthRoomListBox {
-        width: 100%;
+        width: 1010px;
+
         background-color: #fff;
 
-        .daysRulerBox {
-          display: flex;
-          height: 60px;
-          align-items: center;
-          margin-left: 84px;
-        }
-
-        .monthRoomBox {
-          display: flex;
-          height: 60px;
-          margin-bottom: 10px;
-          align-items: center;
+        .monthRoomLeftBox {
+          min-width: 84px;
           .monthRoomNumberBox {
-            width: 84px;
+            height: 60px;
             text-align: center;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             .number {
               font-size: 14px;
@@ -237,6 +232,22 @@
               margin: 0 auto;
             }
           }
+        }
+
+        .daysRulerBox {
+          display: flex;
+          height: 40px;
+          align-items: center;
+          border: 1px solid #B67233;
+          border-radius: 3px;
+          margin-bottom: 5px;
+        }
+
+        .monthRoomBox {
+          display: flex;
+          height: 60px;
+          margin-bottom: 10px;
+          align-items: center;
 
           .userBox {
             height: 100%;
@@ -321,24 +332,11 @@
           }
         }
 
-        .bottomBar {
-          height: 80px;
-          line-height: 80px;
-          text-align: right;
-          .oneKeyBtn {
-            width: 150px;
-            background-color: #f8f1ea;
-            color: #B67233;
-          }
-
-          .saveReserveBtn {
-            width: 150px;
-            background-color: #B67233;
-            color: #f8f1ea;
-            margin-left: 20px;
-            margin-right: 30px;
-          }
+        .monthRoomMainBox {
+          padding-bottom: 25px;
+          overflow: auto;
         }
+
       }
 
     }
@@ -378,6 +376,25 @@
       }
     }
 
+    .bottomBar {
+      height: 80px;
+      line-height: 80px;
+      text-align: right;
+      .oneKeyBtn {
+        width: 150px;
+        background-color: #f8f1ea;
+        color: #B67233;
+      }
+
+      .saveReserveBtn {
+        width: 150px;
+        background-color: #B67233;
+        color: #f8f1ea;
+        margin-left: 20px;
+        margin-right: 30px;
+      }
+    }
+
   }
 }
 
@@ -404,9 +421,9 @@
   .ant-modal-header {
     text-align: center;
   }
-  .noResults{
+  .noResults {
     width: 100%;
-    line-height:40px;
+    line-height: 40px;
     text-align: center;
   }
 }
@@ -422,7 +439,7 @@
   .ant-modal-header {
     text-align: center;
   }
-  .CustomerTable{
+  .CustomerTable {
     margin-top: 10px;
   }
 }
