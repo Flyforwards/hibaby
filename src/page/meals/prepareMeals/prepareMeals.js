@@ -59,12 +59,18 @@ class PrepareMeals extends Component {
   
   onSearch = (value) => {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'prepareMeals/getMenuByDishes',
-      payload: {
-        name: value
-      }
-    })
+    if (!value) {
+      return message.error('请输入菜名！')
+    } else {
+      dispatch({
+        type: 'prepareMeals/getMenuByDishes',
+        payload: {
+          name: value
+        }
+      })
+    }
+    
+    
   }
   showHighModal = (info) => {
     const { dispatch } = this.props;
@@ -269,7 +275,6 @@ class PrepareMeals extends Component {
                       }
                       <li>
                         <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>编辑/添加</Button>
-                      
                       </li>
                     </ul>
                   </div>

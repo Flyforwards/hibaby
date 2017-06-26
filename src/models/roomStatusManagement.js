@@ -39,19 +39,21 @@ export default {
     dayStatusData: '',
     FloorAry: '',
     MainFloorAry: '',
+    fetusAry:'',
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
     monthStateCustomers: [],
     //可编辑的  添加客户  加入的
-    editMonthStateCustomers:[],
-    defSelectCustomers:[],
-
+    editMonthStateCustomers: [],
+    defSelectCustomers: [],
     oldMonthRoomList: [],
     monthRoomList: [],
     dragUser: null,
-    selectedYear: new Date().getFullYear(),
+    defaultYear: new Date().getFullYear(),
+    dateSelectList: [],
     selectedMonthList: [],
+    dateSelectViews: [],
     monthRoomUpdateList: [],// 保存状态有更新的用户
     //弹出的modal数据控制
 
@@ -84,17 +86,17 @@ export default {
     },
     setCustomerPageSave(state, {payload: {list, pagination}}) {
       let ary = [];
-      for(let i = 0;i< state.monthStateCustomers.length;i++){
+      for (let i = 0; i < state.monthStateCustomers.length; i++) {
         const dict = state.monthStateCustomers[i];
-        for(let j = 0;j< list.length;j++) {
+        for (let j = 0; j < list.length; j++) {
           const subDict = list[j];
-          if (subDict.id == dict.customerId){
+          if (subDict.id == dict.customerId) {
             ary.push(j);
             break;
           }
         }
       }
-      return {...state, allCusList: list,defSelectCustomers:ary, pagination: {...state.pagination, ...pagination}};
+      return {...state, allCusList: list, defSelectCustomers: ary, pagination: {...state.pagination, ...pagination}};
     },
     setSelectValue(state, {payload: todo}){
       let listArray = [];
@@ -131,6 +133,9 @@ export default {
       else if (todo.abName === 'CX') {
         return {...state, TowardAry: todo.data};
       }
+      else if(todo.abName === 'YCC'){
+          return {...state,fetusAry:todo.data};
+      }
       return {...state};
     },
     setResultsRowHouses(state, {payload: todo}){
@@ -142,7 +147,7 @@ export default {
     setMonthStatusCustomers(state, {payload: todo}){
       return {
         ...state,
-        monthStateCustomers: todo.data
+        monthStateCustomers: todo.data,
       };
     },
 
@@ -209,16 +214,38 @@ export default {
     },
 
     selectedYearChange(state, {payload: data}){
+      let dateSelectList = state.dateSelectList;
+
+      if (!state.dateSelectList[data.selectViewIndex]) {
+        state.dateSelectList[data.selectViewIndex] = {
+          monthList: [],
+          year: state.defaultYear,
+        }
+      }
+
+      state.dateSelectList[data.selectViewIndex].year = data.selectedYear;
+
       return {
         ...state,
-        selectedYear: data.selectedYear,
+        dateSelectList: dateSelectList,
       }
     },
 
     selectedMonthChange(state, {payload: data}){
+      let dateSelectList = state.dateSelectList;
+
+      if (!dateSelectList[data.selectViewIndex]) {
+        dateSelectList[data.selectViewIndex] = {
+          monthList: [],
+          year: state.defaultYear,
+        }
+      }
+
+      dateSelectList[data.selectViewIndex].monthList = data.selectedMonthList;
+
       return {
         ...state,
-        selectedMonthList: data.selectedMonthList,
+        dateSelectList: dateSelectList,
       }
     },
 
@@ -320,7 +347,16 @@ export default {
         monthRoomList: monthRoomList
       }
     },
+    addDateSelectView(state, {payload: data}){
+      let dateSelectViews = state.dateSelectViews;
 
+      dateSelectViews.push(data.dateSelectView);
+
+      return {
+        ...state,
+        dateSelectViews: dateSelectViews
+      }
+    }
 
   },
 
@@ -440,7 +476,7 @@ export default {
 
     *monthRoomList({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
-      const selectedYear = state.selectedYear;
+      // const selectedYear = state.selectedYear;
       const selectedMonthList = state.selectedMonthList;
 
       if (!selectedYear) {
@@ -450,11 +486,6 @@ export default {
 
       if (!selectedMonthList || !selectedMonthList.length) {
         message.warn('请选择月份');
-        return;
-      }
-
-      if (selectedMonthList.length > 3) {
-        message.warn('最多只能选择3个月份');
         return;
       }
 
@@ -681,7 +712,9 @@ export default {
       return history.listen(({pathname, query}) => {
         if (pathname === '/chamber/roomstatusindex') {
           dispatch({type: 'dayStatus'});
-          if (!query) {
+
+          if (Object.keys(query).length == 0) {
+
             dispatch({
               type: 'getDataDict',
               payload: {
@@ -704,6 +737,12 @@ export default {
               type: 'getDataDict',
               payload: {
                 "abName": 'CX',
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'YCC',
               }
             });
           }

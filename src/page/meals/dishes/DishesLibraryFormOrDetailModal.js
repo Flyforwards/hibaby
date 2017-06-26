@@ -4,10 +4,12 @@
  */
 import React from 'react'
 import {connect} from 'dva'
-import "./DishesLeft.scss"
 import {message,Modal,Form,Input,Button} from 'antd';
 import {routerRedux} from 'dva/router'
 import {local, session} from 'common/util/storage.js';
+import DishesDetailPageCss from './DishesLibraryFormOrDetail.scss';
+import PermissionButton from '../../../common/PermissionButton';
+
 
 const FormItem = Form.Item;
 const createForm = Form.create
@@ -48,8 +50,14 @@ class DishesLibraryFormOrDetailModal extends React.Component{
   componentDidUpdate(prevProps, prevState){
     if(this.props.isNodeDetail){
       $(".DishesLibrary-Node .ant-modal-footer").hide();
+      $(".DishesLibrary-Node .ant-modal-body").css({
+        height : "180px"
+      });
     }else{
       $(".DishesLibrary-Node .ant-modal-footer").show();
+      $(".DishesLibrary-Node .ant-modal-body").css({
+        height : "130px"
+      });
     }
   }
 
@@ -72,9 +80,16 @@ class DishesLibraryFormOrDetailModal extends React.Component{
 
 
     const buttonsDiv = isNodeDetail ? (<div>
-      <Button className='commitButton SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</Button>
-      <Button className='commitButton RemoveBtn' onClick={this.handleRemove.bind(this)}>删除</Button>
-      <Button className='commitButton BackBtn' onClick={this.handleCancel.bind(this)}>返回</Button>
+{/*
+      <Button className='myBtn SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</Button>
+      <Button className='myBtn RemoveBtn' onClick={this.handleRemove.bind(this)}>删除</Button>
+ */}
+
+      <PermissionButton testKey="DISHES_EDIT" className='myBtn SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
+      <PermissionButton testKey="DISHES_DELETE" className='myBtn RemoveBtn' onClick={this.handleRemove.bind(this)}>删除</PermissionButton>
+      <Button className='myBtn BackBtn' onClick={this.handleCancel.bind(this)}>返回</Button>
+
+
     </div>):null;
 
     return (
@@ -87,6 +102,7 @@ class DishesLibraryFormOrDetailModal extends React.Component{
         cancelText="取消"
         onCancel={this.handleCancel.bind(this)}
         onOk={this.handleOk.bind(this)}
+        width={ 600 }
       >
         <div>
           <Form layout='horizontal'>
