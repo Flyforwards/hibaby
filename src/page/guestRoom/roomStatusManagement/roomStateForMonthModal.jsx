@@ -33,6 +33,21 @@ const formItemLayout = {
   wrapperCol: {span: 17},
 };
 
+function textforkey(array,value,valuekey = 'name') {
+  if(array){
+    for (let i = 0 ;i<array.length ;i++){
+      let dict = array[i];
+      if(dict['id'] === value){
+        return  dict[valuekey];
+      }
+    }
+  }
+  else {
+    return value
+  }
+}
+
+
 function CustomerSearch(props) {
   const {getFieldDecorator} = props.form;
   const {dispatch} = props;
@@ -182,8 +197,8 @@ function CustomerSearch(props) {
   )
 }
 
-function CustomerTable({props,loading, selectedRowKeys,selectCustomerFun,dispatch}) {
-  const {allCusList,pagination,defSelectCustomers} = props
+function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
+  const {allCusList,pagination,monthStateCustomers,fetusAry,packageAry} = props
   const columns = [{title: '客户姓名', dataIndex: 'name',key: 'name'},
     {title: '年龄',dataIndex: 'age',key: 'age'},
     {title: '预产期',dataIndex: 'dueDate',render: (record) => {
@@ -191,9 +206,13 @@ function CustomerTable({props,loading, selectedRowKeys,selectCustomerFun,dispatc
       }
     },
     {title: '怀孕周期',dataIndex: 'gestationalWeeks',key: 'gestationalWeeks'},
-    {title: '第几胎', dataIndex: 'fetus', key: 'fetus'},
+    {title: '第几胎', dataIndex: 'fetus', key: 'fetus',render:(record)=>{
+      return textforkey(fetusAry,record)
+    }},
     {title: '联系方式', dataIndex: 'contact', key: 'contact'},
-    {title: '购买套餐', dataIndex: 'purchasePackage', key: 'purchasePackage'},
+    {title: '购买套餐', dataIndex: 'purchasePackage', key: 'purchasePackage',render:(record)=>{
+      return textforkey(packageAry,record)
+    }},
     {title: '合同编号', dataIndex: 'contractNumber', key: 'contractNumber'},
     {title: '添加人', render: (record) => {
         if (record.operator2 != null) {
@@ -204,6 +223,29 @@ function CustomerTable({props,loading, selectedRowKeys,selectCustomerFun,dispatc
       }
     },
   ];
+
+  function disabled(value) {
+    let disabled = false;
+    monthStateCustomers.map((item)=>{
+      if(item.customerId === (value.id||value.customerId) && !item.edit){
+        disabled = true;
+      }
+    })
+    return disabled;
+  }
+
+
+  let ary = [];
+  for(let i = 0;i< selectItem.length;i++){
+    const dict = monthStateCustomers[i];
+    for(let j = 0;j< allCusList.length;j++) {
+      const subDict = allCusList[j];
+      if (subDict.id == (dict.customerId || dict.id)){
+        ary.push(j);
+        break;
+      }
+    }
+  }
 
   const tableProps = {
     loading: loading.effects['roomStatusManagement/getCustomerPage'],
@@ -216,33 +258,31 @@ function CustomerTable({props,loading, selectedRowKeys,selectCustomerFun,dispatc
   }
 
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      selectCustomerFun(selectedRowKeys);
+
+    onSelect: (record, selected, selectedRows) => {
+
+      selectCustomerFun(record,selected);
     },
     getCheckboxProps: (record) =>
       {
-        let disabled = false;
-        allCusList.map((item)=>{
-          if(item.id == record.id){
-            disabled = true;
-          }
-        })
         return(
-          {disabled:disabled}
+          {disabled:disabled(record)}
         )
     },
-    selectedRowKeys
+    selectedRowKeys:ary
   };
 
-  function onClose(e) {
+  function onClose(record) {
+    selectCustomerFun(record,false);
 
   }
 
   let tags = [];
-  if(selectedRowKeys){
-    for(let i = 0;i<selectedRowKeys.length;i++){
-      const dict = allCusList[selectedRowKeys[i]] ;
-        tags.push(<Tag closable={defSelectCustomers.indexOf(selectedRowKeys[i]) === -1} onClose={onClose(selectedRowKeys[i])}>{dict.name}</Tag>)
+  if(selectItem){
+
+    for(let i = 0;i<selectItem.length;i++){
+      const dict = selectItem[i] ;
+        tags.push(<Tag closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
     }
   }
 
@@ -266,7 +306,7 @@ class addCustomer extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      selectedRowKeys:null,
+      selectItem:'',
     }
   }
 
@@ -275,18 +315,42 @@ class addCustomer extends React.Component {
   }
 
   handleOk(){
-    this.handleCancel()
+
+    let ary = this.state.selectItem;
+
+    for(let i = 0;i<ary.length;i++){
+      const dict = ary[i];
+      if (dict.id){
+        dict.customerId = dict.id;
+        dict.customerName = dict.name;
+        dict.reserveDays = 28;
+        dict.edit = true;
+      }
+    }
+    this.props.dispatch({type: 'roomStatusManagement/setMonthStatusCustomers',payload:{data:ary}});
+    this.props.dispatch({type: 'roomStatusManagement/setCustomerVisible', payload: false});
   }
 
   handleCancel(){
-    this.props.dispatch({
-      type: 'roomStatusManagement/setCustomerVisible',
-      payload: false
-    });
+    this.props.dispatch({type: 'roomStatusManagement/setCustomerVisible', payload: false});
   }
 
-  selectCustomerFun(selectedRowKeys){
-    this.setState({selectedRowKeys:selectedRowKeys})
+  selectCustomerFun(record,selected){
+    let ary = this.state.selectItem||this.props.users.monthStateCustomers;
+
+    if(selected){
+      ary.push(record)
+    }
+    else {
+      for(var i=0; i<ary.length; i++) {
+        if((ary[i].id||ary[i].customerId) == record.id) {
+          ary.splice(i, 1);
+          break;
+        }
+      }
+
+    }
+    this.setState({selectItem:ary})
   }
 
   render(){
@@ -297,13 +361,13 @@ class addCustomer extends React.Component {
         width="1000px"
         visible={CustomerVisible}
         title="预约"
-        onOk={this.handleOk.bind(this)}
+        onOk={this.handleOk.bind(this) }
         onCancel={this.handleCancel.bind(this)}
       >
         <CusSearchFormDiv dispatch={this.props.dispatch}/>
         <CustomerTable
-          selectedRowKeys={this.state.selectedRowKeys||this.props.users.defSelectCustomers}
-          selectCustomerFun={(selectedRowKeys)=>{this.selectCustomerFun(selectedRowKeys)}}
+          selectItem={this.state.selectItem||this.props.users.monthStateCustomers}
+          selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
           loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}/>
       </Modal>
     )

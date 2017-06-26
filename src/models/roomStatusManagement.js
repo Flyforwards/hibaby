@@ -39,6 +39,7 @@ export default {
     dayStatusData: '',
     FloorAry: '',
     MainFloorAry: '',
+    fetusAry:'',
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
@@ -132,6 +133,9 @@ export default {
       else if (todo.abName === 'CX') {
         return {...state, TowardAry: todo.data};
       }
+      else if(todo.abName === 'YCC'){
+          return {...state,fetusAry:todo.data};
+      }
       return {...state};
     },
     setResultsRowHouses(state, {payload: todo}){
@@ -143,7 +147,7 @@ export default {
     setMonthStatusCustomers(state, {payload: todo}){
       return {
         ...state,
-        monthStateCustomers: todo.data
+        monthStateCustomers: todo.data,
       };
     },
 
@@ -708,7 +712,9 @@ export default {
       return history.listen(({pathname, query}) => {
         if (pathname === '/chamber/roomstatusindex') {
           dispatch({type: 'dayStatus'});
-          if (!query) {
+
+          if (Object.keys(query).length == 0) {
+
             dispatch({
               type: 'getDataDict',
               payload: {
@@ -731,6 +737,12 @@ export default {
               type: 'getDataDict',
               payload: {
                 "abName": 'CX',
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'YCC',
               }
             });
           }
