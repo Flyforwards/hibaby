@@ -103,8 +103,9 @@ class App extends Component {
   }
   
   getInfo = (data) => {
-    const { changeKey, isLow, dispatch } = this.props;
+    const { changeKey, isLow, dispatch, reset } = this.props;
     const otherInfo = this.props.otherInfo && this.props.otherInfo;
+    
     const { id, name } = data;
     const postData = {
       dishesId: id,
@@ -117,6 +118,7 @@ class App extends Component {
       number: changeKey + 1,
       ...otherInfo
     }
+    reset();
     isLow ? dispatch({
       type: 'prepareMeals/saveLowInfo',
       payload: { postData }

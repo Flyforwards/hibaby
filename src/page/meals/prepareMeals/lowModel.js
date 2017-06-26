@@ -29,8 +29,11 @@ class DynamicFieldSet extends Component {
     const { form, menuInfoByType, dispatch } = this.props;
     let { dishes } = menuInfoByType;
     const length = dishes.length;
+    
+    
     if (length < 7) {
-      dishes.push({ isDel: true })
+      dishes.push({ isDel: true });
+      console.log(dishes, '1')
       dispatch({
         type: "prepareMeals/changeMenuInfoByType",
         payload: { dishes }
@@ -54,12 +57,6 @@ class DynamicFieldSet extends Component {
         })
       }
     });
-    dispatch({
-      type: 'prepareMeals/changeVisible',
-      payload: {
-        visible: false
-      }
-    })
   }
   changeVisible = () => {
     const { dispatch } = this.props;
@@ -69,10 +66,15 @@ class DynamicFieldSet extends Component {
         visible: false
       }
     })
-    
   }
+  
+  reset = (changeKey) => {
+    const { form } = this.props;
+    form.resetFields([`name-${changeKey}`])
+  }
+  
   chooseLowVisible = (k) => {
-    const { dispatch, form, menuInfoByType } = this.props;
+    const { dispatch, form } = this.props;
     dispatch({
       type: 'prepareMeals/chooseVisible',
       payload: {
@@ -89,6 +91,7 @@ class DynamicFieldSet extends Component {
     const { changeKey, isLow } = this.state
     const { getFieldDecorator } = form;
     const { dishes } = menuInfoByType;
+    console.log(dishes, '2')
     const formItemLayout = {
       labelCol: {
         xs: { span: 6 },
@@ -98,7 +101,7 @@ class DynamicFieldSet extends Component {
     
     return (
       <Form onSubmit={this.handleSubmit}>
-        <ChooseDishes changeKey={changeKey} isLow={isLow}/>
+        <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
         <Row >
           {
             dishes.map((v, k) => {

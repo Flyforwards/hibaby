@@ -1,7 +1,7 @@
 import * as prepareMealsService from '../services/prepareMeals'
 import { parse } from 'qs'
 import { message } from 'antd'
-
+import $ from 'jquery'
 export default {
   namespace: 'prepareMeals',
   state: {
@@ -10,12 +10,7 @@ export default {
     visible: false,
     topVisible: false,
     chooseVisibleInfo: false,
-    highInfo: [],
     dishesPageInfo: [],
-    pushLowDish: {},
-    
-    
-    //已完成的
     cardLevelInfo: [],
     findMenuInfo: [],
     dayInfo: [
@@ -387,6 +382,34 @@ export default {
           default:
             data.dishes = [{}];
         }
+      } else {
+        let add = { isDel: true };
+        let length = 1;
+        switch (data.type) {
+          case 1:
+            length = 4;
+            break;
+          case 2:
+            length = 1;
+            break;
+          case 3:
+            length = 5;
+            break;
+          case 4:
+            length = 2;
+            break;
+          case 5:
+            length = 5;
+            break;
+          case 6:
+            length = 2;
+            break;
+          default:
+            length = 1;
+        }
+        data.dishes.map((v, k) => {
+          v.number > length && $.extend(v, v, add)
+        })
       }
       return { ...state, menuInfoByType: data }
     },
@@ -428,10 +451,7 @@ export default {
           findMenuInfo.push(v.dishesId);
           dayInfo.map((n, m) => {
             n.info.map((nn, mm) => {
-              //nn.colorType = nn.week == v.week && nn.day == v.day ? 'red' : '#fff';
-              if (nn.week == v.week && nn.day == v.day) {
-                nn.colorType = 'red';
-              }
+              nn.colorType = (nn.week == v.week && nn.day == v.day) ? 'red' : nn.colorType;
             })
           })
         })
@@ -440,23 +460,18 @@ export default {
     },
     saveLowInfo(state, { payload: { postData } }){
       const { menuInfoByType } = state;
-      menuInfoByType.dishes[postData.number - 1] = postData;
+      const info = menuInfoByType.dishes[postData.number - 1];
+      $.extend(info, postData)
       return { ...state, menuInfoByType }
     },
-    
-    
     saveHighInfo(state, { payload: { postDataHigh } }){
-      console.log(postDataHigh, 'postDataHigh')
       const { topMenuInfoByType } = state;
       topMenuInfoByType.dishes[postDataHigh.number - 1] = postDataHigh;
-      console.log(topMenuInfoByType, 'topMenuInfoByTypetopMenuInfoByType ')
       return { ...state, topMenuInfoByType }
     },
-    
     chooseVisible(state, { payload: { chooseVisibleInfo } }){
       return { ...state, chooseVisibleInfo }
     },
-    
     dishesLibraryNodes(state, { payload: nodesInfo }){
       return { ...state, ...nodesInfo }
     }
@@ -600,7 +615,6 @@ export default {
     },
     
     //保存高档食材的餐单
-    //saveTopMenu
     *saveTopMenu({ payload: values }, { call, put }){
       const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveTopMenu, values);
       if (code == 0) {

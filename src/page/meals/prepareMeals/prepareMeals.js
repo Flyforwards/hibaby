@@ -269,7 +269,6 @@ class PrepareMeals extends Component {
                       }
                       <li>
                         <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>编辑/添加</Button>
-                      
                       </li>
                     </ul>
                   </div>
