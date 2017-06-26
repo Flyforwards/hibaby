@@ -5,8 +5,6 @@
     border: 1px solid #dddddd;
     .colLeft {
       padding: 30px;
-      border-right: 1px solid #dddddd;
-
       .ant-radio-group {
         .timeInfo {
           .weekName {
@@ -15,8 +13,9 @@
             color: #b67233;
             text-align: center;
           }
-          .changeBorder {
-            border-color: red !important;
+          .borderCol {
+            margin-right: 1px;
+            margin-bottom: 1px;
           }
         }
         .ant-radio-button-wrapper {
@@ -42,6 +41,8 @@
       }
     }
     .colRight {
+      border-left: 1px solid #dddddd;
+
       padding: 30px;
       .menuInfo {
         margin-bottom: 20px;

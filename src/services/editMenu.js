@@ -1,7 +1,10 @@
+/**
+ * Created by Flyforwards on 2017/6/26.
+ */
 import request from '../utils/request';
 //查询某一天基础食材餐单
 export function getMenuByDay(values) {
-  return request('/crm/api/v1/menu/getMenuByDay', {
+  return request('/crm/api/v1/adjustableMeal/getCustomerMenuByDay', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -9,7 +12,7 @@ export function getMenuByDay(values) {
 
 //查询某一餐基础餐单详情
 export function getMenuByType(values) {
-  return request('/crm/api/v1/menu/getMenuByType', {
+  return request('/crm/api/v1/adjustableMeal/getCustomerMenuByType', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -18,7 +21,7 @@ export function getMenuByType(values) {
 
 //查询某一天高档食材餐单
 export function getTopMenuByDay(values) {
-  return request('/crm/api/v1/menu/getTopMenuByDay', {
+  return request('/crm/api/v1/adjustableMeal/getCustomerTopMenuByDay', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -26,7 +29,7 @@ export function getTopMenuByDay(values) {
 
 //查询某一餐高档食材餐单详情
 export function getTopMenuByType(values) {
-  return request('/crm/api/v1/menu/getTopMenuByType', {
+  return request('/crm/api/v1/adjustableMeal/getCustomerTopMenuByType', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -34,7 +37,7 @@ export function getTopMenuByType(values) {
 
 //根据菜名查询餐单
 export function getMenuByDishes(values) {
-  return request('/crm/api/v1/menu/getMenuByDishes', {
+  return request('/crm/api/v1/adjustableMeal/getMenuByDishesAndCustomerId', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -67,7 +70,7 @@ export function getDishesPageList(values) {
 
 //保存基础餐单
 export function saveMenu(values) {
-  return request('/crm/api/v1/menu/saveMenu', {
+  return request('/crm/api/v1/adjustableMeal/saveCustomerMenu', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -75,7 +78,7 @@ export function saveMenu(values) {
 
 //保存高档食材餐单
 export function saveTopMenu(values) {
-  return request('/crm/api/v1/menu/saveTopMenu', {
+  return request('/crm/api/v1/adjustableMeal/saveCustomerTopMenu', {
     method: 'POST',
     body: JSON.stringify(values),
   })

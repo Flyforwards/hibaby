@@ -1,6 +1,10 @@
-import * as prepareMealsService from '../services/prepareMeals'
-import { parse } from 'qs'
-import { message } from 'antd'
+/**
+ * Created by Flyforwards on 2017/6/26.
+ */
+import * as prepareMealsService from '../services/editMenu';
+import { parse } from 'qs';
+import { message } from 'antd';
+import { format,queryURL } from '../utils/index.js';
 
 export default {
   namespace: 'prepareMeals',
@@ -13,8 +17,8 @@ export default {
     highInfo: [],
     dishesPageInfo: [],
     pushLowDish: {},
-    
-    
+
+
     //已完成的
     cardLevelInfo: [],
     findMenuInfo: [],
@@ -30,27 +34,27 @@ export default {
             week: 1,
             day: 2,
             colorType: '#fff'
-            
+
           }, {
             week: 1,
             day: 3,
             colorType: '#fff'
-            
+
           }, {
             week: 1,
             day: 4,
             colorType: '#fff'
-            
+
           }, {
             week: 1,
             day: 5,
             colorType: '#fff'
-            
+
           }, {
             week: 1,
             day: 6,
             colorType: '#fff'
-            
+
           }, {
             week: 1,
             day: 7,
@@ -256,7 +260,7 @@ export default {
         title: '晚加',
         info: []
       }
-    
+
     ],
     menuInfo: [],
     topMenuInfoByType: {
@@ -291,7 +295,7 @@ export default {
       total: 200,
       current: 1
     }
-    
+
   },
   reducers: {
     changeVisible(state, { payload: { visible } }){
@@ -333,10 +337,10 @@ export default {
           v.day = lowTime.day;
           v.info = data
         })
-        
+
       }
       return { ...state, menuInfo: menuInfoLow }
-      
+
     },
     getMenuInfoHigh(state, { payload: { data } }){
       const { menuInfoHigh, highTime } = state;
@@ -361,7 +365,7 @@ export default {
         })
       }
       return { ...state, menuInfo: menuInfoHigh }
-      
+
     },
     getMenuInfoByType(state, { payload: { data } }){
       if (data.dishes.length == 0) {
@@ -443,8 +447,8 @@ export default {
       menuInfoByType.dishes[postData.number - 1] = postData;
       return { ...state, menuInfoByType }
     },
-    
-    
+
+
     saveHighInfo(state, { payload: { postDataHigh } }){
       console.log(postDataHigh, 'postDataHigh')
       const { topMenuInfoByType } = state;
@@ -452,20 +456,22 @@ export default {
       console.log(topMenuInfoByType, 'topMenuInfoByTypetopMenuInfoByType ')
       return { ...state, topMenuInfoByType }
     },
-    
+
     chooseVisible(state, { payload: { chooseVisibleInfo } }){
       return { ...state, chooseVisibleInfo }
     },
-    
+
     dishesLibraryNodes(state, { payload: nodesInfo }){
       return { ...state, ...nodesInfo }
     }
-    
+
   },
   effects: {
     //查询某一天基础食材餐单
     *getMenuByDay({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(prepareMealsService.getMenuByDay, values);
+      const customerId = queryURL("dataId");
+      const value = {...values, customerId}
+      const { data: { data, code } } = yield call(prepareMealsService.getMenuByDay, value);
       if (code == 0) {
         yield put({
           type: 'getMenuInfo',
@@ -476,10 +482,12 @@ export default {
         });
       }
     },
-    
+
     //查询某一餐基础餐单详情
     *getMenuByType({ payload: values }, { call, put }){
-      const { data: { data, code } } = yield call(prepareMealsService.getMenuByType, values);
+      const customerId = queryURL("dataId");
+      const value = {...values, customerId}
+      const { data: { data, code } } = yield call(prepareMealsService.getMenuByType, value);
       if (code == 0) {
         yield put({
           type: 'getMenuInfoByType',
@@ -490,10 +498,12 @@ export default {
         });
       }
     },
-    
+
     //查询某一天高档食材餐单
     *getTopMenuByDay({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByDay, values);
+      const customerId = queryURL("dataId");
+      const value = {...values, customerId}
+      const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByDay, value);
       if (code == 0) {
         yield put({
           type: 'getMenuInfoHigh',
@@ -504,10 +514,12 @@ export default {
         });
       }
     },
-    
+
     //查询某一餐高档食材餐单详情
     *getTopMenuByType({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByType, values);
+      const customerId = queryURL("dataId");
+      const value = {...values, customerId}
+      const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByType, value);
       if (code == 0) {
         yield put({
           type: 'getTopMenuInfoByType',
@@ -518,10 +530,12 @@ export default {
         });
       }
     },
-    
+
     //根据菜名查询餐单
     *getMenuByDishes({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(prepareMealsService.getMenuByDishes, values);
+      const customerId = queryURL("dataId");
+      const value = {...values, customerId}
+      const { data: { data, code } } = yield call(prepareMealsService.getMenuByDishes, value);
       if (code == 0) {
         yield put({
           type: 'findMenu',
@@ -540,7 +554,7 @@ export default {
         }
       }
     },
-    
+
     //获取针对套餐
     *getCardLevel({ payload: values }, { call, put }){
       const { data: { data, code } } = yield call(prepareMealsService.getCardLevel, values);
@@ -553,7 +567,7 @@ export default {
         });
       }
     },
-    
+
     //加载菜品库列表
     *getDishesLibraryNodes({ payload: values }, { call, put }){
       const { data: { data, code } } = yield call(prepareMealsService.getDishesLibraryNodes, values);
@@ -566,7 +580,7 @@ export default {
         });
       }
     },
-    
+
     //根据菜品库id获取菜品分页列表
     *getDishesPageList({ payload: values }, { call, put }){
       const { data: { data, code, page, size, total } } = yield call(prepareMealsService.getDishesPageList, values);
@@ -581,10 +595,12 @@ export default {
         });
       }
     },
-    
+
     //保存基础餐单
     *saveMenu({ payload: values }, { call, put }){
-      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveMenu, values);
+      const customerId = queryURL("dataId");
+      const value = {...values, customerId}
+      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveMenu, value);
       if (code == 0) {
         message.success('保存成功');
         yield put({
@@ -598,11 +614,13 @@ export default {
         ;
       }
     },
-    
+
     //保存高档食材的餐单
     //saveTopMenu
     *saveTopMenu({ payload: values }, { call, put }){
-      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveTopMenu, values);
+      const customerId = queryURL("dataId");
+      const value = {...values, customerId}
+      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveTopMenu, value);
       if (code == 0) {
         message.success('保存成功');
         yield put({
@@ -620,7 +638,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
-        
+
         if (pathname === '/meals/dishes/prepareMeals') {
           dispatch({
             type: 'getCardLevel',
@@ -643,3 +661,4 @@ export default {
     }
   }
 }
+

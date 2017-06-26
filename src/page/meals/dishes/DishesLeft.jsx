@@ -10,7 +10,8 @@ import {routerRedux} from 'dva/router'
 import {local, session} from 'common/util/storage.js';
 import DishesLibraryFormOrDetailModal from './DishesLibraryFormOrDetailModal';
 
-
+const rootLevel = 1;//根节点级别
+const minLevel = 2;//最底子节点级别
 const TreeNode = Tree.TreeNode;
 let plusEnter = false;
 class DishesLeft extends React.Component {
@@ -19,16 +20,16 @@ class DishesLeft extends React.Component {
     this.state = {
       upblock: 'none',//控制操作悬浮框是否展示
       ulTop: 0,//控制操作悬浮框的距顶距离
-      ID: null,
-      selectedNode: null,
-      selectedNodeParentId : null,
-      selectedNodeLevel : null,
-      unfolded:["0"],
-      nodeFormOrDetailModalVisible:false,
-      nodeFormOrDetailModalTitle : null,
-      isNodeDetail : false,
-      isNodeEdit : false,
-      initialValue : {},
+      ID: null,//选中树节点id
+      selectedNode: null,//选中树节点
+      selectedNodeParentId : null,//选中树节点所属父id
+      selectedNodeLevel : null,//选中树节点的级别
+      unfolded:["0"],//默认展开的树节点集合
+      nodeFormOrDetailModalVisible:false,//节点表单/详情页面弹出框显示状态
+      nodeFormOrDetailModalTitle : null,//节点表单/详情页面弹出框标题
+      isNodeDetail : false,//是否为查看详情状态
+      isNodeEdit : false,//是否为编辑状态
+      initialValue : {},//节点表单/详情页初始化数据值
     }
     this.addDisplay = "block";
     this.deleteDisplay = "block";
@@ -39,10 +40,10 @@ class DishesLeft extends React.Component {
     const _this = this;
     if(root.nodes){
       return root.nodes.map(function (child,index) {
-        return <TreeNode title={child.name+"("+child.dishesCount+")"} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
+        return <TreeNode name={child.name} title={child.name+"("+child.dishesCount+")"} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
       });
     }
-    return <TreeNode title={root.name} level={root.level} key={root.id} parentId={root.parentId} />;
+    return <TreeNode  name={root.name} title={root.name} level={root.level} key={root.id} parentId={root.parentId} />;
   }
 
   //展开/收起节点时触发
@@ -65,12 +66,12 @@ class DishesLeft extends React.Component {
   onSelect = (value, node)=>{
     if(value[0]){//选中树节点
       this.selectNodeLevel = node.selectedNodes[0].props.level;
-      if(this.selectNodeLevel == 0){//根目录
+      if(this.selectNodeLevel == rootLevel){//根目录
         this.deleteDisplay = "none";//设置删除按钮隐藏
       }else{
         this.deleteDisplay = "block";
       }
-      if(this.selectNodeLevel > 2){//二级菜单
+      if(this.selectNodeLevel > minLevel){//二级菜单
         this.addDisplay = "none"//设置添加按钮隐藏
       }else{
         this.addDisplay = "block"
@@ -93,12 +94,12 @@ class DishesLeft extends React.Component {
       });
 
     }else{
-      if(this.selectNodeLevel == 0){//根目录
+      if(this.selectNodeLevel == rootLevel){//根目录
         this.deleteDisplay = "none";//设置删除按钮隐藏
       }else{
         this.deleteDisplay = "block";
       }
-      if(this.selectNodeLevel > 2){//二级菜单
+      if(this.selectNodeLevel > minLevel){//二级菜单
         this.addDisplay = "none"//设置添加按钮隐藏
       }else{
         this.addDisplay = "block"
@@ -184,7 +185,7 @@ class DishesLeft extends React.Component {
       isNodeDetail : true,
       initialValue : {
         id : this.state.ID,
-        name : this.state.selectedNode.props.title
+        name : this.state.selectedNode.props.name
       }
     });
   }

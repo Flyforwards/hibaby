@@ -103,4 +103,12 @@ export function monthRoomUpdate(values) {
   })
 }
 
+// 入住客平移
+export function resideMove(values) {
+  return request('/crm/api/v1/room/resideMove', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
