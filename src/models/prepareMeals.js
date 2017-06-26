@@ -1,34 +1,60 @@
 import * as prepareMealsService from '../services/prepareMeals'
 import { parse } from 'qs'
+import { message } from 'antd'
+
 export default {
   namespace: 'prepareMeals',
   state: {
-    changeBorder: { 'borderColor': 'red' },
+    defaultValueRadio: { week: 1, day: 1, colorType: "#fff" },
+    heightFoodInfo: {},
+    visible: false,
+    topVisible: false,
+    chooseVisibleInfo: false,
+    highInfo: [],
+    dishesPageInfo: [],
+    pushLowDish: {},
+    
+    
+    //已完成的
+    cardLevelInfo: [],
+    findMenuInfo: [],
     dayInfo: [
       {
         weekName: '第一周',
         info: [
           {
             week: 1,
-            day: 1
+            day: 1,
+            colorType: '#fff'
           }, {
             week: 1,
-            day: 2
+            day: 2,
+            colorType: '#fff'
+            
           }, {
             week: 1,
-            day: 3
+            day: 3,
+            colorType: '#fff'
+            
           }, {
             week: 1,
-            day: 4
+            day: 4,
+            colorType: '#fff'
+            
           }, {
             week: 1,
-            day: 5
+            day: 5,
+            colorType: '#fff'
+            
           }, {
             week: 1,
-            day: 6
+            day: 6,
+            colorType: '#fff'
+            
           }, {
             week: 1,
-            day: 7
+            day: 7,
+            colorType: '#fff'
           }
         ]
       }, {
@@ -36,25 +62,32 @@ export default {
         info: [
           {
             week: 2,
-            day: 1
+            day: 1,
+            colorType: '#fff'
           }, {
             week: 2,
-            day: 2
+            day: 2,
+            colorType: '#fff'
           }, {
             week: 2,
-            day: 3
+            day: 3,
+            colorType: '#fff'
           }, {
             week: 2,
-            day: 4
+            day: 4,
+            colorType: '#fff'
           }, {
             week: 2,
-            day: 5
+            day: 5,
+            colorType: '#fff'
           }, {
             week: 2,
-            day: 6
+            day: 6,
+            colorType: '#fff'
           }, {
             week: 2,
-            day: 7
+            day: 7,
+            colorType: '#fff'
           }
         ]
       }, {
@@ -62,25 +95,32 @@ export default {
         info: [
           {
             week: 3,
-            day: 1
+            day: 1,
+            colorType: '#fff'
           }, {
             week: 3,
-            day: 2
+            day: 2,
+            colorType: '#fff'
           }, {
             week: 3,
-            day: 3
+            day: 3,
+            colorType: '#fff'
           }, {
             week: 3,
-            day: 4
+            day: 4,
+            colorType: '#fff'
           }, {
             week: 3,
-            day: 5
+            day: 5,
+            colorType: '#fff'
           }, {
             week: 3,
-            day: 6
+            day: 6,
+            colorType: '#fff'
           }, {
             week: 3,
-            day: 7
+            day: 7,
+            colorType: '#fff'
           }
         ]
       }, {
@@ -88,25 +128,32 @@ export default {
         info: [
           {
             week: 4,
-            day: 1
+            day: 1,
+            colorType: '#fff'
           }, {
             week: 4,
-            day: 2
+            day: 2,
+            colorType: '#fff'
           }, {
             week: 4,
-            day: 3
+            day: 3,
+            colorType: '#fff'
           }, {
             week: 4,
-            day: 4
+            day: 4,
+            colorType: '#fff'
           }, {
             week: 4,
-            day: 5
+            day: 5,
+            colorType: '#fff'
           }, {
             week: 4,
-            day: 6
+            day: 6,
+            colorType: '#fff'
           }, {
             week: 4,
-            day: 7
+            day: 7,
+            colorType: '#fff'
           }
         ]
       }, {
@@ -114,25 +161,32 @@ export default {
         info: [
           {
             week: 5,
-            day: 1
+            day: 1,
+            colorType: '#fff'
           }, {
             week: 5,
-            day: 2
+            day: 2,
+            colorType: '#fff'
           }, {
             week: 5,
-            day: 3
+            day: 3,
+            colorType: '#fff'
           }, {
             week: 5,
-            day: 4
+            day: 4,
+            colorType: '#fff'
           }, {
             week: 5,
-            day: 5
+            day: 5,
+            colorType: '#fff'
           }, {
             week: 5,
-            day: 6
+            day: 6,
+            colorType: '#fff'
           }, {
             week: 5,
-            day: 7
+            day: 7,
+            colorType: '#fff'
           }
         ]
       }, {
@@ -140,110 +194,273 @@ export default {
         info: [
           {
             week: 0,
-            day: 1
+            day: 1,
+            colorType: '#fff'
           }, {
             week: 0,
-            day: 2
+            day: 2,
+            colorType: '#fff'
           }, {
             week: 0,
-            day: 3
+            day: 3,
+            colorType: '#fff'
           }, {
             week: 0,
-            day: 4
+            day: 4,
+            colorType: '#fff'
           }, {
             week: 0,
-            day: 5
+            day: 5,
+            colorType: '#fff'
           }
         ]
       }
     ],
-    defaultValueRadio: { "week": 1, "day": 1 },
-    heightFoodInfo: {},
+    menuInfoLow: [
+      {
+        week: 1,
+        day: 1,
+        type: 1,
+        title: '早餐',
+        info: []
+      }, {
+        week: 1,
+        day: 1,
+        type: 2,
+        title: '早加',
+        info: []
+      }, {
+        week: 1,
+        day: 1,
+        type: 3,
+        title: '午餐',
+        info: []
+      },
+      {
+        week: 1,
+        day: 1,
+        type: 4,
+        title: '午加',
+        info: []
+      }, {
+        week: 1,
+        day: 1,
+        type: 5,
+        title: '晚餐',
+        info: []
+      },
+      {
+        week: 1,
+        day: 1,
+        type: 6,
+        title: '晚加',
+        info: []
+      }
+    
+    ],
     menuInfo: [],
-    visible: false,
-    topVisible: false,
-    cardLevelInfo: [],
-    menuInfoByType: {
+    topMenuInfoByType: {
+      week: 0,
+      day: 1,
+      type: 0,
+      pointPackage: '1',
       dishes: []
     },
-    topMenuInfoByType: {
-      dishes: [],
-      eatDay: '1',
-      eatTime: '1',
-      frequency: '1',
-      pointPackage: '1'
+    menuInfoHigh: [{
+      day: 1,
+      week: 0,
+      type: 0,
+      title: '高档食材',
+      info: []
+    }],
+    menuInfoByType: {
+      day: 1,
+      type: 1,
+      week: 1,
+      dishes: []
     },
-    findMenuInfo: []
+    lowTime: {
+      week: 1,
+      day: 1
+    },
+    highTime: {
+      week: 0,
+      day: 0
+    },
+    paginationInfo: {
+      total: 200,
+      current: 1
+    }
+    
   },
   reducers: {
-    getMenuInfo(state, { payload: { data } }){
-      let menuInfo = [];
-      let breakfast = [];
-      let breakfastAdd = [];
-      let lunch = [];
-      let lunchAdd = [];
-      let dinner = [];
-      let dinnerAdd = [];
-      let heightFood = [];
-      data.map((v, k) => {
-        const { week, day, type } = v;
-        switch (v.type) {
-          case 0:
-            heightFood.push(v);
-            menuInfo[0] = { title: '高档食材', day, week, info: heightFood, type };
-            break;
-          case 1:
-            breakfast.push(v);
-            menuInfo[0] = { title: '早餐', day, week, info: breakfast, type };
-            break;
-          case 2:
-            breakfastAdd.push(v);
-            menuInfo[1] = { title: '早加', day, week, info: breakfastAdd, type };
-            break;
-          case 3:
-            lunch.push(v);
-            menuInfo[2] = { title: '午餐', day, week, info: lunch, type };
-            break;
-          case 4:
-            lunchAdd.push(v);
-            menuInfo[3] = { title: '午加', day, week, info: lunchAdd, type };
-            break;
-          case 5:
-            dinner.push(v);
-            menuInfo[4] = { title: '晚餐', day, week, info: dinner, type };
-            break;
-          case 6:
-            dinnerAdd.push(v);
-            menuInfo[5] = { title: '晚加', day, week, info: dinnerAdd, type };
-            break;
-          default:
-            return menuInfo;
-        }
-      })
-      return { ...state, menuInfo }
-    },
     changeVisible(state, { payload: { visible } }){
       return { ...state, visible }
     },
     changeTopVisible(state, { payload: { topVisible } }){
       return { ...state, topVisible }
     },
+    changeLowTime(state, { payload: { postDate: lowTime } }){
+      return { ...state, lowTime }
+    },
+    changeHighTime(state, { payload: { postDate: highTime } }){
+      return { ...state, highTime }
+    },
+    getMenuInfo(state, { payload: { data } }){
+      const { menuInfoLow, lowTime } = state;
+      if (data.length != 0) {
+        let info = [];
+        let nu;
+        for (let i = 0; i < menuInfoLow.length; i++) {
+          menuInfoLow[i].info = [];
+        }
+        data.map((v, k) => {
+          nu = v.type - 1;
+          menuInfoLow[nu].day = v.day;
+          menuInfoLow[nu].week = v.week;
+          menuInfoLow[nu].type = v.type;
+          info = {
+            'dishesId': v.dishesId,
+            'dishesName': v.dishesName,
+            'id': v.id,
+            'number': v.number
+          };
+          menuInfoLow[nu].info.push(info);
+        });
+      } else {
+        menuInfoLow.map((v, k) => {
+          v.week = lowTime.week;
+          v.day = lowTime.day;
+          v.info = data
+        })
+        
+      }
+      return { ...state, menuInfo: menuInfoLow }
+      
+    },
+    getMenuInfoHigh(state, { payload: { data } }){
+      const { menuInfoHigh, highTime } = state;
+      if (data.length != 0) {
+        let info = [];
+        menuInfoHigh[0].info = [];
+        data.map((v, k) => {
+          menuInfoHigh[0].day = v.day;
+          menuInfoHigh[0].week = v.week;
+          menuInfoHigh[0].type = v.type;
+          info = {
+            'dishesId': v.dishesId,
+            'dishesName': v.dishesName,
+            'id': v.id,
+            'number': v.number
+          };
+          menuInfoHigh[0].info.push(info);
+        });
+      } else {
+        menuInfoHigh.map((v, k) => {
+          v.day = highTime.day
+        })
+      }
+      return { ...state, menuInfo: menuInfoHigh }
+      
+    },
     getMenuInfoByType(state, { payload: { data } }){
+      if (data.dishes.length == 0) {
+        switch (data.type) {
+          case 1:
+            data.dishes = [{}, {}, {}, {}];
+            break;
+          case 2:
+            data.dishes = [{}];
+            break;
+          case 3:
+            data.dishes = [{}, {}, {}, {}, {}];
+            break;
+          case 4:
+            data.dishes = [{}, {}];
+            break;
+          case 5:
+            data.dishes = [{}, {}, {}, {}, {}];
+            break;
+          case 6:
+            data.dishes = [{}, {}];
+            break;
+          default:
+            data.dishes = [{}];
+        }
+      }
       return { ...state, menuInfoByType: data }
     },
-    
-    getTopMenuInfoByType(state, { payload: { data } }){
-      return { ...state, topMenuInfoByType: data }
+    changeMenuInfoByType(state, { payload: { dishes } }){
+      let { menuInfoByType } = state;
+      menuInfoByType.dishes = dishes;
+      return { ...state, menuInfoByType }
     },
-    findMenu(state, { payload: { data } }){
-      return { ...state, findMenuInfo: data }
+    changeTopMenuInfoByType(state, { payload: { dishes } }){
+      let { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes = dishes;
+      return { ...state, topMenuInfoByType }
+    },
+    changePointPackage(state, { payload: { pointPackage } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.pointPackage = pointPackage;
+      return { ...state, topMenuInfoByType }
+    },
+    getTopMenuInfoByType(state, { payload: { data } }){
+      if (data.dishes.length == 0) {
+        data.dishes = [{}]
+      }
+      return { ...state, topMenuInfoByType: data }
     },
     cardLevelInfo(state, { payload: { data } }){
       return { ...state, cardLevelInfo: data }
     },
-    changeBorderInfo(state, { payload: { data } }){
-      return { ...state, changeBorder: data }
+    getDishesPage(state, { payload: { data: dishesPageInfo, total, page } }){
+      const { paginationInfo } = state;
+      paginationInfo.total = total;
+      paginationInfo.current = page;
+      return { ...state, dishesPageInfo, paginationInfo }
+    },
+    findMenu(state, { payload: { data } }){
+      let { dayInfo, findMenuInfo, defaultValueRadio } = state;
+      if (data.length != 0) {
+        defaultValueRadio = null;
+        data.map((v, k) => {
+          findMenuInfo.push(v.dishesId);
+          dayInfo.map((n, m) => {
+            n.info.map((nn, mm) => {
+              //nn.colorType = nn.week == v.week && nn.day == v.day ? 'red' : '#fff';
+              if (nn.week == v.week && nn.day == v.day) {
+                nn.colorType = 'red';
+              }
+            })
+          })
+        })
+      }
+      return { ...state, dayInfo, findMenuInfo, defaultValueRadio }
+    },
+    saveLowInfo(state, { payload: { postData } }){
+      const { menuInfoByType } = state;
+      menuInfoByType.dishes[postData.number - 1] = postData;
+      return { ...state, menuInfoByType }
+    },
+    
+    
+    saveHighInfo(state, { payload: { postDataHigh } }){
+      console.log(postDataHigh, 'postDataHigh')
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[postDataHigh.number - 1] = postDataHigh;
+      console.log(topMenuInfoByType, 'topMenuInfoByTypetopMenuInfoByType ')
+      return { ...state, topMenuInfoByType }
+    },
+    
+    chooseVisible(state, { payload: { chooseVisibleInfo } }){
+      return { ...state, chooseVisibleInfo }
+    },
+    
+    dishesLibraryNodes(state, { payload: nodesInfo }){
+      return { ...state, ...nodesInfo }
     }
+    
   },
   effects: {
     //查询某一天基础食材餐单
@@ -259,6 +476,7 @@ export default {
         });
       }
     },
+    
     //查询某一餐基础餐单详情
     *getMenuByType({ payload: values }, { call, put }){
       const { data: { data, code } } = yield call(prepareMealsService.getMenuByType, values);
@@ -278,7 +496,7 @@ export default {
       const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByDay, values);
       if (code == 0) {
         yield put({
-          type: 'getMenuInfo',
+          type: 'getMenuInfoHigh',
           payload: {
             data,
             code
@@ -286,6 +504,7 @@ export default {
         });
       }
     },
+    
     //查询某一餐高档食材餐单详情
     *getTopMenuByType({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByType, values);
@@ -307,13 +526,20 @@ export default {
         yield put({
           type: 'findMenu',
           payload: {
-            data,
-            code
+            data
           }
         });
+        if (data.length != 0) {
+          yield put({
+            type: 'getMenuByDay',
+            payload: {
+              'day': data[0].day,
+              'week': data[0].week
+            }
+          });
+        }
       }
     },
-    
     
     //获取针对套餐
     *getCardLevel({ payload: values }, { call, put }){
@@ -326,9 +552,70 @@ export default {
           }
         });
       }
+    },
+    
+    //加载菜品库列表
+    *getDishesLibraryNodes({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(prepareMealsService.getDishesLibraryNodes, values);
+      if (code == 0) {
+        yield put({
+          type: 'dishesLibraryNodes',
+          payload: {
+            nodesInfo: data
+          }
+        });
+      }
+    },
+    
+    //根据菜品库id获取菜品分页列表
+    *getDishesPageList({ payload: values }, { call, put }){
+      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.getDishesPageList, values);
+      if (code == 0) {
+        yield put({
+          type: 'getDishesPage',
+          payload: {
+            data,
+            page,
+            total
+          }
+        });
+      }
+    },
+    
+    //保存基础餐单
+    *saveMenu({ payload: values }, { call, put }){
+      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveMenu, values);
+      if (code == 0) {
+        message.success('保存成功');
+        yield put({
+          type: 'getMenuByDay',
+          payload: {
+            week: values.week,
+            day: values.day,
+            type: values.type
+          }
+        })
+        ;
+      }
+    },
+    
+    //保存高档食材的餐单
+    //saveTopMenu
+    *saveTopMenu({ payload: values }, { call, put }){
+      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveTopMenu, values);
+      if (code == 0) {
+        message.success('保存成功');
+        yield put({
+          type: 'getTopMenuByDay',
+          payload: {
+            week: values.week,
+            day: values.day,
+            type: values.type
+          }
+        })
+        ;
+      }
     }
-    
-    
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -338,6 +625,18 @@ export default {
           dispatch({
             type: 'getCardLevel',
             payload: {}
+          });
+          dispatch({
+            type: 'getDishesLibraryNodes',
+            payload: {}
+          });
+          dispatch({
+            type: 'getDishesPageList',
+            payload: {
+              'nodeId': 1,
+              'page': 1,
+              'size': 10
+            }
           });
         }
       })
