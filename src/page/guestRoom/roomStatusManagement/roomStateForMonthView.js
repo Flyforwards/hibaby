@@ -121,6 +121,11 @@ const monthStateView = (props) => {
     };
 
     const checkboxChangeHandler = (value) => {
+      if (value.length > 3) {
+        message.warn('最多只能选择3个月份');
+        return;
+      }
+
       dispatch({
         type: 'roomStatusManagement/selectedMonthChange',
         payload: {
@@ -134,8 +139,7 @@ const monthStateView = (props) => {
         <Col span={5} className="yearSelectBox">
           <Select className="yearSelect"
                   defaultValue={defaultYear}
-                  onChange={yearSelectChangeHandler}
-          >
+                  onChange={yearSelectChangeHandler}>
             {years}
           </Select>
           <span style={{margin: '10px'}}>年</span>
@@ -256,7 +260,7 @@ const monthStateView = (props) => {
                 dayCount: 1,
               });
             }
-          } else if (dayCustomerList.length >= 1) {
+          } else if (dayCustomerList.length > 1) {
             for (let j = 0; j < dayCustomerList.length; j++) {
               let hasUser = false;
 
@@ -505,6 +509,7 @@ const monthStateView = (props) => {
                 endIndex: user.startIndex + user.dayCount - 1,
                 status: user.status,
                 startDate: user.startDate,
+                endDate: parseInt(user.startDate) + (user.dayCount - 1) * 86400000,
                 roomIndex: roomIndex,
               },
             }
@@ -556,7 +561,7 @@ const monthStateView = (props) => {
               v1
             </div>
           </div>
-          <div style={{height: "100%", position: "relative"}}>
+          <div style={{height: "100%", position: "relative", flex: 1, minWidth: '835px'}}>
             {
               renderDayRoom(room.useAndBookingList)
             }
@@ -589,8 +594,27 @@ const monthStateView = (props) => {
       )
     };
 
+    const renderDaysRuler = (item) => {
+
+      return (
+        <div>
+          {item} 月
+        </div>
+      )
+    };
+
     return (
       <div className="monthRoomListBox">
+        <div className="monthRoomBox">
+          <div className="daysRulerBox">
+            {
+              props.users.selectedMonthList.map(item => renderDaysRuler(item))
+            }
+          </div>
+
+        </div>
+
+
         {
           roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
         }
