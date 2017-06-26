@@ -351,9 +351,11 @@ export default {
           menuInfoHigh[0].info.push(info);
         });
       } else {
+        menuInfoHigh[0].info = [];
         menuInfoHigh.map((v, k) => {
           v.day = highTime.day
         })
+        
       }
       return { ...state, menuInfo: menuInfoHigh }
       
@@ -428,9 +430,29 @@ export default {
       topMenuInfoByType.pointPackage = pointPackage;
       return { ...state, topMenuInfoByType }
     },
+    changeEatDay(state, { payload: { eatDayValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].eatDay = eatDayValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeEatTime(state, { payload: { eatTimeValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].eatTime = eatTimeValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeFrequency(state, { payload: { frequencyValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].frequency = frequencyValue;
+      return { ...state, topMenuInfoByType }
+    },
     getTopMenuInfoByType(state, { payload: { data } }){
       if (data.dishes.length == 0) {
         data.dishes = [{}]
+      } else {
+        const add = { isDel: true };
+        data.dishes.length > 1 && data.dishes.map((v, k) => {
+          v.number > 1 && $.extend(v, v, add)
+        })
       }
       return { ...state, topMenuInfoByType: data }
     },
@@ -466,7 +488,8 @@ export default {
     },
     saveHighInfo(state, { payload: { postDataHigh } }){
       const { topMenuInfoByType } = state;
-      topMenuInfoByType.dishes[postDataHigh.number - 1] = postDataHigh;
+      const info = topMenuInfoByType.dishes[postDataHigh.number - 1];
+      $.extend(info, postDataHigh)
       return { ...state, topMenuInfoByType }
     },
     chooseVisible(state, { payload: { chooseVisibleInfo } }){
@@ -602,6 +625,12 @@ export default {
       const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveMenu, values);
       if (code == 0) {
         message.success('保存成功');
+        yield put({
+          type: 'changeVisible',
+          payload: {
+            visible: false
+          }
+        })
         yield put({
           type: 'getMenuByDay',
           payload: {
