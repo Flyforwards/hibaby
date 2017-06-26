@@ -404,6 +404,11 @@
   .ant-modal-header {
     text-align: center;
   }
+  .noResults{
+    width: 100%;
+    line-height:40px;
+    text-align: center;
+  }
 }
 
 .addCustomer {
@@ -416,6 +421,9 @@
   }
   .ant-modal-header {
     text-align: center;
+  }
+  .CustomerTable{
+    margin-top: 10px;
   }
 }
 

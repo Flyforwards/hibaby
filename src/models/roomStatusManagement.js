@@ -43,6 +43,10 @@ export default {
     TowardAry: '',
     roomState: 'day',
     monthStateCustomers: [],
+    //可编辑的  添加客户  加入的
+    editMonthStateCustomers:[],
+    defSelectCustomers:[],
+
     oldMonthRoomList: [],
     monthRoomList: [],
     dragUser: null,
@@ -79,7 +83,18 @@ export default {
       return {...state, RowHousesWayVisible: data};
     },
     setCustomerPageSave(state, {payload: {list, pagination}}) {
-      return {...state, allCusList: list, pagination: {...state.pagination, ...pagination}};
+      let ary = [];
+      for(let i = 0;i< state.monthStateCustomers.length;i++){
+        const dict = state.monthStateCustomers[i];
+        for(let j = 0;j< list.length;j++) {
+          const subDict = list[j];
+          if (subDict.id == dict.customerId){
+            ary.push(j);
+            break;
+          }
+        }
+      }
+      return {...state, allCusList: list,defSelectCustomers:ary, pagination: {...state.pagination, ...pagination}};
     },
     setSelectValue(state, {payload: todo}){
       let listArray = [];
@@ -130,6 +145,7 @@ export default {
         monthStateCustomers: todo.data
       };
     },
+
     setMonthRoomList(state, {payload: todo}){
       // 保留初始的数据, 用于保存预约状态时和当前状态比较, 深拷贝
       state.oldMonthRoomList = JSON.parse(JSON.stringify(todo.data));
@@ -373,12 +389,12 @@ export default {
     // 获取用户列表
     *getCustomerPage({payload: values}, {call, put}) {
 
-      const defParam = {page: 1, size: 10}
+      const defParam = {page: 1, size: 5}
 
       const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, {...defParam, ...values});
       if (code == 0) {
         if (data.length == 0 && page > 1) {
-          yield put({type: 'getCustomerPage', payload: {page: page - 1, size: 10}})
+          yield put({type: 'getCustomerPage', payload: {page: page - 1, size: 5}})
 
         } else {
           yield put({
@@ -387,7 +403,7 @@ export default {
               list: data,
               pagination: {
                 current: Number(page) || 1,
-                pageSize: Number(size) || 10,
+                pageSize: Number(size) || 5,
                 total: total,
               },
             },
