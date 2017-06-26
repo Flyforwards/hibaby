@@ -51,9 +51,9 @@ export default {
     monthRoomUpdateList: [],// 保存状态有更新的用户
     //弹出的modal数据控制
 
-    CustomerVisible:false,
-    RowHousesVisible:false,
-    RowHousesWayVisible:false,
+    CustomerVisible: false,
+    RowHousesVisible: false,
+    RowHousesWayVisible: false,
     allCusList: '',
     pagination: {
       showQuickJumper: true,
@@ -65,18 +65,18 @@ export default {
 
   reducers: {
     setCustomerVisible(state, {payload: data}) {
-      let dict = {CustomerVisible:data};
+      let dict = {CustomerVisible: data};
       return {...state, ...dict};
     },
     setRowHousesVisible(state, {payload: data}) {
-      let dict = {RowHousesVisible:data};
-      if(data === false){
+      let dict = {RowHousesVisible: data};
+      if (data === false) {
         dict.resultsRowHouses = ''
       }
       return {...state, ...dict};
     },
     setRowHousesWayVisible(state, {payload: data}) {
-      return {...state, RowHousesWayVisible:data};
+      return {...state, RowHousesWayVisible: data};
     },
     setCustomerPageSave(state, {payload: {list, pagination}}) {
       return {...state, allCusList: list, pagination: {...state.pagination, ...pagination}};
@@ -375,7 +375,7 @@ export default {
 
       const defParam = {page: 1, size: 10}
 
-      const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, {...defParam,...values});
+      const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, {...defParam, ...values});
       if (code == 0) {
         if (data.length == 0 && page > 1) {
           yield put({type: 'getCustomerPage', payload: {page: page - 1, size: 10}})
@@ -459,25 +459,85 @@ export default {
     *userDrop({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
 
-      // 删除之前的
-      yield put({
-        type: 'deleteUser',
-        payload: {
-          ...value,
-          startIndex: state.dragUser.startIndex,
-          endIndex: state.dragUser.endIndex,
-          customerId: state.dragUser.customerId,
-          roomIndex: state.dragUser.roomIndex,
-        }
-      });
 
-      // 添加新的
-      yield put({
-        type: 'userDropReducer',
-        payload: {
-          ...value,
+      // 如果已入住, 开始的时间保持不变
+      if (state.dragUser.status == 4) {
+        // 先调用平移接口
+        let param = {
+          customerInfoList: [
+            {
+              customerId: state.dragUser.customerId,
+              customerName: state.dragUser.customerName,
+              useDate: timeToDate(state.dragUser.startDate),
+            }
+          ],
+          fromRoomId: state.monthRoomList[state.dragUser.roomIndex].roomId,
+          fromRoomName: state.monthRoomList[state.dragUser.roomIndex].roomNo,
+          toRoomId: state.monthRoomList[value.roomIndex].roomId,
+          toRoomName: state.monthRoomList[value.roomIndex].roomNo,
         }
-      });
+        const {data: {code, data}} = yield call(roomManagement.resideMove, param);
+
+
+        payload.dayIndex = state.dragUser.startIndex;
+
+        if (code != 0) {
+          return;
+        }
+
+        // 删除之前的
+        yield put({
+          type: 'deleteUser',
+          payload: {
+            ...value,
+            startIndex: state.dragUser.startIndex,
+            endIndex: state.dragUser.endIndex,
+            customerId: state.dragUser.customerId,
+            roomIndex: state.dragUser.roomIndex,
+            status: state.dragUser.status,
+          }
+        });
+
+        let payload = {
+          ...value,
+          status: state.dragUser.status,
+        }
+
+        // 添加新的
+        yield put({
+          type: 'userDropReducer',
+          payload: {
+            ...payload,
+          }
+        });
+      } else {
+        // 删除之前的
+        yield put({
+          type: 'deleteUser',
+          payload: {
+            ...value,
+            startIndex: state.dragUser.startIndex,
+            endIndex: state.dragUser.endIndex,
+            customerId: state.dragUser.customerId,
+            roomIndex: state.dragUser.roomIndex,
+            status: state.dragUser.status,
+          }
+        });
+
+        let payload = {
+          ...value,
+          status: state.dragUser.status,
+        }
+
+        // 添加新的
+        yield put({
+          type: 'userDropReducer',
+          payload: {
+            ...payload,
+          }
+        });
+      }
+
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){
@@ -591,7 +651,7 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, value||param);
+      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, value || param);
 
       if (code == 0) {
         // 更新原始集合的状态

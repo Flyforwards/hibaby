@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal,RowHousesModal,RowHousesWayModal} from './roomStateForMonthModal';
+import {AddCustomerModal, RowHousesModal, RowHousesWayModal} from './roomStateForMonthModal';
 
 import {
   Button,
@@ -69,6 +69,7 @@ const monthStateView = (props) => {
 
     // 过去的时间, 不可放置, 今天即过去
     if (date < tomorrow.getTime()) {
+      message.error("无法移动到过去");
       return;
     }
 
@@ -228,14 +229,14 @@ const monthStateView = (props) => {
 
         let result = dayList.map((day, dayindex) => {
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
-          let roomState = 0;
+          let status = 0;
           // 一天中的用户列表
           let dayCustomerList = day.customerList;
 
           // 如果该天只有一个用户, 直接显示相应状态
           if (dayCustomerList.length === 1) {
             let hasUser = false;
-            roomState = dayCustomerList[0].status || 7;
+            status = dayCustomerList[0].status || 7;
 
             for (let i = 0; i < users.length; i++) {
               if (users[i].customerId === dayCustomerList[0].customerId) {
@@ -279,15 +280,15 @@ const monthStateView = (props) => {
               }
             }
 
-            roomState = 9; // 重叠
+            status = 9; // 重叠
           }
 
           let stateBox = classNames('stateBox', {
-            'empty': roomState == 0, // 空房
-            'checkingIn': roomState == 4, // 入住
-            'reserve': roomState == 7, // 预约
-            'repair': roomState == 1, // 维修
-            'overlap': roomState == 9, // 重叠
+            'empty': status == 0, // 空房
+            'checkingIn': status == 4, // 入住
+            'reserve': status == 7, // 预约
+            'repair': status == 1, // 维修
+            'overlap': status == 9, // 重叠
           });
 
           return (
@@ -318,9 +319,18 @@ const monthStateView = (props) => {
         };
 
         const userBoxDbClickHandler = (e) => {
+
+          // 首先要排除不是在确认入住或删除按钮上双击的
+          // 因为以上两个按钮也是在这个容器内, 事件会冒泡
           if (!e.target.classList.contains("userBox")) {
             return;
           }
+
+          // 如果是已入住状态, 是不能再次确认入住和删除的
+          if (e.target.dataset.status == 4) {
+            return;
+          }
+
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
           btn.className = "userBoxConfirm";
@@ -347,7 +357,15 @@ const monthStateView = (props) => {
         const userBoxRightClickHandler = (e) => {
           e.preventDefault();
           e.stopPropagation();
+
+          // 首先要排除不是在确认入住或删除按钮上双击的
+          // 因为以上两个按钮也是在这个容器内, 事件会冒泡
           if (!e.target.classList.contains("userBox")) {
+            return;
+          }
+
+          // 如果是已入住状态, 是不能再次确认入住和删除的
+          if (e.target.dataset.status == 4) {
             return;
           }
 
@@ -417,10 +435,13 @@ const monthStateView = (props) => {
             let tempUnit = parseInt(offsetX / UNIT_WIDTH);
 
             if (tempUnit > 0) {
-              let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
-              let dragDate = parseInt(target.dataset.startDate) + ((oldEndIndex + tempUnit + 2) * 86400000);
-
-              if (roomDate > dragDate) {
+              try {
+                let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
+                let dragDate = parseInt(target.dataset.startDate) + ((oldEndIndex + tempUnit + 2) * 86400000);
+                if (roomDate > dragDate) {
+                  return;
+                }
+              } catch (e) {
                 return;
               }
             }
@@ -482,6 +503,8 @@ const monthStateView = (props) => {
                 reserveDays: user.dayCount,
                 startIndex: user.startIndex,
                 endIndex: user.startIndex + user.dayCount - 1,
+                status: user.status,
+                startDate: user.startDate,
                 roomIndex: roomIndex,
               },
             }
@@ -505,6 +528,7 @@ const monthStateView = (props) => {
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
                  data-user-dayCount={users[i].dayCount}
                  data-start-date={users[i].startDate}
+                 data-status={users[i].status}
                  onClick={userBoxClickHandler}
                  onDoubleClick={userBoxDbClickHandler}
                  onContextMenu={userBoxRightClickHandler}
@@ -648,7 +672,9 @@ const monthStateView = (props) => {
         {
           customers.map((costomer) => {
             return (
-              <div className="customerItem" onClick={()=>{onClicked(costomer)}} draggable="true" onDragStart={() => dragStart(costomer)}>
+              <div className="customerItem" onClick={() => {
+                onClicked(costomer)
+              }} draggable="true" onDragStart={() => dragStart(costomer)}>
                 {costomer.customerName}
               </div>
             )
