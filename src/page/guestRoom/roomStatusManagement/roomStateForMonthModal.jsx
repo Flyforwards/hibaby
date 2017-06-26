@@ -182,8 +182,8 @@ function CustomerSearch(props) {
   )
 }
 
-function CustomerTable({props,loading,selectCustomer,selectCustomerFun}) {
-  const {allCusList,pagination} = props
+function CustomerTable({props,loading, selectedRowKeys,selectCustomerFun,dispatch}) {
+  const {allCusList,pagination,defSelectCustomers} = props
   const columns = [{title: '客户姓名', dataIndex: 'name',key: 'name'},
     {title: '年龄',dataIndex: 'age',key: 'age'},
     {title: '预产期',dataIndex: 'dueDate',render: (record) => {
@@ -211,36 +211,48 @@ function CustomerTable({props,loading,selectCustomer,selectCustomerFun}) {
     pagination,
     columns,
     onChange (page) {
-      const { pathname } = location
-      dispatch(routerRedux.push({
-        pathname,
-        query: {
-          page: page.current,
-          size: page.pageSize
-        }
-      }))
+      dispatch({type:'roomStatusManagement/getCustomerPage',payload:{page:page.current}})
     }
   }
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      selectCustomerFun(selectedRows);
+      selectCustomerFun(selectedRowKeys);
     },
+    getCheckboxProps: (record) =>
+      {
+        let disabled = false;
+        allCusList.map((item)=>{
+          if(item.id == record.id){
+            disabled = true;
+          }
+        })
+        return(
+          {disabled:disabled}
+        )
+    },
+    selectedRowKeys
   };
 
-  let tags = [];
+  function onClose(e) {
 
-  for(let i = 0;i<selectCustomer.length;i++){
-    const dict = selectCustomer[i];
-    tags.push(<Tag closable onClose={dict.name.id}>{dict.name}</Tag>)
   }
+
+  let tags = [];
+  if(selectedRowKeys){
+    for(let i = 0;i<selectedRowKeys.length;i++){
+      const dict = allCusList[selectedRowKeys[i]] ;
+        tags.push(<Tag closable={defSelectCustomers.indexOf(selectedRowKeys[i]) === -1} onClose={onClose(selectedRowKeys[i])}>{dict.name}</Tag>)
+    }
+  }
+
 
   return(
     <Card bodyStyle={{padding:'10px'}} title="预约客户">
       <Card bodyStyle={{padding:'10px'}}>
         {tags}
       </Card>
-      <Table rowSelection={rowSelection} {...tableProps}/>
+      <Table  className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
     </Card>
   )
 
@@ -254,7 +266,7 @@ class addCustomer extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      selectCustomer:[]
+      selectedRowKeys:null,
     }
   }
 
@@ -273,8 +285,8 @@ class addCustomer extends React.Component {
     });
   }
 
-  selectCustomerFun(array){
-    this.setState({selectCustomer:array})
+  selectCustomerFun(selectedRowKeys){
+    this.setState({selectedRowKeys:selectedRowKeys})
   }
 
   render(){
@@ -289,7 +301,10 @@ class addCustomer extends React.Component {
         onCancel={this.handleCancel.bind(this)}
       >
         <CusSearchFormDiv dispatch={this.props.dispatch}/>
-        <CustomerTable selectCustomer={this.state.selectCustomer} selectCustomerFun={(array)=>{this.selectCustomerFun(array)}} loading={this.props.loading} props={this.props.users}/>
+        <CustomerTable
+          selectedRowKeys={this.state.selectedRowKeys||this.props.users.defSelectCustomers}
+          selectCustomerFun={(selectedRowKeys)=>{this.selectCustomerFun(selectedRowKeys)}}
+          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}/>
       </Modal>
     )
   }
@@ -414,7 +429,7 @@ function SearResults({resultsRowHouses,selectFun,currSelect}) {
       ary.push(<Card onClick={()=>{selectFun(i)}} style={{border: i === currSelect ? '1px solid red' : '1px solid #e9e9e9'}} key={i} bodyStyle={{padding:'10px'}} className="cardCli">{chiAry}</Card>)
 
     }
-    return ary
+    return ary.length > 0 ? ary : <h2 className="noResults">没有符合条件的结果</h2>
   }
 
 
