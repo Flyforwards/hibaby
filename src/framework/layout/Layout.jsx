@@ -13,7 +13,6 @@ import Footer from '../footer/footer.jsx'
 import { message } from 'antd'
 import PhoneSystemIndex from '../PhoneSystemIndex'
 
-
 class Layout extends React.Component {
     constructor(props) {
         super(props)
@@ -22,7 +21,6 @@ class Layout extends React.Component {
             loading: false,
         }
 
-      this.extra = (<div><Button>最小化</Button><Button>关闭</Button></div>)
     }
 
 
@@ -40,19 +38,6 @@ class Layout extends React.Component {
         })
     }
 
-    onClick(){
-      message.success('登录成功');
-      this.props.dispatch({
-        type:'layout/xxxx'
-      })
-      console.log(window.token)
-    }
-
-    // onclick(token){
-    //   console.log(token);
-    // }
-
-    // <Button  id="bridging-btn" style={{position: 'absolute', left: 0, top: 0,width:'40px',height:'30px'}} >桥接中介</Button>
     render() {
         const cls = classNames({
             'mini': this.state.mini,
@@ -61,8 +46,7 @@ class Layout extends React.Component {
         const { subMenu} = this.props;
         return (
             <div className={ cls }>
-                <Button onClick={ this.onClick.bind(this)}  id="bridging-btn" style={{position: 'absolute', left: 0, top: 0,width:'40px',height:'30px', display: 'none'}} >桥接中介</Button>
-                <PhoneSystemIndex />
+                <PhoneSystemIndex/>
                 <Spin key="yt-admin-framework-layout" spinning={ this.state.loading } size="large">
                     <Header
                         miniMode ={ this.state.mini }

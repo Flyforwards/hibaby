@@ -2,10 +2,12 @@
 
 
 import React from 'react'
-import { Card, Button } from 'antd'
+import { Card, Button, Table } from 'antd'
 
 import { connect } from 'dva';
 import './PhoneSystemIndex.scss'
+import { message } from 'antd'
+var setIntlId= new Array();
 
 class PhoneSystemIndex extends React.Component {
   constructor(props) {
@@ -22,7 +24,38 @@ class PhoneSystemIndex extends React.Component {
       </div>)
     this.state = {
       style: 'hidden',
+      loginTime: 0,
+      dataSource: [],
     }
+    this.columns = [{
+      title: '主叫号码',
+      dataIndex: 'customerNumber',
+      key: 'customerNumber',
+    },{
+      title: '来电时间',
+      dataIndex: 'startTime',
+      key: 'startTime',
+    },{
+      title: '进入队列时间',
+      dataIndex: 'joinTime',
+      key: 'joinTime',
+    },{
+      title: '排队等待时长',
+      dataIndex: 'waitTime',
+      key: 'waitTime',
+    },{
+      title: '呼叫状态',
+      dataIndex: 'call_status',
+      key: 'call_status',
+    },{
+      title: '溢出次数',
+      dataIndex: 'overflow',
+      key: 'overflow',
+    },{
+      title: '排队位置',
+      dataIndex: 'position',
+      key: 'position',
+    },]
   }
 
   toMin() {
@@ -43,122 +76,263 @@ class PhoneSystemIndex extends React.Component {
     })
   }
 
+  onClick(){
+
+    // this.props.dispatch({
+    //   type:'layout/xxxx'
+    // })
+    console.log(window.callback)
+
+    if (window.callback.type == 'login') {
+      message.success('登录成功');
+    } else if (window.callback.type == 'queueStatus') {
+      var data = window.callback.data;
+      for(var i=0;i<setIntlId.length;i++){
+        clearInterval(setIntlId[i]);
+      }
+      setIntlId.length=0;
+      $("#callTable").empty();
+      var showData="";
+      if(showData == ""){
+        showData = data.queueStatus[0];
+      }
+
+      var online=0;
+
+      for(var i=0;i<showData.memberStatus.length; i++){
+
+        var ms = showData.memberStatus[i];
+        var status = window.deviceStatus.deviceStatusLoginStatus(ms.deviceStatus+ms.loginStatus, ms.pauseDescription, ms.busyDescription);
+
+        if(status != "离线"){
+          online+=1;
+        }
+        var customerNumber =showData.memberStatus[i].customerNumber;
+        var callstaken = showData.memberStatus[i].callstaken;
+        var loginTime = showData.memberStatus[i].loginTime;
+        var cno = showData.memberStatus[i].cid.substring(7,showData.memberStatus[i].cid.length);
+
+        if(callstaken == undefined){
+          callstaken = "--";
+        }
+        if(loginTime == undefined ){
+          loginTime = 0;
+        } else{
+          loginTime = millisecondToDate(parseInt(loginTime,10));
+        }
+
+        if(customerNumber == undefined){
+          customerNumber = "--";
+        }
+        showData.queueEntry.map((item)=>{
+          item.key = item.uniqueId.replace(".",'');
+        })
+        this.setState({
+          dataSource: showData.queueEntry
+        })
+        if(status != '离线' && 2000 == cno) {
+          this.time = setInterval(
+            () => {
+              loginTime++;
+              this.setState({
+                loginTime
+              })
+            },
+            1000
+          );
+        }
+      }
+
+      $("#onlineCno").text(online);
+    } else if (window.callback.type == 'queue'){
+      const json = window.callback.json;
+      const dataSource = this.state.dataSource;
+      if(json.name == 'joinQueue'){
+        json.key = json.uniqueId.replace(".",'');
+        if (json.overflow == null) {
+          json.overflow = '0'
+        }
+        dataSource.push(json);
+        this.setState({
+          dataSource
+        })
+
+      }
+      if(json.name == 'leaveQueue'){
+        var uniqueId = json.uniqueId.replace(".",'');
+        this.setState({
+          dataSource: dataSource.filter(item => item.key !== uniqueId)
+        })
+      }
+      if(json.name == 'queueCall'){
+
+      }
+    } else if (window.callback.type == 'status') {
+      const token = window.callback.token;
+      var str = deviceStatus.deviceStatusLoginStatus(token.deviceStatus+token.loginStatus, token.pauseDescription, token.busyDescription);
+      if(str != ""){
+        $("#status").text(str);
+      }
+
+      if(token.eventName=="outRinging"){//外呼座席响铃
+        //top.CTI_ID = token.uniqueId;//获取录音编号
+        this.setState({
+          info: '外呼号码: ' + token.customerNumber
+        })
+      }else if(token.eventName=="comeRinging"){//呼入座席响铃
+        this.getCustomerInfo(token.customerNumber);
+        this.setState({
+          info: '外呼号码: ' + token.customerNumber
+        })
+      }else if(token.eventName=="normalBusy"){//呼入座席接听
+        // $('#call_input').show();
+        // $('#call_history').show();
+
+        this.setState({
+          info: '来电号码: ' + token.customerNumber
+        })
+         this.getCustomerInfo(token.customerNumber);
+
+        // window.document.getElementById('call_time').innerHTML = millisecondToDate(0);
+        // var setIntervaldurationId = setInterval("timerCount('call_time')", 1000);
+        // setIntlId.push(setIntervaldurationId);
+        // $("#call_time").attr("setIntervaldurationId",setIntervaldurationId);
+      }else if(token.eventName=="outBusy"){//外呼客户接听
+        //if(top.CTI_ID == "") {
+        //	top.CTI_ID = token.uniqueId;
+        //}
+
+        this.setState({
+          info: '外呼号码: ' + token.customerNumber
+        })
+      }else if(token.eventName=="online"){//置闲
+        // $('#call_phone').text('');
+        // $('#call_div').hide();
+        // $('#call_input').hide();
+        // $('#call_history').hide();
+      }else if(token.eventName=="pause"){//置忙
+
+      }else if(token.eventName=="waitLink"){//座席接听 等待客户接听
+
+      }else if(token.eventName=="neatenStart"){//整理开始（座席挂断）
+        // $('#call_phone').text('');
+        // $('#call_div').hide();
+        // $('#call_input').hide();
+        // $('#call_history').hide();
+        // clearInterval(document.getElementById('call_time').setIntervalCnoTimeId);
+        // document.getElementById('call_time').innerHTML="";
+      }else if(token.eventName=="neatenEnd"){//整理结束
+
+      }else if(token.eventName=="hold"){//保持开始
+
+      }else if(token.eventName=="unHold"){//保持结束
+
+      }else if(token.eventName=="consultLink"){//咨询成功
+        this.setState({
+          info: '咨询号码: ' + '席位号:' + token.consultObject
+        })
+      }else if(token.eventName=="consulterOrTransferBusy"){//被咨询转接或转移的通话
+
+      }
+    }
+  }
+
+  getCustomerInfo(number){
+    this.props.dispatch({
+      type: 'layout/getCustomerByMobile',
+      payload: { mobile: number }
+    })
+  }
+
+  toDub(n){
+    return n<10?"0"+n:""+n;
+  }
 
   render() {
-    if (this.state.style == 'large') {
-      return (
-        <Card className="phone-system-cent" title = '来电弹屏' extra={ this.bigExtra }>
-          <div class='telephone-system-content'>
-            <div style='height: 40px;'>
-              <span style='margin-left:10px; line-height:40px;'>登录状态</span>
-              <span style='line-height:40px;' id="status">离线</span>
-              <span style='margin-left:20px; line-height:40px;'>登录时间 </span>
-              <span style='line-height:40px;' id="cnoTime"></span>
-              <button style="float: right; margin-right: 5px;" class='system-button' id='phone-system-close'>隐藏</button>
-              <button style="float: right; margin-right: 5px;" class='system-button' id='phone-system-minimize'>最小化</button>
-            </div>
+    let bottom = null;
+    const { style } = this.state;
+    const { customerInfo } = this.props;
+    if (style == 'large') {
+      const { loginTime, dataSource, info } = this.state
 
-            <div style="position:absolute; border:1px solid #000;  top:50px; left:0; width:100%; height:300px;">
-              <div class="list_Div" style="min-width:700px;">
-                <div class="list_title">
-                  <span class="list_title_titleSpan">呼叫列表</span>
-                  <span class="list_title_numSpan">(共<span id="callNumber">0</span>条呼叫信息)</span>
-                  <span class="list_title_hrSpan"><hr class="list_title_hrSpan_hr" size="2" color="f0f0f0"/></span>
-                  <span class="list_title_imgSpan"><span id="callList">收起</span></span>
-                </div>
-                <div class="list_content" id="callContent">
-                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                    <tr class="list_content_title_tr">
-                      <td align="center" width="15%">主叫号码</td>
-                      <td align="center" width="15%">来电时间</td>
-                      <td align="center" width="15%">进入队列时间</td>
-                      <td align="center" width="10%">排队等待时长</td>
-                      <td align="center" width="10%">呼叫状态</td>
-                      <td align="center" width="10%">溢出次数</td>
-                      <td align="center" width="10%">排队位置</td>
-                    </tr>
-                  </table>
-                  <div style="height:170px; overflow:auto;">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="callTable">
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+      const { } = this.props;
+      const time = loginTime
+      const s=this.toDub(parseInt(time%60));
+      const m=this.toDub(parseInt(time/60));
+      const h=this.toDub(parseInt(m/60));
 
-            <div id='call_history'  style="position:absolute; border:1px solid #000;  top:350px; left:0; width:100%; height:200px;display: none">
-              <div>
-                <span>通话内容</span>
-                <table width='100%' id='contentTable'></table>
-              </div>
-            </div>
+      let userName = '';
+      if ( customerInfo == null) {
+        userName = '未知用户';
+      } else if ( customerInfo ) {
+        userName = customerInfo.name;
+      }
 
-            <div id='call_input'  style="position:absolute; border:1px solid #000;  top:550px; left:0; width:100%; height:100px;display: none">
-              <div>
-                <span>本次通话内容</span>
-                <div>
-                  <textarea id='call_input_content' style='width: 100%; height:80px' ></textarea>
-                </div>
-              </div>
-              <button style="float: right; margin-right: 5px;" class='system-button' id='submit_call_content'>提交</button>
-            </div>
-
-            <div id='call_div' align="center" style='position: absolute; right: 150px; height: 40px; width: 50%; top:0;display: none' >
-              <span id='call_phone' style='line-height:40px;'></span>
-              <span style='margin-left:10px'>通话时长</span>
-              <span id='call_time'></span>
-            </div>
-
-            <div style="position:absolute; width:100%; bottom:2px; ">
-              <table border="0" cellspacing="0" cellpadding="0" style="min-width:380px; margin:0;">
-                <td align="left" id="toolbarButton">
-                  <input type="button" id="pause" class='system-button2' value="置忙"/>
-                  <input type="button" id="online" class='system-button2' value="置闲"/>
-                  <input type="button" id="answer" class='system-button2' value="接听"/>
-                  <input type="button" id="unLink" class='system-button2' value="挂断"/>
-                  <input type="button" id="refused"  class='system-button2' value="拒接"/>
-                  <input type="button" id="hold" class='system-button2' value="保持"/>
-                  <input type="button" id="unHold"  class="system-button3" value="保持接回"/>
-                  <input type="button" id="consult" class='system-button2' value="咨询"/>
-                  <input type="button" id="consultBack"  class="system-button3" value="咨询接回"/>
-                  <input type="button" id="consultTransfer"  class="system-button3" value="咨询转接"/>
-                  <input type="button" id="consultThreeway"  class="system-button3" value="咨询三方"/>
-                  <input type="button" id="transfer"  class='system-button2' value="转移"/>
-                  <input type="text"   id="phoneCallText" value="" maxlength="12" style="display:none;width:100px;height:28px;line-height:28px;font-family:verdana;border:solid 1px #ddd;vertical-align:top;margin-top:2px;"/>
-                  <input type="button" id="phoneCallout"  class="system-button3" value="呼叫"/>
-                  <input type="button" id="phoneCallCancel" class="system-button3" value="呼叫取消"/>
-                  <select id="consultInput" style="display:none;">
-                    <option value="0">普通电话</option>
-                    <option value="1">座席号</option>
-                  </select>
-                </td>
-            </table>
+      const customer = (
+        <div>
+          <div>
+            <span>{ info }</span>
+          </div>
+          <div>
+            客户信息
+            <span>{ userName }</span>
+          </div>
+          <div>
+            来往通话内容
+            <Table dataSource={null}/>
+          </div>
+          <div>
+            本次通话内容
           </div>
         </div>
+      )
+      bottom = (
+        <Card className="phone-system-cent" title = '来电弹屏' extra={ this.bigExtra }>
+          <div style={{ height: '40px' }}>
+            <span style={{ 'marginLeft':'10px', 'lineHeight': '40px' }}>登录状态</span>
+            <span style={{ 'marginLeft':'10px', 'lineHeight': '40px'}} id="status">离线</span>
+            <span style={{ 'marginLeft':'20px', 'lineHeight': '40px' }}>登录时间</span>
+            <span style={{ 'marginLeft':'10px', 'lineHeight': '40px' }} >{ h+':'+m+':'+s }</span>
+          </div>
+          <Table pagination={false} columns={this.columns} dataSource={dataSource} size='small' />
+          {customer}
         </Card>
       )
-    } else if (this.state.style == 'min') {
-      return (
+    } else if (style == 'min') {
+      bottom = (
         <Card className="phone-system-min-cent" title = '来电弹屏' extra={ this.minExtra }>
 
 
         </Card>
       )
-    } else if (this.state.style == 'hidden') {
-      return (
+    } else if (style == 'hidden') {
+      bottom =  (
         <Button className='system-button-option-show' onClick={ this.toLarge.bind(this) }> 显示 </Button>
       )
     }
+    return (
+      <div>
+        <Button onClick={ this.onClick.bind(this)}  id="bridging-btn" style={{position: 'absolute', left: 0, top: 0,width:'40px',height:'30px', display: 'none'}} >桥接中介</Button>
+        { bottom }
+      </div>
+    )
 
 
 
   }
 }
 
+function mapStateToProps(state) {
+  const {
+    customerInfo
+  } = state.layout;
+  return {
+    customerInfo
+  };
+}
 
 
-
-export default connect()(PhoneSystemIndex);
+export default connect(mapStateToProps)(PhoneSystemIndex);
 
 
 
