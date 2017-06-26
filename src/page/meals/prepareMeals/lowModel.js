@@ -91,7 +91,6 @@ class DynamicFieldSet extends Component {
     const { changeKey, isLow } = this.state
     const { getFieldDecorator } = form;
     const { dishes } = menuInfoByType;
-    console.log(dishes, '2')
     const formItemLayout = {
       labelCol: {
         xs: { span: 6 },
@@ -165,16 +164,7 @@ class LowMOdel extends Component {
       visible: true
     }
   }
-  
-  handleOk = (e) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'prepareMeals/changeVisible',
-      payload: {
-        visible: false
-      }
-    })
-  }
+ 
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -196,7 +186,6 @@ class LowMOdel extends Component {
           className="lowModel"
           title={`编辑餐单：第${menuInfoByType.week}周—${menuInfoByType.day}—${title}`}
           visible={visible}
-          onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText="保存"
           width={1000}
