@@ -1,0 +1,26 @@
+.DishesLibrary-Node{
+  .ant-modal-body{
+    height : 180px;
+  }
+  .myBtn {
+    float: right;
+    margin-right: 5px;
+    font:10px "微软雅黑";
+    width: 80px;
+    height: 30px;
+  }
+  .BackBtn{
+    background:#b67233;
+    border-color:#b67233;
+    color:#fff;
+  }
+  .SaveBtn{
+    background:#f1e8df;
+    border-color:#bb7c41;
+    color:#b67233;
+  }
+  .RemoveBtn{
+    background: #f75555;
+    color:#fff;
+  }
+}
