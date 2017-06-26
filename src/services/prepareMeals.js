@@ -48,3 +48,35 @@ export function getCardLevel(values) {
     body: JSON.stringify(values),
   })
 };
+
+//加载菜品库列表
+export function getDishesLibraryNodes(values) {
+  return request('/crm/api/v1/dishesLibrary/getDishesLibraryNodes', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+//根据菜品库id获取菜品分页列表
+export function getDishesPageList(values) {
+  return request('/crm/api/v1/dishes/getDishesPageList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+//保存基础餐单
+export function saveMenu(values) {
+  return request('/crm/api/v1/menu/saveMenu', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+//保存高档食材餐单
+export function saveTopMenu(values) {
+  return request('/crm/api/v1/menu/saveTopMenu', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
