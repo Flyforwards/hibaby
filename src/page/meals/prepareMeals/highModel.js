@@ -12,13 +12,9 @@ class DynamicFieldSet extends Component {
     super(props);
     this.state = {
       isLow: false,
-      changeKey: 0,
-      otherInfo: {
-        frequency: null,
-        eatDay: null,
-        eatTime: null
-      }
+      changeKey: 0
     }
+    this.infoKey = 0;
   }
   
   remove = (k) => {
@@ -62,6 +58,11 @@ class DynamicFieldSet extends Component {
       }
     })
   }
+  reset = (changeKey) => {
+    const { form } = this.props;
+    form.resetFields([`name-${changeKey}`])
+  }
+  
   changeTopVisible = () => {
     const { dispatch } = this.props;
     dispatch({
@@ -98,30 +99,44 @@ class DynamicFieldSet extends Component {
   }
   
   changeEatDay = (value) => {
-    const { otherInfo } = this.state;
-    otherInfo.eatDay = parseInt(value);
-    this.setState({
-      otherInfo
+    const { dispatch } = this.props;
+    const infoKey = this.infoKey;
+    const eatDayValue = parseInt(value);
+    dispatch({
+      type: 'prepareMeals/changeEatDay',
+      payload: {
+        eatDayValue, infoKey
+      }
     })
+    
   }
   changeEatTime = (value) => {
-    const { otherInfo } = this.state;
-    otherInfo.eatTime = parseInt(value);
-    this.setState({
-      otherInfo
+    const { dispatch } = this.props;
+    const infoKey = this.infoKey;
+    const eatTimeValue = parseInt(value);
+    dispatch({
+      type: 'prepareMeals/changeEatTime',
+      payload: {
+        eatTimeValue, infoKey
+      }
     })
+    
   }
   changeFrequency = (value) => {
-    const { otherInfo } = this.state;
-    otherInfo.frequency = parseInt(value);
-    this.setState({
-      otherInfo
+    const { dispatch } = this.props;
+    const infoKey = this.infoKey;
+    const frequencyValue = parseInt(value);
+    dispatch({
+      type: 'prepareMeals/changeFrequency',
+      payload: {
+        frequencyValue, infoKey
+      }
     })
   }
   
   render() {
     const { form, cardLevelInfo, topMenuInfoByType } = this.props;
-    const { changeKey, isLow, otherInfo } = this.state;
+    const { changeKey, isLow } = this.state;
     const { dishes } = topMenuInfoByType;
     const { getFieldDecorator } = form;
     const selectItemLayout = {
@@ -137,12 +152,12 @@ class DynamicFieldSet extends Component {
     
     return (
       <Form onSubmit={this.handleSubmit}>
-        <ChooseDishes changeKey={changeKey} isLow={isLow} otherInfo={otherInfo}/>
+        <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
         <Row style={{ backgroundColor: "#CFCFCF", textAlign: 'center', paddingTop: '20px' }}>
           <Col span={6}>
             <FormItem label="针对套餐" {...selectItemLayout}>
               {getFieldDecorator('pointPackage', {
-                initialValue: topMenuInfoByType.pointPackage && topMenuInfoByType.pointPackage,
+                initialValue: topMenuInfoByType.pointPackage && topMenuInfoByType.pointPackage.toString(),
                 rules: [{
                   required: true,
                   message: "请选择针对套餐"
@@ -184,13 +199,16 @@ class DynamicFieldSet extends Component {
                 <Col span={6}>
                   <FormItem label='食用日' {...selectItemLayout}>
                     {getFieldDecorator(`eatDay-${k + 1}`, {
-                      initialValue: v.eatDay && v.eatDay,
+                      initialValue: v.eatDay && v.eatDay.toString(),
                       rules: [{
                         required: true,
                         message: "请选择实用日"
                       }]
                     })(
-                      <Select onSelect={this.changeEatDay}>
+                      <Select onSelect={(value) => {
+                        this.infoKey = k;
+                        this.changeEatDay(value);
+                      }}>
                         <Option value='1'>周一</Option>
                         <Option value='2'>周二</Option>
                         <Option value='3'>周三</Option>
@@ -205,13 +223,16 @@ class DynamicFieldSet extends Component {
                 <Col span={6}>
                   <FormItem label='食用时间' {...selectItemLayout}>
                     {getFieldDecorator(`eatTime-${k + 1}`, {
-                      initialValue: v.eatTime && v.eatTime,
+                      initialValue: v.eatTime && v.eatTime.toString(),
                       rules: [{
                         required: true,
                         message: "请选择食用时间"
                       }]
                     })(
-                      <Select onSelect={this.changeEatTime}>
+                      <Select onSelect={(value) => {
+                        this.infoKey = k;
+                        this.changeEatTime(value);
+                      }}>
                         <Option value='1'>早</Option>
                         <Option value='2'>早加</Option>
                         <Option value='3'>午</Option>
@@ -225,13 +246,16 @@ class DynamicFieldSet extends Component {
                 <Col span={5}>
                   <FormItem label="频次" {...selectItemLayout}>
                     {getFieldDecorator(`frequency-${k + 1}`, {
-                      initialValue: v.frequency && v.frequency,
+                      initialValue: v.frequency && v.frequency.toString(),
                       rules: [{
                         required: true,
                         message: "请选择频次"
                       }]
                     })(
-                      <Select onSelect={this.changeFrequency}>
+                      <Select onSelect={(value) => {
+                        this.infoKey = k;
+                        this.changeFrequency(value);
+                      }}>
                         <Option value="1">每周都吃</Option>
                         <Option value="2">两周吃一次</Option>
                         <Option value="3">四周吃一次</Option>

@@ -29,8 +29,11 @@ class DynamicFieldSet extends Component {
     const { form, menuInfoByType, dispatch } = this.props;
     let { dishes } = menuInfoByType;
     const length = dishes.length;
+    
+    
     if (length < 7) {
-      dishes.push({ isDel: true })
+      dishes.push({ isDel: true });
+      console.log(dishes, '1')
       dispatch({
         type: "prepareMeals/changeMenuInfoByType",
         payload: { dishes }
@@ -54,12 +57,6 @@ class DynamicFieldSet extends Component {
         })
       }
     });
-    dispatch({
-      type: 'prepareMeals/changeVisible',
-      payload: {
-        visible: false
-      }
-    })
   }
   changeVisible = () => {
     const { dispatch } = this.props;
@@ -69,10 +66,15 @@ class DynamicFieldSet extends Component {
         visible: false
       }
     })
-    
   }
+  
+  reset = (changeKey) => {
+    const { form } = this.props;
+    form.resetFields([`name-${changeKey}`])
+  }
+  
   chooseLowVisible = (k) => {
-    const { dispatch, form, menuInfoByType } = this.props;
+    const { dispatch, form } = this.props;
     dispatch({
       type: 'prepareMeals/chooseVisible',
       payload: {
@@ -98,7 +100,7 @@ class DynamicFieldSet extends Component {
     
     return (
       <Form onSubmit={this.handleSubmit}>
-        <ChooseDishes changeKey={changeKey} isLow={isLow}/>
+        <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
         <Row >
           {
             dishes.map((v, k) => {
@@ -162,16 +164,7 @@ class LowMOdel extends Component {
       visible: true
     }
   }
-  
-  handleOk = (e) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'prepareMeals/changeVisible',
-      payload: {
-        visible: false
-      }
-    })
-  }
+ 
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -193,7 +186,6 @@ class LowMOdel extends Component {
           className="lowModel"
           title={`编辑餐单：第${menuInfoByType.week}周—${menuInfoByType.day}—${title}`}
           visible={visible}
-          onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText="保存"
           width={1000}

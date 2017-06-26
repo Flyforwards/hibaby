@@ -104,6 +104,7 @@ export default {
       if (code == 0) {
         //更新state
         message.success("删除菜品信息成功");
+        yield put({type:'getDishesLibraryNodes'} );
         const state = yield select(state => state.dishes);
         yield put({
           type: 'getDishesPageList',

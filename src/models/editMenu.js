@@ -1,9 +1,10 @@
 /**
  * Created by Flyforwards on 2017/6/26.
  */
-import * as prepareMealsService from '../services/prepareMeals'
-import { parse } from 'qs'
-import { message } from 'antd'
+import * as prepareMealsService from '../services/editMenu';
+import { parse } from 'qs';
+import { message } from 'antd';
+import { format,queryURL } from '../utils/index.js';
 
 export default {
   namespace: 'prepareMeals',
