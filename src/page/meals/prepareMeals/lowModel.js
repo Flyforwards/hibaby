@@ -122,7 +122,7 @@ class DynamicFieldSet extends Component {
                     )}
                     {
                       v.isDel ? <Icon
-                        className="dynamic-delete-button"
+                        className="dynamic-delete-button iconDel"
                         type="minus-circle-o"
                         onClick={() => {this.remove(k)}}
                       /> : null

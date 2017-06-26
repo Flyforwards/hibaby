@@ -4,6 +4,7 @@ import { Modal, Button } from 'antd';
 import { Tree, Input, Row, Col, Table } from 'antd';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
+import './prepareMeals.scss'
 
 class App extends Component {
   state = {
@@ -113,7 +114,7 @@ class App extends Component {
     const postDataHigh = {
       dishesId: id,
       dishesName: name,
-      number: changeKey + 1,
+      number: changeKey + 1
     }
     reset();
     isLow ? dispatch({
@@ -170,11 +171,12 @@ class App extends Component {
       dataIndex: 'status',
       key: 'status'
     }, {
+      title: '操作',
       key: 'action',
       dataIndex: 'status',
       render: (text, record) => {
         return (
-          <Button onClick={() => {this.getInfo(record)}}>选择</Button>
+          <a href="#" onClick={() => {this.getInfo(record)}}>选择</a>
         )
       }
     }]
@@ -208,8 +210,8 @@ class App extends Component {
           visible={chooseVisibleInfo}
           footer={null}
           onCancel={this.handleCancel}
+          className="chooseDishesModel"
         >
-          <Search style={{ width: 300 }} placeholder="Search" onChange={this.onChange}/>
           <Row>
             <Col span={6}>
               <Tree
@@ -222,15 +224,17 @@ class App extends Component {
               </Tree>
             </Col>
             <Col span={18}>
+              <Search className="search" placeholder="请输入菜品名" onChange={this.onChange}/>
               <Table rowKey="id"
                      columns={columns}
                      dataSource={dishesPageInfo}
                      onChange={this.handleTableChange}
                      pagination={paginationInfo}
+                     className="dishesTab"
+                     bordered
               />
             </Col>
           </Row>
-        
         </Modal>
       </div>
     );

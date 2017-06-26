@@ -265,7 +265,9 @@ class DynamicFieldSet extends Component {
                 </Col>
                 {
                   v.isDel ? <Col span={2} style={{ textAlign: 'center' }}>
-                    <Button onClick={() => this.remove(k)}>删除</Button>
+                    <Button className="btnDelIcon" onClick={() => this.remove(k)}>
+                      删除
+                    </Button>
                   </Col> : null
                 }
               </Row>

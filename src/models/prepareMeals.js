@@ -622,9 +622,9 @@ export default {
     
     //保存基础餐单
     *saveMenu({ payload: values }, { call, put }){
-      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveMenu, values);
+      const { data: { code } } = yield call(prepareMealsService.saveMenu, values);
       if (code == 0) {
-        message.success('保存成功');
+        message.success('保存成功!');
         yield put({
           type: 'changeVisible',
           payload: {
@@ -645,9 +645,15 @@ export default {
     
     //保存高档食材的餐单
     *saveTopMenu({ payload: values }, { call, put }){
-      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveTopMenu, values);
+      const { data: { code } } = yield call(prepareMealsService.saveTopMenu, values);
       if (code == 0) {
-        message.success('保存成功');
+        message.success('保存成功!');
+        yield put({
+          type: 'changeTopVisible',
+          payload: {
+            topVisible: false
+          }
+        })
         yield put({
           type: 'getTopMenuByDay',
           payload: {
@@ -655,8 +661,7 @@ export default {
             day: values.day,
             type: values.type
           }
-        })
-        ;
+        });
       }
     }
   },
