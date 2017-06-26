@@ -72,7 +72,7 @@ export default {
               try {
                 const {data: {code: code5, data}} = yield call(usersService.getByCurrentUser,);
                 if (code5 == 0) {
-                  window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
+                   // window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
                 }
               } catch (err) {
 
@@ -98,7 +98,7 @@ export default {
                   try {
                     const {data: {code: code5, data}} = yield call(usersService.getByCurrentUser,);
                     if (code5 == 0) {
-                      window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
+                      // window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
                     }
                   } catch (err) {
 

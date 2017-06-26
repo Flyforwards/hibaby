@@ -42,16 +42,17 @@ class AddServiceed extends Component {
           key: 'usageCount',
           width: "20%",
           render: (text, record, index) => {
+            const onChange=(number)=>{
+              this.state.selectedRows.map(item=> {
+                if (item.id == record.id) {
+                  item.usageCount = number;
+                }
+              });
+              record.usageCount = number
+            }
             return (
-                <span className="span">
-                  <InputNumber defaultValue={record.usageCount} max={999} min={1} onChange={(number)=>{
-                    this.state.selectedRows.map(item=> {
-                      if (item.id == record.id) {
-                        item.usageCount = number;
-                      }
-                    });
-                    record.usageCount = number
-                  }}/>
+                <span className="span" id={index}>
+                  <InputNumber defaultValue={record.usageCount} max={999} min={1} onChange = {onChange}/>
                 </span>
             );
           },
@@ -76,31 +77,6 @@ class AddServiceed extends Component {
       this.setState({ selectedRows });
     }
 
-    componentDidMount() {
-        this.props.dispatch({
-            type: 'packageInfo/getServiceList',
-            payload: { }
-        });
-        this.props.dispatch({
-            type: 'packageInfo/getDictionary',
-            payload: {
-              "abName":"TCLX" ,
-              "softDelete": 0
-            }
-        });
-        this.props.dispatch({
-            type: 'packageInfo/selectData',
-            payload: { }
-        });
-        this.props.dispatch({
-            type: 'packageInfo/roomList',
-            payload: { }
-        });
-        this.props.dispatch({
-            type: 'packageInfo/getCardLevel',
-            payload: { }
-        });
-    }
     handleSubmit = ()=>{
       history.go(-1)
     }
@@ -146,6 +122,11 @@ class AddServiceed extends Component {
         }
       })
     }
+    componentWillUnmount(){
+      this.props.serviceList.map(record=>{
+        record.usageCount = 1;
+      })
+    }
     render() {
         const { form, serviceList, selectData, grade } = this.props;
         const { getFieldDecorator } = form;
@@ -163,7 +144,7 @@ class AddServiceed extends Component {
         const ListLnformation = serviceList.map((record)=>{
           record.key = record.id;
           return record;
-        });;
+        });
 
         if(grade){
           gradeList = grade.map((item)=>{
@@ -186,6 +167,7 @@ class AddServiceed extends Component {
             selectedRows,
             onChange: this.onSelectChange,
         };
+
 
         const botton_div = (
           <div className="addServiceinfoSuite">
@@ -254,7 +236,7 @@ class AddServiceed extends Component {
                   <Table bordered
                     rowSelection={ rowSelection }
                     columns={ columns }
-                    dataSource={ListLnformation}
+                    dataSource={ ListLnformation }
                     pagination = { false }
                     scroll={{ y: 470 }}
                   />

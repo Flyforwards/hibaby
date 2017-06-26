@@ -15,13 +15,14 @@ export default {
 		size:null,
 		serviceList: [],
 		roomData:null,
-		findById:null,
+    packageItem:{}, // 套餐实体
 		selectDataSave:null,
 		getDictionary:null,
 		suiteListByPage:[],
 		roomFindById:null,
 		commodityListByPage:[],
 		chineseToPinyin:null,
+    selectedRowKeys: [],
 		grade:null,
 		pagination: {
 	      showQuickJumper: true,
@@ -55,6 +56,10 @@ export default {
         state.selectedRowKeys.remove(record.key);
         return {...state, };
       },
+      changeSelect(state,{payload:{ selectedRowKeys }}){
+        return {...state, selectedRowKeys}
+      },
+
 	    listByPageSave(state,{payload:{ list, pagination}}){
 	      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 	    },
@@ -62,13 +67,17 @@ export default {
 	      let roomListSavedata = {...state,roomData,code};
 	      return roomListSavedata
 	    },
-	    getCardLevelSave(state,{payload:{ data:grade,code }}){
-	      let getCardLevelSavedata = {...state,grade,code};
+	    getCardLevelSave(state,{payload:{ data: grade }}){
+	      let getCardLevelSavedata = {...state, grade };
 	      return getCardLevelSavedata
 	    },
-	    findByIdSave(state,{payload:{ data:findById,code }}){
-	      let findByIdSavedata = {...state,findById,code};
-	      return findByIdSavedata
+	    findByIdSave(state,{payload:{ packageItem }}){
+
+	      const selectedRowKeys = packageItem.serviceInfoList.map((record)=>{
+          return record.serviceInfoId;
+        })
+        console.log(selectedRowKeys);
+	      return {...state, packageItem, selectedRowKeys}
 	    },
 	    chineseToPinyinSave(state,{payload:{ data:chineseToPinyin,code }}){
 	      let chineseToPinyindata = {...state,chineseToPinyin,code};
@@ -305,9 +314,7 @@ export default {
 			if (code == 0) {
 				yield put({
 					type: 'findByIdSave',
-					payload: {
-						data
-					}
+					payload: { packageItem: data }
 				});
 			}
 		},
@@ -350,7 +357,7 @@ export default {
 		},
 	    // 服务项目 列表
     *getServiceList({payload: values}, { call, put }) {
-			const { data: { data, code }} = yield call(packageInfoService.serviceListByPage, values);
+			const { data: { data, code }} = yield call(packageInfoService.getServiceList, values);
 			if (code == 0) {
 			  if (data && data.length > 0) {
 			    data.map((record)=>{
@@ -390,12 +397,38 @@ export default {
 	            payload: query
 	          });
 	        }
+
 	        if (pathname === '/crm/service-info') {
 		         dispatch({
 		            type: 'listByPage',
 		            payload: query
 		        });
 	        }
+	        if (pathname == '/crm/service-info/add') {
+            dispatch({
+              type: 'getServiceList',
+              payload: { }
+            });
+            dispatch({
+              type: 'getDictionary',
+              payload: {
+                "abName":"TCLX" ,
+                "softDelete": 0
+              }
+            });
+            dispatch({
+              type: 'selectData',
+              payload: { }
+            });
+           dispatch({
+              type: 'roomList',
+              payload: { }
+            });
+            dispatch({
+              type: 'getCardLevel',
+              payload: { }
+            });
+          }
 	      })
 	    }
 	},

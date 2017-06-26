@@ -105,13 +105,13 @@ class AddServiceed extends Component {
         let gradeList = []
         const columns = this.columns;
         const { getFieldDecorator } = this.props.form;
-        if(this.props.findById != null){
-            ListLnformation = this.props.findById.serviceInfoList;
+        if(this.props.packageItem.serviceInfoList){
+            ListLnformation = this.props.packageItem.serviceInfoList;
               ListLnformation.map((record)=>{
-                record.key = record.id;
+                record.key = record.serviceInfoId;
             });
             loadingName = false
-            if(this.props.findById.suiteId){
+            if(this.props.packageItem.suiteId){
               this.roomVisbled = true
             }else{
               this.roomVisbled = false
@@ -127,9 +127,9 @@ class AddServiceed extends Component {
             selectedRows,
             onChange: this.onSelectChange,
         };
-        if(this.props.getDictionary != null && this.props.findById != null){
+        if(this.props.getDictionary != null && this.props.packageItem.serviceInfoList){
           this.props.getDictionary.map((item)=>{
-            if(item.id == this.props.findById.type){
+            if(item.id == this.props.packageItem.type){
               type = item.name
             }
           })
@@ -139,10 +139,10 @@ class AddServiceed extends Component {
             return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
           })
         }
-        if(this.props.selectData != null && this.props.findById != null){
-          levels.push(String(this.props.findById.levels))
+        if(this.props.selectData != null && this.props.packageItem.serviceInfoList){
+          levels.push(String(this.props.packageItem.levels))
           this.props.selectData.map((item)=>{
-            if(item.id == this.props.findById.suiteId){
+            if(item.id == this.props.packageItem.suiteId){
               suiteId = item.name
             }
           })
@@ -159,7 +159,7 @@ class AddServiceed extends Component {
                    className="name"
                   >
                     {getFieldDecorator('name', {
-                      initialValue:this.props.findById?this.props.findById.name:null,
+                      initialValue:this.props.packageItem.name,
                       rules: [],
                     })(
                     <Input disabled={true}/>
@@ -170,7 +170,7 @@ class AddServiceed extends Component {
                      className="price"
                   >
                   {getFieldDecorator('price', {
-                    initialValue:this.props.findById?this.props.findById.price:null,
+                    initialValue:this.props.packageItem.price,
                     rules: [],
                     })(
                      <Input
@@ -245,7 +245,7 @@ class AddServiceed extends Component {
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
                   ID = { this.state.ID }
-                  serviceInfoList = { this.props.findById}
+                  serviceInfoList = { this.props.packageItem}
                 />
             </div>
         )
@@ -255,7 +255,7 @@ class AddServiceed extends Component {
 
 function mapStateToProps(state) {
   const {
-    findById,
+    packageItem,
     getDictionary,
     grade,
     selectData
@@ -263,7 +263,7 @@ function mapStateToProps(state) {
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.packageInfo,
-    findById,
+    packageItem,
     getDictionary,
     selectData,
     grade,

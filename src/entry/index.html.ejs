@@ -35,7 +35,7 @@
           .list_content_list_Td{border:0;border-bottom:2px solid #eef1f1;}
 
     .telephone-system-content{
-        border:1px solid #000; background-color:#FFF;
+       border:1px solid #000; background-color:#FFF;
        background-color: white;
        z-index: 10;
        width:1000px;
@@ -248,6 +248,8 @@
     function cbLogin(token){//登陆
     	if(token.code == "0"){
     		// alert("登录成功");
+        window.token = token
+        $('#bridging-btn').click();
 
     		orderCallbackCount = token.allCallBackCount;
     		window.executeAction('doQueueStatus');//获取队列数据

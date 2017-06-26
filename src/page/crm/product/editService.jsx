@@ -41,11 +41,10 @@ class AddServiceed extends Component {
           key: 'usageCount',
           width: "20%",
           render: (text, record, index) => {
-            let count = 1
-            if(this.props.findById != null){
-              this.props.findById.serviceInfoList.map((item)=>{
+            const { packageItem } = this.props;
+            if(packageItem.serviceInfoList){
+              packageItem.serviceInfoList.map((item)=>{
                 if(item.serviceInfoId == record.id){
-                  count = item.usageCount
                   record.usageCount = item.usageCount
                 }
               })
@@ -60,14 +59,18 @@ class AddServiceed extends Component {
           },
         }];
         this.state = {
-          selectedRowKeys:[],
-          isNess: false
+            visible: true
         };
+        this.first = true;
+        this.defaultVisible = false;
         this.TableEdit = false
     }
 
-    onSelectChange = (selectedRowKeys,selectedRows) => {
-      this.setState({ selectedRows,selectedRowKeys });
+    onSelectChange = (selectedRowKeys) => {
+      this.props.dispatch({
+        type: 'packageInfo/changeSelect',
+        payload: { selectedRowKeys }
+      });
     }
 
     componentDidMount() {
@@ -105,19 +108,25 @@ class AddServiceed extends Component {
       this.props.form.validateFields((err, values) => {
         if(!err){
           let serviceInfoList = [];
-          const { selectedRowKeys} = this.state;
-          if(selectedRowKeys && selectedRowKeys.length>=1){
-            serviceInfoList = selectedRowKeys.map((item)=>{
-
-              return {"serviceInfoId":item.id,"usageCount":Number(item.usageCount),}
+          const { selectedRowKeys, serviceList, packageItem } = this.props;
+          if( selectedRowKeys.length>=1){
+             selectedRowKeys.map((item)=>{
+              serviceList.map((record)=>{
+                if (record.id == item) {
+                  serviceInfoList.push({"serviceInfoId": record.id, "usageCount": Number(record.usageCount),})
+                }
+              })
             })
           } else {
             message.error('至少选择一个服务项目!');
             return;
           }
-
+          let visible = this.defaultVisible
+          if (!this.first) {
+            visible = this.state.visible;
+          }
           // 是月子套餐
-          if (this.state.isNess) {
+          if (visible) {
             if (!values.packageLevel) {
               message.error('请选择套餐级别!')
               return;
@@ -130,68 +139,69 @@ class AddServiceed extends Component {
             values.packageLevel = undefined;
             values.room = undefined;
           }
-          console.log(values);
-          console.log(serviceInfoList);
-          return;
+          values.id = packageItem.id;
           this.props.dispatch({
-            type: 'packageInfo/add',
+            type: 'packageInfo/edit',
             payload: {
               "name": values.name,
               "price": values.price,
               "serviceInfoList":serviceInfoList,
               "suiteId": values.room,
               "type": values.type,
-              "levels":values.packageLevel
+              "levels":values.packageLevel,
+              'id': values.id,
             }
           });
         }
       })
     }
+
     onSelect(value, option){
-      let isNess = false;
+      let visible = false;
       if (option && option.props.title == "月子套餐") {
-        isNess = true;
+        visible = true;
       }
+      this.first = false;
       this.setState({
-        isNess
+        visible: visible
       })
     }
     render() {
-        let levels = []
+
         let rowSelection = {}
-        const { getFieldDecorator } = this.props.form;
-        const { serviceList, grade, } = this.props;
-        const { selectedRowKeys } = this.state;
+        const { getFieldDecorator,  } = this.props.form;
+        const { serviceList, grade, selectData, packageItem, selectedRowKeys } = this.props;
         const columns = this.columns;
         let roomList = []
-        let type = []
+        let roomOption = []
+        let gradeList = []
         const ListLnformation = serviceList.map((record)=>{
             record.key = record.id;
             return record;
         });
 
-
-
-
-        if(this.props.getDictionary != null &&　this.props.findById != null){
-          roomList = this.props.getDictionary.map((item)=>{
-            if(item.id == this.props.findById.type){
-              type = String(item.id)
-            }
+        if(selectData){
+          roomOption = selectData.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
           })
         }
-        if(this.props.findById){
-        let data = [];
-        levels.push(String(this.props.findById.levels))
-          if(this.props.findById.isUse == 1){
+        if(grade){
+          gradeList = grade.map((item)=>{
+            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
+          })
+        }
+
+        if(this.props.getDictionary != null &&　packageItem.type){
+          roomList = this.props.getDictionary.map((item)=>{
+            return (<Option value={item.id+""} title={item.name} key={item.name}>{item.name}</Option>)
+          })
+        }
+        if(packageItem.name){
+          if(packageItem.isUse == 1){
               this.TableEdit = true
           }else{
               this.TableEdit = false
           }
-          this.props.findById.serviceInfoList.map((record)=>{
-              data.push(record.serviceInfoId)
-          });
           rowSelection = {
               selectedRowKeys,
               onChange: this.onSelectChange,
@@ -201,6 +211,17 @@ class AddServiceed extends Component {
           };
         }
 
+
+      if (packageItem.suiteId) {
+          this.defaultVisible = true;
+      } else {
+          this.defaultVisible = false;
+      }
+      let visible = this.defaultVisible
+      if (!this.first) {
+        visible = this.state.visible;
+      }
+
       const botton_div = (
         <div className="addServiceinfoSuite">
           <p>选择套房<span className="roomVist">(只有月子套餐才可以选择套房)</span>:</p>
@@ -209,8 +230,9 @@ class AddServiceed extends Component {
               label="套房"
               className="room"
             >
-              { getFieldDecorator('room', { rules: [],
+              { getFieldDecorator('room', { rules: [],initialValue: packageItem.suiteId?String(packageItem.suiteId):packageItem.suiteId,
               })( <Select>
+                { roomOption }
                 </Select>
               )}
             </FormItem>
@@ -218,8 +240,9 @@ class AddServiceed extends Component {
               label="套餐等级"
               className="packageLevel"
             >
-              {getFieldDecorator('packageLevel', { rules: [],
+              {getFieldDecorator('packageLevel', { rules: [],initialValue: packageItem.levels?String(packageItem.levels):packageItem.levels,
               })( <Select>
+                { gradeList }
                 </Select>
               )}
             </FormItem>
@@ -236,8 +259,8 @@ class AddServiceed extends Component {
                    className="name"
                   >
                     {getFieldDecorator('name', {
-                      initialValue:this.props.findById?this.props.findById.name:null,
-                       rules:  [{ required: true, message: '请填写套餐名称！限30字',max: 30 }],
+                      initialValue: packageItem.name,
+                      rules:  [{ required: true, message: '请填写套餐名称！限30字',max: 30 }],
                     })(
                       <Input />
                     )}
@@ -247,7 +270,7 @@ class AddServiceed extends Component {
                      className="price"
                   >
                   {getFieldDecorator('price', {
-                    initialValue:this.props.findById?this.props.findById.price:null,
+                    initialValue: packageItem.price,
                     rules: [{ required: true,pattern: /^\d{0,7}$/, message: '请输入0-7位数字' }],
                     })(
                     <Input
@@ -260,7 +283,7 @@ class AddServiceed extends Component {
                    label="套餐类型"
                    >
                     {getFieldDecorator('type', {
-                      initialValue:type,
+                      initialValue: packageItem.type ? String(packageItem.type): packageItem.type,
                       rules: [{ required: true, message: '请选择套餐类型！' }],
                     })(
                     <Select onSelect = {this.onSelect.bind(this)} disabled={this.TableEdit}
@@ -283,7 +306,7 @@ class AddServiceed extends Component {
                     defaultExpandedRowKeys = {ListLnformation}
                     />
                 </div>
-                { this.state.isNess ? botton_div : null }
+                { visible ? botton_div : null }
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
                 <Button className="SaveBtn" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
@@ -295,17 +318,19 @@ function mapStateToProps(state) {
   const {
     serviceList,
     selectData,
-    findById,
+    packageItem,
     grade,
-    getDictionary
+    getDictionary,
+    selectedRowKeys
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
     serviceList,
     selectData,
-    findById,
+    packageItem,
     grade,
-    getDictionary
+    getDictionary,
+    selectedRowKeys
     };
 }
 const addService = Form.create()(AddServiceed);
