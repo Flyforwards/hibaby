@@ -39,10 +39,10 @@ class DishesLeft extends React.Component {
     const _this = this;
     if(root.nodes){
       return root.nodes.map(function (child,index) {
-        return <TreeNode title={child.name+"("+child.dishesCount+")"} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
+        return <TreeNode name={child.name} title={child.name+"("+child.dishesCount+")"} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
       });
     }
-    return <TreeNode title={root.name} level={root.level} key={root.id} parentId={root.parentId} />;
+    return <TreeNode  name={root.name} title={root.name} level={root.level} key={root.id} parentId={root.parentId} />;
   }
 
   //展开/收起节点时触发
@@ -184,7 +184,7 @@ class DishesLeft extends React.Component {
       isNodeDetail : true,
       initialValue : {
         id : this.state.ID,
-        name : this.state.selectedNode.props.title
+        name : this.state.selectedNode.props.name
       }
     });
   }

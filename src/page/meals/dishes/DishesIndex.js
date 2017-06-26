@@ -120,7 +120,6 @@ class DishesIndex extends React.Component{
   handleSearch  = () =>{
     this.getTableData({
       nodeId : this.props.dishes.nodeId,
-
       page : this.props.dishes.page,
       size : this.props.dishes.size
     });
@@ -128,7 +127,7 @@ class DishesIndex extends React.Component{
 
   onTableChange = (pageNumber) =>{
     this.getTableData({
-      nodeId : 1,
+      nodeId : this.props.dishes.nodeId,
       page : pageNumber,
       size : this.props.dishes.size
     });
@@ -252,7 +251,8 @@ class DishesIndex extends React.Component{
                 bordered
                 dataSource={dataSource}
                 columns={this.columns}
-                pagination={pagination}/>
+                pagination={pagination}
+              />
               <Current
                 page={this.props.dishes.page}
                 total={ this.props.dishes.total}
