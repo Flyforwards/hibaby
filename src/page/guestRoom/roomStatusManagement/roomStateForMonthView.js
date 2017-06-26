@@ -663,7 +663,7 @@ const monthStateView = (props) => {
           <div className="monthRoomMainBox">
             <div className="daysRulerBox">
               {
-                props.users.selectedMonthList.map(item => renderDaysRuler(item))
+                /*props.users.selectedMonthList.map(item => renderDaysRuler(item))*/
               }
             </div>
             {

@@ -39,7 +39,7 @@ export default {
     dayStatusData: '',
     FloorAry: '',
     MainFloorAry: '',
-    fetusAry:'',
+    fetusAry: '',
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
@@ -52,7 +52,6 @@ export default {
     dragUser: null,
     defaultYear: new Date().getFullYear(),
     dateSelectList: [],
-    selectedMonthList: [],
     dateSelectViews: [],
     monthRoomUpdateList: [],// 保存状态有更新的用户
     //弹出的modal数据控制
@@ -133,8 +132,8 @@ export default {
       else if (todo.abName === 'CX') {
         return {...state, TowardAry: todo.data};
       }
-      else if(todo.abName === 'YCC'){
-          return {...state,fetusAry:todo.data};
+      else if (todo.abName === 'YCC') {
+        return {...state, fetusAry: todo.data};
       }
       return {...state};
     },
@@ -476,23 +475,32 @@ export default {
 
     *monthRoomList({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
-      // const selectedYear = state.selectedYear;
-      const selectedMonthList = state.selectedMonthList;
+      const dateSelectList = state.dateSelectList;
 
-      if (!selectedYear) {
-        message.warn('请选择年份');
-        return;
+      // 去重
+      let years = {};
+
+      for (let dateSelect of dateSelectList) {
+        years[dateSelect.year] = {};
+
+        for (let month of dateSelect.monthList) {
+          years[dateSelect.year][month] = "";
+        }
       }
 
-      if (!selectedMonthList || !selectedMonthList.length) {
-        message.warn('请选择月份');
-        return;
+      // 扁平化
+      let param = [];
+
+      for (let year in years) {
+        param.push({
+          year: year,
+          monthList: Object.keys(years[year]),
+        })
       }
 
-      let param = [{
-        year: selectedYear,
-        monthList: selectedMonthList,
-      }];
+      if (!param.length) {
+        message.error("请选择时间");
+      }
 
       const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
 
