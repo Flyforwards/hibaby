@@ -286,19 +286,32 @@ const monthStateView = (props) => {
           return null;
         }
 
-        let result = dayList.map((day, dayindex) => {
-          //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
-          let status = 0;
-          // 一天中的用户列表
-          let dayCustomerList = day.customerList;
+        //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
+        let status = 0;
+        let dayCustomerList = null;
+        let hasUser = false;
 
-          // 如果该天只有一个用户, 直接显示相应状态
-          if (dayCustomerList.length === 1) {
-            let hasUser = false;
+        let result = dayList.map((day, dayindex) => {
+          // 一天中的用户列表
+          dayCustomerList = day.customerList;
+          if (!dayCustomerList || !dayCustomerList.length) {
+            // 空房
+            status = 0;
+          } else if (dayCustomerList.length === 1) {
+            // 如果该天只有一个用户, 直接显示相应状态
             status = dayCustomerList[0].status || 7;
+          } else if (dayCustomerList.length > 1) {
+            // 重叠
+            status = 9;
+          }
+
+          for (let j = 0; j < dayCustomerList.length; j++) {
+            hasUser = false;
 
             for (let i = 0; i < users.length; i++) {
-              if (users[i].customerId === dayCustomerList[0].customerId) {
+              if (users[i].customerId === dayCustomerList[j].customerId
+                && users[i].lastIndex === dayindex - 1
+                && users[i].status === dayCustomerList[j].status) {
                 hasUser = true;
                 users[i].dayCount++;
                 users[i].lastIndex = dayindex;
@@ -308,38 +321,13 @@ const monthStateView = (props) => {
 
             if (!hasUser) {
               users.push({
-                ...dayCustomerList[0],
+                ...dayCustomerList[j],
                 startDate: day.date,
                 startIndex: dayindex,
                 lastIndex: dayindex,
                 dayCount: 1,
-              });
+              })
             }
-          } else if (dayCustomerList.length > 1) {
-            for (let j = 0; j < dayCustomerList.length; j++) {
-              let hasUser = false;
-
-              for (let i = 0; i < users.length; i++) {
-                if (users[i].customerId === dayCustomerList[j].customerId) {
-                  hasUser = true;
-                  users[i].dayCount++;
-                  users[i].lastIndex = dayindex;
-                  break;
-                }
-              }
-
-              if (!hasUser) {
-                users.push({
-                  ...dayCustomerList[j],
-                  startDate: day.date,
-                  startIndex: dayindex,
-                  lastIndex: dayindex,
-                  dayCount: 1,
-                })
-              }
-            }
-
-            status = 9; // 重叠
           }
 
           let stateBox = classNames('stateBox', {
@@ -634,7 +622,6 @@ const monthStateView = (props) => {
       }
 
       const renderFiveDays = (days) => {
-        console.log(days);
         let result = [];
 
         let fiveDays = parseInt(days / 5);
@@ -693,32 +680,32 @@ const monthStateView = (props) => {
 
     return (
       <div className="monthRoomListBox">
-        <div style={{display: "flex"}}>
-          <div className="monthRoomLeftBox">
-            <div style={{height: '40px'}}/>
-            {
-              roomList.map((room) => {
-                return (
-                  <div className="monthRoomNumberBox">
-                    <div>
+        <div className="monthRoomLeftBox">
+          <div style={{height: '40px'}}/>
+          {
+            roomList.map((room) => {
+              return (
+                <div className="monthRoomNumberBox">
+                  <div>
 
-                      <div className="number">
-                        {room.roomNo}
-                      </div>
-                      <div className="level">
-                        v1
-                      </div>
+                    <div className="number">
+                      {room.roomNo}
+                    </div>
+                    <div className="level">
+                      v1
                     </div>
                   </div>
-                )
-              })
-            }
-          </div>
-          <div className="monthRoomMainBox">
-            {
-              renderDaysRuler()
-            }
+                </div>
+              )
+            })
+          }
+        </div>
+        <div className="monthRoomRightBox">
+          {
+            renderDaysRuler()
+          }
 
+          <div className="monthRoomMainBox">
             {
               roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
             }

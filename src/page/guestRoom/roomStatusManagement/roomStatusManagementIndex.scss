@@ -209,6 +209,7 @@
 
       .monthRoomListBox {
         background-color: #fff;
+        display: flex;
 
         .monthRoomLeftBox {
           min-width: 84px;
@@ -235,61 +236,68 @@
           }
         }
 
-        .daysRulerBox {
-          height: 40px;
-          align-items: center;
-          border: 1px solid #B67233;
-          border-radius: 3px;
-          margin-bottom: 5px;
+        .monthRoomRightBox {
+          display: flex;
+          overflow-x:scroll;
+          flex-direction: column;
 
-          .itemRulerBox {
-            float: left;
-            box-sizing: border-box;
-            overflow: hidden;
-            background-color: #F8F1EA;
+          .daysRulerBox {
+            height: 40px;
+            align-items: center;
+            border: 1px solid #B67233;
+            border-radius: 3px;
+            margin-bottom: 5px;
 
-            .itemRulerBoxTop {
-              height: 26px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              .itemRulerBoxTitle {
-                width: 70px;
-                height: 16px;
-                background: #B67233;
-                border-radius: 3px;
-                margin: 0 auto;
-                line-height: 16px;
-                text-align: center;
-                color: #fff;
-
-              }
-            }
-
-            .itemRulerBoxBottom {
+            .itemRulerBox {
+              float: left;
+              box-sizing: border-box;
               overflow: hidden;
-              height: 14px;
-              width: 300px;
-              margin-top:-2px;
-              .fiveDayRuler {
-                float: left;
-                height: 14px;
-                line-height: 14px;
-                box-sizing: border-box;
-                text-align: center;
-                font-size: 10px;
-                color: #B67233;
+              background-color: #F8F1EA;
+
+              .itemRulerBoxTop {
+                height: 26px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .itemRulerBoxTitle {
+                  width: 70px;
+                  height: 16px;
+                  background: #B67233;
+                  border-radius: 3px;
+                  margin: 0 auto;
+                  line-height: 16px;
+                  text-align: center;
+                  color: #fff;
+
+                }
               }
 
-              .fiveDayRuler:nth-child(n+2) {
-                border-left: 1px solid #B67233;
+              .itemRulerBoxBottom {
+                overflow: hidden;
+                height: 14px;
+                width: 300px;
+                margin-top: -2px;
+                .fiveDayRuler {
+                  float: left;
+                  height: 14px;
+                  line-height: 14px;
+                  box-sizing: border-box;
+                  text-align: center;
+                  font-size: 10px;
+                  color: #B67233;
+                }
+
+                .fiveDayRuler:nth-child(n+2) {
+                  border-left: 1px solid #B67233;
+                }
               }
             }
-          }
 
-          .itemRulerBox:nth-child(n+2) {
-            border-left: 1px solid #B67233;
+            .itemRulerBox:nth-child(n+2) {
+              border-left: 1px solid #B67233;
+            }
+
           }
 
         }
@@ -297,7 +305,7 @@
         .monthRoomBox {
           display: flex;
           height: 60px;
-          margin:0 0 10px 1px;
+          margin: 0 0 10px 1px;
           align-items: center;
 
           .userBox {
@@ -385,7 +393,6 @@
 
         .monthRoomMainBox {
           padding-bottom: 25px;
-          overflow: auto;
         }
 
       }
