@@ -236,18 +236,67 @@
         }
 
         .daysRulerBox {
-          display: flex;
           height: 40px;
           align-items: center;
           border: 1px solid #B67233;
           border-radius: 3px;
           margin-bottom: 5px;
+
+          .itemRulerBox {
+            float: left;
+            box-sizing: border-box;
+            overflow: hidden;
+
+            .itemRulerBoxTop {
+              height: 26px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              .itemRulerBoxTitle {
+                width: 70px;
+                height: 16px;
+                background: #B67233;
+                border-radius: 3px;
+                margin: 0 auto;
+                line-height: 16px;
+                text-align: center;
+                color: #fff;
+
+              }
+            }
+
+            .itemRulerBoxBottom {
+              overflow: hidden;
+              height: 14px;
+              width: 300px;
+              margin-top:-2px;
+              .fiveDayRuler {
+                float: left;
+                height: 14px;
+                line-height: 14px;
+                box-sizing: border-box;
+                text-align: center;
+                font-size: 10px;
+                color: #B67233;
+              }
+
+              .fiveDayRuler:nth-child(n+2) {
+                border-left: 1px solid #B67233;
+              }
+            }
+          }
+
+          .itemRulerBox:nth-child(n+2) {
+            border-left: 1px solid #B67233;
+          }
+
         }
 
         .monthRoomBox {
           display: flex;
           height: 60px;
-          margin-bottom: 10px;
+          margin:0 0 10px 1px;
           align-items: center;
 
           .userBox {

@@ -624,15 +624,69 @@ const monthStateView = (props) => {
     };
 
 
-    const renderDaysRuler = (item) => {
+    const renderDaysRuler = () => {
 
-      const getDays = (year, month) => {
-        return (new Date(year, month, 0)).getDate();
+      let dateRulerList = props.users.dateRulerList;
+      let boxWidth = 0;
+
+      for (let item of dateRulerList) {
+        boxWidth += item.days * UNIT_WIDTH;
+      }
+
+      const renderFiveDays = (days) => {
+        console.log(days);
+        let result = [];
+
+        let fiveDays = parseInt(days / 5);
+        let remainder = days % 5;
+
+        for (let i = 1; i <= fiveDays; i++) {
+          result.push(
+            <div className="fiveDayRuler" style={{
+              width: 5 * UNIT_WIDTH + "px",
+            }}>
+              {i * 5}天
+            </div>
+          )
+        }
+
+        if (remainder) {
+          result.push(
+            <div className="fiveDayRuler" style={{
+              width: remainder * UNIT_WIDTH + "px",
+            }}>
+            </div>
+          )
+        }
+
+        return result;
+
       };
 
       return (
-        <div>
-          {item} 月
+
+        <div className="daysRulerBox" style={{width: boxWidth + 2 + "px"}}>
+          {
+            dateRulerList.map(item => {
+
+              return (
+                <div className="itemRulerBox" style={{
+                  width: item.days * UNIT_WIDTH,
+                }}>
+                  <div className="itemRulerBoxTop">
+                    <div className="itemRulerBoxTitle">
+                      {item.date}
+                    </div>
+                  </div>
+                  <div className="itemRulerBoxBottom">
+                    {
+                      renderFiveDays(item.days)
+                    }
+                  </div>
+                </div>
+              )
+            })
+          }
         </div>
       )
     };
@@ -661,11 +715,10 @@ const monthStateView = (props) => {
             }
           </div>
           <div className="monthRoomMainBox">
-            <div className="daysRulerBox">
-              {
-                /*props.users.selectedMonthList.map(item => renderDaysRuler(item))*/
-              }
-            </div>
+            {
+              renderDaysRuler()
+            }
+
             {
               roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
             }

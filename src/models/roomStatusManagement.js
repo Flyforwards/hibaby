@@ -29,6 +29,16 @@ const timeToDate = (time) => {
   }
 };
 
+/**
+ * 获取某月天数
+ * @param year
+ * @param month
+ * @returns {number}
+ */
+const getDays = (year, month) => {
+  return (new Date(year, month, 0)).getDate();
+};
+
 export default {
   namespace: 'roomStatusManagement',
   state: {
@@ -52,6 +62,7 @@ export default {
     dragUser: null,
     defaultYear: new Date().getFullYear(),
     dateSelectList: [],
+    dateRulerList: [],
     dateSelectViews: [],
     monthRoomUpdateList: [],// 保存状态有更新的用户
     //弹出的modal数据控制
@@ -355,6 +366,35 @@ export default {
         ...state,
         dateSelectViews: dateSelectViews
       }
+    },
+
+    updateDateRulerList(state, {payload: data}) {
+
+      let dateRulerList = [];
+      let dateObj = {};
+      let sortYears = [];
+
+      for (let d of data.data) {
+        dateObj[d.year] = d.monthList;
+        sortYears.push(d.year)
+      }
+
+      sortYears.sort((a, b) => a - b);
+
+      for (let year of sortYears) {
+        for (let month of dateObj[year]) {
+          month = month < 10 ? '0' + month : month;
+          dateRulerList.push({
+            date: year + '-' + month,
+            days: getDays(year, month),
+          })
+        }
+      }
+
+      return {
+        ...state,
+        dateRulerList: dateRulerList,
+      }
     }
 
   },
@@ -390,6 +430,7 @@ export default {
         ))
       }
     },
+
     *getDataDict({payload: value}, {call, put}){
       const parameter = {
         abName: value.abName,
@@ -406,6 +447,7 @@ export default {
         });
       }
     },
+
     *arrangeRoom({payload: value}, {call, put}){
       const defData = {"customerId": -1, "customerName": ''}
 
@@ -481,6 +523,10 @@ export default {
       let years = {};
 
       for (let dateSelect of dateSelectList) {
+        if (!dateSelect) {
+          return;
+        }
+
         if (!years[dateSelect.year]) {
           years[dateSelect.year] = {};
         }
@@ -502,9 +548,17 @@ export default {
 
       if (!param.length) {
         message.error("请选择时间");
+        return;
       }
 
       const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
+
+      yield put({
+        type: 'updateDateRulerList',
+        payload: {
+          data: param,
+        }
+      });
 
       yield put({
         type: 'setMonthRoomList',
@@ -513,6 +567,7 @@ export default {
         }
       });
     },
+
     *userDrop({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
 
