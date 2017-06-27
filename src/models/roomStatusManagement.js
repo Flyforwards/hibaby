@@ -490,7 +490,6 @@ export default {
         }
       }
 
-      console.log(years);
       // 扁平化
       let param = [];
 
