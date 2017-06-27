@@ -191,7 +191,7 @@ class DishesFormPage extends React.Component{
                   }
                 ],
               })(
-                <Input data-index={i+1} onChange={this.ingredientsChange.bind(this)} />
+                <Input data-index={i+1}  />
               )}
             </FormItem>
           </Col>
@@ -211,7 +211,7 @@ class DishesFormPage extends React.Component{
                   }
                 ],
               })(
-                <Input suffix="g" />
+                <Input addonAfter="g" />
               )}
             </FormItem>
           </Col>
@@ -331,7 +331,7 @@ class DishesFormPage extends React.Component{
                       }
                     ],
                   })(
-                    <Input suffix="g" />
+                    <Input addonAfter="g" />
                   )}
                 </FormItem>
               </Col>
