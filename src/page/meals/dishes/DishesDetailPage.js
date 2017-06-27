@@ -120,7 +120,7 @@ class DishesDetailPage extends React.Component{
                   }
                 ],
               })(
-                <Input suffix="g" disabled={this.state.disabled}/>
+                <Input addonAfter="g" disabled={this.state.disabled}/>
               )}
             </FormItem>
           </Col>
@@ -129,7 +129,15 @@ class DishesDetailPage extends React.Component{
     }
 
 
-
+    const {mvTypeData,vdTypeData} = this.props.dishes;
+    const mvTypeOptions = [];
+    mvTypeData.map(function (item,index) {
+      mvTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    });
+    const vdTypeOptions = [];
+    vdTypeData.map(function (item,index) {
+      vdTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    });
 
     return (
       <div className="dishesDiv">
@@ -170,9 +178,7 @@ class DishesDetailPage extends React.Component{
                     ],
                   })(
                     <Select placeholder="请选择" allowClear={true} disabled={this.state.disabled} >
-                      <Option value="0">荤</Option>
-                      <Option value="1">素</Option>
-                      <Option value="2">半荤</Option>
+                      {mvTypeOptions}
                     </Select>
                   )}
                 </FormItem>
@@ -192,10 +198,7 @@ class DishesDetailPage extends React.Component{
                     ],
                   })(
                     <Select placeholder="请选择" allowClear={true} disabled={this.state.disabled} >
-                      <Option value="0">主食</Option>
-                      <Option value="1">配菜</Option>
-                      <Option value="2">点心</Option>
-                      <Option value="3">水果</Option>
+                      {vdTypeOptions}
                     </Select>
                   )}
                 </FormItem>
@@ -241,7 +244,7 @@ class DishesDetailPage extends React.Component{
                       }
                     ],
                   })(
-                    <Input suffix="g" disabled={this.state.disabled} />
+                    <Input addonAfter="g" disabled={this.state.disabled} />
                   )}
                 </FormItem>
               </Col>

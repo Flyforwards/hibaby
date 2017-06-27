@@ -159,6 +159,7 @@ class CardDetail extends Component {
       </Row>
     }
     return (
+      <div className="infoCard">
       <div className="cardDetail" style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
@@ -254,6 +255,7 @@ class CardDetail extends Component {
         >
           <p>是否确定删除此卡种?</p>
         </Modal>
+      </div>
       </div>
     )
   }

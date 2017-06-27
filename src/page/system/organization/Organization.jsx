@@ -257,7 +257,7 @@ class Organization extends React.Component {
       status: fields.OrganizationType,
       character: fields.SystemRoles,
       statusType: true,
-      current:1
+      current: 1
     })
     this.props.dispatch({
       type: 'organization/organizationList',
@@ -341,7 +341,7 @@ class Organization extends React.Component {
           <div className="Organization-right">
             <div className="Organization-nav">
               <Form layout="inline">
-                <Row  justify="space-between">
+                <Row justify="space-between">
                   <Col span={8}>
                     <FormItem
                       label="姓名"
@@ -386,13 +386,18 @@ class Organization extends React.Component {
                 </Row>
 
               </Form>
-              <div className="btn">
-                {this.state.tissueProperty == 3 ?
-                 <Link to={{ pathname: '/system/organization/addUser', query: { nodeid: this.state.nodeid } }}><Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button></Link>:
-                  <Link to="/system/organization/addUser"><Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button></Link>
-                }
-                <Button className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</Button>
-              </div>
+              <Row className="btn">
+                  {this.state.tissueProperty == 3 ?
+                    <Link to={{ pathname: '/system/organization/addUser', query: { nodeid: this.state.nodeid } }}>
+                      <Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button></Link> :
+                    <Link to="/system/organization/addUser">
+                      <Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button>
+                    </Link>
+                  }
+                  <Link >
+                    <Button className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</Button>
+                  </Link>
+              </Row>
             </div>
             {this.props.list ?
               <div className="CreateModaList">
