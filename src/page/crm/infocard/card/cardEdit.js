@@ -106,6 +106,7 @@ class CardDetail extends Component {
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return (
+      <div className="infoCard">
       <div className="cardEdit" style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
@@ -205,6 +206,7 @@ class CardDetail extends Component {
           </Form>
         </Card>
 
+      </div>
       </div>
     )
   }
