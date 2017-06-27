@@ -2,13 +2,21 @@
 
 
 import React from 'react'
-import { Card, Button, Table } from 'antd'
+import { Card, Button, Table, Input, Col, Row, Form } from 'antd'
 
 import { connect } from 'dva';
 import './PhoneSystemIndex.scss'
 import { message } from 'antd'
+import moment from 'moment';
+
+
+
 var setIntlId= new Array();
 
+const createForm = Form.create
+const FormItem = Form.Item
+
+@createForm()
 class PhoneSystemIndex extends React.Component {
   constructor(props) {
     super(props)
@@ -27,6 +35,19 @@ class PhoneSystemIndex extends React.Component {
       loginTime: 0,
       dataSource: [],
     }
+    this.cols = [{
+      dataIndex: 'createTime',
+      key: 'createTime',
+      render: (record) => {
+        if (record!=null) {
+          return moment(record).format("YYYY-MM-DD HH:mm:ss")
+        }
+      }
+    },{
+      dataIndex: 'content',
+      key: 'content',
+    }]
+
     this.columns = [{
       title: '主叫号码',
       dataIndex: 'customerNumber',
@@ -56,6 +77,7 @@ class PhoneSystemIndex extends React.Component {
       dataIndex: 'position',
       key: 'position',
     },]
+    this.getCustomerInfo('13269778099')
   }
 
   toMin() {
@@ -238,9 +260,30 @@ class PhoneSystemIndex extends React.Component {
   }
 
   getCustomerInfo(number){
-    this.props.dispatch({
+    const { dispatch } = this.props;
+    dispatch({
       type: 'layout/getCustomerByMobile',
       payload: { mobile: number }
+    })
+    // 查询来电备注记录
+    dispatch({
+      type: 'layout/getCallRecordsList',
+      payload: { str: number }
+    })
+
+  }
+
+  onSave() {
+    const { form, dispatch } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        console.log(values);
+        values.number = '13269778099'
+        dispatch({
+          type: 'layout/saveCallRecords',
+          payload: values
+        })
+      }
     })
   }
 
@@ -251,11 +294,12 @@ class PhoneSystemIndex extends React.Component {
   render() {
     let bottom = null;
     const { style } = this.state;
-    const { customerInfo } = this.props;
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
     if (style == 'large') {
       const { loginTime, dataSource, info } = this.state
 
-      const { } = this.props;
+      const { callRecords, customerInfo } = this.props;
       const time = loginTime
       const s=this.toDub(parseInt(time%60));
       const m=this.toDub(parseInt(time/60));
@@ -270,19 +314,39 @@ class PhoneSystemIndex extends React.Component {
 
       const customer = (
         <div>
-          <div>
-            <span>{ info }</span>
+          <div className="phone-system-phone-info">
+            <Row style={{ marginTop:'4px' }}>
+              <Col span="8">
+                <Col span="6" style={{ lineHeight: '32px', textAlign: 'end' }}>来电号码: </Col>
+                <Col span="18"><Input readOnly value="13269778099"/></Col>
+
+              </Col>
+              <Col span="8">
+                <Row>
+                <Col span="6" style={{ lineHeight: '32px', textAlign: 'end' }}>归属地:  </Col>
+                <Col span="18"><Input readOnly value="北京市"/></Col>
+                </Row>
+              </Col>
+            </Row>
           </div>
-          <div>
-            客户信息
+          <div className="phone-system-board">
+            <div className="phone-system-board-title"><h4>客户信息</h4></div>
             <span>{ userName }</span>
           </div>
-          <div>
-            来往通话内容
-            <Table dataSource={null}/>
+          <div className="phone-system-board">
+            <div className="phone-system-board-title"><h4>来往通话内容</h4></div>
+            <Table bordered pagination={false} size='small' columns={this.cols} rowKey='id' dataSource={callRecords}/>
           </div>
-          <div>
-            本次通话内容
+          <div className="phone-system-board">
+            <div className="phone-system-board-title"><h4>本次通话内容</h4></div>
+            <FormItem>
+              {getFieldDecorator('content',{
+              })(
+                <Input type='textarea'/>
+              )}
+            </FormItem>
+
+            <Button onClick={ this.onSave.bind(this) }>保存</Button>
           </div>
         </div>
       )
@@ -294,7 +358,7 @@ class PhoneSystemIndex extends React.Component {
             <span style={{ 'marginLeft':'20px', 'lineHeight': '40px' }}>登录时间</span>
             <span style={{ 'marginLeft':'10px', 'lineHeight': '40px' }} >{ h+':'+m+':'+s }</span>
           </div>
-          <Table pagination={false} columns={this.columns} dataSource={dataSource} size='small' />
+          <Table bordered pagination={false} columns={this.columns} rowKey='id' dataSource={dataSource} size='small'/>
           {customer}
         </Card>
       )
@@ -324,10 +388,12 @@ class PhoneSystemIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-    customerInfo
+    customerInfo,
+    callRecords
   } = state.layout;
   return {
-    customerInfo
+    customerInfo,
+    callRecords
   };
 }
 

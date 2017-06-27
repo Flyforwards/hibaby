@@ -567,85 +567,9 @@
 //       }
 //     });
 //   },
-//   monitoringBar_ul : function(){
-//     $(".monitoringBar_ul").unbind("mouseenter mouseleave");
-//     $(".monitoringBar_ul").hide();
-//     $(".monitoringBar_ul").bind({
-//       mouseenter : function(){
-//         $(this).show();
-//       },
-//       mouseleave : function(){
-//         $(this).hide();
-//       }
-//     });
-//   },
-//   list_Div_table_tr : function(){
-//     $(".list_Div table tr").unbind("mouseenter mouseleave");
-//     $(".list_Div table tr").bind({
-//       mouseenter : function(){
-//         $(this).addClass("list_content_list_mouseenterBg");
-//       },
-//       mouseleave : function(){
-//         $(this).removeClass("list_content_list_mouseenterBg");
-//       }
-//     });
-//   },
-//   list_title_imgSpan : function(){
-//     $(".list_title_imgSpan img").unbind("mouseenter mouseleave mousedown");
-//     $(".list_title_imgSpan img").attr("src","images/queueMonitoringIMG/buttonArrow01.png");
-//     $("#callContent, #cnoContent, #qStatusContent").show();
-//     $(".list_title_imgSpan img").bind({
-//       mouseenter : function(){
-//         var imgSrc = $(this).attr("src");
-//         //imgSrc = imgSrc.substring(imgSrc.length-4,imgStrArray[0].length);
-//         var str = imgSrc.substring(imgSrc.length-7,imgSrc.length-4);
-//
-//         if(str == 'w01'){
-//           $(this).attr("src","images/queueMonitoringIMG/buttonArrow02.png");
-//         }else{
-//           $(this).attr("src","images/queueMonitoringIMG/buttonArrow002.png");
-//         }
-//       },
-//       mouseleave : function(){
-//         var imgSrc = $(this).attr("src");
-//         var str = imgSrc.substring(imgSrc.length-7,imgSrc.length-4);
-//         if(str == 'w02'){
-//           $(this).attr("src","images/queueMonitoringIMG/buttonArrow01.png");
-//         }else{
-//           $(this).attr("src","images/queueMonitoringIMG/buttonArrow001.png");
-//         }
-//       },
-//       mousedown : function(){
-//         var imgSrc = $(this).attr("src");
-//         var str = imgSrc.substring(imgSrc.length-7,imgSrc.length-4);
-//         if(str == 'w02'){
-//           $(this).attr("src","images/queueMonitoringIMG/buttonArrow002.png");
-//         }else{
-//           $(this).attr("src","images/queueMonitoringIMG/buttonArrow02.png");
-//         }
-//         var id = $(this).attr("id");
-//         if(id == 'callList'){
-//           if($("#callContent").css("display") == "none"){
-//             $("#callContent").show();
-//           }else{
-//             $("#callContent").hide();
-//           }
-//         }else if(id == 'cnoList'){
-//           if($("#cnoContent").css("display") == "none"){
-//             $("#cnoContent").show();
-//           }else{
-//             $("#cnoContent").hide();
-//           }
-//         }else if(id == 'qStatus'){
-//           if($("#qStatusContent").css("display") == "none"){
-//             $("#qStatusContent").show();
-//           }else{
-//             $("#qStatusContent").hide();
-//           }
-//         }
-//       }
-//     });
-//   },
+
+
+
 //   queueSelect : function(){
 //     $("#queueSelect").unbind("change");
 //     $("#queueSelect").change(function(){

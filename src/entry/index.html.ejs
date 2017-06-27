@@ -286,40 +286,7 @@
         }
     }
 
-    var events = {
-        list_title_imgSpan : function(){
-            $(".list_title_imgSpan span").unbind("mouseenter mouseleave mousedown");
-            $(".list_title_imgSpan span").attr("title","收起");
-            $("#callContent, #qStatusContent").show();
-            $(".list_title_imgSpan span").bind({
-                mousedown : function(){
-                    var spanSrc = $(this).text();
-                    if(spanSrc == '收起'){
-                        $(this).text('放开');
-                    } else{
-                        $(this).text('收起');
-                    }
-                    var id = $(this).attr("id");
-                    if(id == 'callList'){
-                        if($("#callContent").css("display") == "none"){
-                            $("#callContent").show();
-                        }else{
-                            $("#callContent").hide();
-                        }
-                    } else if(id == 'qStatus'){
-                        if($("#qStatusContent").css("display") == "none"){
-                            $("#qStatusContent").show();
-                        }else{
-                            $("#qStatusContent").hide();
-                        }
-                    }
-                }
-            });
-        },
-        init : function(){
-            this.list_title_imgSpan();
-        }
-    }
+
     var setIntlId= new Array();
 
     function queue(data, qid){
@@ -413,7 +380,6 @@
             var setIntervalwaitTimeId = setInterval("timerCount('"+waitTimeId+"')", 1000);
             setIntlId.push(setIntervalwaitTimeId);
         }
-        events.init();
     }
 
     function joinQueue(json){
@@ -453,10 +419,12 @@
         setIntlId.push(setIntervalwaitTimeId);
         $("#"+uniqueId).attr("settimeId",setIntervalwaitTimeId);
     }
+
     function queueCall(json){
         var uniqueId = json.uniqueId.replace(".",'');
         $("#"+uniqueId).find("td").eq(5).text("响铃");
     }
+
     function leaveQueue(json){
         var uniqueId = json.uniqueId.replace(".",'');
         clearInterval($("#"+uniqueId).attr("settimeId"));
@@ -548,11 +516,11 @@
             //callType：
             //1：呼入，2：网上400,3：点击外呼，4：预览外呼，5：IVR外呼，6：分机直接外呼
             if(token.eventName == "comeRinging"&&token.name == "ringing"){	//呼入响铃
-                alert("来电号码：" + token.customerNumber);
+                // alert("来电号码：" + token.customerNumber);
                 //var call_id = token.uniqueId;		//获取录音编号
             }
             if(token.eventName == "normalBusy"&&token.name == "status"){ // 呼入接听
-                alert("来电号码：" + token.customerNumber + "已接听");
+                // alert("来电号码：" + token.customerNumber + "已接听");
             }
 
             if(token.eventName == "consultLink"&&token.name == "consultLink"){	//咨询接听

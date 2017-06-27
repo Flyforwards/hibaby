@@ -442,7 +442,6 @@ function mapStateToProps(state) {
           range
         } = state.organization;
   const { permissionAlias } = state.layout;
-  console.log("list",list);
   return {
     loading: state.loading.models.organization,
     list,

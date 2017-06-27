@@ -13,6 +13,40 @@
     margin-right: 5px;
   }
 
+  .phone-system-phone-info {
+    height: 40px;
+  }
+
+  .phone-system-board {
+    margin-top: 5px;
+    border:1px solid #e5e5e5;
+    border-radius: 4px;
+    .ant-table-thead {
+      display: none;
+    }
+    .phone-system-board-title {
+      height: 40px;
+      line-height: 40px;
+      font-family: '微软雅黑 Bold', '微软雅黑';
+      font-size: 14px;
+      border-bottom: 1px solid #e5e5e5;
+      h4 {
+        margin-left: 5px;
+      }
+    }
+    .ant-table-wrapper {
+      margin: 5px 5px 5px;
+    }
+    .ant-btn{
+      float: right;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+
+
+
 }
 
 .phone-system-min-cent {
