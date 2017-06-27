@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal, RowHousesModal} from './roomStateForMonthModal';
+import {AddCustomerModal, RowHousesModal, RowHousesWayModal} from './roomStateForMonthModal';
 import {
   Button,
   Checkbox,
@@ -9,9 +9,15 @@ import {
   Select,
   Switch,
   message,
+  Modal
 } from 'antd'
 
+const Option = Select.Option;
+
 const UNIT_WIDTH = 9;
+let SELECT_CUSTOMER = '';
+let zIndexCount = 100;
+let selectViewIndex = 0;
 
 const statusExplain = [
   {name: "预定", color: "#29C1A6"},
@@ -22,8 +28,16 @@ const statusExplain = [
   {name: "维修", color: "#63C3E6"},
 ];
 
+
 const monthStateView = (props) => {
   const {dispatch} = props;
+
+  let years = [];
+  let defaultYear = props.users.defaultYear;
+
+  for (let i = 2000; i < 2099; i++) {
+    years.push(<Option key={i} value={`${i}`}>{`${i}`}</Option>)
+  }
 
   document.ondragover = function (event) {
     event.preventDefault();
@@ -65,6 +79,7 @@ const monthStateView = (props) => {
 
     // 过去的时间, 不可放置, 今天即过去
     if (date < tomorrow.getTime()) {
+      message.error("无法移动到过去");
       return;
     }
 
@@ -90,52 +105,46 @@ const monthStateView = (props) => {
   };
 
   const renderMonthSelectView = () => {
-    let years = [];
-    let defaultYear = props.users.selectedYear;
 
-    for (let i = 2000; i < 2099; i++) {
-      years.push(<Option key={i} value={`${i}`}>{`${i}`}</Option>)
-    }
+    const renderYearSelectView = (index) => {
 
-    const addBtnClickHandler = () => {
+      const yearSelectChangeHandler = (value) => {
+        dispatch({
+          type: 'roomStatusManagement/selectedYearChange',
+          payload: {
+            selectViewIndex: index,
+            selectedYear: value,
+          }
+        });
+      };
 
-      dispatch({
-        type: 'roomStatusManagement/monthRoomList',
-        payload: {}
-      });
-
-    };
-
-    const yearSelectChangeHandler = (value) => {
-      dispatch({
-        type: 'roomStatusManagement/selectedYearChange',
-        payload: {
-          selectedYear: value,
-        }
-      });
-    };
-
-    const checkboxChangeHandler = (value) => {
-      dispatch({
-        type: 'roomStatusManagement/selectedMonthChange',
-        payload: {
-          selectedMonthList: value,
-        }
-      });
-    };
-
-    return (
-      <Row type="flex" justify="center" align="middle" className="timeSelectBox">
+      return (
         <Col span={5} className="yearSelectBox">
           <Select className="yearSelect"
                   defaultValue={defaultYear}
-                  onChange={yearSelectChangeHandler}
-          >
+                  onChange={yearSelectChangeHandler}>
             {years}
           </Select>
           <span style={{margin: '10px'}}>年</span>
         </Col>
+      )
+    };
 
+    const renderMonthSelectView = (index) => {
+
+      const checkboxChangeHandler = (value) => {
+        value.sort((a, b) => a - b);
+
+        dispatch({
+          type: 'roomStatusManagement/selectedMonthChange',
+          payload: {
+            selectedMonthList: value,
+            selectViewIndex: index,
+          }
+        });
+      };
+
+      return (
         <Col offset={1} span={12} style={{height: "100%"}}>
           <Checkbox.Group onChange={checkboxChangeHandler}>
             <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
@@ -156,15 +165,70 @@ const monthStateView = (props) => {
             </Row>
           </Checkbox.Group>
         </Col>
+      )
+    };
 
-        <Col span={5} offset={1}>
-          <Button className="addBtn" onClick={addBtnClickHandler}>添加</Button>
-        </Col>
-      </Row>
+
+    const addBtnClickHandler = () => {
+
+      let index = ++selectViewIndex;
+
+      let dateSelectView = (
+        <Row type="flex" justify="center" align="middle" className="timeSelectBox">
+          {
+            renderYearSelectView(index)
+          }
+
+          {
+            renderMonthSelectView(index)
+          }
+
+          <Col span={5} offset={1}/>
+        </Row>
+      );
+
+      dispatch({
+        type: 'roomStatusManagement/addDateSelectView',
+        payload: {
+          dateSelectView: dateSelectView,
+        }
+      });
+    };
+
+    return (
+      <div>
+        <Row type="flex" justify="center" align="middle" className="timeSelectBox">
+          {
+            renderYearSelectView(selectViewIndex)
+          }
+
+          {
+            renderMonthSelectView(selectViewIndex)
+          }
+
+          <Col span={5} offset={1}>
+            <Button className="addBtn" onClick={addBtnClickHandler}>添加</Button>
+          </Col>
+        </Row>
+        {
+          props.users.dateSelectViews
+        }
+      </div>
     )
   };
 
+
   const renderQueryView = () => {
+
+    const queryBtnClickHandler = () => {
+
+      dispatch({
+        type: 'roomStatusManagement/monthRoomList',
+        payload: {}
+      });
+
+    };
+
     return (
       <Row type="flex" justify="center" align="middle" className="queryBox">
         <Col span={5}>
@@ -182,7 +246,7 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="queryBtn">查询</Button>
+          <Button className="queryBtn" onClick={queryBtnClickHandler}>查询</Button>
         </Col>
       </Row>
     );
@@ -224,14 +288,14 @@ const monthStateView = (props) => {
 
         let result = dayList.map((day, dayindex) => {
           //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
-          let roomState = 0;
+          let status = 0;
           // 一天中的用户列表
           let dayCustomerList = day.customerList;
 
           // 如果该天只有一个用户, 直接显示相应状态
           if (dayCustomerList.length === 1) {
             let hasUser = false;
-            roomState = dayCustomerList[0].status || 7;
+            status = dayCustomerList[0].status || 7;
 
             for (let i = 0; i < users.length; i++) {
               if (users[i].customerId === dayCustomerList[0].customerId) {
@@ -251,7 +315,7 @@ const monthStateView = (props) => {
                 dayCount: 1,
               });
             }
-          } else if (dayCustomerList.length >= 1) {
+          } else if (dayCustomerList.length > 1) {
             for (let j = 0; j < dayCustomerList.length; j++) {
               let hasUser = false;
 
@@ -275,15 +339,15 @@ const monthStateView = (props) => {
               }
             }
 
-            roomState = 9; // 重叠
+            status = 9; // 重叠
           }
 
           let stateBox = classNames('stateBox', {
-            'empty': roomState == 0, // 空房
-            'checkingIn': roomState == 4, // 入住
-            'reserve': roomState == 7, // 预约
-            'repair': roomState == 1, // 维修
-            'overlap': roomState == 9, // 重叠
+            'empty': status == 0, // 空房
+            'checkingIn': status == 4, // 入住
+            'reserve': status == 7, // 预约
+            'repair': status == 1, // 维修
+            'overlap': status == 9, // 重叠
           });
 
           return (
@@ -297,7 +361,7 @@ const monthStateView = (props) => {
           )
         });
 
-        let zIndexCount = 100;
+
         const userBoxClickHandler = (e) => {
           let userBoxes = document.querySelectorAll(".userBox");
 
@@ -314,9 +378,18 @@ const monthStateView = (props) => {
         };
 
         const userBoxDbClickHandler = (e) => {
+
+          // 首先要排除不是在确认入住或删除按钮上双击的
+          // 因为以上两个按钮也是在这个容器内, 事件会冒泡
           if (!e.target.classList.contains("userBox")) {
             return;
           }
+
+          // 如果是已入住状态, 是不能再次确认入住和删除的
+          if (e.target.dataset.status == 4) {
+            return;
+          }
+
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
           btn.className = "userBoxConfirm";
@@ -343,7 +416,15 @@ const monthStateView = (props) => {
         const userBoxRightClickHandler = (e) => {
           e.preventDefault();
           e.stopPropagation();
+
+          // 首先要排除不是在确认入住或删除按钮上双击的
+          // 因为以上两个按钮也是在这个容器内, 事件会冒泡
           if (!e.target.classList.contains("userBox")) {
+            return;
+          }
+
+          // 如果是已入住状态, 是不能再次确认入住和删除的
+          if (e.target.dataset.status == 4) {
             return;
           }
 
@@ -413,10 +494,13 @@ const monthStateView = (props) => {
             let tempUnit = parseInt(offsetX / UNIT_WIDTH);
 
             if (tempUnit > 0) {
-              let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
-              let dragDate = parseInt(target.dataset.startDate) + ((oldEndIndex + tempUnit + 2) * 86400000);
-
-              if (roomDate > dragDate) {
+              try {
+                let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
+                let dragDate = parseInt(target.dataset.startDate) + ((oldEndIndex + tempUnit + 2) * 86400000);
+                if (roomDate > dragDate) {
+                  return;
+                }
+              } catch (e) {
                 return;
               }
             }
@@ -478,6 +562,9 @@ const monthStateView = (props) => {
                 reserveDays: user.dayCount,
                 startIndex: user.startIndex,
                 endIndex: user.startIndex + user.dayCount - 1,
+                status: user.status,
+                startDate: user.startDate,
+                endDate: parseInt(user.startDate) + (user.dayCount - 1) * 86400000,
                 roomIndex: roomIndex,
               },
             }
@@ -501,6 +588,7 @@ const monthStateView = (props) => {
                  data-end-index={users[i].startIndex + users[i].dayCount - 1}
                  data-user-dayCount={users[i].dayCount}
                  data-start-date={users[i].startDate}
+                 data-status={users[i].status}
                  onClick={userBoxClickHandler}
                  onDoubleClick={userBoxDbClickHandler}
                  onContextMenu={userBoxRightClickHandler}
@@ -520,15 +608,13 @@ const monthStateView = (props) => {
 
       return (
         <div className="monthRoomBox">
-          <div className="monthRoomNumberBox">
-            <div className="number">
-              {room.roomNo}
-            </div>
-            <div className="level">
-              v1
-            </div>
-          </div>
-          <div style={{height: "100%", position: "relative"}}>
+
+          <div style={{
+            height: "100%",
+            position: "relative",
+            paddingRight: "20px",
+            minWidth: room.useAndBookingList.length * UNIT_WIDTH + 20 + 'px'
+          }}>
             {
               renderDayRoom(room.useAndBookingList)
             }
@@ -537,39 +623,78 @@ const monthStateView = (props) => {
       )
     };
 
-    const renderBottomBar = () => {
 
-      const saveReserveClickHandler = () => {
-        dispatch({
-          type: 'roomStatusManagement/monthRoomUpdate',
-          payload: {}
-        });
+    const renderDaysRuler = (item) => {
+
+      const getDays = (year, month) => {
+        return (new Date(year, month, 0)).getDate();
       };
 
-      const oneKeyClicked = () => {
-        dispatch({
-          type: 'roomStatusManagement/setRowHousesVisible',
-          payload: true
-        });
-      }
-
       return (
-        <div className="bottomBar">
-          <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
-          <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
+        <div>
+          {item} 月
         </div>
       )
     };
 
     return (
       <div className="monthRoomListBox">
-        {
-          roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
-        }
+        <div style={{display: "flex"}}>
+          <div className="monthRoomLeftBox">
+            <div style={{height: '40px'}}/>
+            {
+              roomList.map((room) => {
+                return (
+                  <div className="monthRoomNumberBox">
+                    <div>
 
-        {
-          renderBottomBar()
-        }
+                      <div className="number">
+                        {room.roomNo}
+                      </div>
+                      <div className="level">
+                        v1
+                      </div>
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </div>
+          <div className="monthRoomMainBox">
+            <div className="daysRulerBox">
+              {
+                /*props.users.selectedMonthList.map(item => renderDaysRuler(item))*/
+              }
+            </div>
+            {
+              roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
+            }
+          </div>
+        </div>
+      </div>
+    )
+  };
+
+  const renderBottomBar = () => {
+
+    const saveReserveClickHandler = () => {
+      dispatch({
+        type: 'roomStatusManagement/monthRoomUpdate',
+        payload: {}
+      });
+    };
+
+    const oneKeyClicked = () => {
+      dispatch({
+        type: 'roomStatusManagement/setRowHousesVisible',
+        payload: true
+      });
+    };
+
+    return (
+      <div className="bottomBar">
+        <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
+        <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
       </div>
     )
   };
@@ -604,6 +729,10 @@ const monthStateView = (props) => {
           /* 月房态列表 */
           renderMonthRoomListView()
         }
+
+        {
+          renderBottomBar()
+        }
       </div>
     )
   };
@@ -629,6 +758,14 @@ const monthStateView = (props) => {
       });
     };
 
+    function onClicked(e) {
+      SELECT_CUSTOMER = e;
+      dispatch({
+        type: 'roomStatusManagement/setRowHousesWayVisible',
+        payload: true
+      });
+    }
+
     return (
       <div className="sidebar">
         <h3>客户列表</h3>
@@ -636,7 +773,9 @@ const monthStateView = (props) => {
         {
           customers.map((costomer) => {
             return (
-              <div className="customerItem" draggable="true" onDragStart={() => dragStart(costomer)}>
+              <div className="customerItem" onClick={() => {
+                onClicked(costomer)
+              }} draggable="true" onDragStart={() => dragStart(costomer)}>
                 {costomer.customerName}
               </div>
             )
@@ -663,6 +802,7 @@ const monthStateView = (props) => {
       }
       <AddCustomerModal/>
       <RowHousesModal/>
+      <RowHousesWayModal selectCuntomer={SELECT_CUSTOMER}/>
     </div>
   )
 };

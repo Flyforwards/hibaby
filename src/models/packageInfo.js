@@ -13,15 +13,16 @@ export default {
 		list:null,
 		page:null,
 		size:null,
-		serviceListByPage:null,
+		serviceList: [],
 		roomData:null,
-		findById:null,
+    packageItem:{}, // 套餐实体
 		selectDataSave:null,
 		getDictionary:null,
 		suiteListByPage:[],
 		roomFindById:null,
 		commodityListByPage:[],
 		chineseToPinyin:null,
+    selectedRowKeys: [],
 		grade:null,
 		pagination: {
 	      showQuickJumper: true,
@@ -55,6 +56,10 @@ export default {
         state.selectedRowKeys.remove(record.key);
         return {...state, };
       },
+      changeSelect(state,{payload:{ selectedRowKeys }}){
+        return {...state, selectedRowKeys}
+      },
+
 	    listByPageSave(state,{payload:{ list, pagination}}){
 	      return {...state, list, pagination: {  ...state.pagination,...pagination }};
 	    },
@@ -62,13 +67,17 @@ export default {
 	      let roomListSavedata = {...state,roomData,code};
 	      return roomListSavedata
 	    },
-	    getCardLevelSave(state,{payload:{ data:grade,code }}){
-	      let getCardLevelSavedata = {...state,grade,code};
+	    getCardLevelSave(state,{payload:{ data: grade }}){
+	      let getCardLevelSavedata = {...state, grade };
 	      return getCardLevelSavedata
 	    },
-	    findByIdSave(state,{payload:{ data:findById,code }}){
-	      let findByIdSavedata = {...state,findById,code};
-	      return findByIdSavedata
+	    findByIdSave(state,{payload:{ packageItem }}){
+
+	      const selectedRowKeys = packageItem.serviceInfoList.map((record)=>{
+          return record.serviceInfoId;
+        })
+        console.log(selectedRowKeys);
+	      return {...state, packageItem, selectedRowKeys}
 	    },
 	    chineseToPinyinSave(state,{payload:{ data:chineseToPinyin,code }}){
 	      let chineseToPinyindata = {...state,chineseToPinyin,code};
@@ -93,22 +102,12 @@ export default {
 	    suiteListByPageSave(state,{payload:{suiteListByPage,suitepagination}}){
 	      return {...state, suiteListByPage, suitepagination: {  ...state.suitepagination,...suitepagination }};
 	    },
-	    commodityListByPageSave(state,{payload:{ commodityListByPage,commoditypagination }}){
-			return {...state, commodityListByPage, commoditypagination: {  ...state.commoditypagination,...commoditypagination}};
+	    commodityListByPageSave(state, { payload:{ commodityListByPage,commoditypagination }}){
+			  return {...state, commodityListByPage, commoditypagination: {  ...state.commoditypagination,...commoditypagination}};
 	    },
-	    serviceListByPageSave(state,{payload:{data:serviceListByPage,total,page,size,code}}){
-	      let serviceListByPagedata = {...state,
-				serviceListByPage,
-				total,
-				page,
-				size,
-			};
-			let range = {
-				start: page == 1 ? 1 : (page - 1) * 3 + 1,
-				end: page == 1 ? serviceListByPage.length : (page - 1) * 3 + serviceListByPage.length,
-				totalpage:Math.ceil(total/size),
-			}
-			return {...serviceListByPagedata,range};
+
+      serviceListSave(state,{payload:{ serviceList }}){
+			  return {...state, serviceList,};
 	    },
 	},
 	effects: {
@@ -315,9 +314,7 @@ export default {
 			if (code == 0) {
 				yield put({
 					type: 'findByIdSave',
-					payload: {
-						data
-					}
+					payload: { packageItem: data }
 				});
 			}
 		},
@@ -358,9 +355,9 @@ export default {
 				});
 			}
 		},
-	    //服务项目分页列表
-	    *serviceListByPage({payload: values}, { call, put }) {
-			const { data: { data, total, 	page, size, code }} = yield call(packageInfoService.serviceListByPage, values);
+	    // 服务项目 列表
+    *getServiceList({payload: values}, { call, put }) {
+			const { data: { data, code }} = yield call(packageInfoService.getServiceList, values);
 			if (code == 0) {
 			  if (data && data.length > 0) {
 			    data.map((record)=>{
@@ -368,12 +365,9 @@ export default {
           })
         }
 				yield put({
-					type: 'serviceListByPageSave',
+					type: 'serviceListSave',
 					payload: {
-						data,
-						total,
-						page,
-						size,
+            serviceList: data,
 					}
 				});
 			}
@@ -403,12 +397,38 @@ export default {
 	            payload: query
 	          });
 	        }
+
 	        if (pathname === '/crm/service-info') {
 		         dispatch({
 		            type: 'listByPage',
 		            payload: query
 		        });
 	        }
+	        if (pathname == '/crm/service-info/add') {
+            dispatch({
+              type: 'getServiceList',
+              payload: { }
+            });
+            dispatch({
+              type: 'getDictionary',
+              payload: {
+                "abName":"TCLX" ,
+                "softDelete": 0
+              }
+            });
+            dispatch({
+              type: 'selectData',
+              payload: { }
+            });
+           dispatch({
+              type: 'roomList',
+              payload: { }
+            });
+            dispatch({
+              type: 'getCardLevel',
+              payload: { }
+            });
+          }
 	      })
 	    }
 	},

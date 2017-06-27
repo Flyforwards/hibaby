@@ -120,21 +120,6 @@ class ExportMenu extends React.Component {
               marginButtom:'20px',
               backgroundColor: 'rgba(255, 102, 0, 1)'
             }}>返回</Button>
-            {/*<Select defaultValue="1"*/}
-            {/*style={{ width: 300 }}*/}
-            {/*allowClear={true}*/}
-            {/*onSelect={ this.onSelect.bind(this) }*/}
-            {/*>*/}
-            {/*<Option value="1">当日餐单</Option>*/}
-            {/*<Option value="2">早餐</Option>*/}
-            {/*<Option value="3">早加</Option>*/}
-            {/*<Option value="4">午餐</Option>*/}
-            {/*<Option value="5">午加</Option>*/}
-            {/*<Option value="6">晚餐</Option>*/}
-            {/*<Option value="7">晚加</Option>*/}
-            {/*</Select>*/}
-            {/*<Button className="cardBtn"  style={{width:'180px',backgroundColor:this.state.backgroundDayState}}  onClick={this.onDay.bind(this)}>当日餐单</Button>*/}
-            {/*<Button className="cardBtn"  style={{width:'180px',marginLeft:'10px',background:this.state.backgroundMonthState}} onClick={this.onMonth.bind(this)} >全部餐单</Button>*/}
           </div>
 
       </div>

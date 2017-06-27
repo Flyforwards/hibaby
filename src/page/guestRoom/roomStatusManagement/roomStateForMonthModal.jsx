@@ -26,10 +26,27 @@ import moment from 'moment';
 import {parse} from 'qs';
 
 
+let SELECT_CUSTOMER = ''
+
 const formItemLayout = {
   labelCol: {span: 7},
   wrapperCol: {span: 17},
 };
+
+function textforkey(array,value,valuekey = 'name') {
+  if(array){
+    for (let i = 0 ;i<array.length ;i++){
+      let dict = array[i];
+      if(dict['id'] === value){
+        return  dict[valuekey];
+      }
+    }
+  }
+  else {
+    return value
+  }
+}
+
 
 function CustomerSearch(props) {
   const {getFieldDecorator} = props.form;
@@ -59,7 +76,7 @@ function CustomerSearch(props) {
         {getFieldDecorator(dict.submitStr)
         (
           dict.selectName?
-            <Select className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+            <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
             :
             ( dict.component  === 'Date'?
                 <DatePicker style={{width: '100%'}}/>:
@@ -85,10 +102,14 @@ function CustomerSearch(props) {
 
       tempChiAry.push (
         <Col span={4}>
-          {creatComponent(dict[0])}
+          <Row><Col span={22} offset={2}>
+            {creatComponent(dict[0])}
+          </Col></Row>
         </Col>,
         <Col span={2}>
-          {creatComponent(dict[1])}
+          <Row><Col span={23} offset={1}>
+            {creatComponent(dict[1])}
+          </Col></Row>
         </Col>
       )
     }
@@ -106,11 +127,11 @@ function CustomerSearch(props) {
 
 
   function reset() {
-
+    props.form.resetFields();
+    onSearch()
   }
 
   function onSearch(e) {
-    e.preventDefault();
 
     props.form.validateFields((err, values) => {
       if (!err) {
@@ -140,23 +161,29 @@ function CustomerSearch(props) {
   function HeadSrarch() {
     return(
       <Row>
-        <Col span={16}>{creatComponent({component:'Input',submitStr:'sear'})}</Col>
+        <Col offset={1} span={15}>{creatComponent({component:'Input',submitStr:'sear'})}</Col>
         <Col span={4}>
-          <Button onClick={ reset} style={{
+          <Row><Col span={23} offset={1}>
+            <Button onClick={ reset} style={{
+              width: '100%',
+              height: '40px',
+              lineHeight: '40px',
+              backgroundColor: 'rgba(255, 0, 0, 1)'
+            }}>重置</Button>
+          </Col></Row>
+
+        </Col>
+        <Col span={4}>
+          <Row><Col span={23} offset={1}>
+            <Button onClick={ onSearch} style={{
             width: '100%',
             height: '40px',
             lineHeight: '40px',
-            backgroundColor: 'rgba(255, 0, 0, 1)'
-          }}>重置</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={ onSearch} style={{
-          width: '100%',
-          height: '40px',
-          lineHeight: '40px',
-          backgroundColor: 'rgba(255, 102, 0, 1)'}}>
-            查询
-          </Button>
+            backgroundColor: 'rgba(255, 102, 0, 1)'}}>
+              查询
+            </Button>
+          </Col></Row>
+
         </Col>
       </Row>
     )
@@ -170,8 +197,8 @@ function CustomerSearch(props) {
   )
 }
 
-function CustomerTable({props,loading,selectCustomer,selectCustomerFun}) {
-  const {allCusList,pagination} = props
+function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
+  const {allCusList,pagination,monthStateCustomers,fetusAry,packageAry} = props
   const columns = [{title: '客户姓名', dataIndex: 'name',key: 'name'},
     {title: '年龄',dataIndex: 'age',key: 'age'},
     {title: '预产期',dataIndex: 'dueDate',render: (record) => {
@@ -179,9 +206,13 @@ function CustomerTable({props,loading,selectCustomer,selectCustomerFun}) {
       }
     },
     {title: '怀孕周期',dataIndex: 'gestationalWeeks',key: 'gestationalWeeks'},
-    {title: '第几胎', dataIndex: 'fetus', key: 'fetus'},
+    {title: '第几胎', dataIndex: 'fetus', key: 'fetus',render:(record)=>{
+      return textforkey(fetusAry,record)
+    }},
     {title: '联系方式', dataIndex: 'contact', key: 'contact'},
-    {title: '购买套餐', dataIndex: 'purchasePackage', key: 'purchasePackage'},
+    {title: '购买套餐', dataIndex: 'purchasePackage', key: 'purchasePackage',render:(record)=>{
+      return textforkey(packageAry,record)
+    }},
     {title: '合同编号', dataIndex: 'contractNumber', key: 'contractNumber'},
     {title: '添加人', render: (record) => {
         if (record.operator2 != null) {
@@ -193,46 +224,81 @@ function CustomerTable({props,loading,selectCustomer,selectCustomerFun}) {
     },
   ];
 
+  function disabled(value) {
+    let disabled = false;
+    monthStateCustomers.map((item)=>{
+      if(item.customerId === (value.id||value.customerId) && !item.edit){
+        disabled = true;
+      }
+    })
+    return disabled;
+  }
+
+
+  let ary = [];
+  for(let i = 0;i< selectItem.length;i++){
+    const dict = monthStateCustomers[i];
+    for(let j = 0;j< allCusList.length;j++) {
+      const subDict = allCusList[j];
+      if (subDict.id == (dict.customerId || dict.id)){
+        ary.push(j);
+        break;
+      }
+    }
+  }
+
   const tableProps = {
     loading: loading.effects['roomStatusManagement/getCustomerPage'],
     dataSource: allCusList,
     pagination,
     columns,
     onChange (page) {
-      const { pathname } = location
-      dispatch(routerRedux.push({
-        pathname,
-        query: {
-          page: page.current,
-          size: page.pageSize
-        }
-      }))
+      dispatch({type:'roomStatusManagement/getCustomerPage',payload:{page:page.current}})
     }
   }
 
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      selectCustomerFun(selectedRows);
+
+    onSelect: (record, selected, selectedRows) => {
+
+      selectCustomerFun(record,selected);
     },
+    getCheckboxProps: (record) =>
+      {
+        return(
+          {disabled:disabled(record)}
+        )
+    },
+    selectedRowKeys:ary
   };
 
-  let tags = [];
+  function onClose(record) {
+    selectCustomerFun(record,false);
 
-  for(let i = 0;i<selectCustomer.length;i++){
-    const dict = selectCustomer[i];
-    tags.push(<Tag closable onClose={dict.name.id}>{dict.name}</Tag>)
   }
+
+  let tags = [];
+  if(selectItem){
+
+    for(let i = 0;i<selectItem.length;i++){
+      const dict = selectItem[i] ;
+        tags.push(<Tag closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
+    }
+  }
+
 
   return(
     <Card bodyStyle={{padding:'10px'}} title="预约客户">
       <Card bodyStyle={{padding:'10px'}}>
         {tags}
       </Card>
-      <Table rowSelection={rowSelection} {...tableProps}/>
+      <Table  className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
     </Card>
   )
 
 }
+
+const CusSearchFormDiv = Form.create()(CustomerSearch);
 
 //添加客户
 class addCustomer extends React.Component {
@@ -240,7 +306,7 @@ class addCustomer extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      selectCustomer:[]
+      selectItem:'',
     }
   }
 
@@ -249,38 +315,60 @@ class addCustomer extends React.Component {
   }
 
   handleOk(){
-    this.props.dispatch({
-      type: 'roomStatusManagement/setCustomerVisible',
-      payload: false
-    });
+
+    let ary = this.state.selectItem;
+
+    for(let i = 0;i<ary.length;i++){
+      const dict = ary[i];
+      if (dict.id){
+        dict.customerId = dict.id;
+        dict.customerName = dict.name;
+        dict.reserveDays = 28;
+        dict.edit = true;
+      }
+    }
+    this.props.dispatch({type: 'roomStatusManagement/setMonthStatusCustomers',payload:{data:ary}});
+    this.props.dispatch({type: 'roomStatusManagement/setCustomerVisible', payload: false});
   }
 
   handleCancel(){
-    this.props.dispatch({
-      type: 'roomStatusManagement/setCustomerVisible',
-      payload: false
-    });
+    this.props.dispatch({type: 'roomStatusManagement/setCustomerVisible', payload: false});
   }
 
-  selectCustomerFun(array){
-    console.log(array)
-    this.setState({selectCustomer:array})
+  selectCustomerFun(record,selected){
+    let ary = this.state.selectItem||this.props.users.monthStateCustomers;
+
+    if(selected){
+      ary.push(record)
+    }
+    else {
+      for(var i=0; i<ary.length; i++) {
+        if((ary[i].id||ary[i].customerId) == record.id) {
+          ary.splice(i, 1);
+          break;
+        }
+      }
+
+    }
+    this.setState({selectItem:ary})
   }
 
   render(){
     const {CustomerVisible} = this.props.users;
-    const SearchFormDiv = Form.create()(CustomerSearch)
     return(
       <Modal
         className="addCustomer"
         width="1000px"
         visible={CustomerVisible}
         title="预约"
-        onOk={this.handleOk.bind(this)}
+        onOk={this.handleOk.bind(this) }
         onCancel={this.handleCancel.bind(this)}
       >
-        <SearchFormDiv dispatch={this.props.dispatch}/>
-        <CustomerTable selectCustomer={this.state.selectCustomer} selectCustomerFun={(array)=>{this.selectCustomerFun(array)}} loading={this.props.loading} props={this.props.users}/>
+        <CusSearchFormDiv dispatch={this.props.dispatch}/>
+        <CustomerTable
+          selectItem={this.state.selectItem||this.props.users.monthStateCustomers}
+          selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
+          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}/>
       </Modal>
     )
   }
@@ -294,11 +382,18 @@ function SearchForm(props){
 
 
   function onSearch() {
+
+
+
     props.form.validateFields((err, values) => {
       if (!err) {
-
-
         let param = {};
+
+        if (SELECT_CUSTOMER){
+          param.customerId = SELECT_CUSTOMER.customerId;
+          param.customerName = SELECT_CUSTOMER.customerName;
+        }
+
         Object.keys(values).map((key) => {
           const value = values[key];
           if(value){
@@ -381,6 +476,9 @@ function SearchForm(props){
   )
 }
 
+const SearchFormDiv = Form.create()(SearchForm)
+
+
 function SearResults({resultsRowHouses,selectFun,currSelect}) {
 
   function creatCard() {
@@ -395,7 +493,7 @@ function SearResults({resultsRowHouses,selectFun,currSelect}) {
       ary.push(<Card onClick={()=>{selectFun(i)}} style={{border: i === currSelect ? '1px solid red' : '1px solid #e9e9e9'}} key={i} bodyStyle={{padding:'10px'}} className="cardCli">{chiAry}</Card>)
 
     }
-    return ary
+    return ary.length > 0 ? ary : <h2 className="noResults">没有符合条件的结果</h2>
   }
 
 
@@ -418,17 +516,36 @@ class RowHouses extends React.Component{
   }
 
   selectFun(index){
-    console.log(index)
     this.setState({
       currSelect:index
     })
   }
 
   handleOk(){
-    handleCancel()
+    const {resultsRowHouses} = this.props.users;
+
+    if(this.state.currSelect === ''){
+      message.error('请先选择一个方案')
+      return;
+    }
+
+    if(!SELECT_CUSTOMER){
+      message.error('请先选择一个客户')
+      return;
+    }
+
+    this.handleCancel()
+
+    this.props.dispatch({
+      type: 'roomStatusManagement/monthRoomUpdate',
+      payload: resultsRowHouses[this.state.currSelect].monthRoomUpdateList
+    });
+
+
   }
 
   handleCancel(){
+    SELECT_CUSTOMER = '';
     this.props.dispatch({
       type: 'roomStatusManagement/setRowHousesVisible',
       payload: false
@@ -437,7 +554,6 @@ class RowHouses extends React.Component{
 
   render(){
     const {packageAry,resultsRowHouses, RowHousesVisible} = this.props.users;
-    const SearchFormDiv = Form.create()(SearchForm)
     return(
       <Modal
 
@@ -455,6 +571,43 @@ class RowHouses extends React.Component{
   }
 }
 
+function RowHousesWay(props) {
+  const {RowHousesWayVisible} = props.users;
+  const selectCuntomer = props.selectCuntomer;
+  SELECT_CUSTOMER = selectCuntomer;
+  function handleCancel(){
+    props.dispatch({
+      type: 'roomStatusManagement/setRowHousesWayVisible',
+      payload: false
+    });
+  }
+
+  function autoRowHouses(){
+    handleCancel()
+    props.dispatch({
+      type: 'roomStatusManagement/setRowHousesVisible',
+      payload: true
+    });
+  }
+
+  return(
+    <Modal
+      title="提示"
+      className="RowHousesWay"
+      visible={RowHousesWayVisible}
+      closable={false}
+      maskClosable
+      footer={[
+        <Button className='backBtn' key="back" onClick={handleCancel}>取消</Button>,
+      ]}
+    >
+      <h3>请选择此客户的排房方式</h3>
+      <Button type="primary" onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" onClick={()=>autoRowHouses()}>自动排房</Button>
+    </Modal>
+  )
+}
+
 function mapStateToProps(state) {
   return {
     users: state.roomStatusManagement,
@@ -462,5 +615,6 @@ function mapStateToProps(state) {
   };
 }
 
+export const RowHousesWayModal = connect(mapStateToProps)(RowHousesWay) ;
 export const AddCustomerModal = connect(mapStateToProps)(addCustomer) ;
 export const RowHousesModal = connect(mapStateToProps)(RowHouses) ;

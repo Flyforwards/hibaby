@@ -987,8 +987,6 @@
 //     var setIntervalwaitTimeId = setInterval("timerCount('"+waitTimeId+"')", 1000);
 //     setIntlId.push(setIntervalwaitTimeId);
 //   }
-//   $("#waitNormal").text(showData.queueEntry.length);
-//   $("#callNumber").text(showData.queueEntry.length);
 //   events.init();
 // }
 // window.joinQueue = function joinQueue(json){
@@ -996,9 +994,6 @@
 //   if(q != json.qid){
 //     return;
 //   }
-//
-//   $("#waitNormal").text(parseInt($("#waitNormal").text(),10)+1);
-//   $("#callNumber").text(parseInt($("#callNumber").text(),10)+1);
 //
 //   var queueEntryTr = "<tr class='list_content_list_tr list_content_list_trBg' id='#{uniqueId}'>"+
 //     "<td align='center' class='list_content_list_Td' width='15%'>#{customerNumber}</td>"+
@@ -1043,8 +1038,6 @@
 //   if(q != json.qid){
 //     return;
 //   }
-//   $("#callNumber").text(parseInt($("#callNumber").text(),10)-1);
-//   $("#waitNormal").text(parseInt($("#waitNormal").text(),10)-1);
 //   var uniqueId = json.uniqueId.replace(".",'');
 //   clearInterval($("#"+uniqueId).attr("settimeId"));
 //   var cm = $("#"+uniqueId).find('td').eq(7).text();

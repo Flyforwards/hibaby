@@ -1,7 +1,7 @@
 
 import './index.scss'
 import React from 'react'
-import {BackTop, Spin} from 'antd'
+import { BackTop, Spin, Button, Card } from 'antd'
 import Header from '../header/Header.jsx'
 
 import Sidebar from '../sidebar/Sidebar.jsx'
@@ -10,6 +10,8 @@ import { local, session} from 'common/util/storage.js'
 import { connect } from 'dva';
 import classNames from 'classnames';
 import Footer from '../footer/footer.jsx'
+import { message } from 'antd'
+import PhoneSystemIndex from '../PhoneSystemIndex'
 
 class Layout extends React.Component {
     constructor(props) {
@@ -18,10 +20,10 @@ class Layout extends React.Component {
             mini: local.get('mini'),
             loading: false,
         }
-    }
-    componentWillMount() {
 
     }
+
+
 
     handleMiniChange(mode) {
         local.set('mini', mode)
@@ -36,7 +38,6 @@ class Layout extends React.Component {
         })
     }
 
-
     render() {
         const cls = classNames({
             'mini': this.state.mini,
@@ -45,6 +46,7 @@ class Layout extends React.Component {
         const { subMenu} = this.props;
         return (
             <div className={ cls }>
+                <PhoneSystemIndex/>
                 <Spin key="yt-admin-framework-layout" spinning={ this.state.loading } size="large">
                     <Header
                         miniMode ={ this.state.mini }

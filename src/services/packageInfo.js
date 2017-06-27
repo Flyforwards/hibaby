@@ -51,9 +51,9 @@ export function getCardLevel(values) {
     body: JSON.stringify(values),
   })
 }
-//服务项目分页列表
-export function serviceListByPage(values) {
-  return request('/crm/api/v1/serviceInfo/listByPage', {
+//服务项目列表
+export function getServiceList(values) {
+  return request('/crm/api/v1/serviceInfo/list', {
     method: 'POST',
     body: JSON.stringify(values),
   })

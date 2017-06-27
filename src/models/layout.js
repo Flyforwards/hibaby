@@ -98,7 +98,7 @@ export default {
                   try {
                     const {data: {code: code5, data}} = yield call(usersService.getByCurrentUser,);
                     if (code5 == 0) {
-                      window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
+                      // window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
                     }
                   } catch (err) {
 
@@ -339,6 +339,23 @@ export default {
 
       yield put(routerRedux.push('/user/information'));
     },
+
+    *getCustomerByMobile({ payload: value }, {call, put}) {
+      try {
+        const {data: {data, code}} = yield call(usersService.getCustomerByMobile, value)
+        if (code == 0) {
+          yield put({
+            type: 'getCustomerByMobileSuccess',
+            payload: { customerInfo: data }
+          })
+        }
+      } catch (e) {
+        yield put({
+          type: 'getCustomerByMobileSuccess',
+          payload: { customerInfo: null }
+        })
+      }
+    },
   },
 
 
@@ -373,6 +390,10 @@ export default {
     },
     getTimeSuccess (state, { payload: { systemTime } }) {
       return { ...state, systemTime }
+    },
+
+    getCustomerByMobileSuccess(state, { payload: { customerInfo } }) {
+      return { ...state, customerInfo }
     },
   },
 }

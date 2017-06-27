@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form,message } from 'antd'
+import { Icon, Card, Button,Table, Input,Select,Form,message,InputNumber } from 'antd'
 import { Link} from 'react-router'
 import './serviceinfo.scss'
 import Current from '../../Current'
@@ -41,48 +41,38 @@ class AddServiceed extends Component {
           key: 'usageCount',
           width: "20%",
           render: (text, record, index) => {
-            let count = 1
-            if(this.props.findById != null){
-              this.props.findById.serviceInfoList.map((item)=>{
+            const { packageItem } = this.props;
+            if(packageItem.serviceInfoList){
+              packageItem.serviceInfoList.map((item)=>{
                 if(item.serviceInfoId == record.id){
-                  count = item.usageCount
                   record.usageCount = item.usageCount
                 }
               })
             }
-           // console.log("count",record)
             return (
-                <span className="span">
-                  <Input defaultValue ={ count } onChange={(event)=>{
-                    record.usageCount = event.target.value
+              <span className="span">
+                  <InputNumber defaultValue={record.usageCount} max={999} min={1} onChange={(number)=>{
+                    record.usageCount = number
                   }}/>
                 </span>
             );
           },
         }];
         this.state = {
-          loading: false,
-          selectedRowKeys:[],
-          selectedRows: []
+            visible: true
         };
+        this.first = true;
+        this.defaultVisible = false;
         this.TableEdit = false
     }
-    shouldComponentUpdate (nextProps) {
-      if(nextProps.findById){
-        let selectedRowKeys = []
-        nextProps.findById.serviceInfoList.map((item)=>{
-            selectedRowKeys.push(item.serviceInfoId)
-        })
-        this.setState({
-          selectedRowKeys: selectedRowKeys
-        })
-      }
-       return true
+
+    onSelectChange = (selectedRowKeys) => {
+      this.props.dispatch({
+        type: 'packageInfo/changeSelect',
+        payload: { selectedRowKeys }
+      });
     }
-    onSelectChange = (selectedRowKeys,selectedRows) => {
-      //console.log(selectedRows)
-      this.setState({ selectedRows,selectedRowKeys });
-    }
+
     componentDidMount() {
       let ID = window.location.search.split("=")[1]
         this.props.dispatch({
@@ -92,7 +82,7 @@ class AddServiceed extends Component {
             }
         });
         this.props.dispatch({
-            type: 'packageInfo/serviceListByPage',
+            type: 'packageInfo/getServiceList',
             payload: { }
         });
         this.props.dispatch({
@@ -106,7 +96,7 @@ class AddServiceed extends Component {
         this.props.dispatch({
             type: 'packageInfo/getDictionary',
             payload: {
-             "abName":"TCLX" ,
+              "abName":"TCLX" ,
               "softDelete": 0
             }
         });
@@ -114,131 +104,105 @@ class AddServiceed extends Component {
     handleSubmit = ()=>{
       history.go(-1)
     }
-    handleAdd(data){
-      let serviceInfoList =[]
-      let ID = window.location.search.split("=")[1]
-      const fields = this.props.form.getFieldsValue();
-      console.log(fields)
-      if(this.state.selectedRows.length>=1){
-        this.state.selectedRows.map((item)=>{
-          if(item.usageCount){
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
-          }else{
-            serviceInfoList.push({"serviceInfoId":item.id,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
+    handleAdd(){
+      this.props.form.validateFields((err, values) => {
+        if(!err){
+          let serviceInfoList = [];
+          const { selectedRowKeys, serviceList, packageItem } = this.props;
+          if( selectedRowKeys.length>=1){
+             selectedRowKeys.map((item)=>{
+              serviceList.map((record)=>{
+                if (record.id == item) {
+                  serviceInfoList.push({"serviceInfoId": record.id, "usageCount": Number(record.usageCount),})
+                }
+              })
+            })
+          } else {
+            message.error('至少选择一个服务项目!');
+            return;
           }
-        })
-      }else{
-          data.serviceInfoList.map((item)=>{
-            if(item.usageCount){
-             serviceInfoList.push({"serviceInfoId":item.serviceInfoId,"usageCount":Number(item.usageCount),"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
-            }else{
-              serviceInfoList.push({"serviceInfoId":item.serviceInfoId,"usageCount":1,"serviceInfoContents":item.contents,"serviceInfoPrice":item.price,"serviceInfoName":item.name})
+          let visible = this.defaultVisible
+          if (!this.first) {
+            visible = this.state.visible;
+          }
+          // 是月子套餐
+          if (visible) {
+            if (!values.packageLevel) {
+              message.error('请选择套餐级别!')
+              return;
             }
-          })
-      }
-      if(this.TableEdit){
-        if(fields.name){
+            if (!values.room) {
+              message.error('请选择套房!');
+              return;
+            }
+          } else {
+            values.packageLevel = undefined;
+            values.room = undefined;
+          }
+          values.id = packageItem.id;
           this.props.dispatch({
             type: 'packageInfo/edit',
             payload: {
-              "id":ID,
-              "name": fields.name
+              "name": values.name,
+              "price": values.price,
+              "serviceInfoList":serviceInfoList,
+              "suiteId": values.room,
+              "type": values.type,
+              "levels":values.packageLevel,
+              'id': values.id,
             }
           });
-      }else{
-        message.warning("请输入套餐的名称");
-      }
-      }else{
-        if(fields.name){
-          if(fields.price){
-            if(fields.type){
-              if(serviceInfoList.length>=1){
-                console.log("serviceInfoList",serviceInfoList)
-                this.props.dispatch({
-                  type: 'packageInfo/edit',
-                  payload: {
-                    "id":ID,
-                    "name": fields.name,
-                    "price": fields.price,
-                    "serviceInfoList":serviceInfoList,
-                    "suiteId": fields.room,
-                    "type": fields.type,
-                    "levels":fields.packageLevel
-                  }
-                });
-              }else{
-                message.warning("请选择服务项目");
-              }
-            }else{
-              message.warning("请选择套餐的类型");
-            }
-          }else{
-            message.warning("请输入套餐的价格");
-          }
-        }else{
-          message.warning("请输入套餐的名称");
         }
-      }
+      })
     }
-    onSelect(value, option){
 
+    onSelect(value, option){
+      let visible = false;
+      if (option && option.props.title == "月子套餐") {
+        visible = true;
+      }
+      this.first = false;
+      this.setState({
+        visible: visible
+      })
     }
     render() {
-        let loadingName = true
-        let levels = []
-        let rowSelection = {}
-        const { getFieldDecorator } = this.props.form;
-        const { loading, selectedRows,selectedRowKeys} = this.state;
-        const columns = this.columns;
-        let ListLnformation = []
-        let selectData = []
-        let roomList = []
-        let type = []
-        let gradeList = []
-        let suiteId = null
-        if(this.props.serviceListByPage != null){
-            ListLnformation = this.props.serviceListByPage;
-              ListLnformation.map((record)=>{
-                record.key = record.id;
-            });
-            loadingName = false
 
-        }
-        if(this.props.grade != null){
-          gradeList = this.props.grade.map((item)=>{
-            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
-          })
-        }
-        if(this.props.selectData != null && this.props.findById){
-          selectData = this.props.selectData.map((item)=>{
-            if(item.id == this.props.findById.suiteId){
-              suiteId = String(item.id)
-            }
-            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
-          })
-        }
-        //console.log(suiteId)
-        if(this.props.getDictionary != null &&　this.props.findById != null){
-          roomList = this.props.getDictionary.map((item)=>{
-            if(item.id == this.props.findById.type){
-              type = String(item.id)
-            }
+        let rowSelection = {}
+        const { getFieldDecorator,  } = this.props.form;
+        const { serviceList, grade, selectData, packageItem, selectedRowKeys } = this.props;
+        const columns = this.columns;
+        let roomList = []
+        let roomOption = []
+        let gradeList = []
+        const ListLnformation = serviceList.map((record)=>{
+            record.key = record.id;
+            return record;
+        });
+
+        if(selectData){
+          roomOption = selectData.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
           })
         }
-        if(this.props.findById){
-          let data = [];
-        levels.push(String(this.props.findById.levels))
-          if(this.props.findById.isUse == 1){
+        if(grade){
+          gradeList = grade.map((item)=>{
+            return (<Option value={item.id+""} key={item.id}>{item.name}</Option>)
+          })
+        }
+
+        if(this.props.getDictionary != null &&　packageItem.type){
+          roomList = this.props.getDictionary.map((item)=>{
+            return (<Option value={item.id+""} title={item.name} key={item.name}>{item.name}</Option>)
+          })
+        }
+        if(packageItem.name){
+          if(packageItem.isUse == 1){
               this.TableEdit = true
           }else{
               this.TableEdit = false
           }
-          this.props.findById.serviceInfoList.map((record)=>{
-              data.push(record.serviceInfoId)
-          });
           rowSelection = {
-              selectedRows,
               selectedRowKeys,
               onChange: this.onSelectChange,
               getCheckboxProps: record => ({
@@ -246,6 +210,45 @@ class AddServiceed extends Component {
               }),
           };
         }
+
+
+      if (packageItem.suiteId) {
+          this.defaultVisible = true;
+      } else {
+          this.defaultVisible = false;
+      }
+      let visible = this.defaultVisible
+      if (!this.first) {
+        visible = this.state.visible;
+      }
+
+      const botton_div = (
+        <div className="addServiceinfoSuite">
+          <p>选择套房<span className="roomVist">(只有月子套餐才可以选择套房)</span>:</p>
+          <Form layout="inline">
+            <FormItem
+              label="套房"
+              className="room"
+            >
+              { getFieldDecorator('room', { rules: [],initialValue: packageItem.suiteId?String(packageItem.suiteId):packageItem.suiteId,
+              })( <Select>
+                { roomOption }
+                </Select>
+              )}
+            </FormItem>
+            <FormItem
+              label="套餐等级"
+              className="packageLevel"
+            >
+              {getFieldDecorator('packageLevel', { rules: [],initialValue: packageItem.levels?String(packageItem.levels):packageItem.levels,
+              })( <Select>
+                { gradeList }
+                </Select>
+              )}
+            </FormItem>
+          </Form>
+        </div>)
+
         return (
             <div className="addServiceinfo">
                 <div className="addServiceinfoList">
@@ -256,8 +259,8 @@ class AddServiceed extends Component {
                    className="name"
                   >
                     {getFieldDecorator('name', {
-                      initialValue:this.props.findById?this.props.findById.name:null,
-                       rules: [],
+                      initialValue: packageItem.name,
+                      rules:  [{ required: true, message: '请填写套餐名称！限30字',max: 30 }],
                     })(
                       <Input />
                     )}
@@ -267,8 +270,8 @@ class AddServiceed extends Component {
                      className="price"
                   >
                   {getFieldDecorator('price', {
-                    initialValue:this.props.findById?this.props.findById.price:null,
-                    rules: [],
+                    initialValue: packageItem.price,
+                    rules: [{ required: true,pattern: /^\d{0,7}$/, message: '请输入0-7位数字' }],
                     })(
                     <Input
                       addonBefore="￥"
@@ -280,8 +283,8 @@ class AddServiceed extends Component {
                    label="套餐类型"
                    >
                     {getFieldDecorator('type', {
-                      initialValue:type,
-                      rules: [],
+                      initialValue: packageItem.type ? String(packageItem.type): packageItem.type,
+                      rules: [{ required: true, message: '请选择套餐类型！' }],
                     })(
                     <Select onSelect = {this.onSelect.bind(this)} disabled={this.TableEdit}
                     >
@@ -300,98 +303,34 @@ class AddServiceed extends Component {
                     dataSource={ListLnformation}
                     pagination = { false }
                     scroll={{ y: 500 }}
-                    loading = { loadingName }
                     defaultExpandedRowKeys = {ListLnformation}
                     />
                 </div>
-                <div className="addServiceinfoSuite">
-                <p>选择套房<span className="roomVist">(只有月子套餐才可以选择套房)</span>:</p>
-                <Form layout="inline">
-                  <FormItem
-                   label="套房"
-                   className="room"
-                  >
-                    {getFieldDecorator('room', {
-                      initialValue:suiteId,
-                       rules: [],
-                    })(
-                      <Select disabled={this.TableEdit}
-                    >
-                     {
-                      selectData
-                     }
-                    </Select>
-                    )}
-                  </FormItem>
-                  <FormItem
-                   label="套餐等级"
-                   className="packageLevel"
-                  >
-                    {getFieldDecorator('packageLevel', {
-                      initialValue:levels,
-                      rules: [],
-                    })(
-                      <Select 
-                    >
-                     {
-                      gradeList
-                     }
-                    </Select>
-                    )}
-                  </FormItem>
-                </Form>
-                </div>
+                { visible ? botton_div : null }
                 <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button className="SaveBtn" onClick={this.handleAdd.bind(this,this.props.findById)}>保存</Button>
+                <Button className="SaveBtn" onClick={this.handleAdd.bind(this)}>保存</Button>
             </div>
         )
     }
 }
-function AddService({
-  dispatch,
-  serviceListByPage,
-  selectData,
-  findById,
-  grade,
-  getDictionary
-}) {
-  return ( < div >
-    <AddServiceed dispatch = {
-      dispatch
-    }
-    serviceListByPage = {
-      serviceListByPage
-    }
-    selectData = {
-      selectData
-    }
-    findById = {
-      findById
-    }
-    getDictionary = {
-      getDictionary
-    } 
-    grade = {
-      grade
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
-    serviceListByPage,
+    serviceList,
     selectData,
-    findById,
+    packageItem,
     grade,
-    getDictionary
+    getDictionary,
+    selectedRowKeys
   } = state.packageInfo;
   return {
     loading: state.loading.models.packageInfo,
-    serviceListByPage,
+    serviceList,
     selectData,
-    findById,
+    packageItem,
     grade,
-    getDictionary
+    getDictionary,
+    selectedRowKeys
     };
 }
 const addService = Form.create()(AddServiceed);

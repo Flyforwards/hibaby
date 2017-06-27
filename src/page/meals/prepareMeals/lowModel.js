@@ -4,47 +4,57 @@ import './prepareMeals.scss'
 import { Button, Icon, Modal, Form, Input, Row, Col, message } from 'antd';
 const FormItem = Form.Item;
 import './prepareMeals.scss'
-
+import ChooseDishes from './chooseDishesModel'
 
 class DynamicFieldSet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      uuid: 1,
+      isLow: true,
+      changeKey: 0
     }
   }
   
   remove = (k) => {
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    form.setFieldsValue({
-      keys: keys.filter(key => key !== k)
+    const { form, menuInfoByType, dispatch } = this.props;
+    let { dishes } = menuInfoByType;
+    dishes.splice(k, 1);
+    dispatch({
+      type: "prepareMeals/changeMenuInfoByType",
+      payload: { dishes }
     });
   }
   
-  add = () => {
-    this.setState({
-      uuid: this.state.uuid + 1
-    })
-    const { form, menuInfoByType } = this.props;
-    const { dishes } = menuInfoByType;
-    const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(this.state.uuid);
-    const lengthNum = keys.length + dishes.length + 1;
-    if (lengthNum <= 7) {
-      form.setFieldsValue({
-        keys: nextKeys
-      });
+  add = (e) => {
+    const { form, menuInfoByType, dispatch } = this.props;
+    let { dishes } = menuInfoByType;
+    const length = dishes.length;
+    
+    
+    if (length < 7) {
+      dishes.push({ isDel: true });
+      console.log(dishes, '1')
+      dispatch({
+        type: "prepareMeals/changeMenuInfoByType",
+        payload: { dishes }
+      })
     } else {
       message.error('菜品不能超过7道！')
     }
   }
   
+  
   handleSubmit = (e) => {
+    const { menuInfoByType, dispatch } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        dispatch({
+          type: 'prepareMeals/saveMenu',
+          payload: {
+            ...menuInfoByType
+          }
+        })
       }
     });
   }
@@ -58,9 +68,28 @@ class DynamicFieldSet extends Component {
     })
   }
   
+  reset = (changeKey) => {
+    const { form } = this.props;
+    form.resetFields([`name-${changeKey}`])
+  }
+  
+  chooseLowVisible = (k) => {
+    const { dispatch, form } = this.props;
+    dispatch({
+      type: 'prepareMeals/chooseVisible',
+      payload: {
+        chooseVisibleInfo: true
+      }
+    })
+    this.setState({
+      changeKey: k
+    });
+  }
+  
   render() {
     const { form, menuInfoByType } = this.props;
-    const { getFieldDecorator, getFieldValue } = form;
+    const { changeKey, isLow } = this.state
+    const { getFieldDecorator } = form;
     const { dishes } = menuInfoByType;
     const formItemLayout = {
       labelCol: {
@@ -68,40 +97,10 @@ class DynamicFieldSet extends Component {
         sm: { span: 6 }
       }
     };
-    getFieldDecorator('keys', { initialValue: [] });
-    const keys = getFieldValue('keys');
-    
-    const formItems = keys.map((k, index) => {
-      return (
-        <Col key={k} span={8} className="foodCol">
-          <FormItem
-            {...formItemLayout}
-            label={index === 0 ? `菜品${index + dishes.length + 1}` : `菜品${index + dishes.length + 1}`}
-            required={false}
-            key={k}
-          >
-            {getFieldDecorator(`names-${k}`, {
-              rules: [{
-                required: true,
-                whitespace: true,
-                message: "请选择菜品"
-              }]
-            })(
-              <Input suffix={<Icon type="folder"/>} placeholder="请选择" style={{ width: '60%', marginRight: 8 }}/>
-            )}
-            <Icon
-              className="dynamic-delete-button"
-              type="minus-circle-o"
-              disabled={keys.length === 1}
-              onClick={() => this.remove(k)}
-            />
-          </FormItem>
-        </Col>
-      );
-    })
     
     return (
       <Form onSubmit={this.handleSubmit}>
+        <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
         <Row >
           {
             dishes.map((v, k) => {
@@ -109,21 +108,30 @@ class DynamicFieldSet extends Component {
                 <Col span={8} className="foodCol" key={k}>
                   <FormItem label={`菜品${k + 1}`} {...formItemLayout} >
                     {getFieldDecorator(`name-${k}`, {
-                      validateTrigger: ['onChange', 'onBlur'],
-                      initialValue: v.dishesName,
+                      initialValue: v.dishesName && v.dishesName,
                       rules: [{
                         required: true,
                         message: "请选择菜品"
                       }]
                     })(
-                      <Input suffix={<Icon type="folder"/>} style={{ width: '60%', marginRight: 8 }}/>
+                      <Input onClick={() => {this.chooseLowVisible(k)}} suffix={
+                        <Icon type="folder"/>} style={{
+                        width: '60%',
+                        marginRight: 8
+                      }}/>
                     )}
+                    {
+                      v.isDel ? <Icon
+                        className="dynamic-delete-button iconDel"
+                        type="minus-circle-o"
+                        onClick={() => {this.remove(k)}}
+                      /> : null
+                    }
                   </FormItem>
                 </Col>
               )
             })
           }
-          {formItems}
         </Row>
         <Row style={{ marginTop: '25px' }}>
           <Col span={15}/>
@@ -156,16 +164,7 @@ class LowMOdel extends Component {
       visible: true
     }
   }
-  
-  handleOk = (e) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'prepareMeals/changeVisible',
-      payload: {
-        visible: false
-      }
-    })
-  }
+ 
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -175,34 +174,18 @@ class LowMOdel extends Component {
       }
     })
   }
-  showModal = () => {
-    const { dispatch, info } = this.props;
-    const { week, day, type } = info;
-    dispatch({
-      type: 'prepareMeals/getMenuByType',
-      payload: {
-        week, day, type
-      }
-    })
-    dispatch({
-      type: 'prepareMeals/changeVisible',
-      payload: {
-        visible: true
-      }
-    })
-  }
   
   render() {
-    const { info, prepareMeals, dispatch } = this.props;
+    const { prepareMeals, dispatch } = this.props;
     const { visible, menuInfoByType } = prepareMeals;
+    const { type } = menuInfoByType;
+    let title = type == 1 ? '早餐' : type == 2 ? '早加' : type == 3 ? '午餐' : type == 4 ? '午加' : type == 5 ? '晚餐' : type == 6 ? '晚加' : '';
     return (
       <div >
-        <Button className="lastBtn" onClick={this.showModal}>编辑/添加</Button>
         <Modal
           className="lowModel"
-          title={`编辑餐单：第${info.week}周—${info.day}—${info.title}`}
+          title={`编辑餐单：第${menuInfoByType.week}周—${menuInfoByType.day}—${title}`}
           visible={visible}
-          onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText="保存"
           width={1000}

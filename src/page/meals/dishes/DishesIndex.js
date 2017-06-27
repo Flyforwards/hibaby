@@ -120,7 +120,6 @@ class DishesIndex extends React.Component{
   handleSearch  = () =>{
     this.getTableData({
       nodeId : this.props.dishes.nodeId,
-
       page : this.props.dishes.page,
       size : this.props.dishes.size
     });
@@ -128,7 +127,7 @@ class DishesIndex extends React.Component{
 
   onTableChange = (pageNumber) =>{
     this.getTableData({
-      nodeId : 1,
+      nodeId : this.props.dishes.nodeId,
       page : pageNumber,
       size : this.props.dishes.size
     });
@@ -171,6 +170,10 @@ class DishesIndex extends React.Component{
 
   //表格上方筛选框
   initTableSearch(){
+    let addBtn = null;
+    if(this.props.dishes.nodeId != 1){//根节点无法创建菜品
+      addBtn = <span className="Dishes-add"><PermissionLink testKey='DISHES_ADD' to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></PermissionLink></span>;
+    }
     return (
         <div className="Dishes-nav">
           <Form layout="inline">
@@ -219,12 +222,10 @@ class DishesIndex extends React.Component{
             </Row>
           </Form>
           <div className="btn">
-            <span className="Dishes-add">
+            {addBtn}
+            {/*<span className="Dishes-add">
               <PermissionLink testKey='DISHES_ADD' to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></PermissionLink>
-{/*
-              <Link to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></Link>
-*/}
-            </span>
+            </span>*/}
             <Link><Button className="Dishes-Inquire" onClick={this.handleSearch.bind(this)}>查询</Button></Link>
           </div>
         </div>
@@ -252,7 +253,8 @@ class DishesIndex extends React.Component{
                 bordered
                 dataSource={dataSource}
                 columns={this.columns}
-                pagination={pagination}/>
+                pagination={pagination}
+              />
               <Current
                 page={this.props.dishes.page}
                 total={ this.props.dishes.total}

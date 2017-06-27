@@ -39,20 +39,26 @@ export default {
     dayStatusData: '',
     FloorAry: '',
     MainFloorAry: '',
+    fetusAry: '',
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
     monthStateCustomers: [],
+    //可编辑的  添加客户  加入的
+    editMonthStateCustomers: [],
+    defSelectCustomers: [],
     oldMonthRoomList: [],
     monthRoomList: [],
     dragUser: null,
-    selectedYear: new Date().getFullYear(),
-    selectedMonthList: [],
+    defaultYear: new Date().getFullYear(),
+    dateSelectList: [],
+    dateSelectViews: [],
     monthRoomUpdateList: [],// 保存状态有更新的用户
     //弹出的modal数据控制
 
-    CustomerVisible:false,
-    RowHousesVisible:false,
+    CustomerVisible: false,
+    RowHousesVisible: false,
+    RowHousesWayVisible: false,
     allCusList: '',
     pagination: {
       showQuickJumper: true,
@@ -64,14 +70,32 @@ export default {
 
   reducers: {
     setCustomerVisible(state, {payload: data}) {
-      return {...state, CustomerVisible:data};
+      let dict = {CustomerVisible: data};
+      return {...state, ...dict};
     },
     setRowHousesVisible(state, {payload: data}) {
-      return {...state, RowHousesVisible:data};
+      let dict = {RowHousesVisible: data};
+      if (data === false) {
+        dict.resultsRowHouses = ''
+      }
+      return {...state, ...dict};
     },
-
+    setRowHousesWayVisible(state, {payload: data}) {
+      return {...state, RowHousesWayVisible: data};
+    },
     setCustomerPageSave(state, {payload: {list, pagination}}) {
-      return {...state, allCusList: list, pagination: {...state.pagination, ...pagination}};
+      let ary = [];
+      for (let i = 0; i < state.monthStateCustomers.length; i++) {
+        const dict = state.monthStateCustomers[i];
+        for (let j = 0; j < list.length; j++) {
+          const subDict = list[j];
+          if (subDict.id == dict.customerId) {
+            ary.push(j);
+            break;
+          }
+        }
+      }
+      return {...state, allCusList: list, defSelectCustomers: ary, pagination: {...state.pagination, ...pagination}};
     },
     setSelectValue(state, {payload: todo}){
       let listArray = [];
@@ -108,6 +132,9 @@ export default {
       else if (todo.abName === 'CX') {
         return {...state, TowardAry: todo.data};
       }
+      else if (todo.abName === 'YCC') {
+        return {...state, fetusAry: todo.data};
+      }
       return {...state};
     },
     setResultsRowHouses(state, {payload: todo}){
@@ -119,9 +146,10 @@ export default {
     setMonthStatusCustomers(state, {payload: todo}){
       return {
         ...state,
-        monthStateCustomers: todo.data
+        monthStateCustomers: todo.data,
       };
     },
+
     setMonthRoomList(state, {payload: todo}){
       // 保留初始的数据, 用于保存预约状态时和当前状态比较, 深拷贝
       state.oldMonthRoomList = JSON.parse(JSON.stringify(todo.data));
@@ -185,16 +213,38 @@ export default {
     },
 
     selectedYearChange(state, {payload: data}){
+      let dateSelectList = state.dateSelectList;
+
+      if (!state.dateSelectList[data.selectViewIndex]) {
+        state.dateSelectList[data.selectViewIndex] = {
+          monthList: [],
+          year: state.defaultYear,
+        }
+      }
+
+      state.dateSelectList[data.selectViewIndex].year = data.selectedYear;
+
       return {
         ...state,
-        selectedYear: data.selectedYear,
+        dateSelectList: dateSelectList,
       }
     },
 
     selectedMonthChange(state, {payload: data}){
+      let dateSelectList = state.dateSelectList;
+
+      if (!dateSelectList[data.selectViewIndex]) {
+        dateSelectList[data.selectViewIndex] = {
+          monthList: [],
+          year: state.defaultYear,
+        }
+      }
+
+      dateSelectList[data.selectViewIndex].monthList = data.selectedMonthList;
+
       return {
         ...state,
-        selectedMonthList: data.selectedMonthList,
+        dateSelectList: dateSelectList,
       }
     },
 
@@ -296,7 +346,16 @@ export default {
         monthRoomList: monthRoomList
       }
     },
+    addDateSelectView(state, {payload: data}){
+      let dateSelectViews = state.dateSelectViews;
 
+      dateSelectViews.push(data.dateSelectView);
+
+      return {
+        ...state,
+        dateSelectViews: dateSelectViews
+      }
+    }
 
   },
 
@@ -352,6 +411,7 @@ export default {
 
       const {data: {code, data}} = yield call(roomManagement.arrangeRoom, {...defData, ...value});
       if (code == 0) {
+        console.log(data)
         yield put({
           type: 'setResultsRowHouses',
           payload: {
@@ -364,12 +424,12 @@ export default {
     // 获取用户列表
     *getCustomerPage({payload: values}, {call, put}) {
 
-      const defParam = {page: 1, size: 10}
+      const defParam = {page: 1, size: 5}
 
-      const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, {...defParam,...values});
+      const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, {...defParam, ...values});
       if (code == 0) {
         if (data.length == 0 && page > 1) {
-          yield put({type: 'getCustomerPage', payload: {page: page - 1, size: 10}})
+          yield put({type: 'getCustomerPage', payload: {page: page - 1, size: 5}})
 
         } else {
           yield put({
@@ -378,7 +438,7 @@ export default {
               list: data,
               pagination: {
                 current: Number(page) || 1,
-                pageSize: Number(size) || 10,
+                pageSize: Number(size) || 5,
                 total: total,
               },
             },
@@ -415,28 +475,34 @@ export default {
 
     *monthRoomList({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
-      const selectedYear = state.selectedYear;
-      const selectedMonthList = state.selectedMonthList;
+      const dateSelectList = state.dateSelectList;
 
-      if (!selectedYear) {
-        message.warn('请选择年份');
-        return;
+      // 去重
+      let years = {};
+
+      for (let dateSelect of dateSelectList) {
+        if (!years[dateSelect.year]) {
+          years[dateSelect.year] = {};
+        }
+
+        for (let month of dateSelect.monthList) {
+          years[dateSelect.year][month] = "";
+        }
       }
 
-      if (!selectedMonthList || !selectedMonthList.length) {
-        message.warn('请选择月份');
-        return;
+      // 扁平化
+      let param = [];
+
+      for (let year in years) {
+        param.push({
+          year: year,
+          monthList: Object.keys(years[year]),
+        })
       }
 
-      if (selectedMonthList.length > 3) {
-        message.warn('最多只能选择3个月份');
-        return;
+      if (!param.length) {
+        message.error("请选择时间");
       }
-
-      let param = [{
-        year: selectedYear,
-        monthList: selectedMonthList,
-      }];
 
       const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
 
@@ -450,25 +516,82 @@ export default {
     *userDrop({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
 
-      // 删除之前的
-      yield put({
-        type: 'deleteUser',
-        payload: {
-          ...value,
-          startIndex: state.dragUser.startIndex,
-          endIndex: state.dragUser.endIndex,
+      // 如果已入住, 开始的时间保持不变
+      if (state.dragUser.status == 4) {
+        // 先调用平移接口
+        let param = {
           customerId: state.dragUser.customerId,
-          roomIndex: state.dragUser.roomIndex,
-        }
-      });
+          customerName: state.dragUser.customerName,
+          beginDate: timeToDate(state.dragUser.startDate),
+          endDate: timeToDate(state.dragUser.endDate),
+          fromRoomId: state.monthRoomList[state.dragUser.roomIndex].roomId,
+          fromRoomName: state.monthRoomList[state.dragUser.roomIndex].roomNo,
+          toRoomId: state.monthRoomList[value.roomIndex].roomId,
+          toRoomName: state.monthRoomList[value.roomIndex].roomNo,
+        };
 
-      // 添加新的
-      yield put({
-        type: 'userDropReducer',
-        payload: {
-          ...value,
+        const {data: {code, data}} = yield call(roomManagement.resideMove, param);
+
+        // 平移不成功, 返回
+        if (code != 0) {
+          return;
         }
-      });
+
+        // 删除之前的
+        yield put({
+          type: 'deleteUser',
+          payload: {
+            ...value,
+            startIndex: state.dragUser.startIndex,
+            endIndex: state.dragUser.endIndex,
+            customerId: state.dragUser.customerId,
+            roomIndex: state.dragUser.roomIndex,
+            status: state.dragUser.status,
+          }
+        });
+
+        let payload = {
+          ...value,
+          status: state.dragUser.status,
+        };
+
+        payload.dayIndex = state.dragUser.startIndex;
+
+        // 添加新的
+        yield put({
+          type: 'userDropReducer',
+          payload: {
+            ...payload,
+          }
+        });
+      } else {
+        // 删除之前的
+        yield put({
+          type: 'deleteUser',
+          payload: {
+            ...value,
+            startIndex: state.dragUser.startIndex,
+            endIndex: state.dragUser.endIndex,
+            customerId: state.dragUser.customerId,
+            roomIndex: state.dragUser.roomIndex,
+            status: state.dragUser.status,
+          }
+        });
+
+        let payload = {
+          ...value,
+          status: state.dragUser.status,
+        };
+
+        // 添加新的
+        yield put({
+          type: 'userDropReducer',
+          payload: {
+            ...payload,
+          }
+        });
+      }
+
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){
@@ -582,7 +705,7 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
+      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, value || param);
 
       if (code == 0) {
         // 更新原始集合的状态
@@ -599,7 +722,9 @@ export default {
       return history.listen(({pathname, query}) => {
         if (pathname === '/chamber/roomstatusindex') {
           dispatch({type: 'dayStatus'});
-          if (!query) {
+
+          if (Object.keys(query).length == 0) {
+
             dispatch({
               type: 'getDataDict',
               payload: {
@@ -622,6 +747,12 @@ export default {
               type: 'getDataDict',
               payload: {
                 "abName": 'CX',
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'YCC',
               }
             });
           }

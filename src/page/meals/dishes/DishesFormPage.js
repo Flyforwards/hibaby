@@ -108,6 +108,20 @@ class DishesFormPage extends React.Component{
   }
 
 
+  checkConfirm = (rule, value, callback) => {
+    if(value){
+      const reg = /^[0-9]+(.[0-9]{0,2})?$/;
+      if(!reg.test(value)){
+        callback("请输入正确的数值");
+      }else{
+        callback();
+      }
+    }else{
+      callback();
+    }
+  }
+
+
 
   render(){
     const _this = this;
@@ -192,6 +206,8 @@ class DishesFormPage extends React.Component{
                   {
                     required: volumeRequired,
                     message: '食材用量不能为空'
+                  }, {
+                    validator: this.checkConfirm,
                   }
                 ],
               })(
@@ -310,6 +326,8 @@ class DishesFormPage extends React.Component{
                       {
                         required: true,
                         message: '食材用量不能为空'
+                      }, {
+                        validator: this.checkConfirm,
                       }
                     ],
                   })(

@@ -154,3 +154,13 @@ export function modifyUser(values) {
   })
 }
 
+// 根据电话号码获取用户信息
+export function getCustomerByMobile(values) {
+  return request('/crm/api/v1/customer/getCustomerByMobile', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+

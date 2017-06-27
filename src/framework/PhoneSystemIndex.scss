@@ -1,0 +1,38 @@
+.phone-system-cent {
+  position: absolute;
+  z-index: 10;
+  width:1000px;
+  height:800px;
+  left:50%;
+  top:50%;
+  margin-left:-500px;
+  margin-top:-400px;
+
+  .system-button-option {
+    float: right;
+    margin-right: 5px;
+  }
+
+}
+
+.phone-system-min-cent {
+  position: absolute;
+  z-index: 10;
+  width:200px;
+  height:100px;
+  left: 5px;
+  bottom: 45px;
+
+  .system-button-option {
+    float: right;
+    margin-right: 5px;
+  }
+}
+
+
+.system-button-option-show {
+  position: absolute;
+  z-index: 10;
+  left: 5px;
+  bottom: 45px;
+}
