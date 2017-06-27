@@ -80,6 +80,14 @@
 }
 
 .lowModel {
+  .iconDel{
+    color: red;
+    font-size: 18px;
+  }
+  .btnDelIcon{
+    background: red;
+    color: #fff;
+  }
   h3 {
     width: 100%;
     line-height: 30px;
@@ -123,4 +131,40 @@
     }
   }
 
+}
+
+.chooseDishesModel {
+  .ant-input-affix-wrapper{
+    width: 50%;
+  }
+  .dishesTab {
+    margin-top: 20px;
+    .ant-table-thead {
+      tr {
+        th {
+          background: #666666;
+          text-align: center;
+          span {
+            color: #fff;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    .ant-table-tbody {
+      .ant-table-row {
+        td {
+          text-align: center;
+          a {
+            font-size: 14px;
+            color: #b67231;
+            &:hover {
+              color: #108ee9;
+            }
+          }
+
+        }
+      }
+    }
+  }
 }

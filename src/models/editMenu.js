@@ -1,9 +1,7 @@
-/**
- * Created by Flyforwards on 2017/6/26.
- */
 import * as prepareMealsService from '../services/editMenu';
 import { parse } from 'qs';
 import { message } from 'antd';
+import $ from 'jquery';
 import { format,queryURL } from '../utils/index.js';
 
 export default {
@@ -14,12 +12,7 @@ export default {
     visible: false,
     topVisible: false,
     chooseVisibleInfo: false,
-    highInfo: [],
     dishesPageInfo: [],
-    pushLowDish: {},
-
-
-    //已完成的
     cardLevelInfo: [],
     findMenuInfo: [],
     dayInfo: [
@@ -360,9 +353,11 @@ export default {
           menuInfoHigh[0].info.push(info);
         });
       } else {
+        menuInfoHigh[0].info = [];
         menuInfoHigh.map((v, k) => {
           v.day = highTime.day
         })
+
       }
       return { ...state, menuInfo: menuInfoHigh }
 
@@ -391,6 +386,34 @@ export default {
           default:
             data.dishes = [{}];
         }
+      } else {
+        let add = { isDel: true };
+        let length = 1;
+        switch (data.type) {
+          case 1:
+            length = 4;
+            break;
+          case 2:
+            length = 1;
+            break;
+          case 3:
+            length = 5;
+            break;
+          case 4:
+            length = 2;
+            break;
+          case 5:
+            length = 5;
+            break;
+          case 6:
+            length = 2;
+            break;
+          default:
+            length = 1;
+        }
+        data.dishes.map((v, k) => {
+          v.number > length && $.extend(v, v, add)
+        })
       }
       return { ...state, menuInfoByType: data }
     },
@@ -409,9 +432,29 @@ export default {
       topMenuInfoByType.pointPackage = pointPackage;
       return { ...state, topMenuInfoByType }
     },
+    changeEatDay(state, { payload: { eatDayValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].eatDay = eatDayValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeEatTime(state, { payload: { eatTimeValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].eatTime = eatTimeValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeFrequency(state, { payload: { frequencyValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].frequency = frequencyValue;
+      return { ...state, topMenuInfoByType }
+    },
     getTopMenuInfoByType(state, { payload: { data } }){
       if (data.dishes.length == 0) {
         data.dishes = [{}]
+      } else {
+        const add = { isDel: true };
+        data.dishes.length > 1 && data.dishes.map((v, k) => {
+          v.number > 1 && $.extend(v, v, add)
+        })
       }
       return { ...state, topMenuInfoByType: data }
     },
@@ -432,10 +475,7 @@ export default {
           findMenuInfo.push(v.dishesId);
           dayInfo.map((n, m) => {
             n.info.map((nn, mm) => {
-              //nn.colorType = nn.week == v.week && nn.day == v.day ? 'red' : '#fff';
-              if (nn.week == v.week && nn.day == v.day) {
-                nn.colorType = 'red';
-              }
+              nn.colorType = (nn.week == v.week && nn.day == v.day) ? 'red' : nn.colorType;
             })
           })
         })
@@ -444,23 +484,19 @@ export default {
     },
     saveLowInfo(state, { payload: { postData } }){
       const { menuInfoByType } = state;
-      menuInfoByType.dishes[postData.number - 1] = postData;
+      const info = menuInfoByType.dishes[postData.number - 1];
+      $.extend(info, postData)
       return { ...state, menuInfoByType }
     },
-
-
     saveHighInfo(state, { payload: { postDataHigh } }){
-      console.log(postDataHigh, 'postDataHigh')
       const { topMenuInfoByType } = state;
-      topMenuInfoByType.dishes[postDataHigh.number - 1] = postDataHigh;
-      console.log(topMenuInfoByType, 'topMenuInfoByTypetopMenuInfoByType ')
+      const info = topMenuInfoByType.dishes[postDataHigh.number - 1];
+      $.extend(info, postDataHigh)
       return { ...state, topMenuInfoByType }
     },
-
     chooseVisible(state, { payload: { chooseVisibleInfo } }){
       return { ...state, chooseVisibleInfo }
     },
-
     dishesLibraryNodes(state, { payload: nodesInfo }){
       return { ...state, ...nodesInfo }
     }
@@ -469,8 +505,8 @@ export default {
   effects: {
     //查询某一天基础食材餐单
     *getMenuByDay({ payload: values }, { call, put }) {
-      const customerId = queryURL("dataId");
-      const value = {...values, customerId}
+      const customerId = queryURL('dataId');
+      const value = {...values, customerId};
       const { data: { data, code } } = yield call(prepareMealsService.getMenuByDay, value);
       if (code == 0) {
         yield put({
@@ -485,8 +521,8 @@ export default {
 
     //查询某一餐基础餐单详情
     *getMenuByType({ payload: values }, { call, put }){
-      const customerId = queryURL("dataId");
-      const value = {...values, customerId}
+      const customerId = queryURL('dataId');
+      const value = {...values, customerId};
       const { data: { data, code } } = yield call(prepareMealsService.getMenuByType, value);
       if (code == 0) {
         yield put({
@@ -501,8 +537,8 @@ export default {
 
     //查询某一天高档食材餐单
     *getTopMenuByDay({ payload: values }, { call, put }) {
-      const customerId = queryURL("dataId");
-      const value = {...values, customerId}
+      const customerId = queryURL('dataId');
+      const value = {...values, customerId};
       const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByDay, value);
       if (code == 0) {
         yield put({
@@ -517,8 +553,8 @@ export default {
 
     //查询某一餐高档食材餐单详情
     *getTopMenuByType({ payload: values }, { call, put }) {
-      const customerId = queryURL("dataId");
-      const value = {...values, customerId}
+      const customerId = queryURL('dataId');
+      const value = {...values, customerId};
       const { data: { data, code } } = yield call(prepareMealsService.getTopMenuByType, value);
       if (code == 0) {
         yield put({
@@ -533,8 +569,8 @@ export default {
 
     //根据菜名查询餐单
     *getMenuByDishes({ payload: values }, { call, put }) {
-      const customerId = queryURL("dataId");
-      const value = {...values, customerId}
+      const customerId = queryURL('dataId');
+      const value = {...values, customerId};
       const { data: { data, code } } = yield call(prepareMealsService.getMenuByDishes, value);
       if (code == 0) {
         yield put({
@@ -598,11 +634,17 @@ export default {
 
     //保存基础餐单
     *saveMenu({ payload: values }, { call, put }){
-      const customerId = queryURL("dataId");
-      const value = {...values, customerId}
-      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveMenu, value);
+      const customerId = queryURL('dataId');
+      const value = {...values, customerId};
+      const { data: { code } } = yield call(prepareMealsService.saveMenu, value);
       if (code == 0) {
-        message.success('保存成功');
+        message.success('保存成功!');
+        yield put({
+          type: 'changeVisible',
+          payload: {
+            visible: false
+          }
+        })
         yield put({
           type: 'getMenuByDay',
           payload: {
@@ -616,13 +658,18 @@ export default {
     },
 
     //保存高档食材的餐单
-    //saveTopMenu
     *saveTopMenu({ payload: values }, { call, put }){
-      const customerId = queryURL("dataId");
-      const value = {...values, customerId}
-      const { data: { data, code, page, size, total } } = yield call(prepareMealsService.saveTopMenu, value);
+      const customerId = queryURL('dataId');
+      const value = {...values, customerId};
+      const { data: { code } } = yield call(prepareMealsService.saveTopMenu, value);
       if (code == 0) {
-        message.success('保存成功');
+        message.success('保存成功!');
+        yield put({
+          type: 'changeTopVisible',
+          payload: {
+            topVisible: false
+          }
+        })
         yield put({
           type: 'getTopMenuByDay',
           payload: {
@@ -630,8 +677,7 @@ export default {
             day: values.day,
             type: values.type
           }
-        })
-        ;
+        });
       }
     }
   },
@@ -639,7 +685,7 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
 
-        if (pathname === '/meals/dishes/prepareMeals') {
+        if (pathname === '/meals/nutritionist/editmenu') {
           dispatch({
             type: 'getCardLevel',
             payload: {}
@@ -661,4 +707,3 @@ export default {
     }
   }
 }
-
