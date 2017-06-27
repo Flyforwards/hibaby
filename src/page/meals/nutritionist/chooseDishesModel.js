@@ -15,8 +15,8 @@ class App extends Component {
     data: [],
     loading: false
   }
-  
-  
+
+
   generateList = (data) => {
     for (let i = 0; i < data.length; i++) {
       const node = data[i];
@@ -27,14 +27,14 @@ class App extends Component {
       }
     }
   };
-  
+
   componentWillMount() {
     const { prepareMeals } = this.props;
     const { nodesInfo } = prepareMeals;
     const { nodes } = nodesInfo;
     this.generateList(nodes);
   }
-  
+
   getParentKey = (key, tree) => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
@@ -49,8 +49,8 @@ class App extends Component {
     }
     return parentKey;
   };
-  
-  
+
+
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
@@ -62,24 +62,24 @@ class App extends Component {
     const { nodesInfo } = prepareMeals;
     const { nodes } = nodesInfo;
     const value = e.target.value;
-    
-    
+
+
     const expandedKeys = this.state.dataList.map((item) => {
       if (item.key.indexOf(value) > -1) {
         return this.getParentKey(item.keys, nodes);
       }
       return null;
     }).filter((item, i, self) => item && self.indexOf(item) === i);
-    
-    
+
+
     this.setState({
       expandedKeys,
       searchValue: value,
       autoExpandParent: true
     });
   }
-  
-  
+
+
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -88,8 +88,9 @@ class App extends Component {
         topVisible: false
       }
     })
-  }
+  };
   onSelect = (selectedKeys, info) => {
+    console.log("selectKeys",selectedKeys);
     const { dispatch } = this.props;
     dispatch({
       type: 'prepareMeals/getDishesPageList',
@@ -102,7 +103,7 @@ class App extends Component {
       postNodeId: selectedKeys[0]
     })
   }
-  
+
   getInfo = (data) => {
     const { changeKey, isLow, dispatch, reset } = this.props;
     const { id, name } = data;
@@ -132,11 +133,11 @@ class App extends Component {
         topVisible: false
       }
     })
-    
+
   }
-  
+
   handleTableChange = (pagination, filters, sorter) => {
-    
+
     const { dispatch, prepareMeals } = this.props;
     dispatch({
       type: 'prepareMeals/getDishesPageList',
@@ -147,7 +148,7 @@ class App extends Component {
       }
     })
   }
-  
+
   render() {
     const { prepareMeals } = this.props;
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo } = prepareMeals;
@@ -161,7 +162,7 @@ class App extends Component {
       title: '荤素类型',
       dataIndex: 'mvType',
       key: 'mvType'
-      
+
     }, {
       title: '菜品类型',
       dataIndex: 'vdType',
@@ -180,7 +181,7 @@ class App extends Component {
         )
       }
     }]
-    
+
     const loop = data => data.map((item) => {
       const index = item.name.search(searchValue);
       const beforeStr = item.name.substr(0, index);
@@ -218,7 +219,7 @@ class App extends Component {
                 onExpand={this.onExpand}
                 expandedKeys={expandedKeys}
                 autoExpandParent={autoExpandParent}
-                onSelect={this.onSelect}
+                onSelect={this.onSelect.bind(this)}
               >
                 {loop(nodes)}
               </Tree>
@@ -242,7 +243,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals
   };

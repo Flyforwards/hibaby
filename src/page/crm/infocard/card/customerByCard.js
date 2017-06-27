@@ -120,6 +120,7 @@ class CustomerByCard extends Component {
       },
     }
     return (
+      <div className="infoCard">
       <Card>
         <div className="card-title">
           <h3>客户列表:</h3>
@@ -195,6 +196,7 @@ class CustomerByCard extends Component {
         </Form>
         <Table {...tableProps} bordered size="small" rowKey = { record=>record.id } columns={ this.columns }/>
       </Card>
+      </div>
     )
   }
 }
