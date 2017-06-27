@@ -29,7 +29,7 @@ class DishesIndex extends React.Component{
       name : null,
       mvType : null,
       vdType : null,
-      status : null,
+      status : null
     }
     this.columns = [{
       title: '序号',
@@ -46,11 +46,33 @@ class DishesIndex extends React.Component{
       dataIndex: 'mvType',
       key:'mvType',
       width: '10%',
+      render: (text, record, index) => {
+        const {mvTypeData} = this.props.dishes;
+        let result = null;
+        mvTypeData.map(function (item) {
+          if(text == item.id){
+            result = <span>{item.name}</span>;
+            return;
+          }
+        });
+        return result;
+      }
     },{
       title: '菜品类型',
       dataIndex: 'vdType',
       key:'vdType',
       width: '10%',
+      render: (text, record, index) => {
+        const {vdTypeData} = this.props.dishes;
+        let result = null;
+        vdTypeData.map(function (item) {
+          if(text == item.id){
+            result = <span>{item.name}</span>;
+            return;
+          }
+        });
+        return result;
+      }
     },{
       title: '使用状态',
       dataIndex: 'status',
@@ -104,17 +126,32 @@ class DishesIndex extends React.Component{
   }
 
 
-
   componentDidMount(){
     const {dispatch} = this.props;
     dispatch({
       type: 'dishes/getDishesLibraryNodes'
     });
+
+    dispatch({
+      type: 'dishes/getDictionary',
+      payload : {
+        abName : "MVTYPE"
+      }
+    });
+
+    dispatch({
+      type: 'dishes/getDictionary',
+      payload : {
+        abName : "VDTYPE"
+      }
+    });
+
     this.getTableData({
       nodeId : this.props.dishes.nodeId,
       page : this.props.dishes.page,
       size : this.props.dishes.size
     });
+
   }
 
   handleSearch  = () =>{
@@ -174,6 +211,16 @@ class DishesIndex extends React.Component{
     if(this.props.dishes.nodeId != 1){//根节点无法创建菜品
       addBtn = <span className="Dishes-add"><PermissionLink testKey='DISHES_ADD' to="/meals/dishes/addDishes"><Button className="SaveBtn" >创建菜品</Button></PermissionLink></span>;
     }
+    const {mvTypeData,vdTypeData} = this.props.dishes;
+    const mvTypeOptions = [];
+    mvTypeData.map(function (item,index) {
+      mvTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    });
+    const vdTypeOptions = [];
+    vdTypeData.map(function (item,index) {
+      vdTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    });
+
     return (
         <div className="Dishes-nav">
           <Form layout="inline">
@@ -190,9 +237,7 @@ class DishesIndex extends React.Component{
                   label="荤素类型"
                 >
                   <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
-                    <Option value="0">荤</Option>
-                    <Option value="1">素</Option>
-                    <Option value="2">半荤</Option>
+                    {mvTypeOptions}
                   </Select>
 
                 </FormItem>
@@ -202,10 +247,7 @@ class DishesIndex extends React.Component{
                   label="菜品类型"
                 >
                     <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
-                      <Option value="0">主食</Option>
-                      <Option value="1">配菜</Option>
-                      <Option value="2">点心</Option>
-                      <Option value="3">水果</Option>
+                      {vdTypeOptions}
                     </Select>
                 </FormItem>
               </Col>
