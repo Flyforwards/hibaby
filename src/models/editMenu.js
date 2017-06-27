@@ -308,13 +308,14 @@ export default {
       if (data.length != 0) {
         let info = [];
         let nu;
-        for (let i = 0; i < menuInfoLow.length; i++) {
-          menuInfoLow[i].info = [];
-        }
+
+        menuInfoLow.map((v,k)=>{
+          menuInfoLow[k].info = [];
+          menuInfoLow[k].day = data[0].day;
+          menuInfoLow[k].week = data[0].week;
+        })
         data.map((v, k) => {
           nu = v.type - 1;
-          menuInfoLow[nu].day = v.day;
-          menuInfoLow[nu].week = v.week;
           menuInfoLow[nu].type = v.type;
           info = {
             'dishesId': v.dishesId,
@@ -324,6 +325,7 @@ export default {
           };
           menuInfoLow[nu].info.push(info);
         });
+
       } else {
         menuInfoLow.map((v, k) => {
           v.week = lowTime.week;
@@ -412,7 +414,7 @@ export default {
             length = 1;
         }
         data.dishes.map((v, k) => {
-          v.number > length && $.extend(v, v, add)
+          v.number > length && $.extend(v, v, add);
         })
       }
       return { ...state, menuInfoByType: data }

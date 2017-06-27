@@ -330,6 +330,7 @@ class LowMOdel extends Component {
     return (
       <div >
         <Modal
+          key={topVisible}
           className="lowModel"
           title={`编辑餐单：高档食材—${topMenuInfoByType.day}`}
           visible={topVisible}
