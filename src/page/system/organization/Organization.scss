@@ -1,408 +1,408 @@
-.organizationConnet{
-height:100%;
-overflow:hidden;
-min-width:860px;
-.mini .yt-admin-framework-content {
+.organizationConnet {
+  height: 100%;
+  overflow: hidden;
+  min-width: 860px;
+  .mini .yt-admin-framework-content {
     transition: all .3s;
     margin-left: 60px;
-}
-.yt-admin-framework-content {
+  }
+  .yt-admin-framework-content {
     padding: 0 12px;
     background-color: #eeeeee;
-}
-.yt-admin-framework--a{
-	.ant-table {
-	    margin-top: -187px;
-	}
-}
-.yt-admin-framework-Customer-a{
-height:100%;
-overflow: hidden;
-.Organization-right{
-  overflow: hidden;
-}
-:root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after {
-    font-size: 20px;
-}
-:root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
-	font-size: 20px;
-}
-.Organization-nav{
-  padding-left: 10px;
-	background-color:#fff;
-	height:100px;
-	font-size:12px;
-	margin-top:10px;
-	padding-top:10px;
-	.name{
-		float:left;
-		margin-left:40px;
-    height:30px;
-    font:12px "微软雅黑";
-		input{
-			width:160px;
-			height:30px;
-			font-size:14px;
-			padding-left:5px;
-			margin-left:10px;
-		}
-	}
-	.SystemRoles{
-		margin-left:30px;
-		background-color:#fff;
-		font-size:12px;
-    height:30px;
-    line-height:30px;
-		.ant-select-selection--single {
-		    width:180px;
-			height:30px;
-			font-size:12px;
-			line-height:30px;
-			vertical-align:middle;
-		}
-		.ant-select-selection__rendered {
-		    line-height: 30px;
-		}
-		.OrganizationType{
-			margin-left:20px;
-			width:180px;
-		}
-	}
-	.status{
-		float:left;
-		margin-left:30px;
-		background-color:#fff;
-		font-size:12px;
-    height:30px;
-    line-height:30px;
-		.ant-select-selection--single {
-		  width:180px;
-			height:30px;
-			font-size:12px;
-			line-height:30px;
-			vertical-align:middle;
-		}
-		.ant-select-selection__rendered {
-		    line-height: 30px;
-		}
-		.OrganizationType{
-			margin-left:20px;
-			width:180px;
-		}
-	}
-  :root .ant-select-arrow {
-    font-size: 16px;
   }
-  .btn{
-    width:100%;
-    height:30px;
+  .yt-admin-framework--a {
+    .ant-table {
+      margin-top: -187px;
+    }
   }
-	.Organization-Inquire{
-		float:right;
-		font-size: 14px;
-		color: #b67233;
-		cursor: pointer;
-		margin-right:50px;
-		margin-top:15px;
-		display: inline-block;
-		border:1px solid #b67233;
-		border-radius: 3px;
-		line-height: 30px;
-		text-align:center;
-		width: 15%;
-	    height: 30px;
-	    background: inherit;
-	    background-color:#f7f2e9;
-	    a{
-	    	width:100%;
-        color: #b57332;
+  .yt-admin-framework-Customer-a {
+    height: 100%;
+    overflow: hidden;
+    .Organization-right {
+      overflow: hidden;
+    }
+    :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after {
+      font-size: 20px;
+    }
+    :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
+      font-size: 20px;
+    }
+    .Organization-nav {
+      padding-left: 10px;
+      background-color: #fff;
+      height: 100px;
+      font-size: 12px;
+      margin-top: 10px;
+      padding-top: 10px;
+      .name {
         float: left;
-	    	display:block;
-        height: 26px;
-        .SaveBtn{
-          color: #b57332;
-          font: 14px "微软雅黑";
-          background: #f7f2e9;
-          height: 26px;
-          width: 124px;
+        margin-left: 40px;
+        height: 30px;
+        font: 12px "微软雅黑";
+        input {
+          width: 160px;
+          height: 30px;
+          font-size: 14px;
+          padding-left: 5px;
+          margin-left: 10px;
         }
-	    }
-	}
-	.Organization-add{
-		float:right;
-		font-size: 14px;
-		color: #FFFFFF;
-		cursor: pointer;
-		margin-right:2%;
-		margin-top:15px;
-		display: inline-block;
-		border-radius: 3px;
-		line-height: 30px;
-		text-align:center;
-		width: 15%;
-	    height: 30px;
-	    background: inherit;
-	    background-color:#b57332;
-	}
-}
-@media (max-width: 767px) {
-    .mini .yt-admin-framework-content {
+      }
+      .SystemRoles {
+        margin-left: 30px;
+        background-color: #fff;
+        font-size: 12px;
+        height: 30px;
+        line-height: 30px;
+        .ant-select-selection--single {
+          width: 180px;
+          height: 30px;
+          font-size: 12px;
+          line-height: 30px;
+          vertical-align: middle;
+        }
+        .ant-select-selection__rendered {
+          line-height: 30px;
+        }
+        .OrganizationType {
+          margin-left: 20px;
+          width: 180px;
+        }
+      }
+      .status {
+        float: left;
+        margin-left: 30px;
+        background-color: #fff;
+        font-size: 12px;
+        height: 30px;
+        line-height: 30px;
+        .ant-select-selection--single {
+          width: 180px;
+          height: 30px;
+          font-size: 12px;
+          line-height: 30px;
+          vertical-align: middle;
+        }
+        .ant-select-selection__rendered {
+          line-height: 30px;
+        }
+        .OrganizationType {
+          margin-left: 20px;
+          width: 180px;
+        }
+      }
+      :root .ant-select-arrow {
+        font-size: 16px;
+      }
+      .btn {
+        .Organization-Inquire {
+          float: right;
+          font-size: 14px;
+          color: #b67233;
+          cursor: pointer;
+          margin-right: 50px;
+          margin-top: 15px;
+          display: inline-block;
+          border: 1px solid #b67233;
+          border-radius: 3px;
+          line-height: 30px;
+          text-align: center;
+          height: 30px;
+          background: inherit;
+          background-color: #f7f2e9;
+          a {
+            width: 100%;
+            color: #b57332;
+            float: left;
+            display: block;
+            height: 26px;
+            .SaveBtn {
+              color: #b57332;
+              font: 14px "微软雅黑";
+              background: #f7f2e9;
+              height: 26px;
+              width: 124px;
+            }
+          }
+        }
+        .Organization-add {
+          float: right;
+          font-size: 14px;
+          color: #FFFFFF;
+          cursor: pointer;
+          margin-right: 20px;
+          margin-top: 15px;
+          display: inline-block;
+          border-radius: 3px;
+          line-height: 30px;
+          text-align: center;
+          height: 30px;
+          background: inherit;
+          background-color: #b57332;
+        }
+      }
+
+    }
+    @media (max-width: 767px) {
+      .mini .yt-admin-framework-content {
         transition: all .3s;
         margin-left: 0;
+      }
     }
-}
-.ant-modal-title{
-	text-align:center;
-}
-.ant-btn .ant-btn-lg{
+    .ant-modal-title {
+      text-align: center;
+    }
+    .ant-btn .ant-btn-lg {
 
+    }
+    .ant-btn {
+      background-color: #b67233;
+      color: #fff;
+      border: 0;
+      width: 150px;
+      border-radius: 0px;
+    }
+    .ant-btn:hover, .ant-btn:focus {
+      color: #fff;
+      background-color: #b67233;
+      border: 0;
+      width: 150px;
+    }
+    .ant-calendar {
+      top: 32px;
+      left: 10px;
+      width: 179px;
+      border-radius: 0;
+    }
+    .CreateList {
+      span {
+        display: block;
+        float: left;
+        margin-left: 19px;
+        width: 21%;
+        height: 40px;
+        input {
+          margin-right: 5px;
+          vertical-align: middle;
+        }
+      }
+    }
+    .ant-table-thead > tr > th {
+      background-color: rgba(102, 102, 102, 1);
+      font-weight: 500;
+      transition: background .3s ease;
+      text-align: center;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+    .ant-table-tbody > tr > td {
+      text-align: center;
+      background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-size: 14px;
+      span {
+        width: 100%;
+        .firstA {
+          color: #0066FF;
+          text-decoration: none;
+        }
+        a {
+          margin: 0 3px;
+          color: #b87638;
+        }
+        a:hover {
+          color: #0066ff;
+        }
+        .twoA:hover {
+          color: #ff0000;
+        }
+      }
+    }
+    .ant-modal-body {
+      height: 230px;
+      font-size: 14px;
+      line-height: 2.5;
+      margin-top: -10px;
+    }
+    .CreateModaList {
+      width: 100%;
+      height: 100%;
+    }
+    .editable-cell {
+      position: relative;
+    }
+
+    .editable-cell-input-wrapper,
+    .editable-cell-text-wrapper {
+      padding-right: 24px;
+    }
+
+    .editable-cell-text-wrapper {
+      padding: 5px 24px 5px 5px;
+    }
+
+    .editable-cell-icon,
+    .editable-cell-icon-check {
+      position: absolute;
+      right: 0;
+      width: 20px;
+      cursor: pointer;
+    }
+
+    .editable-cell-icon {
+      line-height: 18px;
+      display: none;
+    }
+
+    .editable-cell-icon-check {
+      line-height: 28px;
+    }
+
+    .editable-cell:hover .editable-cell-icon {
+      display: inline-block;
+    }
+
+    .editable-cell-icon:hover,
+    .editable-cell-icon-check:hover {
+      color: #108ee9;
+    }
+
+    .editable-add-btn {
+      margin-bottom: 8px;
+    }
+    .allList {
+      width: 400px;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #999999;
+      text-align: left;
+      display: inline-block;
+      margin-top: -40px;
+      margin-left: 10px;
+      float: left;
+    }
+    .ant-table-paginations {
+      margin-right: 60px;
+    }
+    .ant-tree li a {
+      width: 400px;
+      margin-left: -20px;
+      text-indent: 20px;
+      height: 30px;
+      line-height: 30px;
+    }
+    .Organization-left .ant-tree {
+      margin-left: 0;
+    }
+    .Organization-left .ant-tree li ul {
+      width: 100%;
+      li {
+        a {
+          width: 400px;
+        }
+      }
+    }
+    .Organization-left .ant-tree li ul li a {
+      width: 400px;
+      margin-left: -20px;
+      text-indent: 30px;
+    }
+    .Organization-left .ant-tree li {
+      position: relative;
+      width: 100%;
+    }
+    .Organization-left .ant-tree .plus {
+      position: absolute;
+      color: #a3a3a3;
+      font-size: 16px;
+      height: 16px;
+      line-height: 16px;
+      font-weight: 900;
+      //left:116px;
+      top: 3px;
+    }
+    .Organization-left .ant-tree li ul li a:hover {
+      width: 400px;
+      margin-left: -20px;
+      text-indent: 30px;
+    }
+    .ant-tree-child-tree .ant-tree-child-tree-open {
+      li {
+        a {
+          margin-left: -10px;
+        }
+      }
+      width: 400px;
+      background-color: #fff;
+    }
+    .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
+      font-size: 16px;
+      font-size: 7px \9
+    ;
+      content: "\E606";
+      font-weight: 700;
+      margin-left: 10px;
+    }
+    .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
+      font-size: 16px;
+      font-size: 7px \9
+    ;
+      content: "\E606";
+      font-weight: 700;
+      margin-left: 10px;
+    }
+    :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
+      transform: scale(0.29);
+    }
+    :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
+      transform: scale(0.29)
+    }
+    .ant-tree li span.ant-tree-switcher, .ant-tree li span.ant-tree-iconEle {
+
+    }
+    #components-tree-demo-draggable .draggable-tree .ant-tree-node-content-wrapper {
+      width: calc(100% - 18px);
+    }
+    .nameList {
+      width: 45%;
+      background-color: #eee;
+      position: absolute;
+      left: 55%;
+      z-index: 10000;
+      .li {
+        padding-left: 10px;
+        height: 30px;
+        font-size: 12px;
+        line-height: 30px;
+      }
+      .li:hover {
+        background-color: #f89d2d;
+        color: #fff;
+      }
+      .fourLi {
+        color: #f89d2d;
+        padding-left: 10px;
+        height: 30px;
+        font-size: 12px;
+        line-height: 30px;
+      }
+
+    }
+  }
 }
-.ant-btn {
-	background-color:#b67233;
-	color:#fff;
-	border:0;
-	width:150px;
-	border-radius:0px;
-}
-.ant-btn:hover, .ant-btn:focus {
-    color: #fff;
-    background-color: #b67233;
-    border:0;
-    width:150px;
-}
-.ant-calendar{
-	top:32px;
-	left:10px;
-	width:179px;
-	border-radius:0;
-}
-.CreateList{
-	span{
-		display:block;
-		float:left;
-		margin-left:19px;
-		width:21%;
-		height:40px;
-		input{
-			margin-right:5px;
-			vertical-align: middle;
-		}
-	}
-}
-.ant-table-thead > tr > th {
-    background-color: rgba(102, 102, 102, 1);
-    font-weight: 500;
-    transition: background .3s ease;
-    text-align: center;
-    font-family: '微软雅黑 Regular', '微软雅黑';
-    font-weight: 400;
-    font-style: normal;
-    font-size: 14px;
-    color: #FFFFFF;
-}
-.ant-table-tbody > tr > td {
-    text-align:center;
-    background-color: #fff;
-	font-family: '微软雅黑 Regular', '微软雅黑';
-    font-weight: 400;
-    font-size: 14px;
-	span{
-		width:100%;
-		.firstA{
-			color: #0066FF;
-			text-decoration: none;
-		}
-		a{
-			margin: 0 3px;
-			color:#b87638;
-		}
-    a:hover{
-			color:#0066ff;
-		}
-		.twoA:hover{
-			color:#ff0000;
-		}
-	}
-}
-.ant-modal-body {
-    height:230px;
-    font-size: 14px;
-    line-height: 2.5;
-    margin-top:-10px;
-}
-.CreateModaList{
-	width:100%;
-	height:100%;
-}
-.editable-cell {
+
+.ant-tree li .ant-tree-node-content-wrapper {
   position: relative;
 }
 
-.editable-cell-input-wrapper,
-.editable-cell-text-wrapper {
-  padding-right: 24px;
-}
-
-.editable-cell-text-wrapper {
-  padding: 5px 24px 5px 5px;
-}
-
-.editable-cell-icon,
-.editable-cell-icon-check {
-  position: absolute;
-  right: 0;
-  width: 20px;
-  cursor: pointer;
-}
-
-.editable-cell-icon {
-  line-height: 18px;
-  display: none;
-}
-
-.editable-cell-icon-check {
-  line-height: 28px;
-}
-
-.editable-cell:hover .editable-cell-icon {
-  display: inline-block;
-}
-
-.editable-cell-icon:hover,
-.editable-cell-icon-check:hover {
-  color: #108ee9;
-}
-
-.editable-add-btn {
-  margin-bottom: 8px;
-}
-.allList{
-	width:400px;
-	font-family: '微软雅黑 Regular', '微软雅黑';
-    font-weight: 400;
-    font-style: normal;
-    font-size: 14px;
-    color: #999999;
-    text-align: left;
-    display:inline-block;
-    margin-top:-40px;
-    margin-left:10px;
-    float:left;
-}
-.ant-table-paginations{
-	margin-right: 60px;
-}
-.ant-tree li a {
-    width: 400px;
-    margin-left:-20px;
-    text-indent: 20px;
-    height:30px;
-    line-height:30px;
-}
-.Organization-left .ant-tree {
-    margin-left:0;
-}
-.Organization-left .ant-tree li ul {
-    width:100%;
-    li{
-    	a{
-    		width:400px;
-    	}
-    }
-}
-.Organization-left .ant-tree li ul li a {
-    width: 400px;
-   	margin-left:-20px;
-    text-indent: 30px;
-}
-.Organization-left .ant-tree li{
-	position: relative;
-	width:100%;
-}
-.Organization-left .ant-tree .plus{
-	position:absolute;
-	color:#a3a3a3;
-    font-size: 16px;
-    height: 16px;
-    line-height: 16px;
-    font-weight: 900;
-    //left:116px;
-    top:3px;
-}
-.Organization-left .ant-tree li ul li a:hover {
-    width: 400px;
-    margin-left:-20px;
-    text-indent: 30px;
-}
-.ant-tree-child-tree .ant-tree-child-tree-open{
-		li{
-			a{
-				margin-left:-10px;
-			}
-		}
-	width:400px;
-	background-color: #fff;
-}
-.ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
-    font-size: 16px;
-    font-size: 7px\9;
-    content: "\E606";
-    font-weight: 700;
-    margin-left:10px;
-}
-.ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
-	font-size: 16px;
-    font-size: 7px\9;
-    content: "\E606";
-    font-weight: 700;
-    margin-left: 10px;
-}
-:root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
-    transform: scale(0.29);
-}
-:root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
-    transform: scale(0.29)
-}
-.ant-tree li span.ant-tree-switcher, .ant-tree li span.ant-tree-iconEle {
-
-}
-#components-tree-demo-draggable .draggable-tree .ant-tree-node-content-wrapper {
-    width: calc(100% - 18px);
-}
-.nameList{
-	width:45%;
-	background-color: #eee;
-	position:absolute;
-	left:55%;
-  z-index:10000;
-	.li{
-		padding-left:10px;
-		height:30px;
-		font-size:12px;
-		line-height: 30px;
-	}
-	.li:hover{
-		background-color:#f89d2d;
-		color:#fff;
-	}
-	.fourLi{
-		color:#f89d2d;
-		padding-left:10px;
-		height:30px;
-		font-size:12px;
-		line-height: 30px;
-	}
-
-}
-}
-}
-
-.ant-tree li .ant-tree-node-content-wrapper{
-  position: relative;
-}
-.pagination{
-	width: 300px;
-	float: left;
-	margin-top: -45px;
-    margin-left: 22px;
+.pagination {
+  width: 300px;
+  float: left;
+  margin-top: -45px;
+  margin-left: 22px;
 }
