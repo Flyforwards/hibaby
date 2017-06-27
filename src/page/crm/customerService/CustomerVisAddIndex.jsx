@@ -110,22 +110,20 @@ class CustomerVisAddIndex extends React.Component {
                   </FormItem>
                 </Col>
               </Row>
-              
-              
+            
+            
             </Form>
           </Card>
-          <div style={{ marginTop: 20 }}>
-            <Row>
-              <Col offset={16} span={4}>
-                <Link to='/crm/customer-vis'>
-                  <Button className="button-add"> 返回 </Button>
-                </Link>
-              </Col>
-              <Col span={4}>
-                <Button className="SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
-              </Col>
-            </Row>
-          </div>
+          <Row className="btnRow">
+            <Col offset={16} span={4}>
+              <Link to='/crm/customer-vis'>
+                <Button className="button-add"> 返回 </Button>
+              </Link>
+            </Col>
+            <Col span={4}>
+              <Button className="SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+            </Col>
+          </Row>
         </div>
       </div>
     )
