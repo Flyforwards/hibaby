@@ -8,7 +8,6 @@ export default {
     isShowDetail: false,
     curTabsIndex: '1',
     curDetailTabsIndex: '1',
-    loopList: {},
     systemTime: ''
   },
   reducers: {
@@ -39,7 +38,7 @@ export default {
     //保存循环周期信息
     saveLoopList(state, {payload: {data: loopList}}) {
       console.log(loopList);
-      return {...state, loopList};
+      return {...state, ...loopList};
     },
 
     //保存服务器时间

@@ -26,7 +26,7 @@ function mealCycle (props) {
   function headerComponent (){
     return (
       <div>
-        <div style={{marginLeft: '85%' ,marginTop: '20px'}}><p style={{marginTop: '10px'}}>今日用餐客户共计<font color="#ac672c">40</font>人</p></div>
+        <div style={{marginLeft: '85%' ,marginTop: '20px'}}><p style={{marginTop: '10px'}}>今日用餐客户共计<font color="#ac672c">{props.allTotal}</font>人</p></div>
         <div style={{marginTop: '-40px'}}>{headerDateTabs()}</div>
       </div>
     )
@@ -203,7 +203,11 @@ function mapStateToProps(state) {
   return {
     loading: state.loading,
     isShowDetail: state.cyclePage.isShowDetail,
-    curTabsIndex: state.cyclePage.curTabsIndex
+    curTabsIndex: state.cyclePage.curTabsIndex,
+    allTotal: state.cyclePage.allTotal,
+    date: state.cyclePage.date,
+    dayOfWeek: state.cyclePage.dayOfWeek,
+    loops: state.cyclePage.loops
   };
 }
 export default connect(mapStateToProps)(mealCycle)
