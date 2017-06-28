@@ -295,7 +295,8 @@ export default {
         for (let j = startIndex; j <= endIndex; j++) {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
-            if (customerList[k].customerId == data.customerId) {
+            if (customerList[k].customerId == data.customerId
+              && customerList[k].status == data.status) {
               delete customerList[k].status;
               customerList.splice(k, 1);
               break;
