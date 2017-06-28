@@ -111,4 +111,11 @@ export function resideMove(values) {
   })
 }
 
+// 取消预订
+export function cancelBooking(values) {
+  return request('/crm/api/v1/room/cancelBooking', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 

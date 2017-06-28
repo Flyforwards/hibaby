@@ -458,6 +458,7 @@ const monthStateView = (props) => {
                 customerId: parentNode.dataset.customerId,
                 startIndex: parentNode.dataset.startIndex,
                 endIndex: parentNode.dataset.endIndex,
+                startDate: parentNode.dataset.startDate,
                 status: parentNode.dataset.status,
               }
             });
