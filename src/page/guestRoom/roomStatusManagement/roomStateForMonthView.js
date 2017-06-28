@@ -510,6 +510,7 @@ const monthStateView = (props) => {
 
           document.onmouseup = () => {
             document.onmousemove = null;
+            document.onmouseup = null;
 
             if (!unit) {
               return;
@@ -544,7 +545,6 @@ const monthStateView = (props) => {
               }
             });
 
-            document.onmouseup = null;
           }
         };
 
@@ -658,15 +658,12 @@ const monthStateView = (props) => {
         }
 
         return result;
-
       };
 
       return (
-
         <div className="daysRulerBox" style={{width: boxWidth + 2 + "px"}}>
           {
             dateRulerList.map(item => {
-
               return (
                 <div className="itemRulerBox" style={{
                   width: item.days * UNIT_WIDTH,
@@ -804,7 +801,6 @@ const monthStateView = (props) => {
             ...dragUser,
             startIndex: -1,
             endIndex: -1,
-            status: 7,
             roomIndex: -1,
           }
         }

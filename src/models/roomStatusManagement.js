@@ -328,10 +328,22 @@ export default {
           }
 
           let customerList = room[j].customerList;
-          customerList.push({
-            customerId,
-            customerName,
-          })
+
+          // 如果用户已存在, 则不进行添加
+          let noUser = true;
+          for(let customer of customerList){
+            if(customer.customerId === customerId){
+              noUser = false;
+              break;
+            }
+          }
+
+          if(noUser){
+            customerList.push({
+              customerId,
+              customerName,
+            })
+          }
         }
       } else {
         for (let j = startIndex + 1; j <= endIndex; j++) {
