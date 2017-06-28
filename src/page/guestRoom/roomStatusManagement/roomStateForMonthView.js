@@ -18,6 +18,9 @@ const UNIT_WIDTH = 9;
 let SELECT_CUSTOMER = '';
 let zIndexCount = 100;
 let selectViewIndex = 0;
+// 保留所拖动元素中鼠标的位置
+let dragOffsetX = 0;
+let dragOffsetY = 0;
 
 const statusExplain = [
   {name: "预定", color: "#29C1A6"},
@@ -36,7 +39,11 @@ const monthStateView = (props) => {
   let defaultYear = props.users.defaultYear;
 
   for (let i = 2000; i < 2099; i++) {
-    years.push(<Option key={i} value={`${i}`}>{`${i}`}</Option>)
+    years.push(
+      <Option key={i} value={`${i}`}>
+        {`${i}`}
+      </Option>
+    )
   }
 
   document.ondragover = function (event) {
@@ -49,6 +56,7 @@ const monthStateView = (props) => {
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
+    let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
 
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
@@ -87,7 +95,7 @@ const monthStateView = (props) => {
       type: 'roomStatusManagement/userDrop',
       payload: {
         roomIndex,
-        dayIndex,
+        dayIndex: dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit,
       }
     });
   };
@@ -540,7 +548,10 @@ const monthStateView = (props) => {
           }
         };
 
-        const dragStart = (user) => {
+        const dragStart = (event, user) => {
+          dragOffsetX = event.nativeEvent.offsetX;
+          dragOffsetY = event.nativeEvent.offsetY;
+
           dispatch({
             type: 'roomStatusManagement/userDragStart',
             payload: {
@@ -568,7 +579,7 @@ const monthStateView = (props) => {
                    left: users[i].startIndex * UNIT_WIDTH,
                  }}
                  draggable="true"
-                 onDragStart={() => dragStart(users[i])}
+                 onDragStart={(event) => dragStart(event, users[i])}
                  data-room-index={roomIndex}
                  data-customer-id={users[i].customerId}
                  data-customer-name={users[i].customerName}
@@ -782,11 +793,20 @@ const monthStateView = (props) => {
 
     const customers = props.users.monthStateCustomers;
 
-    const dragStart = (dragUser) => {
+    const dragStart = (dragUser, event) => {
+      dragOffsetX = event.nativeEvent.offsetX;
+      dragOffsetY = event.nativeEvent.offsetY;
+
       dispatch({
         type: 'roomStatusManagement/userDragStart',
         payload: {
-          dragUser,
+          dragUser: {
+            ...dragUser,
+            startIndex: -1,
+            endIndex: -1,
+            status: 7,
+            roomIndex: -1,
+          }
         }
       });
     };
@@ -815,7 +835,7 @@ const monthStateView = (props) => {
             return (
               <div className="customerItem" onClick={() => {
                 onClicked(costomer)
-              }} draggable="true" onDragStart={() => dragStart(costomer)}>
+              }} draggable="true" onDragStart={(event) => dragStart(costomer, event)}>
                 {costomer.customerName}
               </div>
             )

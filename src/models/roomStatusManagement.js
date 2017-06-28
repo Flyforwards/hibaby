@@ -286,17 +286,20 @@ export default {
 
     deleteUser(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
-      let room = monthRoomList[data.roomIndex].useAndBookingList;
 
-      let startIndex = parseInt(data.startIndex);
-      let endIndex = parseInt(data.endIndex);
-      for (let j = startIndex; j <= endIndex; j++) {
-        let customerList = room[j].customerList;
-        for (let k = 0; k < customerList.length; k++) {
-          if (customerList[k].customerId == data.customerId) {
-            delete customerList[k].status;
-            customerList.splice(k, 1);
-            break;
+      if (monthRoomList[data.roomIndex]) {
+        let room = monthRoomList[data.roomIndex].useAndBookingList;
+        let startIndex = parseInt(data.startIndex);
+        let endIndex = parseInt(data.endIndex);
+
+        for (let j = startIndex; j <= endIndex; j++) {
+          let customerList = room[j].customerList;
+          for (let k = 0; k < customerList.length; k++) {
+            if (customerList[k].customerId == data.customerId) {
+              delete customerList[k].status;
+              customerList.splice(k, 1);
+              break;
+            }
           }
         }
       }
@@ -571,7 +574,6 @@ export default {
     *userDrop({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
 
-
       // 如果已入住, 开始的时间保持不变
       if (state.dragUser.status == 4) {
         // 先调用平移接口
@@ -594,18 +596,21 @@ export default {
         }
       }
 
-      // 删除之前的
-      yield put({
-        type: 'deleteUser',
-        payload: {
-          ...value,
-          startIndex: state.dragUser.startIndex,
-          endIndex: state.dragUser.endIndex,
-          customerId: state.dragUser.customerId,
-          roomIndex: state.dragUser.roomIndex,
-          status: state.dragUser.status,
-        }
-      });
+      if (state.dragUser.roomIndex !== -1) {
+        // 不是新拖入的, 删除之前的
+        yield put({
+          type: 'deleteUser',
+          payload: {
+            ...value,
+            startIndex: state.dragUser.startIndex,
+            endIndex: state.dragUser.endIndex,
+            customerId: state.dragUser.customerId,
+            roomIndex: state.dragUser.roomIndex,
+            status: state.dragUser.status,
+          }
+        });
+      }
+
 
       let payload = {
         ...value,
@@ -623,8 +628,6 @@ export default {
           ...payload,
         }
       });
-
-
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){
