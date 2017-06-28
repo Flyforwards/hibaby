@@ -506,6 +506,8 @@ const monthStateView = (props) => {
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
             }
+
+
           };
 
           document.onmouseup = () => {

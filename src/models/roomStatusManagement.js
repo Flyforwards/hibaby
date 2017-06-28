@@ -540,7 +540,7 @@ export default {
 
       for (let dateSelect of dateSelectList) {
         if (!dateSelect) {
-          return;
+          continue;
         }
 
         if (!years[dateSelect.year]) {
