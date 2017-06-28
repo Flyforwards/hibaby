@@ -319,7 +319,7 @@ const monthStateView = (props) => {
             for (let i = 0; i < users.length; i++) {
               if (users[i].customerId === dayCustomerList[j].customerId
                 && users[i].lastIndex === dayindex - 1
-                && users[i].status === dayCustomerList[j].status) {
+                && users[i].status == dayCustomerList[j].status) {
                 hasUser = true;
                 users[i].dayCount++;
                 users[i].lastIndex = dayindex;
@@ -464,18 +464,11 @@ const monthStateView = (props) => {
           let roomIndex = target.dataset.roomIndex;
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
-
-          let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
-
+          let status = target.dataset.status;
 
           // 左端在入住状态下不可操作
-          for (let i = 0; i < customerList.length; i++) {
-            let customer = customerList[i];
-            if (customer.customerId == customerId) {
-              if (customer.status == 4) {
-                return;
-              }
-            }
+          if (status == 4) {
+            return;
           }
 
 
@@ -544,6 +537,7 @@ const monthStateView = (props) => {
                 customerId,
                 customerName,
                 reserveDays,
+                status,
               }
             });
 

@@ -297,8 +297,8 @@ export default {
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == data.customerId
               && customerList[k].status == data.status) {
-              delete customerList[k].status;
-              customerList.splice(k, 1);
+              // delete customerList[k].status;
+              customerList.splice(k--, 1);
               break;
             }
           }
@@ -319,6 +319,7 @@ export default {
       let endIndex = parseInt(data.endIndex);
       let customerId = data.customerId;
       let customerName = data.customerName;
+      let status = data.status;
       let type = data.type;
 
       if (type === "add") {
@@ -343,6 +344,7 @@ export default {
             customerList.push({
               customerId,
               customerName,
+              status,
             })
           }
         }
@@ -351,8 +353,7 @@ export default {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == customerId) {
-              delete customerList[k].status;
-              customerList.splice(k, 1);
+              customerList.splice(k--, 1);
               break;
             }
           }
@@ -623,7 +624,6 @@ export default {
           }
         });
       }
-
 
       let payload = {
         ...value,
