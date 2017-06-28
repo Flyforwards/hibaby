@@ -21,37 +21,34 @@ class ExportMenu extends React.Component {
     this.state = {
       exportValue: 1,
       initValue:"0",
-      clickState:false,
       choiceValue:0,
     }
   }
   // componentDidMount() {
-  //   this.props.dispatch({ type: 'customer/getCustomerPage' });
-  //   this.props.dispatch({ type: 'customer/listByMain' });
-  //   this.props.dispatch({ type: 'customer/getMemberShipCard' });
-  //   this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
+  //   // this.props.dispatch({ type: 'customer/getCustomerPage' });
+  //   // this.props.dispatch({ type: 'customer/listByMain' });
+  //   // this.props.dispatch({ type: 'customer/getMemberShipCard' });
+  //   // this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
   // }
   onBack() {
-    history.go(-1)
+    const dataId = queryURL("dataId");
+    this.props.dispatch(routerRedux.push({
+      pathname:'/meals/nutritionist/editmenu',
+      query: {
+        dataId: dataId
+      }
+    }));
   }
   onPrint() {
     const dataId = queryURL("dataId");
     do_print('print-content',dataId,this.state.choiceValue);
   }
-  // onSelect(value,options) {
-  //   console.log("onSelect",value)
-  //   this.setState({
-  //     exportValue:value,
-  //   })
-  // }
-
   //tab切换
   onTab(key) {
 
   }
   handleChange(value) {
     const { dispatch } = this.props;
-    console.log("select Accept",value);
     const dataId = queryURL("dataId");
     dispatch({
       type:'dinner/getPrintMsg',
@@ -64,21 +61,19 @@ class ExportMenu extends React.Component {
     // this.props.dispatch({
     //   type:'dinner/getSystemTime',
     // })
-    if(value.length <=0) {
+    if(!this.props.printMsg) {
        this.setState({
          initValue:"0",
-         clickState:true,
          choiceValue:'0'
        })
     }else{
       this.setState({
         choiceValue:value,
-        clickState:false,
       })
     }
   }
   render() {
-    const { loading, dispatch,form } = this.props;
+    const { loading, dispatch,form ,printMsg} = this.props;
     const { getFieldDecorator } =form;
     const tabKeys =
       <formItem>
@@ -103,15 +98,15 @@ class ExportMenu extends React.Component {
         </Tabs>
         <div className="" style={{ overflow: 'hidden' }}>
           <div className="exportButton">
-            <Button  onClick={this.onPrint.bind(this)} disabled={this.state.clickState} style={{
+            <Button  onClick={this.onPrint.bind(this)} disabled={printMsg ? false:true} style={{
               width: '15%',
               height: '40px',
               lineHeight: '40px',
               float:'right',
               marginButtom:'20px',
-              backgroundColor: this.state.clickState ? '#d9d9d9':'rgba(255, 102, 0, 1)',
+              backgroundColor: !printMsg ? '#d9d9d9':'rgba(255, 102, 0, 1)',
             }}>打印</Button>
-            <Button  onClick={this.onBack} style={{
+            <Button  onClick={this.onBack.bind(this)} style={{
               width: '15%',
               height: '40px',
               lineHeight: '40px',
@@ -130,7 +125,9 @@ class ExportMenu extends React.Component {
 
 
 function mapStateToProps(state) {
+const { printMsg } = state.dinner;
   return {
+    printMsg,
     loading: state.loading,
   };
 }
