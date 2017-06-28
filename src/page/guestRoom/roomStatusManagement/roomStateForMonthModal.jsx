@@ -53,8 +53,8 @@ function CustomerSearch(props) {
   const {dispatch} = props;
 
   const searchAry = [
-    [{title:'年龄',component:'Input',submitStr:'age1'},
-      {component:'Input',submitStr:'age2'}],
+    [{title:'年龄',component:'InputNumber',submitStr:'age1'},
+      {component:'InputNumber',submitStr:'age2'}],
     {title:'预产期',component:'Date',submitStr:'dueDate'},
     {title:'操作者2',component:'Input',submitStr:'operator'},
     {title:'会员身份',component:'Select',submitStr:'member',selectName:'MEMBER'},
@@ -80,7 +80,11 @@ function CustomerSearch(props) {
             :
             ( dict.component  === 'Date'?
                 <DatePicker style={{width: '100%'}}/>:
-                <Input style={{height:dict.submitStr === 'sear'?'40px':'32px'}} placeholder={dict.submitStr === 'sear' ? '输入客户编号、客户姓名、联系方式、合同编号':"请填写"} className='antCli'/>
+              (
+                dict.component  === 'Input'? <Input style={{height:dict.submitStr === 'sear'?'40px':'32px'}} placeholder={dict.submitStr === 'sear' ? '输入客户编号、客户姓名、联系方式、合同编号':"请填写"} className='antCli'/>
+                  :<InputNumber min={1} max={100}/>
+              )
+
             )
         )}
       </FormItem>
@@ -157,11 +161,12 @@ function CustomerSearch(props) {
     })
   }
 
+  const searBar = creatComponent({component:'Input',submitStr:'sear'})
 
-  function HeadSrarch() {
+  const HeadSrarch = () =>{
     return(
       <Row>
-        <Col offset={1} span={15}>{creatComponent({component:'Input',submitStr:'sear'})}</Col>
+        <Col offset={1} span={15}>{searBar}</Col>
         <Col span={4}>
           <Row><Col span={23} offset={1}>
             <Button onClick={ reset} style={{
@@ -191,7 +196,7 @@ function CustomerSearch(props) {
 
   return(
     <div>
-      <HeadSrarch/>
+      {HeadSrarch()}
       {searchChiAry}
     </div>
   )
@@ -237,14 +242,17 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
 
   let ary = [];
   for(let i = 0;i< selectItem.length;i++){
-    const dict = monthStateCustomers[i];
-    for(let j = 0;j< allCusList.length;j++) {
-      const subDict = allCusList[j];
-      if (subDict.id == (dict.customerId || dict.id)){
-        ary.push(j);
-        break;
+    const dict = selectItem[i];
+    if(dict){
+      for(let j = 0;j< allCusList.length;j++) {
+        const subDict = allCusList[j];
+        if (subDict.id == ( dict.id||dict.customerId)){
+          ary.push(j);
+          break;
+        }
       }
     }
+
   }
 
   const tableProps = {
@@ -315,8 +323,7 @@ class addCustomer extends React.Component {
   }
 
   handleOk(){
-
-    let ary = this.state.selectItem;
+    let ary = [...this.state.selectItem];
 
     for(let i = 0;i<ary.length;i++){
       const dict = ary[i];
@@ -336,14 +343,15 @@ class addCustomer extends React.Component {
   }
 
   selectCustomerFun(record,selected){
-    let ary = this.state.selectItem||this.props.users.monthStateCustomers;
 
+    let ary = this.state.selectItem ? this.state.selectItem : [...this.props.users.monthStateCustomers];
     if(selected){
       ary.push(record)
     }
     else {
       for(var i=0; i<ary.length; i++) {
-        if((ary[i].id||ary[i].customerId) == record.id) {
+        const dict = ary[i]
+        if((dict.customerId||dict.id) == record.id) {
           ary.splice(i, 1);
           break;
         }
@@ -351,6 +359,8 @@ class addCustomer extends React.Component {
 
     }
     this.setState({selectItem:ary})
+    console.log(this.props.users.monthStateCustomers.length)
+
   }
 
   render(){
@@ -367,7 +377,7 @@ class addCustomer extends React.Component {
       >
         <CusSearchFormDiv dispatch={this.props.dispatch}/>
         <CustomerTable
-          selectItem={this.state.selectItem||this.props.users.monthStateCustomers}
+          selectItem={this.state.selectItem||[...this.props.users.monthStateCustomers]}
           selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
           loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}/>
       </Modal>
