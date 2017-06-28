@@ -331,14 +331,14 @@ export default {
 
           // 如果用户已存在, 则不进行添加
           let noUser = true;
-          for(let customer of customerList){
-            if(customer.customerId === customerId){
+          for (let customer of customerList) {
+            if (customer.customerId === customerId) {
               noUser = false;
               break;
             }
           }
 
-          if(noUser){
+          if (noUser) {
             customerList.push({
               customerId,
               customerName,
@@ -753,7 +753,11 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, value || param);
+      if (value && Object.keys(value).length) {
+        param = value;
+      }
+
+      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
 
       if (code == 0) {
         // 更新原始集合的状态
