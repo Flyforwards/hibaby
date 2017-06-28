@@ -98,8 +98,8 @@ class DishesLibraryFormOrDetailModal extends React.Component{
         key={nodeFormOrDetailModalVisible}
         visible={nodeFormOrDetailModalVisible}
         title={nodeFormOrDetailModalTitle}
-        okText="确定"
-        cancelText="取消"
+        okText="保存"
+        cancelText="返回"
         onCancel={this.handleCancel.bind(this)}
         onOk={this.handleOk.bind(this)}
         width={ 600 }
