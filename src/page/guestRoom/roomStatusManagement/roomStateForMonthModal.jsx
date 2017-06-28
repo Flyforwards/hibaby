@@ -80,7 +80,7 @@ function CustomerSearch(props) {
             :
             ( dict.component  === 'Date'?
                 <DatePicker style={{width: '100%'}}/>:
-                <Input placeholder={dict.submitStr === 'sear' ? '输入客户编号、客户姓名、联系方式、合同编号':"请填写"} className='antCli'/>
+                <Input style={{height:dict.submitStr === 'sear'?'40px':'32px'}} placeholder={dict.submitStr === 'sear' ? '输入客户编号、客户姓名、联系方式、合同编号':"请填写"} className='antCli'/>
             )
         )}
       </FormItem>
