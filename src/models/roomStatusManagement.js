@@ -295,7 +295,8 @@ export default {
         for (let j = startIndex; j <= endIndex; j++) {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
-            if (customerList[k].customerId == data.customerId) {
+            if (customerList[k].customerId == data.customerId
+              && customerList[k].status == data.status) {
               delete customerList[k].status;
               customerList.splice(k, 1);
               break;
@@ -331,14 +332,14 @@ export default {
 
           // 如果用户已存在, 则不进行添加
           let noUser = true;
-          for(let customer of customerList){
-            if(customer.customerId === customerId){
+          for (let customer of customerList) {
+            if (customer.customerId === customerId) {
               noUser = false;
               break;
             }
           }
 
-          if(noUser){
+          if (noUser) {
             customerList.push({
               customerId,
               customerName,
@@ -753,7 +754,11 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, value || param);
+      if (value && Object.keys(value).length) {
+        param = value;
+      }
+
+      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
 
       if (code == 0) {
         // 更新原始集合的状态
