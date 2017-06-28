@@ -215,12 +215,19 @@ class DishesLeft extends React.Component {
 
   //节点表单/详情页取消按钮点击事件
   handleNodeCancel = () =>{
-    this.setState({
-      nodeFormOrDetailModalVisible : false,
-      isNodeDetail : false,
-      isNodeEdit: false,
-      initialValue : null
-    });
+    if(this.state.isNodeEdit){
+      this.setState({
+        isNodeDetail : true,
+        isNodeEdit : false
+      });
+    }else{
+      this.setState({
+        nodeFormOrDetailModalVisible : false,
+        isNodeDetail : false,
+        isNodeEdit: false,
+        initialValue : null
+      });
+    }
   }
 
   //节点表单/详情确认按钮点击事件
