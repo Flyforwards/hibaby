@@ -297,7 +297,6 @@ export default {
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == data.customerId
               && customerList[k].status == data.status) {
-              // delete customerList[k].status;
               customerList.splice(k--, 1);
               break;
             }
