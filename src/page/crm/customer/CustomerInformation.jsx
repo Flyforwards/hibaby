@@ -484,7 +484,7 @@ function ExtensionInfo(props) {
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
     {title:'合同编号',component:'Input',submitStr:'contractNumber'},
-    {title:'关联客房',component:'InputNumber',submitStr:'associatedRooms'},
+    {title:'关联客房',component:'InputNumber',submitStr:'associatedRooms',disabled:true,noRequired:"1"},
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},

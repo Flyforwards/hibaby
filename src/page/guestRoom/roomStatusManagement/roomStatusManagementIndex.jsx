@@ -320,7 +320,7 @@ class roomStatusIndex extends React.Component {
 
       if (array.indexOf('all') != -1) {
         isAll = true;
-        array = ['all', 0, 1, 2, 3, 4, 5, 6, 7]
+        array = ['all', '0', '1', '2', '3', '4', '5', '6', '7']
       } else {
         if (array.length === 8) {
           isAll = true;
@@ -328,7 +328,7 @@ class roomStatusIndex extends React.Component {
         }
       }
     }
-
+    console.log(array)
     this.props.dispatch({type: 'roomStatusManagement/setSelectValue', payload: {data: array}})
   }
 

@@ -282,14 +282,14 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
 
     for(let i = 0;i<selectItem.length;i++){
       const dict = selectItem[i] ;
-        tags.push(<Tag closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
+        tags.push(<Tag  closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
     }
   }
 
 
   return(
     <Card bodyStyle={{padding:'10px'}} title="预约客户">
-      <Card bodyStyle={{padding:'10px'}}>
+      <Card bodyStyle={{padding:'10px', paddingTop:0}}>
         {tags}
       </Card>
       <Table  className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
