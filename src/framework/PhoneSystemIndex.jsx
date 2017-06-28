@@ -2,16 +2,18 @@
 
 
 import React from 'react'
-import { Card, Button, Table, Input, Col, Row, Form } from 'antd'
+import { Card, Button, Table, Input, Col, Row, Form, Select } from 'antd'
 
 import { connect } from 'dva';
 import './PhoneSystemIndex.scss'
 import { message } from 'antd'
 import moment from 'moment';
-
+import { AREA_CODES } from 'common/constants.js'
 
 const createForm = Form.create
 const FormItem = Form.Item
+const Option = Select.Option;
+const InputGroup = Input.Group;
 
 @createForm()
 class PhoneSystemIndex extends React.Component {
@@ -33,6 +35,9 @@ class PhoneSystemIndex extends React.Component {
       loginTime: 0,
       dataSource: [],
       call_time: 0,
+      status: 0, // 0:空闲， 1:响铃 2: 接通 3:整理
+      info: {},
+      nodeId: [], // 显示的按钮
     }
     this.cols = [{
       dataIndex: 'createTime',
@@ -95,8 +100,85 @@ class PhoneSystemIndex extends React.Component {
       dataIndex: 'position',
       key: 'position',
     },]
-    this.getCustomerInfo('13269778099')
+    const { getFieldDecorator } = props.form;
+    this.nodes = [
+      <Button key="pause" className='system-button2' onClick={ this.actionType.bind(this,1) }>置忙</Button>, // 1
+      <Button key="online" className='system-button2' onClick={ this.actionType.bind(this,2) }>置闲</Button>, // 2
+      <Button key="answer" className='system-button2' onClick={ this.actionType.bind(this,3) }>接听</Button>, // 3
+      <Button key="unLink" className='system-button2' onClick={ this.actionType.bind(this,4) }>挂断</Button>, // 4
+      <Button key="refused"  className='system-button2' onClick={ this.actionType.bind(this,5) }>拒接</Button>, // 5
+      <Button key="hold" className='system-button2' onClick={ this.actionType.bind(this,6) }>保持</Button>, // 6
+      <Button key="unHold"  className="system-button3" onClick={ this.actionType.bind(this,7) }>保持接回</Button>, // 7
+      <Button key="consult" className='system-button2' >咨询</Button>, // 8
+      <Button key="consultBack"  className="system-button3" onClick={ this.actionType.bind(this,9) }>咨询接回</Button>, // 9
+      <Button key="consultTransfer"  className="system-button3" onClick={ this.actionType.bind(this,10) }>咨询转接</Button>, // 10
+      <Button key="consultThreeway"  className="system-button3" onClick={ this.actionType.bind(this,11) }>咨询三方</Button>, // 11
+      <Button key="transfer"  className='system-button2'>转移</Button>, // 12
+      <InputGroup className="phone-button-input" key="phoneCallText" compact>
+        {getFieldDecorator('type',{
+          rules: [{ required: true, }], initialValue: "0"
+        })(
+        <Select style={{ width: '78px', }} key="consultInput">
+          <Option key='0' value="0">普通电话</Option>
+          <Option key='1' value="1">座席号</Option>
+        </Select>)}
+        {getFieldDecorator('number',{
+          rules: [{ required: true, max: 12}]
+        })(
+        <Input style={{ width: '90px',height: '33px' }} />)}
+      </InputGroup>, //13
+      <Button key="phoneCallout"  className="system-button3">呼叫</Button>, // 14
+      <Button key="phoneCallCancel" className="system-button3" onClick={ this.actionType.bind(this,15) }>呼叫取消</Button>, // 15
+      ];
   }
+
+  actionType(type) {
+    switch(type) {
+      case 1 :
+        window.executeAction('doPause', { description: "置忙"})
+        break;
+      case 2 :
+        window.executeAction('doUnpause')
+        break;
+      case 3 :
+        window.executeAction('doLink')
+        break;
+      case 4 :
+        window.executeAction('doUnLink')
+        break;
+      case 5 :
+        window.executeAction('doRefuse')
+        break;
+      case 6 :
+        window.executeAction('doHold')
+        break;
+      case 7 :
+        window.executeAction('doUnhold')
+        break;
+      case 8 :
+
+        break;
+      case 9 :
+        window.executeAction('doUnconsult')
+        break;
+      case 10 :
+        window.executeAction('doConsultTransfer');
+        break;
+      case 11 :
+        window.executeAction('doConsultThreeway');
+        break;
+      case 12 :
+
+        break;
+      case 14 :
+
+        break;
+      case 15 :
+        window.executeAction('doPreviewOutcallCancel')
+        break;
+    }
+  }
+
 
   toMin() {
     this.setState({
@@ -230,6 +312,109 @@ class PhoneSystemIndex extends React.Component {
       }
     } else if (window.callback.type == 'status') {
       const token = window.callback.token;
+      switch(token.eventName){
+        case 'outRinging' : //外呼座席响铃
+          if(token.name == "ringing"){
+            this.setState({
+              nodeId: [15]
+            })
+            //第三方代码
+            top.CTI_ID = token.uniqueId;//获取录音编号
+          }
+          break;
+        case 'comeRinging' : //呼入座席响铃
+          if(token.name == "ringing"){
+            if(userBasic.getBindType() == '3') {
+              this.setState({
+                nodeId: [3,5]
+              })
+            } else {
+              this.setState({
+                nodeId: [3]
+              })
+            }
+          }
+          break;
+        case 'normalBusy' : //呼入座席接听
+          this.setState({
+            nodeId: [4, 6, 8, 12, 13]
+          })
+          //typeButton.consultThreeway();
+          //typeButton.consultTransfer();
+          break;
+        case 'outBusy' : //外呼客户接听 客户和座席通话
+          this.setState({
+            nodeId: [4, 6, 8, 12, 13]
+          })
+          //typeButton.consultThreeway();
+          //typeButton.consultTransfer();
+          break;
+        case 'online' : //置闲
+          this.setState({
+            nodeId: [1, 13, 14,]
+          })
+          //$("#phoneCallCancel").hide();
+          break;
+        case 'pause' : //置忙
+          this.setState({
+            nodeId: [2, 13, 14,]
+          })
+          //$("#phoneCallCancel").hide();
+          break;
+        case 'waitLink' : //外呼座席接听等待客户接听
+
+          break;
+        case 'neatenStart' : //整理开始（座席挂断）
+          this.setState({
+            nodeId: [1, 2]
+          })
+          break;
+        case 'neatenEnd' : //整理结束
+          var s = deviceStatus.deviceStatusLoginStatus(token.deviceStatus+token.loginStatus, token.pauseDescription, token.busyDescription);
+          if(s == '空闲'){
+            this.setState({
+              nodeId: [1, 13, 14]
+            })
+          }else{
+            this.setState({
+              nodeId: [2, 13, 14]
+            })
+          }
+          break;
+        case 'hold' : //保持开始
+          this.setState({
+            nodeId: [4, 7]
+          })
+          break;
+        case 'unHold' : //保持结束
+          this.setState({
+            nodeId: [4, 6, 8]
+          })
+          //typeButton.consultThreeway();
+          //typeButton.consultTransfer();
+          //typeButton.transfer();
+          break;
+        case 'onlineUnlink' : //挂断后置闲
+          this.setState({
+            nodeId: [1, 13, 14]
+          })
+          break;
+        case 'pauseUnlink' : //挂断后置忙
+          this.setState({
+            nodeId: [2, 13, 14]
+          })
+          break;
+        case 'consultLink' : //咨询成功
+          this.setState({
+            nodeId: [9, 10, 11, 12]
+          })
+          break;
+        case 'consulterOrTransferBusy' : //被咨询转接或转移的通话
+          this.setState({
+            nodeId: [4, 6]
+          })
+          break;
+      }
 
       var str = deviceStatus.deviceStatusLoginStatus(token.deviceStatus+token.loginStatus, token.pauseDescription, token.busyDescription);
       if(str != ""){
@@ -241,19 +426,30 @@ class PhoneSystemIndex extends React.Component {
       if(token.eventName=="outRinging"){//外呼座席响铃
         //top.CTI_ID = token.uniqueId;//获取录音编号
         this.setState({
-          info: '外呼号码: ' + token.customerNumber
+          info: {
+            title: '外呼号码',
+            number: token.customerNumber
+          }
         })
       }else if(token.eventName=="comeRinging"){//呼入座席响铃
         this.getCustomerInfo(token.customerNumber);
+        this.toLarge();
         this.setState({
-          info: '外呼号码: ' + token.customerNumber
+          info: {
+            title: '来电号码',
+            number: token.customerNumber,
+            customerAreaCode: token.customerAreaCode
+          },
+          status: 1,
         })
-      }else if(token.eventName=="normalBusy"){//呼入座席接听
-        // $('#call_input').show();
-        // $('#call_history').show();
-
+      } else if(token.eventName=="normalBusy"){//呼入座席接听
         this.setState({
-          info: '来电号码: ' + token.customerNumber
+          info: {
+            title: '来电号码',
+            number: token.customerNumber,
+            customerAreaCode: token.customerAreaCode
+          },
+          status: 2,
         })
         this.getCustomerInfo(token.customerNumber);
 
@@ -271,11 +467,16 @@ class PhoneSystemIndex extends React.Component {
         //}
 
         this.setState({
-          info: '外呼号码: ' + token.customerNumber
+          info: {
+            title: '外呼号码',
+            number: token.customerNumber,
+          },
         })
-      }else if(token.eventName=="online"){//置闲
+      } else if(token.eventName=="online"){//置闲
         this.setState({
-          call_time: 0
+          info: {},
+          call_time: 0,
+          status: 0
         })
         // 清除定时器， 隐藏输入框，用户信息，通话记录
         clearInterval(this.callTimer)
@@ -285,19 +486,27 @@ class PhoneSystemIndex extends React.Component {
 
       }else if(token.eventName=="neatenStart"){//整理开始（座席挂断）
         this.setState({
-          call_time: 0
+          call_time: 0,
+          status: 3,
+          info: {},
         })
         // 清除定时器， 隐藏输入框，用户信息，通话记录
         clearInterval(this.callTimer)
       }else if(token.eventName=="neatenEnd"){//整理结束
-
+        this.setState({
+          info: {},
+          status: 0
+        })
       }else if(token.eventName=="hold"){//保持开始
 
       }else if(token.eventName=="unHold"){//保持结束
 
       }else if(token.eventName=="consultLink"){//咨询成功
         this.setState({
-          info: '咨询号码: ' + '席位号:' + token.consultObject
+          info: {
+            title: '咨询号码: ' + '席位号:',
+            number: token.consultObject
+          },
         })
       }else if(token.eventName=="consulterOrTransferBusy"){//被咨询转接或转移的通话
 
@@ -346,11 +555,11 @@ class PhoneSystemIndex extends React.Component {
 
   render() {
     let bottom = null;
-    const { style } = this.state;
+    const { style,  } = this.state;
     const { form } = this.props;
     const { getFieldDecorator } = form;
     if (style == 'large') {
-      const { loginTime, dataSource, info, loginStatus, call_time } = this.state
+      const { loginTime, dataSource, info, status, loginStatus, call_time, nodeId } = this.state
       const { callRecords, customerInfo } = this.props;
 
       let userName = '';
@@ -359,20 +568,37 @@ class PhoneSystemIndex extends React.Component {
       } else if ( customerInfo ) {
         userName = customerInfo.name;
       }
-      console.log(call_time);
+
+      const buttons = []
+      if (nodeId) {
+        nodeId.map(item=>{
+          buttons.push(this.nodes[item-1])
+        })
+      }
+      const callContent = (
+        <div className="phone-system-board">
+          <div className="phone-system-board-title"><h4>本次通话内容</h4></div>
+          <FormItem>
+            {getFieldDecorator('content',{
+              rules: [{ required: true, message: '通话备注不能为空！限200字！', max: 200 }]
+            })(
+              <Input type='textarea'/>
+            )}
+          </FormItem>
+          <Button onClick={ this.onSave.bind(this) }>保存</Button>
+        </div>)
       const customer = (
         <div>
           <div className="phone-system-phone-info">
             <Row style={{ marginTop:'4px' }}>
               <Col span="8">
-                <Col span="6" style={{ lineHeight: '32px', textAlign: 'end' }}>来电号码: </Col>
-                <Col span="18"><Input readOnly value="13269778099"/></Col>
-
+                <Col span="6" style={{ lineHeight: '32px', textAlign: 'end' }}>{ info.title+':'} </Col>
+                <Col span="18"><Input readOnly value={ info.number }/></Col>
               </Col>
               <Col span="8">
                 <Row>
                 <Col span="6" style={{ lineHeight: '32px', textAlign: 'end' }}>归属地:  </Col>
-                <Col span="18"><Input readOnly value="北京市"/></Col>
+                <Col span="18"><Input readOnly value={ AREA_CODES[info.customerAreaCode] }/></Col>
                 </Row>
               </Col>
               <Col span="8">
@@ -389,20 +615,9 @@ class PhoneSystemIndex extends React.Component {
           </div>
           <div className="phone-system-board">
             <div className="phone-system-board-title"><h4>来往通话内容</h4></div>
-            <Table bordered pagination={false} size='small' columns={this.cols} rowKey='id' dataSource={callRecords}/>
+            <Table bordered pagination={false} size='small' columns={this.cols} rowKey={ record=>record.id} dataSource={callRecords}/>
           </div>
-          <div className="phone-system-board">
-            <div className="phone-system-board-title"><h4>本次通话内容</h4></div>
-            <FormItem>
-              {getFieldDecorator('content',{
-                rules: [{ required: true, message: '通话备注不能为空！限200字！', max: 200 }]
-              })(
-                <Input type='textarea'/>
-              )}
-            </FormItem>
-
-            <Button onClick={ this.onSave.bind(this) }>保存</Button>
-          </div>
+          { status==2||status==3? callContent:null }
         </div>
       )
       bottom = (
@@ -414,7 +629,10 @@ class PhoneSystemIndex extends React.Component {
             <span style={{ 'marginLeft':'10px', 'lineHeight': '40px' }} >{ this.transportTime(loginTime) }</span>
           </div>
           <Table bordered pagination={false} columns={this.columns} rowKey='id' dataSource={dataSource} size='small'/>
-          {customer}
+          { status== 0? null:customer }
+          <div className="phone-system-action-button">
+            { buttons }
+          </div>
         </Card>
       )
     } else if (style == 'min') {
@@ -435,8 +653,6 @@ class PhoneSystemIndex extends React.Component {
         { bottom }
       </div>
     )
-
-
 
   }
 }
