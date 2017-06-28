@@ -44,7 +44,7 @@ export default {
   state: {
     packageAry: [],
     roomList: '',
-    selectValue: ['all', 0, 1, 2, 3, 4, 5, 6, 7],
+    selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
     resultsRowHouses: '',
     dayStatusData: '',
     FloorAry: '',

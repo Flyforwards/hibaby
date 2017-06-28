@@ -340,21 +340,20 @@
       width: 400px;
       background-color: #fff;
     }
+
     .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
       font-size: 16px;
-      font-size: 7px \9
-    ;
+      font-size: 7px \9;
       content: "\E606";
       font-weight: 700;
-      margin-left: 10px;
+
     }
     .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after, .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after {
       font-size: 16px;
       font-size: 7px \9
-    ;
+    ;;
       content: "\E606";
       font-weight: 700;
-      margin-left: 10px;
     }
     :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_open:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_open:after {
       transform: scale(0.29);
@@ -362,9 +361,7 @@
     :root .ant-tree li span.ant-tree-switcher.ant-tree-bottom_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-center_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-noline_close:after, :root .ant-tree li span.ant-tree-switcher.ant-tree-roots_close:after {
       transform: scale(0.29)
     }
-    .ant-tree li span.ant-tree-switcher, .ant-tree li span.ant-tree-iconEle {
 
-    }
     #components-tree-demo-draggable .draggable-tree .ant-tree-node-content-wrapper {
       width: calc(100% - 18px);
     }
