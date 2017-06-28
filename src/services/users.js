@@ -162,5 +162,23 @@ export function getCustomerByMobile(values) {
   })
 }
 
+// 根据电话号码获取用户信息
+export function getCallRecordsList(values) {
+  return request('/crm/api/v1/callRecords/listByNumber', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 保存通话记录
+export function saveCallRecords(values) {
+  return request('/crm/api/v1/callRecords/add', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
 
 

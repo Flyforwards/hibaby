@@ -110,7 +110,7 @@ class CustomerVisIndex extends React.Component {
               times
             }
           </Timeline>
-          <Row>
+          <Row style={{marginBottom:'20px'}}>
             <Col span={20}/>
             <Col span={4}>
               <PermissionButton testKey='CUSTOMERVIS_EDIT' onClick={this.edit.bind(this)} className="button-add">编辑</PermissionButton>

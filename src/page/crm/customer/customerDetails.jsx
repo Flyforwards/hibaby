@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
+import PermissionButton from 'common/PermissionButton';
 
 import {Icon,Table, Modal,Row, Col,Button,Spin} from 'antd';
 
@@ -249,8 +250,8 @@ class customerDetails extends React.Component{
           />
 
           <div className='saveDiv'>
-            <Button className='backBtn SaveBtn' onClick={this.editBtnClick.bind(this)}>编辑</Button>
-            <Button className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</Button>
+            <PermissionButton testKey='CUSTOMER_EDIT' className='backBtn SaveBtn' onClick={this.editBtnClick.bind(this)}>编辑</PermissionButton>
+            <PermissionButton testKey='CUSTOMER_DELETE' className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</PermissionButton>
             <Button className='backBtn BackBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
           </div>
         </Spin>

@@ -14,7 +14,7 @@ import { format,queryURL } from '../utils/index.js';
 export default {
   namespace: 'dinner',
   state: {
-    list: [],
+  list: [],
     item: null,
     editItem: null,
     packageList: [],//主套餐列表
@@ -98,37 +98,6 @@ export default {
         });
       }
     },
-    // // 获取用户列表
-    // *getCustomerPage({ payload: values }, { call, put }) {
-    //   values = parse(location.search.substr(1));
-    //   if (values.page === undefined) {
-    //     values.page = 1;
-    //   }
-    //   if (values.size === undefined) {
-    //     values.size = 10;
-    //   }
-    //   const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, values);
-    //   if (code == 0) {
-    //     //if(data.length == 0 && page > 1){
-    //     //  yield put(routerRedux.push(`/crm/customer?page=${page -1}&size=10`))
-    //
-    //     //}else{
-    //       yield put({
-    //         type: 'saveCustomerList',
-    //         payload: {
-    //           list: data,
-    //           pagination: {
-    //             current: Number(page) || 1,
-    //             pageSize: Number(size) || 10,
-    //             total: total,
-    //           },
-    //         },
-    //       })
-    //     }
-    //
-    //   }
-    // },
-
     *getDataDict({payload: value}, {call, put}){
       const parameter = {
         abName: value.abName,
@@ -136,7 +105,6 @@ export default {
       };
       const {data: {code, data}} = yield call(addCustomerInformation.getDataDict, parameter);
       if (code == 0) {
-
         yield put({
           type: 'addMutDictData',
           payload: {
@@ -259,7 +227,13 @@ export default {
         if (pathname === '/meals/nutritionist/dinner') {
           dispatch({
             type:'getCustomerList',
-          })
+          });
+          dispatch({
+            type:'getPrintData',
+            payload:{
+              data:null,
+            }
+          });
           //dispatch({type: 'getCustomerPage',});
           dispatch({type: 'listByMain',});
           dispatch({type: 'getMemberShipCard',});

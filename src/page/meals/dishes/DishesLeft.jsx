@@ -24,7 +24,7 @@ class DishesLeft extends React.Component {
       selectedNode: null,//选中树节点
       selectedNodeParentId : null,//选中树节点所属父id
       selectedNodeLevel : null,//选中树节点的级别
-      unfolded:[this.props.dishes.nodeId+""],//默认展开的树节点集合
+      unfolded:["0"],//默认展开的树节点集合
       nodeFormOrDetailModalVisible:false,//节点表单/详情页面弹出框显示状态
       nodeFormOrDetailModalTitle : null,//节点表单/详情页面弹出框标题
       isNodeDetail : false,//是否为查看详情状态
@@ -59,7 +59,7 @@ class DishesLeft extends React.Component {
           $(e).after("<span class='plus'>+</span>");
         }
       })
-    }, 50)
+    }, 50);
   }
 
   //点击树节点触发
@@ -154,6 +154,9 @@ class DishesLeft extends React.Component {
         return
       }
     }.bind(this))
+
+
+    this.selectNodeLevel = rootLevel;
   }
 
   componentDidUpdate() {
@@ -212,12 +215,19 @@ class DishesLeft extends React.Component {
 
   //节点表单/详情页取消按钮点击事件
   handleNodeCancel = () =>{
-    this.setState({
-      nodeFormOrDetailModalVisible : false,
-      isNodeDetail : false,
-      isNodeEdit: false,
-      initialValue : null
-    });
+    if(this.state.isNodeEdit){
+      this.setState({
+        isNodeDetail : true,
+        isNodeEdit : false
+      });
+    }else{
+      this.setState({
+        nodeFormOrDetailModalVisible : false,
+        isNodeDetail : false,
+        isNodeEdit: false,
+        initialValue : null
+      });
+    }
   }
 
   //节点表单/详情确认按钮点击事件
@@ -280,7 +290,7 @@ class DishesLeft extends React.Component {
 
     const {dishesLibraryNodes} = this.props.dishes;
     let treeNodes = dishesLibraryNodes?this.nodesIteration(dishesLibraryNodes):null;
-    treeNodes =dishesLibraryNodes?<TreeNode key={dishesLibraryNodes.id} level={dishesLibraryNodes.level} title={dishesLibraryNodes.name} parentId={dishesLibraryNodes.parentId}>{treeNodes}</TreeNode>:null;
+    treeNodes =dishesLibraryNodes?<TreeNode name={dishesLibraryNodes.name} key={dishesLibraryNodes.id} level={dishesLibraryNodes.level} title={dishesLibraryNodes.name} parentId={dishesLibraryNodes.parentId}>{treeNodes}</TreeNode>:null;
     return (
       <div className="Dishes-left">
         <Tree
@@ -288,6 +298,7 @@ class DishesLeft extends React.Component {
           autoExpandParent = { true }
           onExpand={this.expandHandler.bind(this)}
           defaultSelectedKeys = { this.state.unfolded }
+          selectedKeys = {this.state.unfolded}
           expandedKeys = { this.state.unfolded }
           onSelect={ this.onSelect.bind(this) }
           >

@@ -23,14 +23,6 @@ class PrintPageList extends Component {
         time:'',
     }
   }
- // menuList(data) {
- //    data ? data.map(function(elem,index){
- //      let menuArray = [];
- //      menuArray.push(
- //
- //      )
- //    }):null;
- // }
   getName(i) {
     switch(i){
       case 1:return "早餐";

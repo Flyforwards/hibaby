@@ -77,6 +77,7 @@ class CardFind extends Component {
     }) : null;
     const add = !this.props.permissionAlias.contains('CARD_ADD');
     return (
+      <div className="infoCard">
       <div className="cardFind" style={{ overflow:"hidden" }}>
         <Form>
           <Row>
@@ -128,6 +129,7 @@ class CardFind extends Component {
             </Col>
           </Row>
         </Form>
+      </div>
       </div>
     )
   }

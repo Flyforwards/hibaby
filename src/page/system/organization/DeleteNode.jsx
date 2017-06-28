@@ -9,6 +9,7 @@ const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
+
 @createForm()
 class DeleteNode extends Component {
     constructor(props) {

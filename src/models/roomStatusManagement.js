@@ -29,12 +29,22 @@ const timeToDate = (time) => {
   }
 };
 
+/**
+ * 获取某月天数
+ * @param year
+ * @param month
+ * @returns {number}
+ */
+const getDays = (year, month) => {
+  return (new Date(year, month, 0)).getDate();
+};
+
 export default {
   namespace: 'roomStatusManagement',
   state: {
     packageAry: [],
     roomList: '',
-    selectValue: ['all', 0, 1, 2, 3, 4, 5, 6, 7],
+    selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
     resultsRowHouses: '',
     dayStatusData: '',
     FloorAry: '',
@@ -52,6 +62,7 @@ export default {
     dragUser: null,
     defaultYear: new Date().getFullYear(),
     dateSelectList: [],
+    dateRulerList: [],
     dateSelectViews: [],
     monthRoomUpdateList: [],// 保存状态有更新的用户
     //弹出的modal数据控制
@@ -275,17 +286,21 @@ export default {
 
     deleteUser(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
-      let room = monthRoomList[data.roomIndex].useAndBookingList;
 
-      let startIndex = parseInt(data.startIndex);
-      let endIndex = parseInt(data.endIndex);
-      for (let j = startIndex; j <= endIndex; j++) {
-        let customerList = room[j].customerList;
-        for (let k = 0; k < customerList.length; k++) {
-          if (customerList[k].customerId == data.customerId) {
-            delete customerList[k].status;
-            customerList.splice(k, 1);
-            break;
+      if (monthRoomList[data.roomIndex]) {
+        let room = monthRoomList[data.roomIndex].useAndBookingList;
+        let startIndex = parseInt(data.startIndex);
+        let endIndex = parseInt(data.endIndex);
+
+        for (let j = startIndex; j <= endIndex; j++) {
+          let customerList = room[j].customerList;
+          for (let k = 0; k < customerList.length; k++) {
+            if (customerList[k].customerId == data.customerId
+              && customerList[k].status == data.status) {
+              // delete customerList[k].status;
+              customerList.splice(k--, 1);
+              break;
+            }
           }
         }
       }
@@ -304,6 +319,7 @@ export default {
       let endIndex = parseInt(data.endIndex);
       let customerId = data.customerId;
       let customerName = data.customerName;
+      let status = data.status;
       let type = data.type;
 
       if (type === "add") {
@@ -314,18 +330,30 @@ export default {
           }
 
           let customerList = room[j].customerList;
-          customerList.push({
-            customerId,
-            customerName,
-          })
+
+          // 如果用户已存在, 则不进行添加
+          let noUser = true;
+          for (let customer of customerList) {
+            if (customer.customerId === customerId) {
+              noUser = false;
+              break;
+            }
+          }
+
+          if (noUser) {
+            customerList.push({
+              customerId,
+              customerName,
+              status,
+            })
+          }
         }
       } else {
         for (let j = startIndex + 1; j <= endIndex; j++) {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == customerId) {
-              delete customerList[k].status;
-              customerList.splice(k, 1);
+              customerList.splice(k--, 1);
               break;
             }
           }
@@ -354,6 +382,35 @@ export default {
       return {
         ...state,
         dateSelectViews: dateSelectViews
+      }
+    },
+
+    updateDateRulerList(state, {payload: data}) {
+
+      let dateRulerList = [];
+      let dateObj = {};
+      let sortYears = [];
+
+      for (let d of data.data) {
+        dateObj[d.year] = d.monthList;
+        sortYears.push(d.year)
+      }
+
+      sortYears.sort((a, b) => a - b);
+
+      for (let year of sortYears) {
+        for (let month of dateObj[year]) {
+          month = month < 10 ? '0' + month : month;
+          dateRulerList.push({
+            date: year + '-' + month,
+            days: getDays(year, month),
+          })
+        }
+      }
+
+      return {
+        ...state,
+        dateRulerList: dateRulerList,
       }
     }
 
@@ -390,6 +447,7 @@ export default {
         ))
       }
     },
+
     *getDataDict({payload: value}, {call, put}){
       const parameter = {
         abName: value.abName,
@@ -406,6 +464,7 @@ export default {
         });
       }
     },
+
     *arrangeRoom({payload: value}, {call, put}){
       const defData = {"customerId": -1, "customerName": ''}
 
@@ -481,6 +540,10 @@ export default {
       let years = {};
 
       for (let dateSelect of dateSelectList) {
+        if (!dateSelect) {
+          continue;
+        }
+
         if (!years[dateSelect.year]) {
           years[dateSelect.year] = {};
         }
@@ -502,9 +565,17 @@ export default {
 
       if (!param.length) {
         message.error("请选择时间");
+        return;
       }
 
       const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
+
+      yield put({
+        type: 'updateDateRulerList',
+        payload: {
+          data: param,
+        }
+      });
 
       yield put({
         type: 'setMonthRoomList',
@@ -513,6 +584,7 @@ export default {
         }
       });
     },
+
     *userDrop({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
 
@@ -536,8 +608,10 @@ export default {
         if (code != 0) {
           return;
         }
+      }
 
-        // 删除之前的
+      if (state.dragUser.roomIndex !== -1) {
+        // 不是新拖入的, 删除之前的
         yield put({
           type: 'deleteUser',
           payload: {
@@ -547,51 +621,26 @@ export default {
             customerId: state.dragUser.customerId,
             roomIndex: state.dragUser.roomIndex,
             status: state.dragUser.status,
-          }
-        });
-
-        let payload = {
-          ...value,
-          status: state.dragUser.status,
-        };
-
-        payload.dayIndex = state.dragUser.startIndex;
-
-        // 添加新的
-        yield put({
-          type: 'userDropReducer',
-          payload: {
-            ...payload,
-          }
-        });
-      } else {
-        // 删除之前的
-        yield put({
-          type: 'deleteUser',
-          payload: {
-            ...value,
-            startIndex: state.dragUser.startIndex,
-            endIndex: state.dragUser.endIndex,
-            customerId: state.dragUser.customerId,
-            roomIndex: state.dragUser.roomIndex,
-            status: state.dragUser.status,
-          }
-        });
-
-        let payload = {
-          ...value,
-          status: state.dragUser.status,
-        };
-
-        // 添加新的
-        yield put({
-          type: 'userDropReducer',
-          payload: {
-            ...payload,
           }
         });
       }
 
+      let payload = {
+        ...value,
+        status: state.dragUser.status,
+      };
+
+      if (state.dragUser.status == 4) {
+        payload.dayIndex = state.dragUser.startIndex;
+      }
+
+      // 添加新的
+      yield put({
+        type: 'userDropReducer',
+        payload: {
+          ...payload,
+        }
+      });
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){
@@ -705,7 +754,11 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, value || param);
+      if (value && Object.keys(value).length) {
+        param = value;
+      }
+
+      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
 
       if (code == 0) {
         // 更新原始集合的状态

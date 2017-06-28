@@ -18,6 +18,9 @@ const UNIT_WIDTH = 9;
 let SELECT_CUSTOMER = '';
 let zIndexCount = 100;
 let selectViewIndex = 0;
+// 保留所拖动元素中鼠标的位置
+let dragOffsetX = 0;
+let dragOffsetY = 0;
 
 const statusExplain = [
   {name: "预定", color: "#29C1A6"},
@@ -36,7 +39,11 @@ const monthStateView = (props) => {
   let defaultYear = props.users.defaultYear;
 
   for (let i = 2000; i < 2099; i++) {
-    years.push(<Option key={i} value={`${i}`}>{`${i}`}</Option>)
+    years.push(
+      <Option key={i} value={`${i}`}>
+        {`${i}`}
+      </Option>
+    )
   }
 
   document.ondragover = function (event) {
@@ -49,6 +56,7 @@ const monthStateView = (props) => {
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
+    let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
 
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
@@ -87,7 +95,7 @@ const monthStateView = (props) => {
       type: 'roomStatusManagement/userDrop',
       payload: {
         roomIndex,
-        dayIndex,
+        dayIndex: dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit,
       }
     });
   };
@@ -286,19 +294,32 @@ const monthStateView = (props) => {
           return null;
         }
 
-        let result = dayList.map((day, dayindex) => {
-          //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
-          let status = 0;
-          // 一天中的用户列表
-          let dayCustomerList = day.customerList;
+        //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
+        let status = 0;
+        let dayCustomerList = null;
+        let hasUser = false;
 
-          // 如果该天只有一个用户, 直接显示相应状态
-          if (dayCustomerList.length === 1) {
-            let hasUser = false;
+        let result = dayList.map((day, dayindex) => {
+          // 一天中的用户列表
+          dayCustomerList = day.customerList;
+          if (!dayCustomerList || !dayCustomerList.length) {
+            // 空房
+            status = 0;
+          } else if (dayCustomerList.length === 1) {
+            // 如果该天只有一个用户, 直接显示相应状态
             status = dayCustomerList[0].status || 7;
+          } else if (dayCustomerList.length > 1) {
+            // 重叠
+            status = 9;
+          }
+
+          for (let j = 0; j < dayCustomerList.length; j++) {
+            hasUser = false;
 
             for (let i = 0; i < users.length; i++) {
-              if (users[i].customerId === dayCustomerList[0].customerId) {
+              if (users[i].customerId === dayCustomerList[j].customerId
+                && users[i].lastIndex === dayindex - 1
+                && users[i].status == dayCustomerList[j].status) {
                 hasUser = true;
                 users[i].dayCount++;
                 users[i].lastIndex = dayindex;
@@ -308,38 +329,13 @@ const monthStateView = (props) => {
 
             if (!hasUser) {
               users.push({
-                ...dayCustomerList[0],
+                ...dayCustomerList[j],
                 startDate: day.date,
                 startIndex: dayindex,
                 lastIndex: dayindex,
                 dayCount: 1,
-              });
+              })
             }
-          } else if (dayCustomerList.length > 1) {
-            for (let j = 0; j < dayCustomerList.length; j++) {
-              let hasUser = false;
-
-              for (let i = 0; i < users.length; i++) {
-                if (users[i].customerId === dayCustomerList[j].customerId) {
-                  hasUser = true;
-                  users[i].dayCount++;
-                  users[i].lastIndex = dayindex;
-                  break;
-                }
-              }
-
-              if (!hasUser) {
-                users.push({
-                  ...dayCustomerList[j],
-                  startDate: day.date,
-                  startIndex: dayindex,
-                  lastIndex: dayindex,
-                  dayCount: 1,
-                })
-              }
-            }
-
-            status = 9; // 重叠
           }
 
           let stateBox = classNames('stateBox', {
@@ -468,18 +464,11 @@ const monthStateView = (props) => {
           let roomIndex = target.dataset.roomIndex;
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
-
-          let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
-
+          let status = target.dataset.status;
 
           // 左端在入住状态下不可操作
-          for (let i = 0; i < customerList.length; i++) {
-            let customer = customerList[i];
-            if (customer.customerId == customerId) {
-              if (customer.status == 4) {
-                return;
-              }
-            }
+          if (status == 4) {
+            return;
           }
 
 
@@ -510,10 +499,13 @@ const monthStateView = (props) => {
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
             }
+
+
           };
 
           document.onmouseup = () => {
             document.onmousemove = null;
+            document.onmouseup = null;
 
             if (!unit) {
               return;
@@ -545,14 +537,17 @@ const monthStateView = (props) => {
                 customerId,
                 customerName,
                 reserveDays,
+                status,
               }
             });
 
-            document.onmouseup = null;
           }
         };
 
-        const dragStart = (user) => {
+        const dragStart = (event, user) => {
+          dragOffsetX = event.nativeEvent.offsetX;
+          dragOffsetY = event.nativeEvent.offsetY;
+
           dispatch({
             type: 'roomStatusManagement/userDragStart',
             payload: {
@@ -580,7 +575,7 @@ const monthStateView = (props) => {
                    left: users[i].startIndex * UNIT_WIDTH,
                  }}
                  draggable="true"
-                 onDragStart={() => dragStart(users[i])}
+                 onDragStart={(event) => dragStart(event, users[i])}
                  data-room-index={roomIndex}
                  data-customer-id={users[i].customerId}
                  data-customer-name={users[i].customerName}
@@ -624,48 +619,97 @@ const monthStateView = (props) => {
     };
 
 
-    const renderDaysRuler = (item) => {
+    const renderDaysRuler = () => {
 
-      const getDays = (year, month) => {
-        return (new Date(year, month, 0)).getDate();
+      let dateRulerList = props.users.dateRulerList;
+      let boxWidth = 0;
+
+      for (let item of dateRulerList) {
+        boxWidth += item.days * UNIT_WIDTH;
+      }
+
+      const renderFiveDays = (days) => {
+        let result = [];
+
+        let fiveDays = parseInt(days / 5);
+        let remainder = days % 5;
+
+        for (let i = 1; i <= fiveDays; i++) {
+          result.push(
+            <div className="fiveDayRuler" style={{
+              width: 5 * UNIT_WIDTH + "px",
+            }}>
+              {i * 5}天
+            </div>
+          )
+        }
+
+        if (remainder) {
+          result.push(
+            <div className="fiveDayRuler" style={{
+              width: remainder * UNIT_WIDTH + "px",
+            }}>
+            </div>
+          )
+        }
+
+        return result;
       };
 
       return (
-        <div>
-          {item} 月
+        <div className="daysRulerBox" style={{width: boxWidth + 2 + "px"}}>
+          {
+            dateRulerList.map(item => {
+              return (
+                <div className="itemRulerBox" style={{
+                  width: item.days * UNIT_WIDTH,
+                }}>
+                  <div className="itemRulerBoxTop">
+                    <div className="itemRulerBoxTitle">
+                      {item.date}
+                    </div>
+                  </div>
+                  <div className="itemRulerBoxBottom">
+                    {
+                      renderFiveDays(item.days)
+                    }
+                  </div>
+                </div>
+              )
+            })
+          }
         </div>
       )
     };
 
     return (
       <div className="monthRoomListBox">
-        <div style={{display: "flex"}}>
-          <div className="monthRoomLeftBox">
-            <div style={{height: '40px'}}/>
-            {
-              roomList.map((room) => {
-                return (
-                  <div className="monthRoomNumberBox">
-                    <div>
+        <div className="monthRoomLeftBox">
+          <div style={{height: '40px'}}/>
+          {
+            roomList.map((room) => {
+              return (
+                <div className="monthRoomNumberBox">
+                  <div>
 
-                      <div className="number">
-                        {room.roomNo}
-                      </div>
-                      <div className="level">
-                        v1
-                      </div>
+                    <div className="number">
+                      {room.roomNo}
+                    </div>
+                    <div className="level">
+                      v1
                     </div>
                   </div>
-                )
-              })
-            }
-          </div>
+                </div>
+              )
+            })
+          }
+        </div>
+        <div className="monthRoomRightBox">
+          {
+            renderDaysRuler()
+          }
+
           <div className="monthRoomMainBox">
-            <div className="daysRulerBox">
-              {
-                /*props.users.selectedMonthList.map(item => renderDaysRuler(item))*/
-              }
-            </div>
             {
               roomList.map((item, roomIndex) => renderMonthRoom(item, roomIndex))
             }
@@ -742,11 +786,19 @@ const monthStateView = (props) => {
 
     const customers = props.users.monthStateCustomers;
 
-    const dragStart = (dragUser) => {
+    const dragStart = (dragUser, event) => {
+      dragOffsetX = event.nativeEvent.offsetX;
+      dragOffsetY = event.nativeEvent.offsetY;
+
       dispatch({
         type: 'roomStatusManagement/userDragStart',
         payload: {
-          dragUser,
+          dragUser: {
+            ...dragUser,
+            startIndex: -1,
+            endIndex: -1,
+            roomIndex: -1,
+          }
         }
       });
     };
@@ -775,7 +827,7 @@ const monthStateView = (props) => {
             return (
               <div className="customerItem" onClick={() => {
                 onClicked(costomer)
-              }} draggable="true" onDragStart={() => dragStart(costomer)}>
+              }} draggable="true" onDragStart={(event) => dragStart(costomer, event)}>
                 {costomer.customerName}
               </div>
             )
