@@ -31,6 +31,25 @@ const statusExplain = [
   {name: "维修", color: "#63C3E6"},
 ];
 
+// 时间毫秒数转日期: YYYY-MM-DD
+const timeToDate = (time) => {
+  if (!time) {
+    return '';
+  }
+
+  try {
+    let date = new Date(parseInt(time));
+
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    return month + '月' + day + '日';
+  } catch (e) {
+    console.log("日期转换时发生错误", e);
+    return "";
+  }
+};
+
 
 const monthStateView = (props) => {
   const {dispatch} = props;
@@ -499,8 +518,6 @@ const monthStateView = (props) => {
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
             }
-
-
           };
 
           document.onmouseup = () => {
@@ -588,7 +605,14 @@ const monthStateView = (props) => {
                  onDoubleClick={userBoxDbClickHandler}
                  onContextMenu={userBoxRightClickHandler}
             >
-              {users[i].customerName}
+              {
+                users[i].customerName + '('
+                + users[i].dayCount + '天, '
+                + timeToDate(users[i].startDate)
+                + '-'
+                + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
+                + ')'
+              }
               <a href="javascript:void(0)"
                  className="resizeBar"
                  title={users[i].dayCount + '天'}
