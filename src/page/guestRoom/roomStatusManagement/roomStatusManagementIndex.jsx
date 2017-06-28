@@ -328,7 +328,6 @@ class roomStatusIndex extends React.Component {
         }
       }
     }
-    console.log(array)
     this.props.dispatch({type: 'roomStatusManagement/setSelectValue', payload: {data: array}})
   }
 
