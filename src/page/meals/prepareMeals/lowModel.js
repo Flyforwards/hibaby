@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { connect } from 'dva';
 import './prepareMeals.scss'
-import { Button, Icon, Modal, Form, Input, Row, Col, message } from 'antd';
+import { Button, Icon, Modal, Form, Input, Row, Col, message, Spin } from 'antd';
 const FormItem = Form.Item;
 import './prepareMeals.scss'
 import ChooseDishes from './chooseDishesModel'
@@ -33,7 +33,6 @@ class DynamicFieldSet extends Component {
     
     if (length < 7) {
       dishes.push({ isDel: true });
-      console.log(dishes, '1')
       dispatch({
         type: "prepareMeals/changeMenuInfoByType",
         payload: { dishes }
@@ -97,7 +96,6 @@ class DynamicFieldSet extends Component {
         sm: { span: 6 }
       }
     };
-    
     return (
       <Form onSubmit={this.handleSubmit}>
         <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
@@ -164,7 +162,7 @@ class LowMOdel extends Component {
       visible: true
     }
   }
- 
+  
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -176,13 +174,14 @@ class LowMOdel extends Component {
   }
   
   render() {
-    const { prepareMeals, dispatch } = this.props;
+    const { prepareMeals, dispatch, loading } = this.props;
     const { visible, menuInfoByType } = prepareMeals;
     const { type } = menuInfoByType;
     let title = type == 1 ? '早餐' : type == 2 ? '早加' : type == 3 ? '午餐' : type == 4 ? '午加' : type == 5 ? '晚餐' : type == 6 ? '晚加' : '';
     return (
       <div >
         <Modal
+          key={visible}
           className="lowModel"
           title={`编辑餐单：第${menuInfoByType.week}周—${menuInfoByType.day}—${title}`}
           visible={visible}
@@ -191,9 +190,10 @@ class LowMOdel extends Component {
           width={1000}
           footer={null}
         >
-          <h3 className="standardFood">标准菜品</h3>
-          <WrappedDynamicFieldSet dispatch={dispatch} menuInfoByType={menuInfoByType}/>
+            <h3 className="standardFood">标准菜品</h3>
+            <WrappedDynamicFieldSet dispatch={dispatch} menuInfoByType={menuInfoByType}/>
         </Modal>
+      
       </div>
     )
   }
@@ -201,7 +201,8 @@ class LowMOdel extends Component {
 function mapStateToProps(state) {
   
   return {
-    prepareMeals: state.prepareMeals
+    prepareMeals: state.prepareMeals,
+    loading: state.loading
   };
 }
 export default connect(mapStateToProps)(LowMOdel);

@@ -1,40 +1,85 @@
-.customer-vis-cent{
+.customer-vis-cent {
   padding: 10px 20px;
-  .button-wrapper{
-    padding:0 24px;
+  .button-wrapper {
+    padding: 0 24px;
   }
-  .ant-col-6{
+  .ant-col-6 {
     text-align: end;
   }
-  .button-add{
+  .button-add {
     margin-left: 20px;
     width: 150px;
     background: #b67233;
-    border:none;
+    border: none;
     color: #fff;
   }
   .left-time-btn {
     margin-left: 15px;
     margin-top: 15px;
+    width: 100px;
+    height: 40px;
+    background-color: rgba(242, 242, 242, 1);
+    border: none;
+    border-radius: 5px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
     font-size: 14px;
   }
   .left-time-div {
     margin-left: 15px;
-    margin-top: 15px;
-    font-size: 14px;
+    position: relative;
+    height: 40px;
+    display: inline-block;
+    .left-time-span {
+      margin-top: 10px;
+      width: 100px;
+      line-height: 40px;
+      background-color: rgba(242, 242, 242, 1);
+      border: none;
+      border-radius: 5px;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      display: inline-block;
+      text-align: center;
+    }
+    .anticon {
+      position: absolute;
+      color: red;
+      right: -6px;
+      font-size: 20px;
+    }
   }
-  .left-time-span {
 
-  }
-  .customer-vis-cent-add{
-    .ant-calendar-picker{
+  .customer-vis-cent-add {
+    .ant-calendar-picker {
       display: block;
     }
   }
-  .SaveBtn{
-    background: #f1e8df;
-    border-color: #dbb999;
-    color: #b67233;
-  }
 
+  .btnRow {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    .SaveBtn {
+      background: #f1e8df;
+      border-color: #dbb999;
+      color: #b67233;
+      width: 150px;
+    }
+    .BackBtn {
+      margin-left: 20px;
+      width: 150px;
+      background: #b67233;
+      border: none;
+      color: #fff;
+    }
+  }
 }

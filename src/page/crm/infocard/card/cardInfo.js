@@ -123,7 +123,8 @@ class CardModal extends Component {
     level? level.map(function(elem,index){
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
-    return (
+    return(
+    <div className="infoCard">
       <div className="cardInfo" style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
@@ -231,6 +232,7 @@ class CardModal extends Component {
           </Form>
         </Card>
       </div>
+    </div>
     )
   }
 }

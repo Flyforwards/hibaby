@@ -2,8 +2,9 @@
 import * as usersService from '../services/users';
 import * as loginService from '../services/login';
 import * as systemService from '../services/system';
-import { routerRedux } from 'dva/router'
-import { local, session } from 'common/util/storage.js'
+import { routerRedux } from 'dva/router';
+import { message } from 'antd';
+import { local, session } from 'common/util/storage.js';
 
 // 个人中心菜单
 const userModuleList = [
@@ -24,6 +25,7 @@ export default {
     permissionAlias: [],
     systemTime: 0,
     endemic: {}, // 用户选择的地方中心
+    callRecords: [], // 400通话记录
   },
 
   subscriptions: {
@@ -356,6 +358,28 @@ export default {
         })
       }
     },
+
+    // 获取通话备注记录
+    *getCallRecordsList({ payload: value }, {call, put}) {
+      const {data: {data, code}} = yield call(usersService.getCallRecordsList, value)
+      if (code == 0) {
+        yield put({
+          type: 'getCallRecordsListSuccess',
+          payload: { callRecords: data }
+        })
+      }
+    },
+    // 保存通话记录
+    *saveCallRecords({ payload: value }, {call, put}) {
+      const {data: {data, code}} = yield call(usersService.saveCallRecords, value)
+      if (code == 0) {
+        // yield put({
+        //   type: 'saveCallRecordsSuccess',
+        //   payload: { callRecords: data }
+        // })
+        message.success('保存备注信息成功')
+      }
+    },
   },
 
 
@@ -394,6 +418,10 @@ export default {
 
     getCustomerByMobileSuccess(state, { payload: { customerInfo } }) {
       return { ...state, customerInfo }
+    },
+
+    getCallRecordsListSuccess(state, { payload: { callRecords } }) {
+      return { ...state, callRecords }
     },
   },
 }

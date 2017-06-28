@@ -112,11 +112,12 @@ class Card extends Component {
       }
     };
     return (
-      <div className="card">
-        <CardFind permissionAlias style={{ clear:'both'}}/>
-        <Table class="cardTable" columns={this.columns} bordered rowKey="id" { ...tableProps }/>
+      <div className="infoCard">
+        <div className="card">
+          <CardFind permissionAlias style={{ clear:'both'}}/>
+          <Table class="cardTable" columns={this.columns} bordered rowKey="id" { ...tableProps }/>
+        </div>
       </div>
-
     )
   }
 }

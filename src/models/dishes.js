@@ -20,6 +20,8 @@ export default {
     initialValue : null,
     dishesLibraryNodes : null,
     nodeId : 1,
+    mvTypeData : [],//荤素类型
+    vdTypeData : [],//菜品类型
   },
   //加载页面
   subscriptions: {
@@ -42,6 +44,24 @@ export default {
   },
   //调用服务器端接口
   effects: {
+    *getDictionary({payload : values}, { call, put,select }){
+      values.softDelete = 0;
+      const {data: { data,code,err} } = yield call(dishesService.getDictionary, values);
+      if (code == 0) {
+        //更新state
+        let result = null;
+        if(values.abName === 'MVTYPE'){
+          result = {
+            mvTypeData : data
+          }
+        }else{
+          result = {
+            vdTypeData : data
+          }
+        }
+        yield put({type:'setDictionary',payload:{result}} );
+      }
+    },
     //获取左侧菜品库列表数据
     *getDishesLibraryNodes({payload : values}, { call, put,select }){
       const {data: { data,code,err} } = yield call(dishesService.getDishesLibraryNodes, values);
@@ -144,6 +164,9 @@ export default {
     },
     clearDishesDetail(state){
       return {...state,initialValue: null}
+    },
+    setDictionary(state, { payload: {result} }){
+      return {...state,...result}
     }
   }
 };

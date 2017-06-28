@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { connect } from 'dva';
 import './prepareMeals.scss'
-import { message, Button, Radio, Icon, Modal, Form, Row, Col, Input, Select } from 'antd';
+import { message, Button, Radio, Icon, Modal, Form, Row, Col, Input, Select ,Spin} from 'antd';
 import LowModal from './lowModel'
 import HighModal from './highModel'
 const RadioButton = Radio.Button;
@@ -94,23 +94,24 @@ class PrepareMeals extends Component {
     const { dispatch } = this.props;
     const { week, day, type } = info;
     dispatch({
-      type: 'prepareMeals/getMenuByType',
-      payload: {
-        week, day, type
-      }
-    })
-    dispatch({
       type: 'prepareMeals/changeVisible',
       payload: {
         visible: true
       }
     })
+    dispatch({
+      type: 'prepareMeals/getMenuByType',
+      payload: {
+        week, day, type
+      }
+    })
+   
   }
   
   render() {
-    const { prepareMeals } = this.props;
+    const { prepareMeals,loading } = this.props;
     const { dayInfo, defaultValueRadio, menuInfo, findMenuInfo } = prepareMeals;
-    let colorType = '#dddddd'
+    let colorType = '#dddddd';
     return (
       <div className="prepareMeals">
         <LowModal/>
@@ -174,8 +175,7 @@ class PrepareMeals extends Component {
                     case 1:
                       v.info = [{
                         dishesName: '菜一',
-                        number: 1,
-                        dishesId: 1
+                        number: 1
                       }, {
                         dishesName: '菜二',
                         number: 2
@@ -241,8 +241,7 @@ class PrepareMeals extends Component {
                     case 6:
                       v.info = [{
                         dishesName: '菜一',
-                        number: 1,
-                        dishesId: 3
+                        number: 1
                       }, {
                         dishesName: '菜二',
                         number: 2
@@ -262,7 +261,6 @@ class PrepareMeals extends Component {
                     <ul>
                       {
                         v.info.map((vv, kk) => {
-                          //colorType = vv.dishesName && $.inArray(vv.dishesName, findMenuInfo) != -1 ? 'red' : '#fff';
                           if (vv.dishesId && $.inArray(vv.dishesId, findMenuInfo) != -1) {
                             colorType = 'red';
                           } else {
@@ -274,7 +272,9 @@ class PrepareMeals extends Component {
                         })
                       }
                       <li>
-                        <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>编辑/添加</Button>
+                          <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
+                            编辑/添加
+                          </Button>
                       </li>
                     </ul>
                   </div>
@@ -290,7 +290,9 @@ class PrepareMeals extends Component {
 function mapStateToProps(state) {
   
   return {
-    prepareMeals: state.prepareMeals
+    prepareMeals: state.prepareMeals,
+    loading: state.loading
+  
   };
 }
 export default connect(mapStateToProps)(PrepareMeals);
