@@ -69,7 +69,7 @@ function CustomerSearch(props) {
 
   function creatComponent(dict) {
 
-    let formItemLayout = dict.title ? {labelCol: {span: 7},wrapperCol: {span: 17}} : {labelCol: {span: 0},wrapperCol: {span: 24}}
+    let formItemLayout = dict.title ? {labelCol: {span: 8},wrapperCol: {span: 16}} : {labelCol: {span: 0},wrapperCol: {span: 24}}
 
     return(
       <FormItem key={dict.submitStr} {...formItemLayout} label={dict.title}>
@@ -102,7 +102,7 @@ function CustomerSearch(props) {
 
       tempChiAry.push (
         <Col span={4}>
-          <Row><Col span={22} offset={2}>
+          <Row><Col span={19} offset={5}>
             {creatComponent(dict[0])}
           </Col></Row>
         </Col>,
@@ -361,6 +361,7 @@ class addCustomer extends React.Component {
         width="1000px"
         visible={CustomerVisible}
         title="预约"
+        maskClosable
         onOk={this.handleOk.bind(this) }
         onCancel={this.handleCancel.bind(this)}
       >
@@ -554,13 +555,14 @@ class RowHouses extends React.Component{
 
   render(){
     const {packageAry,resultsRowHouses, RowHousesVisible} = this.props.users;
+
     return(
       <Modal
-
         className="RowHouses"
         width="1000px"
         visible={RowHousesVisible}
         title="一键排房"
+        maskClosable
         onOk={this.handleOk.bind(this)}
         onCancel={this.handleCancel.bind(this)}
       >

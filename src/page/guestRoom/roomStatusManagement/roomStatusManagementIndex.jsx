@@ -172,11 +172,7 @@ function ScreenBar(props) {
         <span className="titlespan">计划离所 <span
           style={{color: 'rgb(247,171,63)'}}>{dayStatusData.endCount}</span> 客人</span>
         <span className="titlespan">
-          今日在所
-          <span style={{color: 'rgb(243,106,105)'}}>
-          {dayStatusData.useCount}
-          </span>
-          客人
+          今日在所 <span style={{color: 'rgb(243,106,105)'}}>{dayStatusData.useCount}</span> 客人
         </span>
       </div>
 
@@ -239,13 +235,13 @@ function CardArray({roomList, dispatch}) {
         <p>母婴护理师：朱禹桥</p>
         <p>会员卡种：{dict.customerConsume.membershipCardName}</p>
         <p>会员卡号：{dict.customerConsume.membershipCardId}</p>
-        <p>离所日期：{dict.endDate}</p>
+        <p>离所日期：{moment(dict.endDate).format('YYYY年MM月DD日') }</p>
       </div>
     }
     else if(dict.customerConsume){
       chiDiv = <div >
         <p>预约人：{dict.customerConsume.customerName}</p>
-        <p>入所日期：{moment(dict.beginDate).format('YYYY-MM-DD') }</p>
+        <p>入所日期：{moment(dict.beginDate).format('YYYY年MM月DD日') }</p>
       </div>
     }
 
