@@ -6,28 +6,36 @@ export default {
   namespace: 'cyclePage',
   state: {
     isShowDetail: false,
-    curTabsIndex: '1',
-    curDetailTabsIndex: '1',
-    systemTime: ''
+    curTabsIndex: 0,
+    curDetailTabsIndex: 0,
+    systemTime: '',
+    loopDatas: {},
+    loopSecondDatas: {},
+    loopThirdDatas: {},
+    loopWeekDatas: {}
   },
   reducers: {
 
     changedTabActivity(state, { payload: { status} }) {
       let index = Number(state.curTabsIndex) + status;
-      let indexStr = index+'';
-      return {...state, curTabsIndex: indexStr};
+      if (index == 3){
+        index = 0;
+      }
+      if (index == -1){
+        index = 2;
+      }
+      return {...state, curTabsIndex: index};
     },
 
     changedDetailTabActivity(state, { payload: { status} }) {
-      if (status == 0){//重置
-        let indexStr = '1';
-        return {...state, curDetailTabsIndex: indexStr};
+      let index = Number(state.curDetailTabsIndex) + status;
+      if (index == 3){
+        index = 0;
       }
-      else {
-        let index = Number(state.curDetailTabsIndex) + status;
-        let indexStr = index+'';
-        return {...state, curDetailTabsIndex: indexStr};
+      if (index == -1){
+        index = 2;
       }
+      return {...state, curDetailTabsIndex: index};
     },
 
     changedShowStatus(state, {}) {
@@ -36,9 +44,31 @@ export default {
     },
 
     //保存循环周期信息
-    saveLoopList(state, {payload: {data: loopList}}) {
-      console.log(loopList);
-      return {...state, ...loopList};
+    saveLoopList(state, {payload: {data}}) {
+      console.log('第一页');
+      console.log(data);
+      return {...state, loopDatas:data};
+    },
+
+    //保存循环周期房间送餐信息
+    saveloopRoomDishesList(state, {payload: {data}}) {
+      console.log('第三页');
+      console.log(data);
+      return {...state, loopThirdDatas:data};
+    },
+
+    //保存循环周期菜品信息
+    saveloopDishesList(state, {payload: {data}}) {
+      console.log('第二页');
+      console.log(data);
+      return {...state, loopSecondDatas:data};
+    },
+
+    //保存单个循环详情
+    saveloopListByWeek(state, {payload: {data}}) {
+      console.log('单个循环详情');
+      console.log(data);
+      return {...state, loopWeekDatas:data};
     },
 
     //保存服务器时间
@@ -54,6 +84,45 @@ export default {
       if (code == 0) {
         yield put({
           type: "saveLoopList",
+          payload: {
+            data
+          }
+        })
+      }
+    },
+
+    //查询循环周期房间送餐信息
+    *getLoopRoomDishesList({payload: value}, {call, put}){
+      const {data: {code, data}} = yield call(cycleService.getLoopRoomDishesList, value);
+      if (code == 0) {
+        yield put({
+          type: "saveloopRoomDishesList",
+          payload: {
+            data
+          }
+        })
+      }
+    },
+
+    //查询循环周期菜品界面
+    *getLoopDishesList({payload: value}, {call, put}){
+      const {data: {code, data}} = yield call(cycleService.getLoopDishesList, value);
+      if (code == 0) {
+        yield put({
+          type: "saveloopDishesList",
+          payload: {
+            data
+          }
+        })
+      }
+    },
+
+    //查询单个循环周期详情
+    *getLoopListByWeek({payload: value}, {call, put}){
+      const {data: {code, data}} = yield call(cycleService.getLoopListByWeek, value);
+      if (code == 0) {
+        yield put({
+          type: "saveloopListByWeek",
           payload: {
             data
           }
