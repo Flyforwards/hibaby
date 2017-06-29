@@ -196,6 +196,15 @@ const monthStateView = (props) => {
     };
 
 
+    const deleteBtnClickHandler = (index) => {
+      dispatch({
+        type: 'roomStatusManagement/deleteDateSelectView',
+        payload: {
+          index: index,
+        }
+      });
+    }
+
     const addBtnClickHandler = () => {
 
       let index = ++selectViewIndex;
@@ -210,7 +219,9 @@ const monthStateView = (props) => {
             renderMonthSelectView(index)
           }
 
-          <Col span={5} offset={1}/>
+          <Col span={5} offset={1}>
+            <Button className="addBtn" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
+          </Col>
         </Row>
       );
 

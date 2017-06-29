@@ -375,8 +375,18 @@ export default {
     },
     addDateSelectView(state, {payload: data}){
       let dateSelectViews = state.dateSelectViews;
-
       dateSelectViews.push(data.dateSelectView);
+      return {
+        ...state,
+        dateSelectViews: dateSelectViews
+      }
+    },
+
+    deleteDateSelectView(state, {payload: data}){
+
+      let dateSelectViews = state.dateSelectViews;
+
+      delete dateSelectViews[data.index -1]
 
       return {
         ...state,
@@ -469,7 +479,6 @@ export default {
 
       const {data: {code, data}} = yield call(roomManagement.arrangeRoom, {...defData, ...value});
       if (code == 0) {
-        console.log(data)
         yield put({
           type: 'setResultsRowHouses',
           payload: {
