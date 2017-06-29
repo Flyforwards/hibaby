@@ -38,6 +38,8 @@ class PhoneSystemIndex extends React.Component {
       status: 0, // 0:空闲， 1:响铃 2: 接通 3:整理
       info: {},
       nodeId: [], // 显示的按钮
+      type: '0',
+      memberStatus: [] // 席座 队列
     }
     this.cols = [{
       dataIndex: 'createTime',
@@ -99,8 +101,7 @@ class PhoneSystemIndex extends React.Component {
       title: '排队位置',
       dataIndex: 'position',
       key: 'position',
-    },]
-    const { getFieldDecorator } = props.form;
+    },];
     this.nodes = [
       <Button key="pause" className='system-button2' onClick={ this.actionType.bind(this,1) }>置忙</Button>, // 1
       <Button key="online" className='system-button2' onClick={ this.actionType.bind(this,2) }>置闲</Button>, // 2
@@ -109,31 +110,34 @@ class PhoneSystemIndex extends React.Component {
       <Button key="refused"  className='system-button2' onClick={ this.actionType.bind(this,5) }>拒接</Button>, // 5
       <Button key="hold" className='system-button2' onClick={ this.actionType.bind(this,6) }>保持</Button>, // 6
       <Button key="unHold"  className="system-button3" onClick={ this.actionType.bind(this,7) }>保持接回</Button>, // 7
-      <Button key="consult" className='system-button2' >咨询</Button>, // 8
+      <Button key="consult" className='system-button2' onClick={ this.actionType.bind(this,8) }>咨询</Button>, // 8
       <Button key="consultBack"  className="system-button3" onClick={ this.actionType.bind(this,9) }>咨询接回</Button>, // 9
       <Button key="consultTransfer"  className="system-button3" onClick={ this.actionType.bind(this,10) }>咨询转接</Button>, // 10
       <Button key="consultThreeway"  className="system-button3" onClick={ this.actionType.bind(this,11) }>咨询三方</Button>, // 11
-      <Button key="transfer"  className='system-button2'>转移</Button>, // 12
-      <InputGroup className="phone-button-input" key="phoneCallText" compact>
-        {getFieldDecorator('type',{
-          rules: [{ required: true, }], initialValue: "0"
-        })(
-        <Select style={{ width: '78px', }} key="consultInput">
+      <Button key="transfer"  className='system-button2' onClick={ this.actionType.bind(this,12) }>转移</Button>, // 12
+      <InputGroup className="phone-button-input" style={{ width: '170px' }} key="phoneText" compact>
+        <Select disabled defaultValue='0' style={{ width: '78px' }} key="consultInput">
           <Option key='0' value="0">普通电话</Option>
-          <Option key='1' value="1">座席号</Option>
-        </Select>)}
-        {getFieldDecorator('number',{
-          rules: [{ required: true, max: 12}]
-        })(
-        <Input style={{ width: '90px',height: '33px' }} />)}
+        </Select>
+        <Input ref="phone" style={{ width:'88px',height: '33px' }} />
       </InputGroup>, //13
-      <Button key="phoneCallout"  className="system-button3">呼叫</Button>, // 14
+      <Button key="phoneCallout"  className="system-button3" onClick={ this.actionType.bind(this,14) }>呼叫</Button>, // 14
       <Button key="phoneCallCancel" className="system-button3" onClick={ this.actionType.bind(this,15) }>呼叫取消</Button>, // 15
       ];
   }
+  // 切换呼叫类型
+  onChange(value) {
+    if (value  == '1') {
+      // 获取队列数据
+      window.executeAction('doQueueStatus');//获取队列数据
+    }
+  }
 
-  actionType(type) {
-    switch(type) {
+
+
+  actionType(id) {
+
+    switch(id) {
       case 1 :
         window.executeAction('doPause', { description: "置忙"})
         break;
@@ -155,8 +159,26 @@ class PhoneSystemIndex extends React.Component {
       case 7 :
         window.executeAction('doUnhold')
         break;
-      case 8 :
-
+      case 8 : {
+          const { getFieldValue } = this.props.form
+          const type = getFieldValue('type');
+          const cno = getFieldValue('cno');
+          if ( type == '0' ) {
+            const number = this.refs.number.refs.input.value;
+            if (!number || number.length==0 && number.length>12) {
+              message.error('请输入正确号码！')
+              return;
+            }
+            object.consultObject = number;
+          } else {
+            if (!cno) {
+              message.error('请选择正确座席!');
+              return;
+            }
+            object.consultObject = cno
+          }
+          window.executeAction('doConsult', object);
+        }
         break;
       case 9 :
         window.executeAction('doUnconsult')
@@ -167,11 +189,38 @@ class PhoneSystemIndex extends React.Component {
       case 11 :
         window.executeAction('doConsultThreeway');
         break;
-      case 12 :
+      case 12 : {
+          const { getFieldValue } = this.props.form
+          const type = getFieldValue('type');
+          const cno = getFieldValue('cno');
+          let object = { objectType: type };
+          if ( type == '0' ) {
+            const number = this.refs.number.refs.input.value;
+            if (!number || number.length==0 && number.length>12) {
+              message.error('请输入正确号码！')
+              return;
+            }
+            object.transferObject = number;
+          } else {
+            if (!cno) {
+              message.error('请选择正确座席!');
+              return;
+            }
+            object.transferObject = cno
+          }
+          window.executeAction('doTransfer', object);
+        }
 
         break;
       case 14 :
-
+        return
+          const phone = this.refs.phone.refs.input.value;
+          if (phone && phone.length>0 && phone.length<12) {
+            const params = { callType: '3', tel: phone };
+            window.executeAction('doPreviewOutCall', params);
+          } else {
+            message.error('请输入正确号码！')
+          }
         break;
       case 15 :
         window.executeAction('doPreviewOutcallCancel')
@@ -218,7 +267,7 @@ class PhoneSystemIndex extends React.Component {
         showData = data.queueStatus[0];
       }
 
-      for(var i=0;i<showData.memberStatus.length; i++){
+      for(var i=0;i<showData.memberStatus.length; i++) {
 
         var ms = showData.memberStatus[i];
         var status = window.deviceStatus.deviceStatusLoginStatus(ms.deviceStatus+ms.loginStatus, ms.pauseDescription, ms.busyDescription);
@@ -233,7 +282,7 @@ class PhoneSystemIndex extends React.Component {
         }
         if(loginTime == undefined ){
           loginTime = 0;
-        } else{
+        } else {
           loginTime = parseInt(loginTime,10);
         }
 
@@ -262,6 +311,10 @@ class PhoneSystemIndex extends React.Component {
       })
       this.setState({
         dataSource: showData.queueEntry
+      })
+
+      this.setState({
+        memberStatus: showData.memberStatus
       })
 
       this.customerTimer = setInterval(
@@ -330,21 +383,21 @@ class PhoneSystemIndex extends React.Component {
               })
             } else {
               this.setState({
-                nodeId: [3]
+                nodeId: [5]
               })
             }
           }
           break;
         case 'normalBusy' : //呼入座席接听
           this.setState({
-            nodeId: [4, 6, 8, 12, 13]
+            nodeId: [4, 6, 8, 12, 16]
           })
           //typeButton.consultThreeway();
           //typeButton.consultTransfer();
           break;
         case 'outBusy' : //外呼客户接听 客户和座席通话
           this.setState({
-            nodeId: [4, 6, 8, 12, 13]
+            nodeId: [4, 6, 8, 12, 16]
           })
           //typeButton.consultThreeway();
           //typeButton.consultTransfer();
@@ -371,7 +424,7 @@ class PhoneSystemIndex extends React.Component {
           break;
         case 'neatenEnd' : //整理结束
           var s = deviceStatus.deviceStatusLoginStatus(token.deviceStatus+token.loginStatus, token.pauseDescription, token.busyDescription);
-          if(s == '空闲'){
+          if(s == '空闲') {
             this.setState({
               nodeId: [1, 13, 14]
             })
@@ -559,7 +612,7 @@ class PhoneSystemIndex extends React.Component {
     const { form } = this.props;
     const { getFieldDecorator } = form;
     if (style == 'large') {
-      const { loginTime, dataSource, info, status, loginStatus, call_time, nodeId } = this.state
+      const { loginTime, dataSource, info, status, loginStatus, call_time, nodeId, memberStatus } = this.state
       const { callRecords, customerInfo } = this.props;
 
       let userName = '';
@@ -568,11 +621,41 @@ class PhoneSystemIndex extends React.Component {
       } else if ( customerInfo ) {
         userName = customerInfo.name;
       }
-
+      let input_bottom_16 = null;
+      if  (this.state.type == '0') {
+        input_bottom_16 = <Input ref="number" style={{ width: '113px',height: '33px' }} />
+      } else {
+        const options = memberStatus.map((record)=>{
+          const number = record.cid.substring(7, record.cid.length)
+          const name = record.cname
+          // const type = '席位类型' + record.power == 1?'班长席':'普通座席';
+          const status = window.deviceStatus.deviceStatusLoginStatus(record.deviceStatus+record.loginStatus, record.pauseDescription, record.busyDescription);
+          let disabled = true;
+          if ( status == '空闲') {
+            disabled = false
+          }
+          return <Option value={ number } disabled={ disabled } key={ record.cid }>{ name + ' ' + status }</Option>;
+        })
+        input_bottom_16 = getFieldDecorator('cno')(<Select style={{ width: '113px' }}>{ options }</Select>)
+      }
+      const input_16 = <InputGroup className="phone-button-input" key="phoneCallText" style={{ width: '190px' }} compact>
+          {getFieldDecorator('type', { initialValue: '0' })(
+            <Select style={{width: '77px'} } onChange={ this.onChange.bind(this) }
+                    key="consultInput">
+              <Option key='0' value="0">普通电话</Option>
+              <Option key='1' value="1">座席号</Option>
+            </Select>
+          )}
+          { input_bottom_16 }
+        </InputGroup> //16
       const buttons = []
       if (nodeId) {
         nodeId.map(item=>{
-          buttons.push(this.nodes[item-1])
+          if (item != 16) {
+            buttons.push(this.nodes[item-1])
+          } else {
+            buttons.push(input_16)
+          }
         })
       }
       const callContent = (
@@ -628,7 +711,7 @@ class PhoneSystemIndex extends React.Component {
             <span style={{ 'marginLeft':'20px', 'lineHeight': '40px' }}>登录时间</span>
             <span style={{ 'marginLeft':'10px', 'lineHeight': '40px' }} >{ this.transportTime(loginTime) }</span>
           </div>
-          <Table bordered pagination={false} columns={this.columns} rowKey='id' dataSource={dataSource} size='small'/>
+          <Table bordered pagination={false} columns={this.columns} rowKey={ record=>record.uniqueId} dataSource={dataSource} size='small'/>
           { status== 0? null:customer }
           <div className="phone-system-action-button">
             { buttons }
