@@ -32,6 +32,14 @@ export function getLoopListByWeek(values) {
   })
 }
 
+//查询单个循环周期房间送餐详情
+export function getLoopRoomDishesListByWeek(values) {
+  return request('/crm/api/v1/loop/getLoopRoomDishesListByWeek', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
 // 获取服务器时间
 export function getSystemTime(values) {
   return request('/crm/api/v1/getSystemTime', {
