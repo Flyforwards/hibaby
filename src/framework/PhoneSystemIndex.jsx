@@ -30,7 +30,7 @@ class PhoneSystemIndex extends React.Component {
         <Button onClick={ this.toLarge.bind(this) } className='system-button-option'>最大化</Button>
       </div>)
     this.state = {
-      style: 'hidden',
+      style: 'none',
       loginStatus: '离线',
       loginTime: 0,
       dataSource: [],
@@ -38,7 +38,6 @@ class PhoneSystemIndex extends React.Component {
       status: 0, // 0:空闲， 1:响铃 2: 接通 3:整理
       info: {},
       nodeId: [], // 显示的按钮
-      type: '0',
       memberStatus: [] // 席座 队列
     }
     this.cols = [{
@@ -252,6 +251,7 @@ class PhoneSystemIndex extends React.Component {
 
     if (window.callback.type == 'login') {
       message.success('登录成功');
+      this.toLarge();
     } else if (window.callback.type == 'queueStatus') {
 
       var data = window.callback.data;
@@ -729,7 +729,10 @@ class PhoneSystemIndex extends React.Component {
       bottom = (
         <Button className='system-button-option-show' onClick={ this.toLarge.bind(this) }> 显示 </Button>
       )
+    } else if (style == 'none') {
+      bottom = null;
     }
+
     return (
       <div>
         <Button onClick={ this.onClick.bind(this)}  id="bridging-btn" style={{position: 'absolute', left: 0, top: 0,width:'40px',height:'30px', display: 'none'}} >桥接中介</Button>
