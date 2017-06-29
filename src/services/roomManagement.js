@@ -79,7 +79,7 @@ export function getMonthRoomList(values) {
   })
 }
 
-//一键排房
+//取得一键排房数据
 export function arrangeRoom(values) {
   return request('/crm/api/v1/room/arrangeRoom', {
     method: 'POST',

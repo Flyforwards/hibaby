@@ -10,7 +10,8 @@ import {
   Switch,
   message,
   Modal,
-  Popover
+  Popover,
+  Spin
 } from 'antd'
 
 const Option = Select.Option;
@@ -53,7 +54,7 @@ const timeToDate = (time) => {
 
 
 const monthStateView = (props) => {
-  const {dispatch} = props;
+  const {dispatch,loading} = props;
 
   let years = [];
   let defaultYear = props.users.defaultYear;
@@ -500,9 +501,10 @@ const monthStateView = (props) => {
           let status = target.dataset.status;
 
           // 左端在入住状态下不可操作
-          if (status == 4) {
-            return;
-          }
+          // if (status == 4) {
+          // 我的断点
+          //   return;
+          // }
 
 
           document.onmousemove = (ee) => {
@@ -600,11 +602,11 @@ const monthStateView = (props) => {
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           const content = <div>{users[i].customerName + '('
-            + users[i].dayCount + '天, '
-            + timeToDate(users[i].startDate)
-            + '-'
-            + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
-            + ')'}</div>
+          + users[i].dayCount + '天, '
+          + timeToDate(users[i].startDate)
+          + '-'
+          + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
+          + ')'}</div>
           result.push(
             <Popover content={content}>
               <div className="userBox"
@@ -626,7 +628,7 @@ const monthStateView = (props) => {
                    onDoubleClick={userBoxDbClickHandler}
                    onContextMenu={userBoxRightClickHandler}
               >
-
+                {users[i].customerName}
                 <a href="javascript:void(0)"
                    className="resizeBar"
                    title={users[i].dayCount + '天'}
@@ -642,6 +644,7 @@ const monthStateView = (props) => {
 
 
       return (
+
         <div className="monthRoomBox">
 
           <div style={{
@@ -788,36 +791,43 @@ const monthStateView = (props) => {
    */
   const monthMainView = () => {
     return (
-      <div className="main">
-        <div className="headDiv">
-          <Switch className='switch'
-                  onChange={roomViewStateChange}
-                  checkedChildren={'日房态'}
-                  unCheckedChildren={'月房态'}
-                  defaultChecked={true}/>
+
+        <div className="main">
+          <div className="headDiv">
+            <Switch className='switch'
+                    onChange={roomViewStateChange}
+                    checkedChildren={'日房态'}
+                    unCheckedChildren={'月房态'}
+                    defaultChecked={true}/>
+          </div>
+
+          {
+            renderMonthSelectView()
+          }
+
+          {
+            renderQueryView()
+          }
+
+          {
+            renderStatusExplainView()
+          }
+
+          <Spin
+            spinning={loading.effects['roomStatusManagement/monthRoomList'] !== undefined ? loading.effects['roomStatusManagement/monthRoomList'] : false}>
+            {
+              /* 月房态列表 */
+              renderMonthRoomListView()
+            }
+          </Spin>
+
+
+          {
+            renderBottomBar()
+          }
         </div>
 
-        {
-          renderMonthSelectView()
-        }
 
-        {
-          renderQueryView()
-        }
-
-        {
-          renderStatusExplainView()
-        }
-
-        {
-          /* 月房态列表 */
-          renderMonthRoomListView()
-        }
-
-        {
-          renderBottomBar()
-        }
-      </div>
     )
   };
 
@@ -827,6 +837,7 @@ const monthStateView = (props) => {
     const customers = props.users.monthStateCustomers;
 
     const dragStart = (dragUser, event) => {
+      console.log(11);
       dragOffsetX = event.nativeEvent.offsetX;
       dragOffsetY = event.nativeEvent.offsetY;
 
@@ -898,5 +909,6 @@ const monthStateView = (props) => {
     </div>
   )
 };
+
 
 export default monthStateView;
