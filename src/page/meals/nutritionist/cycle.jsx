@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import styles from './Cycle.scss';
 import CycleDetail from './cycleDetail.jsx';
-import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
+import CycleDishesDetail from './cycleDishesDetail.jsx';
+import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge, Select } from 'antd'
+const Option = Select.Option;
 
 // 主页面
 function mealCycle (props) {
@@ -19,7 +21,10 @@ function mealCycle (props) {
           </Col>
           <Col span="22">
             <div className="dayTitle">{props.loopDatas.date} {chineseWeekDay(props.loopDatas.dayOfWeek)}</div>
-            <div style={{marginLeft: '85%' ,marginTop: '-55px'}}><p>今日用餐客户共计<font color="#ac672c">{props.loopDatas.allTotal}</font>人</p></div>
+            <div style={{marginTop: '-65px'}}>
+              {filterDiv()}
+              <div style={{marginLeft: '85%', marginTop: '-15px'}}><p>今日用餐客户共计<font color="#ac672c">{props.loopDatas.allTotal}</font>人</p></div>
+            </div>
             <div style={{marginTop: '20px' ,marginBottom: '40px'}}>{ showCurrentComponent(props.curTabsIndex) }</div>
           </Col>
           <Col span="1">
@@ -62,6 +67,38 @@ function mealCycle (props) {
     return(
       chinessWeek
     )
+  }
+
+  //筛选
+  function filterDiv() {
+    return (
+      <Select defaultValue={props.curType}  style={{ width: 200 ,textAlign:'center',fontSzie:'16px',color:'#333333'}} placeholder="" onChange={handleChangeType} >
+        <Option value="0">当日餐单</Option>
+        <Option value="1">早餐</Option>
+        <Option value="2">早加</Option>
+        <Option value="3">午餐</Option>
+        <Option value="4">午加</Option>
+        <Option value="5">晚餐</Option>
+        <Option value="6">晚加</Option>
+      </Select>
+    )
+  }
+
+  function handleChangeType (value) {
+
+    const {dispatch} = props;
+    if (value != props.curType) {
+
+      dispatch({
+        type: 'cyclePage/chooicesType',
+        payload:{ value }
+      })
+
+      dispatch({
+        type: 'cyclePage/getLoopList',
+        payload:{ type: Number(value) }
+      })
+    }
   }
 
   function showCurrentComponent(index) {
@@ -440,7 +477,7 @@ function mealCycle (props) {
 
     return (
       <div>
-        <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#e6e6e6'}}>
+        <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#e6e6e6'}} onClick={() => { handleGotoDishesDetail(loopObj.week) }}>
           <div style={{display: 'flex',justifyContent: 'flex-end'}}>
             <Badge count={loopObj.day} style={{
               backgroundColor: '#fff',
@@ -454,6 +491,21 @@ function mealCycle (props) {
         </Card>
       </div>
     )
+  }
+
+  //CycleDishesDetail
+  function handleGotoDishesDetail(week) {
+    const {dispatch} = props;
+    dispatch({
+      type: 'cyclePage/changedShowStatus',
+      payload: {value: 2}
+    }),
+
+    //单个循环周期房间送餐详情
+    dispatch({
+      type: 'cyclePage/getLoopRoomDishesListByWeek',
+      payload: { week: week , type: Number(props.curType)}
+    })
   }
 
   function foodMenuDivs(loopDishes) {
@@ -494,7 +546,8 @@ function mealCycle (props) {
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedShowStatus',
-    })
+      payload: {value: 1}
+    }),
 
     //查询单个循环的数据
     dispatch({
@@ -549,42 +602,58 @@ function mealCycle (props) {
     if (index == 0){
       dispatch({
         type: 'cyclePage/getLoopList',
-        payload:{ type: 0 }
+        payload:{  type: Number(props.curType) }
       })
     }
     else if (index == 1){
       dispatch({
         type: 'cyclePage/getLoopDishesList',
-        payload:{ type: 0 }
+        payload:{ type: Number(props.curType) }
       })
     }
     else {
       dispatch({
         type: 'cyclePage/getLoopRoomDishesList',
-        payload:{ type: 0 }
+        payload:{ type: Number(props.curType) }
       })
     }
   }
 
-  return (
-    <div className="MealCycle">
-      { props.isShowDetail ?  <CycleDetail loopWeekDatas={props.loopWeekDatas}/> :headerComponent()}
-    </div>
-
-  )
+  if (props.showPageIndex == 0) {
+    return (
+      <div className="MealCycle">
+        {headerComponent()}
+      </div>
+    )
+  }
+  else if (props.showPageIndex == 1) {
+    return (
+      <div className="MealCycle">
+        <CycleDetail loopWeekDatas={props.loopWeekDatas}/>
+      </div>
+    )
+  }
+  else {
+    return (
+      <div className="MealCycle">
+        <CycleDishesDetail loopWeekDishesDatas={props.loopWeekDishesDatas} type={props.curType}/>
+      </div>
+    )
+  }
 }
-
 
 function mapStateToProps(state) {
 
   return {
     loading: state.loading,
-    isShowDetail: state.cyclePage.isShowDetail,
+    curType: state.cyclePage.curType,
+    showPageIndex: state.cyclePage.showPageIndex,
     curTabsIndex: state.cyclePage.curTabsIndex,
     loopDatas: state.cyclePage.loopDatas,
     loopSecondDatas: state.cyclePage.loopSecondDatas,
     loopThirdDatas: state.cyclePage.loopThirdDatas,
-    loopWeekDatas: state.cyclePage.loopWeekDatas
+    loopWeekDatas: state.cyclePage.loopWeekDatas,
+    loopWeekDishesDatas: state.cyclePage.loopWeekDishesDatas
   };
 }
 export default connect(mapStateToProps)(mealCycle)

@@ -3,10 +3,18 @@ import { connect } from 'dva'
 import styles from './Cycle.scss';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
 
-function mainCycleDetail(props) {
+var curWeek = 0;
+
+function mainCycleDishesDetail(props) {
 
   console.log('-------------------------------');
-  console.log(props.loopWeekDatas);
+  console.log(props.loopWeekDishesDatas);
+
+  let loopObj = {};
+  if (props.loopWeekDishesDatas.loops && props.loopWeekDishesDatas.loops.length > 0){
+    loopObj = props.loopWeekDishesDatas.loops[0];
+  }
+  curWeek = loopObj.week;
 
   function headerComponent (){
     return (
@@ -21,8 +29,8 @@ function mainCycleDetail(props) {
             />
           </Col>
           <Col span="22">
-            <div className="dayTitle">{props.loopWeekDatas.date} {chineseWeekDay(props.loopWeekDatas.dayOfWeek)}</div>
-            <div style={{marginLeft: '85%' ,marginTop: '-55px'}}><p>今日用餐客户共计<font color="#ac672c">{props.loopWeekDatas.allTotal}</font>人</p></div>
+            <div className="dayTitle">{props.loopWeekDishesDatas.date} {chineseWeekDay(props.loopWeekDishesDatas.dayOfWeek)}</div>
+            <div style={{marginLeft: '85%' ,marginTop: '-55px'}}><p>今日用餐客户共计<font color="#ac672c">{props.loopWeekDishesDatas.allTotal}</font>人</p></div>
             <div style={{marginTop: '20px' ,marginBottom: '40px'}}>{ mainComponent() }</div>
           </Col>
           <Col span="1">
@@ -70,16 +78,11 @@ function mainCycleDetail(props) {
   function mainComponent () {
 
     let loopObj = {};
-    if (props.loopWeekDatas.loops && props.loopWeekDatas.loops.length > 0){
-      loopObj = props.loopWeekDatas.loops[0];
+    if (props.loopWeekDishesDatas.loops && props.loopWeekDishesDatas.loops.length > 0){
+      loopObj = props.loopWeekDishesDatas.loops[0];
     }
-    //标准菜品
-    const normalObj = loopObj.loopTotals ? loopObj.loopTotals[0] : {} ;
-    const normalCustomers = normalObj.customers ? normalObj.customers : [] ;
 
-    //禁忌菜品
-    const tabooObj = loopObj.loopTotals ? loopObj.loopTotals[1] : {} ;
-    const tabooCustomers = tabooObj.customers ? tabooObj.customers : {} ;
+    const dishes = loopObj.loopTotals ? loopObj.loopTotals :{};
 
     let title = '周期一';
     if (loopObj.week == 1) {
@@ -110,58 +113,33 @@ function mainCycleDetail(props) {
               marginTop: '-35px' }}
             />
           </Row>
-          <Row>
-            <div className="cardSubtitle" style={{color:'#a5a5a5'}}>标准用户{normalObj.total}人</div>
-          </Row>
-          { normalUserListComponnet(normalCustomers) }
-          <Row>
-            <div style={{background: '#e9e9e9', marginLeft: '20px', marginRight: '20px', marginTop: '20px', height: '1px'}}></div>
-          </Row>
-          <Row>
-            <div className="cardSubtitle" style={{color:'#a5a5a5', height:'30px',lineHeight: '30px',marginTop: '10px'}}>禁忌用户{tabooObj.total}人</div>
-          </Row>
-          { tabooUserListComponnet(tabooCustomers) }
+          {dishesListComponnet(dishes)}
         </Card>
       </div>
     )
   }
 
-  // 标准用户列表
-  function normalUserListComponnet(customers) {
-    const normalUserDivs = [];
-    for (let i = 0; i < customers.length; i++) {
-      const user = customers[i];
-      normalUserDivs.push(
-        <Col span="4" key={i}>
-          <div className="tabooUser-content">V{user['level']}  {user['name']} -- {user['room']}</div>
-        </Col>
-      );
-    }
+  //房间对应菜单
+  function dishesListComponnet(loopDishes) {
 
-    return (
-      <div style={{marginLeft: '20px', marginRight: '20px'}}>
-        <Row>
-          {normalUserDivs}
-        </Row>
-      </div>
-    )
-  }
+    const colDivs = [];
+    for (let i = 0; i < loopDishes.length; i++) {
+      const loopObj = loopDishes[i];
+      const dishes = loopObj?loopObj.dishes:[];
+      let dishesStr = '';
+      for (let k = 0; k < dishes.length; k++){
+        const dishObj = dishes[k];
+        if (k != 0){
+          dishesStr += '、';
+        }
+        dishesStr += dishObj['dishesName'];
+      }
 
-  //禁忌用户列表
-  function tabooUserListComponnet(customers) {
-    const tabooUserDivs = [];
-    for (let i = 0; i < customers.length; i++) {
-      const user = customers[i];
-      tabooUserDivs.push(
+      colDivs.push(
         <Row key={i} style={ i%2 ?{backgroundColor :'#ffffff'} :{backgroundColor: '#f6f6f6'}}>
-          <Col span="5">
-            <div style={{minHeight: '40px'}}>
-              <div className="tabooUser-detail-content">V{user['level']}  {user['name']} -- {user['room']}</div>
-            </div>
-          </Col>
           <Col>
             <div style={{minHeight: '40px'}}>
-              <div className="tabooUser-detail-content">禁忌: {user['taboo']}</div>
+              <div className="tabooUser-detail-content">{loopObj.room}      {dishesStr}</div>
             </div>
           </Col>
         </Row>
@@ -170,9 +148,7 @@ function mainCycleDetail(props) {
 
     return (
       <div style={{marginLeft: '20px', marginRight: '20px'}}>
-        <Row>
-          {tabooUserDivs}
-        </Row>
+        {colDivs}
       </div>
     )
   }
@@ -183,24 +159,20 @@ function mainCycleDetail(props) {
     var that = this;
     const {dispatch} = props;
     dispatch({
-      type: 'cyclePage/changedDetailTabActivity',
+      type: 'cyclePage/changedRoowDishesWeek',
       payload: { status: 1 }
     })
 
-    let loopObj = {};
-    if (props.loopWeekDatas.loops && props.loopWeekDatas.loops.length > 0){
-      loopObj = props.loopWeekDatas.loops[0];
-    }
-    var curWeek = loopObj.week;
-    curWeek = curWeek+1;
+
+    curWeek += 1;
     if (curWeek > 5){
       curWeek = 1;
     }
 
     //查询单个循环的数据
     dispatch({
-      type: 'cyclePage/getLoopListByWeek',
-      payload: { week: curWeek }
+      type: 'cyclePage/getLoopRoomDishesListByWeek',
+      payload: { week: curWeek , type: Number(props.type)}
     })
 
   }
@@ -211,24 +183,19 @@ function mainCycleDetail(props) {
     var that = this;
     const {dispatch} = props;
     dispatch({
-      type: 'cyclePage/changedDetailTabActivity',
+      type: 'cyclePage/changedRoowDishesWeek',
       payload: { status: -1 }
     })
 
-    let loopObj = {};
-    if (props.loopWeekDatas.loops && props.loopWeekDatas.loops.length > 0){
-      loopObj = props.loopWeekDatas.loops[0];
-    }
-    var curWeek = loopObj.week;
-    curWeek = curWeek-1;
+    curWeek -= 1;
     if (curWeek < 1){
       curWeek = 5;
     }
 
     //查询单个循环的数据
     dispatch({
-      type: 'cyclePage/getLoopListByWeek',
-      payload: { week: curWeek }
+      type: 'cyclePage/getLoopRoomDishesListByWeek',
+      payload: { week: curWeek , type: Number(props.type)}
     })
 
   }
@@ -260,4 +227,4 @@ function mapStateToProps(state) {
     curTabsIndex: state.cyclePage.curDetailTabsIndex
   };
 }
-export default connect(mapStateToProps)(mainCycleDetail)
+export default connect(mapStateToProps)(mainCycleDishesDetail)
