@@ -5,6 +5,8 @@ import $ from 'jquery'
 export default {
   namespace: 'prepareMeals',
   state: {
+    vdType: [],
+    mvType: [],
     defaultValueRadio: { week: 1, day: 1, colorType: "#fff" },
     heightFoodInfo: {},
     visible: false,
@@ -289,6 +291,13 @@ export default {
     
   },
   reducers: {
+    getVdtype(state, { payload: { data: vdType } }){
+      return { ...state, vdType }
+    },
+    getMytype(state, { payload: { data: mvType } }){
+      return { ...state, mvType }
+    },
+    
     changeVisible(state, { payload: { visible } }){
       return { ...state, visible }
     },
@@ -306,8 +315,8 @@ export default {
       if (data.length != 0) {
         let info = [];
         let nu;
-      
-        menuInfoLow.map((v,k)=>{
+        
+        menuInfoLow.map((v, k) => {
           menuInfoLow[k].info = [];
           menuInfoLow[k].day = data[0].day;
           menuInfoLow[k].week = data[0].week;
@@ -665,6 +674,28 @@ export default {
           }
         });
       }
+    },
+    //根据字典主表别名和删除标识获取字典
+    *getDictionary({ payload: values }, { call, put, select }){
+      const { data: { data, code, err } } = yield call(prepareMealsService.getDictionary, values);
+      if (code == 0) {
+        if (values.abName === 'MVTYPE') {
+          yield put({
+            type: 'getMytype',
+            payload: {
+              data
+            }
+          })
+        }
+        if (values.abName === 'VDTYPE') {
+          yield put({
+            type: 'getVdtype',
+            payload: {
+              data
+            }
+          })
+        }
+      }
     }
   },
   subscriptions: {
@@ -686,6 +717,20 @@ export default {
               'nodeId': 1,
               'page': 1,
               'size': 10
+            }
+          });
+          dispatch({
+            type: 'getDictionary',
+            payload: {
+              abName: "MVTYPE",
+              softDelete: 0
+            }
+          });
+          dispatch({
+            type: 'getDictionary',
+            payload: {
+              abName: "VDTYPE",
+              softDelete: 0
             }
           });
         }
