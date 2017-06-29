@@ -9,7 +9,8 @@ import {
   Select,
   Switch,
   message,
-  Modal
+  Modal,
+  Popover
 } from 'antd'
 
 const Option = Select.Option;
@@ -598,39 +599,41 @@ const monthStateView = (props) => {
 
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
+          const content = <div>{users[i].customerName + '('
+            + users[i].dayCount + '天, '
+            + timeToDate(users[i].startDate)
+            + '-'
+            + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
+            + ')'}</div>
           result.push(
-            <div className="userBox"
-                 style={{
-                   width: width,
-                   left: users[i].startIndex * UNIT_WIDTH,
-                 }}
-                 draggable="true"
-                 onDragStart={(event) => dragStart(event, users[i])}
-                 data-room-index={roomIndex}
-                 data-customer-id={users[i].customerId}
-                 data-customer-name={users[i].customerName}
-                 data-start-index={users[i].startIndex}
-                 data-end-index={users[i].startIndex + users[i].dayCount - 1}
-                 data-user-dayCount={users[i].dayCount}
-                 data-start-date={users[i].startDate}
-                 data-status={users[i].status}
-                 onClick={userBoxClickHandler}
-                 onDoubleClick={userBoxDbClickHandler}
-                 onContextMenu={userBoxRightClickHandler}
-            >
-              {
-                users[i].customerName + '('
-                + users[i].dayCount + '天, '
-                + timeToDate(users[i].startDate)
-                + '-'
-                + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
-                + ')'
-              }
-              <a href="javascript:void(0)"
-                 className="resizeBar"
-                 title={users[i].dayCount + '天'}
-                 onMouseDown={resizeBarMouseDownHandler}/>
-            </div>
+            <Popover content={content}>
+              <div className="userBox"
+                   style={{
+                     width: width,
+                     left: users[i].startIndex * UNIT_WIDTH,
+                   }}
+                   draggable="true"
+                   onDragStart={(event) => dragStart(event, users[i])}
+                   data-room-index={roomIndex}
+                   data-customer-id={users[i].customerId}
+                   data-customer-name={users[i].customerName}
+                   data-start-index={users[i].startIndex}
+                   data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                   data-user-dayCount={users[i].dayCount}
+                   data-start-date={users[i].startDate}
+                   data-status={users[i].status}
+                   onClick={userBoxClickHandler}
+                   onDoubleClick={userBoxDbClickHandler}
+                   onContextMenu={userBoxRightClickHandler}
+              >
+
+                <a href="javascript:void(0)"
+                   className="resizeBar"
+                   title={users[i].dayCount + '天'}
+                   onMouseDown={resizeBarMouseDownHandler}/>
+              </div>
+            </Popover>
+
           )
         }
 
