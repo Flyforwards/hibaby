@@ -657,9 +657,9 @@ export default {
         customerId: value.customerId,
         date: timeToDate(value.startDate),
       };
-      //
-      const {data: {code, data}} = yield call(roomManagement.confirmReside, param);
+      console.log(param)
 
+      const {data: {code, data}} = yield call(roomManagement.confirmReside, param);
       if (code == 0) {
         yield put({
           type: 'confirmCheckInReducer',
@@ -771,6 +771,12 @@ export default {
       if (code == 0) {
         // 更新原始集合的状态
         state.oldMonthRoomList = JSON.parse(JSON.stringify(state.monthRoomList));
+        if(param === value){
+          yield put({
+            type: 'monthRoomList',
+          })
+        }
+
       }
 
     },
