@@ -31,6 +31,25 @@ const statusExplain = [
   {name: "维修", color: "#63C3E6"},
 ];
 
+// 时间毫秒数转日期: YYYY-MM-DD
+const timeToDate = (time) => {
+  if (!time) {
+    return '';
+  }
+
+  try {
+    let date = new Date(parseInt(time));
+
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    return month + '月' + day + '日';
+  } catch (e) {
+    console.log("日期转换时发生错误", e);
+    return "";
+  }
+};
+
 
 const monthStateView = (props) => {
   const {dispatch} = props;
@@ -319,7 +338,7 @@ const monthStateView = (props) => {
             for (let i = 0; i < users.length; i++) {
               if (users[i].customerId === dayCustomerList[j].customerId
                 && users[i].lastIndex === dayindex - 1
-                && users[i].status === dayCustomerList[j].status) {
+                && users[i].status == dayCustomerList[j].status) {
                 hasUser = true;
                 users[i].dayCount++;
                 users[i].lastIndex = dayindex;
@@ -439,6 +458,8 @@ const monthStateView = (props) => {
                 customerId: parentNode.dataset.customerId,
                 startIndex: parentNode.dataset.startIndex,
                 endIndex: parentNode.dataset.endIndex,
+                startDate: parentNode.dataset.startDate,
+                status: parentNode.dataset.status,
               }
             });
             parentNode.removeChild(e.target);
@@ -464,18 +485,11 @@ const monthStateView = (props) => {
           let roomIndex = target.dataset.roomIndex;
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
-
-          let customerList = roomList[roomIndex].useAndBookingList[oldStartIndex].customerList;
-
+          let status = target.dataset.status;
 
           // 左端在入住状态下不可操作
-          for (let i = 0; i < customerList.length; i++) {
-            let customer = customerList[i];
-            if (customer.customerId == customerId) {
-              if (customer.status == 4) {
-                return;
-              }
-            }
+          if (status == 4) {
+            return;
           }
 
 
@@ -542,6 +556,7 @@ const monthStateView = (props) => {
                 customerId,
                 customerName,
                 reserveDays,
+                status,
               }
             });
 
@@ -592,7 +607,14 @@ const monthStateView = (props) => {
                  onDoubleClick={userBoxDbClickHandler}
                  onContextMenu={userBoxRightClickHandler}
             >
-              {users[i].customerName}
+              {
+                users[i].customerName + '('
+                + users[i].dayCount + '天, '
+                + timeToDate(users[i].startDate)
+                + '-'
+                + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
+                + ')'
+              }
               <a href="javascript:void(0)"
                  className="resizeBar"
                  title={users[i].dayCount + '天'}

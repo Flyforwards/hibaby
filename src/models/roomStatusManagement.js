@@ -284,7 +284,7 @@ export default {
       }
     },
 
-    deleteUser(state, {payload: data}){
+    deleteUserReducer(state, {payload: data}) {
       let monthRoomList = state.monthRoomList.concat();
 
       if (monthRoomList[data.roomIndex]) {
@@ -297,8 +297,7 @@ export default {
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == data.customerId
               && customerList[k].status == data.status) {
-              delete customerList[k].status;
-              customerList.splice(k, 1);
+              customerList.splice(k--, 1);
               break;
             }
           }
@@ -319,6 +318,7 @@ export default {
       let endIndex = parseInt(data.endIndex);
       let customerId = data.customerId;
       let customerName = data.customerName;
+      let status = data.status;
       let type = data.type;
 
       if (type === "add") {
@@ -343,6 +343,7 @@ export default {
             customerList.push({
               customerId,
               customerName,
+              status,
             })
           }
         }
@@ -351,8 +352,7 @@ export default {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == customerId) {
-              delete customerList[k].status;
-              customerList.splice(k, 1);
+              customerList.splice(k--, 1);
               break;
             }
           }
@@ -540,7 +540,7 @@ export default {
 
       for (let dateSelect of dateSelectList) {
         if (!dateSelect) {
-          return;
+          continue;
         }
 
         if (!years[dateSelect.year]) {
@@ -612,7 +612,7 @@ export default {
       if (state.dragUser.roomIndex !== -1) {
         // 不是新拖入的, 删除之前的
         yield put({
-          type: 'deleteUser',
+          type: 'deleteUserReducer',
           payload: {
             ...value,
             startIndex: state.dragUser.startIndex,
@@ -623,7 +623,6 @@ export default {
           }
         });
       }
-
 
       let payload = {
         ...value,
@@ -766,6 +765,30 @@ export default {
       }
 
     },
+
+    *deleteUser({payload: value}, {call, put}){
+
+      let param = {
+        customerId: value.customerId,
+        date: timeToDate(value.startDate),
+      };
+
+      // 调用接口
+      const {data: {code, data}} = yield call(roomManagement.cancelBooking, param);
+
+      // 调用接口失败
+      if (code != 0) {
+        return;
+      }
+
+      // 删除视图中的用户
+      yield put({
+        type: 'deleteUserReducer',
+        payload: {
+          ...value,
+        }
+      });
+    }
   },
 
 

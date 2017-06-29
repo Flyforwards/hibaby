@@ -4,62 +4,154 @@ import styles from './Cycle.scss';
 import CycleDetail from './cycleDetail.jsx';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
 
-const  tabooUsers = [
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'},
-  {VIP: 'V2',userName: '赵丽颖',roomNum: '1001'}
-];
-
-
 // 主页面
 function mealCycle (props) {
   function headerComponent (){
     return (
       <div>
-        <div style={{marginLeft: '85%' ,marginTop: '20px'}}><p style={{marginTop: '10px'}}>今日用餐客户共计<font color="#ac672c">{props.allTotal}</font>人</p></div>
-        <div style={{marginTop: '-40px'}}>{headerDateTabs()}</div>
+        <Row type="flex" justify="space-around" align="middle">
+          <Col span="1">
+            <Button
+              icon="double-left"
+              style={{height: '40px'}}
+              onClick={prevDateComponent}
+            />
+          </Col>
+          <Col span="22">
+            <div className="dayTitle">{props.loopDatas.date} {chineseWeekDay(props.loopDatas.dayOfWeek)}</div>
+            <div style={{marginLeft: '85%' ,marginTop: '-55px'}}><p>今日用餐客户共计<font color="#ac672c">{props.loopDatas.allTotal}</font>人</p></div>
+            <div style={{marginTop: '20px' ,marginBottom: '40px'}}>{ showCurrentComponent(props.curTabsIndex) }</div>
+          </Col>
+          <Col span="1">
+            <Button
+              icon="double-right"
+              style={{height: '40px', marginLeft: '20px'}}
+              onClick={nextDateComponent}
+            />
+          </Col>
+        </Row>
       </div>
     )
   }
 
-  // 头部日期切换
-  const TabPane = Tabs.TabPane;
-  function headerDateTabs () {
+  //英文周几对应的汉字周几
+  function chineseWeekDay(dayOfWeek){
+    var chinessWeek = '';
+    if (dayOfWeek == 'Sunday'){
+      chinessWeek = '周日';
+    }
+    else if (dayOfWeek == 'Monday'){
+      chinessWeek = '周一';
+    }
+    else if (dayOfWeek == 'Tuesday'){
+      chinessWeek = '周二';
+    }
+    else if (dayOfWeek == 'Wednesday'){
+      chinessWeek = '周三';
+    }
+    else if (dayOfWeek == 'Thursday'){
+      chinessWeek = '周四';
+    }
+    else if (dayOfWeek == 'Friday'){
+      chinessWeek = '周五';
+    }
+    else if (dayOfWeek == 'Saturday'){
+      chinessWeek = '周六';
+    }
+
+    return(
+      chinessWeek
+    )
+  }
+
+  function showCurrentComponent(index) {
+    const components = [];
+    components.push (
+      <div>
+        { mainComponent() }
+      </div>
+    );
+    components.push (
+      <div>
+        { secondComponet() }
+      </div>
+    );
+    components.push (
+      <div>
+        { thirdComponet() }
+      </div>
+    );
+
     return (
-      <div className="cycle-tabs">
-        <Tabs defaultActiveKey='1'
-              activeKey={props.curTabsIndex}
-              onPrevClick={() => { prevDateComponent() }}
-              onNextClick={() => { nextDateComponent() }}
-        >
-          <TabPane tab="2017-06-11 周日" key="1"> { mainComponent() } </TabPane>
-          <TabPane tab="2017-06-12 周一" key="2"> { mainComponent() } </TabPane>
-          <TabPane tab="2017-06-13 周二" key="3"> { mainComponent() } </TabPane>
-          <TabPane tab="2017-06-14 周三" key="4"> { mainComponent() } </TabPane>
-          <TabPane tab="2017-06-15 周四" key="5"> { mainComponent() } </TabPane>
-          <TabPane tab="2017-06-16 周五" key="6"> { mainComponent() } </TabPane>
-        </Tabs>
+      components[index]
+    )
+  }
+
+  /**
+   * 第一页的界面: 禁忌用户列表
+   * @returns {XML}
+   */
+  function mainComponent() {
+    return (
+      <div>
+        <Row>
+          <Col span="12">
+            { itemCardComponent(0) }
+          </Col>
+          <Col span="12">
+            { itemCardComponent(1) }
+          </Col>
+          <Col span="12">
+            { itemCardComponent(2) }
+          </Col>
+          <Col span="12">
+            { itemCardComponent(3) }
+          </Col>
+          <Col span="12">
+            { itemCardComponent(4) }
+          </Col>
+        </Row>
       </div>
     )
   }
 
-  function itemCardComponent() {
+  function itemCardComponent(index) {
+
+    let loopObj = {};
+    if (props.loopDatas.loops && props.loopDatas.loops.length > index){
+      loopObj = props.loopDatas.loops[index];
+    }
+    //标准用户
+    const normalUser = loopObj.loopTotals ? loopObj.loopTotals[0] : {} ;
+
+    //禁忌用户
+    const tabooUser = loopObj.loopTotals ? loopObj.loopTotals[1] : {} ;
+
+    //禁忌用户列表
+    const customers = loopObj.loopTotals ? tabooUser.customers : [] ;
+
+    let title = '周期一';
+    if (loopObj.week == 1) {
+      title = '周期一';
+    }
+    else if (loopObj.week == 2){
+      title = '周期二';
+    }
+    else if (loopObj.week == 3){
+      title = '周期三';
+    }
+    else if (loopObj.week == 4){
+      title = '周期四';
+    }
+    else if (loopObj.week == 5){
+      title = '周期五';
+    }
 
     return (
       <div>
-        <Card title="周期一" bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleChangedState() }}>
+        <Card title={title} bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleChangedState(loopObj.week) }}>
           <Row style={{display: 'flex',justifyContent: 'flex-end'}}>
-            <Badge count={1} style={{
+            <Badge count={loopObj.day} style={{
               backgroundColor: '#fff',
               color: '#999',
               boxShadow: '0 0 0 1px #d9d9d9 inset',
@@ -68,48 +160,66 @@ function mealCycle (props) {
             />
           </Row>
           <Row>
-            <div className="cardSubtitle">标准用户14人</div>
+            <div className="cardSubtitle">{`标准用户${normalUser.total}人`}</div>
             <div style={{background: '#e9e9e9', marginLeft: '20px', marginRight: '20px',height: '1px'}}></div>
           </Row>
           <Row>
-            <div className="cardSubtitle" style={{color:'#a5a5a5', height:'30px',lineHeight: '30px',marginTop: '10px'}}>禁忌用户:</div>
-          </Row>
-          <Row>
-            <div style={{marginLeft: '20px', marginRight: '20px'}}>
-              { tabooUserListComponnet() }
-            </div>
+            { tabooUserDiv(customers) }
           </Row>
         </Card>
       </div>
     )
   }
 
+  function tabooUserDiv(customers) {
+
+    if (customers.length > 0) {
+      return (
+        <div>
+          <Row>
+            <div className="cardSubtitle" style={{color:'#a5a5a5', height:'30px',lineHeight: '30px',marginTop: '10px'}}>禁忌用户:</div>
+          </Row>
+          <Row>
+            <div style={{marginLeft: '20px', marginRight: '20px'}}>
+              { tabooUserListComponnet(customers) }
+            </div>
+          </Row>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div></div>
+      )
+    }
+  }
+
   // 禁忌用户列表
-  function tabooUserListComponnet() {
+  function tabooUserListComponnet(customers) {
     const firstColDivs = [];
     const secondColDivs = [];
     const thirdColDivs = [];
-    for (let i = 0; i < tabooUsers.length; i++) {
-      const user = tabooUsers[i];
+    for (let i = 0; i < customers.length; i++) {
+      const customer = customers[i];
       let num = i%18;
       if (num < 6){
         firstColDivs.push(
           <Col key={i}>
-            <div className="tabooUser-content">{user['VIP']}  {user['userName']} -- {user['roomNum']}</div>
+            <div className="tabooUser-content">V{customer['level']}   {customer['name']}  --  {customer['room']}</div>
           </Col>
         );
       }
       else if (num < 12){
         secondColDivs.push(
           <Col key={i}>
-            <div className="tabooUser-content">{user['VIP']}  {user['userName']} -- {user['roomNum']}</div>
+            <div className="tabooUser-content">{customer['level']}   {customer['name']}  --  {customer['room']}</div>
           </Col>
         );
       }
       else {
         thirdColDivs.push(
           <Col key={i}>
-            <div className="tabooUser-content">{user['VIP']}  {user['userName']} -- {user['roomNum']}</div>
+            <div className="tabooUser-content">{customer['level']}   {customer['name']}  --  {customer['room']}</div>
           </Col>
         );
       }
@@ -132,35 +242,264 @@ function mealCycle (props) {
     )
   }
 
-  // 卡片
-  function mainComponent() {
+  /**
+   * 第二页的界面: 禁忌的菜品
+   * @returns {XML}
+     */
+  function secondComponet() {
     return (
-      <div style={{ padding: '30px' }}>
+      <div>
         <Row>
           <Col span="12">
-            { itemCardComponent() }
+            { secondItemCard(0) }
           </Col>
           <Col span="12">
-            { itemCardComponent() }
+            { secondItemCard(1) }
           </Col>
           <Col span="12">
-            { itemCardComponent() }
+            { secondItemCard(2) }
           </Col>
           <Col span="12">
-            { itemCardComponent() }
+            { secondItemCard(3) }
           </Col>
           <Col span="12">
-            { itemCardComponent() }
+            { secondItemCard(4) }
           </Col>
         </Row>
       </div>
     )
   }
 
-  function handleChangedState(){
+  function secondItemCard(index) {
+
+    let loopObj = {};
+    if (props.loopSecondDatas.loops && props.loopSecondDatas.loops.length > index){
+      loopObj = props.loopSecondDatas.loops[index];
+    }
+    //标准菜品
+    const normalObj = loopObj.loopTotals ? loopObj.loopTotals[0] : {} ;
+    const normalDishes = normalObj.dishes ? normalObj.dishes : [] ;
+
+    //禁忌菜品
+    const tabooObj = loopObj.loopTotals ? loopObj.loopTotals[1] : {} ;
+    const tabooDishes = tabooObj.dishes ? tabooObj.dishes : {} ;
+
+    let title = '周期一';
+    if (loopObj.week == 1) {
+      title = '周期一';
+    }
+    else if (loopObj.week == 2){
+      title = '周期二';
+    }
+    else if (loopObj.week == 3){
+      title = '周期三';
+    }
+    else if (loopObj.week == 4){
+      title = '周期四';
+    }
+    else if (loopObj.week == 5){
+      title = '周期五';
+    }
+
+    return (
+      <div>
+        <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#ffb3b3'}}>
+          <div style={{display: 'flex',justifyContent: 'flex-end'}}>
+            <Badge count={loopObj.day} style={{
+              backgroundColor: '#fff',
+              color: '#999',
+              boxShadow: '0 0 0 1px #d9d9d9 inset',
+              marginRight: '20px',
+              marginTop: '-35px' }}
+            />
+          </div>
+          <div style={{scroll: 'auto'}}>
+            { normalDishes.length==0 ?
+              <div></div>
+              :
+              <div>
+                <Row style={{backgroundColor: '#b3ffb3'}}>
+                  <div style={{marginBottom: '10px'}}>
+                    {normalDishesDivs(normalDishes)}
+                  </div>
+                </Row>
+                <div style={{background: '#e9e9e9',
+                               height: '1px'}}>
+                </div>
+              </div>
+            }
+
+            <div>
+              <Row>
+                {tabooDishesDivs(tabooDishes)}
+              </Row>
+            </div>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
+  //标准菜品和数量
+  function normalDishesDivs(dishes) {
+
+    const colDivs = [];
+    for (let i = 0; i < dishes.length; i++) {
+      const dish = dishes[i];
+      colDivs.push(
+        <Col span="5" key={i}>
+          <div className="tabooUser-content">{dish['dishesName']}*{dish['total']}</div>
+        </Col>
+      );
+    }
+
+    return (
+      <div style={{marginLeft: '20px', marginTop: '10px'}}>
+        {colDivs}
+      </div>
+    )
+  }
+
+  //禁忌的菜品
+  function tabooDishesDivs(dishes) {
+
+    const colDivs = [];
+    for (let i = 0; i < dishes.length; i++) {
+      const dish = dishes[i];
+      var mark = '';
+      if (dish['sugar'] == 1){
+        mark = '糖';
+      }
+      colDivs.push(
+          <Col span="5" key={i}>
+            <div className="tabooUser-content"><p>{dish['dishesName']}*{dish['total']}<font color="#ac672c" size="3">   {mark}</font></p></div>
+          </Col>
+      );
+    }
+
+    return (
+      <div style={{marginLeft: '20px', marginTop: '10px'}}>
+        {colDivs}
+      </div>
+    )
+  }
+
+  /**
+   * 第三页的界面: 每个房间的菜单
+   * @returns {XML}
+   */
+  function thirdComponet() {
+    return (
+      <div>
+        <Row>
+          <Col span="12">
+            { thirdItemCard(0) }
+          </Col>
+          <Col span="12">
+            { thirdItemCard(1) }
+          </Col>
+          <Col span="12">
+            { thirdItemCard(2) }
+          </Col>
+          <Col span="12">
+            { thirdItemCard(3) }
+          </Col>
+          <Col span="12">
+            { thirdItemCard(4) }
+          </Col>
+        </Row>
+      </div>
+    )
+  }
+
+  function thirdItemCard(index) {
+
+    let loopObj = {};
+    if (props.loopThirdDatas.loops && props.loopThirdDatas.loops.length > index){
+      loopObj = props.loopThirdDatas.loops[index];
+    }
+
+    const loopDishes = loopObj.loopTotals ? loopObj.loopTotals : [] ;
+
+    let title = '周期一';
+    if (loopObj.week == 1) {
+      title = '周期一';
+    }
+    else if (loopObj.week == 2){
+      title = '周期二';
+    }
+    else if (loopObj.week == 3){
+      title = '周期三';
+    }
+    else if (loopObj.week == 4){
+      title = '周期四';
+    }
+    else if (loopObj.week == 5){
+      title = '周期五';
+    }
+
+    return (
+      <div>
+        <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#e6e6e6'}}>
+          <div style={{display: 'flex',justifyContent: 'flex-end'}}>
+            <Badge count={loopObj.day} style={{
+              backgroundColor: '#fff',
+              color: '#999',
+              boxShadow: '0 0 0 1px #d9d9d9 inset',
+              marginRight: '20px',
+              marginTop: '-35px' }}
+            />
+          </div>
+          {foodMenuDivs(loopDishes)}
+        </Card>
+      </div>
+    )
+  }
+
+  function foodMenuDivs(loopDishes) {
+
+    const colDivs = [];
+    for (let i = 0; i < loopDishes.length; i++) {
+      const loopObj = loopDishes[i];
+      const dishes = loopObj?loopObj.dishes:[];
+      let dishesStr = '';
+      for (let k = 0; k < dishes.length; k++){
+        const dishObj = dishes[k];
+        if (k != 0){
+          dishesStr += '、';
+        }
+        dishesStr += dishObj['dishesName'];
+      }
+
+      colDivs.push(
+        <Row key={i}>
+          <div style={{minHeight: '40px'}}>
+            <div className="tabooUser-detail-content">{loopObj.room}      {dishesStr}</div>
+          </div>
+          <div style={{background: '#e9e9e9',
+                       height: '1px'}}>
+          </div>
+        </Row>
+      );
+    }
+
+    return (
+      <div style={{marginLeft: '20px', marginRight: '20px'}}>
+        { colDivs }
+      </div>
+    )
+  }
+
+  function handleChangedState(week){
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedShowStatus',
+    })
+
+    //查询单个循环的数据
+    dispatch({
+      type: 'cyclePage/getLoopListByWeek',
+      payload: { week: week }
     })
   }
 
@@ -168,6 +507,13 @@ function mealCycle (props) {
 
     var that = this;
     const {dispatch} = props;
+
+    let index = props.curTabsIndex+1;
+    if (index > 2){
+      index = 0;
+    }
+    getComponentData(index);
+
     setTimeout(function(){
       dispatch({
         type: 'cyclePage/changedTabActivity',
@@ -181,6 +527,13 @@ function mealCycle (props) {
 
     var that = this;
     const {dispatch} = props;
+
+    let index = props.curTabsIndex-1;
+    if (index < 0){
+      index = 2;
+    }
+    getComponentData(index);
+
     setTimeout(function(){
       dispatch({
         type: 'cyclePage/changedTabActivity',
@@ -189,9 +542,33 @@ function mealCycle (props) {
     }.bind(that), 450);
   }
 
+  //请求对应页面的数据
+  function getComponentData(index) {
+
+    const {dispatch} = props;
+    if (index == 0){
+      dispatch({
+        type: 'cyclePage/getLoopList',
+        payload:{ type: 0 }
+      })
+    }
+    else if (index == 1){
+      dispatch({
+        type: 'cyclePage/getLoopDishesList',
+        payload:{ type: 0 }
+      })
+    }
+    else {
+      dispatch({
+        type: 'cyclePage/getLoopRoomDishesList',
+        payload:{ type: 0 }
+      })
+    }
+  }
+
   return (
     <div className="MealCycle">
-      { props.isShowDetail ?  <CycleDetail/> :headerComponent()}
+      { props.isShowDetail ?  <CycleDetail loopWeekDatas={props.loopWeekDatas}/> :headerComponent()}
     </div>
 
   )
@@ -204,10 +581,10 @@ function mapStateToProps(state) {
     loading: state.loading,
     isShowDetail: state.cyclePage.isShowDetail,
     curTabsIndex: state.cyclePage.curTabsIndex,
-    allTotal: state.cyclePage.allTotal,
-    date: state.cyclePage.date,
-    dayOfWeek: state.cyclePage.dayOfWeek,
-    loops: state.cyclePage.loops
+    loopDatas: state.cyclePage.loopDatas,
+    loopSecondDatas: state.cyclePage.loopSecondDatas,
+    loopThirdDatas: state.cyclePage.loopThirdDatas,
+    loopWeekDatas: state.cyclePage.loopWeekDatas
   };
 }
 export default connect(mapStateToProps)(mealCycle)

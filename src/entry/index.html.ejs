@@ -19,7 +19,6 @@
         document.write("<script src='"+CCIC2_TOOLBAR_URL+"/jws/sourceCode/ccic2Toolbar.js?version="+version1+"' charset='UTF-8'><\/script>");
     </script>
     <style>
-
     .telephone-system-content{
        border:1px solid #000; background-color:#FFF;
        background-color: white;
@@ -33,24 +32,7 @@
        margin-top:-400px;
        display: none;
     }
-
-    .system-close {
-
-    }
-
-    .system-button {
-      height: 40px;
-      width: 60px;
-    }
-
-    .system-button2{
-      border:none;width:57px;height:33px;display:none;
-    }
-    .system-button3{
-      border:none;width:80px;height:33px;display:none;
-    }
     </style>
-
 
 </head>
 <body>
@@ -74,10 +56,7 @@
             <input type="text"   id="phoneCallText" value="" maxlength="12" style="display:none;width:100px;height:28px;line-height:28px;font-family:verdana;border:solid 1px #ddd;vertical-align:top;margin-top:2px;"/>
             <input type="button" id="phoneCallout"  class="system-button3" value="呼叫"/>
             <input type="button" id="phoneCallCancel" class="system-button3" value="呼叫取消"/>
-            <select id="consultInput" style="display:none;">
-              <option value="0">普通电话</option>
-              <option value="1">座席号</option>
-            </select>
+
           </td>
         </tr>
       </table>
@@ -91,10 +70,7 @@
 <% } %>
 
 <script>
-    var customerNumber = ''
-    var agentNumber = "";
     var orderCallbackCount = 0;
-
     function callout(tel){
     	var params = {};
 
@@ -116,7 +92,6 @@
     		params.sipPwd = document.getElementById('sipPwd').value;
     	}
     	window.executeAction('doLogin',  params);//执行登陆 ccic2里面的js类
-    	agentNumber = params.cno;
 
     }
     function logout(){//登出
@@ -249,119 +224,6 @@
             }
         }
 
-        switch(token.eventName){
-            case 'outRinging' : //外呼座席响铃
-                if(token.name == "ringing"){"ringing"
-                    //$("#phoneCallout").hide();
-                    typeButton.phoneCallCancel();
-                    //第三方代码
-                    top.CTI_ID = token.uniqueId;//获取录音编号
-                }
-                break;
-            case 'comeRinging' : //呼入座席响铃
-                if(token.name == "ringing"){
-                    typeButton.buttonDisabled();
-                    typeButton.answer(token);
-                    typeButton.refused();
-                }
-                break;
-            case 'normalBusy' : //呼入座席接听
-                typeButton.buttonDisabled();
-                typeButton.unLink();
-                typeButton.hold();
-                typeButton.consult();
-                //typeButton.consultThreeway();
-                //typeButton.consultTransfer();
-                typeButton.transfer();
-                $("#phoneCallText").show().attr("disabled", false);
-                break;
-            case 'outBusy' : //外呼客户接听 客户和座席通话
-                typeButton.buttonDisabled();
-                typeButton.unLink();
-                typeButton.hold();
-                typeButton.consult();
-                //typeButton.consultThreeway();
-                //typeButton.consultTransfer();
-                typeButton.transfer();
-                $("#phoneCallText").show().attr("disabled", false);
-                break;
-            case 'online' : //置闲
-                typeButton.buttonDisabled();
-                typeButton.phoneCallout();
-                typeButton.phoneCallText();
-                typeButton.pause();
-                //$("#phoneCallCancel").hide();
-                break;
-            case 'pause' : //置忙
-                typeButton.buttonDisabled();
-                typeButton.phoneCallout();
-                typeButton.phoneCallText();
-                typeButton.online();
-                //$("#phoneCallCancel").hide();
-                break;
-            case 'waitLink' : //外呼座席接听等待客户接听
-
-                break;
-            case 'neatenStart' : //整理开始（座席挂断）
-                typeButton.buttonDisabled();
-                typeButton.online();
-                typeButton.pause();
-                break;
-            case 'neatenEnd' : //整理结束
-                typeButton.buttonDisabled();
-                typeButton.phoneCallout();
-                typeButton.phoneCallText();
-                var s = deviceStatus.deviceStatusLoginStatus(token.deviceStatus+token.loginStatus, token.pauseDescription, token.busyDescription);
-                if(s == '空闲'){
-                    typeButton.pause();
-                }else{
-                    typeButton.online();
-                }
-                break;
-            case 'hold' : //保持开始
-                typeButton.buttonDisabled();
-                //$("#hold").hide();
-                typeButton.unLink();
-                typeButton.unHold();
-                break;
-            case 'unHold' : //保持结束
-                typeButton.buttonDisabled();
-                //$("#unHold").hide();
-                typeButton.unLink();
-                typeButton.hold();
-
-                typeButton.consult();
-                //typeButton.consultThreeway();
-                //typeButton.consultTransfer();
-                //typeButton.transfer();
-
-                break;
-            case 'onlineUnlink' : //挂断后置闲
-                typeButton.buttonDisabled();
-                typeButton.phoneCallout();
-                typeButton.phoneCallText();
-                typeButton.pause();
-                break;
-            case 'pauseUnlink' : //挂断后置忙
-                typeButton.buttonDisabled();
-                typeButton.phoneCallout();
-                typeButton.phoneCallText();
-                typeButton.online();
-                break;
-            case 'consultLink' : //咨询成功
-                $("#consult").hide();
-                typeButton.consultBack();
-                typeButton.consultThreeway();
-                typeButton.consultTransfer();
-                typeButton.transfer();
-                break;
-            case 'consulterOrTransferBusy' : //被咨询转接或转移的通话
-                typeButton.buttonDisabled();
-                typeButton.unLink();
-                typeButton.hold();
-                break;
-        }
-
     }
 
     function consult(){ // 咨询
@@ -411,14 +273,8 @@
     var typeButton = {
         phoneCallout : function(){//外呼
             $("#phoneCallout").show().attr("disabled", false);
-            $("#phoneCallout").unbind("mouseover mouseout click");
+            $("#phoneCallout").unbind("click");
             $("#phoneCallout").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     var params = {};
                     params.tel = $('#phoneCallText').val();
@@ -430,18 +286,12 @@
         phoneCallText : function(){
             $("#phoneCallText").attr("disabled", false);
             $("#phoneCallText").show();
-            $("#consultInput").show();
+
         },
         phoneCallCancel : function(){//外呼取消
             $("#phoneCallCancel").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#phoneCallCancel").unbind("mouseover mouseout click");
+            $("#phoneCallCancel").unbind("click");
             $("#phoneCallCancel").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doPreviewOutcallCancel');
                 }
@@ -449,14 +299,8 @@
         },
         refused : function(){//拒接
             $("#refused").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#refused").unbind("mouseover mouseout click");
+            $("#refused").unbind("click");
             $("#refused").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doRefuse');
                 }
@@ -465,14 +309,8 @@
         unLink : function(){//挂断
 
             $("#unLink").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#unLink").unbind("mouseover mouseout click");
+            $("#unLink").unbind("click");
             $("#unLink").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doUnLink');
                 }
@@ -480,14 +318,8 @@
         },
         hold : function(){//保持
             $("#hold").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#hold").unbind("mouseover mouseout click");
+            $("#hold").unbind(" click");
             $("#hold").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doHold');
                 }
@@ -496,14 +328,8 @@
         unHold : function(){//保持接回
 
             $("#unHold").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#unHold").unbind("mouseover mouseout click");
+            $("#unHold").unbind(" click");
             $("#unHold").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doUnhold');
                 }
@@ -512,14 +338,8 @@
         online : function(){//空闲
 
             $("#online").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#online").unbind("mouseover mouseout click");
+            $("#online").unbind(" click");
             $("#online").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doUnpause');
                 }
@@ -528,14 +348,8 @@
         pause : function(){//置忙
 
             $("#pause").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#pause").unbind("mouseover mouseout click");
+            $("#pause").unbind(" click");
             $("#pause").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     var param={};
                     param.description="置忙";
@@ -548,19 +362,12 @@
             $("#toolbarButton input").hide();
             $("#toolbarButton input").css({"backgroundPosition":"0px 0px"});
             $("#toolbarButton input").attr("disabled", true);
-            $("#toolbarButton input").unbind("mouseover mouseout click");
-
+            $("#toolbarButton input").unbind("click");
         },
         consult : function(){//咨询
             $("#consult").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consult").unbind("mouseover mouseout click");
+            $("#consult").unbind("    click");
             $("#consult").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     var type = $("#consultInput").val();
                     var number = $("#phoneCallText").val();
@@ -573,14 +380,8 @@
         },
         consultBack : function(){//咨询接回
             $("#consultBack").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consultBack").unbind("mouseover mouseout click");
+            $("#consultBack").unbind("    click");
             $("#consultBack").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doUnconsult');
                 }
@@ -588,14 +389,8 @@
         },
         consultTransfer : function(){//咨询转接
             $("#consultTransfer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consultTransfer").unbind("mouseover mouseout click");
+            $("#consultTransfer").unbind("    click");
             $("#consultTransfer").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doConsultTransfer');
                 }
@@ -603,14 +398,8 @@
         },
         consultThreeway : function(){//咨询三方
             $("#consultThreeway").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consultThreeway").unbind("mouseover mouseout click");
+            $("#consultThreeway").unbind("    click");
             $("#consultThreeway").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                      $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     executeAction('doConsultThreeway');
 
@@ -619,14 +408,8 @@
         },
         transfer : function(){//转移
             $("#transfer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#transfer").unbind("mouseover mouseout click");
+            $("#transfer").unbind("    click");
             $("#transfer").bind({
-                mouseover : function(){
-                    $(this).css({"backgroundPosition":"0px -66px"});
-                },
-                mouseout : function(){
-                    $(this).css({"backgroundPosition":"0px -33px"});
-                },
                 click : function(){
                     var type = $("#consultInput").val();
                     var number = $("#phoneCallText").val();
@@ -640,14 +423,8 @@
         answer : function(){//接听 软电话功能
             if(userBasic.getBindType() == '3'){
                 $("#answer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-                $("#answer").unbind("mouseover mouseout click");
+                $("#answer").unbind("    click");
                 $("#answer").bind({
-                    mouseover : function(){
-                        $(this).css({"backgroundPosition":"0px -66px"});
-                    },
-                    mouseout : function(){
-                        $(this).css({"backgroundPosition":"0px -33px"});
-                    },
                     click : function(){
                         executeAction('doLink');
                     }

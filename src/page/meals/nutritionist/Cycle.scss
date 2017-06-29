@@ -9,6 +9,15 @@
     display: none;
   }
 
+  .dayTitle {
+    margin-top: 30px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    font:16px "微软雅黑";
+    font-weight: 400;
+  }
+
   .cardSubtitle {
     height: 50px;
     line-height: 50px;
@@ -22,8 +31,8 @@
   }
 
   .tabooUser-detail-content {
-    height: 40px;
-    line-height: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 12px;
   }
 
@@ -52,7 +61,7 @@
     border-radius: 4px;
     font-size: 12px;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
     height: 330px;
     transition: all .3s;
   }
