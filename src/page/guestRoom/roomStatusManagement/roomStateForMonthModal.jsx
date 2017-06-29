@@ -16,7 +16,8 @@ import {
   Modal,
   Table,
   message,
-  InputNumber
+  InputNumber,
+  Spin
 } from 'antd'
 import {routerRedux} from 'dva/router';
 import './roomStatusManagementIndex.scss'
@@ -372,8 +373,13 @@ class addCustomer extends React.Component {
         visible={CustomerVisible}
         title="预约"
         maskClosable
-        onOk={this.handleOk.bind(this) }
+        closable={false}
         onCancel={this.handleCancel.bind(this)}
+        footer={[
+          <Button className='backBtn' onClick={this.handleCancel.bind(this)}>取消</Button>,
+          <Button className='saveBtn' onClick={this.handleOk.bind(this)}>确定</Button>,
+        ]}
+
       >
         <CusSearchFormDiv dispatch={this.props.dispatch}/>
         <CustomerTable
@@ -455,7 +461,7 @@ function SearchForm(props){
               :
               ( dict.componentStyle  === 'date'?
                   <DatePicker style={{width: '100%'}}/>:
-                  <InputNumber min={1} max={365} placeholder="请填写" className='antCli'/>
+                  <InputNumber style={{height:'32px'}} min={1} max={365} placeholder="请填写" className='antCli'/>
               )
           )}
         </FormItem>
@@ -565,19 +571,28 @@ class RowHouses extends React.Component{
 
   render(){
     const {packageAry,resultsRowHouses, RowHousesVisible} = this.props.users;
-
+    const {loading} = this.props;
     return(
+
       <Modal
         className="RowHouses"
         width="1000px"
         visible={RowHousesVisible}
         title="一键排房"
         maskClosable
-        onOk={this.handleOk.bind(this)}
+        closable={false}
         onCancel={this.handleCancel.bind(this)}
+
+        footer={[
+          <Button className='backBtn' onClick={this.handleCancel.bind(this)}>取消</Button>,
+          <Button className='saveBtn' onClick={this.handleOk.bind(this)}>确定</Button>,
+        ]}
       >
         <SearchFormDiv packageAry={packageAry} dispatch={this.props.dispatch}/>
-        <SearResults selectFun={this.selectFun.bind(this)} currSelect={this.state.currSelect} resultsRowHouses={resultsRowHouses}/>
+        <Spin
+          spinning={loading.effects['roomStatusManagement/arrangeRoom'] !== undefined ? loading.effects['roomStatusManagement/arrangeRoom'] : false}>
+          <SearResults selectFun={this.selectFun.bind(this)} currSelect={this.state.currSelect} resultsRowHouses={resultsRowHouses}/>
+        </Spin>
       </Modal>
     )
   }
@@ -609,13 +624,14 @@ function RowHousesWay(props) {
       visible={RowHousesWayVisible}
       closable={false}
       maskClosable
+      onCancel={handleCancel}
       footer={[
         <Button className='backBtn' key="back" onClick={handleCancel}>取消</Button>,
       ]}
     >
       <h3>请选择此客户的排房方式</h3>
-      <Button type="primary" onClick={()=>handleCancel()}>手动排房</Button>
-      <Button type="primary" onClick={()=>autoRowHouses()}>自动排房</Button>
+      <Button type="primary" className='btn' onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" className='btn' onClick={()=>autoRowHouses()}>自动排房</Button>
     </Modal>
   )
 }

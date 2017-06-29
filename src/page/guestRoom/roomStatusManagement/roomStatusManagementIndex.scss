@@ -435,7 +435,7 @@
       }
     }
 
-    .bottomBar {
+      .bottomBar {
       height: 80px;
       line-height: 80px;
       text-align: right;
@@ -480,10 +480,24 @@
   .ant-modal-header {
     text-align: center;
   }
+  .ant-modal-footer{
+    padding: 10px;
+  }
   .noResults {
     width: 100%;
     line-height: 40px;
     text-align: center;
+  }
+  .backBtn {
+    width: 120px;
+    background-color: #f8f1ea;
+    color: #B67233;
+  }
+
+  .saveBtn {
+    width: 120px;
+    background-color: #B67233;
+    color: #f8f1ea;
   }
 }
 
@@ -509,6 +523,17 @@
     width: 150px;
     border-radius: 4px;
   }
+  .backBtn {
+    width: 120px;
+    background-color: #f8f1ea;
+    color: #B67233;
+  }
+
+  .saveBtn {
+    width: 120px;
+    background-color: #B67233;
+    color: #f8f1ea;
+  }
 }
 
 .RowHousesWay {
@@ -516,8 +541,19 @@
   .ant-modal-footer{
     text-align: center;
   }
-  Button {
-    margin-top: 20px;
-    margin-left: 20px;
+  .ant-btn {
+    width: 150px;
+    background-color: #f8f1ea;
+    color: #B67233;
+    border-color:rgb(220,220,220);
+  }
+  .btn{
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  .backBtn {
+    width: 120px;
+    background-color: #f8f1ea;
+    color: #B67233;
   }
 }
