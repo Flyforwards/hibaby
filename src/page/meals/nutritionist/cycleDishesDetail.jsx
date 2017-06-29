@@ -136,12 +136,15 @@ function mainCycleDishesDetail(props) {
       }
 
       colDivs.push(
-        <Row key={i} style={ i%2 ?{backgroundColor :'#ffffff'} :{backgroundColor: '#f6f6f6'}}>
-          <Col>
-            <div style={{minHeight: '40px'}}>
-              <div className="tabooUser-detail-content">{loopObj.room}      {dishesStr}</div>
-            </div>
-          </Col>
+        <Row key={i} style={ i%2 ?{backgroundColor :'#f6f6f6'} :{backgroundColor: '#ffffff'}}>
+          <div style={{minHeight: '40px'}}>
+            <Col span="1">
+              <div className="tabooUser-detail-content">{loopObj.room}</div>
+            </Col>
+            <Col>
+              <div className="tabooUser-detail-content">{dishesStr}</div>
+            </Col>
+          </div>
         </Row>
       );
     }
