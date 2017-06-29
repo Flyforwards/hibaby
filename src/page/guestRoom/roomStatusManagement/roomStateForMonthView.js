@@ -9,7 +9,8 @@ import {
   Select,
   Switch,
   message,
-  Modal
+  Modal,
+  Popover
 } from 'antd'
 
 const Option = Select.Option;
@@ -30,6 +31,25 @@ const statusExplain = [
   {name: "空房", color: "#fff"},
   {name: "维修", color: "#63C3E6"},
 ];
+
+// 时间毫秒数转日期: YYYY-MM-DD
+const timeToDate = (time) => {
+  if (!time) {
+    return '';
+  }
+
+  try {
+    let date = new Date(parseInt(time));
+
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    return month + '月' + day + '日';
+  } catch (e) {
+    console.log("日期转换时发生错误", e);
+    return "";
+  }
+};
 
 
 const monthStateView = (props) => {
@@ -177,6 +197,15 @@ const monthStateView = (props) => {
     };
 
 
+    const deleteBtnClickHandler = (index) => {
+      dispatch({
+        type: 'roomStatusManagement/deleteDateSelectView',
+        payload: {
+          index: index,
+        }
+      });
+    }
+
     const addBtnClickHandler = () => {
 
       let index = ++selectViewIndex;
@@ -191,7 +220,9 @@ const monthStateView = (props) => {
             renderMonthSelectView(index)
           }
 
-          <Col span={5} offset={1}/>
+          <Col span={5} offset={1}>
+            <Button className="addBtn" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
+          </Col>
         </Row>
       );
 
@@ -439,6 +470,8 @@ const monthStateView = (props) => {
                 customerId: parentNode.dataset.customerId,
                 startIndex: parentNode.dataset.startIndex,
                 endIndex: parentNode.dataset.endIndex,
+                startDate: parentNode.dataset.startDate,
+                status: parentNode.dataset.status,
               }
             });
             parentNode.removeChild(e.target);
@@ -499,8 +532,6 @@ const monthStateView = (props) => {
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
             }
-
-
           };
 
           document.onmouseup = () => {
@@ -568,32 +599,41 @@ const monthStateView = (props) => {
 
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
+          const content = <div>{users[i].customerName + '('
+            + users[i].dayCount + '天, '
+            + timeToDate(users[i].startDate)
+            + '-'
+            + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
+            + ')'}</div>
           result.push(
-            <div className="userBox"
-                 style={{
-                   width: width,
-                   left: users[i].startIndex * UNIT_WIDTH,
-                 }}
-                 draggable="true"
-                 onDragStart={(event) => dragStart(event, users[i])}
-                 data-room-index={roomIndex}
-                 data-customer-id={users[i].customerId}
-                 data-customer-name={users[i].customerName}
-                 data-start-index={users[i].startIndex}
-                 data-end-index={users[i].startIndex + users[i].dayCount - 1}
-                 data-user-dayCount={users[i].dayCount}
-                 data-start-date={users[i].startDate}
-                 data-status={users[i].status}
-                 onClick={userBoxClickHandler}
-                 onDoubleClick={userBoxDbClickHandler}
-                 onContextMenu={userBoxRightClickHandler}
-            >
-              {users[i].customerName}
-              <a href="javascript:void(0)"
-                 className="resizeBar"
-                 title={users[i].dayCount + '天'}
-                 onMouseDown={resizeBarMouseDownHandler}/>
-            </div>
+            <Popover content={content}>
+              <div className="userBox"
+                   style={{
+                     width: width,
+                     left: users[i].startIndex * UNIT_WIDTH,
+                   }}
+                   draggable="true"
+                   onDragStart={(event) => dragStart(event, users[i])}
+                   data-room-index={roomIndex}
+                   data-customer-id={users[i].customerId}
+                   data-customer-name={users[i].customerName}
+                   data-start-index={users[i].startIndex}
+                   data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                   data-user-dayCount={users[i].dayCount}
+                   data-start-date={users[i].startDate}
+                   data-status={users[i].status}
+                   onClick={userBoxClickHandler}
+                   onDoubleClick={userBoxDbClickHandler}
+                   onContextMenu={userBoxRightClickHandler}
+              >
+
+                <a href="javascript:void(0)"
+                   className="resizeBar"
+                   title={users[i].dayCount + '天'}
+                   onMouseDown={resizeBarMouseDownHandler}/>
+              </div>
+            </Popover>
+
           )
         }
 

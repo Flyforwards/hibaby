@@ -284,7 +284,7 @@ export default {
       }
     },
 
-    deleteUser(state, {payload: data}){
+    deleteUserReducer(state, {payload: data}) {
       let monthRoomList = state.monthRoomList.concat();
 
       if (monthRoomList[data.roomIndex]) {
@@ -297,7 +297,6 @@ export default {
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == data.customerId
               && customerList[k].status == data.status) {
-              // delete customerList[k].status;
               customerList.splice(k--, 1);
               break;
             }
@@ -376,8 +375,18 @@ export default {
     },
     addDateSelectView(state, {payload: data}){
       let dateSelectViews = state.dateSelectViews;
-
       dateSelectViews.push(data.dateSelectView);
+      return {
+        ...state,
+        dateSelectViews: dateSelectViews
+      }
+    },
+
+    deleteDateSelectView(state, {payload: data}){
+
+      let dateSelectViews = state.dateSelectViews;
+
+      delete dateSelectViews[data.index -1]
 
       return {
         ...state,
@@ -470,7 +479,6 @@ export default {
 
       const {data: {code, data}} = yield call(roomManagement.arrangeRoom, {...defData, ...value});
       if (code == 0) {
-        console.log(data)
         yield put({
           type: 'setResultsRowHouses',
           payload: {
@@ -613,7 +621,7 @@ export default {
       if (state.dragUser.roomIndex !== -1) {
         // 不是新拖入的, 删除之前的
         yield put({
-          type: 'deleteUser',
+          type: 'deleteUserReducer',
           payload: {
             ...value,
             startIndex: state.dragUser.startIndex,
@@ -766,6 +774,30 @@ export default {
       }
 
     },
+
+    *deleteUser({payload: value}, {call, put}){
+
+      let param = {
+        customerId: value.customerId,
+        date: timeToDate(value.startDate),
+      };
+
+      // 调用接口
+      const {data: {code, data}} = yield call(roomManagement.cancelBooking, param);
+
+      // 调用接口失败
+      if (code != 0) {
+        return;
+      }
+
+      // 删除视图中的用户
+      yield put({
+        type: 'deleteUserReducer',
+        payload: {
+          ...value,
+        }
+      });
+    }
   },
 
 
