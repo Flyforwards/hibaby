@@ -57,7 +57,7 @@ const timeToDate = (time) => {
 
 const monthStateView = (props) => {
   const {dispatch,loading} = props;
-  const {occupancy,dateSelectList,floorSelect} = props.users;
+  const {occupancy,dateSelectList,floorSelect,dragUser} = props.users;
   let years = [];
   let defaultYear = props.users.defaultYear;
 
@@ -75,7 +75,9 @@ const monthStateView = (props) => {
 
   document.ondrop = (event) => {
     event.preventDefault();
-
+    if(dragUser.status == 1){
+      return;
+    }
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
@@ -279,13 +281,15 @@ const monthStateView = (props) => {
       });
     }
 
+
+
     return (
       <Row type="flex" justify="center" align="middle" className="queryBox">
         <Col span={5}>
           <div className="occupancyRateBox">
             <div>
               <div className="rateTitle">入住率</div>
-              <div className="rateNumber">{`${occupancy*100}%`}</div>
+              <div className="rateNumber">{`${Math.floor(occupancy * 10000) / 100}%`}</div>
             </div>
           </div>
         </Col>
@@ -433,7 +437,7 @@ const monthStateView = (props) => {
           }
 
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4) {
+          if (e.target.dataset.status == 4 || e.target.dataset.status == 1) {
             return;
           }
 
@@ -471,7 +475,7 @@ const monthStateView = (props) => {
           }
 
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4) {
+          if (e.target.dataset.status == 4 || e.target.dataset.status == 1) {
             return;
           }
 
@@ -519,7 +523,11 @@ const monthStateView = (props) => {
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
 
-          // 左端在入住状态下不可操作
+          if (status == 1) {
+            return
+          }
+
+            // 左端在入住状态下不可操作
           // if (status == 4) {
           // 我的断点
           //   return;
@@ -864,6 +872,8 @@ const monthStateView = (props) => {
     const customers = props.users.monthStateCustomers;
 
     const dragStart = (dragUser, event) => {
+      console.log(22);
+
       dragOffsetX = event.nativeEvent.offsetX;
       dragOffsetY = event.nativeEvent.offsetY;
 
