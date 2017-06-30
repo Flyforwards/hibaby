@@ -23,7 +23,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 import moment from 'moment';
 import {parse} from 'qs';
-import roomStateForMonthView from "./roomStateForMonthView.js";
+import RoomStateForMonthView from "./roomStateForMonthView.js";
 
 const statusDict = {0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 5: '入所', 6: '出所', 7: '预约', 8: '取消维修'}
 
@@ -339,7 +339,7 @@ class roomStatusIndex extends React.Component {
     const ScreenBarDiv = Form.create()(ScreenBar);
     const {loading} = this.props;
     const {selectValue, roomList} = this.props.users;
-
+    const MonthRoomStatus = <RoomStateForMonthView {...this.props}/>;
     return (
       <div className="roomStatusDiv">
         {
@@ -355,7 +355,7 @@ class roomStatusIndex extends React.Component {
               </Spin>
             </div>
             :
-            roomStateForMonthView(this.props)
+            MonthRoomStatus
         }
 
       </div>
