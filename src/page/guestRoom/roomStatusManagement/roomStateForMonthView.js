@@ -296,7 +296,7 @@ const monthStateView = (props) => {
 
         <Col offset={1} span={12}>
           <span>楼层</span>
-          <DictionarySelect defaultValue={floorSelect}  onChange={floorChange} className='floorSelect' placeholder="请选择"
+          <DictionarySelect defaultValue={floorSelect} onChange={floorChange} className='floorSelect' placeholder="请选择"
                             selectName='Floor'/>
         </Col>
 
@@ -587,9 +587,6 @@ const monthStateView = (props) => {
               reserveDays = startIndex - oldStartIndex + 1;
             }
 
-
-            console.log(startIndex,endIndex,reserveDays)
-
             dispatch({
               type: 'roomStatusManagement/updateReserveDays',
               payload: {
@@ -872,7 +869,6 @@ const monthStateView = (props) => {
     const customers = props.users.monthStateCustomers;
 
     const dragStart = (dragUser, event) => {
-      console.log(22);
 
       dragOffsetX = event.nativeEvent.offsetX;
       dragOffsetY = event.nativeEvent.offsetY;

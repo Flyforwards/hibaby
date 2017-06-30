@@ -79,7 +79,7 @@ export default {
     }
     ],
     dateRulerList: [],
-    floorSelect:'',
+    floorSelect:null,
     dateSelectViews: [],
     //可编辑的  添加客户  加入的
     monthRoomUpdateList: [],// 保存状态有更新的用户
