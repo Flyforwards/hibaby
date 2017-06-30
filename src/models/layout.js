@@ -202,6 +202,8 @@ export default {
 
     // 退出登录
     *logout({ payload }, { call, put }) {
+      // 退出400电话
+      window.executeAction('doLogout', { type: 1 });
       const { data: { data, code , err } }  = yield call(loginService.logout);
       if (code == 0 && err == null) {
         session.removeAll();
@@ -373,10 +375,10 @@ export default {
     *saveCallRecords({ payload: value }, {call, put}) {
       const {data: {data, code}} = yield call(usersService.saveCallRecords, value)
       if (code == 0) {
-        // yield put({
-        //   type: 'saveCallRecordsSuccess',
-        //   payload: { callRecords: data }
-        // })
+        yield put({
+          type: 'getCallRecordsList',
+          payload: { str: value.number }
+        })
         message.success('保存备注信息成功')
       }
     },

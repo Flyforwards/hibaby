@@ -71,34 +71,6 @@
 
 <script>
     var orderCallbackCount = 0;
-    function callout(tel){
-    	var params = {};
-
-    	params.tel = document.getElementById('tel').value;
-    	params.callType = '3'; //3点击外呼
-    	window.executeAction("doPreviewOutCall", params);
-    }
-    function login(){//登录
-
-        var params = {};
-        params.hotLine = document.getElementById('hotLine').value;
-        params.cno =  document.getElementById('cno').value;
-        params.pwd =  document.getElementById('pwd').value;
-        params.bindTel =  document.getElementById('bindTel').value;
-        params.bindType = document.getElementById('bindType').value;
-        params.initStatus =  document.getElementById('initStatus').value;
-    	if(params.bindType == "3"){
-    		params.sipIp = document.getElementById('sipIp').value;
-    		params.sipPwd = document.getElementById('sipPwd').value;
-    	}
-    	window.executeAction('doLogin',  params);//执行登陆 ccic2里面的js类
-
-    }
-    function logout(){//登出
-    	var params = {};
-    	params.type=1;
-    	window.executeAction('doLogout', params);
-    }
 
     function readyLoad(d){
     	//在这里登录
@@ -132,7 +104,7 @@
     		window.executeAction('doQueueStatus');//获取队列数据
 
     	}else{
-    		alert("登录失败！" + token.msg);
+    		alert("400电话 登录失败！" + token.msg);
     	}
     }
 
@@ -171,9 +143,7 @@
             token=JSON.parse(token);
         }
         if(token.code == "0"){
-            alert("已退出");
-            typeButton.buttonDisabled();
-            $('#status').text("离线");
+            sendCallBack({ type: 'logout', token: token })
         }
     }
 
@@ -183,55 +153,13 @@
         }
         sendCallBack({ type: 'status', token: token })
 
-        if(token.cno == 2000){
-            //callType：
-            //1：呼入，2：网上400,3：点击外呼，4：预览外呼，5：IVR外呼，6：分机直接外呼
-            if(token.eventName == "comeRinging"&&token.name == "ringing"){	//呼入响铃
-                // alert("来电号码：" + token.customerNumber);
-                //var call_id = token.uniqueId;		//获取录音编号
-            }
-            if(token.eventName == "normalBusy"&&token.name == "status"){ // 呼入接听
-                // alert("来电号码：" + token.customerNumber + "已接听");
-            }
-
-            if(token.eventName == "consultLink"&&token.name == "consultLink"){	//咨询接听
-                // alert("咨询号码" + token.consultObject + "已接听");
-            }
-
-            if(token.eventName == "normalBusy"&&token.name == "consultError"){	//咨询失败
-                // alert("咨询失败");
-            }
-            if(token.eventName == "neatenStart"){	//客户挂断，整理开始：呼入、空闲时外呼
-                // alert("已挂机，开始整理");
-            }
-            if(token.eventName == "neatenEnd"){	//客户挂断，整理结束：呼入、空闲时外呼
-                // alert("整理结束");
-            }
-            if(token.eventName == "outRinging"&&token.name == "ringing"&&token.callType == "3"){	//外呼时座席响铃: 3、点击外呼
-                 // alert("外呼号码：" + token.customerNumber);
-                //var call_id = token.uniqueId;		//获取录音编号
-            }
-            if(token.eventName == "waitLink"&&token.callType == "3"){	//座席接听后外呼客户:3、点击外呼
-                // alert("座席接听，开始呼叫客户");
-            }
-            if(token.eventName == "outBusy"&&token.name == "previewOutcallBridge"&&token.callType == "3"){	//外呼客户:3、点击外呼
-                // alert("外呼号码：" + token.customerNumber + "已接听");
-            }
-            if(token.eventName == "onlineUnlink"){	//空闲时外呼，客户无应答，座席挂机
-                // alert("已挂机");
-            }
-            if(token.eventName == "pauseUnlink"){	// 置忙时外呼，客户挂断或无应答，座席挂机
-                // alert("已挂机");
-            }
-        }
-
     }
 
     function consult(){ // 咨询
     	var consultText = document.getElementById("consultText").value;
     	if(consultText == ''){
     		alert("号码不能为空");
-    	}else{
+    	}else {
     		var obj = {};
     		obj.consultObject = consultText;
     		obj.objectType = document.getElementById("consultType").value;
@@ -253,8 +181,8 @@
 
     function cbQueueStatus(data){ //得到队列数据
       sendCallBack({ type: 'queueStatus', data: data })
-
     }
+
     function cbStatus(json){ //改变队列座席状态
     	var status = window.deviceStatus.deviceStatusLoginStatus(json.deviceStatus+json.loginStatus, json.pauseDescription, json.busyDescription);
     }
@@ -269,169 +197,6 @@
     		json.customerNumber ='未知号码';
     	}
       sendCallBack({ type: 'queue', json: json })
-    }
-
-    var typeButton = {
-        phoneCallout : function(){//外呼
-            $("#phoneCallout").show().attr("disabled", false);
-            $("#phoneCallout").unbind("click");
-            $("#phoneCallout").bind({
-                click : function(){
-                    var params = {};
-                    params.tel = $('#phoneCallText').val();
-                    params.callType = '3'; //3点击外呼
-                    executeAction('doPreviewOutCall', params);
-                }
-            });
-        },
-        phoneCallText : function(){
-            $("#phoneCallText").attr("disabled", false);
-            $("#phoneCallText").show();
-
-        },
-        phoneCallCancel : function(){//外呼取消
-            $("#phoneCallCancel").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#phoneCallCancel").unbind("click");
-            $("#phoneCallCancel").bind({
-                click : function(){
-                    executeAction('doPreviewOutcallCancel');
-                }
-            });
-        },
-        refused : function(){//拒接
-            $("#refused").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#refused").unbind("click");
-            $("#refused").bind({
-                click : function(){
-                    executeAction('doRefuse');
-                }
-            });
-        },
-        unLink : function(){//挂断
-
-            $("#unLink").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#unLink").unbind("click");
-            $("#unLink").bind({
-                click : function(){
-                    executeAction('doUnLink');
-                }
-            });
-        },
-        hold : function(){//保持
-            $("#hold").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#hold").unbind(" click");
-            $("#hold").bind({
-                click : function(){
-                    executeAction('doHold');
-                }
-            });
-        },
-        unHold : function(){//保持接回
-
-            $("#unHold").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#unHold").unbind(" click");
-            $("#unHold").bind({
-                click : function(){
-                    executeAction('doUnhold');
-                }
-            });
-        },
-        online : function(){//空闲
-
-            $("#online").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#online").unbind(" click");
-            $("#online").bind({
-                click : function(){
-                    executeAction('doUnpause');
-                }
-            });
-        },
-        pause : function(){//置忙
-
-            $("#pause").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#pause").unbind(" click");
-            $("#pause").bind({
-                click : function(){
-                    var param={};
-                    param.description="置忙";
-                    executeAction('doPause', param);
-
-                }
-            });
-        },
-        buttonDisabled : function(){//按钮恢复状态
-            $("#toolbarButton input").hide();
-            $("#toolbarButton input").css({"backgroundPosition":"0px 0px"});
-            $("#toolbarButton input").attr("disabled", true);
-            $("#toolbarButton input").unbind("click");
-        },
-        consult : function(){//咨询
-            $("#consult").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consult").unbind("    click");
-            $("#consult").bind({
-                click : function(){
-                    var type = $("#consultInput").val();
-                    var number = $("#phoneCallText").val();
-                    var object = {};
-                    object.consultObject = number;
-                    object.objectType = type;
-                    executeAction('doConsult', object);
-                }
-            });
-        },
-        consultBack : function(){//咨询接回
-            $("#consultBack").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consultBack").unbind("    click");
-            $("#consultBack").bind({
-                click : function(){
-                    executeAction('doUnconsult');
-                }
-            });
-        },
-        consultTransfer : function(){//咨询转接
-            $("#consultTransfer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consultTransfer").unbind("    click");
-            $("#consultTransfer").bind({
-                click : function(){
-                    executeAction('doConsultTransfer');
-                }
-            });
-        },
-        consultThreeway : function(){//咨询三方
-            $("#consultThreeway").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#consultThreeway").unbind("    click");
-            $("#consultThreeway").bind({
-                click : function(){
-                    executeAction('doConsultThreeway');
-
-                }
-            });
-        },
-        transfer : function(){//转移
-            $("#transfer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-            $("#transfer").unbind("    click");
-            $("#transfer").bind({
-                click : function(){
-                    var type = $("#consultInput").val();
-                    var number = $("#phoneCallText").val();
-                    var object = {};
-                    object.transferObject = number;
-                    object.objectType = type;
-                    executeAction('doTransfer', object);
-                }
-            });
-        },
-        answer : function(){//接听 软电话功能
-            if(userBasic.getBindType() == '3'){
-                $("#answer").show().attr("disabled", false).css({"backgroundPosition":"0px -33px"});
-                $("#answer").unbind("    click");
-                $("#answer").bind({
-                    click : function(){
-                        executeAction('doLink');
-                    }
-                });
-            }
-        }
     }
 
 

@@ -1,33 +1,16 @@
 import React from 'react'
 import './CustomerIndex.scss'
 import { connect } from 'dva'
-import {
-  Select,
-  Button,
-  DatePicker,
-  Table,
-  Input,
-  Form,
-  Icon,
-  Popconfirm,
-  Pagination,
-  Cascader,
-  Col,
-  Row,
-  InputNumber,
-  Modal
-} from 'antd'
+import { Select, Button, DatePicker, Table, Input, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal } from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import DictionarySelect from 'common/dictionary_select';
-import Current from '../../Current'
 import PermissionButton from 'common/PermissionButton';
 
 const Option = Select.Option
 const { MonthPicker, RangePicker } = DatePicker
-const monthFormat = 'YYYY'
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const createForm = Form.create
@@ -472,12 +455,12 @@ class CustomerIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          pagination,
-          shipCards,
-          fetusAry,
-          packageList
-        } = state.customer;
+    list,
+    pagination,
+    shipCards,
+    fetusAry,
+    packageList
+  } = state.customer;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,

@@ -129,6 +129,14 @@ export function getPhoneSystemById(values) {
   })
 }
 
+// 删除400电话配置
+export function phoneSystemDelete(values) {
+  return request('/crm/api/v1/customerServiceConfig/del', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 
 

@@ -43,16 +43,16 @@ class PhoneSystemIndex extends React.Component {
     this.cols = [{
       dataIndex: 'createTime',
       key: 'createTime',
-      with: '20%',
+      width: '20%',
       render: (record) => {
         if (record!=null) {
           return moment(record).format("YYYY-MM-DD HH:mm:ss")
         }
       }
     },{
-      with: '80%',
       dataIndex: 'content',
       key: 'content',
+      width: '80%',
     }]
 
     this.columns = [{
@@ -123,6 +123,7 @@ class PhoneSystemIndex extends React.Component {
       <Button key="phoneCallout"  className="system-button3" onClick={ this.actionType.bind(this,14) }>呼叫</Button>, // 14
       <Button key="phoneCallCancel" className="system-button3" onClick={ this.actionType.bind(this,15) }>呼叫取消</Button>, // 15
       ];
+    // this.getCustomerInfo('15623578269');
   }
   // 切换呼叫类型
   onChange(value) {
@@ -240,6 +241,12 @@ class PhoneSystemIndex extends React.Component {
     })
   }
 
+  toNone() {
+    this.setState({
+      style: 'none'
+    })
+  }
+
   toLarge() {
     this.setState({
       style: 'large'
@@ -250,12 +257,19 @@ class PhoneSystemIndex extends React.Component {
     console.log(window.callback)
 
     if (window.callback.type == 'login') {
-      message.success('登录成功');
+      message.success('400电话,登录成功');
       this.toLarge();
+    } else if (window.callback.type == 'logout') {
+      message.success('400电话,退出成功');
+      this.toNone();
+      this.setState({
+        nodeId: []
+      })
+      clearInterval(this.time);
+      clearInterval(this.customerTimer)
     } else if (window.callback.type == 'queueStatus') {
 
-      var data = window.callback.data;
-
+      const data = window.callback.data;
       clearInterval(this.time);
       clearInterval(this.customerTimer)
 
@@ -541,12 +555,12 @@ class PhoneSystemIndex extends React.Component {
         this.setState({
           call_time: 0,
           status: 3,
-          info: {},
         })
         // 清除定时器， 隐藏输入框，用户信息，通话记录
         clearInterval(this.callTimer)
       }else if(token.eventName=="neatenEnd"){//整理结束
         this.setState({
+          call_time: 0,
           info: {},
           status: 0
         })
@@ -563,6 +577,48 @@ class PhoneSystemIndex extends React.Component {
         })
       }else if(token.eventName=="consulterOrTransferBusy"){//被咨询转接或转移的通话
 
+      }
+
+      if(token.cno == 2000){
+        //callType：
+        //1：呼入，2：网上400,3：点击外呼，4：预览外呼，5：IVR外呼，6：分机直接外呼
+        if(token.eventName == "comeRinging"&&token.name == "ringing"){	//呼入响铃
+          // alert("来电号码：" + token.customerNumber);
+          //var call_id = token.uniqueId;		//获取录音编号
+        }
+        if(token.eventName == "normalBusy"&&token.name == "status"){ // 呼入接听
+          // alert("来电号码：" + token.customerNumber + "已接听");
+        }
+
+        if(token.eventName == "consultLink"&&token.name == "consultLink"){	//咨询接听
+          // alert("咨询号码" + token.consultObject + "已接听");
+        }
+
+        if(token.eventName == "normalBusy"&&token.name == "consultError"){	//咨询失败
+          // alert("咨询失败");
+        }
+        if(token.eventName == "neatenStart"){	//客户挂断，整理开始：呼入、空闲时外呼
+          // alert("已挂机，开始整理");
+        }
+        if(token.eventName == "neatenEnd"){	//客户挂断，整理结束：呼入、空闲时外呼
+          // alert("整理结束");
+        }
+        if(token.eventName == "outRinging"&&token.name == "ringing"&&token.callType == "3"){	//外呼时座席响铃: 3、点击外呼
+          // alert("外呼号码：" + token.customerNumber);
+          //var call_id = token.uniqueId;		//获取录音编号
+        }
+        if(token.eventName == "waitLink"&&token.callType == "3"){	//座席接听后外呼客户:3、点击外呼
+          // alert("座席接听，开始呼叫客户");
+        }
+        if(token.eventName == "outBusy"&&token.name == "previewOutcallBridge"&&token.callType == "3"){	//外呼客户:3、点击外呼
+          // alert("外呼号码：" + token.customerNumber + "已接听");
+        }
+        if(token.eventName == "onlineUnlink"){	//空闲时外呼，客户无应答，座席挂机
+          // alert("已挂机");
+        }
+        if(token.eventName == "pauseUnlink"){	// 置忙时外呼，客户挂断或无应答，座席挂机
+          // alert("已挂机");
+        }
       }
     }
   }
@@ -584,13 +640,17 @@ class PhoneSystemIndex extends React.Component {
   onSave() {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
+      const { info } = this.state;
       if (!err) {
-        console.log(values);
-        values.number = '13269778099'
-        dispatch({
-          type: 'layout/saveCallRecords',
-          payload: values
-        })
+        if (info && info.number && info.number.length > 0) {
+          dispatch({
+            type: 'layout/saveCallRecords',
+            payload: { number: info.number, content: values.content }
+          })
+          values.content = '';
+        } else {
+          alert('保存信息出错，拿不到电话数据');
+        }
       }
     })
   }
@@ -608,19 +668,13 @@ class PhoneSystemIndex extends React.Component {
 
   render() {
     let bottom = null;
-    const { style,  } = this.state;
+    const { style, info, status, call_time, loginStatus  } = this.state;
     const { form } = this.props;
     const { getFieldDecorator } = form;
     if (style == 'large') {
-      const { loginTime, dataSource, info, status, loginStatus, call_time, nodeId, memberStatus } = this.state
+      const { loginTime, dataSource, nodeId, memberStatus } = this.state
       const { callRecords, customerInfo } = this.props;
 
-      let userName = '';
-      if ( customerInfo == null) {
-        userName = '未知用户';
-      } else if ( customerInfo ) {
-        userName = customerInfo.name;
-      }
       let input_bottom_16 = null;
       if  (this.state.type == '0') {
         input_bottom_16 = <Input ref="number" style={{ width: '113px',height: '33px' }} />
@@ -658,7 +712,7 @@ class PhoneSystemIndex extends React.Component {
           }
         })
       }
-      const callContent = (
+      const callContent =  status!=2&&status!=3 ? null:(
         <div className="phone-system-board">
           <div className="phone-system-board-title"><h4>本次通话内容</h4></div>
           <FormItem>
@@ -670,12 +724,46 @@ class PhoneSystemIndex extends React.Component {
           </FormItem>
           <Button onClick={ this.onSave.bind(this) }>保存</Button>
         </div>)
-      const customer = (
+
+      let user = <div className="phone-button-user">新用户</div>;
+      if ( customerInfo ) {
+        user = <div className="phone-button-user">
+          <Row>
+            <Col span='8'>
+              <Col className="phone-button-user-title" span='8'>客户姓名：</Col>
+              <Col className="phone-button-user-content" span='16'>{ customerInfo.name }</Col>
+            </Col>
+            <Col span='8'>
+              <Col className="phone-button-user-title" span='8'>年龄：</Col>
+              <Col className="phone-button-user-content" span='16'>{ customerInfo.age }</Col>
+            </Col>
+            <Col span='8'>
+              <Col className="phone-button-user-title" span='8'>预产期：</Col>
+              <Col className="phone-button-user-content" span='16'>{ moment(customerInfo.dueDate).format("YYYY-MM-DD") }</Col>
+            </Col>
+          </Row>
+          <Row>
+            <Col span='8'>
+              <Col className="phone-button-user-title" span='8'>怀孕周期：</Col>
+              <Col className="phone-button-user-content" span='16'>{ customerInfo.gestationalWeeks }</Col>
+            </Col>
+            <Col span='8'>
+              <Col className="phone-button-user-title" span='8'>购买套餐：</Col>
+              <Col className="phone-button-user-content" span='16'>{ customerInfo.purchasePackage || '无'}</Col>
+            </Col>
+            <Col span='8'>
+              <Col className="phone-button-user-title" span='8'>合同编号：</Col>
+              <Col className="phone-button-user-content" span='16'>{ customerInfo.contractNumber || '无' }</Col>
+            </Col>
+          </Row>
+        </div>;
+      }
+      const customer = status == 0 ? null: (
         <div>
           <div className="phone-system-phone-info">
             <Row style={{ marginTop:'4px' }}>
               <Col span="8">
-                <Col span="6" style={{ lineHeight: '32px', textAlign: 'end' }}>{ info.title+':'} </Col>
+                <Col span="6" style={{ lineHeight: '32px', textAlign: 'end' }}>{ info.title || '来电号码'+':'} </Col>
                 <Col span="18"><Input readOnly value={ info.number }/></Col>
               </Col>
               <Col span="8">
@@ -693,14 +781,20 @@ class PhoneSystemIndex extends React.Component {
             </Row>
           </div>
           <div className="phone-system-board">
-            <div className="phone-system-board-title"><h4>客户信息</h4></div>
-            <span>{ userName }</span>
+            <div className="phone-system-board-title">
+              <h4>客户信息</h4>
+            </div>
+            { user }
           </div>
           <div className="phone-system-board">
-            <div className="phone-system-board-title"><h4>来往通话内容</h4></div>
-            <Table bordered pagination={false} size='small' columns={this.cols} rowKey={ record=>record.id} dataSource={callRecords}/>
+            <div className="phone-system-board-title">
+              <h4>来往通话内容</h4>
+            </div>
+            <div style = {{ maxHeight: '160px', overflowY: 'auto' }}>
+              <Table bordered pagination={false} size='small' columns={this.cols} rowKey={ record=>record.id} dataSource={callRecords}/>
+            </div>
           </div>
-          { status==2||status==3? callContent:null }
+          { callContent }
         </div>
       )
       bottom = (
@@ -711,18 +805,32 @@ class PhoneSystemIndex extends React.Component {
             <span style={{ 'marginLeft':'20px', 'lineHeight': '40px' }}>登录时间</span>
             <span style={{ 'marginLeft':'10px', 'lineHeight': '40px' }} >{ this.transportTime(loginTime) }</span>
           </div>
-          <Table bordered pagination={false} columns={this.columns} rowKey={ record=>record.uniqueId} dataSource={dataSource} size='small'/>
-          { status== 0? null:customer }
+          <div style={{ maxHeight: '120px', overflowY: 'auto' }}>
+            <Table bordered pagination={false} columns={this.columns} rowKey={ record=>record.uniqueId} dataSource={dataSource} size='small'/>
+          </div>
+          { customer }
           <div className="phone-system-action-button">
             { buttons }
           </div>
         </Card>
       )
     } else if (style == 'min') {
+      const customer = status == 0 ?
+        <div style={{ height: '40px' }}>
+          <span style={{ 'marginLeft':'10px', fontSize: '14px', 'lineHeight': '40px' }}>登录状态</span>
+          <span style={{ 'marginLeft':'10px', fontSize: '14px', 'lineHeight': '40px'}} id="status">{ loginStatus }</span>
+        </div>:
+        <div style={{ fontSize: '14px' }}>
+          <div style={{ linHeight: '33px', borderBottom: '1px solid #e5e5e5'}}>
+            <span>{ info.title || '来电号码'+': ' + info.number || ' ' }</span>
+          </div>
+          <div style={{ linHeight: '33px'}}>
+            <span>{ '通话时长: ' + this.transportTime(call_time) }</span>
+          </div>
+        </div>
       bottom = (
         <Card className="phone-system-min-cent" title = '来电弹屏' extra={ this.minExtra }>
-
-
+          { customer }
         </Card>
       )
     } else if (style == 'hidden') {

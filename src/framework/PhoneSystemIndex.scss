@@ -65,14 +65,6 @@
     }
 
     .phone-button-input{
-      //display:none;
-      //width:100px;
-      //height:28px;
-      //line-height:28px;
-      //font-family:verdana;
-      //border:solid 1px #ddd;
-      //vertical-align:top;
-      //margin-top:2px;
       display: inline-block;
       .ant-select-selection--single {
         height:33px;
@@ -81,6 +73,25 @@
         line-height: 29px;
       }
     }
+  }
+
+  .phone-button-user{
+
+    font-family: 微软雅黑;
+    font-size: 13px;
+    margin: 10px 10px 10px 10px;
+
+    .phone-button-user-title{
+      height: 33px;
+      text-align: right;
+      line-height: 33px;
+    }
+
+    .phone-button-user-content{
+      height: 33px;
+      line-height: 33px;
+    }
+
   }
 
 }
@@ -92,6 +103,9 @@
   height:100px;
   left: 5px;
   bottom: 45px;
+  .ant-card-body {
+    padding: 0;
+  }
 
   .system-button-option {
     float: right;

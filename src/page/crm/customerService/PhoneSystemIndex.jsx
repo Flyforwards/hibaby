@@ -88,20 +88,10 @@ class CustomerVisIndex extends React.Component {
   }
 
   del(record){
-
-  }
-
-  loginSystem(){
-    let params = {}
-    params.hotLine = '59565234';
-    params.cno =  '2000';
-    params.pwd = 'z4FlIblV';
-    params.bindTel =  '01043963489';
-    params.bindType = 1;
-    params.initStatus =  'online';
-    window.executeAction('doLogin', params );//执行登陆 ccic2里面的js类
-
-
+    this.props.dispatch({
+      type: 'phoneSystem/phoneSystemDelete',
+      payload: { dataId: record.id }
+    })
   }
 
   render() {

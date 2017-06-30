@@ -123,7 +123,6 @@ export default {
         values.size = 10;
       }
       const { data: { data, total, page, size, code } } = yield call(CustomerSerService.listByUserPage, values);
-      console.log(total);
       if (code == 0) {
         yield put({
           type: 'getListByUserPageSave',
@@ -135,6 +134,15 @@ export default {
               total: total,
             },
           },
+        })
+      }
+    },
+    *phoneSystemDelete({payload: values}, { call, put }) {
+      const { data: { data, code} } = yield call(CustomerSerService.phoneSystemDelete, values);
+      if (code == 0) {
+        message.success('删除信息成功!')
+        yield put({
+          type: 'listByPage',
         })
       }
     },
