@@ -212,6 +212,16 @@
         background-color: #fff;
         display: flex;
 
+        .popover-manual-top {
+          top: -15px !important;
+          width: 200px;
+        }
+
+        .ant-popover-inner-content {
+          padding: 8px 8px;
+          text-align: center;
+        }
+
         .monthRoomLeftBox {
           min-width: 84px;
           .monthRoomNumberBox {
@@ -239,7 +249,7 @@
 
         .monthRoomRightBox {
           display: flex;
-          overflow-x:scroll;
+          overflow-x:auto;
           flex-direction: column;
 
           .daysRulerBox {
