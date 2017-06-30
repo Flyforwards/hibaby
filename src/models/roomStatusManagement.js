@@ -386,11 +386,16 @@ export default {
 
       let dateSelectViews = state.dateSelectViews;
 
+      let dateSelectList = state.dateSelectList;
+
+      delete dateSelectList[data.index ]
+
       delete dateSelectViews[data.index -1]
 
       return {
         ...state,
-        dateSelectViews: dateSelectViews
+        dateSelectViews: dateSelectViews,
+        dateSelectList: dateSelectList,
       }
     },
 
