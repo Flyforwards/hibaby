@@ -118,4 +118,11 @@ export function cancelBooking(values) {
     body: JSON.stringify(values),
   })
 }
+// 取消预订
+export function resideAddOrCut(values) {
+  return request('/crm/api/v1/room/resideAddOrCut', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import {AddCustomerModal, RowHousesModal, RowHousesWayModal} from './roomStateForMonthModal';
+import DictionarySelect from 'common/dictionary_select';
 import {
   Button,
   Checkbox,
@@ -9,7 +10,6 @@ import {
   Select,
   Switch,
   message,
-  Modal,
   Popover,
   Spin
 } from 'antd'
@@ -55,7 +55,7 @@ const timeToDate = (time) => {
 
 const monthStateView = (props) => {
   const {dispatch,loading} = props;
-  const {occupancy,dateSelectList} = props.users;
+  const {occupancy,dateSelectList,floorSelect} = props.users;
   let years = [];
   let defaultYear = props.users.defaultYear;
 
@@ -271,6 +271,13 @@ const monthStateView = (props) => {
 
     };
 
+    const floorChange = (e) => {
+      dispatch({
+        type: 'roomStatusManagement/setFloorSelect',
+        payload: e
+      });
+    }
+
     return (
       <Row type="flex" justify="center" align="middle" className="queryBox">
         <Col span={5}>
@@ -284,7 +291,8 @@ const monthStateView = (props) => {
 
         <Col offset={1} span={12}>
           <span>楼层</span>
-          <Select className="floorSelect"/>
+          <DictionarySelect defaultValue={floorSelect}  onChange={floorChange} className='floorSelect' placeholder="请选择"
+                            selectName='Floor'/>
         </Col>
 
         <Col span={5} offset={1}>
@@ -562,6 +570,9 @@ const monthStateView = (props) => {
               reserveDays = startIndex - oldStartIndex + 1;
             }
 
+
+            console.log(startIndex,endIndex,reserveDays)
+
             dispatch({
               type: 'roomStatusManagement/updateReserveDays',
               payload: {
@@ -574,8 +585,10 @@ const monthStateView = (props) => {
                 reserveDays,
                 status,
               }
-            });
-
+            })
+            if(status == 4){
+              dispatch({type: 'roomStatusManagement/resideAddOrCut',}) ;
+            }
           }
         };
 

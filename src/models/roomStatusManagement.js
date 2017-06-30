@@ -39,6 +39,8 @@ const getDays = (year, month) => {
   return (new Date(year, month, 0)).getDate();
 };
 
+let resideOperation = '';
+
 export default {
   namespace: 'roomStatusManagement',
   state: {
@@ -77,6 +79,7 @@ export default {
     }
     ],
     dateRulerList: [],
+    floorSelect:'',
     dateSelectViews: [],
     //可编辑的  添加客户  加入的
     monthRoomUpdateList: [],// 保存状态有更新的用户
@@ -95,6 +98,9 @@ export default {
   },
 
   reducers: {
+    setFloorSelect(state, {payload: data}) {
+      return {...state,floorSelect:data };
+    },
     setCustomerVisible(state, {payload: data}) {
       let dict = {CustomerVisible: data};
       return {...state, ...dict};
@@ -329,7 +335,11 @@ export default {
     updateReserveDays(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
 
+      //用来增减入住用户的
+      resideOperation = [];
+
       let room = monthRoomList[data.roomIndex].useAndBookingList;
+      let roomId = monthRoomList[data.roomIndex].roomId;
       let startIndex = parseInt(data.startIndex);
       let endIndex = parseInt(data.endIndex);
       let customerId = data.customerId;
@@ -362,6 +372,13 @@ export default {
               status,
             })
           }
+
+          resideOperation.push({ "customerId": customerId,
+            "customerName": customerName,
+            "date":moment(room[j].date).format(),
+            "roomId": roomId,
+            "status": 4})
+
         }
       } else {
         for (let j = startIndex + 1; j <= endIndex; j++) {
@@ -369,11 +386,17 @@ export default {
           for (let k = 0; k < customerList.length; k++) {
             if (customerList[k].customerId == customerId) {
               customerList.splice(k--, 1);
+              resideOperation.push({ "customerId": customerId,
+                "customerName": customerName,
+                "date":moment(room[j].date).format(),
+                "roomId": roomId,
+                "status": 0})
               break;
             }
           }
         }
       }
+
 
       // 更新入住天数
       let customersList = state.monthStateCustomers;
@@ -382,6 +405,10 @@ export default {
         if (customer.customerId == customerId) {
           customer.reserveDays = data.reserveDays;
         }
+      }
+
+      if(status == 4){
+
       }
 
       return {
@@ -563,7 +590,7 @@ export default {
 
     *monthRoomList({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
-      const dateSelectList = state.dateSelectList;
+      const {dateSelectList,floorSelect} = state;
 
       // 去重
       let years = {};
@@ -597,7 +624,13 @@ export default {
         return;
       }
 
-      const {data: {data}} = yield call(roomManagement.getMonthRoomList, param);
+
+      let dict = {yearList:param}
+
+      if(floorSelect){
+        dict.floor = floorSelect;
+      }
+      const {data: {data}} = yield call(roomManagement.getMonthRoomList, dict);
 
       yield put({
         type: 'updateDateRulerList',
@@ -678,7 +711,6 @@ export default {
         customerId: value.customerId,
         date: timeToDate(value.startDate),
       };
-      console.log(param)
 
       const {data: {code, data}} = yield call(roomManagement.confirmReside, param);
       if (code == 0) {
@@ -801,7 +833,22 @@ export default {
       }
 
     },
+    *resideAddOrCut({payload: value}, {call, put}){
 
+      if(resideOperation){
+        console.log(resideOperation)
+        const {data: {code, data}} = yield call(roomManagement.resideAddOrCut, resideOperation);
+
+        // 调用接口失败
+        if (code != 0) {
+          return;
+        }
+        else{
+          message.success('入住信息更新成功')
+        }
+      }
+
+    },
     *deleteUser({payload: value}, {call, put}){
 
       let param = {
