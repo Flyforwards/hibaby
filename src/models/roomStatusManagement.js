@@ -49,21 +49,36 @@ export default {
     dayStatusData: '',
     FloorAry: '',
     MainFloorAry: '',
+    // 入住率
+    occupancy:'',
     fetusAry: '',
     AreaAry: '',
     TowardAry: '',
     roomState: 'day',
     monthStateCustomers: [],
-    //可编辑的  添加客户  加入的
     editMonthStateCustomers: [],
     defSelectCustomers: [],
     oldMonthRoomList: [],
     monthRoomList: [],
     dragUser: null,
     defaultYear: new Date().getFullYear(),
-    dateSelectList: [],
+    dateSelectList: [
+      {year:moment().format('YYYY'),monthList:function (){
+      const month = moment().format('M');
+      let ary = [month];
+      if(parseInt(month) + 1 <= 12){
+        ary.push((parseInt(month) + 1).toString())
+      }
+      if(parseInt(month) + 2 <= 12){
+        ary.push((parseInt(month) + 2).toString())
+      }
+      return(ary)
+    }()
+    }
+    ],
     dateRulerList: [],
     dateSelectViews: [],
+    //可编辑的  添加客户  加入的
     monthRoomUpdateList: [],// 保存状态有更新的用户
     //弹出的modal数据控制
 
@@ -161,11 +176,12 @@ export default {
       };
     },
 
-    setMonthRoomList(state, {payload: todo}){
+    setMonthRoomData(state, {payload:todo}){
+      const {list,rate} = todo.data
       // 保留初始的数据, 用于保存预约状态时和当前状态比较, 深拷贝
-      state.oldMonthRoomList = JSON.parse(JSON.stringify(todo.data));
+      state.oldMonthRoomList = JSON.parse(JSON.stringify(list));
 
-      return {...state, monthRoomList: todo.data};
+      return {...state, monthRoomList: list,occupancy:rate};
     },
 
     userDropReducer(state, {payload: data}){
@@ -591,9 +607,9 @@ export default {
       });
 
       yield put({
-        type: 'setMonthRoomList',
+        type: 'setMonthRoomData',
         payload: {
-          data: data.list,
+          data: data,
         }
       });
     },
@@ -852,7 +868,6 @@ export default {
               }
             });
           }
-
         }
 
       })

@@ -56,7 +56,7 @@ const timeToDate = (time) => {
 
 const monthStateView = (props) => {
   const {dispatch,loading} = props;
-
+  const {occupancy,dateSelectList} = props.users;
   let years = [];
   let defaultYear = props.users.defaultYear;
 
@@ -172,26 +172,28 @@ const monthStateView = (props) => {
           }
         });
       };
+      const creatCheckbox = (month) => {
+        return(
+          <Col span={4}><Checkbox  value={month}>{month}月</Checkbox></Col>
+        )
+      }
+
+      let tempAry = [];
+      let RowAry = [];
+      for(let i = 1 ;i<=12;i++){
+        tempAry.push(creatCheckbox(i.toString()))
+        if(i%6 == 0){
+          RowAry.push(<Row gutter={16} style={{height: "50%"}} type="flex" align="middle">{tempAry}</Row>)
+          tempAry = []
+        }
+      }
 
       return (
+
         <Col offset={1} span={12} style={{height: "100%"}}>
-          <Checkbox.Group onChange={checkboxChangeHandler}>
-            <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
-              <Col span={4}><Checkbox value="1">1月</Checkbox></Col>
-              <Col span={4}><Checkbox value="2">2月</Checkbox></Col>
-              <Col span={4}><Checkbox value="3">3月</Checkbox></Col>
-              <Col span={4}><Checkbox value="4">4月</Checkbox></Col>
-              <Col span={4}><Checkbox value="5">5月</Checkbox></Col>
-              <Col span={4}><Checkbox value="6">6月</Checkbox></Col>
-            </Row>
-            <Row gutter={16} style={{height: "50%"}} type="flex" align="middle">
-              <Col span={4}><Checkbox value="7">7月</Checkbox></Col>
-              <Col span={4}><Checkbox value="8">8月</Checkbox></Col>
-              <Col span={4}><Checkbox value="9">9月</Checkbox></Col>
-              <Col span={4}><Checkbox value="10">10月</Checkbox></Col>
-              <Col span={4}><Checkbox value="11">11月</Checkbox></Col>
-              <Col span={4}><Checkbox value="12">12月</Checkbox></Col>
-            </Row>
+          <Checkbox.Group defaultValue={index == 0 ? dateSelectList[0].monthList : []} onChange={checkboxChangeHandler}>
+            {RowAry[0]}
+            {RowAry[1]}
           </Checkbox.Group>
         </Col>
       )
@@ -275,7 +277,7 @@ const monthStateView = (props) => {
           <div className="occupancyRateBox">
             <div>
               <div className="rateTitle">入住率</div>
-              <div className="rateNumber">85.69%</div>
+              <div className="rateNumber">{`${occupancy*100}%`}</div>
             </div>
           </div>
         </Col>
@@ -588,6 +590,8 @@ const monthStateView = (props) => {
         const dragStart = (event, user) => {
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
+
+          event.target.classList.add("active");
 
           dispatch({
             type: 'roomStatusManagement/userDragStart',
@@ -918,5 +922,21 @@ const monthStateView = (props) => {
   )
 };
 
+class MonthStateClass extends React.Component{
+  constructor(props) {
+    super(props);
+  }
 
-export default monthStateView;
+  componentDidMount(){
+    this.props.dispatch({type: 'roomStatusManagement/monthRoomList'});
+  }
+
+  render(){
+    const View = monthStateView(this.props)
+    return(
+      <div> {View}</div>
+    )
+  }
+}
+
+export default MonthStateClass;
