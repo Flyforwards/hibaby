@@ -83,3 +83,10 @@ export function saveTopMenu(values) {
     body: JSON.stringify(values),
   })
 };
+//根据字典主表别名和删除标识获取字典
+export function getDictionary(values) {
+  return request('/crm/api/v1/dictionary/getDictionary', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};

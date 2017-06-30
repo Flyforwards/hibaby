@@ -150,7 +150,7 @@ class App extends Component {
   
   render() {
     const { prepareMeals } = this.props;
-    const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo } = prepareMeals;
+    const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
     const { nodes } = nodesInfo;
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
     const columns = [{
@@ -160,16 +160,34 @@ class App extends Component {
     }, {
       title: '荤素类型',
       dataIndex: 'mvType',
-      key: 'mvType'
-      
+      key: 'mvType',
+      render: (text, record, index) => {
+        mvType.map(function (item) {
+          if (text == item.id) {
+            return ( <span>{item.name}</span>);
+          }
+        });
+      }
     }, {
       title: '菜品类型',
       dataIndex: 'vdType',
-      key: 'vdType'
+      key: 'vdType',
+      render: (text, record, index) => {
+        vdType.map(function (item) {
+          if (text == item.id) {
+            return ( <span>{item.name}</span>);
+          }
+        });
+      }
     }, {
       title: '使用状态',
       dataIndex: 'status',
-      key: 'status'
+      key: 'status',
+      render: (text, record) => {
+        return (
+          <p>{text == 0 ? '未使用' : '已使用'}</p>
+        )
+      }
     }, {
       title: '操作',
       key: 'action',

@@ -7,7 +7,7 @@ class Footer extends React.Component {
     render() {
         return (
             <footer className="my-footer">
-              <p>Copyright © 2017, 凯贝姆 & 月子中心.Version2.0.12</p>
+              <p>Copyright © 2017, 凯贝姆 & 月子中心.Version2.0.13</p>
             </footer>
         )
     }

@@ -3,12 +3,13 @@ import { connect } from 'dva'
 import styles from './Cycle.scss';
 import CycleDetail from './cycleDetail.jsx';
 import CycleDishesDetail from './cycleDishesDetail.jsx';
-import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge, Select } from 'antd'
+import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge, Select, Spin } from 'antd'
 const Option = Select.Option;
 
 // 主页面
 function mealCycle (props) {
   function headerComponent (){
+
     return (
       <div>
         <Row type="flex" justify="space-around" align="middle">
@@ -35,6 +36,7 @@ function mealCycle (props) {
             />
           </Col>
         </Row>
+
       </div>
     )
   }
@@ -86,6 +88,9 @@ function mealCycle (props) {
 
   function handleChangeType (value) {
 
+    console.log('----------------------value');
+    console.log(value);
+
     const {dispatch} = props;
     if (value != props.curType) {
 
@@ -94,10 +99,8 @@ function mealCycle (props) {
         payload:{ value }
       })
 
-      dispatch({
-        type: 'cyclePage/getLoopList',
-        payload:{ type: Number(value) }
-      })
+      //请求对应页面的数据
+      getComponentData(props.curTabsIndex, value);
     }
   }
 
@@ -367,9 +370,7 @@ function mealCycle (props) {
             }
 
             <div>
-              <Row>
-                {tabooDishesDivs(tabooDishes)}
-              </Row>
+              {tabooDishesDivs(tabooDishes)}
             </div>
           </div>
         </Card>
@@ -384,16 +385,16 @@ function mealCycle (props) {
     for (let i = 0; i < dishes.length; i++) {
       const dish = dishes[i];
       colDivs.push(
-        <Col span="5" key={i}>
+        <Col span="6" key={i}>
           <div className="tabooUser-content">{dish['dishesName']}*{dish['total']}</div>
         </Col>
       );
     }
 
     return (
-      <div style={{marginLeft: '20px', marginTop: '10px'}}>
+      <Row type="flex" justify="space-between" style={{marginLeft: '20px', marginTop: '10px'}}>
         {colDivs}
-      </div>
+      </Row>
     )
   }
 
@@ -408,16 +409,16 @@ function mealCycle (props) {
         mark = '糖';
       }
       colDivs.push(
-          <Col span="5" key={i}>
+          <Col span="8" key={i}>
             <div className="tabooUser-content"><p>{dish['dishesName']}*{dish['total']}<font color="#ac672c" size="3">   {mark}</font></p></div>
           </Col>
       );
     }
 
     return (
-      <div style={{marginLeft: '20px', marginTop: '10px'}}>
+      <Row type="flex" justify="space-between" style={{marginLeft: '20px', marginTop: '10px'}}>
         {colDivs}
-      </div>
+      </Row>
     )
   }
 
@@ -477,7 +478,7 @@ function mealCycle (props) {
 
     return (
       <div>
-        <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#e6e6e6'}} onClick={() => { handleGotoDishesDetail(loopObj.week) }}>
+        <Card title={title} bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleGotoDishesDetail(loopObj.week) }}>
           <div style={{display: 'flex',justifyContent: 'flex-end'}}>
             <Badge count={loopObj.day} style={{
               backgroundColor: '#fff',
@@ -493,7 +494,6 @@ function mealCycle (props) {
     )
   }
 
-  //CycleDishesDetail
   function handleGotoDishesDetail(week) {
     const {dispatch} = props;
     dispatch({
@@ -524,19 +524,21 @@ function mealCycle (props) {
       }
 
       colDivs.push(
-        <Row key={i}>
-          <div style={{minHeight: '40px'}}>
-            <div className="tabooUser-detail-content">{loopObj.room}      {dishesStr}</div>
-          </div>
-          <div style={{background: '#e9e9e9',
-                       height: '1px'}}>
+        <Row key={i} style={ i%2 ?{backgroundColor :'#f6f6f6'} :{backgroundColor: '#ffffff'}}>
+          <div style={{minHeight: '40px',marginLeft: '20px', marginRight: '20px'}}>
+            <Col span="2">
+              <div className="tabooUser-detail-content">{loopObj.room}</div>
+            </Col>
+            <Col span="22">
+              <div className="tabooUser-detail-content">{dishesStr}</div>
+            </Col>
           </div>
         </Row>
       );
     }
 
     return (
-      <div style={{marginLeft: '20px', marginRight: '20px'}}>
+      <div>
         { colDivs }
       </div>
     )
@@ -565,7 +567,7 @@ function mealCycle (props) {
     if (index > 2){
       index = 0;
     }
-    getComponentData(index);
+    getComponentData(index, props.curType);
 
     setTimeout(function(){
       dispatch({
@@ -585,7 +587,7 @@ function mealCycle (props) {
     if (index < 0){
       index = 2;
     }
-    getComponentData(index);
+    getComponentData(index, props.curType);
 
     setTimeout(function(){
       dispatch({
@@ -596,49 +598,95 @@ function mealCycle (props) {
   }
 
   //请求对应页面的数据
-  function getComponentData(index) {
+  function getComponentData(index, type) {
 
     const {dispatch} = props;
+
     if (index == 0){
+
       dispatch({
         type: 'cyclePage/getLoopList',
-        payload:{  type: Number(props.curType) }
+        payload:{  type: type }
       })
     }
     else if (index == 1){
+
       dispatch({
         type: 'cyclePage/getLoopDishesList',
-        payload:{ type: Number(props.curType) }
+        payload:{ type: type }
       })
     }
     else {
+
       dispatch({
         type: 'cyclePage/getLoopRoomDishesList',
-        payload:{ type: Number(props.curType) }
+        payload:{ type: type }
       })
     }
   }
 
+  const {loading} = props;
   if (props.showPageIndex == 0) {
+
     return (
       <div className="MealCycle">
-        {headerComponent()}
+        <Spin
+          spinning={loading.effects['cyclePage/getLoopList'] !== undefined ? loading.effects['cyclePage/getLoopList'] : false}>
+          {headerComponent()}
+        </Spin>
       </div>
     )
   }
   else if (props.showPageIndex == 1) {
     return (
       <div className="MealCycle">
-        <CycleDetail loopWeekDatas={props.loopWeekDatas}/>
+        <Spin
+          spinning={loading.effects['cyclePage/getLoopListByWeek'] !== undefined ? loading.effects['cyclePage/getLoopListByWeek'] : false}>
+          <CycleDetail loopWeekDatas={props.loopWeekDatas}/>
+        </Spin>
       </div>
     )
   }
   else {
     return (
       <div className="MealCycle">
-        <CycleDishesDetail loopWeekDishesDatas={props.loopWeekDishesDatas} type={props.curType}/>
+        <Spin
+          spinning={loading.effects['cyclePage/getLoopRoomDishesListByWeek'] !== undefined ? loading.effects['cyclePage/getLoopRoomDishesListByWeek'] : false}>
+          <CycleDishesDetail loopWeekDishesDatas={props.loopWeekDishesDatas} type={props.curType}/>
+        </Spin>
       </div>
     )
+  }
+}
+
+class MealCyclePage extends React.Component{
+
+  constructor(props){
+    super(props);
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'cyclePage/changedShowStatus',
+      payload: {value: 0}
+    })
+
+    this.props.dispatch({
+      type: 'cyclePage/chooicesType',
+      payload:{ value: '0' }
+    })
+
+
+    this.props.dispatch({
+      type: 'cyclePage/changedTabActivity',
+      payload: { status: 0 }
+    })
+  }
+
+  render(){
+    return (
+      mealCycle(this.props)
+    );
   }
 }
 
@@ -656,4 +704,4 @@ function mapStateToProps(state) {
     loopWeekDishesDatas: state.cyclePage.loopWeekDishesDatas
   };
 }
-export default connect(mapStateToProps)(mealCycle)
+export default connect(mapStateToProps)(MealCyclePage)

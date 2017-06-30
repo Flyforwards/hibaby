@@ -20,14 +20,20 @@ export default {
   reducers: {
 
     changedTabActivity(state, { payload: { status} }) {
-      let index = Number(state.curTabsIndex) + status;
-      if (index == 3){
-        index = 0;
+
+      if (status == 0) {
+        return {...state, curTabsIndex: 0};
       }
-      if (index == -1){
-        index = 2;
+      else {
+        let index = Number(state.curTabsIndex) + status;
+        if (index == 3){
+          index = 0;
+        }
+        if (index == -1){
+          index = 2;
+        }
+        return {...state, curTabsIndex: index};
       }
-      return {...state, curTabsIndex: index};
     },
 
     chooicesType(state, { payload: { value } }) {

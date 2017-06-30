@@ -15,8 +15,8 @@ class App extends Component {
     data: [],
     loading: false
   }
-  
-  
+
+
   generateList = (data) => {
     for (let i = 0; i < data.length; i++) {
       const node = data[i];
@@ -27,14 +27,14 @@ class App extends Component {
       }
     }
   };
-  
+
   componentWillMount() {
     const { prepareMeals } = this.props;
     const { nodesInfo } = prepareMeals;
     const { nodes } = nodesInfo;
     this.generateList(nodes);
   }
-  
+
   getParentKey = (key, tree) => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
@@ -49,8 +49,8 @@ class App extends Component {
     }
     return parentKey;
   };
-  
-  
+
+
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
@@ -62,24 +62,24 @@ class App extends Component {
     const { nodesInfo } = prepareMeals;
     const { nodes } = nodesInfo;
     const value = e.target.value;
-    
-    
+
+
     const expandedKeys = this.state.dataList.map((item) => {
       if (item.key.indexOf(value) > -1) {
         return this.getParentKey(item.keys, nodes);
       }
       return null;
     }).filter((item, i, self) => item && self.indexOf(item) === i);
-    
-    
+
+
     this.setState({
       expandedKeys,
       searchValue: value,
       autoExpandParent: true
     });
   }
-  
-  
+
+
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -102,7 +102,7 @@ class App extends Component {
       postNodeId: selectedKeys[0]
     })
   }
-  
+
   getInfo = (data) => {
     const { changeKey, isLow, dispatch, reset } = this.props;
     const { id, name } = data;
@@ -132,11 +132,11 @@ class App extends Component {
         topVisible: false
       }
     })
-    
+
   }
-  
+
   handleTableChange = (pagination, filters, sorter) => {
-    
+
     const { dispatch, prepareMeals } = this.props;
     dispatch({
       type: 'prepareMeals/getDishesPageList',
@@ -147,10 +147,10 @@ class App extends Component {
       }
     })
   }
-  
+
   render() {
     const { prepareMeals } = this.props;
-    const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo } = prepareMeals;
+    const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
     const { nodes } = nodesInfo;
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
     const columns = [{
@@ -160,16 +160,34 @@ class App extends Component {
     }, {
       title: '荤素类型',
       dataIndex: 'mvType',
-      key: 'mvType'
-      
+      key: 'mvType',
+      render: (text, record, index) => {
+        mvType.map(function (item) {
+          if (text == item.id) {
+            return ( <span>{item.name}</span>);
+          }
+        });
+      }
     }, {
       title: '菜品类型',
       dataIndex: 'vdType',
-      key: 'vdType'
+      key: 'vdType',
+      render: (text, record, index) => {
+        vdType.map(function (item) {
+          if (text == item.id) {
+            return ( <span>{item.name}</span>);
+          }
+        });
+      }
     }, {
       title: '使用状态',
       dataIndex: 'status',
-      key: 'status'
+      key: 'status',
+      render: (text, record) => {
+        return (
+          <p>{text == 0 ? '未使用' : '已使用'}</p>
+        )
+      }
     }, {
       title: '操作',
       key: 'action',
@@ -180,7 +198,7 @@ class App extends Component {
         )
       }
     }]
-    
+
     const loop = data => data.map((item) => {
       const index = item.name.search(searchValue);
       const beforeStr = item.name.substr(0, index);
@@ -242,7 +260,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals
   };
