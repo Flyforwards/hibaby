@@ -10,6 +10,8 @@ import {
   Select,
   Switch,
   message,
+
+  Modal,
   Popover,
   Spin
 } from 'antd'
@@ -134,9 +136,8 @@ const monthStateView = (props) => {
   };
 
   const renderMonthSelectView = () => {
-
+    // console.log('roomMonth:renderMonthSelectViewRendering');
     const renderYearSelectView = (index) => {
-
       const yearSelectChangeHandler = (value) => {
         dispatch({
           type: 'roomStatusManagement/selectedYearChange',
@@ -325,16 +326,21 @@ const monthStateView = (props) => {
 
   /* 月房态列表 */
   const renderMonthRoomListView = () => {
-    const roomList = props.users.monthRoomList;
+    const roomList = [...props.users.monthRoomList];
+    // if(document.getElementById('day-1-1') != undefined) {
+    //    roomList = roomList.splice(0,1);
+    // }
+    // // roomList = roomList.splice(0,1);
 
     const renderMonthRoom = (room, roomIndex) => {
 
       let users = [];
-
+      // console.log('roomMonth:renderMonthRoomListView>>');
       const renderDayRoom = (dayList) => {
         if (!dayList || dayList.length === 0) {
           return null;
         }
+        // console.log('roomMonth:dayList>>', dayList);
 
         //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
         let status = 0;
@@ -387,12 +393,15 @@ const monthStateView = (props) => {
             'repair': status == 1, // 维修
             'overlap': status == 9, // 重叠
           });
-
+          // if (status == 0) {
+          //   return;
+          // }
           return (
             <div className="dayRoom"
                  data-room-index={roomIndex}
                  data-day-index={dayindex}
                  data-date={day.date}
+                 id={`day-${roomIndex}-${dayindex}` }
             >
               <div className={stateBox}/>
             </div>
@@ -625,7 +634,7 @@ const monthStateView = (props) => {
           + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
           + ')'}</div>
           result.push(
-            <Popover content={content}>
+            <Popover content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
               <div className="userBox"
                    style={{
                      width: width,
@@ -807,6 +816,7 @@ const monthStateView = (props) => {
    * 月房态主视图区
    */
   const monthMainView = () => {
+    // console.log('roomMonth:MainRendering');
     return (
 
         <div className="main">
