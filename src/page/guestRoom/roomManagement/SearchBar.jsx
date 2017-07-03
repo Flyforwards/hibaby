@@ -96,7 +96,7 @@ function SearchBar(props) {
       <Col span={8}>
         <FormItem {...formItemLayout} label='房间号'>
           {getFieldDecorator('roomNo',{rules: [{ required: (isSearch||isDetail)?false:true,  message: '请输入房间号！'}],initialValue:supProps?supProps.detailData.roomNo:''})(
-            <Input disabled={isDetail} className='antCli' placeholder="请填写"/>
+            <Input  style={{height:'32px'}} disabled={isDetail} className='antCli' placeholder="请填写"/>
           )}
         </FormItem>
       </Col>
