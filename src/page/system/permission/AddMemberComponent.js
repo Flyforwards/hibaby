@@ -4,8 +4,6 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tree, Button, Table, Modal, Form, Input } from 'antd'
 import "./permission.scss"
-
-
 const TreeNode = Tree.TreeNode;
 
 

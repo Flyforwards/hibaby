@@ -367,11 +367,10 @@ export default {
           yield put(routerRedux.push("/system/organization"));
           break;
         case 2:
-          message.success("该手机号已被注册");
+          message.error("该手机号已被注册");
           break;
         case 3:
-          message.success(`用户${data.name}已在${data.endemicName}注册过`);
-          yield put(routerRedux.push("/system/organization"));
+          message.error(`用户${data.name}已在${data.endemicName}注册过`);
           break;
         default:
           break;
@@ -436,14 +435,8 @@ export default {
     }
   },
   subscriptions: {
-    setup({
-            dispatch,
-            history
-          }) {
-      return history.listen(({
-                               pathname,
-                               query
-                             }) => {
+    setup({ dispatch, history }) {
+      return history.listen(({ pathname, query }) => {
         if (pathname === '/system/organization') {
           dispatch({
             type: 'roleSelectData',
