@@ -32,7 +32,10 @@ class CustomerCompIndex extends React.Component {
       title: '处理部门',
       dataIndex: 'responsibilityDepartment',
       key: 'responsibilityDepartment',
-      width: '10%'
+      width: '10%',
+      render: (record)=> {
+        return this.textforkey(this.props.deptList,record);
+      }
     }, {
       title: '处理时间',
       dataIndex: 'activityTime',
@@ -63,6 +66,15 @@ class CustomerCompIndex extends React.Component {
         }
       },
     ];
+  }
+
+  textforkey(array,value,valuekey = 'name') {
+    for (let i = 0 ;i<array.length ;i++){
+      let dict = array[i];
+      if(dict['id'] === value){
+        return  dict[valuekey];
+      }
+    }
   }
 
   deleteCustomerComp(record) {
@@ -130,12 +142,14 @@ class CustomerCompIndex extends React.Component {
 function mapStateToProps(state) {
   const {
     list,
-    pagination
+    pagination,
+    deptList
   } = state.customerComp;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
     list,
+    deptList,
     pagination,
     permissionAlias,
   };

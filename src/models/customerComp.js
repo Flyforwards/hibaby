@@ -6,6 +6,7 @@ import { local, session } from 'common/util/storage.js';
 import { PAGE_SIZE } from 'common/constants.js'
 import { parse } from 'qs'
 import * as systemService from '../services/system';
+import * as organizationService from '../services/organization';
 
 export default {
   namespace: 'customerComp',
@@ -23,6 +24,10 @@ export default {
   },
 
   reducers: {
+
+    getDeptListSave(state, { payload: { data: deptList } }){
+      return { ...state, deptList }
+    },
 
     getCustomerCompSave(state, { payload: { list, pagination }}) {
       return {...state, list, pagination: {  ...state.pagination,...pagination }};
@@ -53,6 +58,17 @@ export default {
     },
   },
   effects: {
+
+    //获取所有的部门信息
+    *getDeptList({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(organizationService.getDeptList, values);
+      if (code == 0) {
+        yield put({
+          type: 'getDeptListSave',
+          payload: { data , }
+        });
+      }
+    },
 
 
     // 创建客户投诉
@@ -165,6 +181,9 @@ export default {
             payload: query
           });
 
+          dispatch({
+            type: 'getDeptList',
+          });
         }
 
         if (pathname === '/crm/customer-comp/add') {

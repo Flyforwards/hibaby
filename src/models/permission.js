@@ -77,14 +77,10 @@ export default {
     //获取所有的部门信息
     *getDeptList({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.getDeptList, values);
-
       if (code == 0) {
         yield put({
           type: 'getDeptListSave',
-          payload: {
-            data,
-            code
-          }
+          payload: { data , }
         });
       }
     },
