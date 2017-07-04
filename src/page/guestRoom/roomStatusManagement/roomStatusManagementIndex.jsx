@@ -94,7 +94,8 @@ function ScreenBar(props) {
 
   function cusFromItem(dict) {
     return (
-      <FormItem key={dict.submitStr} {...formItemLayout} label={dict.title}>
+    <Col key={dict.submitStr} span={8}>
+      <FormItem  {...formItemLayout} label={dict.title}>
         {getFieldDecorator(dict.submitStr, {initialValue: dict.initValue})
         (
           dict.selectName ?
@@ -110,6 +111,8 @@ function ScreenBar(props) {
             <DatePicker style={{width: '100%'}}/>
         )}
       </FormItem>
+    </Col>
+
     )
   }
 
@@ -142,9 +145,9 @@ function ScreenBar(props) {
     }
 
     if (i < 3) {
-      oneDiv.push(<Col span={8}>{cusFromItem(dict)}</Col>)
+      oneDiv.push(cusFromItem(dict))
     } else {
-      twoDiv.push(<Col span={8}>{cusFromItem(dict)}</Col>)
+      twoDiv.push(cusFromItem(dict))
     }
   }
 
