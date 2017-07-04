@@ -244,7 +244,7 @@ function CardArray({roomList, dispatch}) {
       }
       else{
         chiDiv = <div>
-          <h1>客户信息错误</h1>
+          <h1>客户信息不存在</h1>
         </div>
       }
     }
