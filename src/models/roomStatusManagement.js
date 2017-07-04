@@ -62,7 +62,7 @@ export default {
     oldMonthRoomList: [],
     monthRoomList: [],
     dragUser: null,
-    defaultYear: new Date().getFullYear(),
+    defaultYear: moment().format('YYYY'),
     dateSelectList: [
       {year:moment().format('YYYY'),monthList:function (){
       const month = moment().format('M');
