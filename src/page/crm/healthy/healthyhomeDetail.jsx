@@ -278,7 +278,7 @@ function HealthyhomeDetail(props) {
         <Row className='rightItemBg'>
           <Col span="12">
             <div>
-              {myRadioForm(radioNames[6], {title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
+              {myRadioForm(radioNames[6], {title: '乙肝病毒感染或携带',radioItems: ['否','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
             </div>
           </Col>
         </Row>
@@ -289,7 +289,7 @@ function HealthyhomeDetail(props) {
         <Row className="topRightItemBg" style={{minHeight: '110px'}}>
           <Col span="12">
             <div>
-              {myRadioForm(radioNames[6],{title: '已肝病毒感染或携带',radioItems: ['否','是','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
+              {myRadioForm(radioNames[6],{title: '乙肝病毒感染或携带',radioItems: ['否','大三阳','小三阳','单纯表面抗原阳性'],value:healthInfo['radio_6']})}
             </div>
           </Col>
           <Col span="12">
@@ -456,7 +456,7 @@ function HealthyhomeDetail(props) {
           </Col>
           <Col span="22">
             {radioAllRow(radioNames[15],{title: '自然分娩（侧切）',radioItems: ['无','有'],value:healthInfo['radio_15']})}
-            {radioAllRow(radioNames[16],{title: '自然分娩（会阴撕裂）',radioItems: ['无','有','I度','II度','III度','IV度'],value:healthInfo['radio_16']})}
+            {radioAllRow(radioNames[16],{title: '自然分娩（会阴撕裂）',radioItems: ['无','I度','II度','III度','IV度'],value:healthInfo['radio_16']})}
             <Row>
               <div className="rightItemBg">
                 <FormItem
@@ -517,8 +517,8 @@ function HealthyhomeDetail(props) {
           </Col>
           <Col span="22">
             {radioAllRow(radioNames[21],{title: '产后清宫',radioItems: ['无','有'],value:healthInfo['radio_21']})}
-            {radioInputRow(radioNames[22], inputNames[9], {title: '产后大出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
-            {radioAllRow(radioNames[23],{title: '血压异常',radioItems: ['无','有','低血压','高血压'],value:healthInfo['radio_23']})}
+            {radioInputRow(radioNames[22], inputNames[9], {title: '产后出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
+            {radioAllRow(radioNames[23],{title: '血压异常',radioItems: ['无','低血压','高血压'],value:healthInfo['radio_23']})}
             {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开'],value:healthInfo['radio_24']})}
             {radioAllRow(radioNames[25],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染'],value:healthInfo['radio_25']})}
             {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26'],info:healthInfo['input_10']},'体温',false,'℃')}
@@ -591,10 +591,10 @@ function HealthyhomeDetail(props) {
               </div>
             </Row>
             {radioAllRow(radioNames[33],{title: '喂养方式',radioItems: ['纯母乳','混合','人工'],value:healthInfo['radio_33']})}
-            {radioAllRow(radioNames[34],{title: '产时胎心异常',radioItems: ['无','有','胎心快','胎心慢'],value:healthInfo['radio_34']})}
+            {radioAllRow(radioNames[34],{title: '产时胎心异常',radioItems: ['无','胎心快','胎心慢'],value:healthInfo['radio_34']})}
             {radioAllRow(radioNames[35],{title: '高胆红素血症',radioItems: ['无','有'],value:healthInfo['radioNam_35']})}
             {radioInputRow(radioNames[36], inputNames[14], {title: '蓝光治疗史',radioItems: ['否','是'],value:healthInfo['radio_36'],info:healthInfo['input_14']},'',false,'小时')}
-            {radioAllRow(radioNames[37],{title: '羊水污染',radioItems: ['无','有','1度','2度','3度'],value:healthInfo['radio_37']})}
+            {radioAllRow(radioNames[37],{title: '羊水污染',radioItems: ['无','1度','2度','3度'],value:healthInfo['radio_37']})}
             {radioInputRow(radioNames[38], inputNames[15], {title: '发热史',radioItems: ['否','是'],value:healthInfo['radio_38'],info:healthInfo['input_15']},'体温',false,'℃')}
             {radioAllRow(radioNames[39],{title: '低血糖史',radioItems: ['无','有'],value:healthInfo['radio_39']})}
             {radioAllRow(radioNames[40],{title: '呼吸困难',radioItems: ['无','有'],value:healthInfo['radio_40']})}
