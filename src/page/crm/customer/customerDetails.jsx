@@ -138,10 +138,10 @@ function ExtensionInfo(props) {
             <Col span={6}>
               <Row>
                 <Col className='leftTitle' span={7}>
-                  用户照片
+                  客户照片
                 </Col>
                 <Col span={7}>
-                  <div>
+                  <div className="avatar-uploader">
                     <img src={netData.imgURL} alt="" className="avatar" />
                   </div>
                 </Col>

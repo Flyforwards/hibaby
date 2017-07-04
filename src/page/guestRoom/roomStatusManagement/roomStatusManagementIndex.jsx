@@ -233,13 +233,20 @@ function CardArray({roomList, dispatch}) {
 
 
     if (dict.status === 4 || dict.status === 6) {
-      chiDiv = <div >
-        <p>客户姓名：{dict.customerConsume.customerName}</p>
-        <p>母婴护理师：朱禹桥</p>
-        <p>会员卡种：{dict.customerConsume.membershipCardName}</p>
-        <p>会员卡号：{dict.customerConsume.membershipCardId}</p>
-        <p>离所日期：{moment(dict.endDate).format('YYYY年MM月DD日') }</p>
-      </div>
+      if(dict.customerConsume){
+        chiDiv = <div >
+          <p>客户姓名：{dict.customerConsume.customerName}</p>
+          <p>母婴护理师：朱禹桥</p>
+          <p>会员卡种：{dict.customerConsume.membershipCardName}</p>
+          <p>会员卡号：{dict.customerConsume.membershipCardId}</p>
+          <p>离所日期：{moment(dict.endDate).format('YYYY年MM月DD日') }</p>
+        </div>
+      }
+      else{
+        chiDiv = <div>
+          <h1>客户信息错误</h1>
+        </div>
+      }
     }
     else if(dict.customerConsume){
       chiDiv = <div >
