@@ -1,6 +1,7 @@
 import * as roomManagement from '../services/roomManagement';
 import * as customerService from '../services/customer';
 import * as addCustomerInformation from '../services/addCustomerInformation';
+import * as systemService from '../services/system';
 import {message} from 'antd'
 import {routerRedux} from 'dva/router';
 import moment from 'moment';
@@ -47,6 +48,7 @@ export default {
     packageAry: [],
     roomList: '',
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
+    shipCards:[],
     resultsRowHouses: '',
     dayStatusData: '',
     FloorAry: '',
@@ -97,6 +99,9 @@ export default {
   },
 
   reducers: {
+    memberShipCardSave(state, { payload: { shipCards }}) {
+      return {...state, shipCards};
+    },
     setFloorSelect(state, {payload: data}) {
       return {...state,floorSelect:data };
     },
@@ -883,7 +888,17 @@ export default {
       yield put({
         type: 'monthRoomList',
       });
-    }
+    },
+    // 获取会员身份下拉选项， 也是卡种列表
+    *getMemberShipCard({payload: values}, { call, put }) {
+      const {data: { data, code} } = yield call(systemService.getMemberShipCard, values);
+      if (code == 0) {
+        yield put({
+          type: 'memberShipCardSave',
+          payload: { shipCards: data }
+        })
+      }
+    },
   },
 
 
@@ -895,7 +910,7 @@ export default {
           dispatch({type: 'dayStatus'});
 
           if (Object.keys(query).length == 0) {
-
+            dispatch({type:"getMemberShipCard"});
             dispatch({
               type: 'getDataDict',
               payload: {

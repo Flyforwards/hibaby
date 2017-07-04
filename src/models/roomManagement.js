@@ -95,8 +95,7 @@ export default {
       if (code == 0) {
         message.success('添加成功')
         yield put(routerRedux.push({
-          pathname: '/chamber/room/roomdetail',
-          query: {dataId:values.id}
+          pathname: '/chamber/roomindex',
         }))
       }
     },
@@ -105,7 +104,7 @@ export default {
       if (code == 0) {
         message.success('更新成功')
         yield put(routerRedux.push({
-          pathname: '/chamber/room/roomdetail',
+          pathname: '/chamber/roomindex',
           query: {dataId:values.id}
         }))
       }

@@ -20,6 +20,8 @@ import {
   Spin
 } from 'antd'
 import {routerRedux} from 'dva/router';
+const { MonthPicker } = DatePicker;
+
 import './roomStatusManagementIndex.scss'
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -53,12 +55,11 @@ function textforkey(array,value,valuekey = 'name') {
 
 function CustomerSearch(props) {
   const {getFieldDecorator} = props.form;
-  const {dispatch} = props;
-
+  const {dispatch,shipCards} = props;
   const searchAry = [
     [{title:'年龄',component:'InputNumber',submitStr:'age1'},
       {component:'InputNumber',submitStr:'age2'}],
-    {title:'预产期',component:'Date',submitStr:'dueDate'},
+    {title:'预产期',component:'MonthDate',submitStr:'dueDate'},
     {title:'操作者2',component:'Input',submitStr:'operator'},
     {title:'会员身份',component:'Select',submitStr:'member',selectName:'MEMBER'},
     {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
@@ -70,6 +71,10 @@ function CustomerSearch(props) {
     {title:'分娩医院',component:'Select',submitStr:'hospital',selectName:'Hospital'},
   ]
 
+  const options = shipCards.map((record) => {
+    return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+  });
+
   function creatComponent(dict) {
 
     let formItemLayout = dict.title ? {labelCol: {span: 8},wrapperCol: {span: 16}} : {labelCol: {span: 0},wrapperCol: {span: 24}}
@@ -78,11 +83,15 @@ function CustomerSearch(props) {
       <FormItem {...formItemLayout} label={dict.title}>
         {getFieldDecorator(dict.submitStr)
         (
-          dict.selectName?
+          dict.selectName?(
+            dict.submitStr === 'member'?<Select className='antCli' placeholder='请选择'>{options}</Select>:
             <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+          )
             :
             ( dict.component  === 'Date'?
                 <DatePicker style={{width: '100%'}}/>:
+                (dict.component  === 'MonthDate')?
+                  <MonthPicker style={{width: '100%'}}/>:
               (
                 dict.component  === 'Input'? <Input style={{height:dict.submitStr === 'sear'?'40px':'32px'}} placeholder={dict.submitStr === 'sear' ? '输入客户编号、客户姓名、联系方式、合同编号':"请填写"} className='antCli'/>
                   :<InputNumber min={1} max={100}/>
@@ -142,13 +151,19 @@ function CustomerSearch(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-
+        console.log(values)
         let param = {};
         Object.keys(values).map((key) => {
           const value = values[key];
           if(value){
             if(typeof value === 'object'){
-              param[key] = value.format();
+              if(key === 'dueDate'){
+                param.year = value.format('YYYY');
+                param.month = value.format('M');
+              }
+              else{
+                param[key] = value.format();
+              }
             }
             else {
               param[key] = value;
@@ -387,7 +402,7 @@ class addCustomer extends React.Component {
         ]}
 
       >
-        <CusSearchFormDiv dispatch={this.props.dispatch}/>
+        <CusSearchFormDiv shipCards={this.props.users.shipCards} dispatch={this.props.dispatch}/>
         <CustomerTable
           selectItem={this.state.selectItem||[...this.props.users.monthStateCustomers]}
           selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
