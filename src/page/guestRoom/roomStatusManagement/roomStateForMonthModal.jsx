@@ -75,7 +75,7 @@ function CustomerSearch(props) {
     let formItemLayout = dict.title ? {labelCol: {span: 8},wrapperCol: {span: 16}} : {labelCol: {span: 0},wrapperCol: {span: 24}}
 
     return(
-      <FormItem key={dict.submitStr} {...formItemLayout} label={dict.title}>
+      <FormItem {...formItemLayout} label={dict.title}>
         {getFieldDecorator(dict.submitStr)
         (
           dict.selectName?
@@ -101,19 +101,19 @@ function CustomerSearch(props) {
   for(let i = 0;i<searchAry.length;i++){
     const dict = searchAry[i];
     if((i%4) === 0){
-      searchChiAry.push(<Row>{tempChiAry}</Row>)
+      searchChiAry.push(<Row key={i}>{tempChiAry}</Row>)
       tempChiAry = [];
     }
 
     if(i === 0){
 
       tempChiAry.push (
-        <Col span={4}>
+        <Col  key={dict[0].submitStr} span={4}>
           <Row><Col span={19} offset={5}>
             {creatComponent(dict[0])}
           </Col></Row>
         </Col>,
-        <Col span={2}>
+        <Col key={dict[1].submitStr} span={2}>
           <Row><Col span={23} offset={1}>
             {creatComponent(dict[1])}
           </Col></Row>
@@ -122,14 +122,14 @@ function CustomerSearch(props) {
     }
     else {
       tempChiAry.push (
-        <Col span={6}>
+        <Col key={dict.submitStr} span={6}>
           {creatComponent(dict)}
         </Col>
       )
     }
   }
   if(tempChiAry.length < 4){
-    searchChiAry.push(<Row>{tempChiAry}</Row>)
+    searchChiAry.push(<Row key={searchAry.length}>{tempChiAry}</Row>)
   }
 
 
@@ -242,6 +242,11 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
     return disabled;
   }
 
+  for(let j = 0;j< allCusList.length;j++) {
+    const subDict = allCusList[j];
+    subDict.key = j;
+  }
+
 
   let ary = [];
   for(let i = 0;i< selectItem.length;i++){
@@ -293,7 +298,7 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
 
     for(let i = 0;i<selectItem.length;i++){
       const dict = selectItem[i] ;
-        tags.push(<Tag  closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
+        tags.push(<Tag key={dict.customerId || dict.id} closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
     }
   }
 
@@ -303,7 +308,7 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
       <Card bodyStyle={{padding:'10px', paddingTop:0}}>
         {tags}
       </Card>
-      <Table  className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
+      <Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
     </Card>
   )
 
