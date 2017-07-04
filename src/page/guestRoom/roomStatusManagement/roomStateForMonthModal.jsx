@@ -332,6 +332,7 @@ class addCustomer extends React.Component {
         dict.customerId = dict.id;
         dict.customerName = dict.name;
         dict.reserveDays = 28;
+        dict.newadd=true
         dict.edit = true;
       }
     }
@@ -505,7 +506,8 @@ function SearResults({resultsRowHouses,selectFun,currSelect}) {
       let chiAry = [];
       for (let j = 0; j < dict.jumpList.length; j++) {
         const chiDict = dict.jumpList[j];
-        chiAry.push(<span key={j}>{chiDict.roomNo}  停留天数{chiDict.stayDay}</span>)
+
+        chiAry.push(<span style={{lineHeight:'30px'}} key={j}>{j>0?' --> ':''} {chiDict.roomNo}  停留天数{chiDict.stayDay}</span>)
       }
       ary.push(<Card onClick={()=>{selectFun(i)}} style={{border: i === currSelect ? '1px solid red' : '1px solid #e9e9e9'}} key={i} bodyStyle={{padding:'10px'}} className="cardCli">{chiAry}</Card>)
 

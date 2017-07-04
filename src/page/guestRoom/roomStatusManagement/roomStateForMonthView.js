@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import {AddCustomerModal, RowHousesModal, RowHousesWayModal} from './roomStateForMonthModal';
 import DictionarySelect from 'common/dictionary_select';
+import moment from 'moment';
 import {
   Button,
   Checkbox,
@@ -10,7 +11,6 @@ import {
   Select,
   Switch,
   message,
-
   Modal,
   Popover,
   Spin
@@ -80,6 +80,7 @@ const monthStateView = (props) => {
     }
     let roomIndex = null;
     let dayIndex = null;
+    let newadd = null;
     let date = 0;
     let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
 
@@ -87,17 +88,20 @@ const monthStateView = (props) => {
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = event.target.dataset.dayIndex;
       date = event.target.dataset.date
+      newadd = event.target.dataset.newadd
     } else if (event.target.parentNode.className === "dayRoom") {
       roomIndex = event.target.parentNode.dataset.roomIndex;
       dayIndex = event.target.parentNode.dataset.dayIndex;
       date = event.target.parentNode.dataset.date
+      newadd =event.target.parentNode.dataset.newadd
+
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
 
       // 偏移天数
       let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
       date = new Date(event.target.dataset.date + offsetDays * 86400000);
-
+      newadd = event.target.dataset.newadd
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
@@ -119,7 +123,7 @@ const monthStateView = (props) => {
     dispatch({
       type: 'roomStatusManagement/userDrop',
       payload: {
-        roomIndex,
+        roomIndex,newadd,
         dayIndex: dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit,
       }
     });
@@ -448,17 +452,19 @@ const monthStateView = (props) => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             let parentNode = e.target.parentNode;
+            let dict = parentNode.dataset;
 
             dispatch({
-              type: 'roomStatusManagement/confirmCheckIn',
+              type: 'roomStatusManagement/monthRoomUpdate',
               payload: {
-                roomIndex: parentNode.dataset.roomIndex,
-                customerId: parentNode.dataset.customerId,
-                startIndex: parentNode.dataset.startIndex,
-                endIndex: parentNode.dataset.endIndex,
-                startDate: parentNode.dataset.startDate,
+                ConfirmDict:{roomIndex: dict.roomIndex,
+                  customerId: dict.customerId,
+                  startIndex: dict.startIndex,
+                  endIndex: dict.endIndex,
+                  startDate: dict.startDate,}
               }
             });
+
             parentNode.removeChild(e.target);
           });
           e.target.appendChild(btn);
@@ -648,6 +654,7 @@ const monthStateView = (props) => {
                    draggable="true"
                    onDragStart={(event) => dragStart(event, users[i])}
                    data-room-index={roomIndex}
+                   data-newadd={users[i].newadd}
                    data-customer-id={users[i].customerId}
                    data-customer-name={users[i].customerName}
                    data-start-index={users[i].startIndex}
@@ -869,7 +876,6 @@ const monthStateView = (props) => {
     const customers = props.users.monthStateCustomers;
 
     const dragStart = (dragUser, event) => {
-
       dragOffsetX = event.nativeEvent.offsetX;
       dragOffsetY = event.nativeEvent.offsetY;
 
