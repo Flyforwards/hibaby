@@ -242,22 +242,22 @@ class PrepareMeals extends Component {
                     length < 7 ? v.info = v.info.concat(infoZero.splice(length, 7 - length)) : v.info;
                     break;
                   case 1:
-                    length < 4 ? v.info = v.info.concat(infoOne.splice(length, 7 - length)) : v.info;
+                    length < 4 ? v.info = v.info.concat(infoOne.splice(length, 4 - length)) : v.info;
                     break;
                   case 2:
-                    length < 1 ? v.info = v.info.concat(infoTwo.splice(length, 7 - length)) : v.info;
+                    length < 1 ? v.info = infoTwo : v.info;
                     break;
                   case 3:
-                    length < 5 ? v.info = v.info.concat(infoThr.splice(length, 7 - length)) : v.info;
+                    length < 5 ? v.info = v.info.concat(infoThr.splice(length, 5 - length)) : v.info;
                     break;
                   case 4:
-                    length < 2 ? v.info = v.info.concat(infoFor.splice(length, 7 - length)) : v.info;
+                    length < 2 ? v.info = v.info.concat(infoFor.splice(length, 2 - length)) : v.info;
                     break;
                   case 5:
-                    length < 5 ? v.info = v.info.concat(infoFiv.splice(length, 7 - length)) : v.info;
+                    length < 5 ? v.info = v.info.concat(infoFiv.splice(length, 5 - length)) : v.info;
                     break;
                   case 6:
-                    length < 2 ? v.info = v.info.concat(infoSix.splice(length, 7 - length)) : infoSix;
+                    length < 2 ? v.info = v.info.concat(infoSix.splice(length, 2 - length)) : infoSix;
                     break;
                   default:
                     v.info = infoSix;
