@@ -878,13 +878,10 @@ export default {
       if (code != 0) {
         return;
       }
-
+      message.success('删除成功')
       // 删除视图中的用户
       yield put({
-        type: 'deleteUserReducer',
-        payload: {
-          ...value,
-        }
+        type: 'monthRoomList',
       });
     }
   },

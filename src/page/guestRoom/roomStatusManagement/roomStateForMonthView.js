@@ -25,6 +25,7 @@ let selectViewIndex = 0;
 // 保留所拖动元素中鼠标的位置
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+let addCustomerKey = 'addCustomerKeyOne'
 
 const statusExplain = [
   {name: "预定", color: "#29C1A6"},
@@ -893,6 +894,7 @@ const monthStateView = (props) => {
     };
 
     const addCustomer = () => {
+      addCustomerKey = addCustomerKey === 'addCustomerKeyOne' ?'addCustomerKeyTwo' :"addCustomerKeyOne";
       dispatch({
         type: 'roomStatusManagement/setCustomerVisible',
         payload: true
@@ -941,7 +943,7 @@ const monthStateView = (props) => {
         /** 侧边栏 **/
         monthSidebarView()
       }
-      <AddCustomerModal/>
+      <AddCustomerModal key={addCustomerKey}/>
       <RowHousesModal/>
       <RowHousesWayModal selectCuntomer={SELECT_CUSTOMER}/>
     </div>

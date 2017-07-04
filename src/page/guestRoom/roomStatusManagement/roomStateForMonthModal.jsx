@@ -29,6 +29,8 @@ import {parse} from 'qs';
 
 let SELECT_CUSTOMER = ''
 
+
+
 const formItemLayout = {
   labelCol: {span: 7},
   wrapperCol: {span: 17},
@@ -361,8 +363,6 @@ class addCustomer extends React.Component {
 
     }
     this.setState({selectItem:ary})
-    console.log(this.props.users.monthStateCustomers.length)
-
   }
 
   render(){
@@ -565,6 +565,10 @@ class RowHouses extends React.Component{
 
   handleCancel(){
     SELECT_CUSTOMER = '';
+    this.setState({
+      currSelect:''
+    })
+
     this.props.dispatch({
       type: 'roomStatusManagement/setRowHousesVisible',
       payload: false
