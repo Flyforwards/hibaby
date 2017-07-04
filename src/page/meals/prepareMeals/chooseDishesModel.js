@@ -58,7 +58,7 @@ class App extends Component {
     });
   }
   onChange = (e) => {
-    const { prepareMeals } = this.props;
+    const { prepareMeals, dispatch } = this.props;
     const { nodesInfo } = prepareMeals;
     const { nodes } = nodesInfo;
     const value = e.target.value;
@@ -77,6 +77,7 @@ class App extends Component {
       searchValue: value,
       autoExpandParent: true
     });
+    
   }
   
   
