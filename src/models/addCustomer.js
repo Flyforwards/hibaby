@@ -97,10 +97,18 @@ export default {
       return {...state,editCustomer:todo.data};
     },
     lookDlc(state, { payload: todo }){
-      const lookCardIDDLC = state.lookCardIDDLC;
-      const lookContractDLC = state.lookContractDLC;
-      return {...state,bigImageHidden:true,bigImageData:(todo.isCardid ? lookCardIDDLC
-        :lookContractDLC)};
+      let temp = '';
+
+      if(todo.head){
+        temp = [{url:state.headIconUrl}];
+      }
+      else{
+        temp = todo.isCardid ? state.lookCardIDDLC:state.lookContractDLC;
+      }
+
+      console.log(temp)
+
+      return {...state,bigImageHidden:true,bigImageData:temp};
 
     },
     changeTabs(state, { payload: { activityKey } }){
