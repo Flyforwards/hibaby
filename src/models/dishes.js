@@ -74,6 +74,7 @@ export default {
     *deleteDishesLibraryNodes({payload : values}, { call, put,select }){
       const {data: { data,code,err} } = yield call(dishesService.deleteDishesLibrary, values);
       if (code == 0) {
+        message.success("删除该菜品库节点成功");
         yield put({type:'getDishesLibraryNodes'} );
       }
     },
@@ -81,7 +82,7 @@ export default {
     *saveDishesLibrary({payload : values}, { call, put,select }){
       const {data: { data,code,err} } = yield call(dishesService.saveDishesLibrary, values);
       if (code == 0) {
-        message.info("信息保存成功");
+        message.success("信息保存成功");
         yield put({type:'getDishesLibraryNodes'} );
       }
     },
@@ -89,7 +90,7 @@ export default {
     *updateDishesLibrary({payload : values}, { call, put,select }){
       const {data: { data,code,err} } = yield call(dishesService.updateDishesLibrary, values);
       if (code == 0) {
-        message.info("信息修改成功");
+        message.success("信息修改成功");
         yield put({type:'getDishesLibraryNodes'} );
       }
     },
@@ -114,7 +115,7 @@ export default {
       const {data: { data, code,err} } = yield call(dishesService.saveDishes, values);
       if (code == 0) {
         //更新state
-        message.info("菜品信息保存成功");
+        message.success("菜品信息保存成功");
         yield put(routerRedux.push(`/meals/dishes/dishesDetail?dataId=${data.id}`))
       }
     },

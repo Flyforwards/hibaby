@@ -36,15 +36,15 @@ class DishesLeft extends React.Component {
     this.selectNodeLevel = null;//选中树节点等级
   }
   //递归函数生成树
-  nodesIteration = (root) => {
+  nodesIteration = (nodes) => {
     const _this = this;
-    if(root.nodes){
-      return root.nodes.map(function (child,index) {
-        return <TreeNode name={child.name} title={child.name+"("+child.dishesCount+")"} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
-      });
-    }
-    return <TreeNode  name={root.name} title={root.name} level={root.level} key={root.id} parentId={root.parentId} />;
-  }
+    return nodes.map((item) => {
+      if(item.nodes && item.nodes.length){
+          return <TreeNode name={item.name} title={item.name+"("+item.dishesCount+")"} level={item.level} key={item.id} parentId={item.parentId}>{_this.nodesIteration(item.nodes)}</TreeNode>;
+      }
+      return <TreeNode  name={item.name} title={item.name+"("+item.dishesCount+")"} level={item.level} key={item.id} parentId={item.parentId} />;
+    });
+}
 
   //展开/收起节点时触发
   expandHandler = (expandedKeys, {expanded: bool, node}) => {
@@ -197,6 +197,9 @@ class DishesLeft extends React.Component {
   handlerRemove = () =>{
     const {dispatch} = this.props;
     const _this = this;
+    _this.setState({
+      unfolded:this.state.unfolded
+    });
     Modal.confirm({
       title: '提示',
       content: '是否确定删除此菜品库节点?',
@@ -211,6 +214,7 @@ class DishesLeft extends React.Component {
         });
       }
     });
+
   }
 
   //节点表单/详情页取消按钮点击事件
@@ -289,7 +293,7 @@ class DishesLeft extends React.Component {
 
 
     const {dishesLibraryNodes} = this.props.dishes;
-    let treeNodes = dishesLibraryNodes?this.nodesIteration(dishesLibraryNodes):null;
+    let treeNodes = dishesLibraryNodes?this.nodesIteration(dishesLibraryNodes.nodes):null;
     treeNodes =dishesLibraryNodes?<TreeNode name={dishesLibraryNodes.name} key={dishesLibraryNodes.id} level={dishesLibraryNodes.level} title={dishesLibraryNodes.name} parentId={dishesLibraryNodes.parentId}>{treeNodes}</TreeNode>:null;
     return (
       <div className="Dishes-left">
