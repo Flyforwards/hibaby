@@ -226,7 +226,8 @@ export default {
     },
 
     setLookCardIDDLC(state, { payload: todo }){
-      const ary = state.expandData.idcardScan.split(",");
+      console.log(todo)
+      const ary = state.expandData.idcardScan.split("|");
 
       let dict = [];
       for (let i = 0 ; i < ary.length ; i++ ){
@@ -239,7 +240,7 @@ export default {
     },
 
     setLookContractDLC(state, { payload: todo }){
-      const ary = state.expandData.contractAppendices.split(",");
+      const ary = state.expandData.contractAppendices.split("|");
       let dict = [];
       for (let i = 0 ; i < ary.length ; i++ ){
         const name = ary[i];
@@ -461,14 +462,14 @@ export default {
       for (let i = 0; i < state.lookCardIDDLC.length;i++){
         const dict = state.lookCardIDDLC[i];
         caridStr += dict.name;
-        caridStr += ',';
+        caridStr += '|';
       }
 
 
       for (let i = 0; i < state.lookContractDLC.length;i++){
         const dict = state.lookContractDLC[i];
         contractStr += dict.name;
-        contractStr += ',';
+        contractStr += '|';
       }
 
       if (caridStr.length > 0){caridStr = caridStr.substr(0,caridStr.length - 1) }
