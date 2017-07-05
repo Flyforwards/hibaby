@@ -14,196 +14,198 @@ class PrepareMeals extends Component {
   constructor(props) {
     super(props)
     this.state = {};
-    this.infoZero = [
-      {
-        dishesName: '菜一',
-        number: 1
-      }, {
-        dishesName: '菜二',
-        number: 2
-      }, {
-        dishesName: '菜三',
-        number: 3
-      }, {
-        dishesName: '菜四',
-        number: 4
-      }, {
-        dishesName: '菜五',
-        number: 5
-      }, {
-        dishesName: '菜六',
-        number: 6
-      }, {
-        dishesName: '菜七',
-        number: 7
-      }
-    ];
-    this.infoOne = [
-      {
-        dishesName: '菜一',
-        number: 1
-      }, {
-        dishesName: '菜二',
-        number: 2
-      }, {
-        dishesName: '菜三',
-        number: 3
-      }, {
-        dishesName: '菜四',
-        number: 4
-      }
-    ];
-    this.infoTwo = [
-      {
-        dishesName: '菜一',
-        number: 1
-      }
-    ]
-    this.infoThr = [
-      {
-        dishesName: '菜一',
-        number: 1
-      }, {
-        dishesName: '菜二',
-        number: 2
-      }, {
-        dishesName: '菜三',
-        number: 3
-      }, {
-        dishesName: '菜四',
-        number: 4
-      }, {
-        dishesName: '菜五',
-        number: 5
-      }
-    ];
-    this.infoFor = [
-      {
-        dishesName: '菜一',
-        number: 1
-      }, {
-        dishesName: '菜二',
-        number: 2
-      }
-    ];
-    this.infoFiv = [
-      {
-        dishesName: '菜一',
-        number: 1
-      }, {
-        dishesName: '菜二',
-        number: 2
-      }, {
-        dishesName: '菜三',
-        number: 3
-      }, {
-        dishesName: '菜四',
-        number: 4
-      }, {
-        dishesName: '菜五',
-        number: 5
-      }
-    ];
-    this.infoSix = [
-      {
-        dishesName: '菜一',
-        number: 1
-      }, {
-        dishesName: '菜二',
-        number: 2
-      }
-    ];
-    
+    //this.infoZero = [
+    //  {
+    //    dishesName: '菜一',
+    //    number: 1
+    //  }, {
+    //    dishesName: '菜二',
+    //    number: 2
+    //  }, {
+    //    dishesName: '菜三',
+    //    number: 3
+    //  }, {
+    //    dishesName: '菜四',
+    //    number: 4
+    //  }, {
+    //    dishesName: '菜五',
+    //    number: 5
+    //  }, {
+    //    dishesName: '菜六',
+    //    number: 6
+    //  }, {
+    //    dishesName: '菜七',
+    //    number: 7
+    //  }
+    //];
+    //this.infoOne = [
+    //  {
+    //    dishesName: '菜一',
+    //    number: 1
+    //  }, {
+    //    dishesName: '菜二',
+    //    number: 2
+    //  }, {
+    //    dishesName: '菜三',
+    //    number: 3
+    //  }, {
+    //    dishesName: '菜四',
+    //    number: 4
+    //  }
+    //];
+    //this.infoTwo = [
+    //  {
+    //    dishesName: '菜一',
+    //    number: 1
+    //  }
+    //]
+    //this.infoThr = [
+    //  {
+    //    dishesName: '菜一',
+    //    number: 1
+    //  }, {
+    //    dishesName: '菜二',
+    //    number: 2
+    //  }, {
+    //    dishesName: '菜三',
+    //    number: 3
+    //  }, {
+    //    dishesName: '菜四',
+    //    number: 4
+    //  }, {
+    //    dishesName: '菜五',
+    //    number: 5
+    //  }
+    //];
+    //this.infoFor = [
+    //  {
+    //    dishesName: '菜一',
+    //    number: 1
+    //  }, {
+    //    dishesName: '菜二',
+    //    number: 2
+    //  }
+    //];
+    //this.infoFiv = [
+    //  {
+    //    dishesName: '菜一',
+    //    number: 1
+    //  }, {
+    //    dishesName: '菜二',
+    //    number: 2
+    //  }, {
+    //    dishesName: '菜三',
+    //    number: 3
+    //  }, {
+    //    dishesName: '菜四',
+    //    number: 4
+    //  }, {
+    //    dishesName: '菜五',
+    //    number: 5
+    //  }
+    //];
+    //this.infoSix = [
+    //  {
+    //    dishesName: '菜一',
+    //    number: 1
+    //  }, {
+    //    dishesName: '菜二',
+    //    number: 2
+    //  }
+    //];
+
   }
-  
+
   componentWillMount() {
     this.props.dispatch({
-      type: 'prepareMeals/getMenuByDay',
+      type: 'prepareMealsDinner/getMenuByDay',
       payload: {
         'day': '1',
         'week': '1'
       }
     });
   }
-  
+
   onChange = (e) => {
     const { dispatch } = this.props;
     const postDate = JSON.parse(e.target.value);
     postDate.week == '0' ?
       dispatch({
-        type: 'prepareMeals/changeHighTime',
+        type: 'prepareMealsDinner/changeHighTime',
         payload: { postDate }
       }) : dispatch({
-      type: 'prepareMeals/changeLowTime',
+      type: 'prepareMealsDinner/changeLowTime',
       payload: { postDate }
-    })
-    
+    });
+
     postDate.week == '0' ?
       dispatch({
-        type: 'prepareMeals/getTopMenuByDay',
+        type: 'prepareMealsDinner/getTopMenuByDay',
         payload: postDate
       }) : dispatch({
-      type: 'prepareMeals/getMenuByDay',
+      type: 'prepareMealsDinner/getMenuByDay',
       payload: postDate
     })
-  }
-  
+  };
+
   onSearch = (value) => {
     const { dispatch } = this.props;
     if (!value) {
       return message.error('请输入菜名！')
     } else {
       dispatch({
-        type: 'prepareMeals/getMenuByDishes',
+        type: 'prepareMealsDinner/getMenuByDishes',
         payload: {
           name: value
         }
       })
     }
-    
-    
-  }
+
+
+  };
   showHighModal = (info) => {
     const { dispatch } = this.props;
     const { week, day, type } = info;
     dispatch({
-      type: 'prepareMeals/getTopMenuByType',
+      type: 'prepareMealsDinner/getTopMenuByType',
       payload: {
         week, day, type
       }
-    })
+    });
     dispatch({
-      type: 'prepareMeals/changeTopVisible',
+      type: 'prepareMealsDinner/changeTopVisible',
       payload: {
         topVisible: true
       }
     })
-  }
-  
-  
+  };
+
+
   showLowModal = (info) => {
     const { dispatch } = this.props;
     const { week, day, type } = info;
     dispatch({
-      type: 'prepareMeals/changeVisible',
+      type: 'prepareMealsDinner/changeVisible',
       payload: {
         visible: true
       }
-    })
+    });
     dispatch({
-      type: 'prepareMeals/getMenuByType',
+      type: 'prepareMealsDinner/getMenuByType',
       payload: {
         week, day, type
       }
     })
-    
-  }
-  
+
+  };
+
   render() {
+
+
     const { prepareMeals, loading } = this.props;
-    const { dayInfo, defaultValueRadio, menuInfo, findMenuInfo } = prepareMeals;
+    const { dayInfo, defaultValueRadio, menuInfo, findMenuInfo, leftDish } = prepareMeals;
     let colorType = '#dddddd';
-    const { infoZero, infoOne, infoTwo, infoThr, infoFor, infoFiv, infoSix } = this;
+    const { infoZero, infoOne, infoTwo, infoThr, infoFor, infoFiv, infoSix } = leftDish;
     return (
       <div className="prepareMeals">
         <LowModal/>
@@ -239,25 +241,25 @@ class PrepareMeals extends Component {
                 const length = v.info.length;
                 switch (v.type) {
                   case 0:
-                    length < 7 ? v.info = v.info.concat(infoZero.splice(length, 7 - length)) : v.info;
+                    length < 7 ? v.info = v.info.concat(infoZero.slice(length)) : v.info;
                     break;
                   case 1:
-                    length < 4 ? v.info = v.info.concat(infoOne.splice(length, 4 - length)) : v.info;
+                    length < 4 ? v.info = v.info.concat(infoOne.slice(length)) : v.info;
                     break;
                   case 2:
                     length < 1 ? v.info = infoTwo : v.info;
                     break;
                   case 3:
-                    length < 5 ? v.info = v.info.concat(infoThr.splice(length, 5 - length)) : v.info;
+                    length < 5 ? v.info = v.info.concat(infoThr.slice(length)) : v.info;
                     break;
                   case 4:
-                    length < 2 ? v.info = v.info.concat(infoFor.splice(length, 2 - length)) : v.info;
+                    length < 2 ? v.info = v.info.concat(infoFor.slice(length)) : v.info;
                     break;
                   case 5:
-                    length < 5 ? v.info = v.info.concat(infoFiv.splice(length, 5 - length)) : v.info;
+                    length < 5 ? v.info = v.info.concat(infoFiv.slice(length)) : v.info;
                     break;
                   case 6:
-                    length < 2 ? v.info = v.info.concat(infoSix.splice(length, 2 - length)) : infoSix;
+                    length < 2 ? v.info = v.info.concat(infoSix.slice(length)) : v.info;
                     break;
                   default:
                     v.info = infoSix;
@@ -295,11 +297,11 @@ class PrepareMeals extends Component {
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
-    prepareMeals: state.prepareMeals,
+    prepareMeals: state.prepareMealsDinner,
     loading: state.loading
-    
+
   };
 }
 export default connect(mapStateToProps)(PrepareMeals);

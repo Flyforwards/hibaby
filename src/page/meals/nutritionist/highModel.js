@@ -16,43 +16,43 @@ class DynamicFieldSet extends Component {
     }
     this.infoKey = 0;
   }
-  
+
   remove = (k) => {
     const { topMenuInfoByType, dispatch } = this.props;
     let { dishes } = topMenuInfoByType;
     dishes.splice(k, 1);
     dispatch({
-      type: "prepareMeals/changeTopMenuInfoByType",
+      type: "prepareMealsDinner/changeTopMenuInfoByType",
       payload: { dishes }
     });
   }
-  
-  
+
+
   add = () => {
     const { topMenuInfoByType, dispatch } = this.props;
     const { dishes } = topMenuInfoByType;
     dishes.push({ isDel: true })
     dispatch({
-      type: "prepareMeals/changeTopMenuInfoByType",
+      type: "prepareMealsDinner/changeTopMenuInfoByType",
       payload: { dishes }
     })
   }
-  
-  
+
+
   handleSubmit = (e) => {
     const { dispatch, topMenuInfoByType } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         dispatch({
-          type: 'prepareMeals/saveTopMenu',
+          type: 'prepareMealsDinner/saveTopMenu',
           payload: { ...topMenuInfoByType }
-          
+
         })
       }
     });
     dispatch({
-      type: 'prepareMeals/chooseVisible',
+      type: 'prepareMealsDinner/chooseVisible',
       payload: {
         topVisible: false
       }
@@ -62,11 +62,11 @@ class DynamicFieldSet extends Component {
     const { form } = this.props;
     form.resetFields([`name-${changeKey}`])
   }
-  
+
   changeTopVisible = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'prepareMeals/changeTopVisible',
+      type: 'prepareMealsDinner/changeTopVisible',
       payload: {
         topVisible: false
       }
@@ -77,63 +77,63 @@ class DynamicFieldSet extends Component {
     this.setState({
       changeKey: k
     })
-    
+
     dispatch({
-      type: 'prepareMeals/chooseVisible',
+      type: 'prepareMealsDinner/chooseVisible',
       payload: {
         chooseVisibleInfo: true
       }
     })
   }
-  
+
   changePointPackage = (value) => {
     const { dispatch } = this.props;
     const pointPackage = parseInt(value);
-    
+
     dispatch({
-      type: 'prepareMeals/changePointPackage',
+      type: 'prepareMealsDinner/changePointPackage',
       payload: {
         pointPackage
       }
     })
   }
-  
+
   changeEatDay = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
     const eatDayValue = parseInt(value);
     dispatch({
-      type: 'prepareMeals/changeEatDay',
+      type: 'prepareMealsDinner/changeEatDay',
       payload: {
         eatDayValue, infoKey
       }
     })
-    
+
   }
   changeEatTime = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
     const eatTimeValue = parseInt(value);
     dispatch({
-      type: 'prepareMeals/changeEatTime',
+      type: 'prepareMealsDinner/changeEatTime',
       payload: {
         eatTimeValue, infoKey
       }
     })
-    
+
   }
   changeFrequency = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
     const frequencyValue = parseInt(value);
     dispatch({
-      type: 'prepareMeals/changeFrequency',
+      type: 'prepareMealsDinner/changeFrequency',
       payload: {
         frequencyValue, infoKey
       }
     })
   }
-  
+
   render() {
     const { form, cardLevelInfo, topMenuInfoByType } = this.props;
     const { changeKey, isLow } = this.state;
@@ -149,7 +149,7 @@ class DynamicFieldSet extends Component {
         sm: { span: 16 }
       }
     }
-    
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
@@ -174,8 +174,8 @@ class DynamicFieldSet extends Component {
             </FormItem>
           </Col>
         </Row>
-        
-        
+
+
         {
           dishes.map((v, k) => {
             return (
@@ -274,7 +274,7 @@ class DynamicFieldSet extends Component {
             )
           })
         }
-        
+
         <Row style={{ marginTop: '25px' }}>
           <Col span={15}/>
           <Col span={3} className='btnCenter'>
@@ -304,11 +304,11 @@ class LowMOdel extends Component {
     super(props)
     this.state = {}
   }
-  
+
   handleOk = (e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'prepareMeals/changeTopVisible',
+      type: 'prepareMealsDinner/changeTopVisible',
       payload: {
         topVisible: false
       }
@@ -317,13 +317,13 @@ class LowMOdel extends Component {
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'prepareMeals/changeTopVisible',
+      type: 'prepareMealsDinner/changeTopVisible',
       payload: {
         topVisible: false
       }
     })
   }
-  
+
   render() {
     const { prepareMeals, dispatch } = this.props;
     const { topVisible, cardLevelInfo, topMenuInfoByType } = prepareMeals;
@@ -348,9 +348,9 @@ class LowMOdel extends Component {
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
-    prepareMeals: state.prepareMeals
+    prepareMeals: state.prepareMealsDinner
   };
 }
 export default connect(mapStateToProps)(LowMOdel);
