@@ -585,7 +585,6 @@ export default {
               return {
                 ...item,
                 reserveDays: 28,
-                newadd:true
               }
             })
           }
@@ -907,10 +906,10 @@ export default {
     {
       return history.listen(({pathname, query}) => {
         if (pathname === '/chamber/roomstatusindex') {
-          dispatch({type: 'dayStatus'});
-
+          dispatch({type:"dayStatus"});
           if (Object.keys(query).length == 0) {
             dispatch({type:"getMemberShipCard"});
+            dispatch({type:"listByMain"});
             dispatch({
               type: 'getDataDict',
               payload: {

@@ -75,7 +75,6 @@ class PicturesWall extends React.Component {
 
   render() {
     const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
-    const {noMultiple} = this.props;
 
     return (
       <div>
@@ -84,9 +83,9 @@ class PicturesWall extends React.Component {
           action="/crm/api/v1/uploadImg"
           headers={{'USER-TOKEN':session.get("token")}}
           showUploadList = {!this.props.isHead}
-          defaultFileList={defaultFileList}
+          defaultFileList={this.props.isHead?null:defaultFileList}
           filelist={fileList}
-          multiple={noMultiple ? false :true}
+          multiple={this.props.isHead ? false :true}
           beforeUpload={this.beforeUpload.bind(this)}
           onPreview={this.handlePreview.bind(this)}
           onChange={this.handleChange.bind(this)}

@@ -354,7 +354,6 @@ class addCustomer extends React.Component {
         dict.customerId = dict.id;
         dict.customerName = dict.name;
         dict.reserveDays = 28;
-        dict.newadd=true
         dict.edit = true;
       }
     }

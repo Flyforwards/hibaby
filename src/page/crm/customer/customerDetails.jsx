@@ -21,7 +21,8 @@ function rowDiv(dict) {
   return(
     <Row className='rowHeight'>
       <Col className='leftTitle' span={titSpan}>{`${dict.title}：`}</Col>
-      <Col span={contentSpan}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid||dict.onClick.onClickForContractAppendices}>查看附件</Button>  :dict.value }</Col>
+      <Col span={contentSpan}>{dict.isDLC ? <Button onClick={dict.onClick.onClickForCardid||dict.onClick.onClickForContractAppendices}>查看附件</Button>
+        :dict.value }</Col>
     </Row>
   )
 }
@@ -129,6 +130,9 @@ function ExtensionInfo(props) {
     );
   }
 
+  function imgOnClick() {
+    dispatch({type:'addCustomer/lookDlc',payload:{head:true}})
+  }
 
   return(
         <div className='contentDiv detail'>
@@ -142,7 +146,7 @@ function ExtensionInfo(props) {
                 </Col>
                 <Col span={7}>
                   <div className="avatar-uploader">
-                    <img src={netData.imgURL} alt="" className="avatar" />
+                    <img onClick={imgOnClick}  src={netData.imgURL} alt="" className="avatar" />
                   </div>
                 </Col>
               </Row>

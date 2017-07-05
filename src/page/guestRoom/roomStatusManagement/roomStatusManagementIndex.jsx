@@ -217,7 +217,7 @@ function CardArray({roomList, dispatch}) {
     if (dict.status === 0) {
       chiAry = [...chiAry, 2, 3]
     }
-    if (dict.status === 1) {
+    if (dict.isRepair == 1) {
       chiAry = [8]
     }
 
@@ -265,12 +265,12 @@ function CardArray({roomList, dispatch}) {
 
     return (
       <Card className="smallCard" bodyStyle={{padding: '10px'}} key={key} title={dict.roomNo}
-            extra={statusDict[dict.status]}>
+            extra={dict.isRepair == 1 ? '维修' : statusDict[dict.status]}>
         {chiDiv}
         <Row className='bottomLine'>
           <Col span={7}><p>房间状态</p></Col>
           <Col span={17}>
-            <Select disabled={disabled} value={statusDict[dict.status]} key={key} onChange={(index) => {
+            <Select disabled={disabled} value={dict.isRepair == 1 ? '维修' : statusDict[dict.status]} key={key} onChange={(index) => {
               handleChange(index, dict)
             }} className='antCli' placeholder='请选择'>
               {chiDivAry}
@@ -305,12 +305,14 @@ function CardArray({roomList, dispatch}) {
   )
 }
 
-let isAll = true;
-
-class roomStatusIndex extends React.Component {
+class DayRoomStatus extends React.Component{
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    this.props.dispatch({type: 'roomStatusManagement/dayStatus'});
   }
 
   statusChange(array) {
@@ -341,29 +343,44 @@ class roomStatusIndex extends React.Component {
     this.props.dispatch({type: 'roomStatusManagement/setSelectValue', payload: {data: array}})
   }
 
-  componentDidMount() {
-    this.props.dispatch({type: 'roomStatusManagement/listByMain'});
-  }
 
-  render() {
+  render(){
+
     const ScreenBarDiv = Form.create()(ScreenBar);
     const {loading} = this.props;
     const {selectValue, roomList} = this.props.users;
+
+    return(
+      <div>
+        <ScreenBarDiv selectValue={selectValue} supProps={this.props}
+                      statusChange={this.statusChange.bind(this)}/>
+        <Spin
+          spinning={loading.effects['roomStatusManagement/dayStatus'] !== undefined ? loading.effects['roomStatusManagement/dayStatus'] : false}>
+          <CardArray dispatch={this.props.dispatch}
+                     roomList={roomList || this.props.users.dayStatusData.roomList}/>
+        </Spin>
+      </div>
+    )
+  }
+}
+
+let isAll = true;
+
+class roomStatusIndex extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
     const MonthRoomStatus = <RoomStateForMonthView {...this.props}/>;
+    const RoomStatus = <DayRoomStatus {...this.props}/>;
     return (
       <div className="roomStatusDiv">
         {
           this.props.users.roomState === "day"
             ?
-            <div>
-              <ScreenBarDiv selectValue={selectValue} supProps={this.props}
-                            statusChange={this.statusChange.bind(this)}/>
-              <Spin
-                spinning={loading.effects['roomStatusManagement/dayStatus'] !== undefined ? loading.effects['roomStatusManagement/dayStatus'] : false}>
-                <CardArray dispatch={this.props.dispatch}
-                           roomList={roomList || this.props.users.dayStatusData.roomList}/>
-              </Spin>
-            </div>
+            RoomStatus
             :
             MonthRoomStatus
         }

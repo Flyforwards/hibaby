@@ -101,7 +101,7 @@ function cusComponent(dict) {
     case 'headUpload':
     {
         tempDiv =
-          <FileUpload noMultiple={false} fun={dict.fun} isHead={true} loadProgress={dict.loadProgress}>
+          <FileUpload fun={dict.fun} isHead={true} loadProgress={dict.loadProgress}>
             <Spin  spinning={dict.spin}>
               <div className="avatar-uploader">
                 {

@@ -81,7 +81,6 @@ const monthStateView = (props) => {
     }
     let roomIndex = null;
     let dayIndex = null;
-    let newadd = null;
     let date = 0;
     let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
 
@@ -89,12 +88,10 @@ const monthStateView = (props) => {
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = event.target.dataset.dayIndex;
       date = event.target.dataset.date
-      newadd = event.target.dataset.newadd
     } else if (event.target.parentNode.className === "dayRoom") {
       roomIndex = event.target.parentNode.dataset.roomIndex;
       dayIndex = event.target.parentNode.dataset.dayIndex;
       date = event.target.parentNode.dataset.date
-      newadd =event.target.parentNode.dataset.newadd
 
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
@@ -102,7 +99,6 @@ const monthStateView = (props) => {
       // 偏移天数
       let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
       date = new Date(event.target.dataset.date + offsetDays * 86400000);
-      newadd = event.target.dataset.newadd
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
@@ -124,7 +120,7 @@ const monthStateView = (props) => {
     dispatch({
       type: 'roomStatusManagement/userDrop',
       payload: {
-        roomIndex,newadd,
+        roomIndex,
         dayIndex: dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit,
       }
     });
@@ -655,7 +651,6 @@ const monthStateView = (props) => {
                    draggable="true"
                    onDragStart={(event) => dragStart(event, users[i])}
                    data-room-index={roomIndex}
-                   data-newadd={users[i].newadd}
                    data-customer-id={users[i].customerId}
                    data-customer-name={users[i].customerName}
                    data-start-index={users[i].startIndex}
