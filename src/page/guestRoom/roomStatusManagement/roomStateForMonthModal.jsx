@@ -55,7 +55,7 @@ function textforkey(array,value,valuekey = 'name') {
 
 function CustomerSearch(props) {
   const {getFieldDecorator} = props.form;
-  const {dispatch,shipCards} = props;
+  const {dispatch,shipCards,packageAry} = props;
   const searchAry = [
     [{title:'年龄',component:'InputNumber',submitStr:'age1'},
       {component:'InputNumber',submitStr:'age2'}],
@@ -75,6 +75,10 @@ function CustomerSearch(props) {
     return (<Option key={record.id} value={record.id}>{record.name}</Option>)
   });
 
+  const purchasePackageOptions = packageAry.map((record) => {
+    return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+  });
+
   function creatComponent(dict) {
 
     let formItemLayout = dict.title ? {labelCol: {span: 8},wrapperCol: {span: 16}} : {labelCol: {span: 0},wrapperCol: {span: 24}}
@@ -84,8 +88,10 @@ function CustomerSearch(props) {
         {getFieldDecorator(dict.submitStr)
         (
           dict.selectName?(
-            dict.submitStr === 'member'?<Select className='antCli' placeholder='请选择'>{options}</Select>:
-            <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+            dict.submitStr === 'member'?<Select className='antCli' placeholder='请选择'>{options}</Select>:(
+                dict.submitStr === 'purchasePackage'?<Select className='antCli' placeholder='请选择'>{purchasePackageOptions}</Select>:
+                  <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+              )
           )
             :
             ( dict.component  === 'Date'?
@@ -401,7 +407,7 @@ class addCustomer extends React.Component {
         ]}
 
       >
-        <CusSearchFormDiv shipCards={this.props.users.shipCards} dispatch={this.props.dispatch}/>
+        <CusSearchFormDiv packageAry={this.props.users.packageAry} shipCards={this.props.users.shipCards} dispatch={this.props.dispatch}/>
         <CustomerTable
           selectItem={this.state.selectItem||[...this.props.users.monthStateCustomers]}
           selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
