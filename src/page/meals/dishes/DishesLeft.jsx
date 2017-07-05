@@ -42,7 +42,7 @@ class DishesLeft extends React.Component {
       if(item.nodes && item.nodes.length){
           return <TreeNode name={item.name} title={item.name+"("+item.dishesCount+")"} level={item.level} key={item.id} parentId={item.parentId}>{_this.nodesIteration(item.nodes)}</TreeNode>;
       }
-      return <TreeNode  name={item.name} title={item.name} level={item.level} key={item.id} parentId={item.parentId} />;
+      return <TreeNode  name={item.name} title={item.name+"("+item.dishesCount+")"} level={item.level} key={item.id} parentId={item.parentId} />;
     });
 }
 
