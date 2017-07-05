@@ -285,30 +285,7 @@ export default {
       }
     },
 
-    confirmCheckInReducer(state, {payload: data}){
-      let monthRoomList = state.monthRoomList.concat();
-      let room = monthRoomList[data.roomIndex].useAndBookingList;
-      let startIndex = parseInt(data.startIndex);
-      let endIndex = parseInt(data.endIndex);
 
-      for (let j = startIndex; j <= endIndex; j++) {
-        let customerList = room[j].customerList;
-        for (let k = 0; k < customerList.length; k++) {
-          if (customerList[k].customerId == data.customerId) {
-            customerList[k].status = 4; // 确认入住
-            break;
-          }
-        }
-      }
-
-      // 深拷贝, 保留初始的数据, 用于保存预约状态时和当前状态比较
-      state.oldMonthRoomList = JSON.parse(JSON.stringify(monthRoomList));
-
-      return {
-        ...state,
-        monthRoomList: monthRoomList
-      }
-    },
 
     deleteUserReducer(state, {payload: data}) {
       let monthRoomList = state.monthRoomList.concat();
@@ -719,15 +696,7 @@ export default {
       const {data: {code, data}} = yield call(roomManagement.confirmReside, param);
       if (code == 0) {
         message.success('入住成功')
-        yield put({
-          type: 'confirmCheckInReducer',
-          payload: {
-            customerId: value.customerId,
-            endIndex: value.endIndex,
-            roomIndex: value.roomIndex,
-            startIndex: value.startIndex,
-          }
-        })
+        yield put({type: 'monthRoomList',})
       }
     },
 

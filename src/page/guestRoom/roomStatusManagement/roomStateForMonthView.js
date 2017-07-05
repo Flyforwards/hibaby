@@ -448,6 +448,7 @@ const monthStateView = (props) => {
 
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
+
             let parentNode = e.target.parentNode;
             let dict = parentNode.dataset;
 

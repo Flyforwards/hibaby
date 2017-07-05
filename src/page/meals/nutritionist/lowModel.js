@@ -14,42 +14,42 @@ class DynamicFieldSet extends Component {
       changeKey: 0
     }
   }
-  
+
   remove = (k) => {
     const { form, menuInfoByType, dispatch } = this.props;
     let { dishes } = menuInfoByType;
     dishes.splice(k, 1);
     dispatch({
-      type: "prepareMeals/changeMenuInfoByType",
+      type: "prepareMealsDinner/changeMenuInfoByType",
       payload: { dishes }
     });
   }
-  
+
   add = (e) => {
     const { form, menuInfoByType, dispatch } = this.props;
     let { dishes } = menuInfoByType;
     const length = dishes.length;
-    
-    
+
+
     if (length < 7) {
       dishes.push({ isDel: true });
       dispatch({
-        type: "prepareMeals/changeMenuInfoByType",
+        type: "prepareMealsDinner/changeMenuInfoByType",
         payload: { dishes }
       })
     } else {
       message.error('菜品不能超过7道！')
     }
   }
-  
-  
+
+
   handleSubmit = (e) => {
     const { menuInfoByType, dispatch } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         dispatch({
-          type: 'prepareMeals/saveMenu',
+          type: 'prepareMealsDinner/saveMenu',
           payload: {
             ...menuInfoByType
           }
@@ -60,22 +60,22 @@ class DynamicFieldSet extends Component {
   changeVisible = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'prepareMeals/changeVisible',
+      type: 'prepareMealsDinner/changeVisible',
       payload: {
         visible: false
       }
     })
   }
-  
+
   reset = (changeKey) => {
     const { form } = this.props;
     form.resetFields([`name-${changeKey}`])
   }
-  
+
   chooseLowVisible = (k) => {
     const { dispatch, form } = this.props;
     dispatch({
-      type: 'prepareMeals/chooseVisible',
+      type: 'prepareMealsDinner/chooseVisible',
       payload: {
         chooseVisibleInfo: true
       }
@@ -84,7 +84,7 @@ class DynamicFieldSet extends Component {
       changeKey: k
     });
   }
-  
+
   render() {
     const { form, menuInfoByType } = this.props;
     const { changeKey, isLow } = this.state
@@ -162,17 +162,17 @@ class LowMOdel extends Component {
       visible: true
     }
   }
-  
+
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'prepareMeals/changeVisible',
+      type: 'prepareMealsDinner/changeVisible',
       payload: {
         visible: false
       }
     })
   }
-  
+
   render() {
     const { prepareMeals, dispatch, loading } = this.props;
     const { visible, menuInfoByType } = prepareMeals;
@@ -193,15 +193,15 @@ class LowMOdel extends Component {
             <h3 className="standardFood">标准菜品</h3>
             <WrappedDynamicFieldSet dispatch={dispatch} menuInfoByType={menuInfoByType}/>
         </Modal>
-      
+
       </div>
     )
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
-    prepareMeals: state.prepareMeals,
+    prepareMeals: state.prepareMealsDinner,
     loading: state.loading
   };
 }

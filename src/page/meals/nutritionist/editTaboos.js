@@ -22,7 +22,15 @@ class EditTaboo extends React.Component {
       uids:6,
     }
   }
-
+  componentDidMount(){
+    const dataId = queryURL("dataId");
+    this.props.dispatch({
+      type:'dinner/getTabooFood',
+      payload:{
+        dataId:dataId,
+      }
+    })
+  }
  // 返回
   onBack(){
     this.props.dispatch(routerRedux.push({
@@ -93,7 +101,25 @@ class EditTaboo extends React.Component {
     getFieldDecorator('ikeys', {initialValue: []});
     const keys = getFieldValue('keys');
     const tabooArr = tabooData ? tabooData.taboo.split(','):[];
-    const items = keys.map((k,index) => {
+    tabooArr.length > keys.length ? this.state.uids = tabooArr.length:6;
+    const items = tabooArr.length > keys.length ? tabooArr.map((i,index) => {
+      return(
+        <Col key={i} span={8} className="delDisplan">
+          <FormItem
+            {...formItemLayout}
+            label="禁忌食材"
+            required={false}
+            key={i}
+          >
+            {getFieldDecorator(`taboo-${i}`, {
+              initialValue:tabooArr[index] == undefined ? '':tabooArr[index]
+            })(
+              <Input placeholder="请输入禁忌食材"/>
+            )}
+          </FormItem>
+        </Col>
+      )
+    }): keys.map((k,index) => {
         return(
           <Col key={k} span={8} className="delDisplan">
             <FormItem
@@ -139,7 +165,7 @@ class EditTaboo extends React.Component {
 
     return (
       <div className="Taboo">
-        <Spin spinning={loading.effects['dinner/getTabooFood'] !== undefined ? loading.effects['dinner/getTabooFood']:false}>
+        <Spin spinning={loading.effects['dinner/getCustomerMsg'] !== undefined ? loading.effects['dinner/getCustomerMsg']:false}>
         <div className="TabooTital">
           <p className="basicInformation">
             <span>客户姓名 : {customerData ? customerData.name:''}</span>

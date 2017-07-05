@@ -267,10 +267,10 @@ export default {
           //禁忌
           dispatch({
             type:"getTabooFood",
-            payload:{
-              "dataId":query.dataId,
-            }
-          });
+            // payload:{
+            // "dataId":query.dataId,
+            // }
+        });
           dispatch({
             type:"getCustomerMsg",
             payload:{

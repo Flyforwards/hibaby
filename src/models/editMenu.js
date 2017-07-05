@@ -5,7 +5,7 @@ import $ from 'jquery';
 import { format,queryURL } from '../utils/index.js';
 
 export default {
-  namespace: 'prepareMeals',
+  namespace: 'prepareMealsDinner',
   state: {
     vdType: [],
     mvType: [],
@@ -289,6 +289,107 @@ export default {
     paginationInfo: {
       total: 200,
       current: 1
+    },
+    leftDish:{
+      infoZero: [
+        {
+          dishesName: '菜一',
+          number: 1
+        }, {
+          dishesName: '菜二',
+          number: 2
+        }, {
+          dishesName: '菜三',
+          number: 3
+        }, {
+          dishesName: '菜四',
+          number: 4
+        }, {
+          dishesName: '菜五',
+          number: 5
+        }, {
+          dishesName: '菜六',
+          number: 6
+        }, {
+          dishesName: '菜七',
+          number: 7
+        }
+      ],
+      infoOne: [
+        {
+          dishesName: '菜一',
+          number: 1
+        }, {
+          dishesName: '菜二',
+          number: 2
+        }, {
+          dishesName: '菜三',
+          number: 3
+        }, {
+          dishesName: '菜四',
+          number: 4
+        }
+      ],
+      infoTwo: [
+        {
+          dishesName: '菜一',
+          number: 1
+        }
+      ],
+      infoThr: [
+        {
+          dishesName: '菜一',
+          number: 1
+        }, {
+          dishesName: '菜二',
+          number: 2
+        }, {
+          dishesName: '菜三',
+          number: 3
+        }, {
+          dishesName: '菜四',
+          number: 4
+        }, {
+          dishesName: '菜五',
+          number: 5
+        }
+      ],
+      infoFor: [
+        {
+          dishesName: '菜一',
+          number: 1
+        }, {
+          dishesName: '菜二',
+          number: 2
+        }
+      ],
+      infoFiv: [
+        {
+          dishesName: '菜一',
+          number: 1
+        }, {
+          dishesName: '菜二',
+          number: 2
+        }, {
+          dishesName: '菜三',
+          number: 3
+        }, {
+          dishesName: '菜四',
+          number: 4
+        }, {
+          dishesName: '菜五',
+          number: 5
+        }
+      ],
+      infoSix: [
+        {
+          dishesName: '菜一',
+          number: 1
+        }, {
+          dishesName: '菜二',
+          number: 2
+        }
+      ]
     }
 
   },
@@ -644,6 +745,7 @@ export default {
 
     //保存基础餐单
     *saveMenu({ payload: values }, { call, put }){
+      console.log("保存基础菜单");
       const customerId = queryURL('dataId');
       const value = {...values, customerId};
       const { data: { code } } = yield call(prepareMealsService.saveMenu, value);
