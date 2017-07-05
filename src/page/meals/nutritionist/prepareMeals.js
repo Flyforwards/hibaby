@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { connect } from 'dva';
 import './prepareMeals.scss'
-import { message, Button, Radio, Icon, Modal, Form, Row, Col, Input, Select ,Spin} from 'antd';
+import { message, Button, Radio, Icon, Modal, Form, Row, Col, Input, Select, Spin } from 'antd';
 import LowModal from './lowModel'
 import HighModal from './highModel'
 const RadioButton = Radio.Button;
@@ -10,19 +10,110 @@ const Search = Input.Search;
 import $ from 'jquery'
 
 
-let test = { title: '111', info: [{ name: 'aa', key: 1 }] }
-const b = [{ name: 'nnn', key: 1, week: 2, day: 3 }, { name: 'bbb', key: 2, week: 5, day: 6 }]
-b.map((v, k) => {
-  const { week, day } = v;
-  let arr = [];
-  arr.push(v);
-  test = { ...test }
-})
-
 class PrepareMeals extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {};
+    this.infoZero = [
+      {
+        dishesName: '菜一',
+        number: 1
+      }, {
+        dishesName: '菜二',
+        number: 2
+      }, {
+        dishesName: '菜三',
+        number: 3
+      }, {
+        dishesName: '菜四',
+        number: 4
+      }, {
+        dishesName: '菜五',
+        number: 5
+      }, {
+        dishesName: '菜六',
+        number: 6
+      }, {
+        dishesName: '菜七',
+        number: 7
+      }
+    ];
+    this.infoOne = [
+      {
+        dishesName: '菜一',
+        number: 1
+      }, {
+        dishesName: '菜二',
+        number: 2
+      }, {
+        dishesName: '菜三',
+        number: 3
+      }, {
+        dishesName: '菜四',
+        number: 4
+      }
+    ];
+    this.infoTwo = [
+      {
+        dishesName: '菜一',
+        number: 1
+      }
+    ]
+    this.infoThr = [
+      {
+        dishesName: '菜一',
+        number: 1
+      }, {
+        dishesName: '菜二',
+        number: 2
+      }, {
+        dishesName: '菜三',
+        number: 3
+      }, {
+        dishesName: '菜四',
+        number: 4
+      }, {
+        dishesName: '菜五',
+        number: 5
+      }
+    ];
+    this.infoFor = [
+      {
+        dishesName: '菜一',
+        number: 1
+      }, {
+        dishesName: '菜二',
+        number: 2
+      }
+    ];
+    this.infoFiv = [
+      {
+        dishesName: '菜一',
+        number: 1
+      }, {
+        dishesName: '菜二',
+        number: 2
+      }, {
+        dishesName: '菜三',
+        number: 3
+      }, {
+        dishesName: '菜四',
+        number: 4
+      }, {
+        dishesName: '菜五',
+        number: 5
+      }
+    ];
+    this.infoSix = [
+      {
+        dishesName: '菜一',
+        number: 1
+      }, {
+        dishesName: '菜二',
+        number: 2
+      }
+    ];
+    
   }
   
   componentWillMount() {
@@ -105,13 +196,14 @@ class PrepareMeals extends Component {
         week, day, type
       }
     })
-   
+    
   }
   
   render() {
-    const { prepareMeals,loading } = this.props;
+    const { prepareMeals, loading } = this.props;
     const { dayInfo, defaultValueRadio, menuInfo, findMenuInfo } = prepareMeals;
     let colorType = '#dddddd';
+    const { infoZero, infoOne, infoTwo, infoThr, infoFor, infoFiv, infoSix } = this;
     return (
       <div className="prepareMeals">
         <LowModal/>
@@ -144,116 +236,31 @@ class PrepareMeals extends Component {
           <Col span={12} className="colRight">
             {
               menuInfo.map((v, k) => {
-                if (v.info.length == 0) {
-                  switch (v.type) {
-                    case 0:
-                      v.info = [
-                        {
-                          dishesName: '菜一',
-                          number: 1
-                        }, {
-                          dishesName: '菜二',
-                          number: 2
-                        }, {
-                          dishesName: '菜三',
-                          number: 3
-                        }, {
-                          dishesName: '菜四',
-                          number: 4
-                        }, {
-                          dishesName: '菜五',
-                          number: 5
-                        }, {
-                          dishesName: '菜六',
-                          number: 6
-                        }, {
-                          dishesName: '菜七',
-                          number: 7
-                        }
-                      ];
-                      break;
-                    case 1:
-                      v.info = [{
-                        dishesName: '菜一',
-                        number: 1
-                      }, {
-                        dishesName: '菜二',
-                        number: 2
-                      }, {
-                        dishesName: '菜三',
-                        number: 3
-                      }, {
-                        dishesName: '菜四',
-                        number: 4
-                      }];
-                      break;
-                    case 2:
-                      v.info = [{
-                        dishesName: '菜一',
-                        number: 1
-                      }];
-                      break;
-                    case 3:
-                      v.info = [{
-                        dishesName: '菜一',
-                        number: 1
-                      }, {
-                        dishesName: '菜二',
-                        number: 2
-                      }, {
-                        dishesName: '菜三',
-                        number: 3
-                      }, {
-                        dishesName: '菜四',
-                        number: 4
-                      }, {
-                        dishesName: '菜五',
-                        number: 5
-                      }];
-                      break;
-                    case 4:
-                      v.info = [{
-                        dishesName: '菜一',
-                        number: 1
-                      }, {
-                        dishesName: '菜二',
-                        number: 2
-                      }];
-                      break;
-                    case 5:
-                      v.info = [{
-                        dishesName: '菜一',
-                        number: 1
-                      }, {
-                        dishesName: '菜二',
-                        number: 2
-                      }, {
-                        dishesName: '菜三',
-                        number: 3
-                      }, {
-                        dishesName: '菜四',
-                        number: 4
-                      }, {
-                        dishesName: '菜五',
-                        number: 5
-                      }];
-                      break;
-                    case 6:
-                      v.info = [{
-                        dishesName: '菜一',
-                        number: 1
-                      }, {
-                        dishesName: '菜二',
-                        number: 2
-                      }];
-                      break;
-                    default:
-                      v.info = [{
-                        dishesName: '菜一',
-                        number: 1
-                      }];
-                      break;
-                  }
+                const length = v.info.length;
+                switch (v.type) {
+                  case 0:
+                    length < 7 ? v.info = v.info.concat(infoZero.splice(length, 7 - length)) : v.info;
+                    break;
+                  case 1:
+                    length < 4 ? v.info = v.info.concat(infoOne.splice(length, 4 - length)) : v.info;
+                    break;
+                  case 2:
+                    length < 1 ? v.info = infoTwo : v.info;
+                    break;
+                  case 3:
+                    length < 5 ? v.info = v.info.concat(infoThr.splice(length, 5 - length)) : v.info;
+                    break;
+                  case 4:
+                    length < 2 ? v.info = v.info.concat(infoFor.splice(length, 2 - length)) : v.info;
+                    break;
+                  case 5:
+                    length < 5 ? v.info = v.info.concat(infoFiv.splice(length, 5 - length)) : v.info;
+                    break;
+                  case 6:
+                    length < 2 ? v.info = v.info.concat(infoSix.splice(length, 2 - length)) : infoSix;
+                    break;
+                  default:
+                    v.info = infoSix;
                 }
                 return (
                   <div key={k} className="menuInfo">
@@ -272,9 +279,9 @@ class PrepareMeals extends Component {
                         })
                       }
                       <li>
-                          <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
-                            编辑/添加
-                          </Button>
+                        <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
+                          编辑/添加
+                        </Button>
                       </li>
                     </ul>
                   </div>
@@ -292,7 +299,7 @@ function mapStateToProps(state) {
   return {
     prepareMeals: state.prepareMeals,
     loading: state.loading
-  
+    
   };
 }
 export default connect(mapStateToProps)(PrepareMeals);
