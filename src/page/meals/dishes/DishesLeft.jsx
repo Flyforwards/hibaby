@@ -84,7 +84,7 @@ class DishesLeft extends React.Component {
         selectedNode: node.selectedNodes[0],
         selectedNodeParentId: node.selectedNodes[0].props.parentId,
         selectedNodeLevel:this.selectNodeLevel,
-        unfolded : node.selectedNodes[0].props.children ?  value:this.state.unfolded
+        unfolded : node.node.props.children ? value:this.state.unfolded
       });
       //获取节点下的分页菜品信息
       this.props.dispatch({
@@ -198,9 +198,6 @@ class DishesLeft extends React.Component {
   handlerRemove = () =>{
     const {dispatch} = this.props;
     const _this = this;
-    _this.setState({
-      unfolded:this.state.unfolded
-    });
     Modal.confirm({
       title: '提示',
       content: '是否确定删除此菜品库节点?',
