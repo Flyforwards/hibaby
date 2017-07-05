@@ -1,14 +1,14 @@
 
-import * as activityService from '../services/activity';
-import * as customerService from '../services/customer';
-import * as addCustomerInformation from '../services/addCustomerInformation';
+// import * as activityService from '../services/activity';
+// import * as customerService from '../services/customer';
+// import * as addCustomerInformation from '../services/addCustomerInformation';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { local, session } from 'common/util/storage.js';
 import { PAGE_SIZE } from 'common/constants.js'
 import { parse } from 'qs';
 import * as dinnerService from '../services/dinner';
-import * as systemService from '../services/system';
+// import * as systemService from '../services/system';
 import { format,queryURL } from '../utils/index.js';
 
 export default {
@@ -79,7 +79,7 @@ export default {
 
     // 获取会员身份下拉选项， 也是卡种列表
     *getMemberShipCard({payload: values}, {call, put}) {
-      const {data: {data, code}} = yield call(systemService.getMemberShipCard, values);
+      const {data: {data, code}} = yield call(dinnerService.getMemberShipCard, values);
       if (code == 0) {
         yield put({
           type: 'memberShipCardSave',
@@ -89,21 +89,21 @@ export default {
     },
 
     // 删除客户
-    *deleteCustomer ({payload: values}, {call, put}) {
-      const {data: {data, code}} = yield call(customerService.deleteCustomer, values);
-      if (code == 0) {
-        message.success("删除客户成功");
-        yield put({
-          type: 'getCustomerPage',
-        });
-      }
-    },
+    // *deleteCustomer ({payload: values}, {call, put}) {
+    //   const {data: {data, code}} = yield call(customerService.deleteCustomer, values);
+    //   if (code == 0) {
+    //     message.success("删除客户成功");
+    //     yield put({
+    //       type: 'getCustomerPage',
+    //     });
+    //   }
+    // },
     *getDataDict({payload: value}, {call, put}){
       const parameter = {
         abName: value.abName,
         softDelete: 0,
       };
-      const {data: {code, data}} = yield call(addCustomerInformation.getDataDict, parameter);
+      const {data: {code, data}} = yield call(dinnerService.getDataDict, parameter);
       if (code == 0) {
         yield put({
           type: 'addMutDictData',
@@ -116,7 +116,7 @@ export default {
     },
 
     *listByMain({payload: value}, {call, put}){
-      const {data: {code, data}} = yield call(customerService.listByMain);
+      const {data: {code, data}} = yield call(dinnerService.listByMain);
       if (code == 0) {
         yield put({
           type: 'setPackageList',
