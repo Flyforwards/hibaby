@@ -247,6 +247,10 @@ class CustomerIndex extends React.Component {
       return (<Option key={record.id} value={record.id}>{record.name}</Option>)
     });
 
+    const purchasePackageOptions = packageList.map((record) => {
+      return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+    });
+
     const formChooseLayout = {
       labelCol: { span: 10 },
       wrapperCol: { span: 14 }
@@ -405,7 +409,11 @@ class CustomerIndex extends React.Component {
               <Col span={6}>
                 <FormItem label="购买套餐" {...formChooseOneAge}>
                   {getFieldDecorator('purchasePackage')(
-                    <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
+                    <Select placeholder="请选择">
+                      {
+                        purchasePackageOptions
+                      }
+                    </Select>
                   )}
                 </FormItem>
               </Col>
