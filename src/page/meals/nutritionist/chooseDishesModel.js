@@ -14,18 +14,18 @@ class App extends Component {
     selectedKeys: [],
     name: ''
   }
-  
+
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false
     });
   }
-  
+
   onChange = (value) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'prepareMeals/getDishesPageList',
+      type: 'prepareMealsDinner/getDishesPageList',
       payload: {
         nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
         page: 1,
@@ -39,7 +39,7 @@ class App extends Component {
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'prepareMeals/chooseVisible',
+      type: 'prepareMealsDinner/chooseVisible',
       payload: {
         topVisible: false
       }
@@ -53,7 +53,7 @@ class App extends Component {
       name: ''
     }, function () {
       dispatch({
-        type: 'prepareMeals/getDishesPageList',
+        type: 'prepareMealsDinner/getDishesPageList',
         payload: {
           nodeId: this.state.postNodeId,
           page: 1
@@ -64,7 +64,7 @@ class App extends Component {
       selectedKeys: []
     })
   }
-  
+
   getInfo = (data) => {
     const { changeKey, isLow, dispatch, reset } = this.props;
     const { id, name } = data;
@@ -80,35 +80,35 @@ class App extends Component {
     }
     reset();
     isLow ? dispatch({
-      type: 'prepareMeals/saveLowInfo',
+      type: 'prepareMealsDinner/saveLowInfo',
       payload: { postData }
     }) : dispatch({
-      type: 'prepareMeals/saveHighInfo',
+      type: 'prepareMealsDinner/saveHighInfo',
       payload: {
         postDataHigh
       }
     });
     dispatch({
-      type: 'prepareMeals/chooseVisible',
+      type: 'prepareMealsDinner/chooseVisible',
       payload: {
         topVisible: false
       }
     })
-    
+
   }
-  
+
   handleTableChange = (pagination, filters, sorter) => {
     const { dispatch, prepareMeals } = this.props;
     const { name } = this.state;
     name == '' ? dispatch({
-      type: 'prepareMeals/getDishesPageList',
+      type: 'prepareMealsDinner/getDishesPageList',
       payload: {
         page: pagination.current,
         size: 10,
         nodeId: this.state.postNodeId ? this.state.postNodeId : 1
       }
     }) : dispatch({
-      type: 'prepareMeals/getDishesPageList',
+      type: 'prepareMealsDinner/getDishesPageList',
       payload: {
         page: pagination.current,
         size: 10,
@@ -117,7 +117,7 @@ class App extends Component {
       }
     })
   }
-  
+
   render() {
     const { prepareMeals } = this.props;
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
@@ -169,7 +169,7 @@ class App extends Component {
           )
         }
       }]
-    
+
     const loop = data => data.map((item) => {
       if (item.nodes) {
         return (
@@ -223,9 +223,9 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  
+
   return {
-    prepareMeals: state.prepareMeals
+    prepareMeals: state.prepareMealsDinner
   };
 }
 export default connect(mapStateToProps)(App);

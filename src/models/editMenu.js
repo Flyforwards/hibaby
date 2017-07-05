@@ -5,7 +5,7 @@ import $ from 'jquery';
 import { format,queryURL } from '../utils/index.js';
 
 export default {
-  namespace: 'prepareMeals',
+  namespace: 'prepareMealsDinner',
   state: {
     vdType: [],
     mvType: [],
@@ -644,6 +644,7 @@ export default {
 
     //保存基础餐单
     *saveMenu({ payload: values }, { call, put }){
+      console.log("保存基础菜单");
       const customerId = queryURL('dataId');
       const value = {...values, customerId};
       const { data: { code } } = yield call(prepareMealsService.saveMenu, value);

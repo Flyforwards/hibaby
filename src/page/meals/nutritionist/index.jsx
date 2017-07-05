@@ -154,6 +154,7 @@ class PrepareMealPage extends React.Component {
     return value;
   }
   componentDidMount() {
+    this.props.dispatch({type:'dinner/getCustomerList'});
     this.props.dispatch({ type: 'dinner/listByMain' });
     this.props.dispatch({ type: 'dinner/getMemberShipCard' });
     this.props.dispatch({ type: 'dinner/getDataDict', payload: { "abName": 'YCC' } });

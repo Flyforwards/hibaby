@@ -113,92 +113,92 @@ class PrepareMeals extends Component {
         number: 2
       }
     ];
-    
+
   }
-  
+
   componentWillMount() {
     this.props.dispatch({
-      type: 'prepareMeals/getMenuByDay',
+      type: 'prepareMealsDinner/getMenuByDay',
       payload: {
         'day': '1',
         'week': '1'
       }
     });
   }
-  
+
   onChange = (e) => {
     const { dispatch } = this.props;
     const postDate = JSON.parse(e.target.value);
     postDate.week == '0' ?
       dispatch({
-        type: 'prepareMeals/changeHighTime',
+        type: 'prepareMealsDinner/changeHighTime',
         payload: { postDate }
       }) : dispatch({
-      type: 'prepareMeals/changeLowTime',
+      type: 'prepareMealsDinner/changeLowTime',
       payload: { postDate }
     })
-    
+
     postDate.week == '0' ?
       dispatch({
-        type: 'prepareMeals/getTopMenuByDay',
+        type: 'prepareMealsDinner/getTopMenuByDay',
         payload: postDate
       }) : dispatch({
-      type: 'prepareMeals/getMenuByDay',
+      type: 'prepareMealsDinner/getMenuByDay',
       payload: postDate
     })
   }
-  
+
   onSearch = (value) => {
     const { dispatch } = this.props;
     if (!value) {
       return message.error('请输入菜名！')
     } else {
       dispatch({
-        type: 'prepareMeals/getMenuByDishes',
+        type: 'prepareMealsDinner/getMenuByDishes',
         payload: {
           name: value
         }
       })
     }
-    
-    
+
+
   }
   showHighModal = (info) => {
     const { dispatch } = this.props;
     const { week, day, type } = info;
     dispatch({
-      type: 'prepareMeals/getTopMenuByType',
+      type: 'prepareMealsDinner/getTopMenuByType',
       payload: {
         week, day, type
       }
     })
     dispatch({
-      type: 'prepareMeals/changeTopVisible',
+      type: 'prepareMealsDinner/changeTopVisible',
       payload: {
         topVisible: true
       }
     })
   }
-  
-  
+
+
   showLowModal = (info) => {
     const { dispatch } = this.props;
     const { week, day, type } = info;
     dispatch({
-      type: 'prepareMeals/changeVisible',
+      type: 'prepareMealsDinner/changeVisible',
       payload: {
         visible: true
       }
     })
     dispatch({
-      type: 'prepareMeals/getMenuByType',
+      type: 'prepareMealsDinner/getMenuByType',
       payload: {
         week, day, type
       }
     })
-    
+
   }
-  
+
   render() {
     const { prepareMeals, loading } = this.props;
     const { dayInfo, defaultValueRadio, menuInfo, findMenuInfo } = prepareMeals;
@@ -295,11 +295,11 @@ class PrepareMeals extends Component {
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
-    prepareMeals: state.prepareMeals,
+    prepareMeals: state.prepareMealsDinner,
     loading: state.loading
-    
+
   };
 }
 export default connect(mapStateToProps)(PrepareMeals);
