@@ -64,6 +64,7 @@ class DishesLeft extends React.Component {
 
   //点击树节点触发
   onSelect = (value, node)=>{
+
     if(value[0]){//选中树节点
       this.selectNodeLevel = node.selectedNodes[0].props.level;
       if(this.selectNodeLevel == rootLevel){//根目录
@@ -83,7 +84,7 @@ class DishesLeft extends React.Component {
         selectedNode: node.selectedNodes[0],
         selectedNodeParentId: node.selectedNodes[0].props.parentId,
         selectedNodeLevel:this.selectNodeLevel,
-        unfolded : value
+        unfolded : node.selectedNodes[0].props.children ?  value:this.state.unfolded
       });
       //获取节点下的分页菜品信息
       this.props.dispatch({
@@ -302,7 +303,6 @@ class DishesLeft extends React.Component {
           autoExpandParent = { true }
           onExpand={this.expandHandler.bind(this)}
           defaultSelectedKeys = { this.state.unfolded }
-          selectedKeys = {this.state.unfolded}
           expandedKeys = { this.state.unfolded }
           onSelect={ this.onSelect.bind(this) }
           >
