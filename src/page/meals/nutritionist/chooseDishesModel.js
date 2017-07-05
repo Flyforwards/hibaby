@@ -9,77 +9,33 @@ import './prepareMeals.scss'
 class App extends Component {
   state = {
     expandedKeys: [],
-    searchValue: '',
     autoExpandParent: true,
-    dataList: [],
     data: [],
-    loading: false
+    selectedKeys: [],
+    name: ''
   }
-
-
-  generateList = (data) => {
-    for (let i = 0; i < data.length; i++) {
-      const node = data[i];
-      const name = node.name;
-      this.state.dataList.push({ key: name, title: name });
-      if (node.nodes) {
-        this.generateList(node.nodes, node.key);
-      }
-    }
-  };
-
-  componentWillMount() {
-    const { prepareMeals } = this.props;
-    const { nodesInfo } = prepareMeals;
-    const { nodes } = nodesInfo;
-    this.generateList(nodes);
-  }
-
-  getParentKey = (key, tree) => {
-    let parentKey;
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i];
-      if (node.nodes) {
-        if (node.nodes.some(item => item.key === key)) {
-          parentKey = node.key;
-        } else if (this.getParentKey(key, node.nodes)) {
-          parentKey = this.getParentKey(key, node.nodes);
-        }
-      }
-    }
-    return parentKey;
-  };
-
-
+  
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false
     });
   }
-  onChange = (e) => {
-    const { prepareMeals } = this.props;
-    const { nodesInfo } = prepareMeals;
-    const { nodes } = nodesInfo;
-    const value = e.target.value;
-
-
-    const expandedKeys = this.state.dataList.map((item) => {
-      if (item.key.indexOf(value) > -1) {
-        return this.getParentKey(item.keys, nodes);
+  
+  onChange = (value) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'prepareMeals/getDishesPageList',
+      payload: {
+        nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
+        page: 1,
+        name: value
       }
-      return null;
-    }).filter((item, i, self) => item && self.indexOf(item) === i);
-
-
+    })
     this.setState({
-      expandedKeys,
-      searchValue: value,
-      autoExpandParent: true
-    });
+      name: value
+    })
   }
-
-
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -91,18 +47,24 @@ class App extends Component {
   }
   onSelect = (selectedKeys, info) => {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'prepareMeals/getDishesPageList',
-      payload: {
-        nodeId: selectedKeys[0],
-        page: 1
-      }
+    this.setState({
+      selectedKeys: selectedKeys,
+      postNodeId: selectedKeys[0],
+      name: ''
+    }, function () {
+      dispatch({
+        type: 'prepareMeals/getDishesPageList',
+        payload: {
+          nodeId: this.state.postNodeId,
+          page: 1
+        }
+      })
     })
     this.setState({
-      postNodeId: selectedKeys[0]
+      selectedKeys: []
     })
   }
-
+  
   getInfo = (data) => {
     const { changeKey, isLow, dispatch, reset } = this.props;
     const { id, name } = data;
@@ -132,93 +94,91 @@ class App extends Component {
         topVisible: false
       }
     })
-
+    
   }
-
+  
   handleTableChange = (pagination, filters, sorter) => {
-
     const { dispatch, prepareMeals } = this.props;
-    dispatch({
+    const { name } = this.state;
+    name == '' ? dispatch({
       type: 'prepareMeals/getDishesPageList',
       payload: {
         page: pagination.current,
         size: 10,
         nodeId: this.state.postNodeId ? this.state.postNodeId : 1
       }
+    }) : dispatch({
+      type: 'prepareMeals/getDishesPageList',
+      payload: {
+        page: pagination.current,
+        size: 10,
+        nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
+        name: name
+      }
     })
   }
-
+  
   render() {
     const { prepareMeals } = this.props;
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
     const { nodes } = nodesInfo;
-    const { searchValue, expandedKeys, autoExpandParent } = this.state;
-    const columns = [{
-      title: '菜品名',
-      dataIndex: 'name',
-      key: 'name'
-    }, {
-      title: '荤素类型',
-      dataIndex: 'mvType',
-      key: 'mvType',
-      render: (text, record, index) => {
-        mvType.map(function (item) {
-          if (text == item.id) {
-            return ( <span>{item.name}</span>);
-          }
-        });
-      }
-    }, {
-      title: '菜品类型',
-      dataIndex: 'vdType',
-      key: 'vdType',
-      render: (text, record, index) => {
-        vdType.map(function (item) {
-          if (text == item.id) {
-            return ( <span>{item.name}</span>);
-          }
-        });
-      }
-    }, {
-      title: '使用状态',
-      dataIndex: 'status',
-      key: 'status',
-      render: (text, record) => {
-        return (
-          <p>{text == 0 ? '未使用' : '已使用'}</p>
-        )
-      }
-    }, {
-      title: '操作',
-      key: 'action',
-      dataIndex: 'status',
-      render: (text, record) => {
-        return (
-          <a href="#" onClick={() => {this.getInfo(record)}}>选择</a>
-        )
-      }
-    }]
-
+    const { expandedKeys, autoExpandParent } = this.state;
+    const columns = [
+      {
+        title: '菜品名',
+        dataIndex: 'name',
+        key: 'name'
+      }, {
+        title: '荤素类型',
+        dataIndex: 'mvType',
+        key: 'mvType',
+        render: (text, record, index) => {
+          mvType.map(function (item) {
+            if (text == item.id) {
+              return ( <span>{item.name}</span>);
+            }
+          });
+        }
+      }, {
+        title: '菜品类型',
+        dataIndex: 'vdType',
+        key: 'vdType',
+        render: (text, record, index) => {
+          vdType.map(function (item) {
+            if (text == item.id) {
+              return ( <span>{item.name}</span>);
+            }
+          });
+        }
+      }, {
+        title: '使用状态',
+        dataIndex: 'status',
+        key: 'status',
+        render: (text, record) => {
+          return (
+            <p>{text == 0 ? '未使用' : '已使用'}</p>
+          )
+        }
+      }, {
+        title: '操作',
+        key: 'action',
+        dataIndex: 'status',
+        render: (text, record) => {
+          return (
+            <a href="#" onClick={() => {this.getInfo(record)}}>选择</a>
+          )
+        }
+      }]
+    
     const loop = data => data.map((item) => {
-      const index = item.name.search(searchValue);
-      const beforeStr = item.name.substr(0, index);
-      const afterStr = item.name.substr(index + searchValue.length);
-      const title = index > -1 ? (
-        <span>
-          {beforeStr}
-          <span style={{ color: '#f50' }}>{searchValue}</span>
-          {afterStr}
-          ({item.dishesCount})
-        </span>
-      ) : <span>{item.name}({item.dishesCount})</span>;
       if (item.nodes) {
         return (
-          <TreeNode key={item.id} title={title}>
+          <TreeNode key={item.id} title={item.name + `(${item.dishesCount})`}>
             {loop(item.nodes)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item.key} title={title}/>;
+      return <TreeNode key={item.id} title={item.name + `(${item.dishesCount})`}/>;
     });
     return (
       <div>
@@ -233,16 +193,19 @@ class App extends Component {
           <Row>
             <Col span={6}>
               <Tree
+                selectedKeys={ this.state.selectedKeys}
                 onExpand={this.onExpand}
                 expandedKeys={expandedKeys}
                 autoExpandParent={autoExpandParent}
                 onSelect={this.onSelect}
               >
-                {loop(nodes)}
+                <TreeNode title="菜品库" key="1">
+                  {loop(nodes)}
+                </TreeNode>
               </Tree>
             </Col>
             <Col span={18}>
-              <Search className="search" placeholder="请输入菜品名" onChange={this.onChange}/>
+              <Search className="search" placeholder="请输入菜品名" onSearch={this.onChange}/>
               <Table rowKey="id"
                      columns={columns}
                      dataSource={dishesPageInfo}
@@ -260,7 +223,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-
+  
   return {
     prepareMeals: state.prepareMeals
   };
