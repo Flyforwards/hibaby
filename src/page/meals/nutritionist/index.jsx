@@ -131,12 +131,12 @@ class PrepareMealPage extends React.Component {
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
-        this.props.dispatch({
-          type:'dinner/getCustomerList',
-          payload:{
-            values,
-          }
-        })
+        // this.props.dispatch({
+        //   type:'dinner/getCustomerList',
+        //   payload:{
+        //     values,
+        //   }
+        // })
         this.props.dispatch(routerRedux.push({
           pathname: "/meals/nutritionist/dinner",
           query: values

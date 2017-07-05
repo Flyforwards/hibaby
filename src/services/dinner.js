@@ -53,4 +53,26 @@ export function getSystemTime(values) {
     body: JSON.stringify(values),
   })
 }
+// 获取会员身份下拉选项， 也是卡种列表
+export function getMemberShipCard(values) {
+  return request('/crm/api/v1/membershipcard/getMembershipcard', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//数据字典
+export function getDataDict(values) {
+  return request('/crm/api/v1/dictionary/getDictionary', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+// 主套餐列表
+export function listByMain(values) {
+  return request('/crm/api/v1/packageInfo/listByMain', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
