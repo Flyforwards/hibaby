@@ -171,7 +171,7 @@ class PrepareMealPage extends React.Component {
     }
     const { getFieldDecorator } = form;
     const tableProps = {
-      loading: loading.effects['dinner/getCustomerList'],
+      loading: loading,
       dataSource: list,
       pagination,
       columns,
@@ -200,6 +200,13 @@ class PrepareMealPage extends React.Component {
       wrapperCol: { span: 18 }
     };
     const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
+    let items = [];
+    packageList ? packageList.map((elem,index) => {
+      items.push(
+        <Option key={elem.id}>{elem.name}</Option>
+      )
+    }):'';
+
     return (
       <div className="CustomerConents dinnerConnet">
         <main className="yt-admin-framework-Customer">
@@ -325,7 +332,15 @@ class PrepareMealPage extends React.Component {
               <Col span={6}>
                 <FormItem label="购买套餐" {...formChooseOneAge}>
                   {getFieldDecorator('purchasePackage')(
-                    <DictionarySelect placeholder="请选择" selectName="IntentionPackage"/>
+                    <Select
+                    showSearch
+                    allowClear
+                    placeholder="请选择"
+                    optionFilterProp="children"
+                    filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                    { items }
+                    </Select>
                   )}
                 </FormItem>
               </Col>
@@ -336,8 +351,6 @@ class PrepareMealPage extends React.Component {
                   {getFieldDecorator('gestationalWeeks')(
                     <InputNumber max={40} min={1}/>
                   )}
-
-
                 </FormItem>
               </Col>
               <Col span={1}/>
@@ -381,7 +394,7 @@ function mapStateToProps(state) {
   } = state.dinner;
   const { permissionAlias } = state.layout;
   return {
-    loading: state.loading,
+    loading: state.loading.models.dinner,
     list,
     fetusAry,
     pagination,
