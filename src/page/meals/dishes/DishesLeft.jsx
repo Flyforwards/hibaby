@@ -30,6 +30,7 @@ class DishesLeft extends React.Component {
       isNodeDetail : false,//是否为查看详情状态
       isNodeEdit : false,//是否为编辑状态
       initialValue : {},//节点表单/详情页初始化数据值
+      node : null
     }
     this.addDisplay = "block";
     this.deleteDisplay = "block";
@@ -84,7 +85,8 @@ class DishesLeft extends React.Component {
         selectedNode: node.selectedNodes[0],
         selectedNodeParentId: node.selectedNodes[0].props.parentId,
         selectedNodeLevel:this.selectNodeLevel,
-        unfolded : node.node.props.children ? value:this.state.unfolded
+        unfolded : node.node.props.children ? value:this.state.unfolded,
+        node : node
       });
       //获取节点下的分页菜品信息
       this.props.dispatch({
@@ -95,6 +97,9 @@ class DishesLeft extends React.Component {
       });
 
     }else{
+      this.setState({
+        node : node
+      });
       if(this.selectNodeLevel == rootLevel){//根目录
         this.deleteDisplay = "none";//设置删除按钮隐藏
       }else{
@@ -198,6 +203,9 @@ class DishesLeft extends React.Component {
   handlerRemove = () =>{
     const {dispatch} = this.props;
     const _this = this;
+    this.setState({
+      unfolded : !this.state.node.node.props.children ? [this.state.selectedNodeParentId+""]:this.state.unfolded
+    });
     Modal.confirm({
       title: '提示',
       content: '是否确定删除此菜品库节点?',
