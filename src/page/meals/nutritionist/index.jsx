@@ -67,11 +67,12 @@ class PrepareMealPage extends React.Component {
       }
     }, {
       title: '餐单状态',
-      render: (record) => {
-        if (record.operator2 != null) {
-          return record.operator2;
+      dataIndex:'menuStatus',
+      render: (record,text,index) => {
+        if (text == 0) {
+          return "标准餐单";
         } else {
-          return record.operator;
+          return "禁忌餐单";
         }
       }
     },{
