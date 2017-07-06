@@ -76,7 +76,7 @@ const monthStateView = (props) => {
 
   document.ondrop = (event) => {
     event.preventDefault();
-    if(dragUser.status == 1){
+    if(dragUser.status == 1 && !dragUser.customerId){
       return;
     }
     let roomIndex = null;
@@ -371,8 +371,7 @@ const monthStateView = (props) => {
 
             for (let i = 0; i < users.length; i++) {
               if (users[i].customerId === dayCustomerList[j].customerId
-                && users[i].lastIndex === dayindex - 1
-                && users[i].status == dayCustomerList[j].status) {
+                && users[i].lastIndex === dayindex - 1) {
                 hasUser = true;
                 users[i].dayCount++;
                 users[i].lastIndex = dayindex;
@@ -527,7 +526,8 @@ const monthStateView = (props) => {
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
 
-          if (status == 1) {
+
+          if (status == 1 && !customerId) {
             return
           }
 
@@ -636,7 +636,7 @@ const monthStateView = (props) => {
 
         for (let i = 0; i < users.length; i++) {
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
-          const content = <div>{users[i].customerName + '('
+          const content = <div>{(users[i].customerName?users[i].customerName:(users[i].status == 1 ? '维修中' :'' )) + '('
           + users[i].dayCount + '天, '
           + timeToDate(users[i].startDate)
           + '-'
