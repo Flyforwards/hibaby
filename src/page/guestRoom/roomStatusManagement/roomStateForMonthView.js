@@ -517,6 +517,7 @@ const monthStateView = (props) => {
 
           let pageX = e.pageX;
           let target = e.target.parentNode;
+
           let targetWidth = target.offsetWidth;
           let unit = 0;
           let oldStartIndex = parseInt(target.dataset.startIndex);
@@ -526,10 +527,15 @@ const monthStateView = (props) => {
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
 
-
-          if (status == 1 && !customerId) {
-            return
+          if (status == 1) {
+            if(customerId){
+              status = 4;
+            }
+            else{
+              return
+            }
           }
+
 
             // 左端在入住状态下不可操作
           // if (status == 4) {
@@ -635,6 +641,7 @@ const monthStateView = (props) => {
         };
 
         for (let i = 0; i < users.length; i++) {
+
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           const content = <div>{(users[i].customerName?users[i].customerName:(users[i].status == 1 ? '维修中' :'' )) + '('
           + users[i].dayCount + '天, '
