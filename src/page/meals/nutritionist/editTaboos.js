@@ -177,11 +177,11 @@ class EditTaboo extends React.Component {
             <Col span={8} className="delDisplan">
               <FormItem label="糖" {...formChooseOneSugar}>
                 {getFieldDecorator('sugar', {
-                  initialValue:tabooData ?tabooData.sugar+'':1+'',
+                  initialValue:tabooData ?tabooData.sugar+'':0+'',
                   rules: []
                 })(
                   <Select placeholder="请选择是否加糖" allowClear={ true }  >
-                    <Option key="0" value="0">有糖</Option>
+                    <Option key="0" value="0">无</Option>
                     <Option key="1" value="1">无糖</Option>
                   </Select>
                 )}

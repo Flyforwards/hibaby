@@ -30,21 +30,22 @@ class DishesLeft extends React.Component {
       isNodeDetail : false,//是否为查看详情状态
       isNodeEdit : false,//是否为编辑状态
       initialValue : {},//节点表单/详情页初始化数据值
+      node : null
     }
     this.addDisplay = "block";
     this.deleteDisplay = "block";
     this.selectNodeLevel = null;//选中树节点等级
   }
   //递归函数生成树
-  nodesIteration = (root) => {
+  nodesIteration = (nodes) => {
     const _this = this;
-    if(root.nodes){
-      return root.nodes.map(function (child,index) {
-        return <TreeNode name={child.name} title={child.name+"("+child.dishesCount+")"} level={child.level} key={child.id} parentId={child.parentId}>{_this.nodesIteration(child)}</TreeNode>;
-      });
-    }
-    return <TreeNode  name={root.name} title={root.name} level={root.level} key={root.id} parentId={root.parentId} />;
-  }
+    return nodes.map((item) => {
+      if(item.nodes && item.nodes.length){
+          return <TreeNode name={item.name} title={item.name+"("+item.dishesCount+")"} level={item.level} key={item.id} parentId={item.parentId}>{_this.nodesIteration(item.nodes)}</TreeNode>;
+      }
+      return <TreeNode  name={item.name} title={item.name+"("+item.dishesCount+")"} level={item.level} key={item.id} parentId={item.parentId} />;
+    });
+}
 
   //展开/收起节点时触发
   expandHandler = (expandedKeys, {expanded: bool, node}) => {
@@ -64,6 +65,7 @@ class DishesLeft extends React.Component {
 
   //点击树节点触发
   onSelect = (value, node)=>{
+
     if(value[0]){//选中树节点
       this.selectNodeLevel = node.selectedNodes[0].props.level;
       if(this.selectNodeLevel == rootLevel){//根目录
@@ -83,7 +85,8 @@ class DishesLeft extends React.Component {
         selectedNode: node.selectedNodes[0],
         selectedNodeParentId: node.selectedNodes[0].props.parentId,
         selectedNodeLevel:this.selectNodeLevel,
-        unfolded : value
+        unfolded : node.node.props.children ? value:this.state.unfolded,
+        node : node
       });
       //获取节点下的分页菜品信息
       this.props.dispatch({
@@ -94,6 +97,9 @@ class DishesLeft extends React.Component {
       });
 
     }else{
+      this.setState({
+        node : node
+      });
       if(this.selectNodeLevel == rootLevel){//根目录
         this.deleteDisplay = "none";//设置删除按钮隐藏
       }else{
@@ -197,6 +203,9 @@ class DishesLeft extends React.Component {
   handlerRemove = () =>{
     const {dispatch} = this.props;
     const _this = this;
+    this.setState({
+      unfolded : !this.state.node.node.props.children ? [this.state.selectedNodeParentId+""]:this.state.unfolded
+    });
     Modal.confirm({
       title: '提示',
       content: '是否确定删除此菜品库节点?',
@@ -211,6 +220,7 @@ class DishesLeft extends React.Component {
         });
       }
     });
+
   }
 
   //节点表单/详情页取消按钮点击事件
@@ -289,7 +299,7 @@ class DishesLeft extends React.Component {
 
 
     const {dishesLibraryNodes} = this.props.dishes;
-    let treeNodes = dishesLibraryNodes?this.nodesIteration(dishesLibraryNodes):null;
+    let treeNodes = dishesLibraryNodes?this.nodesIteration(dishesLibraryNodes.nodes):null;
     treeNodes =dishesLibraryNodes?<TreeNode name={dishesLibraryNodes.name} key={dishesLibraryNodes.id} level={dishesLibraryNodes.level} title={dishesLibraryNodes.name} parentId={dishesLibraryNodes.parentId}>{treeNodes}</TreeNode>:null;
     return (
       <div className="Dishes-left">
@@ -298,7 +308,6 @@ class DishesLeft extends React.Component {
           autoExpandParent = { true }
           onExpand={this.expandHandler.bind(this)}
           defaultSelectedKeys = { this.state.unfolded }
-          selectedKeys = {this.state.unfolded}
           expandedKeys = { this.state.unfolded }
           onSelect={ this.onSelect.bind(this) }
           >
