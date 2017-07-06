@@ -10,7 +10,6 @@ export default {
     curDetailTabsIndex: 0,
     curRoowDishesWeek: 0,
     curType: '0',
-    systemTime: '',
     loopDatas: {},
     loopSecondDatas: {},
     loopThirdDatas: {},
@@ -100,11 +99,6 @@ export default {
       console.log('单个循环房间送餐详情');
       console.log(data);
       return {...state, loopWeekDishesDatas:data};
-    },
-
-    //保存服务器时间
-    saveSystemTime(state, {payload: {data: systemTime}}) {
-      return {...state, systemTime};
     }
   },
   effects: {
@@ -172,21 +166,7 @@ export default {
           }
         })
       }
-    },
-
-    //获取服务器时间
-    *getSystemTime({payload: values}, {call, put}){
-      const {data: {code, data}} = yield  call(cycleService.getSystemTime, values);
-      if (code == 0) {
-        yield put({
-          type: 'saveSystemTime',
-          payload: {
-            data
-          }
-        })
-      }
     }
-
   },
 
   subscriptions: {
@@ -196,9 +176,6 @@ export default {
 
           //查询循环周期
           dispatch({type: 'getLoopList'});
-
-          //获取服务器时间
-          dispatch({type: 'getSystemTime'});
         }
       })
     }
