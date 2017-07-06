@@ -16,7 +16,7 @@ function mealCycle (props) {
           <Col span="1">
             <Button
               icon="double-left"
-              style={{height: '40px'}}
+              style={{height: '40px',width: '40px'}}
               onClick={prevDateComponent}
             />
           </Col>
@@ -31,7 +31,7 @@ function mealCycle (props) {
           <Col span="1">
             <Button
               icon="double-right"
-              style={{height: '40px', marginLeft: '20px'}}
+              style={{height: '40px', width: '40px', marginLeft: '20px'}}
               onClick={nextDateComponent}
             />
           </Col>
@@ -340,7 +340,7 @@ function mealCycle (props) {
     else if (loopObj.week == 5){
       title = '周期五';
     }
-
+    
     return (
       <div>
         <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#ffb3b3'}}>
