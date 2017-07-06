@@ -10,48 +10,11 @@ import Current from '../../Current'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-let roomId = []
 
 class AddSuiteed extends Component {
 
     constructor(props) {
         super(props)
-        this.columns = [{
-          title: '服务项目名称',
-          dataIndex: 'name',
-          key:'name',
-          width: "20%",
-        }, {
-          title: '服务项价格',
-          dataIndex: 'price',
-          key:'price',
-          width: "20%",
-          render:(text,record,index) => {
-            let price = "￥"+record.price
-            return (
-              price
-            )
-          }
-        }, {
-          title: '服务项目内容',
-          dataIndex: 'contents',
-          key:'contents',
-          width: "40%",
-        },{
-          title: '使用次数',
-          dataIndex: 'usageCount',
-          key: 'usageCount',
-          width: "20%",
-          render: (text, record, index) => {
-            return (
-                <span className="span">
-                  <Input defaultValue ={1} onChange={(event)=>{
-                    record.usageCount = event.target.value
-                  }}/>
-                </span>
-            );
-          },
-        }];
         this.state = {
           selectedRows: [],
           loading: false
@@ -129,7 +92,6 @@ class AddSuiteed extends Component {
         let loadingName = true
         let roomInformation = []
         const { getFieldDecorator } = this.props.form;
-        const columns = this.columns;
         let ListLnformation = []
         let roomList = []
         let selectData = []
@@ -219,32 +181,7 @@ class AddSuiteed extends Component {
         )
     }
 }
-function AddSuite({
-  dispatch,
-  serviceListByPage,
-  roomData,
-  selectData,
-  getDictionary
-}) {
-  return ( < div >
-    <AddSuiteed dispatch = {
-      dispatch
-    }
-    selectData = {
-      selectData
-    }
-    serviceListByPage = {
-      serviceListByPage
-    }
-    roomData = {
-      roomData
-    }
-     getDictionary = {
-      getDictionary
-     }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     serviceListByPage,

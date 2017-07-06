@@ -103,10 +103,6 @@ const monthStateView = (props) => {
     } else {
       return;
     }
-    console.log(dayIndex - offsetUnit)
-
-
-
 
     if(moment().isAfter(moment.unix(date/1000))){
       message.error("无法移动到过去");
@@ -135,7 +131,6 @@ const monthStateView = (props) => {
   };
 
   const renderMonthSelectView = () => {
-    // console.log('roomMonth:renderMonthSelectViewRendering');
     const renderYearSelectView = (index) => {
       const yearSelectChangeHandler = (value) => {
         dispatch({
@@ -336,12 +331,10 @@ const monthStateView = (props) => {
     const renderMonthRoom = (room, roomIndex) => {
 
       let users = [];
-      // console.log('roomMonth:renderMonthRoomListView>>');
       const renderDayRoom = (dayList) => {
         if (!dayList || dayList.length === 0) {
           return null;
         }
-        // console.log('roomMonth:dayList>>', dayList);
 
         //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
         let status = 0;
@@ -783,7 +776,7 @@ const monthStateView = (props) => {
                       {room.roomNo}
                     </div>
                     <div className="level">
-                      v1
+                      v{room.packageInfoLevels}
                     </div>
                   </div>
                 </div>
@@ -834,7 +827,6 @@ const monthStateView = (props) => {
    * 月房态主视图区
    */
   const monthMainView = () => {
-    // console.log('roomMonth:MainRendering');
     return (
 
         <div className="main">
@@ -884,7 +876,6 @@ const monthStateView = (props) => {
     const dragStart = (dragUser, event) => {
       dragOffsetX = event.nativeEvent.offsetX;
       dragOffsetY = event.nativeEvent.offsetY;
-
       dispatch({
         type: 'roomStatusManagement/userDragStart',
         payload: {
