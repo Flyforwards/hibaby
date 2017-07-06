@@ -228,7 +228,7 @@ function CardArray({roomList, dispatch}) {
     }
 
     let chiDiv = <div>
-      <h1>{statusDict[dict.status]}</h1>
+      <h1>{dict.isRepair == 1 ? '维修' : statusDict[dict.status]}</h1>
     </div>
 
 
