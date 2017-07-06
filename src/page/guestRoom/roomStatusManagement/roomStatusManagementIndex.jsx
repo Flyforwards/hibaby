@@ -258,7 +258,7 @@ function CardArray({roomList, dispatch}) {
     let disabled = false;
     const webparam = parse(location.search.substr(1))
     if (webparam.useDate) {
-      if(moment(webparam.useDate).format('YYYYMMDD') !== moment().format('YYYYMMDD')){
+      if(moment(webparam.useDate).format('YYYYMMDD') !== moment().format('YYYYMMDD') && dict.isRepair != 1){
         disabled = true;
       }
     }
