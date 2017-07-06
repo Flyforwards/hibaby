@@ -340,6 +340,7 @@ class DayRoomStatus extends React.Component{
         }
       }
     }
+
     this.props.dispatch({type: 'roomStatusManagement/setSelectValue', payload: {data: array}})
   }
 

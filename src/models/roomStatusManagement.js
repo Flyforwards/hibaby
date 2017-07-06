@@ -134,14 +134,21 @@ export default {
       return {...state, allCusList: list, defSelectCustomers: ary, pagination: {...state.pagination, ...pagination}};
     },
     setSelectValue(state, {payload: todo}){
+
       let listArray = [];
       if (state.dayStatusData) {
         for (let i = 0; i < state.dayStatusData.roomList.length; i++) {
           const dict = state.dayStatusData.roomList[i];
-          for (let j = 0; j < todo.data.length; j++) {
-            if (dict.status == todo.data[j]) {
+          if(dict.isRepair == 1){
+            if(todo.data.indexOf('1') != -1){
               listArray.push(dict);
-              break;
+            }
+            continue;
+          }
+          for (let j = 0; j < todo.data.length; j++) {
+           if (dict.status == todo.data[j]){
+                listArray.push(dict);
+                break;
             }
           }
         }
