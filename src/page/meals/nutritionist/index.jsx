@@ -68,10 +68,10 @@ class PrepareMealPage extends React.Component {
     }, {
       title: '餐单状态',
       dataIndex:'menuStatus',
-      render: (record,text,index) => {
+      render: (text,record ,index) => {
         if (text == 0) {
           return "标准餐单";
-        } else {
+        } else if(text == 1){
           return "禁忌餐单";
         }
       }
@@ -252,23 +252,22 @@ class PrepareMealPage extends React.Component {
 
             <Row gutter={16} style={{ height: 50 }}>
               <Col span={5} >
-                <FormItem label="年龄" {...formChooseOneAge}>
+                <FormItem label="年龄" {...formChooseOneAge} >
                   {getFieldDecorator('age1', {
                     rules: [{ required: false }]
                   })(
-                    <InputNumber min={1} max={100}/>
+                    <InputNumber min={1} max={100} style={{width:'100%'}} />
                   )}
                 </FormItem>
               </Col>
               <Col span={1} style={{ marginLeft: -100, marginRight: 100 }}>
-                <FormItem >
-                  {getFieldDecorator('age2', {
-                    rules: [{ required: false }]
-                  })(
-                    <InputNumber min={1} max={100}/>
-                  )}
-                </FormItem>
-
+                {/*<FormItem >*/}
+                  {/*{getFieldDecorator('age2', {*/}
+                    {/*rules: [{ required: false }]*/}
+                  {/*})(*/}
+                    {/*<InputNumber min={1} max={100}/>*/}
+                  {/*)}*/}
+                {/*</FormItem>*/}
               </Col>
               <Col span={6} className="delDisplan">
                 <FormItem label="预产期" {...formChooseOneAge}>
@@ -350,7 +349,7 @@ class PrepareMealPage extends React.Component {
               <Col span={5}>
                 <FormItem label="孕周" {...formChooseOneAge}>
                   {getFieldDecorator('gestationalWeeks')(
-                    <InputNumber max={40} min={1}/>
+                    <InputNumber max={40} min={1} style={{width:"100%"}} />
                   )}
                 </FormItem>
               </Col>
