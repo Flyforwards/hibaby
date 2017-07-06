@@ -179,11 +179,11 @@ function ScreenBar(props) {
         </span>
       </div>
 
-      <Card className="SelectDiv" bodyStyle={{padding: '20px'}}>
-        <Row style={{height: 50, width: '800px', overflow: 'hidden', float: 'left'}}>
+      <Card className="SelectDiv" bodyStyle={{padding: '20px 20px 0px 20px'}}>
+        <Row style={{height: 50, width: '800px', overflow: 'hidden'}}>
           {oneDiv}
         </Row>
-        <Row style={{height: 50, width: '800px', overflow: 'hidden', float: 'left'}}>
+        <Row style={{height: 50, width: '800px', overflow: 'hidden', display:'inline-block'}}>
           {twoDiv}
         </Row>
         <Button className='btn' onClick={ onSearch}>查询</Button>
