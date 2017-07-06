@@ -13,6 +13,7 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const createForm = Form.create;
 
+let ids = 2;
 @createForm()
 class EditTaboo extends React.Component {
   constructor(props) {
@@ -20,8 +21,10 @@ class EditTaboo extends React.Component {
     this.state = {
       addList:[],
       uids:6,
-    }
+    };
+    this.uids = 6;
   }
+
   componentDidMount(){
     const dataId = queryURL("dataId");
     this.props.dispatch({
@@ -50,13 +53,12 @@ class EditTaboo extends React.Component {
   //保存禁忌信息
   onSave(){
     const fields = this.props.form.getFieldsValue();
-    console.log("保存",fields)
     const { dispatch } =this.props;
     const customerId = queryURL("dataId");
     let itemStr ='';
     for(var item in fields){
       if(item.match("taboo")){
-        if(fields[item].trim()){
+        if(fields[item] !=　undefined &&　fields[item].trim()){
           itemStr+= fields[item]+',';
         }
       }
@@ -76,12 +78,10 @@ class EditTaboo extends React.Component {
 
   //添加禁忌
   onAdd() {
-    this.setState({
-      uids: this.state.uids + 1
-    })
+    this.uids =  this.uids + 1
     const { form } = this.props;
     const ikeys = form.getFieldValue('ikeys');
-    const nextKeys = ikeys.concat(this.state.uids);
+    const nextKeys = ikeys.concat(this.uids);
     form.setFieldsValue({
       ikeys: nextKeys
     });
@@ -101,7 +101,7 @@ class EditTaboo extends React.Component {
     getFieldDecorator('ikeys', {initialValue: []});
     const keys = getFieldValue('keys');
     const tabooArr = tabooData ? tabooData.taboo.split(','):[];
-    tabooArr.length > keys.length ? this.state.uids = tabooArr.length:6;
+    // this.uids = tabooArr.length > keys.length ?   tabooArr.length :  6;
     const items = tabooArr.length > keys.length ? tabooArr.map((i,index) => {
       return(
         <Col key={i} span={8} className="delDisplan">
