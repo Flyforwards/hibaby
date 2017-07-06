@@ -61,7 +61,7 @@ class ViewSuiteed extends Component {
         let ID = window.location.search.split("=")[1]
         if(this.props.roomFindById != null){
           this.props.roomFindById.roomNoList.map((item)=>{
-            roomInformation.push(<span key= {item} className="roomColor">{item}</span>)
+            roomInformation.push(<span key= {item} className="roomColorA">{item}</span>)
           })
         }
         const edit = !this.props.permissionAlias.contains('SUITE_EDIT');
