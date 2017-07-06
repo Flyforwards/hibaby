@@ -106,12 +106,12 @@ function SearchBar(props) {
 
   return(
     <div className="searchDiv">
-      <Row style={{clean:both,height: 50,overflow:'hidden'}}>
+      <Row style={{clear:'left',height: 50,overflow:'hidden'}}>
         {searchDiv[0]}
         {searchDiv[1]}
         {searchDiv[2]}
       </Row>
-      <Row style={{clean:both,height: 50,overflow:'hidden'}}>
+      <Row style={{clear:'left',height: 50,overflow:'hidden'}}>
         {searchDiv[3]}
         {searchDiv[4]}
       </Row>
