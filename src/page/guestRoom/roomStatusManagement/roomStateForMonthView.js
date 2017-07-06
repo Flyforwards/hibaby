@@ -95,24 +95,20 @@ const monthStateView = (props) => {
 
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
-
       // 偏移天数
       let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
-      date = new Date(event.target.dataset.date + offsetDays * 86400000);
+      date = event.target.dataset.startDate;
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
       return;
     }
+    console.log(dayIndex - offsetUnit)
 
-    let today = new Date();
-    let year = today.getFullYear();
-    let month = today.getMonth();
-    let day = today.getDate();
-    let tomorrow = new Date(year, month, day + 1);
 
-    // 过去的时间, 不可放置, 今天即过去
-    if (date < tomorrow.getTime()) {
+
+
+    if(moment().isAfter(moment.unix(date/1000))){
       message.error("无法移动到过去");
       return;
     }
@@ -451,6 +447,12 @@ const monthStateView = (props) => {
             let parentNode = e.target.parentNode;
             let dict = parentNode.dataset;
 
+
+            if(moment.unix(dict.startDate/1000).format('YYYYMMDD') !== moment().format('YYYYMMDD')) {
+              message.error('只有今日入住的用户可以确认入住')
+              return
+            }
+
             dispatch({
               type: 'roomStatusManagement/monthRoomUpdate',
               payload: {
@@ -517,6 +519,7 @@ const monthStateView = (props) => {
 
           let pageX = e.pageX;
           let target = e.target.parentNode;
+
           let targetWidth = target.offsetWidth;
           let unit = 0;
           let oldStartIndex = parseInt(target.dataset.startIndex);
@@ -526,10 +529,15 @@ const monthStateView = (props) => {
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
 
-
-          if (status == 1 && !customerId) {
-            return
+          if (status == 1) {
+            if(customerId){
+              status = 4;
+            }
+            else{
+              return
+            }
           }
+
 
             // 左端在入住状态下不可操作
           // if (status == 4) {
@@ -635,6 +643,7 @@ const monthStateView = (props) => {
         };
 
         for (let i = 0; i < users.length; i++) {
+
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
           const content = <div>{(users[i].customerName?users[i].customerName:(users[i].status == 1 ? '维修中' :'' )) + '('
           + users[i].dayCount + '天, '

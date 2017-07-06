@@ -504,8 +504,9 @@ export default {
         dict.id = state.expandData.id;
       }
 
-      const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
+
       try {
+        const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
         if (remarkList.length > 0) {
           yield put({
             type: 'savaRemark',
@@ -550,11 +551,10 @@ export default {
       }
       if(inputs.length > 0){
         const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
-        if (code == 0) {
+        try {
           message.success('信息保存成功');
           yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
-        }
-        else{
+        }catch (err){
           message.error('备注信息保存失败');
           yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
         }

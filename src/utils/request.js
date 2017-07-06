@@ -34,7 +34,6 @@ function checkCode(data) {
   // const whiteList = [6];
   if (code != 0) {
     if (code == 5) { // 未登陆
-      message
       if (location.pathname != '/login') {
         location.href = '/login'
       }
@@ -42,7 +41,6 @@ function checkCode(data) {
       const error = new Error(err || "请求错误" );
       throw error;
     }
-
   }
   return { data };
 }
