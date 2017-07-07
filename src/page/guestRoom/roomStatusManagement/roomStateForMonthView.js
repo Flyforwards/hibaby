@@ -95,24 +95,16 @@ const monthStateView = (props) => {
 
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
-
       // 偏移天数
       let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
-      date = new Date(event.target.dataset.date + offsetDays * 86400000);
+      date = event.target.dataset.startDate;
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
       return;
     }
 
-    let today = new Date();
-    let year = today.getFullYear();
-    let month = today.getMonth();
-    let day = today.getDate();
-    let tomorrow = new Date(year, month, day + 1);
-
-    // 过去的时间, 不可放置, 今天即过去
-    if (date < tomorrow.getTime()) {
+    if(moment().isAfter(moment.unix(date/1000))){
       message.error("无法移动到过去");
       return;
     }
@@ -139,7 +131,6 @@ const monthStateView = (props) => {
   };
 
   const renderMonthSelectView = () => {
-    // console.log('roomMonth:renderMonthSelectViewRendering');
     const renderYearSelectView = (index) => {
       const yearSelectChangeHandler = (value) => {
         dispatch({
@@ -340,12 +331,10 @@ const monthStateView = (props) => {
     const renderMonthRoom = (room, roomIndex) => {
 
       let users = [];
-      // console.log('roomMonth:renderMonthRoomListView>>');
       const renderDayRoom = (dayList) => {
         if (!dayList || dayList.length === 0) {
           return null;
         }
-        // console.log('roomMonth:dayList>>', dayList);
 
         //{0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '住客房', 6: '出所', 7: '预约', 8: '取消维修'}
         let status = 0;
@@ -450,6 +439,12 @@ const monthStateView = (props) => {
 
             let parentNode = e.target.parentNode;
             let dict = parentNode.dataset;
+
+
+            if(moment.unix(dict.startDate/1000).format('YYYYMMDD') !== moment().format('YYYYMMDD')) {
+              message.error('只有今日入住的用户可以确认入住')
+              return
+            }
 
             dispatch({
               type: 'roomStatusManagement/monthRoomUpdate',
@@ -781,7 +776,7 @@ const monthStateView = (props) => {
                       {room.roomNo}
                     </div>
                     <div className="level">
-                      v1
+                      v{room.packageInfoLevels}
                     </div>
                   </div>
                 </div>
@@ -832,7 +827,6 @@ const monthStateView = (props) => {
    * 月房态主视图区
    */
   const monthMainView = () => {
-    // console.log('roomMonth:MainRendering');
     return (
 
         <div className="main">
@@ -882,7 +876,6 @@ const monthStateView = (props) => {
     const dragStart = (dragUser, event) => {
       dragOffsetX = event.nativeEvent.offsetX;
       dragOffsetY = event.nativeEvent.offsetY;
-
       dispatch({
         type: 'roomStatusManagement/userDragStart',
         payload: {

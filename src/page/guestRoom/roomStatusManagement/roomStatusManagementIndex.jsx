@@ -179,11 +179,11 @@ function ScreenBar(props) {
         </span>
       </div>
 
-      <Card className="SelectDiv" bodyStyle={{padding: '20px'}}>
-        <Row style={{height: 50, width: '800px', overflow: 'hidden', float: 'left'}}>
+      <Card className="SelectDiv" bodyStyle={{padding: '20px 20px 0px 20px'}}>
+        <Row style={{height: 50, width: '800px', overflow: 'hidden'}}>
           {oneDiv}
         </Row>
-        <Row style={{height: 50, width: '800px', overflow: 'hidden', float: 'left'}}>
+        <Row style={{height: 50, width: '800px', overflow: 'hidden', display:'inline-block'}}>
           {twoDiv}
         </Row>
         <Button className='btn' onClick={ onSearch}>查询</Button>
@@ -258,7 +258,7 @@ function CardArray({roomList, dispatch}) {
     let disabled = false;
     const webparam = parse(location.search.substr(1))
     if (webparam.useDate) {
-      if(moment(webparam.useDate).format('YYYYMMDD') !== moment().format('YYYYMMDD')){
+      if(moment(webparam.useDate).format('YYYYMMDD') !== moment().format('YYYYMMDD') && dict.isRepair != 1){
         disabled = true;
       }
     }
@@ -340,6 +340,7 @@ class DayRoomStatus extends React.Component{
         }
       }
     }
+
     this.props.dispatch({type: 'roomStatusManagement/setSelectValue', payload: {data: array}})
   }
 

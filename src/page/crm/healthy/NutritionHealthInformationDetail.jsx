@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button, Col, Form, Input, Row, Radio, Select } from 'antd';
+import { Button, Col, Form, Input, Row, Radio, Select,Checkbox } from 'antd';
 import "./NutritionHealth.scss"
 import { routerRedux } from 'dva/router';
 import ExcelTitleModel from './excelTitle';
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const Option = Select.Option;
+const CheckboxGroup = Checkbox.Group;
 import PermissionButton from 'common/PermissionButton';
 /**
  * 客户信息》健康档案》营养部健康档案
@@ -245,6 +246,92 @@ function NutritionHealthInformationDetail(props) {
       }
     })
   }
+
+  //row 整行复选
+  function checkboxAllRow(radioName, dict,key) {
+    return(
+      <Row className="radioAllRow" key={key}>
+        <Col className="radioAllRowBg" span="10" style={{height: '55px',display: 'table'}}>
+          <FormItem
+            label={dict.title}
+            {...formItemLayout}
+          >
+            {getFieldDecorator(`${radioName}`, {
+              initialValue : healthInfo[radioName],
+              rules: [{ required: false, message: '  ' }]
+            })(
+              <CheckboxGroup disabled={disabled} options={dict.radioItems}  />
+            )}
+          </FormItem>
+        </Col>
+      </Row>
+    );
+  }
+
+  //复选item
+  function myCheckForm (radioName, dict) {
+
+    const radioItemDivs = [];
+    for (let i = 0; i < dict.radioItems.length; i++) {
+      radioItemDivs.push(
+        <Checkbox disabled={disabled} key={i} value={dict.radioItems[i]}>{dict.radioItems[i]}</Checkbox>
+      );
+    }
+
+    return (
+      <FormItem
+        label={dict.title}
+        {...formItemLayout}
+        style={{height: '100%'}}
+      >
+        {getFieldDecorator(`${radioName}`, {
+          initialValue : healthInfo[radioName],
+          rules: [{ required: false, message: '  ' }]
+        })(
+          <CheckboxGroup>
+            {radioItemDivs}
+          </CheckboxGroup>
+        )}
+      </FormItem>
+    )
+  }
+
+
+  //row 复选输入框
+  function checkWhiteRow (radioName, inputName, dict, inputTitle, lastRow, suffix, key) {
+    const radioValue = healthInfo[radioName];
+    if(radioValue && (radioValue == '其他' || radioValue == '有' || radioValue == '是' || radioValue.indexOf('其他') > -1)){
+      return (
+        <Row  className="radioWhiteRow" key={key}>
+          <Col className="radioWhiteRowLeft"  span="10" style={{height: '55px',display: 'table'}}>
+            {myCheckForm(radioName ,dict)}
+          </Col>
+          <Col className="radioWhiteRowRight" span="10"  style={{height: '55px',display: 'table'}}>
+            <FormItem>
+              {getFieldDecorator(`${inputName}`, {
+                initialValue : healthInfo[inputName],
+                rules: [{ required: false, message: '  ' }]
+              })(
+                <Input disabled={disabled}
+                       suffix={suffix}
+                />
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+      )
+    }else{
+      return (<Row  className="radioWhiteRow" key={key}>
+        <Col className="radioWhiteRowLeft"  span="10" style={{height: '55px',display: 'table'}}>
+          {myCheckForm(radioName ,dict)}
+        </Col>
+        <Col className="radioWhiteRowRight" span="10"  style={{height: '55px',display: 'table'}}>
+        </Col>
+      </Row>)
+    }
+
+  }
+
   //返回
   function handleBack() {
     const {dispatch} = props;
@@ -293,10 +380,15 @@ function NutritionHealthInformationDetail(props) {
               <div className="dietTitle">饮食禁忌:</div>
             </Col>
             <Col span='20' style={{height: '110px',display: 'table',width:'85.4%'}}>
-              {radioAllRow(radioNames[10],{radioItems: [
+              {/*{radioAllRow(radioNames[10],{radioItems: [
                 '猪肉','牛肉','羊肉','鸡肉','苦瓜', '茄子','带壳海鲜','猕猴桃','西红柿'
               ]},'',false,'',12)}
               {radioWhiteRow(radioNames[10], inputNames[13], {radioItems: ['其他']},'',false,'',12)}
+*/}
+              {checkboxAllRow(radioNames[10],{radioItems: [
+                '猪肉','牛肉','羊肉','鸡肉','苦瓜', '茄子','带壳海鲜','猕猴桃','西红柿'
+              ]},-12)}
+              {checkWhiteRow(radioNames[10], inputNames[13], {radioItems: ['其他']},'',false,'',12)}
             </Col>
           </Row>
           <Row className="matchItem">
@@ -317,8 +409,11 @@ function NutritionHealthInformationDetail(props) {
                   <div className="dietTitle">红肉类:</div>
                 </Col>
                 <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
-                  {radioAllRow(radioNames[13],{radioItems: ['猪肉','牛肉','羊肉']},'',false,'',13)}
-                  {radioWhiteRow(radioNames[13], inputNames[14], {radioItems: ['其他']},'',false,'',14)}
+                  {/*{radioAllRow(radioNames[13],{radioItems: ['猪肉','牛肉','羊肉']},'',false,'',13)}*/}
+                  {/*{radioWhiteRow(radioNames[13], inputNames[14], {radioItems: ['其他']},'',false,'',14)}*/}
+                  {checkboxAllRow(radioNames[13],{radioItems: ['猪肉','牛肉','羊肉']},13)}
+                  {checkWhiteRow(radioNames[13], inputNames[14], {radioItems: ['其他']},'',false,'',14)}
+
                 </Col>
               </Row>
               <Row className="dietTaboo">
@@ -326,8 +421,12 @@ function NutritionHealthInformationDetail(props) {
                   <div className="dietTitle">白肉类:</div>
                 </Col>
                 <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
-                  {radioAllRow(radioNames[15],{radioItems: ['鸡肉', '鱼肉', '虾蟹','鱿鱼']},'',false,'',15)}
-                  {radioWhiteRow(radioNames[15], inputNames[15], {radioItems: ['其他']},'',false,'',16)}
+                  {/*{radioAllRow(radioNames[15],{radioItems: ['鸡肉', '鱼肉', '虾蟹','鱿鱼']},'',false,'',15)}*/}
+                  {/*{radioWhiteRow(radioNames[15], inputNames[15], {radioItems: ['其他']},'',false,'',16)}*/}
+
+                  {checkboxAllRow(radioNames[15],{radioItems: ['鸡肉', '鱼肉', '虾蟹','鱿鱼']},15)}
+                  {checkWhiteRow(radioNames[15], inputNames[15], {radioItems: ['其他']},'',false,'',16)}
+
                 </Col>
               </Row>
               <Row className="dietTaboo">
@@ -335,18 +434,28 @@ function NutritionHealthInformationDetail(props) {
                   <div className="dietTitle">水果类:</div>
                 </Col>
                 <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
-                  {radioAllRow(radioNames[17],{radioItems: ['柑橘类', '瓜类', '苹果','香蕉','凤梨','芒果']},'',false,'',17)}
-                  {radioWhiteRow(radioNames[17], inputNames[16], {radioItems: ['其他']},'',false,'',18)}
+                  {/*{radioAllRow(radioNames[17],{radioItems: ['柑橘类', '瓜类', '苹果','香蕉','凤梨','芒果']},'',false,'',17)}*/}
+                  {/*{radioWhiteRow(radioNames[17], inputNames[16], {radioItems: ['其他']},'',false,'',18)}*/}
+
+                  {checkboxAllRow(radioNames[17],{radioItems: ['柑橘类', '瓜类', '苹果','香蕉','凤梨','芒果']},17)}
+                  {checkWhiteRow(radioNames[17], inputNames[16], {radioItems: ['其他']},'',false,'',18)}
                 </Col>
               </Row>
-              {radioAllRow(radioNames[19], {title: '腌制类',radioItems: [ '咸鱼', '腊肉', '泡菜']},'',false,'',19)}
-              {radioAllRow(radioNames[20], {title: '加工食品',radioItems: ['肉丸', '肉罐头','肉松','方便面','巧克力','话梅蜜饯','糖果','甜汤品', '面包', '蛋糕']},20)}
+              {/*{radioAllRow(radioNames[19], {title: '腌制类',radioItems: [ '咸鱼', '腊肉', '泡菜']},'',false,'',19)}*/}
+              {/*{radioAllRow(radioNames[20], {title: '加工食品',radioItems: ['肉丸', '肉罐头','肉松','方便面','巧克力','话梅蜜饯','糖果','甜汤品', '面包', '蛋糕']},20)}*/}
+
+              {checkboxAllRow(radioNames[19],{title: '腌制类',radioItems: ['咸鱼', '腊肉', '泡菜']},19)}
+              {checkboxAllRow(radioNames[20],{title: '加工食品',radioItems: ['肉丸', '肉罐头','肉松','方便面','巧克力','话梅蜜饯','糖果','甜汤品', '面包', '蛋糕']},20)}
+
               <Row className="lastDiet">
-                {radioAllRow(radioNames[21], {title: '刺激食品',radioItems: [ '茶','咖啡', '辣椒','烟', '酒', '油炸食物' ]},21)}
+                {/*{radioAllRow(radioNames[21], {title: '刺激食品',radioItems: [ '茶','咖啡', '辣椒','烟', '酒', '油炸食物' ]},21)}*/}
+                {checkboxAllRow(radioNames[21],{title: '刺激食品',radioItems: ['茶','咖啡', '辣椒','烟', '酒', '油炸食物' ]},21)}
               </Row>
             </Col>
           </Row>
-          {radioWhiteRow(radioNames[22], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',22)}
+          {/*{radioWhiteRow(radioNames[22], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',22)}*/}
+          {checkWhiteRow(radioNames[22], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',22)}
+
           <Row className="lastRow">
             {radioAllRow(radioNames[24],{title: '睡眠',radioItems: ['低于4小时','4-8小时','超过八小时']},23)}
           </Row>
