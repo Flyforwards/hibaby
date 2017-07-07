@@ -310,6 +310,47 @@ function HealthyhomeMainComponent(props) {
     )
   }
 
+  //row 整行单选
+  function radioAllRow2 (radioName, dict) {
+    return (
+      <Row>
+        <Col>
+          <div className="rightItemBg">
+            {secondRadioForm2(radioName, dict,4)}
+          </div>
+        </Col>
+      </Row>
+    )
+  }
+
+
+
+  //整行的单选item
+  function secondRadioForm2 (radioName ,dict,index) {
+    const radioItemDivs = [];
+    for (let i = 0; i < dict.radioItems.length; i++) {
+      radioItemDivs.push(
+        <Radio key={i} value={i+index}>{dict.radioItems[i]}</Radio>
+      );
+    }
+
+    return (
+      <FormItem
+        label={dict.title}
+        labelCol={{span: 5}}
+        wrapperCol={{span: 18}}
+      >
+        {getFieldDecorator(`${radioName}`, {
+          rules: [{ required: false, message: '  ' }]
+        })(
+          <RadioGroup>
+            {radioItemDivs}
+          </RadioGroup>
+        )}
+      </FormItem>
+    )
+  }
+
   //提交表单
   function handleSubmit (e) {
     //console.log("您点击了保存按钮");
@@ -602,7 +643,7 @@ function HealthyhomeMainComponent(props) {
             {radioInputRow(radioNames[22], inputNames[9], {title: '产后出血',radioItems: ['无','有']},'出血量',false,'毫升')}
             {radioAllRow(radioNames[23],{title: '血压异常',radioItems: ['无','低血压','高血压']})}
             {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开']})}
-            {radioAllRow(radioNames[25],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染']})}
+            {radioAllRow2(radioNames[24],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染']})}
             {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有']},'体温',false,'℃')}
             {radioAllRow(radioNames[27],{title: '乳房肿胀',radioItems: ['无','有']})}
             {radioAllRow(radioNames[28],{title: '哺乳困难',radioItems: ['无','有']})}
