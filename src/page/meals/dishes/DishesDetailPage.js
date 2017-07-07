@@ -29,7 +29,7 @@ class DishesDetailPage extends React.Component{
     dispatch(routerRedux.push(`/meals/dishes/editDishes`));
   }
   //删除点击事件
-  handleDelate(id){
+  handleDelete(id){
     const _this = this;
     Modal.confirm({
       title: '提示',
@@ -254,9 +254,9 @@ class DishesDetailPage extends React.Component{
         </Form>
         <div>
           <PermissionButton testKey="DISHES_EDIT" className='myBtn SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
-          <PermissionButton testKey="DISHES_DELETE" className='myBtn RemoveBtn' onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</PermissionButton>
+          <PermissionButton testKey="DISHES_DELETE" className='myBtn RemoveBtn' onClick={this.handleDelete.bind(this,initialValue?initialValue.id:null)}>删除</PermissionButton>
           {/*<Button className='myBtn SaveBtn'onClick={this.handleEdit.bind(this)}>编辑</Button>*/}
-          {/*<Button className='myBtn RemoveBtn'onClick={this.handleDelate.bind(this,initialValue?initialValue.id:null)}>删除</Button>*/}
+          {/*<Button className='myBtn RemoveBtn'onClick={this.handleDelete.bind(this,initialValue?initialValue.id:null)}>删除</Button>*/}
           <Button className='myBtn BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </div>
