@@ -6,6 +6,8 @@ import CycleDishesDetail from './cycleDishesDetail.jsx';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge, Select, Spin } from 'antd'
 const Option = Select.Option;
 
+var curWeek = 1;
+
 // 主页面
 function mealCycle (props) {
   function headerComponent (){
@@ -23,7 +25,10 @@ function mealCycle (props) {
           <Col span="22">
             <div className="dayTitle">{props.loopDatas.date} {chineseWeekDay(props.loopDatas.dayOfWeek)}</div>
             <div style={{marginTop: '-65px'}}>
-              {filterDiv()}
+              { props.curTabsIndex == 0
+                ? <div></div>
+                : filterDiv()
+              }
               <div style={{marginLeft: '85%', marginTop: '-15px'}}><p>今日用餐客户共计<font color="#ac672c">{props.loopDatas.allTotal}</font>人</p></div>
             </div>
             <div style={{marginTop: '20px' ,marginBottom: '40px'}}>{ showCurrentComponent(props.curTabsIndex) }</div>
@@ -171,25 +176,25 @@ function mealCycle (props) {
     const customers = loopObj.loopTotals ? tabooUser.customers : [] ;
 
     let title = '周期一';
-    if (loopObj.week == 1) {
+    if (index == 0) {
       title = '周期一';
     }
-    else if (loopObj.week == 2){
+    else if (index == 1){
       title = '周期二';
     }
-    else if (loopObj.week == 3){
+    else if (index == 2){
       title = '周期三';
     }
-    else if (loopObj.week == 4){
+    else if (index == 3){
       title = '周期四';
     }
-    else if (loopObj.week == 5){
+    else if (index == 4){
       title = '周期五';
     }
 
     return (
       <div>
-        <Card title={title} bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleChangedState(loopObj.week) }}>
+        <Card title={title} bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleChangedState(index+1) }}>
           <Row style={{display: 'flex',justifyContent: 'flex-end'}}>
             <Badge count={loopObj.day} style={{
               backgroundColor: '#fff',
@@ -325,22 +330,22 @@ function mealCycle (props) {
     const tabooDishes = tabooObj.dishes ? tabooObj.dishes : {} ;
 
     let title = '周期一';
-    if (loopObj.week == 1) {
+    if (index == 0) {
       title = '周期一';
     }
-    else if (loopObj.week == 2){
+    else if (index == 1){
       title = '周期二';
     }
-    else if (loopObj.week == 3){
+    else if (index == 2){
       title = '周期三';
     }
-    else if (loopObj.week == 4){
+    else if (index == 3){
       title = '周期四';
     }
-    else if (loopObj.week == 5){
+    else if (index == 4){
       title = '周期五';
     }
-    
+
     return (
       <div>
         <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#ffb3b3'}}>
@@ -392,7 +397,7 @@ function mealCycle (props) {
     }
 
     return (
-      <Row type="flex" justify="space-between" style={{marginLeft: '20px', marginTop: '10px'}}>
+      <Row style={{marginLeft: '20px', marginTop: '10px'}}>
         {colDivs}
       </Row>
     )
@@ -416,7 +421,7 @@ function mealCycle (props) {
     }
 
     return (
-      <Row type="flex" justify="space-between" style={{marginLeft: '20px', marginTop: '10px'}}>
+      <Row style={{marginLeft: '20px', marginTop: '10px'}}>
         {colDivs}
       </Row>
     )
@@ -460,25 +465,25 @@ function mealCycle (props) {
     const loopDishes = loopObj.loopTotals ? loopObj.loopTotals : [] ;
 
     let title = '周期一';
-    if (loopObj.week == 1) {
+    if (index == 0) {
       title = '周期一';
     }
-    else if (loopObj.week == 2){
+    else if (index == 1){
       title = '周期二';
     }
-    else if (loopObj.week == 3){
+    else if (index == 2){
       title = '周期三';
     }
-    else if (loopObj.week == 4){
+    else if (index == 3){
       title = '周期四';
     }
-    else if (loopObj.week == 5){
+    else if (index == 4){
       title = '周期五';
     }
 
     return (
       <div>
-        <Card title={title} bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleGotoDishesDetail(loopObj.week) }}>
+        <Card title={title} bordered={true} style={{marginBottom: '10px'}} onClick={() => { handleGotoDishesDetail(index+1) }}>
           <div style={{display: 'flex',justifyContent: 'flex-end'}}>
             <Badge count={loopObj.day} style={{
               backgroundColor: '#fff',
@@ -545,6 +550,9 @@ function mealCycle (props) {
   }
 
   function handleChangedState(week){
+
+    curWeek = week;
+
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedShowStatus',
@@ -606,7 +614,7 @@ function mealCycle (props) {
 
       dispatch({
         type: 'cyclePage/getLoopList',
-        payload:{  type: type }
+        payload:{  type: 0 }
       })
     }
     else if (index == 1){
@@ -642,7 +650,7 @@ function mealCycle (props) {
       <div className="MealCycle">
         <Spin
           spinning={loading.effects['cyclePage/getLoopListByWeek'] !== undefined ? loading.effects['cyclePage/getLoopListByWeek'] : false}>
-          <CycleDetail loopWeekDatas={props.loopWeekDatas}/>
+          <CycleDetail loopWeekDatas={props.loopWeekDatas} week={curWeek}/>
         </Spin>
       </div>
     )
@@ -652,7 +660,7 @@ function mealCycle (props) {
       <div className="MealCycle">
         <Spin
           spinning={loading.effects['cyclePage/getLoopRoomDishesListByWeek'] !== undefined ? loading.effects['cyclePage/getLoopRoomDishesListByWeek'] : false}>
-          <CycleDishesDetail loopWeekDishesDatas={props.loopWeekDishesDatas} type={props.curType}/>
+          <CycleDishesDetail loopWeekDishesDatas={props.loopWeekDishesDatas} type={props.curType} week={curWeek}/>
         </Spin>
       </div>
     )

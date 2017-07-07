@@ -3,6 +3,8 @@ import { connect } from 'dva'
 import styles from './Cycle.scss';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
 
+var changeWeek = 0;
+
 function mainCycleDetail(props) {
 
   console.log('-------------------------------');
@@ -82,19 +84,20 @@ function mainCycleDetail(props) {
     const tabooCustomers = tabooObj.customers ? tabooObj.customers : {} ;
 
     let title = '周期一';
-    if (loopObj.week == 1) {
+    var curWeek = props.week+changeWeek;
+    if (curWeek == 1) {
       title = '周期一';
     }
-    else if (loopObj.week == 2){
+    else if (curWeek == 2){
       title = '周期二';
     }
-    else if (loopObj.week == 3){
+    else if (curWeek == 3){
       title = '周期三';
     }
-    else if (loopObj.week == 4){
+    else if (curWeek == 4){
       title = '周期四';
     }
-    else if (loopObj.week == 5){
+    else if (curWeek == 5){
       title = '周期五';
     }
 
@@ -180,22 +183,18 @@ function mainCycleDetail(props) {
   //下一天
   function nextDateComponent() {
 
-    var that = this;
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedDetailTabActivity',
       payload: { status: 1 }
     })
 
-    let loopObj = {};
-    if (props.loopWeekDatas.loops && props.loopWeekDatas.loops.length > 0){
-      loopObj = props.loopWeekDatas.loops[0];
+    changeWeek++;
+    if (changeWeek > 5-props.week){
+      changeWeek = 1-props.week;
     }
-    var curWeek = loopObj.week;
-    curWeek = curWeek+1;
-    if (curWeek > 5){
-      curWeek = 1;
-    }
+
+    var curWeek = props.week+changeWeek;
 
     //查询单个循环的数据
     dispatch({
@@ -208,22 +207,18 @@ function mainCycleDetail(props) {
   //前一天
   function prevDateComponent() {
 
-    var that = this;
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedDetailTabActivity',
       payload: { status: -1 }
     })
 
-    let loopObj = {};
-    if (props.loopWeekDatas.loops && props.loopWeekDatas.loops.length > 0){
-      loopObj = props.loopWeekDatas.loops[0];
+    changeWeek--;
+    if (changeWeek < 1-props.week){
+      changeWeek = 5-props.week;
     }
-    var curWeek = loopObj.week;
-    curWeek = curWeek-1;
-    if (curWeek < 1){
-      curWeek = 5;
-    }
+
+    var curWeek = props.week+changeWeek;
 
     //查询单个循环的数据
     dispatch({

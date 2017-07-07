@@ -3,18 +3,12 @@ import { connect } from 'dva'
 import styles from './Cycle.scss';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
 
-var curWeek = 0;
+var changeWeek = 0;
 
 function mainCycleDishesDetail(props) {
 
   console.log('-------------------------------');
   console.log(props.loopWeekDishesDatas);
-
-  let loopObj = {};
-  if (props.loopWeekDishesDatas.loops && props.loopWeekDishesDatas.loops.length > 0){
-    loopObj = props.loopWeekDishesDatas.loops[0];
-  }
-  curWeek = loopObj.week;
 
   function headerComponent (){
     return (
@@ -85,19 +79,20 @@ function mainCycleDishesDetail(props) {
     const dishes = loopObj.loopTotals ? loopObj.loopTotals :{};
 
     let title = '周期一';
-    if (loopObj.week == 1) {
+    var curWeek = props.week+changeWeek;
+    if (curWeek == 1) {
       title = '周期一';
     }
-    else if (loopObj.week == 2){
+    else if (curWeek == 2){
       title = '周期二';
     }
-    else if (loopObj.week == 3){
+    else if (curWeek == 3){
       title = '周期三';
     }
-    else if (loopObj.week == 4){
+    else if (curWeek == 4){
       title = '周期四';
     }
-    else if (loopObj.week == 5){
+    else if (curWeek == 5){
       title = '周期五';
     }
 
@@ -167,10 +162,12 @@ function mainCycleDishesDetail(props) {
     })
 
 
-    curWeek += 1;
-    if (curWeek > 5){
-      curWeek = 1;
+    changeWeek++;
+    if (changeWeek > 5-props.week){
+      changeWeek = 1-props.week;
     }
+
+    var curWeek = props.week+changeWeek;
 
     //查询单个循环的数据
     dispatch({
@@ -190,10 +187,12 @@ function mainCycleDishesDetail(props) {
       payload: { status: -1 }
     })
 
-    curWeek -= 1;
-    if (curWeek < 1){
-      curWeek = 5;
+    changeWeek--;
+    if (changeWeek < 1-props.week){
+      changeWeek = 5-props.week;
     }
+
+    var curWeek = props.week+changeWeek;
 
     //查询单个循环的数据
     dispatch({
