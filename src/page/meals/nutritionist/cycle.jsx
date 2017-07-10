@@ -3,6 +3,7 @@ import { connect } from 'dva'
 import styles from './Cycle.scss';
 import CycleDetail from './cycleDetail.jsx';
 import CycleDishesDetail from './cycleDishesDetail.jsx';
+import CycleTabooDetail from './cycleTabooDetail.jsx';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge, Select, Spin } from 'antd'
 const Option = Select.Option;
 
@@ -348,7 +349,7 @@ function mealCycle (props) {
 
     return (
       <div>
-        <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#ffb3b3'}}>
+        <Card title={title} bordered={true} style={{marginBottom: '10px', backgroundColor: '#ffb3b3'}} onClick={() => { handleGotoTabooDetail(index+1) }}>
           <div style={{display: 'flex',justifyContent: 'flex-end'}}>
             <Badge count={loopObj.day} style={{
               backgroundColor: '#fff',
@@ -381,6 +382,20 @@ function mealCycle (props) {
         </Card>
       </div>
     )
+  }
+
+  function handleGotoTabooDetail(week) {
+    const {dispatch} = props;
+    dispatch({
+      type: 'cyclePage/changedShowStatus',
+      payload: {value: 2}
+    }),
+
+      //单个循环周期房间送餐详情
+      dispatch({
+        type: 'cyclePage/getLoopDishesListByWeek',
+        payload: { week: week , type: Number(props.curType)}
+      })
   }
 
   //标准菜品和数量
@@ -503,7 +518,7 @@ function mealCycle (props) {
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedShowStatus',
-      payload: {value: 2}
+      payload: {value: 3}
     }),
 
     //单个循环周期房间送餐详情
@@ -655,6 +670,16 @@ function mealCycle (props) {
       </div>
     )
   }
+  else if (props.showPageIndex == 2) {
+    return (
+      <div className="MealCycle">
+        <Spin
+          spinning={loading.effects['cyclePage/getLoopDishesListByWeek'] !== undefined ? loading.effects['cyclePage/getLoopDishesListByWeek'] : false}>
+          <CycleTabooDetail loopWeekTabboDatas={props.loopWeekTabboDatas} type={props.curType} week={curWeek}/>
+        </Spin>
+      </div>
+    )
+  }
   else {
     return (
       <div className="MealCycle">
@@ -709,7 +734,8 @@ function mapStateToProps(state) {
     loopSecondDatas: state.cyclePage.loopSecondDatas,
     loopThirdDatas: state.cyclePage.loopThirdDatas,
     loopWeekDatas: state.cyclePage.loopWeekDatas,
-    loopWeekDishesDatas: state.cyclePage.loopWeekDishesDatas
+    loopWeekDishesDatas: state.cyclePage.loopWeekDishesDatas,
+    loopWeekTabboDatas: state.cyclePage.loopWeekTabboDatas
   };
 }
 export default connect(mapStateToProps)(MealCyclePage)
