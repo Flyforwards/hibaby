@@ -288,7 +288,7 @@ export default {
       total: 200,
       current: 1
     },
-    leftDish:{
+    leftDish: {
       infoZero: [
         {
           dishesName: '菜一',
@@ -410,8 +410,9 @@ export default {
     changeHighTime(state, { payload: { postDate: highTime } }){
       return { ...state, highTime }
     },
-    getMenuInfo(state, { payload: { data } }){
-      const { menuInfoLow, lowTime } = state;
+    getMenuInfo(state, { payload: { data, values } }){
+      let { menuInfoLow, lowTime, defaultValueRadio } = state;
+      defaultValueRadio = { ...values, colorType: "red" }
       if (data.length != 0) {
         let info = [];
         let nu;
@@ -441,7 +442,7 @@ export default {
         })
         
       }
-      return { ...state, menuInfo: menuInfoLow }
+      return { ...state, menuInfo: menuInfoLow, defaultValueRadio }
       
     },
     getMenuInfoHigh(state, { payload: { data } }){
@@ -580,6 +581,206 @@ export default {
       let { dayInfo, findMenuInfo, defaultValueRadio } = state;
       if (data.length != 0) {
         defaultValueRadio = null;
+        findMenuInfo = [];
+        dayInfo = [
+          {
+            weekName: '第一周',
+            info: [
+              {
+                week: 1,
+                day: 1,
+                colorType: '#fff'
+              }, {
+                week: 1,
+                day: 2,
+                colorType: '#fff'
+                
+              }, {
+                week: 1,
+                day: 3,
+                colorType: '#fff'
+                
+              }, {
+                week: 1,
+                day: 4,
+                colorType: '#fff'
+                
+              }, {
+                week: 1,
+                day: 5,
+                colorType: '#fff'
+                
+              }, {
+                week: 1,
+                day: 6,
+                colorType: '#fff'
+                
+              }, {
+                week: 1,
+                day: 7,
+                colorType: '#fff'
+              }
+            ]
+          }, {
+            weekName: '第二周',
+            info: [
+              {
+                week: 2,
+                day: 1,
+                colorType: '#fff'
+              }, {
+                week: 2,
+                day: 2,
+                colorType: '#fff'
+              }, {
+                week: 2,
+                day: 3,
+                colorType: '#fff'
+              }, {
+                week: 2,
+                day: 4,
+                colorType: '#fff'
+              }, {
+                week: 2,
+                day: 5,
+                colorType: '#fff'
+              }, {
+                week: 2,
+                day: 6,
+                colorType: '#fff'
+              }, {
+                week: 2,
+                day: 7,
+                colorType: '#fff'
+              }
+            ]
+          }, {
+            weekName: '第三周',
+            info: [
+              {
+                week: 3,
+                day: 1,
+                colorType: '#fff'
+              }, {
+                week: 3,
+                day: 2,
+                colorType: '#fff'
+              }, {
+                week: 3,
+                day: 3,
+                colorType: '#fff'
+              }, {
+                week: 3,
+                day: 4,
+                colorType: '#fff'
+              }, {
+                week: 3,
+                day: 5,
+                colorType: '#fff'
+              }, {
+                week: 3,
+                day: 6,
+                colorType: '#fff'
+              }, {
+                week: 3,
+                day: 7,
+                colorType: '#fff'
+              }
+            ]
+          }, {
+            weekName: '第四周',
+            info: [
+              {
+                week: 4,
+                day: 1,
+                colorType: '#fff'
+              }, {
+                week: 4,
+                day: 2,
+                colorType: '#fff'
+              }, {
+                week: 4,
+                day: 3,
+                colorType: '#fff'
+              }, {
+                week: 4,
+                day: 4,
+                colorType: '#fff'
+              }, {
+                week: 4,
+                day: 5,
+                colorType: '#fff'
+              }, {
+                week: 4,
+                day: 6,
+                colorType: '#fff'
+              }, {
+                week: 4,
+                day: 7,
+                colorType: '#fff'
+              }
+            ]
+          }, {
+            weekName: '第五周',
+            info: [
+              {
+                week: 5,
+                day: 1,
+                colorType: '#fff'
+              }, {
+                week: 5,
+                day: 2,
+                colorType: '#fff'
+              }, {
+                week: 5,
+                day: 3,
+                colorType: '#fff'
+              }, {
+                week: 5,
+                day: 4,
+                colorType: '#fff'
+              }, {
+                week: 5,
+                day: 5,
+                colorType: '#fff'
+              }, {
+                week: 5,
+                day: 6,
+                colorType: '#fff'
+              }, {
+                week: 5,
+                day: 7,
+                colorType: '#fff'
+              }
+            ]
+          }, {
+            weekName: '高档食材',
+            info: [
+              {
+                week: 0,
+                day: 1,
+                colorType: '#fff'
+              }, {
+                week: 0,
+                day: 2,
+                colorType: '#fff'
+              }, {
+                week: 0,
+                day: 3,
+                colorType: '#fff'
+              }, {
+                week: 0,
+                day: 4,
+                colorType: '#fff'
+              }, {
+                week: 0,
+                day: 5,
+                colorType: '#fff'
+              }
+            ]
+          }
+        ];
+        console.log(dayInfo, '???????')
         data.map((v, k) => {
           findMenuInfo.push(v.dishesId);
           dayInfo.map((n, m) => {
@@ -588,7 +789,17 @@ export default {
             })
           })
         })
+        console.log(dayInfo, '为什么会有第一个变红')
+      } else {
+        findMenuInfo = [];
+        defaultValueRadio = { week: 1, day: 1, colorType: "#fff" };
+        dayInfo.map((n, m) => {
+          n.info.map((nn, mm) => {
+            nn.colorType = '#fff'
+          })
+        })
       }
+      
       return { ...state, dayInfo, findMenuInfo, defaultValueRadio }
     },
     saveLowInfo(state, { payload: { postData } }){
@@ -620,7 +831,8 @@ export default {
           type: 'getMenuInfo',
           payload: {
             data,
-            code
+            code,
+            values
           }
         });
       }
@@ -686,6 +898,8 @@ export default {
               'week': data[0].week
             }
           });
+        }else {
+          message.error('没有这道菜！')
         }
       }
     },
