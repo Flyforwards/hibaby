@@ -105,15 +105,15 @@
   .ant-form-item {
     margin-bottom: 0px;
   }
-  .mini .yt-admin-framework-content {
-    transition: all .3s;
-    margin-left: 60px;
-  }
-  .yt-admin-framework-content {
-    transition: all .3s;
-    padding: 0 12px;
-    background-color: #eeeeee;
-  }
+  //.mini .yt-admin-framework-content {
+  //  transition: all .3s;
+  //  margin-left: 60px;
+  //}
+  //.yt-admin-framework-content {
+  //  transition: all .3s;
+  //  padding: 0 12px;
+  //  background-color: #eeeeee;
+  //}
   .Customer-title {
     width: 100%;
     height: 100%;
@@ -121,12 +121,12 @@
     position: relative;
   }
 
-  @media (max-width: 767px) {
-    .mini .yt-admin-framework-content {
-      transition: all .3s;
-      margin-left: 0;
-    }
-  }
+  //@media (max-width: 767px) {
+  //  .mini .yt-admin-framework-content {
+  //    transition: all .3s;
+  //    margin-left: 0;
+  //  }
+  //}
 
   .ant-modal-title {
     text-align: center;
