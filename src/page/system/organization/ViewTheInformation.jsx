@@ -10,7 +10,7 @@ import {local, session} from 'common/util/storage.js'
 import DropDownMenued from './dropDownMenu.jsx'
 import Disabled from './Disabled.jsx'
 import AddJobed from './AddJob.jsx'
-import IMG from 'common/img.png'
+import IMG from 'assets/img.png'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;

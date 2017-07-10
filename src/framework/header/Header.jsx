@@ -5,8 +5,8 @@ import { hashHistory, Link} from 'react-router'
 import { local, session } from 'common/util/storage.js'
 import './index.scss'
 import UpdateModal from './UpdateModal.jsx'
-import Logo from './logo.png'
-import UserImg from './user.jpg'
+import Logo from 'assets/logo.png'
+import UserImg from 'assets/user.jpg'
 import { positionDict } from 'common/constants';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
