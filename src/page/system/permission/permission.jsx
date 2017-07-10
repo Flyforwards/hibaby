@@ -136,7 +136,7 @@ class permission extends Component {
         return (
            <div className="permission-cent">
              <div className="divs">
-               <Button disabled={ !permissionAlias.contains("ROLE_ADD") }  className="add" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
+               <Button disabled={ !permissionAlias.contains("ROLE_ADD") }  className="one-button" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
                 <Table {...tableProps} columns={ this.columns } bordered rowKey={record => record.id}/>

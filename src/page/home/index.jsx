@@ -4,7 +4,7 @@ import React from 'react'
 import {message, Button, Icon} from 'antd'
 import Page from '../../framework/page'
 import './index.scss';
-import logo from 'assets/logo2.png'
+import logo from 'assets/logo.png'
 
 class Home extends React.Component {
 
