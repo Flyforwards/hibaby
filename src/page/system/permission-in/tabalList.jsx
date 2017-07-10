@@ -7,6 +7,7 @@ import {local, session} from 'common/util/storage.js'
 import FromCreateModal from './fromCreateModal'
 import AlertModalFrom from 'common/AlertModalFrom'
 import {routerRedux} from 'dva/router'
+import { Link } from 'react-router';
 
 class TabalListed extends Component {
   constructor(props) {
@@ -17,11 +18,11 @@ class TabalListed extends Component {
           title: 'id',
           dataIndex: 'id',
           key: 'id',
-          width: '90px',
+          width: '6%',
         },{
           title: '主模块',
           dataIndex: 'projectId',
-          width: '90px',
+          width: '12%',
           render:(record)=>{
             if (projectAndModuleTree!=null&&projectAndModuleTree.length>0) {
               const instance =projectAndModuleTree.find((value)=>{
@@ -34,39 +35,44 @@ class TabalListed extends Component {
           title: '上级权限',
           dataIndex: 'parentName',
           key: 'parentName',
+          width: '12%',
         }, {
           title: '名称',
           dataIndex: 'name',
           key: 'name',
+          width: '12%',
         }, {
           title: '别名-对应按钮权限',
           dataIndex: 'alias',
           key: 'alias',
+          width: '18%',
         },{
           title: '描述',
           dataIndex: 'description',
           key: 'description',
+          width: '18%',
         },{
           title: '排序',
           dataIndex: 'orderBy',
           key: 'orderBy',
+          width: '6%',
         },{
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
           render: (text, record, index) => {
             return (
-                <div>
-                  <a className="firstA" onClick={this.delete.bind(this,record)}>删除</a>
-                  <a className="firstB" onClick={this.modify.bind(this,record)}>修改</a>
-                </div>
+              <div className="operate-list" key={ index }>
+                <Link className="one-link" style={{ width: '50%'}} onClick={this.modify.bind(this,record)}>编辑</Link>
+                <Link className="two-link" style={{ width: '50%'}} onClick={this.delete.bind(this,record)}>删除</Link>
+              </div>
             );
           },
+          width: '16%',
         }];
         this.state = {
-              createModalVisible: false,
-              modifyModalVisible: false,
-              alertModalVisible:false,
+            modifyModalVisible: false,
+            alertModalVisible:false,
         }
     }
 
@@ -96,7 +102,6 @@ class TabalListed extends Component {
 
     handleCreateModalCancel() {
         this.setState({
-            createModalVisible: false,
             alertModalVisible:false
         })
     }
@@ -132,8 +137,8 @@ class TabalListed extends Component {
           },
         }
         return (
-          <div>
-          <Table bordered {...tableProps} columns={this.columns} className="fromModal" rowKey ="id"/>
+          <div className="form-center">
+          <Table bordered {...tableProps} columns={ this.columns } rowKey ="id"/>
           <FromCreateModal
             handleOk={this.state.handleOk}
             record={this.record}

@@ -2,14 +2,13 @@
 import React, {Component} from 'react';
 import {connect} from 'dva'
 import './module.scss';
-import {routerRedux} from 'dva/router'
+import { routerRedux } from 'dva/router'
 import {Icon, Table, Input, Button, Form, Row, Col,Popconfirm, Modal,Radio,messageMenu,Select,TreeSelect,message} from 'antd';
-import request from '../../../common/request/request.js';
-import Current from '../../Current';
+import { Link } from 'react-router';
 import AlertModalFrom from 'common/AlertModalFrom'
 import AddModule from './AddModule'
 import EditModule from './EditModule'
-import {Link} from 'react-router';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const createForm = Form.create
@@ -30,53 +29,53 @@ class moduleIndex extends Component {
       title: '主模块',
       dataIndex: 'projectName',
       key:'projectName',
-      width: '200px',
+      width: '10%',
     },{
       title: '名称',
       dataIndex: 'name',
       key:'name',
-      width: '200px',
+      width: '10%',
     },{
       title: '描述',
       dataIndex: 'description',
       key:'description',
-      width: '200px',
+      width: '10%',
     },{
       title: '上级菜单',
       dataIndex: 'parentName',
       key:'parentName',
-      width: '200px',
+      width: '10%',
     },{
       title: '路径',
       dataIndex: 'path',
       key:'path',
-      width: '300px',
+      width: '20%',
     },{
       title: '权限名称',
       dataIndex: 'permissionName',
       key:'permissionName',
-      width: '150px',
+      width: '10%',
     },{
       title: '图标',
       dataIndex: 'icon',
       key:'icon',
-      width: '150px',
+      width: '10%',
     },{
       title: '排序',
       dataIndex: 'orderBy',
       key:'orderBy',
-      width: '100px',
+      width: '5%',
     },{
       title: '操作',
       dataIndex: 'operating',
       key: 'operating',
-      width: '150px',
+      width: '15%',
       render: (text, record, index) => {
         return (
-              <div className="OperateList" key={ index }>
-                <Link className="firstA" onClick={this.editMenu.bind(this,record)}>编辑</Link>
-                <Link className="firstB" onClick={this.delete.bind(this,record)}>删除</Link>
-              </div>
+          <div className="operate-list" key={ index }>
+            <Link className="one-link" style={{ width: '50%'}} onClick={this.editMenu.bind(this,record)}>编辑</Link>
+            <Link className="two-link" style={{ width: '50%'}} onClick={this.delete.bind(this,record)}>删除</Link>
+          </div>
         );
       },
     }];
@@ -173,10 +172,6 @@ class moduleIndex extends Component {
   render() {
     const { getFieldDecorator  } = this.props.form;
     const { pagination, list, dispatch, loading, projectList } = this.props;
-    const formItemLayout = {
-     labelCol: { span: 3 },
-     wrapperCol: { span:6 },
-    };
 
     const children = projectList.map((res,index)=>{
       return (<Option value={ String(res.id)} key={res.id}>{res.name}</Option>)
@@ -203,37 +198,37 @@ class moduleIndex extends Component {
     }
 
     return (
-      <div className="MenuInside">
-        <div className="menuHeard">
+      <div className="menu-cent">
+        <div className="menu-heard">
         <Form className="ant-advanced-search-form ">
                 <FormItem label="主模块：">
                   {getFieldDecorator('projectId', {rules: [{ required: false, }],
                   })(
-                  <Select className="SelectMenu"  placeholder="请选择">
+                  <Select  placeholder="请选择">
                       { children }
                   </Select>)}
                 </FormItem>
                 <FormItem label="名称：">
                   {getFieldDecorator('name', {rules: [{ required: false, }],
                   })(
-                      <Input className="input"/>
+                      <Input />
                   )}
                 </FormItem>
                 <FormItem label="路径：">
                   {getFieldDecorator('path', {rules: [{ required: false, }],
                   })(
-                      <Input className="input"/>
+                      <Input />
                   )}
                 </FormItem>
-                <div className="btn">
-                    <Button className="SelBtn" onClick={this.handleSearch.bind(this)}>查询</Button>
-                    <Button className="ClearBtn" onClick={this.handleReset.bind(this)}>清空</Button>
-                    <Button className="AddBtn" onClick={this.addMenuList.bind(this)}>新增</Button>
+                <div className="button-group">
+                    <Button className="button-group-1" onClick={this.handleSearch.bind(this)}>查询</Button>
+                    <Button className="button-group-2" onClick={this.handleReset.bind(this)}>清空</Button>
+                    <Button className="button-group-3" onClick={this.addMenuList.bind(this)}>新增</Button>
                 </div>
             </Form>
         </div>
-        <div className="CreateModaList">
-          <Table {...tableProps} className="search-result-list" bordered />
+        <div className="menu-center">
+          <Table {...tableProps}  bordered />
         </div>
         <AddModule
           visible ={ this.state.modifyModalVisible }
