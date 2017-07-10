@@ -2,7 +2,6 @@ import React, { Component }from 'react';
 import { connect } from 'dva';
 import { Button, Icon, Modal, Form, Input, Row, Col, message, Select } from 'antd';
 import ChooseDishes from './chooseDishesModel'
-import './prepareMeals.scss'
 const Option = Select.Option
 const FormItem = Form.Item;
 
