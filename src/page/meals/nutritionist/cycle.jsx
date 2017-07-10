@@ -583,7 +583,6 @@ function mealCycle (props) {
 
   function nextDateComponent() {
 
-    var that = this;
     const {dispatch} = props;
 
     let index = props.curTabsIndex+1;
@@ -592,18 +591,15 @@ function mealCycle (props) {
     }
     getComponentData(index, props.curType);
 
-    setTimeout(function(){
-      dispatch({
-        type: 'cyclePage/changedTabActivity',
-        payload: { status: 1 }
-      })
-    }.bind(that), 450);
+    dispatch({
+      type: 'cyclePage/changedTabActivity',
+      payload: { status: 1 }
+    })
 
   }
 
   function prevDateComponent() {
 
-    var that = this;
     const {dispatch} = props;
 
     let index = props.curTabsIndex-1;
@@ -612,12 +608,10 @@ function mealCycle (props) {
     }
     getComponentData(index, props.curType);
 
-    setTimeout(function(){
-      dispatch({
-        type: 'cyclePage/changedTabActivity',
-        payload: { status: -1 }
-      })
-    }.bind(that), 450);
+    dispatch({
+      type: 'cyclePage/changedTabActivity',
+      payload: { status: -1 }
+    })
   }
 
   //请求对应页面的数据
@@ -692,13 +686,48 @@ function mealCycle (props) {
   }
 }
 
+var refreshInterval;
+
 class MealCyclePage extends React.Component{
 
   constructor(props){
     super(props);
   }
 
+  componentDidMount() {
+    //定义一个反复执行的调用
+    var that = this;
+    refreshInterval = setInterval(function () {
+
+      if (this.props.curTabsIndex == 0){
+
+        this.props.dispatch({
+          type: 'cyclePage/getLoopList',
+          payload:{  type: 0 }
+        })
+      }
+      else if (this.props.curTabsIndex == 1){
+
+        this.props.dispatch({
+          type: 'cyclePage/getLoopDishesList',
+          payload:{ type: this.props.curType }
+        })
+      }
+      else {
+
+        this.props.dispatch({
+          type: 'cyclePage/getLoopRoomDishesList',
+          payload:{ type: this.props.curType }
+        })
+      }
+
+    }.bind(that), 3600000);
+  }
+
   componentWillUnmount() {
+
+    clearInterval(refreshInterval);
+
     this.props.dispatch({
       type: 'cyclePage/changedShowStatus',
       payload: {value: 0}
@@ -735,7 +764,8 @@ function mapStateToProps(state) {
     loopThirdDatas: state.cyclePage.loopThirdDatas,
     loopWeekDatas: state.cyclePage.loopWeekDatas,
     loopWeekDishesDatas: state.cyclePage.loopWeekDishesDatas,
-    loopWeekTabboDatas: state.cyclePage.loopWeekTabboDatas
+    loopWeekTabboDatas: state.cyclePage.loopWeekTabboDatas,
+    systemTime: state.cyclePage.systemTime
   };
 }
 export default connect(mapStateToProps)(MealCyclePage)

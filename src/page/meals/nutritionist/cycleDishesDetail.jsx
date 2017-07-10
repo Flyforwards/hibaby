@@ -224,9 +224,43 @@ function mainCycleDishesDetail(props) {
   )
 }
 
+var refreshInterval;
+class MealCycleDishesDetailPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    //定义一个反复执行的调用
+    var that = this;
+    refreshInterval = setInterval(function () {
+
+      var curWeek = this.props.week+changeWeek;
+
+      //查询单个循环的数据
+      this.props.dispatch({
+        type: 'cyclePage/getLoopRoomDishesListByWeek',
+        payload: { week: curWeek , type: Number(this.props.type)}
+      })
+
+    }.bind(that), 3600000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(refreshInterval);
+  }
+
+  render(){
+    return (
+      mainCycleDishesDetail(this.props)
+    );
+  }
+}
+
 function mapStateToProps(state) {
   return {
     curTabsIndex: state.cyclePage.curDetailTabsIndex
   };
 }
-export default connect(mapStateToProps)(mainCycleDishesDetail)
+export default connect(mapStateToProps)(MealCycleDishesDetailPage)

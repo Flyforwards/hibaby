@@ -15,7 +15,8 @@ export default {
     loopThirdDatas: {},
     loopWeekDatas: {},
     loopWeekDishesDatas: {},
-    loopWeekTabboDatas: {}
+    loopWeekTabboDatas: {},
+    systemTime: ''
   },
   reducers: {
 
@@ -107,6 +108,12 @@ export default {
       console.log('单个循环菜品详情界面');
       console.log(data);
       return {...state, loopWeekTabboDatas:data};
+    },
+
+    //保存服务器时间
+    saveSystemTime(state, {payload: {data}}) {
+      console.log(data);
+      return {...state, systemTime:data};
     }
   },
   effects: {
@@ -187,6 +194,19 @@ export default {
           }
         })
       }
+    },
+
+    //查询服务器时间
+    *getSystemTime({payload: value}, {call, put}){
+      const {data: {code, data}} = yield call(cycleService.getSystemTime, value);
+      if (code == 0) {
+        yield put({
+          type: "saveSystemTime",
+          payload: {
+            data
+          }
+        })
+      }
     }
   },
 
@@ -198,6 +218,9 @@ export default {
 
           //查询循环周期
           dispatch({type: 'getLoopList'});
+
+          //获取服务器时间
+          dispatch({type: 'getSystemTime'});
         }
       })
     }
