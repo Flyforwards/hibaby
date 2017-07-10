@@ -1,13 +1,12 @@
+
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
+import './management.scss';
 import {Card,Input,Button,Form} from 'antd';
-import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
 
 const FormItem = Form.Item;
 const createForm = Form.create();
-var Nzh = require("nzh");
 
 @createForm
 class CheckData extends React.Component {
@@ -59,7 +58,7 @@ class CheckData extends React.Component {
       };
       const edit = !this.props.permissionAlias.contains('GROUP_CHAR_EDIT');
       return (
-          <div className="xuanxiang container2">
+          <div className="management-cent">
               <Card title = "字段信息:" >
                 <FormItem {...formItemLayout} label='字段名称'>
                   {getFieldDecorator('name',{

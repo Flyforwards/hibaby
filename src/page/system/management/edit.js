@@ -1,8 +1,9 @@
+
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
 import { Card,Input,Button,Form } from 'antd';
 import { Link } from 'react-router';
+import './management.scss';
 const FormItem = Form.Item;
 const createForm = Form.create
 
@@ -154,7 +155,7 @@ class editGroupData extends React.Component {
       const dataId = GetQueryString("dataId");
 
       return (
-        <div className="xuanxiang container2">
+        <div className="management-cent">
           <Card title = "字段信息:" >
               <Form layout={ 'horizontal' }>
               <FormItem {...formItemLayout} className="parentCen" label="字段名称">

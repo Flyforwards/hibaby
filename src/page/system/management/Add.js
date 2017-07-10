@@ -1,13 +1,11 @@
 
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
+import './management.scss';
 import {Card,Input,Button,Form} from 'antd';
 import {Link} from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
-
-
 
 @createForm()
 class AddGroupChar extends React.Component {
@@ -97,7 +95,7 @@ class AddGroupChar extends React.Component {
       });
 
       return (
-        <div className="xuanxiang container2">
+        <div className="management-cent">
             <Card title = "字段信息:" >
                 <Form >
                     <FormItem className = "div">
@@ -126,11 +124,11 @@ class AddGroupChar extends React.Component {
                   </FormItem>
                 </Form>
             </Card>
-            <Card title = "下拉选项:" >
-            <Form>
-                 { formItems }
-                 <Button className = "editable-add-btn add" onClick = { this.add.bind(this) }> 添加 </Button>
-            </Form>
+            <Card className="card-bottom" title = "下拉选项:" >
+              <Form>
+                   { formItems }
+                   <Button className = "editable-add-btn add" onClick = { this.add.bind(this) }> 添加 </Button>
+              </Form>
             </Card >
             <div className="retuSave">
               <Link to='/system/group-char'>
