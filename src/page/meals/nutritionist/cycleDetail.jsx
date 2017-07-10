@@ -250,9 +250,43 @@ function mainCycleDetail(props) {
   )
 }
 
+var refreshInterval;
+class MealCycleDetailPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    //定义一个反复执行的调用
+    var that = this;
+    refreshInterval = setInterval(function () {
+
+      var curWeek = this.props.week+changeWeek;
+      //查询单个循环的数据
+      this.props.dispatch({
+        type: 'cyclePage/getLoopListByWeek',
+        payload: { week: curWeek }
+      })
+
+    }.bind(that), 3600000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(refreshInterval);
+  }
+
+  render(){
+    return (
+      mainCycleDetail(this.props)
+    );
+  }
+
+}
+
 function mapStateToProps(state) {
   return {
     curTabsIndex: state.cyclePage.curDetailTabsIndex
   };
 }
-export default connect(mapStateToProps)(mainCycleDetail)
+export default connect(mapStateToProps)(MealCycleDetailPage)
