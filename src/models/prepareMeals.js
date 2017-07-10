@@ -780,7 +780,6 @@ export default {
             ]
           }
         ];
-        console.log(dayInfo, '???????')
         data.map((v, k) => {
           findMenuInfo.push(v.dishesId);
           dayInfo.map((n, m) => {
@@ -789,7 +788,6 @@ export default {
             })
           })
         })
-        console.log(dayInfo, '为什么会有第一个变红')
       } else {
         findMenuInfo = [];
         defaultValueRadio = { week: 1, day: 1, colorType: "#fff" };
