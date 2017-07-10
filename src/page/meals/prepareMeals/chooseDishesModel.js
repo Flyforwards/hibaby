@@ -4,7 +4,6 @@ import { Modal, Button } from 'antd';
 import { Tree, Input, Row, Col, Table } from 'antd';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-import './prepareMeals.scss'
 
 class App extends Component {
   state = {

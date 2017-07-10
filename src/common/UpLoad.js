@@ -1,7 +1,7 @@
 import { Upload, Icon, Modal ,message} from 'antd';
 import React, {Component} from 'react'
 import {local, session} from 'common/util/storage.js'
-import IMG from 'common/img.png'
+import IMG from 'assets/img.png'
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));

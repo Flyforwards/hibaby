@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import './prepareMeals.scss'
 import { Button, Icon, Modal, Form, Input, Row, Col, message, Spin } from 'antd';
 const FormItem = Form.Item;
-import './prepareMeals.scss'
 import ChooseDishes from './chooseDishesModel'
 
 class DynamicFieldSet extends Component {

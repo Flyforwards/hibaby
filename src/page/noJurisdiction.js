@@ -8,7 +8,7 @@ class noJurisdiction extends Component {
   render() {
 
     return (
-      <Page loading={false} title="noJurisdiction">
+      <Page loading={false} title="没有权限">
       <div className='error-404'>
       <Icon type='frown-o'/>
       <h1>没有权限访问这个菜单</h1>

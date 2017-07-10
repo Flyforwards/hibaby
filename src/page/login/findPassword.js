@@ -2,7 +2,7 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import  './LoginIndex.scss';
-import logo from './images/logo.png'
+import logo from 'assets/logo2.png'
 import { connect } from 'dva';
 import { Link } from 'react-router';
 import { message } from 'antd'

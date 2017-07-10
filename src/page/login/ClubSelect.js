@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { connect } from 'dva';
 import './LoginIndex.scss';
 
-import logo from './images/logo.png'
+import logo from 'assets/logo2.png'
 
 function ClubSelect({ dispatch, clubs}){
   const btnClick = (index) => {
