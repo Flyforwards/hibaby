@@ -28,11 +28,12 @@ var webpackConfig = {
         extensions: ['', '.js', '.jsx'],
         unsafeCache: true,
         alias: {
-            'component': path.resolve(__dirname, './src/component'),
-            'common': path.resolve(__dirname, './src/common'),
-            'framework': path.resolve(__dirname, './src/framework'),
-            'models': path.resolve(__dirname, './src/models'),
-            'page': path.resolve(__dirname, './src/page'),
+          'component': path.resolve(__dirname, './src/component'),
+          'common': path.resolve(__dirname, './src/common'),
+          'framework': path.resolve(__dirname, './src/framework'),
+          'models': path.resolve(__dirname, './src/models'),
+          'page': path.resolve(__dirname, './src/page'),
+          'assets': path.resolve(__dirname, './src/assets'),
         }
     },
     resolveLoader: {

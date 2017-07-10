@@ -4,7 +4,7 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { connect } from 'dva';
 import  './LoginIndex.scss';
 import { session } from 'common/util/storage.js';
-import logo from './images/logo.png'
+import logo from 'assets/logo2.png'
 import { Link} from 'react-router'
 const FormItem = Form.Item;
 const createForm = Form.create

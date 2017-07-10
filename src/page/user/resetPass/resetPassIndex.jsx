@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'dva'
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import  './resetPass.scss';
-import logo from 'common/logo.png'
+import logo from 'assets/logo2.png'
 import { local, session } from 'common/util/storage.js';
 
 const FormItem = Form.Item;
