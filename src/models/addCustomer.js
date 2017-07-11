@@ -494,21 +494,19 @@ export default {
 
       const dict = {
         "associatedRooms": values.associatedRooms,
-        "cityPermanent": values.cityPermanent.key,
         "contact": values.contact,
         "contractAppendices": contractStr,
         "contractNumber": values.contractNumber,
         "customerId": values.id,
         "customerPhoto": state.headIcon,
-        "detailedPermanent": values.detailedPermanent,
         "idcard": values.idcard,
         "idcardScan": caridStr,
         'contactName':values.contactName,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
         "nation": values.nation.key,
         "operator": state.operator,
+        "placeOrigin": values.placeOrigin,
         "productionDate": values.productionDate? values.productionDate.format('YYYY-MM-DD'):'',
-        "provincePermanent": values.provincePermanent.key,
         "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.data.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };

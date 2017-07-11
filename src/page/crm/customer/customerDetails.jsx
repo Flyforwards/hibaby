@@ -129,6 +129,7 @@ function ExtensionInfo(props) {
 
   const expandInfo = [
     {title:'身份证',value:netData.idcard},
+    {title:'籍贯', value:netData.placeOrigin},
     {title:'民族',value: textforkey(nationalData, netData.nation,'nation')},
     {title:'购买套餐',value:netData.purchasePackage},
     {title:'联系人姓名',value:netData.contactName},

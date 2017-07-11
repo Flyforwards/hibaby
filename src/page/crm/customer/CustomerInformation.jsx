@@ -503,6 +503,7 @@ function ExtensionInfo(props) {
 
   const expandInfo = [
     {title:'身份证',component:'Input',submitStr:'idcard'},
+    {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
     {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,noRequired:"1"},
     {title:'联系人姓名',component:'Input',submitStr:'contactName'},
@@ -515,7 +516,6 @@ function ExtensionInfo(props) {
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},
-    {title:'户籍地址',component:'Select',submitStr:'provincePermanent',fun:PermanentProvinceSelect,children:provinceDataChis,span:6},
     {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
     {component:'Input',submitStr:'detailedPermanent',span:17,offset:1},
     {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl,loadProgress:loadProgress,spin:headIconSpin},
