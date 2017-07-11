@@ -260,9 +260,9 @@
   line-height: 30px;
 
   font-size: 14px;
-  color: #b67233;
-  background-color: #f1e8df;
-  border-color:#d4ad89;
+  color:#fff;
+  background: #b67233;
+  border-color: #b67233;
   &:hover,&:visited,&:focus,&:active {
     color: #fff;
     background-color:#f89d2d;
@@ -286,9 +286,62 @@
   line-height: 30px;
 
   font-size: 14px;
-  color: #b67233;
-  background-color: #f1e8df;
-  border-color:#d4ad89;
+  color: #fff;
+  border-color: rgba(255, 153, 0, 1);
+  background-color: rgba(255, 153, 0, 1);
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.button-group-bottom-3 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background:#693d20 ;
+  border-color:#693d20;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+
+.button-group-bottom-4 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background-color: #eb7c34;
+  border-color: #eb7c34;
   &:hover,&:visited,&:focus,&:active {
     color: #fff;
     background-color:#f89d2d;
@@ -320,4 +373,9 @@
   &:hover,&:visited,&:focus,&:active {
     color:#f89d2d;
   }
+}
+
+
+.operation-list {
+  width: 100%;
 }

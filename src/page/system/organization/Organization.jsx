@@ -14,11 +14,11 @@ import { keyToText } from '../../../utils';
 
 
 const Option = Select.Option
+const FormItem = Form.Item;
 
 let POSITION = [];
 let DEPTEMENT = [];
 let endemic = session.get("endemic")
-const FormItem = Form.Item;
 
 class Organization extends React.Component {
   constructor(props) {
@@ -136,13 +136,10 @@ class Organization extends React.Component {
         }
 
         return (
-          <span>
-                  <Link disabled={ detail} to={{
-                    pathname: '/system/organization/view-info',
-                    query: { data: record.id }
-                  }}>查看</Link>
-                  <Link className="twoA" disabled={ disable } onClick={this.disabled.bind(this, record)}>{ Forbidden }</Link>
-                </span>
+          <div className="operation-list">
+            <Link className="one-link" style={{ width: '50%' }} disabled={ detail} to={{ pathname: '/system/organization/view-info', query: { data: record.id } }}>查看</Link>
+            <Link className="two-link" style={{ width: '50%' }} disabled={ disable } onClick={this.disabled.bind(this, record)}>{ Forbidden }</Link>
+          </div>
         );
       }
     }];
@@ -310,7 +307,7 @@ class Organization extends React.Component {
         record.key = record.id;
       });
     }
-    const { getPosition: positionInfo } = this.props;
+    const { getPosition: positionInfo, page, totalpage, total, results, range } = this.props;
     POSITION = keyToText(positionInfo, "id", "name", "POSITION");
     const { getDeptList: depInfo } = this.props;
     DEPTEMENT = keyToText(depInfo, "id", "name", "POSITION");
@@ -345,7 +342,6 @@ class Organization extends React.Component {
                   <Col span={8}>
                     <FormItem
                       label="姓名"
-                      //className="userName"
                     >
                       {getFieldDecorator('userName', {
                         rules: []
@@ -357,7 +353,6 @@ class Organization extends React.Component {
                   <Col span={8}>
                     <FormItem
                       label="系统角色"
-                      //className="SystemRoles"
                     >
                       {getFieldDecorator('SystemRoles', {
                         rules: []
@@ -371,7 +366,6 @@ class Organization extends React.Component {
                   <Col span={8}>
                     <FormItem
                       label="账户状态"
-                      //className="OrganizationType"
                     >
                       {getFieldDecorator('OrganizationType', {
                         rules: []
@@ -386,38 +380,23 @@ class Organization extends React.Component {
                 </Row>
 
               </Form>
-              <Row className="btn">
-                  {this.state.tissueProperty == 3 ?
-                    <Link to={{ pathname: '/system/organization/addUser', query: { nodeid: this.state.nodeid } }}>
-                      <Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button></Link> :
-                    <Link to="/system/organization/addUser">
-                      <Button className="SaveBtn Organization-Inquire" disabled={!add}>新增员工</Button>
-                    </Link>
-                  }
-                  <Link >
-                    <Button className="Organization-add" onClick={this.OrganizationInquire.bind(this)}>查询</Button>
+              <div className="button-group">
+                <Link >
+                  <Button className="button-group-2" onClick={this.OrganizationInquire.bind(this)}>查询</Button>
+                </Link>
+                {this.state.tissueProperty == 3 ?
+                  <Link to={{ pathname: '/system/organization/addUser', query: { nodeid: this.state.nodeid } }}>
+                    <Button className="button-group-1" disabled={!add}>新增员工</Button></Link> :
+                  <Link to="/system/organization/addUser">
+                    <Button className='button-group-1' disabled={!add}>新增员工</Button>
                   </Link>
-              </Row>
+                }
+              </div>
             </div>
             {this.props.list ?
-              <div className="CreateModaList">
+              <div>
                 <Table bordered dataSource={ListLnformation} columns={columns} pagination={pagination}/>
-                < Current page={
-                  this.props.page
-                }
-                          totalpage={
-                            this.props.totalpage
-                          }
-                          total={
-                            this.props.total
-                          }
-                          results={
-                            this.props.results
-                          }
-                          range={
-                            this.props.range
-                          }
-                />
+                <Current {...{page,totalpage,total,results,range}}  />
               </div> : null}
             <CreateModal
               visible={ this.state.createModalVisible }
@@ -437,15 +416,15 @@ class Organization extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          total,
-          getPosition,
-          getDeptList,
-          getEndemic,
-          page,
-          results,
-          range
-        } = state.organization;
+    list,
+    total,
+    getPosition,
+    getDeptList,
+    getEndemic,
+    page,
+    results,
+    range
+  } = state.organization;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading.models.organization,

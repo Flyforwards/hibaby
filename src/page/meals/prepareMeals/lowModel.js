@@ -102,7 +102,7 @@ class DynamicFieldSet extends Component {
           {
             dishes.map((v, k) => {
               return (
-                <Col span={8} className="foodCol" key={k}>
+                <Col span={8} className="foodCol" key={v.dishesName&&v.dishesName + k}>
                   <FormItem label={`菜品${k + 1}`} {...formItemLayout} >
                     {getFieldDecorator(`name-${k}`, {
                       initialValue: v.dishesName && v.dishesName,
@@ -189,8 +189,8 @@ class LowMOdel extends Component {
           width={1000}
           footer={null}
         >
-            <h3 className="standardFood">标准菜品</h3>
-            <WrappedDynamicFieldSet dispatch={dispatch} menuInfoByType={menuInfoByType}/>
+          <h3 className="standardFood">标准菜品</h3>
+          <WrappedDynamicFieldSet dispatch={dispatch} menuInfoByType={menuInfoByType}/>
         </Modal>
       
       </div>

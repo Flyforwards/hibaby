@@ -329,9 +329,6 @@ export default {
         yield put({type: 'addProvinceData',payload:{data}});
         if (state.editCustomer){
           yield put({type: 'getCityData',payload:{isHouseholdRegistration:false,dataId:state.baseData.province}});
-          if(state.expandData){
-            yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:state.expandData.provincePermanent}});
-          }
         };
 
       }
@@ -424,9 +421,23 @@ export default {
 
       const state = yield select(state => state.addCustomer);
 
+      let focus = ''
+      if(!isNaN(baseDict.focus.length)){
+        baseDict.focus.map(value=>{
+          focus = focus+','+ value.key
+        })
+        focus = focus.substr(1)
+      }
+      else {
+        focus = baseDict.focus.key
+      }
+
+
       let dict = {...baseDict,birthTime:baseDict.birthTime.format('YYYY-MM-DD'),dueDate:baseDict.dueDate.format('YYYY-MM-DD'),
         hospital:baseDict.hospital.key, fetus:baseDict.fetus.key, focus:baseDict.focus.key, resourceCustomer:baseDict.resourceCustomer.key,
-        intentionPackage:baseDict.intentionPackage.key, webSearchTerm:baseDict.webSearchTerm.key, province:baseDict.province.key, city:baseDict.city.key};
+        intentionPackage:baseDict.intentionPackage.key, webSearchTerm:baseDict.webSearchTerm.key, province:baseDict.province.key, city:baseDict.city.key,
+        gravidity:baseDict.gravidity.key,focus:focus
+      };
 
       if (state.editCustomer ){
         dict.id = state.baseData.id;
@@ -480,22 +491,19 @@ export default {
 
       const dict = {
         "associatedRooms": values.associatedRooms,
-        "cityPermanent": values.cityPermanent.key,
         "contact": values.contact,
         "contractAppendices": contractStr,
         "contractNumber": values.contractNumber,
         "customerId": values.id,
         "customerPhoto": state.headIcon,
-        "detailedPermanent": values.detailedPermanent,
         "idcard": values.idcard,
         "idcardScan": caridStr,
-        "insuranceSituation": values.insuranceSituation,
+        'contactName':values.contactName,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
         "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,
-        "productionDate": values.productionDate.format('YYYY-MM-DD'),
-        "provincePermanent": values.provincePermanent.key,
+        "productionDate": values.productionDate? values.productionDate.format('YYYY-MM-DD'):'',
         "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.data.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
@@ -503,7 +511,6 @@ export default {
       if (state.editCustomer ){
         dict.id = state.expandData.id;
       }
-
 
       try {
         const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
@@ -521,7 +528,7 @@ export default {
         }
       }
       catch (err){
-        message.error('扩展信息保存失败');
+        message.success('扩展信息保存失败');
         if (remarkList.length > 0) {
           yield put({
             type: 'savaRemark',
@@ -588,7 +595,6 @@ export default {
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
       if (code == 0) {
         if (data){
-          yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:data.provincePermanent}});
           yield put({type:'setExpandData',payload:{ data }} );
           yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
           yield put({type:'getDlcData'} );

@@ -1,23 +1,6 @@
 .position-cent {
-  .ant-form-item-label label{
-    font-size:14px;
-    font-family: '微软雅黑 Regular', '微软雅黑';
-    font-weight: 400;
-  }
 
-  .search-text{
-    display: inline-block;
-    padding: 6px 7px;
-    font: 12px "微软雅黑";
-    margin-right: 10px;
-    margin-left: 10px;
-    input{
-      height: 40px;
-      width:300px;
-      font-size: 12px;
-    }
-  }
-
+  overflow: hidden;
   .search-button{
     margin-top: 6px;
     width: 140px;
@@ -46,6 +29,28 @@
     a{color:#b87636 }
     a:hover{
       color:#0066ff;
+    }
+  }
+
+  .ant-advanced-search-form .ant-form-item {
+    margin-bottom: 10px;
+    width: 220px;
+    float: left;
+    margin-left:10px;
+    margin-top:10px;
+    .ant-form-item-label{
+      width:70px;
+      float:left;
+      label{
+        font:14px "微软雅黑";
+      }
+    }
+    .ant-form-item-control-wrapper{
+      width:150px;
+      float:right;
+      .ant-input{
+        height:32px;
+      }
     }
   }
 

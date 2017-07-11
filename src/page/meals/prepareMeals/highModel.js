@@ -178,7 +178,7 @@ class DynamicFieldSet extends Component {
         {
           dishes.map((v, k) => {
             return (
-              <Row style={{ 'marginTop': '20px' }} key={k}>
+              <Row style={{ 'marginTop': '20px' }} key={v.dishesName && v.dishesName + k}>
                 <Col span={5} className="foodCol">
                   <FormItem label={`菜品${k + 1}`} {...selectItemLayout}>
                     {getFieldDecorator(`dishesName-${k + 1}`, {

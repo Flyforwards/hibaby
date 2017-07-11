@@ -8,9 +8,6 @@ import {Link} from 'react-router'
 import './addUser.scss'
 import moment from 'moment';
 import {local, session} from 'common/util/storage.js'
-import DropDownMenued from './dropDownMenu.jsx'
-import EntryInformation from './EntryInformation.jsx'
-import request from '../../../common/request/request.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import UPload from 'common/Upload.js'
 import DeleteEnery from './DeleteEnery.jsx'
@@ -449,7 +446,7 @@ class EditUsered extends React.Component {
       return(
         <div className="addUser">
           <div className="basicInformation">基本信息</div>
-            <Form layout="inline" className="basicInformationForm">
+          <Form layout="inline" className="basicInformationForm">
            <FormItem
             >
               {getFieldDecorator('userImg', {
@@ -486,65 +483,28 @@ class EditUsered extends React.Component {
             </p>:null
             }
           </Form>
-         { EntryInformationList }
-         <SelectTheNodeFrom
-           visible={ this.state.visible }
-           onCancel ={ this.handleCreateModalCancel.bind(this) }
-           treeData = { this.props.LeagerData }
-           headelReturnTabal= { this.headelReturnTabal.bind(this) }
+          { EntryInformationList }
+          <SelectTheNodeFrom
+            visible={ this.state.visible }
+            onCancel ={ this.handleCreateModalCancel.bind(this) }
+            treeData = { this.props.LeagerData }
+            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
           <DeleteEnery
-           visible={ this.state.DeleteVisible }
-           onCancel ={ this.handleDeleteEneryCancel.bind(this) }
-           DeleteIndex = { this.state.DeleteIndex }
-           headelReturnTabal= { this.headelReturnTabal.bind(this) }
+            visible={ this.state.DeleteVisible }
+            onCancel ={ this.handleDeleteEneryCancel.bind(this) }
+            DeleteIndex = { this.state.DeleteIndex }
+            headelReturnTabal= { this.headelReturnTabal.bind(this) }
           />
-           <Button className="SaveBtn" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
-           <Button className="BackBtn" onClick={ this.headelReturn }>返回</Button>
+          <div className="button-group-bottom">
+            <Button className="button-group-bottom-1" onClick={ this.headelReturn }>返回</Button>
+            <Button className="button-group-bottom-2" onClick={ this.headelSave.bind(this,USER.entrys,USER) }>保存</Button>
+          </div>
         </div>
       )
   }
 }
 
-function EditUser({
-    dispatch,
-    data,
-    dataEndemicId,
-    dataId,
-    LeagerData,
-    getPosition,
-    getEndemic,
-    userID,
-    code
-}) {
-  return ( <div>
-    <EditUsered dispatch = {
-      dispatch
-    }
-    getEndemic = {
-      getEndemic
-    }
-    getPosition = {
-      getPosition
-    }
-    data = {
-      data
-    }
-    userID = {
-      userID
-    }
-    LeagerData = {
-      LeagerData
-    }
-    dataEndemicId = {
-       dataEndemicId
-    }
-    dataId = {
-      dataId
-    }
-    /> </div>
-  )
-}
 function mapStateToProps(state) {
   const {
     data,
@@ -554,7 +514,6 @@ function mapStateToProps(state) {
     getPosition,
     getEndemic,
     LeagerData,
-    code
   } = state.organization;
 
   return {
@@ -566,7 +525,6 @@ function mapStateToProps(state) {
     getEndemic,
     LeagerData,
     dataEndemicId,
-    code
   };
 }
 
