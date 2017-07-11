@@ -18,16 +18,16 @@ class serviceIndex extends Component {
           title: '服务项目名称',
           dataIndex: 'name',
           key:'name',
-          width: '300px',
+          width: '24%',
         }, {
           title: '服务项目内容',
           dataIndex: 'contents',
           key: 'contents',
-          width: '600px',
+          width: '42%',
         },{
           title: '服务项目价格',
           dataIndex: 'price',
-          width: '150px',
+          width: '15%',
           render: ( (record) => {
             return ("￥"+String(record))
           }),
@@ -35,15 +35,15 @@ class serviceIndex extends Component {
           title: '操作',
           dataIndex: 'operating',
           key: 'operating',
-          width: '150px',
+          width: '15%',
           render: (text, record, index) => {
             const detail = !this.props.permissionAlias.contains('SERVICE_ITEM_DETAIL');
             const del = !this.props.permissionAlias.contains('SERVICE_ITEM_DELETE');
             return (
-                <div className="OperateList" key={ index }>
-                  <Link disabled={detail} to={{ pathname: '/system/service-item/detail', query: { id:record.id } }} className="firstA" >查看</Link>
-                  <Link disabled={del} className="firstB" onClick={ this.delete.bind(this,record )}>删除</Link>
-                </div>
+              <div className="operate-list" key={ index }>
+                <Link disabled={detail} to={{ pathname: '/system/service-item/detail', query: { id:record.id } }} style={{ width: '50%'}} className="one-link" >查看</Link>
+                <Link disabled={del} className="two-link" style={{ width: '50%'}} onClick={ this.delete.bind(this,record )}>删除</Link>
+              </div>
             );
           },
         }];
@@ -91,15 +91,13 @@ class serviceIndex extends Component {
         }
         const add = !this.props.permissionAlias.contains('SERVICE_ITEM_ADD');
         return (
-           <div className="ServiceBox">
-              <div className="name">
+           <div className="service-cent">
+              <div className="top-button">
                 <Link to="/system/service-item/add">
-                  <Button className="addBtn" disabled={add} >添加</Button>
+                  <Button className="one-button" style={{ marginBottom: '10px',float: 'right' }} disabled={add} >添加</Button>
                 </Link>
               </div>
-              <div className="CreateModaList">
-                  <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ this.columns }/>
-              </div>
+              <Table  className="service-center" {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ this.columns }/>
               <AlertModalFrom
                 visible ={ this.state.alertModalVisible }
                 onCancel ={ this.handleCreateModalCancel.bind(this) }
