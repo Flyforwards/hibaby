@@ -344,14 +344,42 @@ function BaseInfo(props) {
 
   const baseInfoDiv = [];
 
+  let tempDivAry = [];
   for (let i = 0; i < baseInfo.length - 4; i++) {
     let dict = baseInfo[i];
+    if(i%4 == 0 && i > 0){
 
+
+
+      baseInfoDiv.push(
+        <Row>
+          {tempDivAry}
+        </Row>
+      );
+      tempDivAry = [];
+
+      tempDivAry.push(
+        <Col className={"baseInfo"+i} span={6} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+    else{
+      tempDivAry.push(
+        <Col className={"baseInfo"+i} span={6} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+  }
+
+  if(tempDivAry.length > 0){
     baseInfoDiv.push(
-      <Col className={"baseInfo"+i} span={6} key={i}>
-        {cusFromItem(props.form,dict)}
-      </Col>
+      <Row>
+        {tempDivAry}
+      </Row>
     );
+    tempDivAry = [];
   }
 
   const addressDiv = [];
@@ -528,13 +556,42 @@ function ExtensionInfo(props) {
 
   const expandInfoDiv = [];
 
+  let tempDivAry = [];
+
   for (let i = 0; i < expandInfo.length - 1; i++) {
+
     let dict = expandInfo[i];
+
+    if(i%3 == 0){
+      expandInfoDiv.push(
+        <Row>
+          {tempDivAry}
+        </Row>
+      );
+      tempDivAry = [];
+      tempDivAry.push(
+        <Col className={"expandInfo"+i} span={8} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+    else{
+      tempDivAry.push(
+        <Col className={"expandInfo"+i} span={8} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+
+  }
+
+  if(tempDivAry.length > 0){
     expandInfoDiv.push(
-      <Col className={"expandInfo"+i} span={8} key={i}>
-        {cusFromItem(props.form,dict)}
-      </Col>
+      <Row>
+        {tempDivAry}
+      </Row>
     );
+    tempDivAry = [];
   }
 
   const addressDiv = [];

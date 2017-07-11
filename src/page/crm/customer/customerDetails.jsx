@@ -275,7 +275,7 @@ class customerDetails extends React.Component{
     const {loading} = this.props;
 
     return (
-      <div className="customerDetailContent">
+      <div className="customerContent">
         <Spin spinning={loading.effects['addCustomer/getCustomerById'] !== undefined ? loading.effects['addCustomer/getCustomerById']:false}>
           <BaseInfo  {...this.props}/>
           {ary}
