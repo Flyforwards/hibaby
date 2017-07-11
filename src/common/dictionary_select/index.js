@@ -8,9 +8,6 @@ import {session} from 'common/util/storage';
 import {DictionaryArray} from './dictionary-map';
 
 const Option = Select.Option;
-const endemic = session.get('endemic');
-let {id:endemic_id} = endemic ? endemic : {id: ''};
-endemic_id = endemic_id + '_';
 
 class DictionarySelect extends Component {
   constructor(props) {
@@ -26,6 +23,10 @@ class DictionarySelect extends Component {
   }
 
   componentWillMount() {
+
+    const endemic = session.get('endemic');
+    let {id:endemic_id} = endemic ? endemic : {id: ''};
+    endemic_id = endemic_id + '_';
 
     this.defaultParams = DictionaryArray[this.name];
     this.selectData = session.get(endemic_id + this.name);
@@ -52,6 +53,11 @@ class DictionarySelect extends Component {
         return (<Option value={item.id+""} key={item.id}> {item.name} </Option>)
       });
     } else if(this.props.selectData[this.name] && this.props.selectData[this.name].length > 0) {
+
+      const endemic = session.get('endemic');
+      let {id:endemic_id} = endemic ? endemic : {id: ''};
+      endemic_id = endemic_id + '_';
+
        session.set(endemic_id + this.name, this.props.selectData[this.name]);
        options = this.props.selectData[this.name].map((item) => {
         return (<Option value={item.id+""}  key={item.id}> {item.name} </Option>)
