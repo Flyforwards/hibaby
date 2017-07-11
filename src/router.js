@@ -81,7 +81,7 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/login/FindPassword.js'))
+                cb(null, require('./page/login/FindPassIndex.js'))
             })
         }
     },

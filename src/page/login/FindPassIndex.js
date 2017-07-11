@@ -2,7 +2,7 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import  './LoginIndex.scss';
-import logo from './images/logo.png'
+import logo from 'assets/logo2.png'
 import { connect } from 'dva';
 import { Link } from 'react-router';
 import { message } from 'antd'
@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const createForm = Form.create
 
 @createForm()
-class FindPassword extends React.Component {
+class FindPassIndex extends React.Component {
 
   constructor(props) {
     super(props);
@@ -156,4 +156,4 @@ class FindPassword extends React.Component {
 }
 
 
-export default connect()(FindPassword);
+export default connect()(FindPassIndex);

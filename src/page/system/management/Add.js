@@ -130,12 +130,12 @@ class AddGroupChar extends React.Component {
                   </FormItem>
                 </Form>
             </Card>
-            <Card className="card-bottom" title = "下拉选项:" >
+            <Card style={{ marginTop: '10px'}} title = "下拉选项:" >
               <Form>
-                   { formItems }
-                   <div>
-                       <Button className = "two-button editable-add-btn" onClick = { this.add.bind(this) }> 添加 </Button>
-                   </div>
+                 { formItems }
+                 <div>
+                     <Button className = "two-button editable-add-btn" onClick = { this.add.bind(this) }> 添加 </Button>
+                 </div>
               </Form>
             </Card >
             <div className="button-group-bottom">
