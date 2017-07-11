@@ -59,7 +59,7 @@ class DynamicFieldSet extends Component {
   }
   reset = (changeKey) => {
     const { form } = this.props;
-    form.resetFields([`name-${changeKey}`])
+    form.resetFields([`dishesName-${changeKey + 1}`])
   }
   
   changeTopVisible = () => {
