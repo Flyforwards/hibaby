@@ -184,7 +184,7 @@ export default {
       return {...state, resultsRowHouses: todo.data};
     },
     setRoomViewState(state, {payload: todo}){
-      return {...state, roomState: todo.data};
+      return {...state, roomState: !todo ? 'day' : 'month'};
     },
     setMonthStatusCustomers(state, {payload: todo}){
       return {
@@ -457,8 +457,7 @@ export default {
         ...state,
         dateRulerList: dateRulerList,
       }
-    }
-
+    },
   },
 
   effects: {
@@ -551,15 +550,9 @@ export default {
       }
     },
 
-    *roomViewStateChange({payload: value}, {call, put}){
-      yield put({
-        type: 'setRoomViewState',
-        payload: {
-          data: !value ? 'day' : 'month',
-        }
-      });
+    *netroomViewStateChange({payload: value}, {call, put}){
 
-      if (value) {
+
         const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers);
 
         yield put({
@@ -573,7 +566,6 @@ export default {
             })
           }
         });
-      }
     },
 
     *monthRoomList({payload: value}, {call, put, select}){

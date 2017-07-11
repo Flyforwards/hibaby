@@ -306,6 +306,32 @@
   }
 }
 
+.button-group-bottom-3 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #b67233;
+  background-color: #f1e8df;
+  border-color:#d4ad89;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
 .one-link {
   display: inline-block;
   color: #b67233;

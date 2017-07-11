@@ -34,8 +34,14 @@ class FindPlaceData extends React.Component {
       const item = this.props.data ? this.props.data : {};
       let {name='', description='',abName=''} = item;
       const formItemLayout = {
-        labelCol: { span: 2 },
-        wrapperCol: { span: 20 },
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 6 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 14 },
+        },
       };
       let arr = [];
       const editid=GetQueryString("dataId");
@@ -58,7 +64,7 @@ class FindPlaceData extends React.Component {
       };
       const edit = !this.props.permissionAlias.contains('LOCAL_CHAR_EDIT');
       return (
-          <div className="xuanxiang PlaceProject">
+          <div className="place-cent">
               <Card title = "字段信息:" >
                 <FormItem {...formItemLayout}  label='字段名称'>
                   {getFieldDecorator('name',{
@@ -82,16 +88,16 @@ class FindPlaceData extends React.Component {
                   )}
                 </FormItem>
               </Card>
-              <Card title = "下拉选项:" >
+              <Card title = "下拉选项:" style={{ marginTop: '10px'}} >
                 {fields.length > 0 ? fields : <p style={{textAlign: 'center', color: '#999'}}>无该地方中心字典数据，点击编辑按钮进行添加</p>}
               </Card >
-              <div className="retuSave">
-                  <Link to='/system/local-char'>
-                    <Button className = "editable-add-btn return"> 返回 </Button>
-                  </Link>
-                  <Link to={{pathname:'/system/local-char/edit',query:{ dataId:`${editid}`}}}>
-                      <Button disabled={edit} className = "editable-add-btn SaveBtn"> 编辑 </Button>
-                  </Link>
+              <div className="button-group-bottom">
+                <Link to={{pathname:'/system/local-char/edit',query:{ dataId:`${editid}`}}}>
+                    <Button disabled={edit} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 编辑 </Button>
+                </Link>
+                <Link to='/system/local-char'>
+                  <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 返回 </Button>
+                </Link>
               </div>
          </div>
       )

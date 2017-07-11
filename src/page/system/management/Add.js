@@ -108,7 +108,7 @@ class AddGroupChar extends React.Component {
             <Card title = "字段信息:" >
                 <Form >
                     <FormItem  {...formItemLayout} label="字段名称">
-                    {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项,限50字！' , max: 50}],
+                    {getFieldDecorator('name', { rules: [{ required: true, message: '字段名称为必填项,限50字！' , max: 50}],
                   })(<div>
                         <Input/>
                       </div>
