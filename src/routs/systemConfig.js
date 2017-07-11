@@ -222,8 +222,17 @@ export default (app) => [
     path: '/system/website-manage',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/myPermission'));
-        cb(null, require('page/system/website-manage/WebSiteManagerIndex.jsx'))
+        registerModel(app, require('models/website'));
+        cb(null, require('page/system/website-manage/WebsiteBanner.js'))
+      })
+    }
+  },
+  {
+    path: '/system/website-manage/add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/website'));
+        cb(null, require('page/system/website-manage/WebsiteBannerAdd.js'))
       })
     }
   },
