@@ -39,7 +39,7 @@ class WorkPlanIndex extends React.Component {
       render: (text, record) => {
         const dataId = record.id;
         return (
-          <Popconfirm title="确定删除？" style={{ width: 70 }} placement="right" onConfirm={() => this.onDelete(dataId)}>
+          <Popconfirm title="确定删除？" style={{ width: 70 }} placement="right" onConfirm={() => this.onDelete(record)}>
             <Icon style={{ color: '#b67233' }} type="delete"/>
           </Popconfirm>
         )
@@ -97,12 +97,15 @@ class WorkPlanIndex extends React.Component {
     })
   }
   
-  onDelete = (dataId) => {
+  onDelete = (record) => {
     const { dispatch } = this.props;
+    const { time, id } = record;
+    const planTime = moment(time).format("YYYY-MM-DD")
     dispatch({
       type: 'workPlanIndex/delWorkPlanInfo',
       payload: {
-        dataId
+        dataId: id,
+        planTime: planTime
       }
     })
   }

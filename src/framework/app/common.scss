@@ -1,70 +1,72 @@
 /*table 上方功能栏*/
-#root{
-  font-family: "微软雅黑",Regular;
-}
-.yt-admin-table-action {
-    padding: 12px 6px;
-    background: #f8f8f8;
-    border-radius: 6px;
-    margin-bottom: 8px;
-}
-
-.yt-admin-table-action > .ant-row {
-    position: relative;
-}
-
-.yt-admin-table-action .ant-form-item {
-    margin-bottom: 12px;
-}
-
-.yt-admin-table-action .ant-btn + .ant-btn {
-    margin-left: 8px;
-}
-
-/*modal中 form item最后一项*/
-.ant-modal .ant-form .ant-form-item:last-child {
-    margin-bottom: 0;
-}
-
-.highlight {
-    background-color: #ecf6fd;
-}
-
-.ant-select-dropdown-menu-item {
-    white-space: normal !important;
-}
-
-a[disabled] {
-  color: rgba(0, 0, 0, 0.25) !important;
-}
-button{
-  height:30px;
-  font: 14px "微软雅黑";
-}
-.BackBtn{
-  //float: left;
-  width: 150px;
-  background: #b67233;
-  border-color: #b67233;
-  font:14px "微软雅黑";
-  color:#fff;
-}
-.SaveBtn{
-  //float: left;
-  width: 150px;
-  background: #f1e8df;
-  color:#b67233;
-  border-color:#d4ad89;
-  font:14px "微软雅黑";
-}
-.delBtn{
-  //float: left;
-  width: 150px;
-  background: #f75555;
-  border-color: #f75555;
-  font:14px "微软雅黑";
-  color:#fff;
-}
+//#root{
+//
+//}
+//.yt-admin-table-action {
+//    padding: 12px 6px;
+//    background: #f8f8f8;
+//    border-radius: 6px;
+//    margin-bottom: 8px;
+//}
+//
+//.yt-admin-table-action > .ant-row {
+//    position: relative;
+//}
+//
+//.yt-admin-table-action .ant-form-item {
+//    margin-bottom: 12px;
+//}
+//
+//.yt-admin-table-action .ant-btn + .ant-btn {
+//    margin-left: 8px;
+//}
+//
+///*modal中 form item最后一项*/
+//.ant-modal .ant-form .ant-form-item:last-child {
+//    margin-bottom: 0;
+//}
+//
+//.highlight {
+//    background-color: #ecf6fd;
+//}
+//
+//.ant-select-dropdown-menu-item {
+//    white-space: normal !important;
+//}
+//
+//
+//
+//a[disabled] {
+//  color: rgba(0, 0, 0, 0.25) !important;
+//}
+//button{
+//  height:30px;
+//  font: 14px "微软雅黑";
+//}
+//.BackBtn{
+//  //float: left;
+//  width: 150px;
+//  background: #b67233;
+//  border-color: #b67233;
+//  font:14px "微软雅黑";
+//  color:#fff;
+//}
+//.SaveBtn{
+//  //float: left;
+//  width: 150px;
+//  background: #f1e8df;
+//  color:#b67233;
+//  border-color:#d4ad89;
+//  font:14px "微软雅黑";
+//}
+//.delBtn{
+//  //float: left;
+//  width: 150px;
+//  background: #f75555;
+//  border-color: #f75555;
+//  font:14px "微软雅黑";
+//  color:#fff;
+//}
 .vertical-center-modal {
   text-align: center;
   white-space: nowrap;
@@ -86,34 +88,236 @@ button{
   vertical-align: middle;
   width: 0;
 }
-.ant-modal-footer {
-  .ant-btn{
-    width: 100px;
-    background: #b67233;
-    border-color:#b67233;
-    color:#fff;
-  }
-  .ant-btn-primary{
-    background: #f1e8df;
-    border-color:#d4ad89;
-    color:#b67233;
-  }
-}
-
-.ant-message-notice-content{
-  padding:6px 15px;
-  font-size:14px;
-}
-
-.ant-input[disabled] {
-  color: rgba(0, 0, 0, 0.68);
-}
-
-.yt-admin-framework-content {
-  padding: 5px 18px 0 0;
-  margin-bottom:100px;
-}
-
+//.ant-modal-footer {
+//  .ant-btn{
+//    width: 100px;
+//    background: #b67233;
+//    border-color:#b67233;
+//    color:#fff;
+//  }
+//  .ant-btn-primary{
+//    background: #f1e8df;
+//    border-color:#d4ad89;
+//    color:#b67233;
+//  }
+//}
+//
+//.ant-message-notice-content{
+//  padding:6px 15px;
+//  font-size:14px;
+//}
+//
+//.ant-input[disabled] {
+//  color: rgba(0, 0, 0, 0.68);
+//}
+//
+//
 .yt-admin-framework {
   background-color: #f7f6f2;
+}
+
+// 头部右上角按钮
+.one-button{
+  height: 30px;
+  padding: 0 26px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background-color:#b67233;
+  border-color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+// 头部右下角按钮 按钮较宽
+
+.two-button{
+  height: 30px;
+  padding: 0 40px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background-color:#b67233;
+  border-color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+//头部按钮
+
+.button-group-1 {
+  height: 30px;
+  padding: 0 26px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #b67233;
+  background-color: #f1e8df;
+  border-color:#d4ad89;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+
+
+.button-group-2 {
+  height: 30px;
+  padding: 0 26px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background: #ff4a4a;
+  border-color: #ff4a4a;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.button-group-3 {
+  height: 30px;
+  padding: 0 26px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background:#b67233;
+  border-color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+// 底部按钮
+.button-group-bottom-1 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #b67233;
+  background-color: #f1e8df;
+  border-color:#d4ad89;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.button-group-bottom-2 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #b67233;
+  background-color: #f1e8df;
+  border-color:#d4ad89;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.one-link {
+  display: inline-block;
+  color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color:#f89d2d;
+  }
+}
+
+.two-link {
+  display: inline-block;
+  color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color:#f89d2d;
+  }
 }

@@ -1,24 +1,31 @@
 .workPlanIndex {
   padding: 10px;
-  .addBtn{
+  .addBtn {
     margin-bottom: 10px;
     border-color: #b67233;
     color: #b67233;
     width: 200px;
   }
-  .calendar{
+  .calendar {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     background-color: #fff;
     margin-bottom: 10px;
+    .ant-fullcalendar-selected-day .ant-fullcalendar-value, .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {
+      background: #FFFFFF !important;
+      color: rgba(0, 0, 0, 0.65);
+      box-shadow: 0 0 0 1px #fff !important;
+    }
+    .ant-fullcalendar-today .ant-fullcalendar-value, .ant-fullcalendar-month-panel-current-cell .ant-fullcalendar-value{
+      box-shadow: 0 0 0 1px #fff !important;
+
+    }
+
   }
-  .planInfo{
+  .planInfo {
     background: #fff;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    h4{
+    padding: 10px 20px 20px;
+    h4 {
       color: #916136;
       padding-left: 8px;
       margin-bottom: 10px;
@@ -31,21 +38,21 @@
   color: #f50;
 }
 
-.workPlanAdd{
+.workPlanAdd {
   padding: 20px;
-  .saveInfoBtn{
+  .saveInfoBtn {
     width: 150px;
     height: 30px;
-    background:#f7f1ea;
+    background: #f7f1ea;
     color: #b67233;
     border-color: #b67233;
   }
-  .backLink{
+  .backLink {
     width: 150px;
     height: 30px;
-    background:#b67233;
+    background: #b67233;
     color: #fff;
-    border:none;
+    border: none;
   }
 }
 

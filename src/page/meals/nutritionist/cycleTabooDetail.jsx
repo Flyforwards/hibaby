@@ -216,8 +216,43 @@ function mainCycleTabooDetail(props) {
 
 }
 
+var refreshInterval;
+class MealCycleTabooDetailPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    //定义一个反复执行的调用
+    var that = this;
+    refreshInterval = setInterval(function () {
+
+      var curWeek = this.props.week+changeWeek;
+
+      //查询单个循环的数据
+      this.props.dispatch({
+        type: 'cyclePage/getLoopDishesListByWeek',
+        payload: { week: curWeek , type: Number(this.props.type)}
+      })
+
+    }.bind(that), 3600000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(refreshInterval);
+  }
+
+  render(){
+    return (
+      mainCycleTabooDetail(this.props)
+    );
+  }
+
+}
+
 function mapStateToProps(state) {
   return {
   };
 }
-export default connect(mapStateToProps)(mainCycleTabooDetail)
+export default connect(mapStateToProps)(MealCycleTabooDetailPage)

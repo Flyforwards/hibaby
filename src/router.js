@@ -4,8 +4,8 @@ import { Router, hashHistory } from 'react-router'
 import { local, session } from 'common/util/storage.js'
 import Layout from './framework/layout/Layout.jsx'
 import Home from './page/home'
-// import './framework/app/base.css'
-// import './framework/app/common.scss'
+import './framework/app/base.css'
+import './framework/app/common.scss'
 import registerModel from './routs/register'
 import systemConfig from './routs/systemConfig'
 import crmConfig from './routs/crmConfig'
@@ -29,6 +29,13 @@ function RouterConfig({ history, app }) {
         getComponent: (location, cb) => {
           require.ensure([], (require) => {
             cb(null, require('page/noJurisdiction.js'))
+          })
+        }
+      },{
+      path: '/public/style',
+        getComponent: (location, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('page/PublickStyleIndex.jsx'))
           })
         }
       },{

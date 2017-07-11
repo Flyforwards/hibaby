@@ -2,19 +2,19 @@
 height:100%;
 overflow:hidden;
 min-width:860px;
-.mini .yt-admin-framework-content {
-    transition: all .3s;
-    margin-left: 60px;
-}
-.yt-admin-framework-content {
-    padding: 0 12px;
-    background-color: #eeeeee;
-}
-.yt-admin-framework--a{
-	.ant-table {
-	    margin-top: -187px;
-	}
-}
+//.mini .yt-admin-framework-content {
+//    transition: all .3s;
+//    margin-left: 60px;
+//}
+//.yt-admin-framework-content {
+//    padding: 0 12px;
+//    background-color: #eeeeee;
+//}
+//.yt-admin-framework--a{
+//	.ant-table {
+//	    margin-top: -187px;
+//	}
+//}
 .yt-admin-framework-Customer-a{
 height:100%;
 overflow: hidden;
@@ -74,12 +74,12 @@ overflow: hidden;
     background-color:#b57332;
 	}
 }
-@media (max-width: 767px) {
-    .mini .yt-admin-framework-content {
-        transition: all .3s;
-        margin-left: 0;
-    }
-}
+//@media (max-width: 767px) {
+//    .mini .yt-admin-framework-content {
+//        transition: all .3s;
+//        margin-left: 0;
+//    }
+//}
 .ant-modal-title{
 	text-align:center;
 }

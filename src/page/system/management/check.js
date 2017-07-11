@@ -1,13 +1,12 @@
+
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
+import './management.scss';
 import {Card,Input,Button,Form} from 'antd';
-import { browserHistory } from 'dva/router';
 import {Link} from 'react-router';
 
 const FormItem = Form.Item;
 const createForm = Form.create();
-var Nzh = require("nzh");
 
 @createForm
 class CheckData extends React.Component {
@@ -36,8 +35,14 @@ class CheckData extends React.Component {
       const item = this.props.data ? this.props.data : {};
       let {name='', description='',abName='', arr=[]} = item;
       const formItemLayout = {
-        labelCol: { span: 3 },
-        wrapperCol: { span: 18 },
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 6 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 14 },
+        },
       };
       const editid = GetQueryString("dataId");
       let fields=[];
@@ -59,7 +64,7 @@ class CheckData extends React.Component {
       };
       const edit = !this.props.permissionAlias.contains('GROUP_CHAR_EDIT');
       return (
-          <div className="xuanxiang container2">
+          <div className="management-cent">
               <Card title = "字段信息:" >
                 <FormItem {...formItemLayout} label='字段名称'>
                   {getFieldDecorator('name',{
@@ -83,16 +88,16 @@ class CheckData extends React.Component {
                   )}
                 </FormItem>
               </Card>
-              <Card title = "下拉选项:" >
+              <Card title = "下拉选项:" style={{ marginTop: '10px'}}>
                 {fields}
               </Card >
-              <div className="retuSave">
-                  <Link to='/system/group-char'>
-                  <Button className = "editable-add-btn return"> 返回 </Button>
-                  </Link>
-                  <Link to={{pathname:'/system/group-char/edit',query:{ dataId:`${editid}`}}}>
-                      <Button disabled={edit} className = "editable-add-btn SaveBtn"> 编辑 </Button>
-                  </Link>
+              <div className="button-group-bottom">
+                <Link to={{pathname:'/system/group-char/edit',query:{ dataId:`${editid}`}}}>
+                    <Button disabled={edit} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 编辑 </Button>
+                </Link>
+                <Link to='/system/group-char'>
+                  <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 返回 </Button>
+                </Link>
               </div>
          </div>
       )

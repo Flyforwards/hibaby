@@ -80,50 +80,50 @@ class permissionInside extends Component {
         }
         const values = parse(location.search.substr(1))
         return (
-            <div className="fromList">
-              <div className="fromhead">
-                  <Form className="ant-advanced-search-form">
-                    <FormItem  label="主模块">
-                     {getFieldDecorator('projectId', {
+            <div className="permission-in-cent">
+              <div className="form-heard">
+                <Form className="ant-advanced-search-form">
+                  <FormItem  label="主模块">
+                   {getFieldDecorator('projectId', {
+                     required: false,
+                     rules: [],
+                     initialValue: values.projectId,
+                   })(
+                      <Select className="SelectMenu" placeholder="请选择" >
+                        { nodes }
+                      </Select>
+                    )}
+                  </FormItem>
+                  <FormItem label="上级权限">
+                     {getFieldDecorator('parentId', {
                        required: false,
                        rules: [],
-                       initialValue: values.projectId,
+                       initialValue: values.parentId?Number(values.parentId):undefined,
                      })(
-                        <Select placeholder="请选择" >
-                          { nodes }
-                        </Select>
+                       <TreeSelect
+                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                         treeData={ permissions }
+                         placeholder="请选择"
+                         treeDefaultExpandAll
+                         className="SelectMenu"
+                       />
                       )}
-                    </FormItem>
-                    <FormItem label="上级权限" className="permission">
-                       {getFieldDecorator('parentId', {
-                         required: false,
-                         rules: [],
-                         initialValue: values.parentId?Number(values.parentId):undefined,
-                       })(
-                         <TreeSelect
-                           style={{ width: 370 }}
-                           dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                           treeData={ permissions }
-                           placeholder="请选择"
-                           treeDefaultExpandAll
-                         />
-                        )}
-                    </FormItem>
-                    <FormItem label="名称">
-                       {getFieldDecorator('name', {
-                         required: false,
-                         initialValue: values.name,
-                         rules: [],
-                       })(
-                           <Input className="name"/>
-                        )}
-                    </FormItem>
-                  </Form>
-                  <div className="Button">
-                    <Button className="btn SelBtn" onClick={ this.Inquire.bind(this) }>查询</Button>
-                    <Button className="btn ClearBtn" onClick={ this.emptied.bind(this) }>重置</Button>
-                    <Button className="btn AddBtn" onClick={ this.addList.bind(this) }>新增</Button>
-                  </div>
+                  </FormItem>
+                  <FormItem label="名称">
+                     {getFieldDecorator('name', {
+                       required: false,
+                       initialValue: values.name,
+                       rules: [],
+                     })(
+                         <Input className="input"/>
+                      )}
+                  </FormItem>
+                </Form>
+                <div className="button-group">
+                  <Button className="button-group-1" onClick={ this.Inquire.bind(this)}>查询</Button>
+                  <Button className="button-group-2" onClick={ this.emptied.bind(this) }>重置</Button>
+                  <Button className="button-group-3" onClick={ this.addList.bind(this) }>新增</Button>
+                </div>
               </div>
               <TabalList form={form} />
               <AddFromCreateModal

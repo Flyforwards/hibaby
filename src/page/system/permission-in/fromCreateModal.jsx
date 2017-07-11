@@ -66,10 +66,6 @@ class FromCreateModal extends Component {
     render() {
         const { visible, form, confirmLoading, permissions, record } = this.props
         const { getFieldDecorator } = form
-        const formItemLayout = {
-            labelCol: {span: 6},
-            wrapperCol: {span: 14},
-        }
         let nodes = [];
         const mainName = local.get("Dictionary");
         if (mainName != null) {
@@ -92,6 +88,8 @@ class FromCreateModal extends Component {
                 onOk={this.handleOk.bind(this,record)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
+                wrapClassName={ "vertical-center-modal" }
+                width = { 500 }
             >
             <div className="fromCreateList">
                 <Form onSubmit={this.handleSubmit}>
@@ -122,7 +120,6 @@ class FromCreateModal extends Component {
                   initialValue: Number(record.parentId),
                 })(
                   <TreeSelect
-                    style={{ width: 370 }}
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                     treeData={ permissions }
                     placeholder="请选择"

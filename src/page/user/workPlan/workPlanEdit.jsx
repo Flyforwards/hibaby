@@ -66,10 +66,6 @@ class WorkPlanAdd extends React.Component {
                 <Input type="textarea" rows={6}/>
               )}
             </FormItem>
-            {/*<FormItem>*/}
-            {/*<Button className="SaveBtn" type="primary" htmlType="submit" size="large">保存</Button>*/}
-            {/*</FormItem>*/}
-            {/*<Button className="BackBtn" onClick={()=>this.back()}>返回</Button>*/}
             <Row gutter={16}>
               <Col span={6}/>
               <Col span={8}/>
