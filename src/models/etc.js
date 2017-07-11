@@ -2,7 +2,8 @@
  * Created by UI on 2017/5/24.
  */
 import * as etcService from '../services/etc';
-import {keyToText} from '../utils'
+import {keyToText} from '../utils';
+import {session} from 'common/util/storage';
 
 export default {
   namespace: 'etc',
@@ -17,10 +18,13 @@ export default {
   },
   effects: {
     *getDicData({ payload: params }, { call, put, select }) {
-        // console.log('etc:models1>>', selectData);
-       const { name:selectName } = params;
+       let { name:selectName } = params;
        const {data: {data: selectDataItem}} = yield call(etcService.getRawData, params);
-       let {selectData, trigger} = yield select(state => state.etc)
+       let {selectData, trigger} = yield select(state => state.etc);
+        const endemic = session.get('endemic');
+        let {id:endemic_id} = endemic ? endemic : {id: ''};
+        endemic_id = endemic_id + '_';
+        selectName = endemic_id + selectName;
       //  console.log('etc:models>>', selectData);
         keyToText(selectDataItem, 'id', 'name', selectName);
         selectData[selectName] = selectDataItem;

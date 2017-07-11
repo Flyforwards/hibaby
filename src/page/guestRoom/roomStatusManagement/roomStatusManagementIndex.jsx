@@ -161,7 +161,7 @@ function ScreenBar(props) {
 
 
   const roomViewStateChange = (checked) => {
-    dispatch({type: 'roomStatusManagement/roomViewStateChange', payload: checked});
+    dispatch({type: 'roomStatusManagement/setRoomViewState', payload: checked});
   };
 
   return (
