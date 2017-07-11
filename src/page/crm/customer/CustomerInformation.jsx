@@ -516,8 +516,6 @@ function ExtensionInfo(props) {
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},
-    {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
-    {component:'Input',submitStr:'detailedPermanent',span:17,offset:1},
     {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl,loadProgress:loadProgress,spin:headIconSpin},
   ];
 
@@ -530,7 +528,7 @@ function ExtensionInfo(props) {
 
   const expandInfoDiv = [];
 
-  for (let i = 0; i < expandInfo.length - 4; i++) {
+  for (let i = 0; i < expandInfo.length - 1; i++) {
     let dict = expandInfo[i];
     expandInfoDiv.push(
       <Col className={"expandInfo"+i} span={8} key={i}>
@@ -541,7 +539,7 @@ function ExtensionInfo(props) {
 
   const addressDiv = [];
 
-  for (let i = expandInfo.length - 4; i < expandInfo.length; i++) {
+  for (let i = expandInfo.length - 1; i < expandInfo.length; i++) {
     let dict = expandInfo[i];
 
     addressDiv.push(
@@ -556,21 +554,12 @@ function ExtensionInfo(props) {
       <Form>
         <h3>扩展信息</h3>
         <Row>
-          {addressDiv[3]}
+          {addressDiv[0]}
 
           <Col span={18}>
             <div>{expandInfoDiv}</div>
           </Col>
         </Row>
-
-        <Row>
-          {addressDiv[0]}
-          <Col offset={1} span={17}>
-            {addressDiv[1]}
-            {addressDiv[2]}
-          </Col>
-        </Row>
-
       </Form>
     </div>
 

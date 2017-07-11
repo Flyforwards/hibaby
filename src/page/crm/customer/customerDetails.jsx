@@ -45,7 +45,7 @@ function textforkey(array,value,valuekey = 'name') {
   if(value){
     if(typeof value === 'string'){
       const ary = value.split(',');
-      if(ary.length > 1){
+      if(ary.length > 0){
         let str = ''
         ary.map(chivalue=>{
           for (let i = 0 ;i<array.length ;i++){
@@ -275,7 +275,7 @@ class customerDetails extends React.Component{
     const {loading} = this.props;
 
     return (
-      <div className="customerContent">
+      <div className="customerDetailContent">
         <Spin spinning={loading.effects['addCustomer/getCustomerById'] !== undefined ? loading.effects['addCustomer/getCustomerById']:false}>
           <BaseInfo  {...this.props}/>
           {ary}

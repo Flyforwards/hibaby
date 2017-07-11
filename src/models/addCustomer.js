@@ -329,9 +329,6 @@ export default {
         yield put({type: 'addProvinceData',payload:{data}});
         if (state.editCustomer){
           yield put({type: 'getCityData',payload:{isHouseholdRegistration:false,dataId:state.baseData.province}});
-          if(state.expandData){
-            yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:state.expandData.provincePermanent}});
-          }
         };
 
       }
@@ -515,9 +512,6 @@ export default {
         dict.id = state.expandData.id;
       }
 
-
-      console.log(dict)
-
       try {
         const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
         if (remarkList.length > 0) {
@@ -601,7 +595,6 @@ export default {
       const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
       if (code == 0) {
         if (data){
-          yield put({type: 'getCityData',payload:{isHouseholdRegistration:true,dataId:data.provincePermanent}});
           yield put({type:'setExpandData',payload:{ data }} );
           yield put({type:'addHeadIcon',payload:{ name:data.customerPhoto ,url: data.imgURL}})
           yield put({type:'getDlcData'} );
