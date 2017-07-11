@@ -157,7 +157,7 @@ class DishesIndex extends React.Component{
   handleSearch  = () =>{
     this.getTableData({
       nodeId : this.props.dishes.nodeId,
-      page : this.props.dishes.page,
+      page : 1,
       size : this.props.dishes.size
     });
   }
