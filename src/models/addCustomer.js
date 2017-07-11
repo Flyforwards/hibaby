@@ -424,9 +424,23 @@ export default {
 
       const state = yield select(state => state.addCustomer);
 
+      let focus = ''
+      if(!isNaN(baseDict.focus.length)){
+        baseDict.focus.map(value=>{
+          focus = focus+','+ value.key
+        })
+        focus = focus.substr(1)
+      }
+      else {
+        focus = baseDict.focus.key
+      }
+
+
       let dict = {...baseDict,birthTime:baseDict.birthTime.format('YYYY-MM-DD'),dueDate:baseDict.dueDate.format('YYYY-MM-DD'),
         hospital:baseDict.hospital.key, fetus:baseDict.fetus.key, focus:baseDict.focus.key, resourceCustomer:baseDict.resourceCustomer.key,
-        intentionPackage:baseDict.intentionPackage.key, webSearchTerm:baseDict.webSearchTerm.key, province:baseDict.province.key, city:baseDict.city.key};
+        intentionPackage:baseDict.intentionPackage.key, webSearchTerm:baseDict.webSearchTerm.key, province:baseDict.province.key, city:baseDict.city.key,
+        gravidity:baseDict.gravidity.key,focus:focus
+      };
 
       if (state.editCustomer ){
         dict.id = state.baseData.id;
@@ -489,12 +503,11 @@ export default {
         "detailedPermanent": values.detailedPermanent,
         "idcard": values.idcard,
         "idcardScan": caridStr,
-        "insuranceSituation": values.insuranceSituation,
+        'contactName':values.contactName,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
         "nation": values.nation.key,
         "operator": state.operator,
-        "placeOrigin": values.placeOrigin,
-        "productionDate": values.productionDate.format('YYYY-MM-DD'),
+        "productionDate": values.productionDate? values.productionDate.format('YYYY-MM-DD'):'',
         "provincePermanent": values.provincePermanent.key,
         "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.data.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
@@ -504,6 +517,8 @@ export default {
         dict.id = state.expandData.id;
       }
 
+
+      console.log(dict)
 
       try {
         const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
@@ -521,7 +536,7 @@ export default {
         }
       }
       catch (err){
-        message.error('扩展信息保存失败');
+        message.success('扩展信息保存失败');
         if (remarkList.length > 0) {
           yield put({
             type: 'savaRemark',
