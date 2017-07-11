@@ -32,6 +32,13 @@ function RouterConfig({ history, app }) {
           })
         }
       },{
+      path: '/public/style',
+        getComponent: (location, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('page/PublickStyleIndex.jsx'))
+          })
+        }
+      },{
       path: '/test',
         getComponent: (location, cb) => {
         require.ensure([], (require) => {
@@ -74,7 +81,7 @@ let routes = [
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, require('./page/login/FindPassword.js'))
+                cb(null, require('./page/login/FindPassIndex.js'))
             })
         }
     },

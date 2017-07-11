@@ -4,7 +4,7 @@ import {connect} from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popconfirm} from 'antd'
 import './fromModal.scss'
 const Option = Select.Option;
-class Charactered extends Component {
+class Character extends Component {
      state = {
       value: undefined
     }
@@ -29,26 +29,10 @@ class Charactered extends Component {
         )
     }
 }
-function Character({
-    dispatch,
-    list,
-    code
-}) {
-  return ( < div >
-    < Charactered dispatch = {
-      dispatch
-    }
-    list = {
-        list
-    }
-    /> </div >
-  )
 
-}
 function mapStateToProps(state) {
   const {
     list,
-    code
   } = state.system;
   return {
     loading: state.loading.models.system,

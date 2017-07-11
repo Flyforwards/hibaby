@@ -73,7 +73,7 @@ class GroupCharIndex extends React.Component {
     const add = !this.props.permissionAlias.contains('GROUP_CHAR_ADD');
     return (
       <div className="management-cent">
-        <div className="buttonwrapper">
+        <div className="top-button">
           <Link to='/system/group-char/add'>
             <Button disabled={add}  className="one-button" style={{ marginBottom: '10px',float: 'right' }}> 添加 </Button>
           </Link >
