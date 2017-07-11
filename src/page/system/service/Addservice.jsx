@@ -46,51 +46,45 @@ class AddService extends Component {
   render() {
     const { formLayout } = this.state;
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = formLayout === 'horizontal' ? {
-      labelCol: { span: 2 },
-      wrapperCol: { span: 22 }
-    } : null;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
     return (
-      <div className="ServiceBox">
-        <Card className="AddService" bordered={true}>
-          <h3>服务项目信息:</h3>
-          <Form className="projectname" layout={formLayout}>
-            <FormItem label="项目名称">
+      <div className="service-cent">
+        <Card title="服务项目信息:" bordered={true}>
+          <Form >
+            <FormItem {...formItemLayout} label="项目名称">
               {getFieldDecorator('name', {
                 rules: [{ required: true, message: '项目名称为必填项！限100字！', max: 100 }]
-              })(<Input  />)}
+              })(<Input placeholder="请填写项目名称！"/>)}
             </FormItem>
-          </Form>
-          <Form className="projectprice" layout={formLayout}>
-            <h4>项目价格</h4>
-            <div className="price">
-              <span className="priceLeft">￥</span>
-              <FormItem className="pricecon"
-                        {...formItemLayout}
-              >
-                {getFieldDecorator('price', {
-                  rules: [{ required: true, message: '项目价格为必填项！限10字！' , max: 10}]
-                })(
-                  <Input type='number'/>)}
-              </FormItem>
-              <span className="priceRight">元</span>
-            </div>
-          </Form>
-          <Form className="AddCentent" layout={formLayout}>
-            <FormItem className="procontent" label="项目内容">
+            <FormItem {...formItemLayout} label="项目价格">
+              {getFieldDecorator('price', {
+                rules: [{ required: true, message: '项目价格为必填项！限10字！' , max: 10}]
+              })(
+                <Input addonBefore="￥" addonAfter="元" placeholder="请填写项目价格！"/>)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="项目内容">
               {getFieldDecorator('contents', {
                 rules: [{ required: true, message: '项目内容为必填项！限300字' ,max: 300}]
               })(
-                <Input className="content"/>
+                <Input placeholder="请填写项目内容！"/>
               )}
             </FormItem>
           </Form>
         </Card>
-        <div className="btn">
-          <Link className="BackBtn AddBack" to='/system/service-item'>
-            <Button>返回</Button>
+        <div className="button-group-bottom">
+          <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2" onClick={ this.handleSave.bind(this) }>保存</Button>
+          <Link to='/system/service-item'>
+            <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-1">返回</Button>
           </Link>
-          <Button className="SaveBtn" onClick={ this.handleSave.bind(this) }>保存</Button>
         </div>
       </div>
     );

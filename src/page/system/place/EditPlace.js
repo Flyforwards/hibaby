@@ -102,8 +102,14 @@ class EditPlaceData extends React.Component {
       }
 
       const formItemLayout = {
-        labelCol: { span: 2 },
-        wrapperCol: { span: 20 },
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 6 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 14 },
+        },
       };
       let rangeArray = (start, end) => Array(end - start + 1).fill(0).map((v, i) => i + start)
       let name="";
@@ -126,48 +132,47 @@ class EditPlaceData extends React.Component {
       const formItems = keys.map((k, index) => {
         const initValue = arr[k-1] ? arr[k-1].name : ""
         return (
-          <FormItem
-            className = "div2"
-            key={ k }
-          >
-            <p className = "label" >{ `选项${String(index+1)}` }</p>
-            <div className="posi childCen" style={{position:'relative',overflow:'hidden'}}>
+          <div key={ k } style={{ position: 'relative' }}>
+            <FormItem
+              key={ k }
+              {...formItemLayout} label={ `选项${String(index+1)}` }
+            >
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
-                rules: [{ required: true, message: '选项不能为空,限50字!', max: 50 }],
+                rules: [{ required: true, message: '选项不能为空,限50字！', max: 50 }],
                 initialValue: initValue,
               })(
-                <Input rows = {6} className = "input2"/>
+                <Input rows = {6}/>
               )}
-            </div>
+            </FormItem>
             {
-              index >=2?(<span className = "editable-add-btn delBtn" onClick={ () => this.remove(k) } > 删除 </span>):null
+              index >=2?(<Button className = "button-group-2 delete-btn" onClick={ () => this.remove(k) } > 删除 </Button>):null
             }
-          </FormItem>
+          </div>
         );
       });
       const dataId = GetQueryString("dataId");
       const edit = !this.props.permissionAlias.contains('LOCAL_CHAR_EDIT');
       return (
-        <div className="xuanxiang PlaceProject">
+        <div className="place-cent">
           <Card title = "字段信息:" >
-            <Form layout={ 'horizontal' }>
-              <FormItem {...formItemLayout} className="parentCen" label="字段名称">
+            <Form>
+              <FormItem {...formItemLayout} label="字段名称">
                 {getFieldDecorator('name', {
                   initialValue:`${name}`,
                   rules: [{ required: true, message: '字段名称为必填项！' }],
-                })(  <Input readOnly={true} className="input" />
+                })(  <Input readOnly={true} />
                 )}
               </FormItem>
-              <FormItem {...formItemLayout} className = "parentCen" label="字段描述">
+              <FormItem {...formItemLayout}  label="字段描述">
                 {getFieldDecorator('description', {
                   initialValue:`${description}`,
                   rules: [{ required: true, message: '字段描述为必填项！' }],
                 })(
-                  <Input readOnly={true} className="input"/>
+                  <Input readOnly={true} />
                 )}
               </FormItem>
-              <FormItem {...formItemLayout} className = "parentCen" label="别名">
+              <FormItem {...formItemLayout} label="别名">
                 {getFieldDecorator('abName', {
                   initialValue:`${abName}`,
                   rules: [{ required: true, message: '别名为必填项！' }],
@@ -177,17 +182,19 @@ class EditPlaceData extends React.Component {
               </FormItem>
             </Form>
           </Card>
-          <Card title = "下拉选项:" >
+          <Card title = "下拉选项:" style={{ marginTop:'10px' }}>
             <Form>
               { formItems }
-              <Button className = "editable-add-btn add" onClick = {this.add.bind(this)}> 添加 </Button>
+              <div>
+                <Button className = "two-button editable-add-btn" onClick = { this.add.bind(this) }> 添加 </Button>
+              </div>
             </Form>
           </Card >
-          <div className="retuSave">
+          <div className="button-group-bottom">
+            <Button disabled={edit} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
             <Link to={{pathname:'/system/local-char/detail',query:{ dataId }}}>
-              <Button className = "editable-add-btn return"> 返回 </Button>
+              <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 返回 </Button>
             </Link>
-            <Button disabled={edit} className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
           </div>
         </div>
       )
