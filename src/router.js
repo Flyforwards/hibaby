@@ -32,6 +32,13 @@ function RouterConfig({ history, app }) {
           })
         }
       },{
+      path: '/public/style',
+        getComponent: (location, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('page/PublickStyleIndex.jsx'))
+          })
+        }
+      },{
       path: '/test',
         getComponent: (location, cb) => {
         require.ensure([], (require) => {
