@@ -193,7 +193,7 @@ class EditPlaceData extends React.Component {
           <div className="button-group-bottom">
             <Button disabled={edit} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
             <Link to={{pathname:'/system/local-char/detail',query:{ dataId }}}>
-              <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 返回 </Button>
+              <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-1"> 返回 </Button>
             </Link>
           </div>
         </div>

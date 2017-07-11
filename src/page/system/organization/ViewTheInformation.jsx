@@ -3,20 +3,14 @@
 import React from 'react'
 import {connect} from 'dva'
 import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select} from 'antd'
-import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'
+import moment from 'moment'
 import {local, session} from 'common/util/storage.js'
-import DropDownMenued from './dropDownMenu.jsx'
 import Disabled from './Disabled.jsx'
 import AddJobed from './AddJob.jsx'
 import IMG from 'assets/img.png'
 
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
-const Option = Select.Option;
-const { MonthPicker, RangePicker } = DatePicker;
-//地方中心字段
 
 class ViewTheInformationed extends React.Component {
   constructor(props) {
@@ -167,7 +161,7 @@ class ViewTheInformationed extends React.Component {
               </div>)
          }
 
-          time = getLocalTime(USER.gmt_entry)
+          time = moment(USER.gmt_entry).format("YYYY-MM-DD")
       }
       let imageUrl = USER.imgURL;
 
@@ -189,43 +183,33 @@ class ViewTheInformationed extends React.Component {
               <p className="entryTime"><span>入职时间 :</span><span className="Two">{ time }</span></p>
             </div>
             { JobInformation }
-
-          <Button disabled={disable} className="disabledButton" onClick={this.headelDisabled}>禁用</Button>
-          <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID} }}>
-              <Button disabled={edit}  type="primary" className="editButton">编辑</Button>
-          </Link>
-          <Button disabled={add_position} className="addButton" onClick={this.headelSave.bind(this)}>添加职位</Button>
-          <Link><Button className="BackBtn" onClick={this.headelReturn.bind(this)}>返回</Button></Link>
-           <Disabled
+            <div className="button-group-bottom">
+              <Link>
+                <Button className="button-group-bottom-1" onClick={this.headelReturn.bind(this)}>返回</Button>
+              </Link>
+              <Button disabled={add_position} className="button-group-bottom-2" onClick={this.headelSave.bind(this)}>添加职位</Button>
+              <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID} }}>
+                <Button disabled={edit} className="button-group-bottom-3">编辑</Button>
+              </Link>
+              <Button disabled={disable} className="button-group-bottom-4" onClick={this.headelDisabled}>禁用</Button>
+            </div>
+            <Disabled
               visible={ this.state.toViewVisible }
               handleOk={this.state.handleOk}
               onCancel={ this.handleCreateModalCancel.bind(this) }
               ID = { dataID }
-          />
-          <AddJobed
+            />
+            <AddJobed
               visible={ this.state.AddJobVisible }
               handleOk={this.state.handleOk}
               onCancel={ this.AddJobVisibleCancel.bind(this) }
               ID = { dataID }
-          />
+            />
         </div>
       )
   }
 }
 
-function getLocalTime(nS) {
-  var now = new Date(parseInt(nS));
-  var year=now.getFullYear();
-  var month=now.getMonth()+1;
-  var date=now.getDate();
-  if(month<10){
-    month = "0"+month
-  }
-  if(date<10){
-    date = "0"+date
-  }
-  return `${year}-${month}-${date}`
-}
 
 function mapStateToProps(state) {
   const {

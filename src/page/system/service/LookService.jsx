@@ -85,7 +85,7 @@ class LookService extends Component {
                 <Link to={{pathname:'/system/service-item/edit',query:{id:`${addressid}`}}}>
                   <Button disabled={edit} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-3"> 编辑 </Button>
                 </Link>
-                <Button disabled={del} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-3" onClick={ this.delete.bind(this,addressid) }>删除</Button>
+                <Button disabled={del} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2" onClick={ this.delete.bind(this,addressid) }>删除</Button>
                 <Link to='/system/service-item'>
                   <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-1"> 返回 </Button>
                 </Link>
