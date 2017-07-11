@@ -125,7 +125,7 @@ const monthStateView = (props) => {
    */
   const roomViewStateChange = (checked) => {
     dispatch({
-      type: 'roomStatusManagement/roomViewStateChange',
+      type: 'roomStatusManagement/setRoomViewState',
       payload: checked
     });
   };
@@ -953,6 +953,7 @@ class MonthStateClass extends React.Component{
 
   componentDidMount(){
     this.props.dispatch({type: 'roomStatusManagement/monthRoomList'});
+    this.props.dispatch({type: 'roomStatusManagement/netroomViewStateChange'});
   }
 
   render(){

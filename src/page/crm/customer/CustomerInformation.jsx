@@ -319,7 +319,7 @@ function BaseInfo(props) {
     {title:'出生日期',component:'DatePicker',submitStr:'birthTime',fun:onChange},
     {title:'年龄',component:'InputNumber',submitStr:'age',disabled:true,max:100},
     {title:'预产期',component:'DatePicker',submitStr:'dueDate',fun:dueDateChange},
-    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',max:40,disabled:true},
+    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disabled:true},
     {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
     {title:'孕次',component:'Select',submitStr:'gravidity',children:fetusChi},
     {title:'产次',component:'Select',submitStr:'fetus',children:fetusChi},
@@ -404,8 +404,12 @@ function BaseInfo(props) {
   }
 
   function dueDateChange(date, dateString) {
+    let weeks = parseInt((280 - date.diff(moment(),'days'))/7)
+    weeks = weeks > 40 ? 40 : weeks;
+    weeks = weeks < 0 ? 0 : weeks;
     props.form.setFieldsValue({
-      gestationalWeeks: parseInt((280 - moment().diff(date,'days'))/7),
+
+      gestationalWeeks: weeks
     });
   }
 
