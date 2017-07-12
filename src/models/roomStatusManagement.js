@@ -202,11 +202,15 @@ export default {
     },
 
     userDropReducer(state, {payload: data}){
+      console.log(data)
       // 复制数组
       let monthRoomList = state.monthRoomList.concat();
 
       // 获取当前操作的用户
       let dragUser = state.dragUser;
+      if(dragUser.status == 1){
+        dragUser.status = 4
+      }
       let roomIndex = parseInt(data.roomIndex);
       let startDayIndex = parseInt(data.dayIndex);
 
@@ -304,8 +308,7 @@ export default {
         for (let j = startIndex; j <= endIndex; j++) {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
-            if (customerList[k].customerId == data.customerId
-              && customerList[k].status == data.status) {
+            if (customerList[k].customerId == data.customerId) {
               customerList.splice(k--, 1);
               break;
             }
@@ -630,7 +633,7 @@ export default {
       const state = yield select(state => state.roomStatusManagement);
 
       // 如果已入住, 开始的时间保持不变
-      if (state.dragUser.status == 4) {
+      if (state.dragUser.status == 4 || state.dragUser.status == 1) {
         // 先调用平移接口
         let param = {
           customerId: state.dragUser.customerId,
@@ -671,7 +674,7 @@ export default {
         status: state.dragUser.status,
       };
 
-      if (state.dragUser.status == 4) {
+      if (state.dragUser.status == 4 || state.dragUser.status == 1) {
         payload.dayIndex = state.dragUser.startIndex;
       }
 
