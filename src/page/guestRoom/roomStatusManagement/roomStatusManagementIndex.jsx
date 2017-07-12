@@ -232,7 +232,7 @@ function CardArray({roomList, dispatch}) {
     </div>
 
 
-    if (dict.status === 4 || dict.status === 6) {
+    if (dict.status === 4 || dict.status === 6 || dict.status === 5) {
       if(dict.customerConsume){
         chiDiv = <div >
           <p>客户姓名：{dict.customerConsume.customerName}</p>
