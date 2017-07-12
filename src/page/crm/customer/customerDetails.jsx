@@ -76,7 +76,7 @@ function BaseInfo(props) {
 
   const netData = props.users.baseData;
 
-  const {fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
+  const {gravidityAry,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
     provinceData,cityData} = props.users;
 
   const baseInfoData = [
@@ -87,7 +87,7 @@ function BaseInfo(props) {
     {title:'预产期',value:moment(netData.dueDate).format('YYYY-MM-DD')},
     {title:'孕周',value:netData.gestationalWeeks},
     {title:'分娩医院',value:textforkey(hospitalAry, netData.hospital) },
-    {title:'孕次',value:textforkey(fetusAry, netData.gravidity)},
+    {title:'孕次',value:textforkey(gravidityAry, netData.gravidity)},
     {title:'产次',value:textforkey(fetusAry, netData.fetus)},
     {title:'客资来源',value:textforkey(guestInformationSourceAry, netData.resourceCustomer)},
     {title:'关注点',value:textforkey(concernsAry, netData.focus)},
@@ -125,10 +125,12 @@ function ExtensionInfo(props) {
 
   const dispatch = props.dispatch;
 
-  const {memberAry,specialIdentityAry,provinceData,permanentCityData,nationalData} = props.users;
+  const {idTypeAry,memberAry,specialIdentityAry,nationalData} = props.users;
 
   const expandInfo = [
-    {title:'身份证',value:netData.idcard},
+
+    {title:'证件类型',value:textforkey(idTypeAry, netData.idType)},
+    {title:'证件号码',value:netData.idcard},
     {title:'籍贯', value:netData.placeOrigin},
     {title:'民族',value: textforkey(nationalData, netData.nation,'nation')},
     {title:'购买套餐',value:netData.purchasePackage},

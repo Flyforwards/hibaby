@@ -258,7 +258,7 @@ function datacompare(dataArray,compareArray,selectArray) {
 
 function BaseInfo(props) {
 
-  const {operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
+  const {gravidityAry,operator,fetusAry,hospitalAry,intentionPackageAry,guestInformationSourceAry,concernsAry,networkSearchWordsAry,
     provinceData,cityData} = props.users;
   const {dispatch} = props;
 
@@ -313,6 +313,12 @@ function BaseInfo(props) {
     cityDataChis.push(<Option key={cityData[i].id}>{cityData[i].description}</Option>);
   }
 
+  const gravidityDataChis = [];
+
+  for (let i = 0; i < gravidityAry.length ; i++) {
+    gravidityDataChis.push(<Option key={gravidityAry[i].id}>{gravidityAry[i].name}</Option>);
+  }
+
   const baseInfo = [
     {title:'客户姓名',component:'Input',submitStr:'name'},
     {title:'联系电话',component:'Input',submitStr:'contact'},
@@ -321,7 +327,7 @@ function BaseInfo(props) {
     {title:'预产期',component:'DatePicker',submitStr:'dueDate',fun:dueDateChange},
     {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disabled:true},
     {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
-    {title:'孕次',component:'Select',submitStr:'gravidity',children:fetusChi},
+    {title:'孕次',component:'Select',submitStr:'gravidity',children:gravidityDataChis},
     {title:'产次',component:'Select',submitStr:'fetus',children:fetusChi},
     {title:'客资来源',component:'Select',submitStr:'resourceCustomer',children:guestInformationSource},
     {title:'关注点',component:'Select',submitStr:'focus',children:concerns,mode:"multiple"},
@@ -443,7 +449,7 @@ function BaseInfo(props) {
 
 function ExtensionInfo(props) {
 
-  const {lookCardIDDLC,lookContractDLC,operator,memberAry,specialIdentityAry,
+  const {idTypeAry,lookCardIDDLC,lookContractDLC,operator,memberAry,specialIdentityAry,
     headIconUrl,provinceData,permanentCityData,nationalData,headIconSpin} = props.users;
 
   const {dispatch} = props;
@@ -531,10 +537,15 @@ function ExtensionInfo(props) {
     nationalDataChis.push(<Option key={nationalData[i].id}>{nationalData[i].nation}</Option>);
   }
 
+  const idTypeDataChis = [];
 
+  for (let i = 0; i < idTypeAry.length ; i++) {
+    idTypeDataChis.push(<Option key={idTypeAry[i].id}>{idTypeAry[i].name}</Option>);
+  }
 
   const expandInfo = [
-    {title:'身份证',component:'Input',submitStr:'idcard'},
+    {title:'证件类型',component:'Select',submitStr:'idType',children:idTypeDataChis},
+    {title:'证件号码',component:'Input',submitStr:'idcard'},
     {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
     {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,noRequired:"1"},

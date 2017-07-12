@@ -157,7 +157,6 @@ function CustomerSearch(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
         let param = {};
         Object.keys(values).map((key) => {
           const value = values[key];
@@ -256,7 +255,7 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
   function disabled(value) {
     let disabled = false;
     monthStateCustomers.map((item)=>{
-      if(item.customerId === (value.id||value.customerId) && !item.edit){
+      if(((item.customerId || item.id) === (value.id||value.customerId)) && (!item.edit && !item.change)){
         disabled = true;
       }
     })
@@ -275,7 +274,7 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
     if(dict){
       for(let j = 0;j< allCusList.length;j++) {
         const subDict = allCusList[j];
-        if (subDict.id == ( dict.id||dict.customerId)){
+        if (((subDict.id || subDict.customerId) == ( dict.id||dict.customerId)) && !dict.change){
           ary.push(j);
           break;
         }
@@ -319,7 +318,10 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
 
     for(let i = 0;i<selectItem.length;i++){
       const dict = selectItem[i] ;
+      if(!dict.change){
         tags.push(<Tag key={dict.customerId || dict.id} closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
+
+      }
     }
   }
 
@@ -372,7 +374,6 @@ class addCustomer extends React.Component {
   }
 
   selectCustomerFun(record,selected){
-
     let ary = this.state.selectItem ? this.state.selectItem : [...this.props.users.monthStateCustomers];
     if(selected){
       ary.push(record)
@@ -380,9 +381,9 @@ class addCustomer extends React.Component {
     else {
       for(var i=0; i<ary.length; i++) {
         const dict = ary[i]
-        if((dict.customerId||dict.id) == record.id) {
+
+        if((dict.customerId||dict.id) == (record.id||record.customerId)) {
           ary.splice(i, 1);
-          break;
         }
       }
 
