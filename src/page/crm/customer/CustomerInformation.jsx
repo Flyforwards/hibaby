@@ -481,6 +481,7 @@ function ExtensionInfo(props) {
   }
 
   function uploadIdcardFileProps(values) {
+    console.log(values)
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
     props.form.resetFields(['idcardScan']);
     props.form.validateFields(['idcardScan'], { force: true });

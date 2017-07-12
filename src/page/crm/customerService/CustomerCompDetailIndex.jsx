@@ -80,21 +80,21 @@ class CustomerCompDetailIndex extends React.Component {
 
     let card = null;
 
+    const backBtn = <Button className="button-group-bottom-1" onClick={this.back.bind(this)}>返回</Button>
+    const delBtn = <Button disabled={!del} className="button-group-bottom-2" onClick={ this.delete.bind(this) }>删除</Button>
+    const saveBtn = <Button disabled={!save} className="button-group-bottom-3" onClick={ this.handleSubmit.bind(this) }>保存</Button>;
     let buttons = (
-      <div className="button-wrapper">
-        <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
-        <Button className="BackBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+      <div className="button-group-bottom-common">
+        { [backBtn, delBtn] }
       </div>)
     if (item.state == 0) {
       if (save) {
         buttons = (
-          <div className="button-wrapper">
-            <Button disabled={!save} className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.handleSubmit.bind(this) }>保存</Button>
-            <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
-            <Button className="BackBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+          <div className="button-group-bottom-common">
+            { [backBtn, delBtn, saveBtn] }
           </div>)
         card = (
-          <Card className="ComplaintHandle" title = "投诉处理:">
+          <Card title = "投诉处理:"  style={{ marginTop: '10px'}}>
             <Form >
               <FormItem {...formItemLayout} label={"处理结果"}>
                 {getFieldDecorator('treatmentResult', {rules: [{ required: true, message: '请填写处理结果!' }],initialValue:item.treatmentResult,
@@ -105,19 +105,16 @@ class CustomerCompDetailIndex extends React.Component {
           </Card>
         )
       }
-
     }
     if (item.state == 1) {
       if (finish) {
         buttons = (
-          <div className="button-wrapper">
-            <Button disabled={!finish} className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.finish.bind(this) }>已处理</Button>
-            <Button disabled={!del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.delete.bind(this) }>删除</Button>
-            <Button className="BackBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>
+          <div className="button-group-bottom-common">
+            { [backBtn, delBtn, saveBtn] }
           </div>)
       }
       card = (
-        <Card title = "投诉处理:">
+        <Card title = "投诉处理:"  style={{ marginTop: '10px'}}>
           <Form >
             <FormItem {...formItemLayout} label={"处理结果"}>
               {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
@@ -130,7 +127,7 @@ class CustomerCompDetailIndex extends React.Component {
     }
     if (item.state == 2) {
       card = (
-        <Card title = "投诉处理:">
+        <Card title = "投诉处理:" style={{ marginTop: '10px'}}>
           <Form >
             <FormItem {...formItemLayout} label={"处理结果"}>
               {getFieldDecorator('treatmentResult', {initialValue:item.treatmentResult,
@@ -146,7 +143,7 @@ class CustomerCompDetailIndex extends React.Component {
     return (
       <div className="customer-comp-cent">
         <div className="add-customer-comp">
-          <Card className="CustomerComplaints" title = "客户投诉:">
+          <Card title = "客户投诉:">
               <FormItem {...formItemLayout} label="投诉者" >
                 {getFieldDecorator('name', {
                   initialValue:item.name,

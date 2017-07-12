@@ -1,0 +1,54 @@
+.website-banner{
+  .management-center{
+    width:100%;
+    .ant-table-thead > tr > th {
+      background-color: rgba(102, 102, 102, 1);
+      font-weight: 500;
+      transition: background .3s ease;
+      text-align: center;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+    .ant-table-tbody > tr > td {
+      text-align:center;
+      background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-size: 14px;
+    }
+
+    .operation-list {
+      width: 100%;
+    }
+  }
+}
+.websitebannerAdd{
+  .bottomBtn{
+    width:100%;
+    .btn{
+      width:150px;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      float: right;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      margin-left: 10px;
+      border-color: #b67233;
+      color: #FFFFFF;
+      font-size:14px;
+      font-family: '微软雅黑';
+    }
+    .saveBtn{
+      background-color: #ff9900;
+      border-color: #ff9900;
+    }
+    .backBtn{
+      background-color: #b67233;
+      border-color: #b67233;
+    }
+  }
+}
