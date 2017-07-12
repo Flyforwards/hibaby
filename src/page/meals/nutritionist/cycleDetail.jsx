@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import styles from './Cycle.scss';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge } from 'antd'
+import { Link } from 'react-router';
+import { routerRedux } from 'dva/router';
 
 var changeWeek = 0;
 
@@ -136,7 +138,7 @@ function mainCycleDetail(props) {
       const user = customers[i];
       normalUserDivs.push(
         <Col span="4" key={i}>
-          <div className="tabooUser-content">V{user['level']}  {user['name']} -- {user['room']}</div>
+          <Link  className="tabooUser-content" onClick={ () => { onSearchUser(user) }}> V{user['level']}  {user['name']} -- {user['room']} </Link>
         </Col>
       );
     }
@@ -159,7 +161,7 @@ function mainCycleDetail(props) {
         <Row key={i} style={ i%2 ?{backgroundColor :'#ffffff'} :{backgroundColor: '#f6f6f6'}}>
           <Col span="5">
             <div style={{minHeight: '40px'}}>
-              <div className="tabooUser-detail-content">V{user['level']}  {user['name']} -- {user['room']}</div>
+              <Link  className="tabooUser-detail-content" onClick={() => { onSearchUser(user) }}> V{user['level']}  {user['name']} -- {user['room']} </Link>
             </div>
           </Col>
           <Col>
@@ -178,6 +180,16 @@ function mainCycleDetail(props) {
         </Row>
       </div>
     )
+  }
+
+  //搜索用户
+  function onSearchUser (user) {
+    const dispatch = props.dispatch;
+    let values = {sear:user.name};
+    dispatch(routerRedux.push({
+      pathname: "/meals/nutritionist/dinner",
+      query: values
+    }))
   }
 
   //下一天
