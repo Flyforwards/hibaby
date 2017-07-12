@@ -685,6 +685,12 @@ export default {
           ...payload,
         }
       });
+
+
+
+
+      yield put({type: 'monthRoomUpdate',payload:'load'});
+
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){
@@ -709,7 +715,7 @@ export default {
       let param = [];
 
 
-      if (value && Object.keys(value).length && !value.ConfirmDict && !value.deleteUse) {
+      if (value && Object.keys(value).length && !value.ConfirmDict && !value.deleteUse && value !== 'load') {
           param = value;
       }
       else{
@@ -822,6 +828,9 @@ export default {
               type: 'deleteUser',
               payload:value.deleteUse
             })
+          }
+          if(value === 'load'){
+            yield put({type: 'monthRoomList'});
           }
         }
 
