@@ -80,9 +80,9 @@ class CustomerCompDetailIndex extends React.Component {
 
     let card = null;
 
-    const backBtn = <Button className="button-group-bottom-1" onClick={this.back.bind(this)}>返回</Button>
-    const delBtn = <Button disabled={!del} className="button-group-bottom-2" onClick={ this.delete.bind(this) }>删除</Button>
-    const saveBtn = <Button disabled={!save} className="button-group-bottom-3" onClick={ this.handleSubmit.bind(this) }>保存</Button>;
+    const backBtn = <Button key='1' className="button-group-bottom-1" onClick={this.back.bind(this)}>返回</Button>
+    const delBtn = <Button key='2' disabled={!del} className="button-group-bottom-2" onClick={ this.delete.bind(this) }>删除</Button>
+    const saveBtn = <Button key='3' disabled={!save} className="button-group-bottom-3" onClick={ this.handleSubmit.bind(this) }>保存</Button>;
     let buttons = (
       <div className="button-group-bottom-common">
         { [backBtn, delBtn] }

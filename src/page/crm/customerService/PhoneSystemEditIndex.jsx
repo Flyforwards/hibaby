@@ -59,36 +59,42 @@ class PhoneSystemEditIndex extends React.Component {
 
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol:{ span: 2 },
-      wrapperCol:{ span:22 }
-    }
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
     return (
       <div className="customer-phone-system-cent">
         <Card title = "添加客服信息:">
           <Form>
             <FormItem {...formItemLayout} label={"热线号码"}>
               {getFieldDecorator('hotLine', {rules: [{ required: true, }],initialValue: item.hotLine
-              })(<Input className="input"/>
+              })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"座席号"}>
               {getFieldDecorator('cno', {rules: [{ required: true, }],initialValue: item.cno
-              })(<Input className="input"/>
+              })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"密码"}>
               {getFieldDecorator('pwd', {rules: [{ required: true, }],initialValue: item.pwd
-              })(<Input className="input"/>
+              })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"绑定电话"}>
               {getFieldDecorator('bindTel', {rules: [{ required: true, }],initialValue: item.bindTel
-              })(<Input className="input"/>
+              })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"电话类型"}>
               {getFieldDecorator('bindType', {rules: [{ required: true, }],initialValue: String(item.bindType)
-              })(<Select className="input">
+              })(<Select>
                   <Option value='1' >电话号码</Option>
                   <Option value='2' >分级号码</Option>
                   <Option value='3' >软电话</Option>
@@ -97,7 +103,7 @@ class PhoneSystemEditIndex extends React.Component {
             </FormItem>
             <FormItem {...formItemLayout} label={"初始状态"}>
               {getFieldDecorator('initStatus', {rules: [{ required: true, } ],initialValue: item.initStatus
-              })(<Select className="input">
+              })(<Select>
                   <Option value='online' >空闲</Option>
                   <Option value='pause' >置忙</Option>
                 </Select>
@@ -106,24 +112,18 @@ class PhoneSystemEditIndex extends React.Component {
             <FormItem {...formItemLayout} label={"绑定员工"}>
               {getFieldDecorator('userId', {rules: [{ required: true, }],initialValue: item.userName
               })(
-                <Input readOnly className="input"/>
+                <Input readOnly/>
               )}
-              <Button onClick={ this.onChoose.bind(this)}>选择员工</Button>
+              <Button className="right-button one-button" onClick={ this.onChoose.bind(this)}>选择员工</Button>
             </FormItem>
           </Form>
-          <div>
-            <Row>
-              <Col offset={16} span={4}>
-                <Link to='/crm/phone-system'>
-                  <Button className="backBtn"> 返回 </Button>
-                </Link>
-              </Col>
-              <Col span={4}>
-                <Button className="saveBtn"  onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
-              </Col>
-            </Row>
-          </div>
         </Card>
+        <div className="button-group-bottom-common">
+          <Link to='/crm/phone-system'>
+            <Button className="button-group-bottom-1"> 返回 </Button>
+          </Link>
+          <Button className="button-group-bottom-2" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+        </div>
         <PhoneSystemModalFrom  onOk={ this.onOk.bind(this) }/>
       </div>
     )

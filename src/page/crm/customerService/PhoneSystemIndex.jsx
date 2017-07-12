@@ -79,9 +79,9 @@ class CustomerVisIndex extends React.Component {
       dataIndex: 'operation',
       width: '15%',
       render: (text, record, index) => {
-        return (<div key={ index }>
-          <Link to={{ pathname: '/crm/phone-system/edit', query:{ dataId:record.id }  }}> 编辑 </Link>
-          <Link onClick={ this.del.bind(this, record) }> 删除 </Link>
+        return (<div className="operation-list" key={ index }>
+          <Link className="one-link link-style" to={{ pathname: '/crm/phone-system/edit', query:{ dataId:record.id }  }}> 编辑 </Link>
+          <Link className="two-link link-style" onClick={ this.del.bind(this, record) }> 删除 </Link>
         </div>)
       }
     }];
@@ -114,12 +114,12 @@ class CustomerVisIndex extends React.Component {
     }
     return (
       <div className = "customer-phone-system-cent">
-        <div className = "button-wrapper">
+        <div className = "top-button">
           <Link to = '/crm/phone-system/add'>
-            <PermissionButton testKey='ACTIVITY_ADD' className="button-add"> 添加 </PermissionButton>
+            <PermissionButton testKey='ACTIVITY_ADD' className="one-button" style={{ float:'right', marginBottom:'10px' }}> 添加 </PermissionButton>
           </Link>
         </div>
-        <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.userId}/>
+        <Table className='customer-phone-system-center' {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.userId}/>
       </div>
     );
   }
