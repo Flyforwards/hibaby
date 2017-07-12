@@ -709,7 +709,7 @@ export default {
       let param = [];
 
 
-      if (value && Object.keys(value).length && !value.ConfirmDict) {
+      if (value && Object.keys(value).length && !value.ConfirmDict && !value.deleteUse) {
           param = value;
       }
       else{
@@ -817,6 +817,12 @@ export default {
               payload:value.ConfirmDict
             })
           }
+          if(value.deleteUse){
+            yield put({
+              type: 'deleteUser',
+              payload:value.deleteUse
+            })
+          }
         }
 
       }
@@ -843,9 +849,8 @@ export default {
       let param = {
         customerId: value.customerId,
         date: timeToDate(value.startDate),
-      };
+      }
 
-      // 调用接口
       const {data: {code, data}} = yield call(roomManagement.cancelBooking, param);
 
       // 调用接口失败
@@ -854,9 +859,9 @@ export default {
       }
       message.success('删除成功')
       // 删除视图中的用户
-      yield put({
-        type: 'monthRoomList',
-      });
+
+      yield put({type: 'monthRoomList'});
+      yield put({type: 'netroomViewStateChange'});
     },
     // 获取会员身份下拉选项， 也是卡种列表
     *getMemberShipCard({payload: values}, { call, put }) {
