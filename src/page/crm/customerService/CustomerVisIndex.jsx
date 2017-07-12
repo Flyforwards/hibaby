@@ -66,10 +66,8 @@ class CustomerVisIndex extends React.Component {
     // for (let i=0; i< 100; i++) {
     //   btns.push(<Button className="left-time-btn" key={i}>范冰冰</Button>)
     // }
-    // console.log(list);
     const times = VISIT_TIME.map((record, index) => {
       let btns = []
-      // console.log(record);
       list.map((item) => {
         if (index + 1 == item.visitTimeId) {
           btns.push(
@@ -87,35 +85,30 @@ class CustomerVisIndex extends React.Component {
     })
 
 
-    const add = !this.props.permissionAlias.contains('');
     return (
       <div className="customer-vis-cent">
-        <div className="button-wrapper">
-          <Row style={{ height: 40 }}>
-            <Col span={20}>
-              <span>预约日期：</span>
-              <DatePicker style={{ width: 200 }} format="YYYY-MM-DD" defaultValue={ date } onChange={this.onChangeDate.bind(this)}/>
-
-            </Col>
-            <Col span={4}>
-              <PermissionButton testKey='CUSTOMERVIS_ADD' className="button-add">
-                <Link to='/crm/customer-vis/add'> 预约参观 </Link>
-              </PermissionButton >
-            </Col>
-          </Row>
-        </div>
+        <Row style={{ height: 40 }}>
+          <Col span={12}>
+            <span>预约日期：</span>
+            <DatePicker style={{ width: 200 }} format="YYYY-MM-DD" defaultValue={ date } onChange={this.onChangeDate.bind(this)}/>
+          </Col>
+          <Col span={12}>
+            <div style={{ float: 'right' }}>
+              <Link to='/crm/customer-vis/add'>
+                <PermissionButton testKey='CUSTOMERVIS_ADD' className="one-button"> 预约参观 </PermissionButton >
+              </Link>
+            </div>
+          </Col>
+        </Row>
         <Card title={ date.format('YYYY年MM月DD日') }>
           <Timeline>
             {
               times
             }
           </Timeline>
-          <Row style={{marginBottom:'20px'}}>
-            <Col span={20}/>
-            <Col span={4}>
-              <PermissionButton testKey='CUSTOMERVIS_EDIT' onClick={this.edit.bind(this)} className="button-add">编辑</PermissionButton>
-            </Col>
-          </Row>
+          <div className="button-group-bottom-common" style={{ marginBottom: '10px'}}>
+            <PermissionButton testKey='CUSTOMERVIS_EDIT' onClick={this.edit.bind(this)} className="button-group-bottom-1">编辑</PermissionButton>
+          </div>
         </Card>
       </div>
     );
@@ -124,9 +117,9 @@ class CustomerVisIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          date
-        } = state.customerVis;
+    list,
+    date
+  } = state.customerVis;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,

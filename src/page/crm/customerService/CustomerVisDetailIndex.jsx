@@ -87,16 +87,12 @@ class CustomerVisAddIndex extends React.Component {
               </FormItem>
             </Form>
           </Card>
-          <Row className="btnRow">
-            <Col offset={16} span={4}>
+          <div className="button-group-bottom-common">
               <Link to='/crm/customer-vis'>
-                <Button className="BackBtn"> 返回 </Button>
+                <Button className="button-group-bottom-1"> 返回 </Button>
               </Link>
-            </Col>
-            <Col span={4}>
-              <PermissionButton testKey='CUSTOMERVIS_DELETE' className="SaveBtn" onClick={ this.delete.bind(this) }> 删除 </PermissionButton>
-            </Col>
-          </Row>
+              <PermissionButton testKey='CUSTOMERVIS_DELETE' className="button-group-bottom-2" onClick={ this.delete.bind(this) }> 删除 </PermissionButton>
+          </div>
         </div>
       </div>
     )

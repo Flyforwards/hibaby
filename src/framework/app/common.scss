@@ -375,7 +375,18 @@
   }
 }
 
+.button-group-bottom-common {
+  float: right;
+  margin-top: 10px;
+  .ant-btn {
+    margin-left: 10px;
+  }
+}
 
 .operation-list {
   width: 100%;
+}
+
+.link-style {
+  width: 50%
 }

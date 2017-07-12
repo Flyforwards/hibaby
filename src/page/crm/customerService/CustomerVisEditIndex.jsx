@@ -10,16 +10,17 @@ import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import moment from 'moment'
 import { VISIT_TIME } from 'common/constants.js'
+import PermissionButton from 'common/PermissionButton';
 const confirm = Modal.confirm;
 const TimeItem = Timeline.Item
 
 class CustomerVisEditIndex extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.removeIds = [];
   }
-  
+
   deleteCustomerComp(record) {
     const { dispatch } = this.props;
     confirm({
@@ -35,8 +36,8 @@ class CustomerVisEditIndex extends React.Component {
       }
     });
   }
-  
-  
+
+
   onChangeDate(date) {
     const { dispatch } = this.props;
     this.removeIds = [];
@@ -49,10 +50,10 @@ class CustomerVisEditIndex extends React.Component {
       payload: { visDate: date.format('YYYY-MM-DD') }
     })
   }
-  
+
   save() {
     let ids = '';
-    
+
     this.removeIds.map((record, index) => {
       if (index == 0) {
         ids = String(record);
@@ -69,7 +70,7 @@ class CustomerVisEditIndex extends React.Component {
       payload: { ids }
     })
   }
-  
+
   remove(item) {
     if (!this.removeIds.contains(item.id)) {
       this.removeIds.push(item.id);
@@ -79,7 +80,7 @@ class CustomerVisEditIndex extends React.Component {
       payload: { itemId: item.id }
     })
   }
-  
+
   render() {
     const { list, dispatch, date } = this.props;
     const times = VISIT_TIME.map((record, index) => {
@@ -90,7 +91,7 @@ class CustomerVisEditIndex extends React.Component {
             <span key={item.id} className="left-time-div"><span className="left-time-span" key={item.id}>{ item.name }</span><Icon onClick={ this.remove.bind(this, item)} type="close-circle"/></span>)
         }
       })
-      
+
       return (<TimeItem key={index}><span>{record}</span>
         <div>
           {
@@ -99,42 +100,38 @@ class CustomerVisEditIndex extends React.Component {
         </div>
       </TimeItem>)
     })
-    
-    
-    const add = !this.props.permissionAlias.contains('CUSTOMERCOMP_ADD');
+
+
     return (
       <div className="customer-vis-cent">
-        <div className="button-wrapper">
-          <Row style={{ height: 40 }}>
-            <Col span={20}>
-              <span>预约日期：</span>
-              <DatePicker style={{ width: 200 }} format="YYYY-MM-DD" defaultValue={ date } onChange={this.onChangeDate.bind(this)}/>
-            </Col>
-            <Col span={4}>
-              <Button disabled={add} className="button-add">
-                <Link to='/crm/customer-vis/add'> 预约参观 </Link>
-              </Button >
-            </Col>
-          </Row>
-        </div>
+        <Row style={{ height: 40 }}>
+          <Col span={12}>
+            <span>预约日期：</span>
+            <DatePicker style={{ width: 200 }} format="YYYY-MM-DD" defaultValue={ date } onChange={this.onChangeDate.bind(this)}/>
+          </Col>
+          <Col span={12}>
+            <div style={{ float: 'right' }}>
+              <Link to='/crm/customer-vis/add'>
+                <PermissionButton testKey='CUSTOMERVIS_ADD' className="one-button"> 预约参观 </PermissionButton >
+              </Link>
+            </div>
+          </Col>
+        </Row>
+
         <Card title={ date.format('YYYY年MM月DD日') }>
           <Timeline>
             {
               times
             }
           </Timeline>
-          <Row className="btnRow">
-            <Col offset={16} span={4}>
+          <div className="button-group-bottom-common" style={{ marginBottom: '10px'}}>
               <Link to='/crm/customer-vis'>
-                <Button className="button-add"> 返回 </Button>
+                <Button className="button-group-bottom-1"> 返回 </Button>
               </Link>
-            </Col>
-            <Col span={4}>
-              <Button className="SaveBtn" onClick={ this.save.bind(this) }> 保存 </Button>
-            </Col>
-          </Row>
+              <Button className="button-group-bottom-2" onClick={ this.save.bind(this) }> 保存 </Button>
+          </div>
         </Card>
-      
+
       </div>
     );
   }

@@ -24,7 +24,7 @@ class CustomerVisAddIndex extends React.Component {
     });
     this.userInfo = session.get("userInfo");
   }
-  
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -37,7 +37,7 @@ class CustomerVisAddIndex extends React.Component {
       }
     })
   }
-  
+
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
@@ -49,8 +49,8 @@ class CustomerVisAddIndex extends React.Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
     }
-    
-    
+
+
     return (
       <div className="customer-vis-cent">
         <div className="customer-vis-cent-add">
@@ -71,7 +71,7 @@ class CustomerVisAddIndex extends React.Component {
                     {getFieldDecorator('visitDate', {
                       rules: [{ required: true, message: '请选择参观日期！' }]
                     })(
-                      <DatePicker format="YYYY-MM-DD" placeholder="请选择"/>
+                      <DatePicker format="YYYY-MM-DD"/>
                     )}
                   </FormItem>
                 </Col>
@@ -110,20 +110,16 @@ class CustomerVisAddIndex extends React.Component {
                   </FormItem>
                 </Col>
               </Row>
-            
-            
+
+
             </Form>
           </Card>
-          <Row className="btnRow">
-            <Col offset={16} span={4}>
+          <div className="button-group-bottom-common">
               <Link to='/crm/customer-vis'>
-                <Button className="button-add"> 返回 </Button>
+                <Button className="button-group-bottom-1"> 返回 </Button>
               </Link>
-            </Col>
-            <Col span={4}>
-              <Button className="SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
-            </Col>
-          </Row>
+              <Button className="button-group-bottom-2" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
+          </div>
         </div>
       </div>
     )
