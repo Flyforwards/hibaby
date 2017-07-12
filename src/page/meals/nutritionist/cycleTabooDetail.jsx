@@ -127,7 +127,7 @@ function mainCycleTabooDetail(props) {
         if (k != 0){
           dishesStr += '、';
         }
-        dishesStr += dishObj['dishesName'];
+        dishesStr += `${dishObj['dishesName']}*${dishObj['total']}`;
       }
 
       colDivs.push(
