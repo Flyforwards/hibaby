@@ -5,7 +5,6 @@ import { connect } from 'dva'
 import { Icon, Card, Button,Table } from 'antd'
 import { Link} from 'react-router'
 import './serviceinfo.scss'
-import Current from '../../Current'
 import Delete from './DeleteSuite.jsx'
 
 
@@ -57,10 +56,10 @@ class Suiteed extends Component {
             const detail = !this.props.permissionAlias.contains('SUITE_DETAIL');
             const del = !this.props.permissionAlias.contains('SUITE_DELETE');
             return (
-                <span>
-                  <Link disabled={detail} to={{ pathname: '/crm/suite/detail', query: { suite:record.id } }}>查看</Link>
-                  <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
-                </span>
+                <div className="operation-list">
+                  <Link className="one-link link-style" disabled={detail} to={{ pathname: '/crm/suite/detail', query: { suite:record.id } }}>查看</Link>
+                  <Link className="two-link link-style" disabled={del} onClick={this.delete.bind(this,record)}>删除</Link>
+                </div>
             );
           },
         }];
@@ -113,10 +112,11 @@ class Suiteed extends Component {
         const add = !this.props.permissionAlias.contains('SUITE_ADD');
         return (
             <div className="serviceinfo">
-                <div className="serviceinfoButton"><Link to="/crm/suite/add"><Button disabled={add} type="primary">添加</Button></Link></div>
-                <div className="serviceinfoTabal">
-                    <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ suiteListByPage } columns={ columns } />
-                </div>
+                <div className="top-button">
+                  <Link to="/crm/suite/add">
+                    <Button disabled={add} className="one-button" style={{ marginBottom:'10px', float: 'right'}}>添加</Button>
+                  </Link></div>
+                <Table className='serviceinfo-table' {...tableProps} rowKey = { record=>record.id } bordered dataSource={ suiteListByPage } columns={ columns } />
                 <Delete
                    visible={ this.state.DeleteVisible }
                    onCancel ={ this.handleDeleteCancel.bind(this) }

@@ -140,30 +140,15 @@ class EditSuiteed extends Component {
                     roomInformation
                   }
                 </div>
-                <Button style={{ float:"right", marginRight: "20px" }} className="save-btn" onClick={this.handleAdd.bind(this)}>保存</Button>
-                <Button style={{ float:"right", marginRight: "20px" }} className="back-btn" onClick={this.handleSubmit}>返回</Button>
+              <div className="button-group-bottom-common">
+                <Button className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                <Button className="button-group-bottom-2" onClick={this.handleAdd.bind(this)}>保存</Button>
+              </div>
             </div>
         )
     }
 }
-function EditSuite({
-  dispatch,
-  roomData,
-  roomFindById
-}) {
-  return ( < div >
-    <EditSuiteed dispatch = {
-      dispatch
-    }
-    roomData = {
-      roomData
-    }
-    roomFindById = {
-      roomFindById
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     roomData,
