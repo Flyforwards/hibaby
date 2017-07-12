@@ -227,6 +227,7 @@ export default (app) => [
       })
     }
   },
+  //添加图片
   {
     path: '/system/website-manage/add',
     getComponent: (location, cb) => {

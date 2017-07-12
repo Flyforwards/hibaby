@@ -25,3 +25,30 @@
     }
   }
 }
+.websitebannerAdd{
+  .bottomBtn{
+    width:100%;
+    .btn{
+      width:150px;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      float: right;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      margin-left: 10px;
+      border-color: #b67233;
+      color: #FFFFFF;
+      font-size:14px;
+      font-family: '微软雅黑';
+    }
+    .saveBtn{
+      background-color: #ff9900;
+      border-color: #ff9900;
+    }
+    .backBtn{
+      background-color: #b67233;
+      border-color: #b67233;
+    }
+  }
+}

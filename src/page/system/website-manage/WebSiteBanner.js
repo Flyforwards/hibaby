@@ -19,18 +19,26 @@ class WebSiteBanner extends React.Component{
       width: '35%'
     }, {
       title: '所属类型',
-      dataIndex: 'type',
-      key: 'type',
+      dataIndex: 'id',
+      key: 'id',
       width: '35%'
     }, {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
-        const detail = !this.props.permissionAlias.contains('GROUP_CHAR_DETAIL');
         return (
-          <Link disabled={detail} className="one-link" to={`/system/group-char/detail?dataId=${record.id}` }> 查看 </Link>)
+          <Link disabled={false} className="one-link" to={`/system/website-manage/add?type=${record.type}&id=${record.id}` }> 查看 </Link>)
       },
       width: '30%'
+    }];
+    this.dataSorce=[{
+      id: '1',
+      type: 1,
+      address: '西湖区湖底公园1号'
+    }, {
+      id: '2',
+      type: 2,
+      address: '西湖区湖底公园1号'
     }];
   }
 
@@ -40,14 +48,15 @@ class WebSiteBanner extends React.Component{
 
 
   render(){
+
     return (
       <Card className="website-banner">
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
-          <Link to="">
+          <Link to="/system/website-manage/add">
             <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>添加</Button>
           </Link>
         </div>
-        <Table className='management-center' bordered columns={ this.columns }/>
+        <Table className='management-center' bordered columns={ this.columns } dataSource={this.dataSorce} />
       </Card>
     )
   }

@@ -2,14 +2,13 @@ import { Upload, message, Modal } from 'antd';
 import React from 'react';
 import {local, session} from 'common/util/storage.js'
 
-class PicturesWall extends React.Component {
+class FileUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.loading = false;
     this.state = {
       previewVisible: false,
       previewImage: '',
-      defaultFileList :this.props.value,
+      defaultFileList : (typeof this.props.defaultFileList === 'object') ? this.props.defaultFileList : [],
       fileList: [],
     };
 
@@ -46,24 +45,20 @@ class PicturesWall extends React.Component {
   }
 
   onRemove = (file) => {
-    this.props.deleteFun({name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
+    this.props.deleteImgFun(this.props.imgInputName,{name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
   }
 
   handleChange = ( {file, fileList} ) => {
+    const _this = this;
 
-    if(this.props.loadProgress){
-      if (file.status === "uploading")
-      {
-        this.loading = true;
-
-      }else {
-        this.loading = false;
-      }
-      this.props.loadProgress(this.loading);
+    if (file.status === "uploading"){
+      console.log("图片正在上传....");
     }
 
     if (file.status === 'done') {
-      this.props.fun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
+      console.log("img",file.response.data.fileKey);
+      _this.props.addImgFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
+      console.log("图片上传成功....");
     }
 
     this.setState({
@@ -82,10 +77,10 @@ class PicturesWall extends React.Component {
           name="file"
           action="/crm/api/v1/uploadImg"
           headers={{'USER-TOKEN':session.get("token")}}
-          showUploadList = {!this.props.isHead}
-          defaultFileList={this.props.isHead?null:defaultFileList}
+          showUploadList = {true}
+          defaultFileList={defaultFileList}
           filelist={fileList}
-          multiple={this.props.isHead ? false :true}
+          multiple={true}
           beforeUpload={this.beforeUpload.bind(this)}
           onPreview={this.handlePreview.bind(this)}
           onChange={this.handleChange.bind(this)}
@@ -101,4 +96,4 @@ class PicturesWall extends React.Component {
   }
 }
 
-export default PicturesWall;
+export default FileUpload;
