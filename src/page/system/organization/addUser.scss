@@ -211,7 +211,17 @@
     color:#fff;
     border:1px solid #dbb999 ;
   }
+
+  .button-group-bottom {
+    float: right;
+    .ant-btn {
+      margin-left: 10px;
+    }
+  }
+
 }
+
+
 .view-info{
   background-color: white;
 	.basicInformation,.contactInformation,.entryInformation{
@@ -322,30 +332,12 @@
 		.Numbering{
 			margin-left:56px;
 		}
+	}
 
-	}
-	.ant-btn{
-    width: 150px;
-		float:right;
-		margin: 0 20px;
-    color:#fff;
-		margin-bottom: 20px;
-    font:14px "微软雅黑";
-	}
-	.disabledButton{
-		background-color: #eb7c34;
-		border: 0;
-	}
-	.addButton{
-   		background-color: rgba(255, 153, 0, 1);
-   		border: 0;
-	}
-  .BackBtn{
-    background: #b67233;
-    border-color: #b67233;
-  }
-  .editButton{
-    background:#693d20 ;
-    border-color:#693d20;
+  .button-group-bottom {
+    float: right;
+    .ant-btn {
+      margin-left: 10px;
+    }
   }
 }

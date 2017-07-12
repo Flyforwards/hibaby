@@ -96,7 +96,7 @@ class CheckData extends React.Component {
                     <Button disabled={edit} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 编辑 </Button>
                 </Link>
                 <Link to='/system/group-char'>
-                  <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2"> 返回 </Button>
+                  <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-1"> 返回 </Button>
                 </Link>
               </div>
          </div>

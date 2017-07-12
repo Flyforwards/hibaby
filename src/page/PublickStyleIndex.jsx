@@ -35,6 +35,7 @@ class PublickStyleIndex extends Component {
           <div style={{ marginTop: '10px'}}>
             <Button style={{ marginLeft: '10px' }} className='button-group-bottom-1'>按钮按钮-group-bottom-style1</Button>
             <Button style={{ marginLeft: '10px' }} className='button-group-bottom-2'>按钮按钮-group-bottom-style2</Button>
+            <Button style={{ marginLeft: '10px' }} className='button-group-bottom-3'>按钮按钮-group-bottom-style3</Button>
           </div>
         </Card>
         <Card>

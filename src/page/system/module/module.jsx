@@ -200,32 +200,32 @@ class moduleIndex extends Component {
     return (
       <div className="menu-cent">
         <div className="menu-heard">
-        <Form className="ant-advanced-search-form ">
-                <FormItem label="主模块：">
-                  {getFieldDecorator('projectId', {rules: [{ required: false, }],
-                  })(
-                  <Select  placeholder="请选择">
-                      { children }
-                  </Select>)}
-                </FormItem>
-                <FormItem label="名称：">
-                  {getFieldDecorator('name', {rules: [{ required: false, }],
-                  })(
-                      <Input />
-                  )}
-                </FormItem>
-                <FormItem label="路径：">
-                  {getFieldDecorator('path', {rules: [{ required: false, }],
-                  })(
-                      <Input />
-                  )}
-                </FormItem>
-                <div className="button-group">
-                    <Button className="button-group-1" onClick={this.handleSearch.bind(this)}>查询</Button>
-                    <Button className="button-group-2" onClick={this.handleReset.bind(this)}>清空</Button>
-                    <Button className="button-group-3" onClick={this.addMenuList.bind(this)}>新增</Button>
-                </div>
-            </Form>
+          <Form className="ant-advanced-search-form">
+              <FormItem label="主模块：">
+                {getFieldDecorator('projectId', {rules: [{ required: false, }],
+                })(
+                <Select  placeholder="请选择">
+                    { children }
+                </Select>)}
+              </FormItem>
+              <FormItem label="名称：">
+                {getFieldDecorator('name', {rules: [{ required: false, }],
+                })(
+                    <Input />
+                )}
+              </FormItem>
+              <FormItem label="路径：">
+                {getFieldDecorator('path', {rules: [{ required: false, }],
+                })(
+                    <Input />
+                )}
+              </FormItem>
+              <div className="button-group">
+                  <Button className="button-group-1" onClick={this.handleSearch.bind(this)}>查询</Button>
+                  <Button className="button-group-2" onClick={this.handleReset.bind(this)}>清空</Button>
+                  <Button className="button-group-3" onClick={this.addMenuList.bind(this)}>新增</Button>
+              </div>
+          </Form>
         </div>
         <div className="menu-center">
           <Table {...tableProps}  bordered />

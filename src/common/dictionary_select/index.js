@@ -17,6 +17,7 @@ class DictionarySelect extends Component {
     this.params = this.props.params ? this.props.params : null;
     this.force = this.props.force ? this.props.force : false;                   //是否强制从数据库获取
     this.name = this.props.selectName;
+    this.rawName = this.props.selectName;
     this.defaultParams = {};
     this.selectData = [];
 
@@ -24,12 +25,13 @@ class DictionarySelect extends Component {
 
   componentWillMount() {
 
+    this.defaultParams = DictionaryArray[this.name];
     const endemic = session.get('endemic');
     let {id:endemic_id} = endemic ? endemic : {id: ''};
     endemic_id = endemic_id + '_';
+    this.name = endemic_id + this.name;
 
-    this.defaultParams = DictionaryArray[this.name];
-    this.selectData = session.get(endemic_id + this.name);
+    this.selectData = session.get(this.name);
     //console.log("select>>>>>",this.selectData)
     if (this.params || this.force) {
       this.getData(this.params)
@@ -41,7 +43,7 @@ class DictionarySelect extends Component {
   getData(params) {
     this.dispatch({
       type: 'etc/getDicData',
-      payload: {...params, name: this.name},
+      payload: {...params, name: this.rawName},
     })
   }
 
@@ -53,12 +55,7 @@ class DictionarySelect extends Component {
         return (<Option value={item.id+""} key={item.id}> {item.name} </Option>)
       });
     } else if(this.props.selectData[this.name] && this.props.selectData[this.name].length > 0) {
-
-      const endemic = session.get('endemic');
-      let {id:endemic_id} = endemic ? endemic : {id: ''};
-      endemic_id = endemic_id + '_';
-
-       session.set(endemic_id + this.name, this.props.selectData[this.name]);
+       session.set(this.name, this.props.selectData[this.name]);
        options = this.props.selectData[this.name].map((item) => {
         return (<Option value={item.id+""}  key={item.id}> {item.name} </Option>)
       });
