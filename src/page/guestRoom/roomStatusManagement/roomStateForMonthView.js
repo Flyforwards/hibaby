@@ -495,7 +495,7 @@ const monthStateView = (props) => {
           }
 
           let deleteBtn = document.createElement("div");
-          deleteBtn.innerHTML = "删除";
+          deleteBtn.innerHTML = "取消预约";
           deleteBtn.className = "userBoxConfirm";
           e.target.appendChild(deleteBtn);
 
@@ -503,15 +503,14 @@ const monthStateView = (props) => {
             e.stopPropagation();
             let parentNode = e.target.parentNode;
             dispatch({
-              type: 'roomStatusManagement/deleteUser',
+
+
+              type: 'roomStatusManagement/monthRoomUpdate',
               payload: {
-                roomIndex: parentNode.dataset.roomIndex,
-                customerId: parentNode.dataset.customerId,
-                startIndex: parentNode.dataset.startIndex,
-                endIndex: parentNode.dataset.endIndex,
-                startDate: parentNode.dataset.startDate,
-                status: parentNode.dataset.status,
+                deleteUse:{ customerId: parentNode.dataset.customerId,
+                  startDate: parentNode.dataset.startDate,}
               }
+
             });
             parentNode.removeChild(e.target);
           });
