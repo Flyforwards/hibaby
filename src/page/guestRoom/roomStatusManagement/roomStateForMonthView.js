@@ -59,6 +59,8 @@ const timeToDate = (time) => {
 const monthStateView = (props) => {
   const {dispatch,loading} = props;
   const {occupancy,dateSelectList,floorSelect,dragUser} = props.users;
+  const customers = props.users.monthStateCustomers;
+
   let years = [];
   let defaultYear = props.users.defaultYear;
 
@@ -84,14 +86,30 @@ const monthStateView = (props) => {
     let date = 0;
     let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
 
+    console.log(dragUser)
+
+    if(dragUser.startIndex == -1){
+      customers.map(value=>{
+        if (value.customerId == dragUser.customerId){
+          value.change = true;
+        }
+      })
+    }
+
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = event.target.dataset.dayIndex;
       date = event.target.dataset.date
+
+
+
+
     } else if (event.target.parentNode.className === "dayRoom") {
       roomIndex = event.target.parentNode.dataset.roomIndex;
       dayIndex = event.target.parentNode.dataset.dayIndex;
       date = event.target.parentNode.dataset.date
+
+
 
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
@@ -108,6 +126,7 @@ const monthStateView = (props) => {
       message.error("无法移动到过去");
       return;
     }
+
 
     dispatch({
       type: 'roomStatusManagement/userDrop',
@@ -911,13 +930,15 @@ const monthStateView = (props) => {
 
         {
           customers.map((costomer) => {
-            return (
-              <div className="customerItem" onClick={() => {
-                onClicked(costomer)
-              }} draggable="true" onDragStart={(event) => dragStart(costomer, event)}>
-                {costomer.customerName}
-              </div>
-            )
+            if(!costomer.change){
+              return (
+                <div className="customerItem" onClick={() => {
+                  onClicked(costomer)
+                }} draggable="true" onDragStart={(event) => dragStart(costomer, event)}>
+                  {costomer.customerName}
+                </div>
+              )
+            }
           })
         }
 

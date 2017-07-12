@@ -47,6 +47,8 @@ export default {
     intentionPackageAry:[],
     memberAry:[],
     specialIdentityAry:[],
+    idTypeAry:[],
+    gravidityAry:[],
 
     remarkListColumns : [{
       title: '备注内容',
@@ -180,7 +182,8 @@ export default {
         intentionPackageAry:[],
         memberAry:[],
         specialIdentityAry:[],
-
+        idTypeAry:[],
+        gravidityAry:[],
         remarkListColumns : [{
           title: '备注内容',
           dataIndex: 'remarkInfo',
@@ -288,7 +291,12 @@ export default {
       else if(todo.abName === 'TCLX'){
         return {...state,intentionPackageAry:todo.data};
       }
-
+      else if(todo.abName === 'YC'){
+        return {...state,gravidityAry:todo.data};
+      }
+      else if(todo.abName === 'ZJLX'){
+        return {...state,idTypeAry:todo.data};
+      }
       return {...state};
     },
     setMembershipcard(state, { payload: todo }){
@@ -497,6 +505,7 @@ export default {
         "customerId": values.id,
         "customerPhoto": state.headIcon,
         "idcard": values.idcard,
+        "idType": values.idType.key,
         "idcardScan": caridStr,
         'contactName':values.contactName,
         "member":  (typeof values.member === 'object')  ? values.member.key : '',
@@ -740,6 +749,18 @@ function defDis(dispatch) {
     type: 'getDataDict',
     payload:{
       "abName": 'KZLY',
+    }
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "abName": 'YC',
+    }
+  });
+  dispatch({
+    type: 'getDataDict',
+    payload:{
+      "abName": 'ZJLX',
     }
   });
   dispatch({
