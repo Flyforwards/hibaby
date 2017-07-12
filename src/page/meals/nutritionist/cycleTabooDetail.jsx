@@ -134,7 +134,7 @@ function mainCycleTabooDetail(props) {
         <Row key={i} style={ i%2 ?{backgroundColor :'#f6f6f6'} :{backgroundColor: '#ffffff'}}>
           <div style={{minHeight: '40px'}}>
             <Col span="2">
-              <div className="tabooUser-detail-content">{loopObj.status==0?'标准餐单':'禁忌餐单'}</div>
+              <div className="tabooUser-detail-content">{loopObj.status==0?'标准餐单:':'禁忌餐单:'}</div>
             </Col>
             <Col>
               <div className="tabooUser-detail-content">{dishesStr}</div>
