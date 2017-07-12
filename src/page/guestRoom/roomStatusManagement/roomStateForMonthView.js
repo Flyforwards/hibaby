@@ -86,15 +86,6 @@ const monthStateView = (props) => {
     let date = 0;
     let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
 
-    console.log(dragUser)
-
-    if(dragUser.startIndex == -1){
-      customers.map(value=>{
-        if (value.customerId == dragUser.customerId){
-          value.change = true;
-        }
-      })
-    }
 
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
@@ -127,6 +118,14 @@ const monthStateView = (props) => {
       return;
     }
 
+
+    if(dragUser.startIndex == -1 && roomIndex){
+      customers.map(value=>{
+        if (value.customerId == dragUser.customerId){
+          value.change = true;
+        }
+      })
+    }
 
     dispatch({
       type: 'roomStatusManagement/userDrop',
