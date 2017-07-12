@@ -211,7 +211,6 @@ export default {
       let startDayIndex = parseInt(data.dayIndex);
 
       let allDays = monthRoomList[roomIndex].useAndBookingList;
-
       for (let i = 0; i < dragUser.reserveDays; i++) {
         let dayIndex = startDayIndex + i;
 

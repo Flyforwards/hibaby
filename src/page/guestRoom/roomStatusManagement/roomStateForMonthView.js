@@ -60,6 +60,7 @@ const monthStateView = (props) => {
   const {dispatch,loading} = props;
   const {occupancy,dateSelectList,floorSelect,dragUser} = props.users;
   const customers = props.users.monthStateCustomers;
+  const monthRoomList = props.users.monthRoomList;
 
   let years = [];
   let defaultYear = props.users.defaultYear;
@@ -78,7 +79,10 @@ const monthStateView = (props) => {
 
   document.ondrop = (event) => {
     event.preventDefault();
-    if(dragUser.status == 1 && !dragUser.customerId){
+    if(dragUser.status == 6){
+      return
+    }
+    if((dragUser.status == 1 )&& !dragUser.customerId){
       return;
     }
     let roomIndex = null;
@@ -90,30 +94,22 @@ const monthStateView = (props) => {
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = event.target.dataset.dayIndex;
-      date = event.target.dataset.date
-
-
-
-
     } else if (event.target.parentNode.className === "dayRoom") {
       roomIndex = event.target.parentNode.dataset.roomIndex;
       dayIndex = event.target.parentNode.dataset.dayIndex;
-      date = event.target.parentNode.dataset.date
-
-
-
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
       // 偏移天数
       let offsetDays = parseInt(event.layerX / UNIT_WIDTH);
-      date = event.target.dataset.startDate;
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
       return;
     }
 
-    if(moment().isAfter(moment.unix(date/1000))){
+     dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
+
+    if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
       message.error("无法移动到过去");
       return;
     }
@@ -127,11 +123,13 @@ const monthStateView = (props) => {
       })
     }
 
+
+
     dispatch({
       type: 'roomStatusManagement/userDrop',
       payload: {
         roomIndex,
-        dayIndex: dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit,
+        dayIndex: dayIndex,
       }
     });
   };
@@ -400,6 +398,7 @@ const monthStateView = (props) => {
           let stateBox = classNames('stateBox', {
             'empty': status == 0, // 空房
             'checkingIn': status == 4, // 入住
+            'checkingOut': status == 6, // 出所
             'reserve': status == 7, // 预约
             'repair': status == 1, // 维修
             'overlap': status == 9, // 重叠
@@ -444,7 +443,7 @@ const monthStateView = (props) => {
           }
 
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.status == 1) {
+          if (e.target.dataset.status == 4 || e.target.dataset.status == 1 || e.target.dataset.status == 6) {
             return;
           }
 
@@ -491,7 +490,7 @@ const monthStateView = (props) => {
           }
 
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.status == 1) {
+          if (e.target.dataset.status == 4 || e.target.dataset.status == 1 || e.target.dataset.status == 6) {
             return;
           }
 
@@ -539,6 +538,10 @@ const monthStateView = (props) => {
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
+
+          if(status == 6){
+            return
+          }
 
           if (status == 1) {
             if(customerId){
@@ -896,9 +899,11 @@ const monthStateView = (props) => {
       dragOffsetY = event.nativeEvent.offsetY;
       dispatch({
         type: 'roomStatusManagement/userDragStart',
-        payload: {
+
+      payload: {
           dragUser: {
             ...dragUser,
+            reserveDays : 28,
             startIndex: -1,
             endIndex: -1,
             roomIndex: -1,

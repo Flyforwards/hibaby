@@ -537,7 +537,6 @@ export default {
         }
       }
       catch (err){
-        message.success('扩展信息保存失败');
         if (remarkList.length > 0) {
           yield put({
             type: 'savaRemark',
@@ -548,6 +547,9 @@ export default {
         }else{
           yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
         }
+
+        throw err;
+
       }
     },
 

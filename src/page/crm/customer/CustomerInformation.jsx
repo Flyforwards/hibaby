@@ -341,7 +341,7 @@ function BaseInfo(props) {
 
   if (props.users.editCustomer){
     if (props.users.baseData){
-      const selectArray = { gravidity:fetusAry,fetus:fetusAry,hospital:hospitalAry,intentionPackage:intentionPackageAry,resourceCustomer:guestInformationSourceAry,
+      const selectArray = { gravidity:gravidityAry,fetus:fetusAry,hospital:hospitalAry,intentionPackage:intentionPackageAry,resourceCustomer:guestInformationSourceAry,
         focus:concernsAry,webSearchTerm:networkSearchWordsAry,province:provinceData,city:cityData};
       datacompare(baseInfo,props.users.baseData,selectArray);
     }
