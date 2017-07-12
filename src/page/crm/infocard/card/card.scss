@@ -80,35 +80,15 @@
 
   }
 
-  .BackBtn{
-     width:150px;
-     height:30px;
-     background:#b67233 ;
-     border-color:#b67233;
-     color:#fff;
-   }
-  .BackBtn:hover{
-    width:150px;
-    height:30px;
-    background:#b67233 ;
-    border-color:#b67233;
-    color:#fff;
+  .info-card-operation {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    .ant-btn {
+      margin-left: 10px;
+    }
   }
-  .SaveBtn{
-    width:150px;
-    height:30px;
-    float: left;
-    background:#f1e8df;
-    border-color:#d4ad89;
-    color:#b67233;
-  }
-  .SaveBtn:hover{
-    width:150px;
-    height:30px;
-    background:#f1e8df;
-    border-color:#d4ad89;
-    color:#b67233;
-  }
+
   .ant-form-item-required:before {
     content: '';
     display: none;

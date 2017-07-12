@@ -307,8 +307,10 @@ class AddServiceed extends Component {
                     />
                 </div>
                 { visible ? botton_div : null }
-                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button className="SaveBtn" onClick={this.handleAdd.bind(this)}>保存</Button>
+              <div className="button-group-bottom-common">
+                <Button className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                <Button className="button-group-bottom-2" onClick={this.handleAdd.bind(this)}>保存</Button>
+              </div>
             </div>
         )
     }

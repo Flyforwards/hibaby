@@ -1,18 +1,20 @@
 /**
  * Created by Flyforwards on 2017/5/25.
  */
+
 import DictionarySelect from 'common/dictionary_select';
 
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon,DatePicker,Table, Card, InputNumber, Radio,Row,Col, } from 'antd';
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
-const Option = Select.Option;
 import { Link } from 'react-router';
 import './card.scss';
 import { parse } from 'qs'
-import CustomerByCard from './customerByCard';
+import CustomerByCard from './CustomerByCard';
+const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+const Option = Select.Option;
+
 
 class CardDetail extends Component {
 
@@ -190,10 +192,8 @@ class CardDetail extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row>
-              <CustomerByCard {...{loading, userPagination, list}} />
-            </Row>
           </Form>
+          <CustomerByCard {...{loading, userPagination, list}} />
         </Card>
         <div className="button-group-bottom-common">
           <Link to={{ pathname:"/crm/card/detail", query: values}}>

@@ -1,16 +1,18 @@
 /**
  * Created by Flyforwards on 2017/5/25.
  */
+
 import DictionarySelect from 'common/dictionary_select';
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon, Card, Radio, Row, Col, Popconfirm, DatePicker, Modal, InputNumber, Table } from 'antd';
+import { Link } from 'react-router';
+import CustomerByCard from './CustomerByCard';
+import './card.scss';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-import { Link } from 'react-router';
-import CustomerByCard from './customerByCard';
-import './card.scss';
+
 const createForm = Form.create
 import { parse } from 'qs'
 
@@ -223,11 +225,8 @@ class CardDetail extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row>
-              <CustomerByCard {...{loading, userPagination, list}} />
-            </Row>
-
           </Form>
+          <CustomerByCard {...{loading, userPagination, list}} />
         </Card>
         <div className="button-group-bottom-common">
           <Link to="/crm/card">

@@ -101,7 +101,7 @@ class CustomerByCard extends Component {
     }
     const formChooseLayout = {
       labelCol:{ span: 10 },
-      wrapperCol:{ span: 14 }
+      wrapperCol:{ span: 12 }
     }
     const values = parse(location.search.substr(1))
     const tableProps = {
@@ -126,27 +126,17 @@ class CustomerByCard extends Component {
           <h3>客户列表:</h3>
         </div>
         <Form>
-          <div>
-            <Row className="topTitleInfo">
-              <Col span={10} style={{float:'left'}}>
-                <FormItem {...formChooseLayout} style={{height:'40px',lineHeight:'40px'}} >
-                  {getFieldDecorator('sear', {rules: [{ required: false }],
-                  })(
-                    <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col span={4} style={{ float:'left'}}>
-                <span>
-                  <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(182, 114, 51, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
-                </span>
-              </Col>
-              <Col span={4} style={{ float:'left'}}>
-                <span>
-                  <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'#f1e8df',borderColor:'#bb7c41',height:'40px',lineHeight:'40px',color:'#b67233'}}>重置</Button>
-                </span>
-              </Col>
-            </Row>
+          <div style={{ position: 'relative'}}>
+            <FormItem {...formChooseLayout}>
+              {getFieldDecorator('sear', {rules: [{ required: false }],
+              })(
+                <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
+              )}
+            </FormItem>
+            <div className="info-card-operation">
+              <Button className='button-group-2' onClick={ this.onSearch.bind(this)}>查询</Button>
+              <Button className='button-group-1' onClick={ this.reset.bind(this)}>重置</Button>
+            </div>
           </div>
           <Row className="titleInfo">
             <Col span={4} style={{width:'140px'}}>
