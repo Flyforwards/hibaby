@@ -120,7 +120,7 @@ class CustomerByCard extends Component {
       },
     }
     return (
-      <div className="infoCard">
+      <div className="info-card-cent">
       <Card>
         <div className="card-title">
           <h3>客户列表:</h3>

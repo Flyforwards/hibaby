@@ -1,33 +1,6 @@
 .activity-cent{
   min-width: 1000px;
-  .activityTop{
-    width: 960px;
-    .selectTop{
-      width: 600px;
-    }
-     .ant-form-item-control-wrapper{
-       width:600px;
-       .ant-form-item-control{
-         width:600px;
-       }
-     }
-    .findBtn{
-      width:130px;
-      float: left;
-      font: 14px "微软雅黑";
-      margin-left: 10px;
-    }
-    .resetBtn{
-      width:130px;
-      float: left;
-      margin-left: 10px;
-      font: 14px "微软雅黑";
-    }
-    button{
-      font: 14px "微软雅黑";
-    }
 
-  }
   .activityTitle{
     width: 960px;
     label{
@@ -125,27 +98,7 @@
     font-size: 14px;
   }
 }
-.vertical-center-modal {
-  text-align: center;
-  white-space: nowrap;
-  .ant-modal {
-    display: inline-block;
-    vertical-align: middle;
-    top: 0;
-    text-align: center;
-    .ant-modal-body {
-      text-align: left;
-    }
-  }
-}
 
-.vertical-center-modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
-}
 .appointMentModal{
   .ant-modal-body{
     .ant-form-item-label{
@@ -158,9 +111,9 @@
       content: '';
       display: none;
     }
-    .ant-form-item-control-wrapper{
-      width:200px;
-    }
+    //.ant-form-item-control-wrapper{
+    //  width:200px;
+    //}
     .ant-card{
       margin-top: 10px;
       width:960px;

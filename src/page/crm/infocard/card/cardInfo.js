@@ -124,7 +124,7 @@ class CardModal extends Component {
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return(
-    <div className="infoCard">
+    <div className="info-card-cent">
       <div className="cardInfo" style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>

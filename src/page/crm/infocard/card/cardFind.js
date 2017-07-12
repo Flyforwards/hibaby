@@ -77,7 +77,7 @@ class CardFind extends Component {
     }) : null;
     const add = !this.props.permissionAlias.contains('CARD_ADD');
     return (
-      <div className="infoCard">
+      <div className="info-card-cent">
       <div className="cardFind" style={{ overflow:"hidden" }}>
         <Form>
           <Row>
@@ -89,15 +89,14 @@ class CardFind extends Component {
               </FormItem>
             </Col>
             <Col span={ 7 }>
-              <Button className="SelBtn" onClick={this.onSearch.bind(this)} size="large" style={{width:'120px',height:'40px',lineHeight:'38px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
+              <Button className="button-group-2" onClick={this.onSearch.bind(this)} size="large" style={{width:'120px',marginRight:'10px'}}><Icon type="search"/>搜索</Button>
               <Link to={{ pathname: '/crm/card/add' }} >
-                <Button className="SaveBtn" disabled={add} style={{width:'120px',height:'40px',lineHeight:'38px'}} size="large">创建卡种</Button>
+                <Button className="button-group-1" disabled={add} size="large">创建卡种</Button>
               </Link>
             </Col>
           </Row>
-
-          <Row style={{clear:'both' }}>
-            <Col span= { 7 } style={{width:'290px'}}>
+          <Row>
+            <Col span= { 7 }>
               <FormItem  {...formItemLayout} label="折扣权限">
                 {getFieldDecorator('salesDiscount')(
                   <Select
@@ -113,7 +112,7 @@ class CardFind extends Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={ 7 } style={{width:'290px'}}>
+            <Col span={ 7 }>
               <FormItem {...formItemLayout} label="卡种类型">
                 {getFieldDecorator('cardType')(
                   <Select

@@ -106,8 +106,8 @@ class CardDetail extends Component {
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return (
-      <div className="infoCard">
-      <div className="cardEdit" style={{ 'padding': '20px' }}>
+      <div className="info-card-cent">
+      <div className="cardEdit">
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
             <Row>
@@ -193,19 +193,15 @@ class CardDetail extends Component {
             <Row>
               <CustomerByCard {...{loading, userPagination, list}} />
             </Row>
-            <Row style={{marginTop:'16px'}}>
-              <Col span = { 16 }>
-              </Col>
-              <Col span = { 4 }>
-                <Link to={{ pathname:"/crm/card/detail", query: values}}><Button className="BackBtn">返回</Button></Link>
-              </Col>
-              <Col span = { 4 }>
-                <Button className="SaveBtn" onClick={this.onSave.bind(this)}>保存</Button>
-              </Col>
-            </Row>
           </Form>
         </Card>
+        <div className="button-group-bottom-common">
+          <Link to={{ pathname:"/crm/card/detail", query: values}}>
+            <Button className="button-group-bottom-1">返回</Button>
+          </Link>
 
+          <Button className="button-group-bottom-2" onClick={this.onSave.bind(this)}>保存</Button>
+        </div>
       </div>
       </div>
     )
