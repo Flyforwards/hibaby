@@ -41,7 +41,7 @@ class localCharIndex extends React.Component {
         render: (text, record, index) => {
           const detail = !this.props.permissionAlias.contains('LOCAL_CHAR_DETAIL');
           return (
-            <Link disabled={detail} to = {`/system/local-char/detail?dataId=${record.id}`} > 查看 </Link>)
+            <Link disabled={detail} className="one-link" to = {`/system/local-char/detail?dataId=${record.id}`} > 查看 </Link>)
           },
         }];
     }
@@ -67,29 +67,16 @@ class localCharIndex extends React.Component {
 
       const add = !this.props.permissionAlias.contains('LOCAL_CHAR_ADD');
       return (
-        <div className = "PlaceProject">
-          <div className = "buttonwrapper">
+        <div className = "place-cent">
+          <div className="top-button">
               <Link to = "/system/local-char/add" >
-                  <Button disabled={add} className="addBtn"> 添加 </Button>
+                  <Button disabled={add} className="one-button" style={{ marginBottom: '10px',float: 'right' }}> 添加 </Button>
               </Link>
           </div>
-          <Table {...tableProps} rowKey = { record=>record.id } bordered columns = { this.columns } />
+          <Table className='place-center' {...tableProps} rowKey = { record=>record.id } bordered columns = { this.columns } />
         </div>
     );
   }
-}
-function getLocalTime(nS) {
-  var now = new Date(parseInt(nS));
-  var year=now.getFullYear();
-  var month=now.getMonth()+1;
-  var date=now.getDate();
-  if(month<10){
-    month = "0"+month
-  }
-  if(date<10){
-    date = "0"+date
-  }
-  return `${year}-${month}-${date}`
 }
 
 function mapStateToProps(state) {

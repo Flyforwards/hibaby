@@ -1,11 +1,10 @@
-import React from 'react'
-import { connect } from 'dva'
-import './system.scss'
-import { Table, Input, Icon, Button, Popconfirm, Pagination } from 'antd'
-import { routerRedux } from 'dva/router'
-import { Link } from 'react-router'
-import moment from 'moment'
-import Current from '../../Current'
+import React from 'react';
+import { connect } from 'dva';
+import './management.scss';
+import { Table, Input, Icon, Button, Popconfirm, Pagination } from 'antd';
+import { routerRedux } from 'dva/router';
+import { Link } from 'react-router';
+import moment from 'moment';
 
 class GroupCharIndex extends React.Component {
 
@@ -46,7 +45,7 @@ class GroupCharIndex extends React.Component {
       render: (text, record, index) => {
         const detail = !this.props.permissionAlias.contains('GROUP_CHAR_DETAIL');
         return (
-          <Link disabled={detail} className="firstA" to={`/system/group-char/detail?dataId=${record.id}` }> 查看 </Link>)
+          <Link disabled={detail} className="one-link" to={`/system/group-char/detail?dataId=${record.id}` }> 查看 </Link>)
       },
       width: '10%'
     }];
@@ -73,13 +72,13 @@ class GroupCharIndex extends React.Component {
 
     const add = !this.props.permissionAlias.contains('GROUP_CHAR_ADD');
     return (
-      <div className="container2">
-        <div className="buttonwrapper">
+      <div className="management-cent">
+        <div className="top-button">
           <Link to='/system/group-char/add'>
-            <Button disabled={add} className="addBtn"> 添加 </Button>
+            <Button disabled={add}  className="one-button" style={{ marginBottom: '10px',float: 'right' }}> 添加 </Button>
           </Link >
         </div>
-        <Table {...tableProps} bordered columns={ this.columns } rowKey={record => record.id}/>
+        <Table className='management-center' {...tableProps} bordered columns={ this.columns } rowKey={record => record.id}/>
       </div>
     );
   }

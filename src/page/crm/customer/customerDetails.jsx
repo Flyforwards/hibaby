@@ -13,9 +13,13 @@ const confirm = Modal.confirm;
 function rowDiv(dict) {
   let titSpan = 8;
   let contentSpan = 16;
-  if (dict.title === '现住址' || dict.title === '户籍地址'){
+  if ( dict.title === '户籍地址'){
     titSpan = 2;
     contentSpan = 22
+  }
+  if ( dict.title === '现住址'){
+    titSpan = 4;
+    contentSpan = 20
   }
 
   return(
@@ -27,14 +31,45 @@ function rowDiv(dict) {
   )
 }
 
-
-function textforkey(array,value,valuekey = 'name') {
+function textforkeyChi(array,value,valuekey = 'name') {
   for (let i = 0 ;i<array.length ;i++){
     let dict = array[i];
     if(dict['id'] === value){
       return  dict[valuekey];
     }
   }
+}
+
+function textforkey(array,value,valuekey = 'name') {
+
+  if(value){
+    if(typeof value === 'string'){
+      const ary = value.split(',');
+      if(ary.length > 0){
+        let str = ''
+        ary.map(chivalue=>{
+          for (let i = 0 ;i<array.length ;i++){
+            let dict = array[i];
+            if(dict['id'] == chivalue){
+              str = str + ',' + dict[valuekey]
+              continue
+            }
+          }
+        })
+        return str.substr(1)
+      }
+      else{
+        return textforkeyChi(array,value,valuekey)
+      }
+    }
+    else
+    {
+
+      return textforkeyChi(array,value,valuekey)
+    }
+
+  }
+
 }
 
 function BaseInfo(props) {
@@ -52,7 +87,8 @@ function BaseInfo(props) {
     {title:'预产期',value:moment(netData.dueDate).format('YYYY-MM-DD')},
     {title:'孕周',value:netData.gestationalWeeks},
     {title:'分娩医院',value:textforkey(hospitalAry, netData.hospital) },
-    {title:'孕次/产次',value:textforkey(fetusAry, netData.fetus)},
+    {title:'孕次',value:textforkey(fetusAry, netData.gravidity)},
+    {title:'产次',value:textforkey(fetusAry, netData.fetus)},
     {title:'客资来源',value:textforkey(guestInformationSourceAry, netData.resourceCustomer)},
     {title:'关注点',value:textforkey(concernsAry, netData.focus)},
     {title:'意向套餐',value:textforkey(intentionPackageAry, netData.intentionPackage)},
@@ -66,7 +102,7 @@ function BaseInfo(props) {
   for (let i = 0; i < baseInfoData.length; i++) {
     const dict = baseInfoData[i];
     baseInfoDiv.push(
-      <Col span={dict.title === '现住址' ? 18 : 6} key={i}>
+      <Col span={dict.title === '现住址' ? 12 : 6} key={i}>
         {rowDiv(dict)}
       </Col>
     );
@@ -96,11 +132,11 @@ function ExtensionInfo(props) {
     {title:'籍贯', value:netData.placeOrigin},
     {title:'民族',value: textforkey(nationalData, netData.nation,'nation')},
     {title:'购买套餐',value:netData.purchasePackage},
-    {title:'保险情况',value:netData.insuranceSituation},
+    {title:'联系人姓名',value:netData.contactName},
     {title:'联系人电话',value:netData.contact},
     {title:'会员身份',value:textforkey(memberAry, netData.member,'name')},
     {title:'特殊身份',value:textforkey(specialIdentityAry, netData.specialIdentity,'name')},
-    {title:'宝宝生产日期',value:moment(netData.productionDate).format('YYYY-MM-DD')},
+    {title:'宝宝生产日期',value:netData.productionDate? moment(netData.productionDate).format('YYYY-MM-DD'):''},
     {title:'合同编号',value:netData.contractNumber},
     {title:'关联客房',value:netData.associatedRooms},
     {title:'身份证扫描',value:netData.idcardScan,isDLC:true,onClick:{onClickForCardid}},
@@ -158,10 +194,6 @@ function ExtensionInfo(props) {
             </Col>
           </Row>
 
-          <Row>
-            <div>{rowDiv({title:'户籍地址',value:`${textforkey(provinceData, netData.provincePermanent,'description')}
-            ${textforkey(permanentCityData, netData.cityPermanent,'description')} ${netData.detailedPermanent}`})}</div>
-          </Row>
         </div>
   )
 }

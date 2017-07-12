@@ -159,39 +159,14 @@
     color: #FFFFFF;
 }
 	.ant-table-tbody > tr > td {
-	    text-align:center;
-	    background-color: #fff;
-		  font-family: '微软雅黑 Regular', '微软雅黑';
-	    font-weight: 400;
-	    font-size: 14px;
-		div{
-			width:100%;
-      .firstA{
-        display: inline-block;
-        color: #b67231;
-        width:25%;
-      }
-      .firstA:hover{
-        color:#0066ff;
-      }
-      .firstB{
-        display: inline-block;
-        color: #b67231;
-        width:25%;
-      }
-      .firstB:hover{
-        color:#ff0000;
-      }
-      .firstC{
-        display: inline-block;
-        color: #FF0000;
-      }
-      .firstD{
-        display: inline-block;
-        color: #999999;
-        width:25%;
-      }
-		}
+    text-align:center;
+    background-color: #fff;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-size: 14px;
+    div{
+      width:100%;
+    }
 	}
 
   .span_border {

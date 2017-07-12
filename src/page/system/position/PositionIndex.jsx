@@ -80,18 +80,28 @@ class PositionIndex extends Component {
         }))
       },
     }
+    const formItemLayout = {
+      labelCol: {
+        span: 1
+      },
+      wrapperCol: {
+        span: 4
+      },
+    };
     return (
       <div className="position-cent">
-        <Form layout="inline" className="find" onSubmit={this.handleSubmit}>
-          <FormItem className="search-text" label="部门">
-            {
-              getFieldDecorator('name', {})(
-                <Input size="large" placeholder="请输入部门名称"/>
-              )}
-          </FormItem>
-          <Button className="search-button" type="primary" htmlType="submit">查询</Button>
-        </Form>
-        <Table {...tableProps} bordered rowKey='id' style={{ 'margin': '0 10px 0 10px', }} columns={this.columns}/>
+        <div style={{ overflow: 'hidden' }}>
+          <Form className="ant-advanced-search-form" onSubmit={this.handleSubmit}>
+            <FormItem label="部门">
+              {
+                getFieldDecorator('name', {})(
+                  <Input placeholder="请输入部门名称"/>
+                )}
+            </FormItem>
+            <Button style={{ marginTop: '10px', marginLeft: '10px' }} className="button-group-2" htmlType="submit">查询</Button>
+          </Form>
+        </div>
+        <Table {...tableProps} bordered rowKey='id' columns={this.columns}/>
       </div>
     )
   }

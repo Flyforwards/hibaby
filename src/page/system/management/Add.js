@@ -1,13 +1,11 @@
 
 import React from 'react';
 import {connect} from 'dva';
-import './system.scss';
-import {Card,Input,Button,Form} from 'antd';
+import './management.scss';
+import { Card, Input, Button, Form, Row, Col} from 'antd';
 import {Link} from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
-
-
 
 @createForm()
 class AddGroupChar extends React.Component {
@@ -71,72 +69,80 @@ class AddGroupChar extends React.Component {
 
     render() {
 
+      const formItemLayout = {
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 6 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 14 },
+        },
+      };
       const { getFieldDecorator, getFieldValue } = this.props.form;
       getFieldDecorator('keys', { initialValue: [0, 1] });
       const keys = getFieldValue('keys');
       const formItems = keys.map((k, index) => {
         return (
+          <div key={ k } style={{ position: 'relative' }}>
             <FormItem
-              className = "div2"
               key={ k }
+              {...formItemLayout} label={ `选项${String(index+1)}` }
             >
-              <p className = "label">{ `选项${String(index+1)}` }</p>
-              <div className="posi" style={{position:'relative',overflow:'hidden'}}>
                 {getFieldDecorator(`names-${k}`, {
                   validateTrigger: ['onChange', 'onBlur'],
                   rules: [{ required: true, message: '选项不能为空,限50字！' ,max: 50}],
                 })(
-                  <Input rows = {6} className = "input2"/>
+                  <Input rows = {6}/>
                 )}
-              </div>
-              {
-                index >=2?(<span className = "editable-add-btn delBtn" onClick={ () => this.remove(k) } > 删除 </span>):null
-              }
             </FormItem>
+            {
+              index >=2?(<Button className = "button-group-2 delete-btn" onClick={ () => this.remove(k) } > 删除 </Button>):null
+            }
+          </div>
         );
       });
 
       return (
-        <div className="xuanxiang container2">
+        <div className="management-cent">
             <Card title = "字段信息:" >
                 <Form >
-                    <FormItem className = "div">
-                    {getFieldDecorator('name', {rules: [{ required: true, message: '字段名称为必填项,限50字！' , max: 50}],
+                    <FormItem  {...formItemLayout} label="字段名称">
+                    {getFieldDecorator('name', { rules: [{ required: true, message: '字段名称为必填项,限50字！' , max: 50}],
                   })(<div>
-                        <p className ="label" > 字段名称 </p>
-                        <Input className="input"/>
+                        <Input/>
                       </div>
                     )}
                   </FormItem>
-                  <FormItem className = "div">
+                  <FormItem  {...formItemLayout} label="字段描述">
                   {getFieldDecorator('description', {rules: [{ required: true, message: '字段描述为必填项,限50字！' ,max: 50}],
                 })(<div>
-                      <p className = "label"> 字段描述 </p>
-                      <Input className="input"/>
+                      <Input/>
                     </div>
                   )}
                   </FormItem>
-                  <FormItem className = "div">
+                  <FormItem {...formItemLayout} label="别名">
                     {getFieldDecorator('abName', {rules: [{ required: true, message: '别名为必填项,限50字', max: 50 }],
                     })(<div>
-                        <p className = "label"> 别名 </p>
-                        <Input className="input"/>
+                        <Input/>
                       </div>
                     )}
                   </FormItem>
                 </Form>
             </Card>
-            <Card title = "下拉选项:" >
-            <Form>
+            <Card style={{ marginTop: '10px'}} title = "下拉选项:" >
+              <Form>
                  { formItems }
-                 <Button className = "editable-add-btn add" onClick = { this.add.bind(this) }> 添加 </Button>
-            </Form>
+                 <div>
+                     <Button className = "two-button editable-add-btn" onClick = { this.add.bind(this) }> 添加 </Button>
+                 </div>
+              </Form>
             </Card >
-            <div className="retuSave">
+            <div className="button-group-bottom">
+              <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
               <Link to='/system/group-char'>
-                <Button className = "editable-add-btn return"> 返回 </Button>
+                <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-1"> 返回 </Button>
               </Link>
-                <Button className = "editable-add-btn SaveBtn" onClick={ this.handleSubmit.bind(this) }> 保存 </Button>
             </div>
       </div>
       )

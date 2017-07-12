@@ -38,10 +38,10 @@ class permission extends Component {
             const del =  !this.props.permissionAlias.contains('ROLE_DELETE')
             return (
               <div key = { index }>
-                <Link className="firstA" disabled={edit} onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
-                <Link className="firstA" disabled={config} onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
-                <Link className="firstA" disabled={users} onClick={ this.showMemberList.bind(this,record) }>成员列表</Link>
-                <Link className="firstB" disabled={del} onClick={ this.delete.bind(this,record )}>删除</Link>
+                <Link className="one-link" style={{ width: '25%' }} disabled={edit} onClick={ this.editPermissions.bind(this,record) }>编辑</Link>
+                <Link className="one-link" style={{ width: '25%' }} disabled={config} onClick={ this.setPermissions.bind(this,record) }>设置权限</Link>
+                <Link className="one-link" style={{ width: '25%' }}disabled={users} onClick={ this.showMemberList.bind(this,record) }>成员列表</Link>
+                <Link className="two-link" style={{ width: '25%' }}disabled={del} onClick={ this.delete.bind(this,record )}>删除</Link>
               </div>
             );
           },
@@ -136,7 +136,7 @@ class permission extends Component {
         return (
            <div className="permission-cent">
              <div className="divs">
-               <Button disabled={ !permissionAlias.contains("ROLE_ADD") }  className="one-button" type="primary" onClick={ this.addList.bind(this) }>添加</Button>
+               <Button disabled={ !permissionAlias.contains("ROLE_ADD") }  className="one-button" style={{ marginBottom: '10px',float: 'right' }} onClick={ this.addList.bind(this) }>添加</Button>
              </div>
              <div>
                 <Table {...tableProps} columns={ this.columns } bordered rowKey={record => record.id}/>

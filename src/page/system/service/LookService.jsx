@@ -10,12 +10,12 @@ const createForm = Form.create;
 
 @createForm()
 class LookService extends Component {
-        constructor(props) {
-            super(props)
-            this.delete=this.delete.bind(this)
-            this.state = {
-                formLayout: 'inline',
-            };
+      constructor(props) {
+        super(props)
+        this.delete=this.delete.bind(this)
+        this.state = {
+          alertModalVisible: false
+        }
       }
        //删除
        delete(addressid){
@@ -54,54 +54,51 @@ class LookService extends Component {
               }
           }
             name=values.name;
-          const { formLayout } = this.state;
          const del = !this.props.permissionAlias.contains('SERVICE_ITEM_DELETE');
          const edit = !this.props.permissionAlias.contains('SERVICE_ITEM_EDIT');
-          return (
-            <div className="ServiceBox">
-                <Card className="AddService" bordered={true} >
-                     <h3>服务项目信息:</h3>
-                      <Form className="projectname"  layout={formLayout}>
-                          <FormItem label="项目名称">
-                            <Input disabled={true}  value={name}  />
-                        </FormItem>
-                      </Form>
-                      <Form className="projectprice" layout={formLayout}>
-                        <h4>项目价格</h4>
-                        <div className="price">
-                            <span className="priceLeft">￥</span>
-                            <FormItem className="pricecon">
-                            <Input disabled={true} value={`${values.price}`} placeholder=" " />
-                          </FormItem>
-                            <span className="priceRight">元</span>
-                        </div>
-                      </Form>
-                      <Form className="AddCentent" layout={formLayout}>
-                          <FormItem  className="procontent" label="项目内容">
-                            <Input disabled={true} value={`${values.contents}`} className = "content"/>
-                          </FormItem>
-                      </Form>
-                </Card>
-                <div className="btn">
-                      <Link className="BackBtn" to='/system/service-item'>
-                          <Button>返回</Button>
-                      </Link>
-                      <Link className="DelBtn" >
-                          <Button disabled={del} onClick={ this.delete.bind(this,addressid) }>删除</Button>
-                      </Link>
-                      <Link className="EditBtn" to={{pathname:'/system/service-item/edit',query:{id:`${addressid}`}}}>
-                          <Button disabled={edit}>编辑</Button>
-                      </Link>
-                </div>
-                <AlertModalFrom
-                  visible ={ this.state.alertModalVisible }
-                  onCancel ={ this.handleCreateModalCancel.bind(this) }
-                  onOk = { this.handleAlertModalOk.bind(this, this.id) }
-                  message = { "是否确定删除此服务项?" }
-                />
-            </div>
-          );
-        }
+         const formItemLayout = {
+           labelCol: {
+             xs: { span: 24 },
+             sm: { span: 6 },
+           },
+           wrapperCol: {
+             xs: { span: 24 },
+             sm: { span: 14 },
+           },
+         };
+        return (
+          <div className="service-cent">
+              <Card title="服务项目信息:" bordered={true} >
+                <Form >
+                  <FormItem {...formItemLayout} label="项目名称">
+                      <Input readOnly  value={name}  />
+                  </FormItem>
+                  <FormItem {...formItemLayout} label="项目价格">
+                    <Input addonBefore="￥" addonAfter="元" readOnly value={`${values.price}`}/>
+                  </FormItem>
+                  <FormItem {...formItemLayout} label="项目内容">
+                    <Input readOnly type="textarea" rows={6} value={`${values.contents}`}/>
+                  </FormItem>
+                </Form>
+              </Card>
+              <div className="button-group-bottom">
+                <Link to={{pathname:'/system/service-item/edit',query:{id:`${addressid}`}}}>
+                  <Button disabled={edit} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-3"> 编辑 </Button>
+                </Link>
+                <Button disabled={del} style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-2" onClick={ this.delete.bind(this,addressid) }>删除</Button>
+                <Link to='/system/service-item'>
+                  <Button style={{ float:'right',marginRight: '10px' }} className = "button-group-bottom-1"> 返回 </Button>
+                </Link>
+              </div>
+              <AlertModalFrom
+                visible ={ this.state.alertModalVisible }
+                onCancel ={ this.handleCreateModalCancel.bind(this) }
+                onOk = { this.handleAlertModalOk.bind(this, this.id) }
+                message = { "是否确定删除此服务项?" }
+              />
+          </div>
+        );
+      }
 }
 function GetQueryString(name){
      var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");

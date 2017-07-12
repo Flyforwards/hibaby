@@ -3,7 +3,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon, Cascader} from 'antd'
-import './AddModule.scss'
 import {local, session} from 'common/util/storage.js'
 const createForm = Form.create
 const FormItem = Form.Item
@@ -88,14 +87,13 @@ class AddModule extends Component {
         onOk = {this.handleOk.bind(this)}
         closable = { false }
         width = { 500 }
-        wrapClassName = { "add-vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal" }
       >
       <div className="AddModuleList">
           <Form>
-              <FormItem label="主模块" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+              <FormItem label="主模块" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                   {getFieldDecorator('projectId', { rules: [{ required: true, message: '主模块为必选项！' }]
                 })(<Select className="SelectMenu" onSelect={this.onSelect.bind(this)}
-                    style={{ width:300 }}
                     placeholder="请选择"
                   >
                       {children}
@@ -103,7 +101,7 @@ class AddModule extends Component {
                 )}
               </FormItem>
 
-            <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+            <FormItem label="上级菜单" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
               {getFieldDecorator('parentId',{rules: [{required: false,} ],
               })(
                 <Select  placeholder="请选择">
@@ -113,7 +111,7 @@ class AddModule extends Component {
                 </Select>
               )}
             </FormItem>
-              <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                   {getFieldDecorator('permissionId', {rules: [{required: false}],
                     })(
                       <Cascader
@@ -122,19 +120,19 @@ class AddModule extends Component {
                       />)
                   }
               </FormItem>
-              <FormItem className="MeunName" label="名称" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+              <FormItem label="名称" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
                   {getFieldDecorator('name', {rules: [{ required: true, message: '名称为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
               </FormItem>
-              <FormItem className = "PathBox" label="路径" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+              <FormItem label="路径" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
                   {getFieldDecorator('path', {rules: [{ required: true, message: '路径为必填项！' }],
                   })(
                       <Input className="input"/>
                   )}
               </FormItem>
-              <FormItem className = "ICON" label="图标" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+              <FormItem label="图标" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
                   {getFieldDecorator('icon', {rules: [{ required: true, message: 'icon为必填项！' }],
                   })(
                       <Input className="input"/>
@@ -146,7 +144,7 @@ class AddModule extends Component {
                   <Input className="input"/>
                 )}
               </FormItem>
-              <FormItem className = "PathBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
+              <FormItem label="排序" labelCol={{ span: 4 }} wrapperCol={{ span:16 }}>
                 {getFieldDecorator('orderBy', {rules: [{ required: false, }],
                 })(
                     <Input className="input"/>

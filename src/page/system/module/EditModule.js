@@ -3,7 +3,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Modal, Form, Input, Radio, Select,TreeSelect, Checkbox, Icon, Cascader} from 'antd'
-import './AddModule.scss'
 import { local, session } from 'common/util/storage.js'
 const createForm = Form.create
 const FormItem = Form.Item
@@ -100,7 +99,7 @@ class EditModule extends Component {
         onOk = {this.handleOk.bind(this)}
         closable = { false }
         width = { 500 }
-        wrapClassName = { "add-vertical-center-modal" }
+        wrapClassName = { "vertical-center-modal" }
       >
       <div className="AddModuleList">
           <Form>
@@ -121,7 +120,7 @@ class EditModule extends Component {
                     </Select>
                   )}
               </FormItem>
-              <FormItem className="MainModule" label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="权限" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                   {getFieldDecorator('permissionId', {initialValue: permissions,rules: [{type: 'array',required: false}],
                     })(
                       <Cascader
@@ -130,19 +129,19 @@ class EditModule extends Component {
                       />
                   )}
               </FormItem>
-              <FormItem className = "NameBox" label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('name', {initialValue: item.name,rules: [{ required: false,message: '名称为必填项！'}],
                 })(
                     <Input className="input"/>
                 )}
               </FormItem>
-              <FormItem className = "PathBox" label="路径" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="路径" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('path', {initialValue: item.path,rules: [{ required:false,}],
                 })(
                     <Input className="input"/>
                 )}
               </FormItem>
-              <FormItem className = "ICON" label="图标" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="图标" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('icon', {initialValue: item.icon,rules: [{ required:false, }],
                 })(
                     <Input className="input"/>
@@ -154,7 +153,7 @@ class EditModule extends Component {
                   <Input className="input"/>
                 )}
               </FormItem>
-              <FormItem className = "orderByBox" label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="排序" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('orderBy', {
                   initialValue: item.orderBy,rules: [{ required:false, message: '字段名称为必填项！' }],
                 })(

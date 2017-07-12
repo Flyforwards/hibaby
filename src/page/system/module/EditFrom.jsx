@@ -5,8 +5,6 @@ import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect,Table,Popc
 import './module.scss'
 import {local, session} from 'common/util/storage.js'
 
-
-const Option = Select.Option;
 class SelectListed extends Component {
      state = {
       value: undefined
@@ -35,28 +33,14 @@ class SelectListed extends Component {
         )
     }
 }
-function SelectList({
-    dispatch,
-    permission,
-    code
-}) {
-  return ( <div>
-    <SelectListed dispatch = {
-      dispatch
-    }
-    permission = {permission}
-    /> </div>
-  )
 
-}
 function mapStateToProps(state) {
   const {
     permission,
-    code
   } = state.module;
   return {
     loading: state.loading.models.module,
     permission
   };
 }
-export default connect(mapStateToProps)(SelectList)
+export default connect(mapStateToProps)(SelectListed)

@@ -96,6 +96,8 @@ class AddFromCreateModal extends Component {
                 onOk={this.handleOk.bind(this,visible)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
+                wrapClassName={ "vertical-center-modal" }
+                width = { 500 }
             >
             <div className="fromCreateList">
                 <Form>
@@ -124,7 +126,6 @@ class AddFromCreateModal extends Component {
                   rules: [],
                 })(
                  <TreeSelect
-                   style={{ width: 370 }}
                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                    treeData={permissions}
                    placeholder="请选择"

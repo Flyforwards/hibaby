@@ -217,6 +217,16 @@ export default (app) => [
         })
       }
     },
+  // 官网管理
+  {
+    path: '/system/website-manage',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/myPermission'));
+        cb(null, require('page/system/website-manage/WebSiteManagerIndex.jsx'))
+      })
+    }
+  },
 
     //404
     {

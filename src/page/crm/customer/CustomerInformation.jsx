@@ -70,13 +70,7 @@ function cusComponent(dict) {
       tempDiv = (<Input disabled={dict.disabled}/>);
       break;
     case 'Select':
-      if (dict.fun)
-      {
-        tempDiv = (<Select labelInValue={true} disabled={dict.disabled} onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
-      }
-      else {
-        tempDiv = (<Select labelInValue={true} disabled={dict.disabled} placeholder='请选择'>{dict.children}</Select>);
-      }
+        tempDiv = (<Select labelInValue={true} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
       break;
     case 'DatePicker':
       if (dict.fun)
@@ -186,6 +180,9 @@ function cusFromItem(form,dict) {
   {
     rules = { rules: [{ required: true, max:12, message: `请输入正确的${dict.title}!`}]};
   }
+  if (dict.submitStr === 'productionDate'){
+    rules = {};
+  }
 
   return(
     dict.title ?
@@ -208,7 +205,7 @@ function datacompare(dataArray,compareArray,selectArray) {
     let dict = dataArray[i];
     if (dict.component === 'DatePicker')
     {
-      dict.initValue =  moment(compareArray[dict.submitStr]);
+      dict.initValue = compareArray[dict.submitStr] ?  moment(compareArray[dict.submitStr]) : null;
     }
     else if (dict.component === 'Select')
     {
@@ -217,14 +214,36 @@ function datacompare(dataArray,compareArray,selectArray) {
 
       if (array)
       {
-        for(let i = 0;i<array.length;i++){
-          const subDict = array[i];
-          if (subDict.id == id){
-            let str =  subDict.name || subDict.description || subDict.nation;
-            dict.initValue = {key: id, label: str}
-            break;
+        if(typeof id === 'string' && id.split(',').length > 1){
+
+          const ary = id.split(',')
+          let tempAry = [];
+          console.log(ary)
+
+          ary.map(chiValue=>{
+            for(let i = 0;i<array.length;i++){
+              const subDict = array[i];
+              if (subDict.id == chiValue){
+                let str =  subDict.name || subDict.description || subDict.nation;
+                tempAry.push({key: chiValue, label: str})
+                break;
+              }
+            }
+          })
+          console.log(tempAry)
+          dict.initValue = tempAry
+        }
+        else {
+          for(let i = 0;i<array.length;i++){
+            const subDict = array[i];
+            if (subDict.id == id){
+              let str =  subDict.name || subDict.description || subDict.nation;
+              dict.initValue = {key: id, label: str}
+              break;
+            }
           }
         }
+
       }
     }
     else {
@@ -299,12 +318,13 @@ function BaseInfo(props) {
     {title:'联系电话',component:'Input',submitStr:'contact'},
     {title:'出生日期',component:'DatePicker',submitStr:'birthTime',fun:onChange},
     {title:'年龄',component:'InputNumber',submitStr:'age',disabled:true,max:100},
-    {title:'预产期',component:'DatePicker',submitStr:'dueDate'},
-    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',max:40},
+    {title:'预产期',component:'DatePicker',submitStr:'dueDate',fun:dueDateChange},
+    {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disabled:true},
     {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
-    {title:'孕次/产次',component:'Select',submitStr:'fetus',children:fetusChi},
+    {title:'孕次',component:'Select',submitStr:'gravidity',children:fetusChi},
+    {title:'产次',component:'Select',submitStr:'fetus',children:fetusChi},
     {title:'客资来源',component:'Select',submitStr:'resourceCustomer',children:guestInformationSource},
-    {title:'关注点',component:'Select',submitStr:'focus',children:concerns},
+    {title:'关注点',component:'Select',submitStr:'focus',children:concerns,mode:"multiple"},
     {title:'意向套餐',component:'Select',submitStr:'intentionPackage',children:intentionPackages},
     {title:'网络搜索词',component:'Select',submitStr:'webSearchTerm',children:networkSearchWords},
     {title:'现住址',component:'Select',submitStr:'province',fun:provinceSelect,children:provinceDataChis,span:6},
@@ -315,7 +335,7 @@ function BaseInfo(props) {
 
   if (props.users.editCustomer){
     if (props.users.baseData){
-      const selectArray = { fetus:fetusAry,hospital:hospitalAry,intentionPackage:intentionPackageAry,resourceCustomer:guestInformationSourceAry,
+      const selectArray = { gravidity:fetusAry,fetus:fetusAry,hospital:hospitalAry,intentionPackage:intentionPackageAry,resourceCustomer:guestInformationSourceAry,
         focus:concernsAry,webSearchTerm:networkSearchWordsAry,province:provinceData,city:cityData};
       datacompare(baseInfo,props.users.baseData,selectArray);
     }
@@ -324,14 +344,42 @@ function BaseInfo(props) {
 
   const baseInfoDiv = [];
 
+  let tempDivAry = [];
   for (let i = 0; i < baseInfo.length - 4; i++) {
     let dict = baseInfo[i];
+    if(i%4 == 0 && i > 0){
 
+
+
+      baseInfoDiv.push(
+        <Row>
+          {tempDivAry}
+        </Row>
+      );
+      tempDivAry = [];
+
+      tempDivAry.push(
+        <Col className={"baseInfo"+i} span={6} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+    else{
+      tempDivAry.push(
+        <Col className={"baseInfo"+i} span={6} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+  }
+
+  if(tempDivAry.length > 0){
     baseInfoDiv.push(
-      <Col className={"baseInfo"+i} span={6} key={i}>
-        {cusFromItem(props.form,dict)}
-      </Col>
+      <Row>
+        {tempDivAry}
+      </Row>
     );
+    tempDivAry = [];
   }
 
   const addressDiv = [];
@@ -354,6 +402,18 @@ function BaseInfo(props) {
       age: age,
     });
   }
+
+  function dueDateChange(date, dateString) {
+    let weeks = parseInt((280 - date.diff(moment(),'days'))/7)
+    weeks = weeks > 40 ? 40 : weeks;
+    weeks = weeks < 0 ? 0 : weeks;
+    props.form.setFieldsValue({
+
+      gestationalWeeks: weeks
+    });
+  }
+
+
 
   function provinceSelect(e) {
     dispatch({type:'addCustomer/getCityData',payload:{isHouseholdRegistration:false,dataId:e.key}})
@@ -478,7 +538,7 @@ function ExtensionInfo(props) {
     {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
     {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,noRequired:"1"},
-    {title:'保险情况',component:'Input',submitStr:'insuranceSituation'},
+    {title:'联系人姓名',component:'Input',submitStr:'contactName'},
     {title:'联系人电话',component:'Input',submitStr:'contact'},
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,disabled:props.users.expandData},
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
@@ -488,9 +548,6 @@ function ExtensionInfo(props) {
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
     {title:'合同附件',component:'UploadButton',submitStr:'contractAppendices',fun:uploadContractAppendicesFileProps,deleteFun:deleteContractAppendicesFileProps,initValue:lookContractDLC},
     {title:'操作者2',component:'Input',submitStr:'operator',disabled:true,initValue:operator},
-    {title:'户籍地址',component:'Select',submitStr:'provincePermanent',fun:PermanentProvinceSelect,children:provinceDataChis,span:6},
-    {component:'Select',submitStr:'cityPermanent',children:permanentCityDataChis,span:6},
-    {component:'Input',submitStr:'detailedPermanent',span:17,offset:1},
     {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl,loadProgress:loadProgress,spin:headIconSpin},
   ];
 
@@ -503,18 +560,47 @@ function ExtensionInfo(props) {
 
   const expandInfoDiv = [];
 
-  for (let i = 0; i < expandInfo.length - 4; i++) {
+  let tempDivAry = [];
+
+  for (let i = 0; i < expandInfo.length - 1; i++) {
+
     let dict = expandInfo[i];
+
+    if(i%3 == 0){
+      expandInfoDiv.push(
+        <Row>
+          {tempDivAry}
+        </Row>
+      );
+      tempDivAry = [];
+      tempDivAry.push(
+        <Col className={"expandInfo"+i} span={8} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+    else{
+      tempDivAry.push(
+        <Col className={"expandInfo"+i} span={8} key={i}>
+          {cusFromItem(props.form,dict)}
+        </Col>
+      )
+    }
+
+  }
+
+  if(tempDivAry.length > 0){
     expandInfoDiv.push(
-      <Col className={"expandInfo"+i} span={8} key={i}>
-        {cusFromItem(props.form,dict)}
-      </Col>
+      <Row>
+        {tempDivAry}
+      </Row>
     );
+    tempDivAry = [];
   }
 
   const addressDiv = [];
 
-  for (let i = expandInfo.length - 4; i < expandInfo.length; i++) {
+  for (let i = expandInfo.length - 1; i < expandInfo.length; i++) {
     let dict = expandInfo[i];
 
     addressDiv.push(
@@ -529,21 +615,12 @@ function ExtensionInfo(props) {
       <Form>
         <h3>扩展信息</h3>
         <Row>
-          {addressDiv[3]}
+          {addressDiv[0]}
 
           <Col span={18}>
             <div>{expandInfoDiv}</div>
           </Col>
         </Row>
-
-        <Row>
-          {addressDiv[0]}
-          <Col offset={1} span={17}>
-            {addressDiv[1]}
-            {addressDiv[2]}
-          </Col>
-        </Row>
-
       </Form>
     </div>
 

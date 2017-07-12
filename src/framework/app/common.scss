@@ -67,27 +67,27 @@
 //  font:14px "微软雅黑";
 //  color:#fff;
 //}
-//.vertical-center-modal {
-//  text-align: center;
-//  white-space: nowrap;
-//  .ant-modal {
-//    display: inline-block;
-//    vertical-align: middle;
-//    top: 0;
-//    text-align: center;
-//    .ant-modal-body {
-//      text-align: left;
-//    }
-//  }
-//}
-//
-//.vertical-center-modal:before {
-//  content: '';
-//  display: inline-block;
-//  height: 100%;
-//  vertical-align: middle;
-//  width: 0;
-//}
+.vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+  .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: center;
+    .ant-modal-body {
+      text-align: left;
+    }
+  }
+}
+
+.vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
 //.ant-modal-footer {
 //  .ant-btn{
 //    width: 100px;
@@ -112,11 +112,11 @@
 //}
 //
 //
-//.yt-admin-framework {
-//  background-color: #f7f6f2;
-//}
+.yt-admin-framework {
+  background-color: #f7f6f2;
+}
 
-
+// 头部右上角按钮
 .one-button{
   height: 30px;
   padding: 0 26px;
@@ -126,7 +126,7 @@
   color: #fff;
   background-color:#b67233;
   border-color: #b67233;
-  &:hover {
+  &:hover,&:visited,&:focus,&:active {
     color: #fff;
     background-color:#f89d2d;
     border-color: #f89d2d;
@@ -141,4 +141,241 @@
     line-height: 30px;
     font-size: 14px;
   }
+}
+
+// 头部右下角按钮 按钮较宽
+
+.two-button{
+  height: 30px;
+  padding: 0 40px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background-color:#b67233;
+  border-color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+//头部按钮
+
+.button-group-1 {
+  height: 30px;
+  padding: 0 26px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #b67233;
+  background-color: #f1e8df;
+  border-color:#d4ad89;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+
+
+.button-group-2 {
+  height: 30px;
+  padding: 0 26px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background: #ff4a4a;
+  border-color: #ff4a4a;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.button-group-3 {
+  height: 30px;
+  padding: 0 26px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background:#b67233;
+  border-color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+// 底部按钮
+.button-group-bottom-1 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color:#fff;
+  background: #b67233;
+  border-color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.button-group-bottom-2 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  border-color: rgba(255, 153, 0, 1);
+  background-color: rgba(255, 153, 0, 1);
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.button-group-bottom-3 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background:#693d20 ;
+  border-color:#693d20;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+
+.button-group-bottom-4 {
+  height: 30px;
+  padding: 0 35px;
+  line-height: 30px;
+
+  font-size: 14px;
+  color: #fff;
+  background-color: #eb7c34;
+  border-color: #eb7c34;
+  &:hover,&:visited,&:focus,&:active {
+    color: #fff;
+    background-color:#f89d2d;
+    border-color: #f89d2d;
+  }
+
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.25);
+    background-color: #f7f7f7;
+    border-color: inherit;
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+}
+
+.one-link {
+  display: inline-block;
+  color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color:#f89d2d;
+  }
+}
+
+.two-link {
+  display: inline-block;
+  color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color:#f89d2d;
+  }
+}
+
+
+.operation-list {
+  width: 100%;
 }
