@@ -164,8 +164,14 @@ function mealCycle (props) {
   function itemCardComponent(index) {
 
     let loopObj = {};
-    if (props.loopDatas.loops && props.loopDatas.loops.length > index){
-      loopObj = props.loopDatas.loops[index];
+    if (props.loopDatas.loops){
+      for (let i = 0; i < props.loopDatas.loops.length; i++) {
+        const tmp_Obj = props.loopDatas.loops[i];
+        if (tmp_Obj.week == index+1){
+          loopObj = tmp_Obj;
+          break;
+        }
+      }
     }
     //标准用户
     const normalUser = loopObj.loopTotals ? loopObj.loopTotals[0] : {} ;
@@ -319,8 +325,14 @@ function mealCycle (props) {
   function secondItemCard(index) {
 
     let loopObj = {};
-    if (props.loopSecondDatas.loops && props.loopSecondDatas.loops.length > index){
-      loopObj = props.loopSecondDatas.loops[index];
+    if (props.loopSecondDatas.loops){
+      for (let i = 0; i < props.loopSecondDatas.loops.length; i++) {
+        const tmp_Obj = props.loopSecondDatas.loops[i];
+        if (tmp_Obj.week == index+1){
+          loopObj = tmp_Obj;
+          break;
+        }
+      }
     }
     //标准菜品
     const normalObj = loopObj.loopTotals ? loopObj.loopTotals[0] : {} ;
@@ -473,8 +485,14 @@ function mealCycle (props) {
   function thirdItemCard(index) {
 
     let loopObj = {};
-    if (props.loopThirdDatas.loops && props.loopThirdDatas.loops.length > index){
-      loopObj = props.loopThirdDatas.loops[index];
+    if (props.loopThirdDatas.loops){
+      for (let i = 0; i < props.loopThirdDatas.loops.length; i++) {
+        const tmp_Obj = props.loopThirdDatas.loops[i];
+        if (tmp_Obj.week == index+1){
+          loopObj = tmp_Obj;
+          break;
+        }
+      }
     }
 
     const loopDishes = loopObj.loopTotals ? loopObj.loopTotals : [] ;
