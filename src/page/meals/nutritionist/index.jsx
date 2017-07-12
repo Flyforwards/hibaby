@@ -208,6 +208,8 @@ class PrepareMealPage extends React.Component {
       )
     }):'';
 
+    const searName = queryURL("sear");
+
     return (
       <div className="CustomerConents dinnerConnet">
         <main className="yt-admin-framework-Customer">
@@ -216,6 +218,7 @@ class PrepareMealPage extends React.Component {
               <Col className="search" span={9}>
                 <FormItem {...formChooseLayout} style={{ height: '40px', lineHeight: '40px' }}>
                   {getFieldDecorator('sear', {
+                    initialValue: searName,
                     rules: [{ required: false }]
                   })(
                     <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{ height: '40px', width: 700 }}/>
