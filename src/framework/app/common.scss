@@ -359,7 +359,7 @@
   }
 }
 
-.button-group-bottom-5 {
+.button-group-bottom-4 {
   height: 30px;
   padding: 0 35px;
   line-height: 30px;
@@ -385,7 +385,7 @@
   }
 }
 
-.button-group-bottom-6 {
+.button-group-bottom-4 {
   height: 30px;
   padding: 0 35px;
   line-height: 30px;
@@ -450,3 +450,18 @@
 .link-style {
   width: 50%
 }
+
+// 时间轴
+.ant-timeline-item-head {
+  background-color: #222222 !important;
+}
+
+.ant-timeline-item-tail {
+  border-left: 2px solid #222222 !important;
+}
+
+.ant-timeline-item-head-blue {
+  border-color: #222222 !important;
+  color: #222222 !important;
+}
+

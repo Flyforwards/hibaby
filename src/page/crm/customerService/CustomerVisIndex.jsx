@@ -67,20 +67,16 @@ class CustomerVisIndex extends React.Component {
     //   btns.push(<Button className="left-time-btn" key={i}>范冰冰</Button>)
     // }
     const times = VISIT_TIME.map((record, index) => {
-      let btns = []
+      let buttonList = []
       list.map((item) => {
         if (index + 1 == item.visitTimeId) {
-          btns.push(
+          buttonList.push(
             <PermissionButton testKey='CUSTOMERVIS_DETAIL' onClick={this.pushDetail.bind(this, item)} className="left-time-btn" key={item.id}>{ item.name }</PermissionButton>)
         }
       })
-
+      const buttons = <div className="buttons-content"> { buttonList }</div>;
       return (<TimeItem key={index}><span>{record}</span>
-        <div>
-          {
-            btns
-          }
-        </div>
+        { buttonList.length>0?buttons:<div></div> }
       </TimeItem>)
     })
 

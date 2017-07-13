@@ -84,20 +84,17 @@ class CustomerVisEditIndex extends React.Component {
   render() {
     const { list, dispatch, date } = this.props;
     const times = VISIT_TIME.map((record, index) => {
-      let btns = []
+      let buttonList = []
       list.map((item) => {
         if (index + 1 == item.visitTimeId) {
-          btns.push(
+          buttonList.push(
             <span key={item.id} className="left-time-div"><span className="left-time-span" key={item.id}>{ item.name }</span><Icon onClick={ this.remove.bind(this, item)} type="close-circle"/></span>)
         }
       })
 
+      const buttons = <div className="buttons-content"> { buttonList }</div>;
       return (<TimeItem key={index}><span>{record}</span>
-        <div>
-          {
-            btns
-          }
-        </div>
+        { buttonList.length>0?buttons:<div></div> }
       </TimeItem>)
     })
 
@@ -139,9 +136,9 @@ class CustomerVisEditIndex extends React.Component {
 
 function mapStateToProps(state) {
   const {
-          list,
-          date
-        } = state.customerVis;
+    list,
+    date
+  } = state.customerVis;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,

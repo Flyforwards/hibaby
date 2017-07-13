@@ -119,6 +119,13 @@ export default {
           });
         }
 
+        if (pathname === '/crm/customer-vis/edit') {
+          dispatch({
+            type: 'getCustomerVisByDate',
+            payload: {}
+          });
+        }
+
         if (pathname === '/crm/customer-vis/detail') {
           dispatch({
             type: 'getCustomerVisById',
