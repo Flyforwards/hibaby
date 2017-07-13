@@ -5,6 +5,7 @@
 
 .member-card-cent {
   .card{
+    margin-top: 10px;
     width: 100%;
     padding: 20px;
     background: #FFFFFF;
@@ -34,12 +35,6 @@
     }
   }
 
-
-  .ant-btn{
-    width:150px;
-    height:30px;
-    font:12px "微软雅黑";
-  }
   .ant-form-item-required:before {
     content: '';
     display: none;

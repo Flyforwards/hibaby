@@ -191,11 +191,9 @@ class MemberShipCard extends Component {
             </TabPane>
           </Tabs>
         </Card>
-        <div style={{textAlign:'right',marginTop:'20px'}}>
-          <Button onClick={this.backTabs.bind(this)} className="cardBtn BackBtn">返回</Button>
-
-          <PermissionButton testKey='CARD_PRINT' className="cardBtn PrintBtn"  onClick={this.onPrint.bind(this)}>打印</PermissionButton>
-
+        <div className="button-group-bottom-common">
+          <Button onClick={this.backTabs.bind(this)} className="button-group-bottom-1">返回</Button>
+          <PermissionButton testKey='CARD_PRINT' className="button-group-bottom-2"  onClick={this.onPrint.bind(this)}>打印</PermissionButton>
           <AlertModalFrom
             modalTitle="会员销卡"
             okText="确定"
@@ -205,7 +203,7 @@ class MemberShipCard extends Component {
             onOk={this.handleCancelCard.bind(this)}
             type="DELETE"
           >
-            <PermissionButton testKey='CARD_CANCEL' className="cardBtn clearBtn">销卡</PermissionButton>
+            <PermissionButton testKey='CARD_CANCEL' className="button-group-bottom-3">销卡</PermissionButton>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -217,7 +215,7 @@ class MemberShipCard extends Component {
             onOk={this.handleRefundCard.bind(this)}
             type="REFUND"
           >
-            <PermissionButton testKey='CARD_REFUND' className="cardBtn RefundBtn">退费</PermissionButton>
+            <PermissionButton testKey='CARD_REFUND' className="button-group-bottom-4">退费</PermissionButton>
           </AlertModalFrom>
 
           <AlertModalFrom
@@ -229,13 +227,13 @@ class MemberShipCard extends Component {
             onOk={this.handleRenewFee.bind(this)}
             type="CHARGE"
           >
-            <PermissionButton testKey='CARD_RENEWAL' className="cardBtn renewBtn" >续费</PermissionButton>
+            <PermissionButton testKey='CARD_RENEWAL' className="button-group-bottom-5" >续费</PermissionButton>
           </AlertModalFrom>
 
           <ChargeBackFeeModal
             onOk={this.onCharge.bind(this)}
           >
-            <PermissionButton testKey='CARD_DEDUCTION' className="cardBtn decBtn">扣费</PermissionButton>
+            <PermissionButton testKey='CARD_DEDUCTION' className="button-group-bottom-6">扣费</PermissionButton>
           </ChargeBackFeeModal>
 
         </div>

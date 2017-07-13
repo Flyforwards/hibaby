@@ -1,6 +1,4 @@
-.dinnerConnet{
-  margin:10px;
-}
+
 .CustomerConents {
   min-width: 1030px;
   .button{
@@ -24,12 +22,6 @@
         }
       }
     }
-    .ant-btn {
-      border-radius: 5px;
-      font: 14px "微软雅黑";
-      //float:left;
-      //margin-left:10px;
-    }
     .findBtn {
       //float:left;
       //margin-left: 20px;
@@ -44,15 +36,8 @@
   .ant-form-item {
     margin-bottom: 0px;
   }
-  //.mini .yt-admin-framework-content {
-  //  transition: all .3s;
-  //  margin-left: 60px;
-  //}
-  //.yt-admin-framework-content {
-  //  transition: all .3s;
-  //  padding: 0 12px;
-  //  background-color: #eeeeee;
-  //}
+
+
   .Customer-title {
     width: 100%;
     height: 100%;
@@ -60,22 +45,20 @@
     position: relative;
   }
 
-  //@media (max-width: 767px) {
-  //  .mini .yt-admin-framework-content {
-  //    transition: all .3s;
-  //    margin-left: 0;
-  //  }
-  //}
+
+  .customer-operation {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    .ant-btn {
+      margin-left: 10px;
+    }
+  }
 
   .ant-modal-title {
     text-align: center;
   }
-  .ant-btn {
-    color: #fff;
-    border: 0;
-    width: 150px;
-    border-radius: 4px;
-  }
+
   .CreateList {
     //width: 1030px;
     span {
@@ -266,16 +249,7 @@
     display: none;
     text-align: left;
   }
-  .ant-input {
-    width:100%;
-  }
-  .ant-btn {
-      border-radius: 5px;
-      border:none;
-      color:#fff;
-      font: 14px "微软雅黑";
-      margin-top: 20px;
-    }
+
   .anticon-plus-circle:before {
     font-size: 29px;
     margin-right: 200%;

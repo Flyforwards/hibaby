@@ -193,8 +193,8 @@ class PrepareMealPage extends React.Component {
     });
 
     const formChooseLayout = {
-      labelCol: { span: 10 },
-      wrapperCol: { span: 14 }
+      labelCol: { span: 12 },
+      wrapperCol: { span: 12 }
     };
     const formChooseOneAge = {
       labelCol: { span: 6 },
@@ -211,47 +211,23 @@ class PrepareMealPage extends React.Component {
     const searName = queryURL("sear");
 
     return (
-      <div className="CustomerConents dinnerConnet">
+      <div className="CustomerConents">
         <main className="yt-admin-framework-Customer">
           <Form>
-            <Row className="topSelect">
-              <Col className="search" span={9}>
-                <FormItem {...formChooseLayout} style={{ height: '40px', lineHeight: '40px' }}>
-                  {getFieldDecorator('sear', {
-                    initialValue: searName,
-                    rules: [{ required: false }]
-                  })(
-                    <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{ height: '40px', width: 700 }}/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col className="findBtn" span={12}>
-                <Row justify="end" type="flex" gutter={8}>
-                  <Col span={6}>
-                      <span>
-                        <Button  onClick={this.onSearch.bind(this)}style={{
-                          width: '100%',
-                          height: '40px',
-                          lineHeight: '40px',
-                          backgroundColor: 'rgba(255, 102, 0, 1)'
-                        }}>搜索</Button>
-                        </span>
-                  </Col>
 
-                  <Col span={6}>
-                  <span>
-                    <Button disabled={add} style={{
-                        width: '100%',
-                        backgroundColor: 'rgb(255, 0, 0)',
-                        height: '40px',
-                        lineHeight: '40px',
-                        color: '#ffffff'
-                      }} onClick={this.onReset.bind(this)}>重置</Button>
-                    </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <div style={{ position: 'relative'}}>
+              <FormItem style={{ height: '40px' }} {...formChooseLayout}>
+                {getFieldDecorator('sear', {
+                  rules: [{ required: false }]
+                })(
+                  <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
+                )}
+              </FormItem>
+              <div className="customer-operation">
+                <Button className='button-group-2' onClick={ this.onSearch.bind(this)}>查询</Button>
+                <Button className='button-group-1' onClick={ this.onReset.bind(this)} >重置</Button>
+              </div>
+            </div>
 
             <Row gutter={16} style={{ height: 50 }}>
               <Col span={5} >

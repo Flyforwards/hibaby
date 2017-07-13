@@ -83,16 +83,16 @@ class creatGuestRoom extends React.Component {
 
     const isDetail = location.pathname.indexOf('detail') !== -1;
 
-    let bottomDiv =  <div className='saveDiv'>
-      <Button className='backBtn SaveBtn' onClick={this.handleSubmit.bind(this)}>保存</Button>
-      <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
+    let bottomDiv =  <div className='button-group-bottom-common'>
+      <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
+      <Button className='button-group-bottom-2' onClick={this.handleSubmit.bind(this)}>保存</Button>
     </div>;
 
     if(isDetail){
-      bottomDiv = <div className='saveDiv'>
-        <Button className='backBtn SaveBtn' onClick={this.editBtnClick.bind(this)}>编辑</Button>
-        <Button className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</Button>
-        <Button className='backBtn BackBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
+      bottomDiv = <div className='button-group-bottom-common'>
+        <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
+        <Button className='button-group-bottom-2' onClick={this.onDelete.bind(this)}>删除</Button>
+        <Button className='button-group-bottom-3' onClick={this.editBtnClick.bind(this)}>编辑</Button>
       </div>
     }
 
