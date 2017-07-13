@@ -123,9 +123,9 @@ class CustomerIndex extends React.Component {
         const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
         const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
-          <div>
-            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+          <div className="operation-list">
+            <Link disabled={detail} className="one-link link-style" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
+            <Link disabled={del} className="two-link link-style" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
           </div>
         );
       }
@@ -260,14 +260,8 @@ class CustomerIndex extends React.Component {
       wrapperCol: { span: 18 }
     }
 
-    const formChooseTwoAge = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 }
-    }
-
     return (
       <div className="CustomerConent">
-        {/*<Card>*/}
           <Form>
             <div style={{ position: 'relative'}}>
               <FormItem style={{ height: '40px' }} {...formChooseLayout}>
@@ -401,18 +395,14 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-
             </Row>
           </Form>
-          <div className="CreateModaList-a">
-            <Table bordered {...tableProps} rowKey={ record => record.id}/>
-          </div>
+          <Table className='customer-table' bordered {...tableProps} rowKey={ record => record.id}/>
           <CreateModal
             handleOk={this.state.handleOk}
             visible={ this.state.createModalVisible }
             onCancel={ this.handleCreateModalCancel.bind(this) }
           />
-        {/*</Card>*/}
       </div>
     )
   }

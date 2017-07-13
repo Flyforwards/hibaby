@@ -328,11 +328,10 @@ class SkinHealthInformation extends React.Component {
               </Row>
             </Col>
           </Row>
-
         </Form>
-        <div className='bottomButton'>
-          <Button className='commitButton SaveBtn'onClick={this.handleSubmit.bind(this)}>保存</Button>
-          <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
+        <div className='button-group-bottom-common'>
+          <Button className='button-group-bottom-1' onClick={this.handleBack.bind(this)}>返回</Button>
+          <Button className='button-group-bottom-2'onClick={this.handleSubmit.bind(this)}>保存</Button>
         </div>
       </div>
     );

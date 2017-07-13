@@ -673,16 +673,13 @@ function HealthyhomeDetail(props) {
       {
         (() => {
           if (location.pathname !== '/crm/customer/printCustomerPage') {
-            return <div>
+            return <div className="button-group-bottom-common">
+              <Button className='button-group-bottom-1' onClick={handleBack}>返回</Button>
+              <PermissionButton testKey="HEALTHINFO_EDIT" className='button-group-bottom-2'
+                                onClick={handleEdit}>编辑</PermissionButton>
               <ExcelTitleModel>
-                <PermissionButton testKey="HEALTHINFO_PRINT" className='commitButton BackBtn'>打印</PermissionButton>
+                <PermissionButton testKey="HEALTHINFO_PRINT" className='button-group-bottom-3'>打印</PermissionButton>
               </ExcelTitleModel>
-              <div className='bottomButton'>
-                <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' type="primary"
-                                  onClick={handleEdit}>编辑</PermissionButton>
-                <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
-
-              </div>
             </div>
           }
         })()

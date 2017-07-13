@@ -336,11 +336,11 @@ class SkinHealthInformationDetail extends React.Component {
             (() => {
               if(location.pathname !== '/crm/customer/printCustomerPage')
               {
-                return <div>
-                  <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
-                  <Button className='commitButton BackBtn' onClick={this.handleBack.bind(this)}>返回</Button>
+                return <div className="button-group-bottom-common">
+                  <Button className='button-group-bottom-1' onClick={this.handleBack.bind(this)}>返回</Button>
+                  <PermissionButton testKey="HEALTHINFO_EDIT" className='button-group-bottom-2' id="editShinButton" type="primary" onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
                   <ExcelTitleModel>
-                    <PermissionButton testKey="HEALTHINFO_PRINT" className='commitButton BackBtn'>打印</PermissionButton>
+                    <PermissionButton testKey="HEALTHINFO_PRINT" className='button-group-bottom-3'>打印</PermissionButton>
                   </ExcelTitleModel>
                 </div>
               }
