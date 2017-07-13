@@ -371,12 +371,17 @@ const monthStateView = (props) => {
             status = 9;
           }
 
+
           for (let j = 0; j < dayCustomerList.length; j++) {
             hasUser = false;
 
             for (let i = 0; i < users.length; i++) {
+
+              let status1 = users[i].status == 1 ? 4 : users[i].status;
+              let status2 = dayCustomerList[j].status == 1 ? 4 : dayCustomerList[j].status;
+
               if (users[i].customerId === dayCustomerList[j].customerId
-                && users[i].lastIndex === dayindex - 1) {
+                && users[i].lastIndex === dayindex - 1 && status1 == status2) {
                 hasUser = true;
                 users[i].dayCount++;
                 users[i].lastIndex = dayindex;
@@ -903,6 +908,7 @@ const monthStateView = (props) => {
           dragUser: {
             ...dragUser,
             reserveDays : 28,
+            status:7,
             startIndex: -1,
             endIndex: -1,
             roomIndex: -1,

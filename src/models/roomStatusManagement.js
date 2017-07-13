@@ -686,10 +686,11 @@ export default {
         }
       });
 
+      console.log(state.dragUser.status)
 
-
-
-      yield put({type: 'monthRoomUpdate',payload:'load'});
+      if(state.dragUser.status !== 7){
+        yield put({type: 'monthRoomUpdate',payload:'load'});
+      }
 
     },
 
@@ -804,13 +805,13 @@ export default {
         }
       }
 
+      console.log(param)
 
       const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
 
       if (code == 0) {
         // 更新原始集合的状态
         message.success('保存成功')
-        state.oldMonthRoomList = JSON.parse(JSON.stringify(state.monthRoomList));
         if(param === value){
           yield put({
             type: 'monthRoomList',
