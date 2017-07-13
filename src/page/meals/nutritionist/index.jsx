@@ -212,7 +212,6 @@ class PrepareMealPage extends React.Component {
 
     return (
       <div className="CustomerConents">
-        <main className="yt-admin-framework-Customer">
           <Form>
 
             <div style={{ position: 'relative'}}>
@@ -352,10 +351,7 @@ class PrepareMealPage extends React.Component {
 
             </Row>
           </Form>
-          <div className="CreateModaList-a">
-            <Table bordered {...tableProps} rowKey={ record => record.id}/>
-          </div>
-        </main>
+          <Table className='nutritionist-table' bordered {...tableProps} rowKey={ record => record.id}/>
       </div>
     )
   }
