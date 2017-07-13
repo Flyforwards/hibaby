@@ -397,6 +397,9 @@ function mealCycle (props) {
   }
 
   function handleGotoTabooDetail(week) {
+
+    curWeek = week;
+
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedShowStatus',
@@ -533,6 +536,9 @@ function mealCycle (props) {
   }
 
   function handleGotoDishesDetail(week) {
+
+    curWeek = week;
+
     const {dispatch} = props;
     dispatch({
       type: 'cyclePage/changedShowStatus',

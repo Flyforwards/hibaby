@@ -9,6 +9,7 @@ function mainCycleTabooDetail(props) {
 
   console.log('-------------------------------');
   console.log(props.loopWeekTabboDatas);
+  console.log(props.week);
 
   function headerComponent (){
     return (
