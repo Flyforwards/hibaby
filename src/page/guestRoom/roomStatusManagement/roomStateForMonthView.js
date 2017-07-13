@@ -82,7 +82,7 @@ const monthStateView = (props) => {
     if(dragUser.status == 6){
       return
     }
-    if((dragUser.status == 1 )&& !dragUser.customerId){
+    if((dragUser.isRepair == 1 )&& !dragUser.customerId){
       return;
     }
     let roomIndex = null;
@@ -356,8 +356,11 @@ const monthStateView = (props) => {
         let status = 0;
         let dayCustomerList = null;
         let hasUser = false;
+        let isRepair = false;
 
         let result = dayList.map((day, dayindex) => {
+          isRepair = false
+
           // 一天中的用户列表
           dayCustomerList = day.customerList;
           if (!dayCustomerList || !dayCustomerList.length) {
@@ -366,9 +369,17 @@ const monthStateView = (props) => {
           } else if (dayCustomerList.length === 1) {
             // 如果该天只有一个用户, 直接显示相应状态
             status = dayCustomerList[0].status || 7;
+            isRepair = dayCustomerList[0].isRepair;
           } else if (dayCustomerList.length > 1) {
-            // 重叠
             status = 9;
+            for(let i = 0;i<dayCustomerList.length;i++ ){
+              if(dayCustomerList[i].isRepair == 1)
+              {
+                isRepair = 1
+                break
+              }
+            }
+            // 重叠
           }
 
 
@@ -377,11 +388,8 @@ const monthStateView = (props) => {
 
             for (let i = 0; i < users.length; i++) {
 
-              let status1 = users[i].status == 1 ? 4 : users[i].status;
-              let status2 = dayCustomerList[j].status == 1 ? 4 : dayCustomerList[j].status;
-
               if (users[i].customerId === dayCustomerList[j].customerId
-                && users[i].lastIndex === dayindex - 1 && status1 == status2) {
+                && users[i].lastIndex === dayindex - 1 && users[i].status == dayCustomerList[j].status) {
                 hasUser = true;
                 users[i].dayCount++;
                 users[i].lastIndex = dayindex;
@@ -405,7 +413,7 @@ const monthStateView = (props) => {
             'checkingIn': status == 4, // 入住
             'checkingOut': status == 6, // 出所
             'reserve': status == 7, // 预约
-            'repair': status == 1, // 维修
+            'repair': isRepair == 1, // 维修
             'overlap': status == 9, // 重叠
           });
           // if (status == 0) {
@@ -448,7 +456,7 @@ const monthStateView = (props) => {
           }
 
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.status == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
             return;
           }
 
@@ -495,7 +503,7 @@ const monthStateView = (props) => {
           }
 
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.status == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
             return;
           }
 
@@ -542,12 +550,13 @@ const monthStateView = (props) => {
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
+          let isRepair = target.dataset.isRepair;
 
           if(status == 6){
             return
           }
 
-          if (status == 1) {
+          if (isRepair == 1) {
             if(customerId){
               status = 4;
             }
@@ -639,7 +648,7 @@ const monthStateView = (props) => {
         const dragStart = (event, user) => {
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
-
+          console.log(user)
           event.target.classList.add("active");
 
           dispatch({
@@ -663,7 +672,7 @@ const monthStateView = (props) => {
         for (let i = 0; i < users.length; i++) {
 
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
-          const content = <div>{(users[i].customerName?users[i].customerName:(users[i].status == 1 ? '维修中' :'' )) + '('
+          const content = <div>{(users[i].customerName?users[i].customerName:(users[i].isRepair == 1 ? '维修中' :'' )) + '('
           + users[i].dayCount + '天, '
           + timeToDate(users[i].startDate)
           + '-'
@@ -686,6 +695,7 @@ const monthStateView = (props) => {
                    data-user-dayCount={users[i].dayCount}
                    data-start-date={users[i].startDate}
                    data-status={users[i].status}
+                   data-isRepair={users[i].isRepair}
                    onClick={userBoxClickHandler}
                    onDoubleClick={userBoxDbClickHandler}
                    onContextMenu={userBoxRightClickHandler}
