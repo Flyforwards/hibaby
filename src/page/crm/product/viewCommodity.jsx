@@ -122,22 +122,24 @@ class ViewCommodityed extends Component {
                     initialValue:this.props.commodityFindById?this.props.commodityFindById.nameLetter:null,
                     rules: [],
                     })(
-                    <Input
-                    disabled = {true}
-                    />
+                    <Input disabled = {true} />
                     )}
                   </FormItem>
                 </Form>
                 </div>
-                <Link to={{ pathname: '/crm/commodity/edit', query:{ commodity:ID } }}><Button disabled={edit} style={{ float:"right", marginRight: "20px" }}  className="save-btn" >编辑</Button></Link>
-                <Button disabled={del} style={{ float:"right", marginRight: "20px" }} className="del-btn"  onClick={this.delete.bind(this)}>删除</Button>
-                <Button style={{ float:"right", marginRight: "20px" }} className="back-btn" onClick={this.handleSubmit}>返回</Button>
-                <Delete
-                  visible={ this.state.DeleteVisible }
-                  onCancel ={ this.handleDeleteCancel.bind(this) }
-                  ID = { this.state.ID }
-                  serviceInfoList = { this.props.findById}
-                />
+              <div className="button-group-bottom-common">
+                <Button  className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                <Button disabled={del} className="button-group-bottom-2"  onClick={this.delete.bind(this)}>删除</Button>
+                <Link to={{ pathname: '/crm/commodity/edit', query:{ commodity:ID } }}>
+                  <Button disabled={edit} className="button-group-bottom-3" >编辑</Button>
+                </Link>
+              </div>
+              <Delete
+                visible={ this.state.DeleteVisible }
+                onCancel ={ this.handleDeleteCancel.bind(this) }
+                ID = { this.state.ID }
+                serviceInfoList = { this.props.findById}
+              />
             </div>
         )
     }

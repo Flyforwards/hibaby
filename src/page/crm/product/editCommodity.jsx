@@ -194,24 +194,7 @@ class EditCommodityed extends Component {
         )
     }
 }
-function EditCommodity({
-  dispatch,
-  commodityFindById,
-  chineseToPinyin
-}) {
-  return ( < div >
-    <ViewCommodityed dispatch = {
-      dispatch
-    }
-    chineseToPinyin = {
-      chineseToPinyin
-    }
-    commodityFindById = {
-      commodityFindById
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     commodityFindById,

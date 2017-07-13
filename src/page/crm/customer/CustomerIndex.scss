@@ -1,6 +1,5 @@
 .CustomerConent {
   min-width: 1030px;
-  margin: 10px;
   .topSelect {
     //width: 1030px;
     height: 50px;
@@ -16,12 +15,6 @@
         }
       }
     }
-    .ant-btn {
-      border-radius: 5px;
-      font: 14px "微软雅黑";
-      //float:left;
-      //margin-left:10px;
-    }
     .findBtn {
       //float:left;
       //margin-left: 20px;
@@ -33,6 +26,16 @@
       display: block;
     }
   }
+
+  .customer-operation {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    .ant-btn {
+      margin-left: 10px;
+    }
+  }
+
   //.topAge{
   //  //width: 1030px;
   //  height: 50px;
@@ -130,13 +133,6 @@
 
   .ant-modal-title {
     text-align: center;
-  }
-  .ant-btn {
-    background-color: #b67233;
-    color: #fff;
-    border: 0;
-    width: 150px;
-    border-radius: 4px;
   }
   .CreateList {
     //width: 1030px;
