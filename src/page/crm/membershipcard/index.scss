@@ -118,22 +118,3 @@
 .ant-tabs{
 
 }
-
-.alert-vertical-center-modal {
-  text-align: center;
-  white-space: nowrap;
-  .ant-modal {
-    display: inline-block;
-    vertical-align: middle;
-    top: 0;
-    text-align: center;
-  }
-}
-
-.alert-vertical-center-modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
-}
