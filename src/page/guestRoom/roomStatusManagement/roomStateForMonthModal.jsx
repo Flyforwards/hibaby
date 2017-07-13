@@ -395,8 +395,6 @@ class addCustomer extends React.Component {
   render(){
     const {CustomerVisible} = this.props.users;
 
-    console.log(this.state.selectItem||[...this.props.users.monthStateCustomers])
-
     return(
       <Modal
         className="addCustomer"

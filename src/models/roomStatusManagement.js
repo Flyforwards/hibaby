@@ -202,19 +202,18 @@ export default {
     },
 
     userDropReducer(state, {payload: data}){
-      console.log(data)
       // 复制数组
       let monthRoomList = state.monthRoomList.concat();
 
       // 获取当前操作的用户
       let dragUser = state.dragUser;
-      if(dragUser.status == 1){
-        dragUser.status = 4
-      }
+
       let roomIndex = parseInt(data.roomIndex);
       let startDayIndex = parseInt(data.dayIndex);
 
       let allDays = monthRoomList[roomIndex].useAndBookingList;
+
+
       for (let i = 0; i < dragUser.reserveDays; i++) {
         let dayIndex = startDayIndex + i;
 
@@ -235,7 +234,7 @@ export default {
         let isExit = false;
 
         for (let customer of currentDay.customerList) {
-          if (customer.customerId === dragUser.customerId) {
+          if (customer.customerId === dragUser.customerId && dragUser.status == customer.status) {
             isExit = true;
             break;
           }
@@ -308,7 +307,7 @@ export default {
         for (let j = startIndex; j <= endIndex; j++) {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
-            if (customerList[k].customerId == data.customerId) {
+            if (customerList[k].customerId == data.customerId && data.status == customerList[k].status) {
               customerList.splice(k--, 1);
               break;
             }
@@ -633,7 +632,7 @@ export default {
       const state = yield select(state => state.roomStatusManagement);
 
       // 如果已入住, 开始的时间保持不变
-      if (state.dragUser.status == 4 || state.dragUser.status == 1) {
+      if (state.dragUser.status == 4) {
         // 先调用平移接口
         let param = {
           customerId: state.dragUser.customerId,
@@ -674,7 +673,7 @@ export default {
         status: state.dragUser.status,
       };
 
-      if (state.dragUser.status == 4 || state.dragUser.status == 1) {
+      if (state.dragUser.status == 4) {
         payload.dayIndex = state.dragUser.startIndex;
       }
 
@@ -685,8 +684,6 @@ export default {
           ...payload,
         }
       });
-
-      console.log(state.dragUser.status)
 
       if(state.dragUser.status !== 7){
         yield put({type: 'monthRoomUpdate',payload:'load'});
@@ -805,8 +802,6 @@ export default {
         }
       }
 
-      console.log(param)
-
       const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
 
       if (code == 0) {
@@ -841,7 +836,7 @@ export default {
     *resideAddOrCut({payload: value}, {call, put}){
 
       if(resideOperation){
-        console.log(resideOperation)
+
         const {data: {code, data}} = yield call(roomManagement.resideAddOrCut, resideOperation);
 
         // 调用接口失败
