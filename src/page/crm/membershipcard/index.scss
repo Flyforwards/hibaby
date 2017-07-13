@@ -1,120 +1,103 @@
 /**
  * Created by Flyforwards on 2017/6/1.
  */
-.card{
-  width: 100%;
-  //margin:10px 0 0 10px;
-  padding: 20px;
-  background: #FFFFFF;
-  button{
-    font:14px "微软雅黑";
-  }
-  .danBtn{
-    background: #ff4a4a;
-    color: #fff;
-  }
-}
-.cardTable{
 
-}
-.cardFind{
-  input{
-    height: 40px;
+
+.member-card-cent {
+  .card{
+    width: 100%;
+    padding: 20px;
+    background: #FFFFFF;
+    button{
+      font:14px "微软雅黑";
+    }
+    .danBtn{
+      background: #ff4a4a;
+      color: #fff;
+    }
   }
-  label{
-    font: 14px "微软雅黑";
-    color: #333;
+  .cardFind{
+    input{
+      height: 40px;
+    }
+    label{
+      font: 14px "微软雅黑";
+      color: #333;
+    }
   }
-}
-.cardDetail{
-  .delbtn{
-    background: #ff4a4a;
-    border:#ff4a4a;
-    color:#fff;
+  .cardDetail{
+    .delbtn{
+      background: #ff4a4a;
+      border:#ff4a4a;
+      color:#fff;
+      font:12px "微软雅黑";
+    }
+  }
+
+
+  .ant-btn{
+    width:150px;
+    height:30px;
     font:12px "微软雅黑";
   }
-}
-.ant-btn{
-  width:150px;
-  height:30px;
-  font:12px "微软雅黑";
-}
-.ant-form-item-required:before {
-  content: '';
-  display: none;
-}
-.ant-table-bordered .ant-table-thead > tr > th{
-  background: #666666;
-  text-align: center;
-  font:14px "微软雅黑";
-  color: #fff;
-}
-.ant-table-bordered .ant-table-tbody > tr > td{
-  text-align: center;
-  font:14px "微软雅黑";
-  .firstA{
-    color:#b87636;
+  .ant-form-item-required:before {
+    content: '';
+    display: none;
   }
-  .firstB{
-    color:#b87636;
+  .ant-table-bordered .ant-table-thead > tr > th{
+    background: #666666;
+    text-align: center;
+    font:14px "微软雅黑";
+    color: #fff;
   }
-}
-.vertical-center-modal {
-  text-align: center;
-  white-space: nowrap;
-}
+  .ant-table-bordered .ant-table-tbody > tr > td{
+    text-align: center;
+    font:14px "微软雅黑";
+    .firstA{
+      color:#b87636;
+    }
+    .firstB{
+      color:#b87636;
+    }
+  }
 
-.vertical-center-modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
-}
 
-.vertical-center-modal .ant-modal {
-  display: inline-block;
-  vertical-align: middle;
-  top: 0;
-  text-align: left;
-}
-.cardBtn{
-  width:150px;
-  height:30px;
-  margin-left: 10px;
-  font-size: 14px;
-  font-family:"微软雅黑";
-}
-.cardBtn:hover{
-  background: #f99d2e;
-  border-color:#f99d2e;
-  color:#fff;
-}
-.PrintBtn{
-  background:#eb7c34;
-  border-color: #eb7c34;
-  color: #fff;
-}
-.clearBtn{
-  background:#f75555;
-  border-color: #f75555;
-  color:#fff;
-}
-.RefundBtn{
-  background: #693d20;
-  border-color: #693d20;
-  color:#fff;
-}
-.renewBtn{
-  background: #d4ad89;
-  border-color: #d4ad89 ;
-  color:#fff;
-}
-.decBtn{
-  background:#f1e8df;
-  border-color:#b67233;
-  color: #b67233;
-}
-.ant-tabs{
+  .cardBtn{
+    width:150px;
+    height:30px;
+    margin-left: 10px;
+    font-size: 14px;
+    font-family:"微软雅黑";
+  }
+  .cardBtn:hover{
+    background: #f99d2e;
+    border-color:#f99d2e;
+    color:#fff;
+  }
+  .PrintBtn{
+    background:#eb7c34;
+    border-color: #eb7c34;
+    color: #fff;
+  }
+  .clearBtn{
+    background:#f75555;
+    border-color: #f75555;
+    color:#fff;
+  }
+  .RefundBtn{
+    background: #693d20;
+    border-color: #693d20;
+    color:#fff;
+  }
+  .renewBtn{
+    background: #d4ad89;
+    border-color: #d4ad89 ;
+    color:#fff;
+  }
+  .decBtn{
+    background:#f1e8df;
+    border-color:#b67233;
+    color: #b67233;
+  }
 
 }

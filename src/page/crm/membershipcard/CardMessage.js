@@ -88,7 +88,7 @@ class CardDetail extends Component {
       </Row>
     }
     return (
-      <div className="cardDetail">
+      <div className="member-card-cent">
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
             <Row>

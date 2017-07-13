@@ -99,9 +99,9 @@ function ConclusionInformationUpdate(props) {
           </Col>
         </Row>
       </Form>
-      <div className='bottomButton'>
-        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
-        <Button className='commitButton SaveBtn' type="primary" onClick={handleSubmit}>保存</Button>
+      <div className='button-group-bottom-common'>
+        <Button className='button-group-bottom-1' onClick={handleBack}>返回</Button>
+        <Button className='button-group-bottom-2' onClick={handleSubmit}>保存</Button>
       </div>
     </div>
   );

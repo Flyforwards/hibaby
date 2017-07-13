@@ -772,10 +772,9 @@ class customerInformation extends React.Component{
         <BaseForm ref="baseForm" {...this.props}/>
         <ExtensionForm ref="extensionForm" {...this.props}/>
         <RemarkForm  {...this.props}/>
-        <div className='saveDiv'>
-          <Button className='backBtn SaveBtn' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
-          <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
-
+        <div className='button-group-bottom-common'>
+          <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
+          <Button className='button-group-bottom-2' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
         </div>
       </div>
     )

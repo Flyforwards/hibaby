@@ -5,11 +5,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col,Popconfirm,Modal,Tabs ,message} from 'antd';
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
-const Option = Select.Option;
-const TabPane = Tabs.TabPane;
-import { Link } from 'react-router';
 import './index.scss';
 import {routerRedux} from 'dva/router';
 import CardMessage from './cardMessage';
@@ -20,6 +15,10 @@ import RefundRecord from './refundRecord';
 import AlertModalFrom from './commonModel';
 import ChargeBackFeeModal from './chargeBackFeeModal'
 import PermissionButton from 'common/PermissionButton';
+
+const TabPane = Tabs.TabPane;
+import { Link } from 'react-router';
+
 
 class MemberShipCard extends Component {
   constructor(props) {
@@ -170,6 +169,7 @@ class MemberShipCard extends Component {
   render() {
     const { feeRecord,renewRecord,refundRecord,activeKey } = this.props;
     return (
+      <div className="member-card-cent">
       <div className="card" style={{overflow:'hidden'}}>
         <div>
           <CardMessage />
@@ -240,6 +240,7 @@ class MemberShipCard extends Component {
 
         </div>
 
+      </div>
       </div>
 
     )
