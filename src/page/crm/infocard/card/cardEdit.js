@@ -1,18 +1,20 @@
 /**
  * Created by Flyforwards on 2017/5/25.
  */
+
 import DictionarySelect from 'common/dictionary_select';
 
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon,DatePicker,Table, Card, InputNumber, Radio,Row,Col, } from 'antd';
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
-const Option = Select.Option;
 import { Link } from 'react-router';
 import './card.scss';
 import { parse } from 'qs'
-import CustomerByCard from './customerByCard';
+import CustomerByCard from './CustomerByCard';
+const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+const Option = Select.Option;
+
 
 class CardDetail extends Component {
 
@@ -106,8 +108,8 @@ class CardDetail extends Component {
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return (
-      <div className="infoCard">
-      <div className="cardEdit" style={{ 'padding': '20px' }}>
+      <div className="info-card-cent">
+      <div className="cardEdit">
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
             <Row>
@@ -190,22 +192,16 @@ class CardDetail extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row>
-              <CustomerByCard {...{loading, userPagination, list}} />
-            </Row>
-            <Row style={{marginTop:'16px'}}>
-              <Col span = { 16 }>
-              </Col>
-              <Col span = { 4 }>
-                <Link to={{ pathname:"/crm/card/detail", query: values}}><Button className="BackBtn">返回</Button></Link>
-              </Col>
-              <Col span = { 4 }>
-                <Button className="SaveBtn" onClick={this.onSave.bind(this)}>保存</Button>
-              </Col>
-            </Row>
           </Form>
+          <CustomerByCard {...{loading, userPagination, list}} />
         </Card>
+        <div className="button-group-bottom-common">
+          <Link to={{ pathname:"/crm/card/detail", query: values}}>
+            <Button className="button-group-bottom-1">返回</Button>
+          </Link>
 
+          <Button className="button-group-bottom-2" onClick={this.onSave.bind(this)}>保存</Button>
+        </div>
       </div>
       </div>
     )

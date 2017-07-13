@@ -69,19 +69,20 @@ class ActivityIndex extends React.Component {
         const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
         const appoint = !this.props.permissionAlias.contains('ACTIVITY_APPOINT');
         // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况服务删除活动
+
+        const detail = <PermissionLink key="1" testKey='ACTIVITY_DETAIL' className="one-link" style={{width: '30%'}} onClick={ this.pushDetail.bind(this,record) }> 查看 </PermissionLink> ;
+        const appointment = <Link key="2" disabled={appoint} className="two-link" style={{width: '30%'}} onClick={ this.appointment.bind(this,record) }> 预约 </Link>;
+        const deleteLink = <Link key="3" disabled={del} className="three-link" style={{width: '30%'}} onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>;
         if (record.activityTime < this.props.systemTime || record.appointments > 0 ) {
           return (
             <div key = { index }>
-              <PermissionLink testKey='ACTIVITY_DETAIL' className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </PermissionLink>
-              <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
+              { [detail, appointment] }
             </div>
           )
         } else {
           return (
             <div key = { index }>
-              <PermissionLink testKey='ACTIVITY_DETAIL' className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </PermissionLink>
-              <Link disabled={appoint} className="firstA" onClick={ this.appointment.bind(this,record) }> 预约 </Link>
-              <Link disabled={del} className="firstB" onClick={ this.deleteActivity.bind(this,record)} > 删除 </Link>
+              { [detail, appointment, deleteLink] }
             </div>
           )
         }
@@ -168,15 +169,14 @@ class ActivityIndex extends React.Component {
         }))
       },
     }
-    const add = !this.props.permissionAlias.contains('ACTIVITY_ADD');
     return (
       <div className = "activity-cent">
-        <div className = "button-wrapper">
+        <div className = "top-button">
           <Link to = '/crm/activity/add'>
-            <PermissionButton testKey='ACTIVITY_ADD' className="button-add"> 添加 </PermissionButton>
+            <PermissionButton testKey='ACTIVITY_ADD' className="one-button" style={{ float:'right', marginBottom:'10px'}}> 添加 </PermissionButton>
           </Link >
         </div>
-        <Table {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
+        <Table className='activity-center' {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
         <AppointmentModalFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.appointmentVisible } selectRecord={ this.selectRecord } onChoose={ this.onChoose.bind(this)}/>
         <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ this.selectRecord } from={ true }/>
         <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ this.selectRecord } from={ true }/>

@@ -41,27 +41,6 @@ export default {
       return {...state, list };
     },
 
-    // getDetailEditSuccess(state, { payload: { editItem }}) {
-    //   return {...state, editItem};
-    // },
-    //
-    // getCustomerSave(state, { payload: { userList, noAppointmentPagination }}) {
-    //   return {...state, userList, noAppointmentPagination: {  ...state.noAppointmentPagination,...noAppointmentPagination }};
-    // },
-    //
-    // getSignCustomerSave(state, { payload: { signUserList, signPagination }}) {
-    //   return {...state, signUserList, signPagination:{  ...state.signPagination,...signPagination } };
-    // },
-    // getSignCustomerSaveEdit(state, { payload: { editSignUserList, editSignPagination }}) {
-    //   return {...state, editSignUserList, editSignPagination:{  ...state.editSignPagination,...editSignPagination } };
-    // },
-    // memberShipCardSave(state, { payload: { shipCards }}) {
-    //   return {...state, shipCards};
-    // },
-    //
-    // getDepartmentSuccess(state, { payload: { departments }}) {
-    //   return {...state, departments};
-    // },
   },
   effects: {
 

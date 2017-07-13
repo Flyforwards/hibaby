@@ -467,7 +467,7 @@ function NutritionHealthInformationDetail(props) {
           (() => {
             if(location.pathname !== '/crm/customer/printCustomerPage')
             {
-             return <div>
+             return <div className="button-group-bottom-common">
               <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' onClick={handleEdit}>编辑</PermissionButton>
               <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
                <ExcelTitleModel>

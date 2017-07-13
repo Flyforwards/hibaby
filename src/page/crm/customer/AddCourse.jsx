@@ -173,7 +173,9 @@ class AddCourse extends Component {
       }
         return (
             <div className="addCourse">
-              <PermissionButton testKey='CUSTOMER_PACKAGE_ADD' className="AddBtn" type="primary" onClick={this.addCourse.bind(this)}>添加套餐</PermissionButton>
+              <div className="top-button">
+                <PermissionButton testKey='CUSTOMER_PACKAGE_ADD' className="one-button" style={{ float: 'right', marginBottom: '10px'}} onClick={this.addCourse.bind(this)}>添加套餐</PermissionButton>
+              </div>
               {
                 dataList
               }

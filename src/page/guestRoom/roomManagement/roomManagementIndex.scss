@@ -1,22 +1,28 @@
 .roomManagementDiv{
+
   .searchDiv{
     width: 1000px;
+
     padding-top:20px;
     .antCli{
       width: 100%;
       height: 40px;
     }
-    .ant-btn{
-      border-radius: 5px;
-      font: 14px "微软雅黑";
-      margin-left:10px;
+    .option-list {
+      margin-left: 10%;
+      .ant-btn{
+        border-radius: 5px;
+        font: 14px "微软雅黑";
+        margin-left:10px;
+      }
     }
+
+
     label{
       font: 14px "微软雅黑";
     }
   }
   .tableDiv{
-    padding: 0 10px;
     clear: both;
     .ant-table-thead > tr > th {
       background-color: dimgray;
@@ -52,7 +58,6 @@
 }
 
 .creatGuestRoom{
-  width: 1000px;
   .antCli{
     width: 100%;
   }

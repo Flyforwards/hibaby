@@ -115,10 +115,12 @@ class ViewSuiteed extends Component {
                     roomInformation
                   }
                 </div>
-              <div className="button-wrapper">
-                <Link to={{ pathname: '/crm/suite/edit', query:{ suite:ID } }}><Button style={{ float:"right", marginRight: "20px" }} disabled={edit}  className="save-btn">编辑</Button></Link>
-                <Button style={{ float:"right", marginRight: "20px" }} disabled={del} className="del-btn" onClick={this.delete.bind(this)}>删除</Button>
-                <Button style={{ float:"right", marginRight: "20px" }} className="back-btn" onClick={this.handleSubmit}>返回</Button>
+              <div className="button-group-bottom-common">
+                <Button className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                <Button disabled={del} className="button-group-bottom-2" onClick={this.delete.bind(this)}>删除</Button>
+                <Link to={{ pathname: '/crm/suite/edit', query:{ suite:ID } }}>
+                  <Button disabled={edit}  className="button-group-bottom-3">编辑</Button>
+                </Link>
               </div>
                 <Delete
                   visible={ this.state.DeleteVisible }

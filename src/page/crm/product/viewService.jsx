@@ -151,7 +151,7 @@ class AddServiceed extends Component {
         const del = !this.props.permissionAlias.contains('SERVICEINFO_DELETE');
         return (
             <div className="viewServiceinfo">
-                <div className="viewServiceinfoList">
+              <div className="viewServiceinfoList">
                 <p>套餐信息:</p>
                 <Form layout="inline">
                   <FormItem
@@ -238,15 +238,19 @@ class AddServiceed extends Component {
                 </Form>
                 </div>:null
                 }
-                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button disabled={del} className="delet" onClick={this.delete.bind(this)}>删除</Button>
-                <Link to={{ pathname: '/crm/service-info/edit', query: { data:this.state.ID } }}><Button disabled={edit} className="editBtn" type="primary">编辑</Button></Link>
-                <Delete
-                  visible={ this.state.DeleteVisible }
-                  onCancel ={ this.handleDeleteCancel.bind(this) }
-                  ID = { this.state.ID }
-                  serviceInfoList = { this.props.packageItem}
-                />
+              <div className="button-group-bottom-common">
+                <Button className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                <Button disabled={del} className="button-group-bottom-2" onClick={this.delete.bind(this)}>删除</Button>
+                <Link to={{ pathname: '/crm/service-info/edit', query: { data:this.state.ID } }}>
+                  <Button disabled={edit} className="button-group-bottom-3">编辑</Button>
+                </Link>
+              </div>
+              <Delete
+                visible={ this.state.DeleteVisible }
+                onCancel ={ this.handleDeleteCancel.bind(this) }
+                ID = { this.state.ID }
+                serviceInfoList = { this.props.packageItem}
+              />
             </div>
         )
     }

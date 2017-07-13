@@ -180,8 +180,10 @@ class EditCommodityed extends Component {
                   </FormItem>
                 </Form>
                 </div>
-                <Button style={{ float:"right", marginRight: "20px" }} className="save-btn" onClick={this.handleAdd.bind(this,this.props.code)}>保存</Button>
-                <Button style={{ float:"right", marginRight: "20px" }} className="back-btn" onClick={this.handleSubmit}>返回</Button>
+                <div className="button-group-bottom-common">
+                  <Button className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                  <Button className="button-group-bottom-2" onClick={this.handleAdd.bind(this)}>保存</Button>
+                </div>
                 <Delete
                   visible={ this.state.DeleteVisible }
                   onCancel ={ this.handleDeleteCancel.bind(this) }
@@ -192,24 +194,7 @@ class EditCommodityed extends Component {
         )
     }
 }
-function EditCommodity({
-  dispatch,
-  commodityFindById,
-  chineseToPinyin
-}) {
-  return ( < div >
-    <ViewCommodityed dispatch = {
-      dispatch
-    }
-    chineseToPinyin = {
-      chineseToPinyin
-    }
-    commodityFindById = {
-      commodityFindById
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     commodityFindById,

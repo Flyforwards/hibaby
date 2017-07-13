@@ -1,11 +1,11 @@
 .viewServiceinfo{
 	height:100%;
 	min-width: 1030px;
+
 	.viewServiceinfoList{
 		width:100%;
 		background-color:#fff;
 		height:20%;
-		margin:10px 0 0 10px;
 		border-radius: 4px;
 		border:1px solid #999;
 		overflow: hidden;
@@ -81,7 +81,7 @@
 		width:100%;
 		background-color:#fff;
 		height:30%;
-		margin:10px;
+		margin-top:10px;
 		border-radius: 4px;
 		border:1px solid #999;
 		p{
@@ -124,10 +124,10 @@
 		}
 	}
 	.viewServiceinfoSuite {
-		width:100%;
-		background-color:#fff;
-		height:20%;
-		margin:10px;
+		width: 100%;
+		background-color: #fff;
+		height: 20%;
+		margin-top: 10px;
 		border-radius: 4px;
 		border:1px solid #999;
 		p{
@@ -163,33 +163,5 @@
 			font-size: 20px;
 		}
 	}
-	.ant-btn {
-		margin-left:52%;
-		width:150px;
-		height:30px;
-		font:14px "微软雅黑";
-	}
-	.ant-btn-primary{
-    	margin-left:20px;
-    	width:150px;
-    	height:30px;
-			font:14px "微软雅黑";
-	}
-  .BackBtn{
-    background:#b67233;
-    color:#fff;
-    border-color: #b67233;
-  }
-	.delet{
-		background-color: rgba(255, 74, 74, 1);
-		margin-left:20px;
-		color:#fff;
-		font:14px "微软雅黑";
-		border:none;
-	}
-  .editBtn{
-    background:#f1e8df;
-    border-color:#d4ad89;
-    color:#b67233;
-  }
+
 }

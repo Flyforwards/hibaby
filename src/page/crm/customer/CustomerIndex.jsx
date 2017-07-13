@@ -1,7 +1,7 @@
 import React from 'react'
 import './CustomerIndex.scss'
 import { connect } from 'dva'
-import { Select, Button, DatePicker, Table, Input, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal } from 'antd'
+import { Select, Button, DatePicker, Table, Input, Card, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal } from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
 import { routerRedux } from 'dva/router'
@@ -123,9 +123,9 @@ class CustomerIndex extends React.Component {
         const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
         const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
-          <div>
-            <Link disabled={detail} className="firstA" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+          <div className="operation-list">
+            <Link disabled={detail} className="one-link link-style" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
+            <Link disabled={del} className="two-link link-style" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
           </div>
         );
       }
@@ -252,80 +252,33 @@ class CustomerIndex extends React.Component {
     });
 
     const formChooseLayout = {
-      labelCol: { span: 10 },
-      wrapperCol: { span: 14 }
-    }
-    const formChooseOneLayout = {
-      labelCol: { span: 9 },
-      wrapperCol: { span: 13 }
+      labelCol: { span: 12 },
+      wrapperCol: { span: 12 }
     }
     const formChooseOneAge = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
     }
 
-    const formChooseTwoAge = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 }
-    }
-
-    const add = !this.props.permissionAlias.contains('CUSTOMER_ADD');
     return (
       <div className="CustomerConent">
-        <main className="yt-admin-framework-Customer">
           <Form>
-            <Row className="topSelect">
-              <Col className="search" span={12}>
-                <FormItem {...formChooseLayout} style={{ height: '40px', lineHeight: '40px' }}>
-                  {getFieldDecorator('sear', {
-                    rules: [{ required: false }]
-                  })(
-                    <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{ height: '40px', width: 700 }}/>
-                  )}
-                </FormItem>
-              </Col>
-              <Col className="findBtn" span={12}>
-                <Row justify="end" type="flex" gutter={8}>
-                  <Col span={6}>
-                      <span>
-                        <Button onClick={ this.onSearch.bind(this)} style={{
-                          width: '100%',
-                          height: '40px',
-                          lineHeight: '40px',
-                          backgroundColor: 'rgba(255, 102, 0, 1)'
-                        }}>查询</Button>
-                        </span>
-                  </Col>
-                  <Col span={6}>
-                  <span>
-                          <Button onClick={ this.reset.bind(this)} style={{
-                            width: '100%',
-                            height: '40px',
-                            lineHeight: '40px',
-                            backgroundColor: 'rgba(255, 0, 0, 1)'
-                          }}>重置</Button>
-                        </span>
-                  </Col>
-                  <Col span={6}>
-                  <span>
-
-                        <Link to="/crm/customer/AddCustomerInformation">
-                          <PermissionButton
-                            testKey='CUSTOMER_ADD'
-                            style={{
-                            width: '100%',
-                            backgroundColor: 'rgba(182, 114, 51, 1)',
-                            height: '40px',
-                            lineHeight: '40px',
-                            color: '#ffffff'
-                          }}
-                          >新增客户</PermissionButton>
-                        </Link>
-                      </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <div style={{ position: 'relative'}}>
+              <FormItem style={{ height: '40px' }} {...formChooseLayout}>
+                {getFieldDecorator('sear', {
+                  rules: [{ required: false }]
+                })(
+                  <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
+                )}
+              </FormItem>
+              <div className="customer-operation">
+                <Button className='button-group-2' onClick={ this.onSearch.bind(this)}>查询</Button>
+                <Button className='button-group-1' onClick={ this.reset.bind(this)} >重置</Button>
+                <Link to="/crm/customer/AddCustomerInformation">
+                  <PermissionButton className='button-group-3' testKey='CUSTOMER_ADD' >新增客户</PermissionButton>
+                </Link>
+              </div>
+            </div>
             <Row gutter={16} style={{ height: 50 }}>
               <Col span={5} >
                 <FormItem label="年龄" {...formChooseOneAge}>
@@ -379,7 +332,6 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-
             </Row>
             <Row style={{ height: 50 }} gutter={16}>
               <Col span={5}>
@@ -443,18 +395,14 @@ class CustomerIndex extends React.Component {
                   )}
                 </FormItem>
               </Col>
-
             </Row>
           </Form>
-          <div className="CreateModaList-a">
-            <Table bordered {...tableProps} rowKey={ record => record.id}/>
-          </div>
+          <Table className='customer-table' bordered {...tableProps} rowKey={ record => record.id}/>
           <CreateModal
             handleOk={this.state.handleOk}
             visible={ this.state.createModalVisible }
             onCancel={ this.handleCreateModalCancel.bind(this) }
           />
-        </main>
       </div>
     )
   }

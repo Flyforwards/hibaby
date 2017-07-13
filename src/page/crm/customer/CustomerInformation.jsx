@@ -162,10 +162,23 @@ function cusFromItem(form,dict) {
     rules = { rules: [{ required: true, pattern:/^1[34578]{1}\d{9}$/, message: `请输入正确的${dict.title}!`}]};
   }
 
-  if (dict.submitStr === 'idcard')
-  {
-    rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
-  }
+  // if (dict.submitStr === 'idcard')
+  // {
+  //   if(form.getFieldValue('idType')){
+  //     if(form.getFieldValue('idType').label === '护照'){
+  //       rules = { rules: [{ required: true, pattern: [/^[a-zA-Z0-9]{3,21}$/,/^(P\d{7})|(G\d{8})$/] , message: `请输入正确的${dict.title}!`}]};
+  //     }
+  //     if(form.getFieldValue('idType').label === '台胞证'){
+  //       rules = { rules: [{ required: true, pattern: /^[a-zA-Z0-9]{5,21}$/, message: `请输入正确的${dict.title}!`}]};
+  //     }
+  //     else{
+  //       rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
+  //     }
+  //   }
+  //   else{
+  //     rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
+  //   }
+  // }
 
   if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices' || dict.submitStr === 'imgURL')
   {
@@ -481,6 +494,7 @@ function ExtensionInfo(props) {
   }
 
   function uploadIdcardFileProps(values) {
+    console.log(values)
     dispatch({type:'addCustomer/addCardIDDLC',payload:values})
     props.form.resetFields(['idcardScan']);
     props.form.validateFields(['idcardScan'], { force: true });
@@ -758,10 +772,9 @@ class customerInformation extends React.Component{
         <BaseForm ref="baseForm" {...this.props}/>
         <ExtensionForm ref="extensionForm" {...this.props}/>
         <RemarkForm  {...this.props}/>
-        <div className='saveDiv'>
-          <Button className='backBtn SaveBtn' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
-          <Button className='backBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
-
+        <div className='button-group-bottom-common'>
+          <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
+          <Button className='button-group-bottom-2' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
         </div>
       </div>
     )

@@ -6,11 +6,13 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col } from 'antd';
+import { Link } from 'react-router';
+import DictionarySelect from 'common/dictionary_select';
+
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-import { Link } from 'react-router';
-import DictionarySelect from 'common/dictionary_select';
+
 
 class CardModal extends Component {
   constructor(props) {
@@ -124,7 +126,7 @@ class CardModal extends Component {
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
     return(
-    <div className="infoCard">
+    <div className="info-card-cent">
       <div className="cardInfo" style={{ 'padding': '20px' }}>
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>

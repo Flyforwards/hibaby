@@ -255,6 +255,7 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
   function disabled(value) {
     let disabled = false;
     monthStateCustomers.map((item)=>{
+
       if(((item.customerId || item.id) === (value.id||value.customerId)) && (!item.edit && !item.change)){
         disabled = true;
       }
@@ -302,7 +303,7 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
     getCheckboxProps: (record) =>
       {
         return(
-          {disabled:disabled(record)}
+          {disabled:record.purchasePackage? disabled(record):true}
         )
     },
     selectedRowKeys:ary
@@ -393,6 +394,7 @@ class addCustomer extends React.Component {
 
   render(){
     const {CustomerVisible} = this.props.users;
+
     return(
       <Modal
         className="addCustomer"

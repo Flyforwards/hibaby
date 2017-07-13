@@ -6,11 +6,9 @@ import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon, Card, Radio,Row,Col,Popconfirm,Modal } from 'antd';
 const FormItem = Form.Item;
 const createForm = Form.create;
-const RadioGroup = Radio.Group;
-const Option = Select.Option;
+
 import { Link } from 'react-router';
 import './index.scss';
-import {routerRedux} from 'dva/router';
 
 @createForm()
 class CardBalance extends Component {
@@ -57,7 +55,7 @@ class CardBalance extends Component {
       wrapperCol:{ span:17 }
     }
     return (
-      <div className="cardDetail" style={{margin:'10px 0px'}}>
+      <div className="member-card-cent" style={{margin:'10px 0px'}}>
         <Card title="余额信息" style={{ width: '100%' }}>
           <Form>
             <Row>

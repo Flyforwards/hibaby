@@ -58,9 +58,9 @@ class CustomerCompIndex extends React.Component {
         const detail = !this.props.permissionAlias.contains('CUSTOMERCOMP_DETAIL');
         const del = !this.props.permissionAlias.contains('CUSTOMERCOMP_DELETE');
           return (
-            <div key = { index }>
-              <Link disabled={detail} className="firstA" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
-              <Link disabled={del} className="firstB" onClick={ this.deleteCustomerComp.bind(this,record)} > 删除 </Link>
+            <div className="operation-list" key = { index }>
+              <Link disabled={detail} className="one-link link-style" onClick={ this.pushDetail.bind(this,record) }> 查看 </Link>
+              <Link disabled={del} className="two-link link-style" onClick={ this.deleteCustomerComp.bind(this,record)} > 删除 </Link>
             </div>
           )
         }
@@ -126,14 +126,12 @@ class CustomerCompIndex extends React.Component {
     const add = !this.props.permissionAlias.contains('CUSTOMERCOMP_ADD');
     return (
       <div className = "customer-comp-cent">
-        <div className = "button-wrapper">
+        <div className = "top-button">
           <Link to = '/crm/customer-comp/add'>
-            <Button disabled={add} className="button-add BackBtn"> 创建投诉 </Button>
-          </Link >
+            <Button disabled={add} className="one-button" style={{ marginBottom: '10px',float: 'right' }}> 创建投诉 </Button>
+          </Link>
         </div>
-        <div className="CreateModaList">
-            <Table className="" {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
-        </div>
+        <Table className='customer-comp-center' {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.id}/>
       </div>
     );
   }

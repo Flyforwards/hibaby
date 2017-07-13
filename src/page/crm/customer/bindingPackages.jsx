@@ -89,7 +89,7 @@ class BindingPackagesed extends Component {
       console.log("history>>>>")
       this.props.dispatch({
         type: 'addCourse/setAddCustomerTab',
-        payload: true 
+        payload: true
       })
       history.go(-1)
     }
@@ -149,34 +149,17 @@ class BindingPackagesed extends Component {
                 {suiteId?<div className="viewServiceinfoSuite">
                 <p className="titleName">套房:</p>
                 <p className="namep">  套房：{suiteId}</p></div>:null}
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this,this.props.findById)}>确定</Button>
+
+              <div className="button-group-bottom-common">
+                <Button className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                <Button className="button-group-bottom-2" onClick={this.handleAdd.bind(this,this.props.findById)}>确定</Button>
+              </div>
             </div>
         )
     }
 }
-function BindingPackages({
-  dispatch,
-  findById,
-  getDictionary,
-  selectData
-}) {
-  return ( < div >
-    <BindingPackagesed dispatch = {
-      dispatch
-    }
-    findById = {
-      findById
-    }
-    getDictionary = {
-      getDictionary
-    }
-    selectData = {
-      selectData
-    }
-    /></div>
-  )
-}
+
+
 function mapStateToProps(state) {
   const {
     findById,

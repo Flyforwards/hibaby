@@ -72,9 +72,9 @@ function ConclusionInformationDetail(props) {
           </Col>
         </Row>
       </Form>
-      <div className='bottomButton'>
-        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
-        <PermissionButton testKey="HEALTHINFO_EDIT" className='commitButton SaveBtn' type="primary" onClick={handleEdit}>编辑</PermissionButton>
+      <div className='button-group-bottom-common'>
+        <Button className='button-group-bottom-1' onClick={handleBack}>返回</Button>
+        <PermissionButton testKey="HEALTHINFO_EDIT" className='button-group-bottom-2' onClick={handleEdit}>编辑</PermissionButton>
       </div>
 
       <BigImageModal

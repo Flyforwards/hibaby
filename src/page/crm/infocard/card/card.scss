@@ -1,187 +1,140 @@
-.infoCard{
+.info-card-cent{
 
-
-.card{
-  min-width: 1030px;
-  margin:10px;
-  padding: 10px;
-  background: #FFFFFF;
-}
-
-.cardFind{
-  input{
-    height: 40px;
-  }
-  label{
-    font: 14px "微软雅黑";
-    color: #333;
-  }
-  .SelBtn{
-    background:#b67233;
-    border-color:#b67233;
-    font:14px "微软雅黑";
-    float: left;
-    color: #ffffff;
-  }
-  .SaveBtn{
-    background:#f1e8df;
-    border-color:#d4ad89;
-    font:14px "微软雅黑";
-    color: #b67233;
-  }
-}
-
-.cardDetail{
-  .delbtn{
-    background: #ff4a4a;
-    border:#ff4a4a;
-    color:#fff;
-    font:14px "微软雅黑";
-  }
-  .topTitleInfo{
-    margin-top:10px;
-    .ant-col-10{
-      width: 600px;
-      margin-right: 20px;
+  .cardFind{
+    label{
+      font: 14px "微软雅黑";
+      color: #333;
     }
-    .ant-form-item{
-      width: 600px;
-      .ant-form-item-control {
-        width:600px;
-      }
+    .SelBtn{
+      background:#b67233;
+      border-color:#b67233;
+      font:14px "微软雅黑";
+      float: left;
+      color: #ffffff;
     }
-    button{
+    .SaveBtn{
+      background:#f1e8df;
+      border-color:#d4ad89;
+      font:14px "微软雅黑";
+      color: #b67233;
+    }
+  }
+
+  .cardDetail{
+    .delbtn{
+      background: #ff4a4a;
+      border:#ff4a4a;
+      color:#fff;
       font:14px "微软雅黑";
     }
-  }
-  .titleInfo{
-    label{
-      font: 12px "微软雅黑";
-    }
-    .ant-form-item-control {
-      width: 130px;
-    }
-  }
-}
-a{
-  border:none;
-  outline: none;
-}
-.cardEdit{
-  .topTitleInfo{
-    margin-top:10px;
-    .ant-col-10{
-      width: 600px;
-      margin-right: 20px;
-    }
-    .ant-form-item{
-      width: 600px;
-      .ant-form-item-control {
-        width:600px;
+    .topTitleInfo{
+      margin-top:10px;
+      .ant-col-10{
+        width: 600px;
+        margin-right: 20px;
+      }
+      .ant-form-item{
+        width: 600px;
+        .ant-form-item-control {
+          width:600px;
+        }
+      }
+      button{
+        font:14px "微软雅黑";
       }
     }
-    button{
-      font:14px "微软雅黑";
+    .titleInfo{
+      label{
+        font: 12px "微软雅黑";
+      }
+      .ant-form-item-control {
+        width: 130px;
+      }
     }
   }
-  .titleInfo{
-    label{
-      font: 12px "微软雅黑";
+  .cardEdit{
+    .topTitleInfo{
+      margin-top:10px;
+      .ant-col-10{
+        width: 600px;
+        margin-right: 20px;
+      }
+      .ant-form-item{
+        width: 600px;
+        .ant-form-item-control {
+          width:600px;
+        }
+      }
+      button{
+        font:14px "微软雅黑";
+      }
     }
-    .ant-form-item-control {
-      width: 130px;
+    .titleInfo{
+      label{
+        font: 12px "微软雅黑";
+      }
+      .ant-form-item-control {
+        width: 130px;
+      }
+    }
+
+  }
+
+  .info-card-operation {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    .ant-btn {
+      margin-left: 10px;
     }
   }
 
-}
-.ant-btn{
-  width:150px;
-  height:30px;
-  font:14px "微软雅黑";
-}
-.BackBtn{
-   width:150px;
-   height:30px;
-   background:#b67233 ;
-   border-color:#b67233;
-   color:#fff;
- }
-.BackBtn:hover{
-  width:150px;
-  height:30px;
-  background:#b67233 ;
-  border-color:#b67233;
-  color:#fff;
-}
-.SaveBtn{
-  width:150px;
-  height:30px;
-  float: left;
-  background:#f1e8df;
-  border-color:#d4ad89;
-  color:#b67233;
-}
-.SaveBtn:hover{
-  width:150px;
-  height:30px;
-  background:#f1e8df;
-  border-color:#d4ad89;
-  color:#b67233;
-}
-.ant-form-item-required:before {
-  content: '';
-  display: none;
-}
-.ant-table-bordered .ant-table-thead > tr > th{
-  background: #666666;
-  text-align: center;
-  font:14px "微软雅黑";
-  color: #fff;
-}
-.ant-table-bordered .ant-table-tbody > tr > td{
-  text-align: center;
-  font:14px "微软雅黑";
-  .firstA{
-    color:#b87636;
+  .ant-form-item-required:before {
+    content: '';
+    display: none;
   }
-  .firstA:hover{
-    color:#0066ff;
-  }
-  .firstB{
-    color:#b87636;
-  }
-  .firstB:hover{
-    color:#ff0000;
-  }
-}
-.vertical-center-modal {
-  text-align: center;
-  white-space: nowrap;
-}
 
-.vertical-center-modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
-}
-
-.vertical-center-modal .ant-modal {
-  display: inline-block;
-  vertical-align: middle;
-  top: 0;
-  text-align: left;
-}
-.ant-modal-body{
-  p{
-    text-align:center;
+  .info-card-center {
+    width:100%;
+    .ant-table-thead > tr > th {
+      background-color: rgba(102, 102, 102, 1);
+      font-weight: 500;
+      transition: background .3s ease;
+      text-align: center;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+    .ant-table-tbody > tr > td {
+      text-align:center;
+      background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-size: 14px;
+    }
   }
-}
-.ant-modal-footer{
-  button{
-    width:100px;
-  }
-}
 
+
+
+  .vertical-center-modal {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .vertical-center-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+  }
+
+  .vertical-center-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+  }
 }

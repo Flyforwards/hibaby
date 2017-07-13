@@ -77,17 +77,11 @@ function SearchBar(props) {
   if(isSearch){
     searchDiv.push(
       <Col span={16}>
-        <Row>
-          <Col offset={9} span={5}>
-            <Button onClick={ onSearch} style={{width:'136px',height:'40px',lineHeight:'40px',backgroundColor:'rgba(255, 102, 0, 1)',color:'#ffffff'}}>查询</Button>
-          </Col>
-          <Col span={5}>
-            <Button onClick={ reset} style={{width:'136px',height:'40px',lineHeight:'40px',backgroundColor:'rgba(255, 0, 0, 1)',color:'#ffffff'}}>重置</Button>
-          </Col>
-          <Col span={5}>
-            <Link to="/chamber/room/creatroom"><Button style={{width:'136px',backgroundColor:'rgba(182, 114, 51, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>建立房间</Button></Link>
-          </Col>
-        </Row>
+        <div className='option-list'>
+            <Button onClick={ onSearch} className='button-group-1'>查询</Button>
+            <Button onClick={ reset} className='button-group-2'>重置</Button>
+            <Link to="/chamber/room/creatroom"><Button className='button-group-3'>建立房间</Button></Link>
+        </div>
       </Col>
     )
   }

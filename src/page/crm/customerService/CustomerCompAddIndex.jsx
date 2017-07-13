@@ -83,18 +83,11 @@ class CustomerCompAddIndex extends React.Component {
               </FormItem>
             </Form>
           </Card>
-          <div>
-            <Row>
-              <Col offset={16} span={4}>
-                <Link to='/crm/customer-comp'>
-                  <Button className="BackBtn"> 返回 </Button>
-                </Link>
-              </Col>
-              <Col span={4}>
-                <Button className="SaveBtn" onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
-              </Col>
-            </Row>
-
+          <div className="button-group-bottom-common">
+            <Link to='/crm/customer-comp'>
+              <Button  className="button-group-bottom-1"> 返回 </Button>
+            </Link>
+            <Button className="button-group-bottom-3" onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
           </div>
         </div>
       </div>

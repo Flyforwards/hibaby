@@ -438,9 +438,9 @@ function NutritionHealthInformationDetailUpdate(props) {
         </Row>
       </Form>
 
-      <div className='bottomButton'>
-        <Button className='commitButton SaveBtn' onClick={handleSubmit}>保存</Button>
-        <Button className='commitButton BackBtn' onClick={handleBack}>返回</Button>
+      <div className='button-group-bottom-common'>
+        <Button className='button-group-bottom-1' onClick={handleBack}>返回</Button>
+        <Button className='button-group-bottom-2' onClick={handleSubmit}>保存</Button>
       </div>
     </div>
   );

@@ -207,10 +207,13 @@ export default {
 
       // 获取当前操作的用户
       let dragUser = state.dragUser;
+
       let roomIndex = parseInt(data.roomIndex);
       let startDayIndex = parseInt(data.dayIndex);
 
       let allDays = monthRoomList[roomIndex].useAndBookingList;
+
+
       for (let i = 0; i < dragUser.reserveDays; i++) {
         let dayIndex = startDayIndex + i;
 
@@ -231,7 +234,7 @@ export default {
         let isExit = false;
 
         for (let customer of currentDay.customerList) {
-          if (customer.customerId === dragUser.customerId) {
+          if (customer.customerId === dragUser.customerId && dragUser.status == customer.status) {
             isExit = true;
             break;
           }
@@ -304,8 +307,7 @@ export default {
         for (let j = startIndex; j <= endIndex; j++) {
           let customerList = room[j].customerList;
           for (let k = 0; k < customerList.length; k++) {
-            if (customerList[k].customerId == data.customerId
-              && customerList[k].status == data.status) {
+            if (customerList[k].customerId == data.customerId && data.status == customerList[k].status) {
               customerList.splice(k--, 1);
               break;
             }
@@ -682,6 +684,11 @@ export default {
           ...payload,
         }
       });
+
+      if(state.dragUser.status !== 7){
+        yield put({type: 'monthRoomUpdate',payload:'load'});
+      }
+
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){
@@ -706,7 +713,7 @@ export default {
       let param = [];
 
 
-      if (value && Object.keys(value).length && !value.ConfirmDict) {
+      if (value && Object.keys(value).length && !value.ConfirmDict && !value.deleteUse && value !== 'load') {
           param = value;
       }
       else{
@@ -795,13 +802,11 @@ export default {
         }
       }
 
-
       const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
 
       if (code == 0) {
         // 更新原始集合的状态
         message.success('保存成功')
-        state.oldMonthRoomList = JSON.parse(JSON.stringify(state.monthRoomList));
         if(param === value){
           yield put({
             type: 'monthRoomList',
@@ -814,6 +819,15 @@ export default {
               payload:value.ConfirmDict
             })
           }
+          if(value.deleteUse){
+            yield put({
+              type: 'deleteUser',
+              payload:value.deleteUse
+            })
+          }
+          if(value === 'load'){
+            yield put({type: 'monthRoomList'});
+          }
         }
 
       }
@@ -822,7 +836,7 @@ export default {
     *resideAddOrCut({payload: value}, {call, put}){
 
       if(resideOperation){
-        console.log(resideOperation)
+
         const {data: {code, data}} = yield call(roomManagement.resideAddOrCut, resideOperation);
 
         // 调用接口失败
@@ -840,9 +854,8 @@ export default {
       let param = {
         customerId: value.customerId,
         date: timeToDate(value.startDate),
-      };
+      }
 
-      // 调用接口
       const {data: {code, data}} = yield call(roomManagement.cancelBooking, param);
 
       // 调用接口失败
@@ -851,9 +864,9 @@ export default {
       }
       message.success('删除成功')
       // 删除视图中的用户
-      yield put({
-        type: 'monthRoomList',
-      });
+
+      yield put({type: 'monthRoomList'});
+      yield put({type: 'netroomViewStateChange'});
     },
     // 获取会员身份下拉选项， 也是卡种列表
     *getMemberShipCard({payload: values}, { call, put }) {

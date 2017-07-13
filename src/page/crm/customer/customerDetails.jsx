@@ -287,10 +287,10 @@ class customerDetails extends React.Component{
             onClose={this.handleCancel.bind(this)}
           />
 
-          <div className='saveDiv'>
-            <PermissionButton testKey='CUSTOMER_EDIT' className='backBtn SaveBtn' onClick={this.editBtnClick.bind(this)}>编辑</PermissionButton>
-            <PermissionButton testKey='CUSTOMER_DELETE' className='backBtn delBtn' onClick={this.onDelete.bind(this)}>删除</PermissionButton>
-            <Button className='backBtn BackBtn' onClick={this.backBtnClick.bind(this)}>返回</Button>
+          <div className='button-group-bottom-common'>
+            <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
+            <PermissionButton testKey='CUSTOMER_DELETE' className='button-group-bottom-2' onClick={this.onDelete.bind(this)}>删除</PermissionButton>
+            <PermissionButton testKey='CUSTOMER_EDIT' className='button-group-bottom-3' onClick={this.editBtnClick.bind(this)}>编辑</PermissionButton>
           </div>
         </Spin>
       </div>
