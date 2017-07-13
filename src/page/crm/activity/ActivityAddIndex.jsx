@@ -33,20 +33,25 @@ class AddGroupChar extends React.Component {
 
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
-      labelCol:{ span: 2 },
-      wrapperCol:{ span:22 }
-    }
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
 
 
     return (
       <div className="activity-cent">
-        <div className="add-activity">
           <Card title = "活动信息:">
             <Form >
                 <FormItem {...formItemLayout} label="活动名称" >
                   {getFieldDecorator('name', {rules: [{ required: true, message: '请填写活动名称' }],
                   })(
-                    <Input className="input" />
+                    <Input />
                   )}
                 </FormItem>
               <FormItem {...formItemLayout} label="活动时间" >
@@ -57,29 +62,22 @@ class AddGroupChar extends React.Component {
               </FormItem>
               <FormItem {...formItemLayout} label={ "活动地点"}>
                 {getFieldDecorator('address', {rules: [{ required: true, message: '请填写活动地点！' }],
-                })(<Input className="input"/>
+                })(<Input/>
                 )}
               </FormItem>
               <FormItem {...formItemLayout} label={"活动内容"}>
                 {getFieldDecorator('content', {rules: [{ required: true, message: '请填写活动内容！' }],
-                })(<Input type="textarea" rows={6} className="input"/>
+                })(<Input type="textarea" rows={6} />
                 )}
               </FormItem>
             </Form>
-            <div>
-              <Row>
-                <Col offset={16} span={4}>
-                  <Link to='/crm/activity'>
-                    <Button className="backBtn"> 返回 </Button>
-                  </Link>
-                </Col>
-                <Col span={4}>
-                  <Button className="saveBtn"  onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
-                </Col>
-              </Row>
-            </div>
           </Card>
-        </div>
+          <div className="button-group-bottom-common">
+            <Link to='/crm/activity'>
+              <Button className="button-group-bottom-1"> 返回 </Button>
+            </Link>
+            <Button className="button-group-bottom-2"  onClick={ this.handleSubmit.bind(this) }> 创建 </Button>
+          </div>
       </div>
     )
   }

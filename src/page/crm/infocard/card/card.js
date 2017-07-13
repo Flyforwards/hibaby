@@ -29,7 +29,7 @@ class Card extends Component {
       dataIndex: 'salesDiscount',
       key: 'salesDiscount',
       render:(text,record,index)=>{
-        return text+'%';giot
+        return text+'%';
       }
     }, {
       title: '会员卡级别',
@@ -59,14 +59,13 @@ class Card extends Component {
       render: (text, record) => {
       const detail = !this.props.permissionAlias.contains('CARD_DETAIL');
       const del = !this.props.permissionAlias.contains('CARD_DELETE');
-      return (<span style={{cursor: 'pointer'}}>
-          <Link disabled={detail} className="firstA" to={{pathname: '/crm/card/detail', query: {dataId: record.id}}}
-                style={{marginRight: '20px'}}>查看</Link>
+      return (
+        <div className="operation-list">
+          <Link disabled={detail} className="one-link link-style" to={{pathname: '/crm/card/detail', query: {dataId: record.id}}} >查看</Link>
           <Popconfirm title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>
-             <Link disabled={del} className="firstB">删除</Link>
+             <Link disabled={del} className="two-link link-style">删除</Link>
           </Popconfirm>
-
-        </span>)
+        </div>)
       }
     }];
 
@@ -112,11 +111,9 @@ class Card extends Component {
       }
     };
     return (
-      <div className="infoCard">
-        <div className="card">
-          <CardFind permissionAlias style={{ clear:'both'}}/>
-          <Table class="cardTable" columns={this.columns} bordered rowKey="id" { ...tableProps }/>
-        </div>
+      <div className="info-card-cent">
+        <CardFind permissionAlias/>
+        <Table className='info-card-center' columns={this.columns} bordered rowKey="id" { ...tableProps }/>
       </div>
     )
   }

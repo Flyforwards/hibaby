@@ -230,20 +230,32 @@ class ActivityDetailIndex extends Component {
     const { form, item, signUserList,loading, signPagination, dispatch, shipCards, systemTime } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol:{ span: 2 },
-      wrapperCol:{ span:22 }
-    }
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
     const formTimeLayout = {
-      labelCol:{ span: 2 },
-      wrapperCol:{ span:4 }
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
     }
     const formItemsLayout = {
       labelCol:{ span: 7 },
       wrapperCol:{ span:15 }
     }
     const formChooseLayout = {
-      labelCol:{ span: 10 },
-      wrapperCol:{ span: 14 }
+      labelCol:{ span: 8 },
+      wrapperCol:{ span: 12 }
     }
     const formChooseOneLayout = {
       labelCol:{ span: 8 },
@@ -263,16 +275,16 @@ class ActivityDetailIndex extends Component {
     const del = !this.props.permissionAlias.contains('ACTIVITY_DELETE');
 
 
-    const edit_btn = (<Button key="1" disabled={edit} className="SaveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.edit.bind(this) }>编辑</Button>);
-    const del_btn = (<Button key="2" disabled={del} className="delBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.deleteActivity.bind(this) }>删除</Button>);
-    const app_btn = (<Button key="3" disabled={appoint} className="subscribeBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.appointment.bind(this) } >预约</Button>);
-    const back_btn = (<Button key="4" className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)}>返回</Button>);
+    const edit_btn = (<Button key="1" disabled={edit} className="button-group-bottom-4" onClick={ this.edit.bind(this) }>编辑</Button>);
+    const del_btn = (<Button key="2" disabled={del} className="button-group-bottom-3" onClick={ this.deleteActivity.bind(this) }>删除</Button>);
+    const app_btn = (<Button key="3" disabled={appoint} className="button-group-bottom-2" onClick={ this.appointment.bind(this) } >预约</Button>);
+    const back_btn = (<Button key="4" className="button-group-bottom-1" onClick={this.back.bind(this)}>返回</Button>);
 
 
     let buttons = (
-      <div className="button-wrapper">
+      <div className="button-group-bottom-common">
         {
-          [edit_btn,app_btn,back_btn]
+          [back_btn,app_btn,edit_btn]
         }
       </div>)
     if (item != null) {
@@ -286,23 +298,19 @@ class ActivityDetailIndex extends Component {
       // 与当前时间比对，后面会与服务器时间对比, 活动已经开始，和已经有预约的情况无法删除活动
       if (item.activityTime < systemTime ) {
         buttons = (
-          <div className="button-wrapper">
-            {
-              [app_btn,back_btn]
-            }
+          <div className="button-group-bottom-common">
+            { [back_btn,app_btn] }
           </div>)
       } else {
         if ( item.appointments > 0 ) {
-          buttons = (<div className="button-wrapper">
-            {
-              [edit_btn,app_btn,back_btn]
-            }
+          buttons = (
+            <div className="button-group-bottom-common">
+            { [back_btn,app_btn,edit_btn] }
           </div>)
         } else {
-          buttons = (<div className="button-wrapper">
-            {
-              [edit_btn,del_btn,app_btn,back_btn]
-            }
+          buttons = (
+            <div className="button-group-bottom-common">
+            { [back_btn,app_btn,del_btn,edit_btn,] }
           </div>)
         }
       }
@@ -341,7 +349,6 @@ class ActivityDetailIndex extends Component {
 
     return (
         <div className="activity-cent">
-          <div className="add-activity">
           <Card>
             <div className="card-title">
               <h3>活动信息:</h3>
@@ -361,9 +368,7 @@ class ActivityDetailIndex extends Component {
               </FormItem>
             </Form>
           </Card>
-          </div>
-          <div className="add-activity">
-          <Card>
+          <Card style={{ marginTop: '10px'}}>
             <div className="card-title">
               <h3>预约客户:</h3>
             </div>
@@ -386,28 +391,18 @@ class ActivityDetailIndex extends Component {
               </Col>
             </Row>
             <Form>
-            <div>
-              <Row className="topTitleInfo">
-                <Col span={10} style={{float:'left'}}>
-                  <FormItem {...formChooseLayout} style={{height:'40px',lineHeight:'40px'}} >
-                    {getFieldDecorator('sear', {rules: [{ required: false }],
-                    })(
-                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={4} style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
-                  </span>
-                </Col>
-                <Col span={4} style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 0, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
-                  </span>
-                </Col>
-              </Row>
-            </div>
+              <div style={{ position: 'relative'}}>
+                <FormItem {...formChooseLayout}>
+                  {getFieldDecorator('sear', {rules: [{ required: false }],
+                  })(
+                    <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
+                  )}
+                </FormItem>
+                <div className="activity-operation">
+                  <Button className='button-group-2' onClick={ this.onSearch.bind(this)}>查询</Button>
+                  <Button className='button-group-1' onClick={ this.reset.bind(this)}>重置</Button>
+                </div>
+              </div>
               <Row className="titleInfo">
                 <Col span={4} style={{width:'140px'}}>
                     <FormItem {...formChooseOneLayout}  label="年龄" >
@@ -475,7 +470,6 @@ class ActivityDetailIndex extends Component {
           <AppointmentMemberFrom onCancel={ this.onCancel.bind(this) } visible={ this.state.memberVisible } selectRecord={ item } from={ false}/>
           <AppointmentNotMemberFrom onCancel={ this.onCancel.bind(this) }  visible={ this.state.notMemberVisible } selectRecord={ item }  from={ false}/>
           <AlertModalFrom  onCancel={ this.onCancel.bind(this) } modalTitle="是否确定删除此活动"  visible={ this.state.alertModalVisible } onOk={ this.onOk.bind(this, item) }/>
-          </div>
         </div>
     )
   }

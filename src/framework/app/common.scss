@@ -375,6 +375,14 @@
   }
 }
 
+.three-link {
+  display: inline-block;
+  color: #b67233;
+  &:hover,&:visited,&:focus,&:active {
+    color:#f89d2d;
+  }
+}
+
 .button-group-bottom-common {
   float: right;
   margin-top: 10px;

@@ -175,8 +175,8 @@ class AppointmentMemberFrom extends Component {
       },
     }
     const formChooseLayout = {
-      labelCol:{ span: 10 },
-      wrapperCol:{ span: 14 }
+      labelCol:{ span: 12 },
+      wrapperCol:{ span: 12 }
     }
     const formChooseOneLayout = {
       labelCol:{ span: 8 },
@@ -195,27 +195,17 @@ class AppointmentMemberFrom extends Component {
       >
         <div className="activity-cent">
           <Form>
-            <div className="activityTop">
-              <Row>
-                <Col className="selectTop" span={10} style={{float:'left'}}>
-                  <FormItem {...formChooseLayout} style={{height:'40px',lineHeight:'40px'}} >
-                    {getFieldDecorator('sear', {rules: [{ required: false }],
-                    })(
-                      <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号" style={{height:'40px'}}/>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col className="findBtn" style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.onSearch.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 102, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>查询</Button>
-                  </span>
-                </Col>
-                <Col className="resetBtn" style={{ float:'left'}}>
-                  <span>
-                    <Button onClick={ this.reset.bind(this)} style={{width:'136px',backgroundColor:'rgba(255, 0, 0, 1)',height:'40px',lineHeight:'40px',color:'#ffffff'}}>重置</Button>
-                  </span>
-                </Col>
-              </Row>
+            <div style={{ position: 'relative'}}>
+              <FormItem {...formChooseLayout}>
+                {getFieldDecorator('sear', {rules: [{ required: false }],
+                })(
+                  <Input placeholder="输入客户编号、客户姓名、联系方式、合同编号"/>
+                )}
+              </FormItem>
+              <div className="activity-operation">
+                <Button className='button-group-2' onClick={ this.onSearch.bind(this)}>查询</Button>
+                <Button className='button-group-1' onClick={ this.reset.bind(this)}>重置</Button>
+              </div>
             </div>
             <div className="activityTitle">
             <Row>

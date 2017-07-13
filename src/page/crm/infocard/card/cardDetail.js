@@ -1,16 +1,18 @@
 /**
  * Created by Flyforwards on 2017/5/25.
  */
+
 import DictionarySelect from 'common/dictionary_select';
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Select, Button, Form, Input, Icon, Card, Radio, Row, Col, Popconfirm, DatePicker, Modal, InputNumber, Table } from 'antd';
+import { Link } from 'react-router';
+import CustomerByCard from './CustomerByCard';
+import './card.scss';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-import { Link } from 'react-router';
-import CustomerByCard from './customerByCard';
-import './card.scss';
+
 const createForm = Form.create
 import { parse } from 'qs'
 
@@ -159,8 +161,8 @@ class CardDetail extends Component {
       </Row>
     }
     return (
-      <div className="infoCard">
-      <div className="cardDetail" style={{ 'padding': '20px' }}>
+      <div className="info-card-cent">
+      <div className="cardDetail" >
         <Card title="会员卡信息" style={{ width: '100%' }}>
           <Form>
             <Row>
@@ -223,25 +225,18 @@ class CardDetail extends Component {
                 </FormItem>
               </Col>
             </Row>
-            <Row>
-              <CustomerByCard {...{loading, userPagination, list}} />
-            </Row>
-            <Row style={{marginTop:'16px'}}>
-              <Col span = { 12}>
-              </Col>
-              <Col span = { 4}>
-                <Link to="/crm/card"><Button className="BackBtn">返回</Button></Link>
-              </Col>
-              <Col span = { 4 }>
-                  <Button disabled={del} className="delbtn" onClick={this.onDelete.bind(this)}>删除</Button>
-              </Col>
-              <Col span = { 4 }>
-                <Link to={{ pathname: '/crm/card/edit', query: values }} ><Button disabled={edit} className="SaveBtn">编辑</Button></Link>
-              </Col>
-            </Row>
           </Form>
+          <CustomerByCard {...{loading, userPagination, list}} />
         </Card>
-
+        <div className="button-group-bottom-common">
+          <Link to="/crm/card">
+            <Button className="button-group-bottom-1">返回</Button>
+          </Link>
+          <Button disabled={del} className="button-group-bottom-2" onClick={this.onDelete.bind(this)}>删除</Button>
+          <Link to={{ pathname: '/crm/card/edit', query: values }} >
+            <Button disabled={edit} className="button-group-bottom-3">编辑</Button>
+          </Link>
+        </div>
         <Modal
           title="提示"
           wrapClassName="vertical-center-modal"

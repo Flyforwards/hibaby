@@ -47,10 +47,10 @@ class Commodityed extends Component {
             const detail = !this.props.permissionAlias.contains('COMMODITY_DETAIL');
             const del = !this.props.permissionAlias.contains('COMMODITY_DELETE');
             return (
-                <span>
-                  <Link disabled={detail} to={{ pathname: '/crm/commodity/detail', query: { commodity:record.id } }} className="twoB">查看</Link>
-                  <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
-                </span>
+                <div className="operation-list">
+                  <Link disabled={detail}  className="one-link link-style" to={{ pathname: '/crm/commodity/detail', query: { commodity:record.id } }}>查看</Link>
+                  <Link disabled={del} className="two-link link-style" onClick={this.delete.bind(this,record)}>删除</Link>
+                </div>
             );
           },
         }];
@@ -96,10 +96,12 @@ class Commodityed extends Component {
         const add = !this.props.permissionAlias.contains('COMMODITY_ADD');
         return (
             <div className="commodity">
-                <div className="commodityButton"><Link to="/crm/commodity/add"><Button disabled={add} type="primary">添加</Button></Link></div>
-                <div className="commodityTabal">
-                  <Table {...tableProps} rowKey = { record=>record.id } bordered columns={ columns } />
+                <div className="top-button">
+                  <Link to="/crm/commodity/add">
+                    <Button disabled={add} className='one-button' style={{ float: 'right', marginBottom: '10px'}}>添加</Button>
+                  </Link>
                 </div>
+                <Table className='commodity-table' {...tableProps} rowKey = { record=>record.id } bordered columns={ columns } />
                 <Delete
                    visible={ this.state.DeleteVisible }
                    onCancel ={ this.handleDeleteCancel.bind(this) }

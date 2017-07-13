@@ -45,9 +45,15 @@ class ActivityDetailIndex extends Component {
     const { editItem, editSignUserList,loading, dispatch, editSignPagination } = this.props;
 
     const formItemLayout = {
-      labelCol:{ span: 2 },
-      wrapperCol:{ span:22 }
-    }
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
 
 
     getFieldDecorator('id', { initialValue: editItem?editItem.id:0 });
@@ -119,17 +125,13 @@ class ActivityDetailIndex extends Component {
     }
     return (
       <div className="activity-cent">
-        <div className="add-activity">
         {
           activityInfo
         }
-        </div>
-        <div className="add-activity">
-          <ReservedUserComponent editItem={ editItem } tableProps={ tableProps }/>
-          <div className="button-wrapper">
-            <Button className="saveBtn" style={{ float:"right", marginRight: "20px" }} onClick={ this.saveEdit.bind(this) } >保存</Button>
-            <Button className="backBtn" style={{ float:"right", marginRight: "20px" }} onClick={this.back.bind(this)} >返回</Button>
-          </div>
+        <ReservedUserComponent className={{ marginTop: '10px' }} editItem={ editItem } tableProps={ tableProps }/>
+        <div className="button-group-bottom-common">
+          <Button className="button-group-bottom-1" onClick={this.back.bind(this)} >返回</Button>
+          <Button className="button-group-bottom-2" onClick={ this.saveEdit.bind(this) } >保存</Button>
         </div>
       </div>
     )

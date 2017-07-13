@@ -21,9 +21,9 @@ class AddCommodityed extends Component {
     }
     componentWillMount() {
     }
-     onSelectChange = (selectedRowKeys,selectedRows) => {
-        this.setState({ selectedRows });
-      }
+    onSelectChange = (selectedRowKeys,selectedRows) => {
+      this.setState({ selectedRows });
+    }
     componentDidMount() {
     }
     chkvalue(e){
@@ -128,7 +128,7 @@ class AddCommodityed extends Component {
                     pattern: /^\d{0,7}$/, message: '请输入0-7位数字'
                   }],
                     })(
-                    <Input 
+                    <Input
                       addonBefore="￥"
                       addonAfter='元'
                     />
@@ -151,7 +151,7 @@ class AddCommodityed extends Component {
                   {getFieldDecorator('nameLetter', {
                     initialValue:this.state.str?str:null,
                     })(
-                    <Input 
+                    <Input
                     disabled = {true}
                     />
                     )}
@@ -166,42 +166,15 @@ class AddCommodityed extends Component {
                   </FormItem>
                 </Form>
                 </div>
-                <Button onClick={this.handleSubmit}>返回</Button>
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+              <div className="button-group-bottom-common">
+                <Button className='button-group-bottom-1' onClick={this.handleSubmit}>返回</Button>
+                <Button className="button-group-bottom-2" onClick={this.handleAdd.bind(this)}>保存</Button>
+              </div>
             </div>
         )
     }
 }
-function AddCommodity({
-  dispatch,
-  serviceListByPage,
-  roomData,
-  selectData,
-  getDictionary,
-  chineseToPinyin
-}) {
-  return ( < div >
-    <AddCommodityed dispatch = {
-      dispatch
-    }
-    selectData = {
-      selectData
-    }
-    serviceListByPage = {
-      serviceListByPage
-    }
-    roomData = {
-      roomData
-    }
-    getDictionary = {
-      getDictionary
-    }
-    chineseToPinyin = {
-      chineseToPinyin
-    }
-    /></div>
-  )
-}
+
 function mapStateToProps(state) {
   const {
     serviceListByPage,

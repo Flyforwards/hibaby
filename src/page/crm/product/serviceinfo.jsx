@@ -6,10 +6,9 @@ import { Icon, Card, Button,Table } from 'antd'
 import { Link} from 'react-router'
 import {routerRedux} from 'dva/router';
 import './serviceinfo.scss'
-import Current from '../../Current'
 import AlertModalFrom from 'common/AlertModalFrom'
 
-class Serviceinfoed extends Component {
+class Serviceinfo extends Component {
 
     constructor(props) {
         super(props)
@@ -70,10 +69,10 @@ class Serviceinfoed extends Component {
             const detail = !this.props.permissionAlias.contains('SERVICEINFO_DETAIL');
             const del = !this.props.permissionAlias.contains('SERVICEINFO_DELETE');
             return (
-                <span>
-                  <Link disabled={detail} to={{ pathname: '/crm/service-info/detail', query: { data:record.id } }}>查看</Link>
-                  <Link disabled={del} className="twoA" onClick={this.delete.bind(this,record)}>删除</Link>
-                </span>
+            <div>
+              <Link className='one-link link-style' disabled={detail} to={{ pathname: '/crm/service-info/detail', query: { data:record.id } }}>查看</Link>
+              <Link className='two-link link-style' disabled={del} onClick={this.delete.bind(this,record)}>删除</Link>
+            </div>
             );
           },
         }];
@@ -118,6 +117,7 @@ class Serviceinfoed extends Component {
         const tableProps = {
           loading: loading.effects['packageInfo/listByPage'],
           dataSource : list ,
+          columns,
           pagination,
           onChange (page) {
             const { pathname } = location
@@ -133,10 +133,12 @@ class Serviceinfoed extends Component {
         const add = !this.props.permissionAlias.contains('SERVICEINFO_ADD');
         return (
             <div className="serviceinfo">
-                <div className="serviceinfoButton"><Link to="/crm/service-info/add"><Button disabled={add} type="primary">添加</Button></Link></div>
-                <div className="serviceinfoTabal">
-                    <Table {...tableProps} rowKey = { record=>record.id } bordered dataSource={ list } columns={ columns } pagination = {pagination} />
+                <div className="top-button">
+                  <Link to="/crm/service-info/add">
+                    <Button className='one-button' style={{ float:'right', marginBottom:'10px'}} disabled={add}>添加</Button>
+                  </Link>
                 </div>
+                <Table className='serviceinfo-table' {...tableProps} rowKey = { record=>record.id } bordered/>
               <AlertModalFrom
                 visible ={ this.state.DeleteVisible }
                 onCancel ={ this.handleCreateModalCancel.bind(this) }
@@ -163,4 +165,4 @@ function mapStateToProps(state) {
     selectData
     };
 }
-export default connect(mapStateToProps)(Serviceinfoed)
+export default connect(mapStateToProps)(Serviceinfo)
