@@ -80,8 +80,6 @@ const monthStateView = (props) => {
   document.ondrop = (event) => {
     event.preventDefault();
 
-    console.log(dragUser)
-
     if(dragUser.status == 6){
       return
     }
@@ -718,7 +716,8 @@ const monthStateView = (props) => {
                    onDoubleClick={userBoxDbClickHandler}
                    onContextMenu={userBoxRightClickHandler}
               >
-                {users[i].customerName}
+                <span>{users[i].customerName}</span>
+
                 <a href="javascript:void(0)"
                    className="resizeBar"
                    title={users[i].dayCount + '天'}
