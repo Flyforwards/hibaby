@@ -8,7 +8,7 @@ class FileUpload extends React.Component {
     this.state = {
       previewVisible: false,
       previewImage: '',
-      defaultFileList : (typeof this.props.defaultFileList === 'object') ? this.props.defaultFileList : [],
+      defaultFileList : this.props.defaultFileList ,
       fileList: [],
     };
 
@@ -38,14 +38,15 @@ class FileUpload extends React.Component {
   handleCancel = () => this.setState({ previewVisible: false })
 
   handlePreview = (file) => {
+    console.log("file",file);
     this.setState({
-      previewImage: file.url || file.response.data.fileUrlList[0],
+      previewImage: file.url ?file.url: file.response.data.fileUrlList[0],
       previewVisible: true,
     });
   }
 
   onRemove = (file) => {
-    this.props.deleteImgFun(this.props.imgInputName,{name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
+    this.props.deleteImgFun({name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
   }
 
   handleChange = ( {file, fileList} ) => {
@@ -69,11 +70,12 @@ class FileUpload extends React.Component {
 
 
   render() {
-    const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
-
+    const { previewVisible, previewImage, fileList} = this.state;
+    const { defaultFileList } = this.props;
     return (
       <div>
         <Upload
+          key={defaultFileList}
           name="file"
           action="/crm/api/v1/uploadImg"
           headers={{'USER-TOKEN':session.get("token")}}

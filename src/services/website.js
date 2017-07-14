@@ -43,3 +43,10 @@ export function getBannerByType(values) {
     body:JSON.stringify(values)
   })
 }
+//获取初始列表
+export function getInitialList(values) {
+  return request('/crm/api/v1/web/banner/findList',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}

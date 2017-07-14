@@ -227,7 +227,7 @@ export default (app) => [
       })
     }
   },
-  //添加图片
+  //官网管理 ---添加banner图片
   {
     path: '/system/website-manage/add',
     getComponent: (location, cb) => {
@@ -237,7 +237,16 @@ export default (app) => [
       })
     }
   },
-
+  //官网管理---专家介绍
+  {
+    path:'/system/website-manage/expert',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/website'));
+        cb(null,require('page/system/website-manage/ExpertIntroduction.js'))
+      })
+    }
+  },
     //404
     {
       path: '/404',

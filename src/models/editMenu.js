@@ -900,7 +900,14 @@ export default {
           }
         });
         if (data.length != 0) {
-          yield put({
+          data[0].week == 0 ?
+            yield put({
+              type: 'getTopMenuByDay',
+              payload: {
+                'day': data[0].day,
+                'week': data[0].week
+              }
+            }) : yield put({
             type: 'getMenuByDay',
             payload: {
               'day': data[0].day,

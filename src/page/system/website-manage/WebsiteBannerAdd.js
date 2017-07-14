@@ -4,9 +4,10 @@
 import React from 'react';
 import { connect } from 'dva';
 import './WebsiteBanner.scss';
-import { Card,Input,Button ,Form,Col,Row,Select,Icon } from 'antd';
+import { Card,Input,Button ,Form,Col,Row,Select,Icon,message } from 'antd';
 import FileUpload from './fileUpload';
 import { Link } from 'react-router';
+import { routerRedux } from 'dva/router';
 import { queryURL } from '../../../utils/index.js';
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -17,29 +18,30 @@ const createForm = Form.create
 class WebsiteBannerAdd extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+      disabledBtn:false,
+    }
   }
 //添加图片
   onAddImg(...values){
-    console.log("addFun",values)
-    console.log("values",values[0].name)
-  this.props.dispatch({
+   this.props.dispatch({
     type:'websiteBanner/setImgList',
-    payload:values[0].name
-  })
+    payload:values
+   })
   }
 //删除图片
-  onDeleteImg(){
+  onDeleteImg(...values){
     this.props.dispatch({
       type:'websiteBanner/deleteImgList',
-      payload:{
-        values
-      }
+      payload:values
     })
   }
 
   //返回
   onBack() {
-
+    this.props.dispatch(routerRedux.push({
+      pathname:'/system/website-manage',
+    }));
   }
 
   //保存
@@ -47,14 +49,14 @@ class WebsiteBannerAdd extends React.Component {
     const { form ,dispatch } = this.props;
    // const id = queryURL("id");
     let imgString = '';
+    let imgUrls='';
     form.validateFields((err, values) => {
-    console.log("prosp",this.props.addImglist)
       this.props.addImglist ? this.props.addImglist.map((v,i) => {
-        imgString += v;
-        imgString += "|";
+        imgString += v[0].name;
+        imgUrls +=v[0].url;
       }):'';
-      values.url = this.props.addImglist ? imgString:'';
-      console.log("ssss",values);
+      values.img = this.props.addImglist ? imgString:'';
+      values.imgUrl = this.props.addImglist ? imgUrls:'';
       if (!err) {
         if(queryURL("id")){
           dispatch({
@@ -65,16 +67,27 @@ class WebsiteBannerAdd extends React.Component {
             }
           })
         }else{
-          console.log("进入")
           dispatch({
             type: 'websiteBanner/addBanner',
-            payload:{  ...values }
+            payload: values
           })
         }
       }
     })
   }
+  //验证图片
+  // checkImg = (rule, value, callback) => {
+  //   console.log("ssss",value)
+  //   if (value.length >=1) {
+  //     callback();
+  //     return;
+  //   }else{
+  //     callback('请上传文件');
+  //   }
+  //
+  // }
   render(){
+    const { disabledBtn ,defaultFileList,ontListType,addImglist,selectAble} = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol:{ span: 6 },
@@ -87,6 +100,7 @@ class WebsiteBannerAdd extends React.Component {
             <Col span={12} style = {{width:300}}>
           <FormItem label="模块类名" {...formItemLayout}>
             {getFieldDecorator('type', {
+              initialValue:ontListType ? ontListType+'':'',
               rules: [{ required: true, message: '请选择模块类名' }]
             })(
               <Select
@@ -95,7 +109,7 @@ class WebsiteBannerAdd extends React.Component {
                 placeholder="请选择"
                 optionFilterProp="children"
                 filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                disabled={false}
+                disabled={selectAble}
               >
                 <Option key="1">首页</Option>
                 <Option key="2">hibaby服务</Option>
@@ -114,10 +128,11 @@ class WebsiteBannerAdd extends React.Component {
             {...formItemLayout}
           >
             {getFieldDecorator("url", {
-              rules: [{ required: false, message: '请上传图片' }]
+              //initialValue:addImglist?addImglist:'' ,
+              rules: [{ required: false }]
             })(
-              <FileUpload  addImgFun={this.onAddImg.bind(this)} deleteImgFun={this.onDeleteImg.bind(this)} imgInputName="url">
-                <Button key="1" className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+              <FileUpload  defaultFileList ={defaultFileList} addImgFun={this.onAddImg.bind(this)} deleteImgFun={this.onDeleteImg.bind(this)} imgInputName="url">
+                <Button key="1" disabled={disabledBtn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
               </FileUpload>
             )}
           </FormItem>
@@ -136,10 +151,13 @@ class WebsiteBannerAdd extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {addImglist} = state.websiteBanner;
-  console.log("返回值",addImglist);
+  const {addImglist,disabledBtn,defaultFileList,ontListType,selectAble} = state.websiteBanner;
   return {
     addImglist,
+    disabledBtn,
+    defaultFileList,
+    ontListType,
+    selectAble
   };
 }
 
