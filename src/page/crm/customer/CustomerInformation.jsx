@@ -5,7 +5,7 @@ import FileUpload from './fileUpload'
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
 
-import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table,Spin} from 'antd';
+import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table,Spin,message} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -671,7 +671,12 @@ function Remark(props) {
   }
 
   function handleOk(e)  {
-    dispatch({type:'addCustomer/addRemark',payload:(props.form.getFieldValue('tempRemark'))})
+    const str = props.form.getFieldValue('tempRemark') || '';
+    if(str.trim().length == 0){
+      message.error('您未输入任何内容')
+      return
+    }
+    dispatch({type:'addCustomer/addRemark',payload:str})
     props.form.resetFields(['tempRemark']);
   }
 
@@ -688,7 +693,12 @@ function Remark(props) {
         <Table bordered texta dataSource={remarkList} columns={remarkListColumns} />
 
         <Modal title="添加备注" visible={modal}
-               onOk={handleOk} onCancel={handleCancel}
+               footer={[
+                 <Button className='backBtn button-group-bottom-1' onClick={handleCancel}>取消</Button>,
+                 <Button className='saveBtn button-group-bottom-2' onClick={handleOk}>确定</Button>,
+               ]
+               }
+               onCancel={handleCancel}
         >
           <FormItem>
             {getFieldDecorator('tempRemark')(

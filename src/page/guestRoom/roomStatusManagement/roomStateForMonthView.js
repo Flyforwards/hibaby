@@ -238,7 +238,7 @@ const monthStateView = (props) => {
           }
 
           <Col span={5} offset={1}>
-            <Button className="addBtn" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
+            <Button className="button-group-1" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
           </Col>
         </Row>
       );
@@ -263,7 +263,7 @@ const monthStateView = (props) => {
           }
 
           <Col span={5} offset={1}>
-            <Button className="addBtn" onClick={addBtnClickHandler}>添加</Button>
+            <Button className="button-group-1" onClick={addBtnClickHandler}>添加</Button>
           </Col>
         </Row>
         {
@@ -312,7 +312,7 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="queryBtn" onClick={queryBtnClickHandler}>查询</Button>
+          <Button className="button-group-2" onClick={queryBtnClickHandler}>查询</Button>
         </Col>
       </Row>
     );
@@ -869,8 +869,8 @@ const monthStateView = (props) => {
 
     return (
       <div className="bottomBar">
-        <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
-        <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
+        <Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
+        <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>
       </div>
     )
   };
@@ -979,7 +979,7 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          <Button className="addCustomerBtn" onClick={addCustomer}>+ 添加客户</Button>
+          <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
         </div>
       </div>
     )

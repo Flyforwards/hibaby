@@ -189,29 +189,12 @@ function CustomerSearch(props) {
   const HeadSrarch = () =>{
     return(
       <Row>
-        <Col offset={1} span={15}>{searBar}</Col>
-        <Col span={4}>
-          <Row><Col span={23} offset={1}>
-            <Button onClick={ reset} style={{
-              width: '100%',
-              height: '40px',
-              lineHeight: '40px',
-              backgroundColor: 'rgba(255, 0, 0, 1)'
-            }}>重置</Button>
+        <Col offset={1} span={17}>{searBar}</Col>
+        <Col offset={1} span={5}>
+          <Row><Col>
+            <Button onClick={ reset} style={{float:'right'}} className='button-group-1'>重置</Button>
+            <Button onClick={ onSearch} style={{float:'right',marginRight:'10px'}} className='button-group-2'>查询</Button>
           </Col></Row>
-
-        </Col>
-        <Col span={4}>
-          <Row><Col span={23} offset={1}>
-            <Button onClick={ onSearch} style={{
-            width: '100%',
-            height: '40px',
-            lineHeight: '40px',
-            backgroundColor: 'rgba(255, 102, 0, 1)'}}>
-              查询
-            </Button>
-          </Col></Row>
-
         </Col>
       </Row>
     )
@@ -405,8 +388,8 @@ class addCustomer extends React.Component {
         closable={false}
         onCancel={this.handleCancel.bind(this)}
         footer={[
-          <Button className='backBtn' onClick={this.handleCancel.bind(this)}>取消</Button>,
-          <Button className='saveBtn' onClick={this.handleOk.bind(this)}>确定</Button>,
+          <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
+          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>,
         ]}
 
       >
@@ -516,7 +499,7 @@ function SearchForm(props){
       </Row>
       <Row>
         {cusFromItem(array[3])}
-        <Col offset={13} span={3}><Button className='btn' onClick={ onSearch}>查询</Button></Col>
+        <Col offset={13} span={3}><Button style={{float:'right'}} className='button-group-2' onClick={ onSearch}>查询</Button></Col>
       </Row>
     </div>
   )
@@ -618,8 +601,8 @@ class RowHouses extends React.Component{
         onCancel={this.handleCancel.bind(this)}
 
         footer={[
-          <Button className='backBtn' onClick={this.handleCancel.bind(this)}>取消</Button>,
-          <Button className='saveBtn' onClick={this.handleOk.bind(this)}>确定</Button>,
+          <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
+          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>,
         ]}
       >
         <SearchFormDiv packageAry={packageAry} dispatch={this.props.dispatch}/>
@@ -660,12 +643,12 @@ function RowHousesWay(props) {
       maskClosable
       onCancel={handleCancel}
       footer={[
-        <Button className='backBtn' key="back" onClick={handleCancel}>取消</Button>,
+        <Button className='button-group-bottom-1' key="back" onClick={handleCancel}>取消</Button>,
       ]}
     >
       <h3>请选择此客户的排房方式</h3>
-      <Button type="primary" className='btn' onClick={()=>handleCancel()}>手动排房</Button>
-      <Button type="primary" className='btn' onClick={()=>autoRowHouses()}>自动排房</Button>
+      <Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</Button>
     </Modal>
   )
 }

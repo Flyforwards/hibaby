@@ -186,8 +186,8 @@ function ScreenBar(props) {
         <Row style={{height: 50, width: '800px', overflow: 'hidden', display:'inline-block'}}>
           {twoDiv}
         </Row>
-        <Button className='btn' onClick={ onSearch}>查询</Button>
-        <Button className='btn' onClick={ reset}>重置</Button>
+        <Button className='button-group-2 btn' onClick={ onSearch}>查询</Button>
+        <Button className='button-group-1 btn' onClick={ reset}>重置</Button>
       </Card>
 
 
