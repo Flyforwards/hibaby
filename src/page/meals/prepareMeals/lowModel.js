@@ -24,20 +24,46 @@ class DynamicFieldSet extends Component {
     });
   }
   
-  add = (e) => {
-    const { form, menuInfoByType, dispatch } = this.props;
-    let { dishes } = menuInfoByType;
+  pushData = (num, dishes) => {
+    const { dispatch } = this.props;
     const length = dishes.length;
-    
-    
-    if (length < 7) {
+    if (length < num) {
       dishes.push({ isDel: true });
       dispatch({
         type: "prepareMeals/changeMenuInfoByType",
         payload: { dishes }
       })
     } else {
-      message.error('菜品不能超过7道！')
+      message.error(`菜品不能超过${num}道!`)
+    }
+  }
+  
+  add = (e) => {
+    const { menuInfoByType } = this.props;
+    let { dishes } = menuInfoByType;
+    
+    console.log(menuInfoByType, '??????')
+    switch (menuInfoByType.type) {
+      case 1:
+        this.pushData(7, dishes);
+        break;
+      case 2:
+        this.pushData(4, dishes);
+        break;
+      case 3:
+        this.pushData(6, dishes);
+        break;
+      case 4:
+        this.pushData(4, dishes);
+        break;
+      case 5:
+        this.pushData(6, dishes);
+        break;
+      case 6:
+        this.pushData(4, dishes);
+        break;
+      default:
+        this.pushData(7, dishes);
     }
   }
   
@@ -102,7 +128,7 @@ class DynamicFieldSet extends Component {
           {
             dishes.map((v, k) => {
               return (
-                <Col span={8} className="foodCol" key={v.dishesName&&v.dishesName + k}>
+                <Col span={8} className="foodCol" key={v.dishesName && v.dishesName + k}>
                   <FormItem label={`菜品${k + 1}`} {...formItemLayout} >
                     {getFieldDecorator(`name-${k}`, {
                       initialValue: v.dishesName && v.dishesName,
