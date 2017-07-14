@@ -79,12 +79,17 @@ const monthStateView = (props) => {
 
   document.ondrop = (event) => {
     event.preventDefault();
+
+    console.log(dragUser)
+
     if(dragUser.status == 6){
       return
     }
-    if((dragUser.isRepair == 1 )&& !dragUser.customerId){
+
+    if(dragUser.isRepair == 1 && dragUser.status == 0){
       return;
     }
+
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
@@ -455,8 +460,14 @@ const monthStateView = (props) => {
             return;
           }
 
+
+          if( e.target.dataset.isrepair == 1 && e.target.dataset.status == 0)
+          {
+            return
+          }
+
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4 || e.target.dataset.status == 6) {
             return;
           }
 
@@ -502,8 +513,13 @@ const monthStateView = (props) => {
             return;
           }
 
+          if( e.target.dataset.isrepair == 1 && e.target.dataset.status == 0)
+          {
+            return
+          }
+
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4  || e.target.dataset.status == 6) {
             return;
           }
 
@@ -550,7 +566,7 @@ const monthStateView = (props) => {
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
-          let isRepair = target.dataset.isRepair;
+          let isRepair = target.dataset.isrepair;
 
           if(status == 6){
             return
@@ -646,9 +662,10 @@ const monthStateView = (props) => {
         };
 
         const dragStart = (event, user) => {
+
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
-          console.log(user)
+
           event.target.classList.add("active");
 
           dispatch({
@@ -662,6 +679,7 @@ const monthStateView = (props) => {
                 endIndex: user.startIndex + user.dayCount - 1,
                 status: user.status,
                 startDate: user.startDate,
+                isRepair:user.isRepair,
                 endDate: parseInt(user.startDate) + (user.dayCount - 1) * 86400000,
                 roomIndex: roomIndex,
               },
@@ -695,7 +713,7 @@ const monthStateView = (props) => {
                    data-user-dayCount={users[i].dayCount}
                    data-start-date={users[i].startDate}
                    data-status={users[i].status}
-                   data-isRepair={users[i].isRepair}
+                   data-isrepair={users[i].isRepair}
                    onClick={userBoxClickHandler}
                    onDoubleClick={userBoxDbClickHandler}
                    onContextMenu={userBoxRightClickHandler}
