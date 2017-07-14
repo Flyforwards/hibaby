@@ -1,5 +1,9 @@
 .roomStatusDiv {
   padding: 10px;
+  .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner {
+    background-color: #b67233;
+    border-color: #b67233;
+  }
   .antCli {
     width: 100%;
     height: 40px;
@@ -41,10 +45,7 @@
         font: 14px "微软雅黑";
       }
     }
-    .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner {
-      background-color: #b67233;
-      border-color: #b67233;
-    }
+
     .SelectDiv {
       margin-top: 10px;
       min-width: 1150px;
