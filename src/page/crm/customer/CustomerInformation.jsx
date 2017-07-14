@@ -755,7 +755,10 @@ class customerInformation extends React.Component{
     if (!baseDict) return;
     if (exErr) return;
 
-    this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
+    this.props.dispatch({type:'addCustomer/validationInfo',payload:{baseDict:baseDict,exDict:exDict}})
+
+
+    // this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
 
   }
 
@@ -766,6 +769,35 @@ class customerInformation extends React.Component{
 
 
   render() {
+
+    if(this.props.users.validationStr){
+      let ary = this.props.users.validationStr.split(',')
+
+      ary.map(value=>{
+        if(value === 'name'){
+          this.refs.baseForm.setFieldsValue({
+            name: '',
+          });
+        }
+        if(value === 'contact'){
+          this.refs.baseForm.setFieldsValue({
+            contact: '',
+          });
+        }
+        if(value === 'contractNumber'){
+          this.refs.extensionForm.setFieldsValue({
+            contractNumber: '',
+          });
+        }
+      })
+
+      this.props.dispatch({
+        type:'addCustomer/setValidationStr',
+        payload:''
+      });
+    }
+
+
 
     return (
       <div className="customerContent">

@@ -74,6 +74,9 @@ export default {
     pageStatus(state, { payload: todo }){
       return {...state,isDetail:todo.data};
     },
+    setValidationStr(state, { payload: todo }){
+      return {...state,validationStr:todo};
+    },
     resetInput(state, { payload: todo }){
       let exdata = state.expandData;
       exdata[todo] = null
@@ -420,6 +423,58 @@ export default {
           }
         });
       }
+    },
+
+    *validationInfo({ payload: values },{ call, put ,select}) {
+
+      const state = yield select(state => state.addCustomer);
+
+      const {baseDict,exDict} = values;
+
+      let dict = {  "name": baseDict.name,"contact": baseDict.contact}
+
+      if(exDict){
+        dict.contractNumber = exDict.contractNumber;
+      }
+
+      if(state.editCustomer){
+        if(state.baseData){
+          dict.customerId = state.baseData.id;
+        }
+        if(state.expandData){
+          dict.customerExtendId =  state.expandData.id;
+        }
+      }
+
+      try {
+        const { data: { code, data ,err} } = yield call(addCustomerInformation.exitCustomer,dict);
+        if(code == 0){
+          console.log(data)
+          if(data){
+            let ary = data.split(',')
+            const tempDict = {contact:'客户电话',contractNumber:'合同编号',name:'客户姓名'}
+            let str = ''
+            ary.map(value=>{
+              str = str + ',' + tempDict[value]
+            })
+            str = str.substr(1)
+            message.error(str+'信息重复')
+
+            yield put({
+              type:'setValidationStr',
+              payload:data
+            });
+          }
+          else{
+            yield put({
+              type:'savaBaseInfo',
+              payload:values
+            });
+          }
+        }
+
+      }
+      catch (err){}
     },
 
 

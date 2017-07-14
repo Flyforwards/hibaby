@@ -29,6 +29,13 @@ export function updateCustomer(values) {
   })
 };
 
+//客户信息校验
+export function exitCustomer(values) {
+  return request('/crm/api/v1/customer/exitCustomer', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
 
 export function savaExtensionInfo(values) {
   return request('/crm/api/v1/customer/saveCustomerExtend', {
