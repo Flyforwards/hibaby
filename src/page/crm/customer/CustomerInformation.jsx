@@ -692,7 +692,7 @@ function Remark(props) {
         </Row>
         <Table bordered texta dataSource={remarkList} columns={remarkListColumns} />
 
-        <Modal title="添加备注" visible={modal}
+        <Modal title="添加备注" visible={modal} bodyStyle={{padding:0}}
                footer={[
                  <Button className='backBtn button-group-bottom-1' onClick={handleCancel}>取消</Button>,
                  <Button className='saveBtn button-group-bottom-2' onClick={handleOk}>确定</Button>,
@@ -700,9 +700,9 @@ function Remark(props) {
                }
                onCancel={handleCancel}
         >
-          <FormItem>
+          <FormItem style={{marginBottom:0}}>
             {getFieldDecorator('tempRemark')(
-              <Input type="textarea" rows={10} />
+              <Input  type="textarea" rows={10} />
             )}
           </FormItem>
         </Modal>
