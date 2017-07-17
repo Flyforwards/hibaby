@@ -7,6 +7,7 @@ import { local,session } from 'common/util/storage.js';
 import { parse } from 'qs';
 import * as websiteBanner from '../services/website';
 import { TypeKey } from '../page/system/website-manage/TypeKey';
+import { format,queryURL } from '../utils/index.js';
 
 export default {
   namespace:'websiteBanner',
@@ -24,11 +25,54 @@ export default {
     },
     //主标题 ---专家团队修改判断
     readAble:false,
+    newsImgList1:[],
+    newsImgList2:[],
+    img1Btn:false,
+    img2Btn:false,
+    modalVisible:false,
   },
   reducers:{
+    //改变modal状态
+    changModal(state,{payload:modalVisible}){
+      return { ...state,modalVisible:modalVisible}
+    },
     //改变select状态
     changeSelect(state,{payload:choiceSelect}){
       return { ...state,selectAble:choiceSelect}
+    },
+    //保存新闻上传图片1
+    setNewsImg1(state,{payload:todos}){
+      let newsArr1 = state.newsImgList1;
+      newsArr1.push(todos);
+      return{...state,newsImgList1:newsArr1,img1Btn:true};
+    },
+    //保存新闻上传图片2
+    setNewsImg2(state,{payload:todos}){
+      let newsArr2 = state.newsImgList2;
+      newsArr2.push(todos);
+      return{...state,newsImgList2:newsArr2,img2Btn:true};
+    },
+    //删除新闻图片1
+    deleteNewsImg1(state,{payload:todos}){
+      let newsArr1 = state.newsImgList1;
+      for(let i=0; i < newsArr1.length; i++) {
+        if(newsArr1[i].name == todos.name) {
+          newsArr1.splice(i, 1);
+          break;
+        }
+      }
+      return {...state,newsImgList1:newsArr1,img1Btn:false};
+    },
+    //删除新闻图片2
+    deleteNewsImg2(state,{payload:todos}){
+      let newsArr2 = state.newsImgList2;
+      for(let i=0; i < newsArr2.length; i++) {
+        if(newsArr2[i].name == todos.name) {
+          newsArr2.splice(i, 1);
+          break;
+        }
+      }
+      return {...state,newsImgList2:newsArr2,img2Btn:false};
     },
     //保存图片
     setImgList(state,{payload:todo}){
@@ -79,15 +123,32 @@ export default {
     },
     //保存一个专家信息
     saveOneExpert(state,{payload:{data:oneExpertMsg}}){
-      if(oneExpertMsg.type = "1-1"){
-        return {...state,oneExpertTitleMsg:oneExpertMsg,readAble:true};
-      }else{
-        return {...state,oneExpertMsg,readAble:false};
-      }
-
+        return {...state,oneExpertTitleMsg:oneExpertMsg};
     },
     //根据ID获取的信息
-    saveExpertById(state,{payload:{data,ExpertIdMsg}}){
+    saveExpertById(state,{payload:{data:ExpertIdMsg}}){
+      if(ExpertIdMsg != null && ExpertIdMsg.id !=undefined ){
+        console.log("1111111111111111111")
+        let defaultFileLists1=[{
+          uid:0,
+          name:ExpertIdMsg.img1,
+          url:ExpertIdMsg.img1Url,
+        }];
+        let defaultFileLists2 = [{
+          uid:1,
+          name:ExpertIdMsg.img2,
+          url:ExpertIdMsg.img2Url,
+        }]
+        let ontListType = ExpertIdMsg.type;
+        return { ...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg};
+      }else{
+        console.log("222222222222222")
+        let defaultFileLists1=null;
+        let defaultFileLists2=null;
+        let ontListType = '';
+        return { ...state,defaultFileLists2,defaultFileLists1,img1Btn:false,img2Btn:false,ExpertIdMsg};
+      }
+
       return { ...state,ExpertIdMsg};
     }
   },
@@ -166,27 +227,46 @@ export default {
     //首页 ---- 专家团队
     //获取专家团队初始列表
     *getExpertInitialList({payload:values},{call,put}){
-      const {data:{data,code}} = yield call(websiteBanner.getExpertInitialList,values);
-      if(code == 0){
-        yield put({
-          type:'saveExpertInitialList',
-          payload:{
-            data
-          }
-        })
+      if(queryURL('type2')){
+        const type = queryURL('type2');
+        const value = {...values,type};
+        const {data:{data,code}} = yield call(websiteBanner.getExpertInitialList,value);
+        if(code == 0){
+          yield put({
+            type:'saveExpertInitialList',
+            payload:{
+              data
+            }
+          })
+        }
+      }else{
+        const {data:{data,code}} = yield call(websiteBanner.getExpertInitialList,values);
+        if(code == 0){
+          yield put({
+            type:'saveExpertInitialList',
+            payload:{
+              data
+            }
+          })
+        }
       }
     },
     //新增专家
     *addExpert({payload:values},{call,put}){
       const {data:{data,code}} = yield call(websiteBanner.addExpert,values);
       if(code == 0){
+        history.go(-1);
         message.success("添加成功");
+
       }
     },
     //删除专家
     *deleteExpert({payload:values},{call,put}){
       const {data:{data,code}} = yield call(websiteBanner.deleteExpert,values);
       if(code == 0) {
+        yield put({
+          type:'getExpertInitialList'
+        });
         message.success("删除成功");
       }
     },
@@ -216,9 +296,26 @@ export default {
     },
     //修改专家信息
     *updateExpert({payload:values},{call,put}){
+      // const type1 = queryURL('type1');
+      // const type2 =queryURL('type2');
       const { data:{data,code}} = yield call(websiteBanner.updateExpert,values);
       if(code == 0) {
         message.success("更新成功");
+        if(queryURL('type1')){
+          yield put({
+            type:'getExpertByOneType',
+            payload:{
+              "str":queryURL('type1'),
+            }
+
+          });
+        }
+        yield put({
+          type:'changModal',
+          paylaod:{
+            "modalVisible":false,
+          }
+        })
       }
     }
 
@@ -262,19 +359,46 @@ export default {
           })
         }
         if(pathname === '/system/website-manage/expert'){
-          console.log("typekey",TypeKey)
-          dispatch({
-            type:'getExpertInitialList',
-            payload:{
-              "str":TypeKey.EXPERTS,
-            }
-          });
+          console.log("11111111",query.type2)
+          if(query.type2){
+            dispatch({
+              type:'getExpertInitialList',
+              payload:{
+                "str":query.type2,
+              }
+            });
+          }else{
+            dispatch({
+              type:'saveExpertInitialList',
+              payload:{
+                data:[]
+              }
+            })
+          }
           dispatch({
             type:'getExpertByOneType',
             payload:{
-              "str":TypeKey.EXPERT,
+              "str":query.type1,
             }
           })
+        }
+        if(pathname === '/system/website-manage/addExpert'){
+          if(query.id){
+            dispatch({
+              type:'getExpertById',
+              payload:{
+                "dataId":query.id,
+              }
+            })
+          }else{
+            dispatch({
+              type:'saveExpertById',
+              payload:{
+                data:[],
+              }
+            })
+          }
+
         }
       })
     }

@@ -94,7 +94,7 @@ export function getExpertById(values) {
 
 //修改专家信息
 export function updateExpert(values) {
-  return request('/crm/api/v1/web/news/findOneByType',{
+  return request('/crm/api/v1/web/news/update',{
     method:'POST',
     body:JSON.stringify(values)
   })
