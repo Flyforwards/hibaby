@@ -247,6 +247,16 @@ export default (app) => [
       })
     }
   },
+  //官网管理---妈妈课程
+  {
+    path:'/system/website-manage/course',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/website'));
+        cb(null,require('page/system/website-manage/WebCourse.js'))
+      })
+    }
+  },
     //404
     {
       path: '/404',
