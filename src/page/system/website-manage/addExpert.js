@@ -199,7 +199,6 @@ class AddExpert extends React.Component{
 function mapStateToProps(state){
   const {ExpertIdMsg,newsImgList1,newsImgList2,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = state.websiteBanner;
   console.log("img1",defaultFileLists1,defaultFileLists2)
-  console.log("values===========",ExpertIdMsg);
   return {
     img1Btn,
     defaultFileLists1,

@@ -41,13 +41,14 @@ export default {
     },
     //保存新闻上传图片1
     setNewsImg1(state,{payload:todos}){
-      let newsArr1 = state.newsImgList1;
+    console.log("todos",todos);
+      let newsArr1 = state.newsImgList1 ? state.newsImgList1:[];
       newsArr1.push(todos);
       return{...state,newsImgList1:newsArr1,img1Btn:true};
     },
     //保存新闻上传图片2
     setNewsImg2(state,{payload:todos}){
-      let newsArr2 = state.newsImgList2;
+      let newsArr2 = state.newsImgList2 ? state.newsImgList2:[];
       newsArr2.push(todos);
       return{...state,newsImgList2:newsArr2,img2Btn:true};
     },
@@ -139,7 +140,7 @@ export default {
           url:ExpertIdMsg.img2Url,
         }]
         let ontListType = ExpertIdMsg.type;
-        return { ...state,defaultFileLists1,defaultFileLists2,newsImgList1:defaultFileLists1,newsImgList2:defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg};
+        return { ...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg};
       }else{
         console.log("222222222222222")
         let defaultFileLists1=null;
