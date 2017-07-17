@@ -140,7 +140,7 @@ export default {
           url:ExpertIdMsg.img2Url,
         }]
         let ontListType = ExpertIdMsg.type;
-        return { ...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg};
+        return { ...state,defaultFileLists1,defaultFileLists2,newsImgList1:defaultFileLists1,newsImgList2:defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg};
       }else{
         console.log("222222222222222")
         let defaultFileLists1=null;
@@ -148,8 +148,6 @@ export default {
         let ontListType = '';
         return { ...state,defaultFileLists2,defaultFileLists1,img1Btn:false,img2Btn:false,ExpertIdMsg};
       }
-
-      return { ...state,ExpertIdMsg};
     }
   },
   effects:{

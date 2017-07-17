@@ -29,15 +29,28 @@ class AddExpert extends React.Component{
     let img1Urls='';
     let img2Urls='';
     form.validateFields((err, values) => {
+      console.log("=================================", this.props.newsImgList1)
       this.props.newsImgList1 ? this.props.newsImgList1.map((v,i) => {
-        img1String += v[0].name;
-        img1Urls +=v[0].url;
+        if(v.length && v.length>0){
+          img1String += v[0].name;
+          img1Urls +=v[0].url;
+        }else{
+          img1String += v.name;
+          img1Urls +=v.url;
+        }
+
       }):'';
       values.img1 = this.props.newsImgList1 ? img1String:'';
       values.img1Url = this.props.newsImgList1 ? img1Urls:'';
       this.props.newsImgList2 ? this.props.newsImgList2.map((v,i) => {
-        img2String += v[0].name;
-        img2Urls +=v[0].url;
+        if(v.length && v.length > 0){
+          img2String += v[0].name;
+          img2Urls +=v[0].url;
+        }else{
+          img2String += v.name;
+          img2Urls +=v.url;
+        }
+
       }):'';
       values.img2 = this.props.newsImgList2 ? img2String:'';
       values.img2Url = this.props.newsImgList2 ? img2Urls:'';
@@ -148,7 +161,7 @@ class AddExpert extends React.Component{
               <Col span={22} style={{width:'401px' }}>
                 <FormItem label="原图上传" {...formRadioItemLayout}>
                   {getFieldDecorator('img1', {
-                    initialValue: ExpertIdMsg ? ExpertIdMsg.img1 : '' ,
+                   initialValue: defaultFileLists1 ? defaultFileLists1 : '' ,
                     rules: [{ required: false, message: '请选择原图' }]
                   })(
                     <FileUpload  defaultFileList={defaultFileLists1} addImgFun={this.onAddImg1.bind(this)} deleteImgFun={this.onDeleteImg1.bind(this)} imgInputName="">
@@ -162,7 +175,7 @@ class AddExpert extends React.Component{
               <Col span={22} style={{width:'401px' }}>
                 <FormItem label="缩略图上传" {...formRadioItemLayout}>
                   {getFieldDecorator('img2', {
-                    initialValue: ExpertIdMsg ?　ExpertIdMsg.img2 : '' ,
+                    initialValue: defaultFileLists2 ?　defaultFileLists2 : '' ,
                     rules: [{ required: false, message: '请选择缩略图' }]
                   })(
                     <FileUpload  defaultFileList={defaultFileLists2} addImgFun={this.onAddImg2.bind(this)} deleteImgFun={this.onDeleteImg2.bind(this)} imgInputName="img2">
@@ -185,6 +198,7 @@ class AddExpert extends React.Component{
 
 function mapStateToProps(state){
   const {ExpertIdMsg,newsImgList1,newsImgList2,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = state.websiteBanner;
+  console.log("img1",defaultFileLists1,defaultFileLists2)
   console.log("values===========",ExpertIdMsg);
   return {
     img1Btn,
