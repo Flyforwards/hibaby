@@ -252,7 +252,7 @@ export default (app) => [
     path:'/system/website-manage/course',
     getComponent:(location,cb) => {
       require.ensure([],(require) => {
-        registerModel(app,require('models/website'));
+        registerModel(app,require('models/webCourse'));
         cb(null,require('page/system/website-manage/WebCourse.js'))
       })
     }
