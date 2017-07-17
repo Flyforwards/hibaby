@@ -188,7 +188,7 @@ const monthStateView = (props) => {
       };
       const creatCheckbox = (month) => {
         return(
-          <Col span={4}><Checkbox  value={month}>{month}月</Checkbox></Col>
+          <Col key={month} span={4}><Checkbox  value={month}>{month}月</Checkbox></Col>
         )
       }
 
@@ -197,7 +197,7 @@ const monthStateView = (props) => {
       for(let i = 1 ;i<=12;i++){
         tempAry.push(creatCheckbox(i.toString()))
         if(i%6 == 0){
-          RowAry.push(<Row gutter={16} style={{height: "50%"}} type="flex" align="middle">{tempAry}</Row>)
+          RowAry.push(<Row key={'row'+i} gutter={16} style={{height: "50%"}} type="flex" align="middle">{tempAry}</Row>)
           tempAry = []
         }
       }
@@ -328,7 +328,7 @@ const monthStateView = (props) => {
         {
           statusExplain.map(item => {
             return (
-              <span>
+              <span key={item.name}>
                 <div style={{float: 'left'}}>{item.name}</div>
                 <div className="statusItem" style={{background: item.color}}/>
               </span>
@@ -471,7 +471,7 @@ const monthStateView = (props) => {
 
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
-          btn.className = "userBoxConfirm";
+          btn.className = "userBoxConfirm button-group-1";
 
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -523,7 +523,7 @@ const monthStateView = (props) => {
 
           let deleteBtn = document.createElement("div");
           deleteBtn.innerHTML = "取消预约";
-          deleteBtn.className = "userBoxConfirm";
+          deleteBtn.className = "userBoxConfirm button-group-1";
           e.target.appendChild(deleteBtn);
 
           deleteBtn.addEventListener("click", (e) => {
@@ -606,6 +606,18 @@ const monthStateView = (props) => {
                 }
               } catch (e) {
                 return;
+              }
+            }
+            else if (tempUnit < 0) {
+              if(status == 4){
+                let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
+
+                console.log(moment.unix(roomDate/1000).format('YYYY-MM-DD'))
+
+                  if(moment().isAfter(moment.unix(roomDate/1000),'day')){
+                  message.error("无法将出所日期移动到今天以前");
+                  return;
+                }
               }
             }
 
@@ -695,7 +707,7 @@ const monthStateView = (props) => {
           + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
           + ')'}</div>
           result.push(
-            <Popover content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
+            <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
               <div className="userBox"
                    style={{
                      width: width,
@@ -768,7 +780,7 @@ const monthStateView = (props) => {
 
         for (let i = 1; i <= fiveDays; i++) {
           result.push(
-            <div className="fiveDayRuler" style={{
+            <div key={'fiveDayRuler'+i} className="fiveDayRuler" style={{
               width: 5 * UNIT_WIDTH + "px",
             }}>
               {i * 5}天
@@ -778,7 +790,7 @@ const monthStateView = (props) => {
 
         if (remainder) {
           result.push(
-            <div className="fiveDayRuler" style={{
+            <div key={'remainder'+i} className="fiveDayRuler" style={{
               width: remainder * UNIT_WIDTH + "px",
             }}>
             </div>
@@ -828,7 +840,7 @@ const monthStateView = (props) => {
                       {room.roomNo}
                     </div>
                     <div className="level">
-                      v{room.packageInfoLevels}
+                      {room.packageInfoLevels?`v${room.packageInfoLevels}`:''}
                     </div>
                   </div>
                 </div>

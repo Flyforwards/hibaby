@@ -1,0 +1,66 @@
+.permission-in-cent{
+  overflow: hidden;
+  .form-heard{
+    width: 100%;
+    background:#fff;
+    border-radius:5px;
+    overflow:hidden;
+    .ant-advanced-search-form .ant-form-item {
+      margin-bottom: 10px;
+      width: 220px;
+      float: left;
+      margin-left:10px;
+      margin-top:10px;
+      .ant-form-item-label{
+        width:70px;
+        float:left;
+        label{
+          font:14px "微软雅黑";
+        }
+      }
+      .ant-form-item-control-wrapper{
+        width:150px;
+        float:right;
+        .ant-input{
+          height:32px;
+        }
+      }
+    }
+    .button-group{
+      float: left;
+      margin:10px 0 0 10px;
+      .ant-btn {
+        margin-left: 10px;
+      }
+    }
+  }
+  .form-center{
+    width:100%;
+    height: auto;
+    margin-top:10px;
+    .ant-table-thead > tr > th {
+      background-color: rgba(102, 102, 102, 1);
+      font-weight: 500;
+      transition: background .3s ease;
+      text-align: center;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+    .ant-table-tbody > tr > td {
+      text-align:center;
+      background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-size: 14px;
+    }
+
+
+    .operation-list {
+      width: 100%;
+    }
+  }
+
+}

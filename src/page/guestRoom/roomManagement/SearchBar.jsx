@@ -78,8 +78,8 @@ function SearchBar(props) {
     searchDiv.push(
       <Col span={16}>
         <div className='option-list'>
-            <Button onClick={ onSearch} className='button-group-1'>查询</Button>
-            <Button onClick={ reset} className='button-group-2'>重置</Button>
+            <Button onClick={ onSearch} className='button-group-2'>查询</Button>
+            <Button onClick={ reset} className='button-group-1'>重置</Button>
             <Link to="/chamber/room/creatroom"><Button className='button-group-3'>建立房间</Button></Link>
         </div>
       </Col>
