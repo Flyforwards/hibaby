@@ -5,7 +5,7 @@ import FileUpload from './fileUpload'
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
 
-import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table,Spin} from 'antd';
+import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table,Spin,message} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -671,7 +671,12 @@ function Remark(props) {
   }
 
   function handleOk(e)  {
-    dispatch({type:'addCustomer/addRemark',payload:(props.form.getFieldValue('tempRemark'))})
+    const str = props.form.getFieldValue('tempRemark') || '';
+    if(str.trim().length == 0){
+      message.error('您未输入任何内容')
+      return
+    }
+    dispatch({type:'addCustomer/addRemark',payload:str})
     props.form.resetFields(['tempRemark']);
   }
 
@@ -687,12 +692,17 @@ function Remark(props) {
         </Row>
         <Table bordered texta dataSource={remarkList} columns={remarkListColumns} />
 
-        <Modal title="添加备注" visible={modal}
-               onOk={handleOk} onCancel={handleCancel}
+        <Modal title="添加备注" visible={modal} bodyStyle={{padding:0}}
+               footer={[
+                 <Button className='backBtn button-group-bottom-1' onClick={handleCancel}>取消</Button>,
+                 <Button className='saveBtn button-group-bottom-2' onClick={handleOk}>确定</Button>,
+               ]
+               }
+               onCancel={handleCancel}
         >
-          <FormItem>
+          <FormItem style={{marginBottom:0}}>
             {getFieldDecorator('tempRemark')(
-              <Input type="textarea" rows={10} />
+              <Input  type="textarea" rows={10} />
             )}
           </FormItem>
         </Modal>
@@ -755,7 +765,10 @@ class customerInformation extends React.Component{
     if (!baseDict) return;
     if (exErr) return;
 
-    this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
+    this.props.dispatch({type:'addCustomer/validationInfo',payload:{baseDict:baseDict,exDict:exDict}})
+
+
+    // this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
 
   }
 
@@ -766,6 +779,35 @@ class customerInformation extends React.Component{
 
 
   render() {
+
+    if(this.props.users.validationStr){
+      let ary = this.props.users.validationStr.split(',')
+
+      ary.map(value=>{
+        if(value === 'name'){
+          this.refs.baseForm.setFieldsValue({
+            name: '',
+          });
+        }
+        if(value === 'contact'){
+          this.refs.baseForm.setFieldsValue({
+            contact: '',
+          });
+        }
+        if(value === 'contractNumber'){
+          this.refs.extensionForm.setFieldsValue({
+            contractNumber: '',
+          });
+        }
+      })
+
+      this.props.dispatch({
+        type:'addCustomer/setValidationStr',
+        payload:''
+      });
+    }
+
+
 
     return (
       <div className="customerContent">

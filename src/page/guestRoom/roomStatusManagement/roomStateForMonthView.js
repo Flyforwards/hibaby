@@ -79,12 +79,15 @@ const monthStateView = (props) => {
 
   document.ondrop = (event) => {
     event.preventDefault();
+
     if(dragUser.status == 6){
       return
     }
-    if((dragUser.isRepair == 1 )&& !dragUser.customerId){
+
+    if(dragUser.isRepair == 1 && dragUser.status == 0){
       return;
     }
+
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
@@ -235,7 +238,7 @@ const monthStateView = (props) => {
           }
 
           <Col span={5} offset={1}>
-            <Button className="addBtn" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
+            <Button className="button-group-1" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
           </Col>
         </Row>
       );
@@ -260,7 +263,7 @@ const monthStateView = (props) => {
           }
 
           <Col span={5} offset={1}>
-            <Button className="addBtn" onClick={addBtnClickHandler}>添加</Button>
+            <Button className="button-group-1" onClick={addBtnClickHandler}>添加</Button>
           </Col>
         </Row>
         {
@@ -309,7 +312,7 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="queryBtn" onClick={queryBtnClickHandler}>查询</Button>
+          <Button className="button-group-2" onClick={queryBtnClickHandler}>查询</Button>
         </Col>
       </Row>
     );
@@ -455,8 +458,14 @@ const monthStateView = (props) => {
             return;
           }
 
+
+          if( e.target.dataset.isrepair == 1 && e.target.dataset.status == 0)
+          {
+            return
+          }
+
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4 || e.target.dataset.status == 6) {
             return;
           }
 
@@ -502,8 +511,13 @@ const monthStateView = (props) => {
             return;
           }
 
+          if( e.target.dataset.isrepair == 1 && e.target.dataset.status == 0)
+          {
+            return
+          }
+
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4  || e.target.dataset.status == 6) {
             return;
           }
 
@@ -550,7 +564,7 @@ const monthStateView = (props) => {
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
-          let isRepair = target.dataset.isRepair;
+          let isRepair = target.dataset.isrepair;
 
           if(status == 6){
             return
@@ -646,9 +660,10 @@ const monthStateView = (props) => {
         };
 
         const dragStart = (event, user) => {
+
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
-          console.log(user)
+
           event.target.classList.add("active");
 
           dispatch({
@@ -662,6 +677,7 @@ const monthStateView = (props) => {
                 endIndex: user.startIndex + user.dayCount - 1,
                 status: user.status,
                 startDate: user.startDate,
+                isRepair:user.isRepair,
                 endDate: parseInt(user.startDate) + (user.dayCount - 1) * 86400000,
                 roomIndex: roomIndex,
               },
@@ -695,12 +711,13 @@ const monthStateView = (props) => {
                    data-user-dayCount={users[i].dayCount}
                    data-start-date={users[i].startDate}
                    data-status={users[i].status}
-                   data-isRepair={users[i].isRepair}
+                   data-isrepair={users[i].isRepair}
                    onClick={userBoxClickHandler}
                    onDoubleClick={userBoxDbClickHandler}
                    onContextMenu={userBoxRightClickHandler}
               >
-                {users[i].customerName}
+                <span>{users[i].customerName}</span>
+
                 <a href="javascript:void(0)"
                    className="resizeBar"
                    title={users[i].dayCount + '天'}
@@ -852,8 +869,8 @@ const monthStateView = (props) => {
 
     return (
       <div className="bottomBar">
-        <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
-        <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
+        <Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
+        <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>
       </div>
     )
   };
@@ -962,7 +979,7 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          <Button className="addCustomerBtn" onClick={addCustomer}>+ 添加客户</Button>
+          <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
         </div>
       </div>
     )
