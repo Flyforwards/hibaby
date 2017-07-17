@@ -3,11 +3,10 @@
  */
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { local,session } from 'common/util/storage.js';
 import { parse } from 'qs';
 import * as websiteBanner from '../services/website';
 import { TypeKey } from '../page/system/website-manage/TypeKey';
-import { format,queryURL } from '../utils/index.js';
+import { format,queryURL } from '../utils/index';
 
 export default {
   namespace:'websiteBanner',
