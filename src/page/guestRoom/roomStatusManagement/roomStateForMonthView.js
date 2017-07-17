@@ -471,7 +471,7 @@ const monthStateView = (props) => {
 
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
-          btn.className = "userBoxConfirm";
+          btn.className = "userBoxConfirm button-group-1";
 
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -523,7 +523,7 @@ const monthStateView = (props) => {
 
           let deleteBtn = document.createElement("div");
           deleteBtn.innerHTML = "取消预约";
-          deleteBtn.className = "userBoxConfirm";
+          deleteBtn.className = "userBoxConfirm button-group-1";
           e.target.appendChild(deleteBtn);
 
           deleteBtn.addEventListener("click", (e) => {
@@ -828,7 +828,7 @@ const monthStateView = (props) => {
                       {room.roomNo}
                     </div>
                     <div className="level">
-                      v{room.packageInfoLevels}
+                      {room.packageInfoLevels?`v${room.packageInfoLevels}`:''}
                     </div>
                   </div>
                 </div>
