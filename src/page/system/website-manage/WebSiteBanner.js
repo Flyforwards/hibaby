@@ -74,16 +74,11 @@ class WebSiteBanner extends React.Component{
     const tableProps = {
       loading:loading,
       dataSource:initialList,
+      pagination:false,
     };
     return (
       <Card className="website-banner">
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
-
-
-
-
-
-
           <Link to="/system/website-manage/add">
             <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>新增</Button>
           </Link>

@@ -6,6 +6,7 @@ import { message } from 'antd';
 import { local,session } from 'common/util/storage.js';
 import { parse } from 'qs';
 import * as websiteBanner from '../services/website';
+import { TypeKey } from '../page/system/website-manage/TypeKey';
 
 export default {
   namespace:'websiteBanner',
@@ -14,6 +15,15 @@ export default {
     addImglist:[],
     disabledBtn:false,
     selectAble:false,
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      pageSize:10,
+      total: null,
+    },
+    //主标题 ---专家团队修改判断
+    readAble:false,
   },
   reducers:{
     //改变select状态
@@ -61,6 +71,24 @@ export default {
     //保存初始列表
     saveInitialList(state,{payload:{data:initialList}}){
       return {...state,initialList};
+    },
+    //首页---专家团队
+    //保存专家初始列表
+    saveExpertInitialList(state,{payload:{data:expertInitialList}}){
+      return { ...state,expertInitialList};
+    },
+    //保存一个专家信息
+    saveOneExpert(state,{payload:{data:oneExpertMsg}}){
+      if(oneExpertMsg.type = "1-1"){
+        return {...state,oneExpertTitleMsg:oneExpertMsg,readAble:true};
+      }else{
+        return {...state,oneExpertMsg,readAble:false};
+      }
+
+    },
+    //根据ID获取的信息
+    saveExpertById(state,{payload:{data,ExpertIdMsg}}){
+      return { ...state,ExpertIdMsg};
     }
   },
   effects:{
@@ -133,6 +161,65 @@ export default {
           }
         })
       }
+    },
+
+    //首页 ---- 专家团队
+    //获取专家团队初始列表
+    *getExpertInitialList({payload:values},{call,put}){
+      const {data:{data,code}} = yield call(websiteBanner.getExpertInitialList,values);
+      if(code == 0){
+        yield put({
+          type:'saveExpertInitialList',
+          payload:{
+            data
+          }
+        })
+      }
+    },
+    //新增专家
+    *addExpert({payload:values},{call,put}){
+      const {data:{data,code}} = yield call(websiteBanner.addExpert,values);
+      if(code == 0){
+        message.success("添加成功");
+      }
+    },
+    //删除专家
+    *deleteExpert({payload:values},{call,put}){
+      const {data:{data,code}} = yield call(websiteBanner.deleteExpert,values);
+      if(code == 0) {
+        message.success("删除成功");
+      }
+    },
+    //根据类型获取单一信息
+    *getExpertByOneType({payload:values},{call,put}){
+      const { data:{data,code}} = yield call(websiteBanner.getExpertByOneType,values);
+      if(code == 0) {
+        yield put({
+          type:'saveOneExpert',
+          payload:{
+            data
+          }
+        })
+      }
+    },
+    //根据Id获取专家信息
+    *getExpertById({payload:values},{call,put}){
+      const { data:{data,code}} = yield call(websiteBanner.getExpertById,values);
+      if(code == 0){
+        yield put ({
+          type:'saveExpertById',
+          payload:{
+            data
+          }
+        })
+      }
+    },
+    //修改专家信息
+    *updateExpert({payload:values},{call,put}){
+      const { data:{data,code}} = yield call(websiteBanner.updateExpert,values);
+      if(code == 0) {
+        message.success("更新成功");
+      }
     }
 
   },
@@ -172,6 +259,21 @@ export default {
           dispatch({
             type:'saveOneList',
             payload:{},
+          })
+        }
+        if(pathname === '/system/website-manage/expert'){
+          console.log("typekey",TypeKey)
+          dispatch({
+            type:'getExpertInitialList',
+            payload:{
+              "str":TypeKey.EXPERTS,
+            }
+          });
+          dispatch({
+            type:'getExpertByOneType',
+            payload:{
+              "str":TypeKey.EXPERT,
+            }
           })
         }
       })
