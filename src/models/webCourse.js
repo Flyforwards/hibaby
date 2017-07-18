@@ -76,7 +76,7 @@ export default {
       const {data: { data,code,err} } = yield call(webCourseService.updateCourse, values);
       if (code == 0) {
         message.success("信息修改成功");
-        yield put({type:'getCoursePageList'} );
+        //yield put({type:'getCoursePageList'} );
         history.go(-1);
       }
     },

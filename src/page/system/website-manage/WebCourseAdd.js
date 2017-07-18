@@ -69,7 +69,7 @@ class WebCourseAdd extends React.Component {
     if(courseTime!=null){
       const date = new Date(courseTime);
       courseTime = moment(date, dateFormat);
-      console.log(moment(date, dateFormat))
+      //console.log(moment(date, dateFormat))
     }
 
     //let courseTime = initialValue==null ? null : moment(initialValue.courseTime, dateFormat);

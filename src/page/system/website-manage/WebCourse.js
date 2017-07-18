@@ -4,10 +4,12 @@
 import React from 'react';
 import { connect } from 'dva';
 import './WebCourse.scss';
-import { Table, Input, Icon, Button, Popconfirm, Pagination ,Card} from 'antd';
+import { Table, Input, Icon, Button, Popconfirm, Pagination ,Card,DatePicker} from 'antd';
 import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import moment from 'moment'
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 import Current from '../../Current';
 import { format } from '../../../utils/index.js';
 
@@ -60,7 +62,12 @@ class WebCourse extends React.Component{
       title:'课程时间',
       dataIndex:'courseTime',
       key:'courseTime',
-      width:'10%'
+      width:'10%',
+      render:(text,record,index) =>{
+        var date = new Date(text).format("yyyy-MM-dd HH:mm:ss");
+        return date;
+        //return moment(date, dateFormat);
+      }
     },{
       title:'地址',
       dataIndex:'address',
@@ -96,7 +103,7 @@ class WebCourse extends React.Component{
     });
   }
   getTableData(params = {}){
-    console.log(this.props)
+    //console.log(this.props)
     const {dispatch} = this.props;
     dispatch({
       type: 'webCourse/getCoursePageList',
