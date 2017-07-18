@@ -36,8 +36,8 @@ export default {
       return {...state,newsImgList1:[],newsImgList2:[]}
     },
     //改变modal状态
-    changModal(state,{payload:modalVisible}){
-      return { ...state,modalVisible:modalVisible}
+    changModal(state,{payload:{modalVisible}}){
+      return { ...state,modalVisible}
     },
     //改变select状态
     changeSelect(state,{payload:choiceSelect}){
