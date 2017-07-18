@@ -25,22 +25,22 @@ export default {
   },
   //加载页面
   subscriptions: {
-    /*setup({ dispatch, history }) {  // eslint-disable-line
+    setup({ dispatch, history }) {  // eslint-disable-line
      return history.listen(({ pathname,query }) => {
-     if (pathname === '/meals/dishes/dishesDetail'){
-     if(query.dataId){
-     dispatch({
-     type: 'getDishesById',
-     payload:{
-     dataId : query.dataId
+     if (pathname === '/system/website-manage/addCourse'){
+     if(query.id){
+       dispatch({
+       type: 'getCourseById',
+       payload:{
+       dataId : query.id
+       }
+       });
+     }else{
+       dispatch({type : 'clearCourseDetail'});
+     }
      }
      });
      }
-     }else if(pathname === '/meals/dishes/addDishes'){
-     dispatch({type : 'clearDishesDetail'});
-     }
-     });
-     }*/
   },
   //调用服务器端接口
   effects: {
@@ -52,31 +52,35 @@ export default {
         yield put({type:'setCoursePageList',payload:{data,total,page,size,nodeId:values.nodeId}} );
       }
     },
-    /* //获取菜品详情
-     *getCourseById({payload : values}, { call, put }){
-     const {data: { data, code,err} } = yield call(webCourseService.getCourseById, values);
-     if (code == 0) {
-     //更新state
-     yield put({type:'seCourseDetail',payload:{dishesInfo : data}} );
-     }
-     },
-     //保存菜品信息
-     *saveCourse({payload : values}, { call, put }){
-     const {data: { data, code,err} } = yield call(webCourseService.saveCourse, values);
-     if (code == 0) {
-     //更新state
-     message.success("菜品信息保存成功");
-     yield put(routerRedux.push(`/meals/dishes/dishesDetail?dataId=${data.id}`))
-     }
-     },
-     //修改菜品库节点信息
-     *updateCourseLibrary({payload : values}, { call, put,select }){
-     const {data: { data,code,err} } = yield call(webCourseService.updateCourseLibrary, values);
-     if (code == 0) {
-     message.success("信息修改成功");
-     yield put({type:'getCourseLibraryNodes'} );
-     }
-     },
+    //获取菜品详情
+    *getCourseById({payload : values}, { call, put }){
+      const {data: { data, code,err} } = yield call(webCourseService.getCourseById, values);
+      if (code == 0) {
+        //更新state
+        yield put({type:'seCourseDetail',payload:{courseInfo : data}} );
+      }
+    },
+    //保存菜品信息
+    *saveCourse({payload : values}, { call, put }){
+      const {data: { data, code,err} } = yield call(webCourseService.saveCourse, values);
+      if (code == 0) {
+        //更新state
+        message.success("课程信息保存成功");
+        //yield put(routerRedux.push(`/system/website-manage/addCourse?id=${data.id}`))
+        //yield put({type:'getCoursePageList'} );
+        history.go(-1);
+      }
+    },
+    //修改菜品库节点信息
+    *updateCourseLibrary({payload : values}, { call, put,select }){
+      const {data: { data,code,err} } = yield call(webCourseService.updateCourse, values);
+      if (code == 0) {
+        message.success("信息修改成功");
+        yield put({type:'getCoursePageList'} );
+        history.go(-1);
+      }
+    },
+    /*
      //删除菜品信息
      *deleteCourse({payload : values}, { call, put,select }){
      const {data: { data, code,err} } = yield call(webCourseService.deleteCourse, values);
@@ -99,17 +103,13 @@ export default {
   },
   //同步请求，更新state
   reducers: {
-    /*setDishesLibraryNodes(state, { payload: {data: data} }){
-     return {...state,dishesLibraryNodes: data}
-     },*/
     setCoursePageList(state, { payload: {data: coursePageList, total, page, size/*,nodeId*/} }){
       let courseData = {
         ...state,
         coursePageList,
         total,
         page,
-        size/*,
-         nodeId*/
+        size
       };
       let range = {
         start: page == 1 ? 1 : (page - 1) * size + 1,
@@ -118,12 +118,14 @@ export default {
       }
       return {...courseData,range}
     },
-    /*setDishesDetail(state, { payload: {dishesInfo} }){
-     return {...state,initialValue: dishesInfo}
-     },
-     clearDishesDetail(state){
-     return {...state,initialValue: null}
-     },
+    seCourseDetail(state, { payload: {courseInfo} }){
+      return {...state,initialValue: courseInfo}
+    },
+    clearCourseDetail(state){
+      return {...state,initialValue: null}
+    },
+    /*
+
      setDictionary(state, { payload: {result} }){
      return {...state,...result}
      }*/
