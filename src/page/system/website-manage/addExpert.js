@@ -29,31 +29,54 @@ class AddExpert extends React.Component{
     let img1Urls='';
     let img2Urls='';
     form.validateFields((err, values) => {
-      console.log("=================================", this.props.newsImgList1)
-      this.props.newsImgList1 ? this.props.newsImgList1.map((v,i) => {
-        if(v.length && v.length>0){
+      if(this.props.newsImgList1){
+        this.props.newsImgList1.map((v,i) => {
           img1String += v[0].name;
           img1Urls +=v[0].url;
-        }else{
-          img1String += v.name;
-          img1Urls +=v.url;
-        }
+        })
+      }else if(this.props.defaultFileLists1){
+        img1String += this.props.defaultFileLists1.name;
+        img1Urls +=this.props.defaultFileLists1.url;
+      }
 
-      }):'';
-      values.img1 = this.props.newsImgList1 ? img1String:'';
-      values.img1Url = this.props.newsImgList1 ? img1Urls:'';
-      this.props.newsImgList2 ? this.props.newsImgList2.map((v,i) => {
-        if(v.length && v.length > 0){
+      values.img1 = img1String;
+      values.img1Url = img1Urls;
+
+      if(this.props.newsImgList2){
+        this.props.newsImgList2.map((v,i) => {
           img2String += v[0].name;
           img2Urls +=v[0].url;
-        }else{
-          img2String += v.name;
-          img2Urls +=v.url;
-        }
-
-      }):'';
-      values.img2 = this.props.newsImgList2 ? img2String:'';
-      values.img2Url = this.props.newsImgList2 ? img2Urls:'';
+        })
+      }else if(this.props.defaultFileLists2){
+        img2String += this.props.defaultFileLists2.name;
+        img2Urls +=this.props.defaultFileLists2.url;
+      }
+      values.img2 = img2String;
+      values.img2Url = img2Urls;
+      // this.props.newsImgList1 ? this.props.newsImgList1.map((v,i) => {
+      //   if(v.length && v.length>0){
+      //     img1String += v[0].name;
+      //     img1Urls +=v[0].url;
+      //   }else{
+      //     img1String += v.name;
+      //     img1Urls +=v.url;
+      //   }
+      //
+      // }):'';
+      // values.img1 = this.props.newsImgList1 ? img1String:'';
+      // values.img1Url = this.props.newsImgList1 ? img1Urls:'';
+      // this.props.newsImgList2 ? this.props.newsImgList2.map((v,i) => {
+      //   if(v.length && v.length > 0){
+      //     img2String += v[0].name;
+      //     img2Urls +=v[0].url;
+      //   }else{
+      //     img2String += v.name;
+      //     img2Urls +=v.url;
+      //   }
+      //
+      // }):'';
+      // values.img2 = this.props.newsImgList2 ? img2String:'';
+      // values.img2Url = this.props.newsImgList2 ? img2Urls:'';
       if (!err) {
         if(queryURL("id")){
           dispatch({
