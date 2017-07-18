@@ -465,3 +465,67 @@
   color: #222222 !important;
 }
 
+
+// 分页器
+.ant-pagination-item-active {
+  background-color: #b67233;
+  border-color: #f89d2d;
+}
+
+.ant-pagination-item,.ant-pagination-prev,.ant-pagination-next {
+
+  &:hover,&:visited,&:focus,&:active {
+    border-color:#f89d2d;
+    a {
+      color: #f89d2d;
+    }
+  }
+}
+
+// 输入框
+.ant-input,.ant-select-selection {
+  &:hover,&:visited,&:focus,&:active {
+    border-color:#f89d2d;
+    box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.2);
+  }
+}
+.ant-pagination-options-quick-jumper {
+  input {
+    &:hover,&:visited,&:focus,&:active {
+      border-color:#f89d2d;
+      box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.2);
+    }
+  }
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #f89d2d;
+  border-color: #f89d2d;
+  &:hover,&:visited,&:focus,&:active {
+    border-color:#f89d2d;
+    //background-color: #f89d2d;
+    //box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.2);
+  }
+}
+//
+.ant-checkbox-input,.ant-checkbox {
+  &:hover,&:visited,&:focus,&:active {
+    border-color:#f89d2d;
+    //background-color: #f89d2d !important;
+    //box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.2);
+  }
+}
+
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: #f89d2d;
+}
+
+.ant-checkbox-input:hover + .ant-checkbox-inner {
+  border-color: #f89d2d;
+}
+
+
+::selection {
+  background: #f89d2d;
+  color: #fff;
+}
