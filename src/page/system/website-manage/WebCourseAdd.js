@@ -61,6 +61,17 @@ class WebCourseAdd extends React.Component {
       }
     })
   }
+  checkNumber = (rule, value, callback) => {
+    if(!value){
+      callback('不能为空');
+      return;
+    }
+    if (value > 0||value ==0) {
+      callback();
+      return;
+    }
+    callback('不能为负数');
+  }
   render(){
     //const { disabledBtn ,defaultFileList,ontListType,addImglist,selectAble} = this.props;
     const {initialValue} = this.props.webCourse;
@@ -79,7 +90,7 @@ class WebCourseAdd extends React.Component {
       wrapperCol:{ span:17}
     };
     return (
-      <Card className="WebCourseAdd">
+      <Card className="websitebannerAdd">
         <Form>
           <Row>
             <Col span={12} style = {{width:300}}>
@@ -98,8 +109,8 @@ class WebCourseAdd extends React.Component {
               <FormItem {...formItemLayout} label="人数限制">
                 {getFieldDecorator('number', {
                   initialValue:(initialValue==null ? '' : initialValue.number),
-                  rules: [{ required: true, message: '人数限制为必填项！', max: 100 }]
-                })(<Input placeholder="请填写人数限制！"/>)}
+                  rules: [{ validator:this.checkNumber ,required: true}]
+                })(<Input placeholder="请填写人数限制！" type="number"/>)}
               </FormItem>
               <FormItem
                 label="类型"
