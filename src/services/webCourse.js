@@ -5,7 +5,7 @@
 import request from '../utils/request';
 //获取课程详情
 export function getCourseById(values) {
-  return request('/crm/api/v1/dishes/getDishesById', {
+  return request('/crm/api/v1/web/webCourse/findOneById', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -32,7 +32,7 @@ export function deleteCourse(values){
   })
 }
 //修改课程信息
-export function getCourseLibraryNodes(values){
+export function updateCourse(values){
   return request('/crm/api/v1/web/webCourse/update',{
     method: 'POST',
     body: JSON.stringify(values),
