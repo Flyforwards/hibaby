@@ -145,7 +145,7 @@ class WebCourseAdd extends React.Component {
               >
                 {getFieldDecorator('courseTime', {
                   initialValue : (courseTime),
-                  rules: [{ type: 'object', required: true, message: '请选择活动开始时间' }],
+                  rules: [{ type: 'object', required: true, message: '请选择课程时间' }],
                 })(
                   <DatePicker
                     style={{width:"100%"}}
