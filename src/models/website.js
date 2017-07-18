@@ -41,7 +41,6 @@ export default {
     },
     //保存新闻上传图片1
     setNewsImg1(state,{payload:todos}){
-    console.log("todos",todos);
       let newsArr1 = state.newsImgList1 ? state.newsImgList1:[];
       newsArr1.push(todos);
       return{...state,newsImgList1:newsArr1,img1Btn:true};
@@ -128,21 +127,38 @@ export default {
     //根据ID获取的信息
     saveExpertById(state,{payload:{data:ExpertIdMsg}}){
       if(ExpertIdMsg != null && ExpertIdMsg.id !=undefined ){
-        console.log("1111111111111111111")
-        let defaultFileLists1=[{
-          uid:0,
-          name:ExpertIdMsg.img1,
-          url:ExpertIdMsg.img1Url,
-        }];
-        let defaultFileLists2 = [{
-          uid:1,
-          name:ExpertIdMsg.img2,
-          url:ExpertIdMsg.img2Url,
-        }]
-        let ontListType = ExpertIdMsg.type;
-        return { ...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg};
-      }else{
-        console.log("222222222222222")
+        if(ExpertIdMsg.img1){
+          let defaultFileLists1=[{
+            uid:0,
+            name:ExpertIdMsg.img1,
+            url:ExpertIdMsg.img1Url,
+          }];
+          if(ExpertIdMsg.img2){
+            let defaultFileLists2 = [{
+              uid:1,
+              name:ExpertIdMsg.img2,
+              url:ExpertIdMsg.img2Url,
+            }]
+            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg}
+          }else{
+            let defaultFileLists2=null;
+            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:false,ExpertIdMsg}
+          }
+        }else{
+          let defaultFileLists1=null;
+          if(ExpertIdMsg.img2){
+            let defaultFileLists2 = [{
+              uid:1,
+              name:ExpertIdMsg.img2,
+              url:ExpertIdMsg.img2Url,
+            }]
+            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:false,img2Btn:true,ExpertIdMsg}
+          }else{
+            let defaultFileLists2=null;
+            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:false,img2Btn:false,ExpertIdMsg}
+          }
+        }
+       }else{
         let defaultFileLists1=null;
         let defaultFileLists2=null;
         let ontListType = '';
@@ -226,8 +242,8 @@ export default {
     //获取专家团队初始列表
     *getExpertInitialList({payload:values},{call,put}){
       if(queryURL('type2')){
-        const type = queryURL('type2');
-        const value = {...values,type};
+        const str = queryURL('type2');
+        const value = {...values,str};
         const {data:{data,code}} = yield call(websiteBanner.getExpertInitialList,value);
         if(code == 0){
           yield put({
@@ -299,6 +315,9 @@ export default {
       const { data:{data,code}} = yield call(websiteBanner.updateExpert,values);
       if(code == 0) {
         message.success("更新成功");
+        if(queryURL('id')){
+          history.go(-1);
+        }
         if(queryURL('type1')){
           yield put({
             type:'getExpertByOneType',
@@ -357,7 +376,6 @@ export default {
           })
         }
         if(pathname === '/system/website-manage/expert'){
-          console.log("11111111",query.type2)
           if(query.type2){
             dispatch({
               type:'getExpertInitialList',
