@@ -28,7 +28,7 @@ class Footer extends React.Component {
       if ( style == 'show') {
         footer = <footer className="my-footer">
           <Button className='my-footer-btn' onClick={this.hidden.bind(this)}>隐藏</Button>
-          <p>Copyright © 2017, 凯贝姆 & 月子中心.Version2.0.25</p>
+          <p>Copyright © 2017, 凯贝姆 & 月子中心.Version2.0.26</p>
         </footer>
       } else {
         footer = <Button className='my-footer-btn' onClick={this.show.bind(this)}>显示</Button>
