@@ -80,9 +80,9 @@ class WebCourse extends React.Component{
         return (
           <span>
           <Link disabled={false} className="one-link" to={`/system/website-manage/addCourse?id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
-          {/*<Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
+          <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
            <Link disabled={false} className="one-link">删除</Link>
-          </Popconfirm>*/}
+          </Popconfirm>
 
         </span>
         )
@@ -111,6 +111,14 @@ class WebCourse extends React.Component{
         ...params
       }
     });
+  }
+  onDeleteOne(record) {
+    this.props.dispatch({
+      type:'webCourse/deleteCourse',
+      payload:{
+        'dataId':record,
+      }
+    })
   }
   render(){
     const dataSource = this.props.webCourse.coursePageList;

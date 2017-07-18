@@ -80,25 +80,21 @@ export default {
         history.go(-1);
       }
     },
-    /*
      //删除菜品信息
      *deleteCourse({payload : values}, { call, put,select }){
      const {data: { data, code,err} } = yield call(webCourseService.deleteCourse, values);
      if (code == 0) {
-     //更新state
-     message.success("删除菜品信息成功");
-     yield put({type:'getCourseLibraryNodes'} );
-     const state = yield select(state => state.dishes);
-     yield put({
-     type: 'getCoursePageList',
-     payload : {
-     nodeId : state.nodeId,
-     page : state.page,
-     size : state.size
+       const state = yield select(state => state.webCourse);
+       yield put({
+         type: 'getCoursePageList',
+         payload : {
+           page : state.page,
+           size : state.size
+         }
+       });
+       message.success("删除成功");
      }
-     });
-     }
-     },*/
+     },
 
   },
   //同步请求，更新state
