@@ -241,6 +241,7 @@ class ExpertIntroduction extends React.Component{
 
 function mapStateToProps(state){
   const {expertInitialList,oneExpertTitleMsg,oneExpertMsg,modalVisible} = state.websiteBanner;
+  console.log("modalVisible",modalVisible)
   return {
     modalVisible,
     oneExpertTitleMsg,

@@ -311,9 +311,19 @@
             box-sizing: border-box;
             padding-top: 10px;
 
+            span{
+              min-width: 30px;
+              //width: 100px;
+              display: block;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+
             .userBoxConfirm {
               position: absolute;
               bottom: -30px;
+              width: 108px;
               right: 0;
               cursor:pointer;
               z-index: 99999;
