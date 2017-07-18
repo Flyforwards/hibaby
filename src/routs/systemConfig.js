@@ -277,6 +277,26 @@ export default (app) => [
       })
     }
   },
+  //官网管理---活动报名
+  {
+    path:'/system/website-manage/activityEnroll',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/activityEnroll'));
+        cb(null,require('page/system/website-manage/activityEnroll.js'))
+      })
+    }
+  },
+  //官网管理---添加活动报名
+  {
+    path:'/system/website-manage/addActivityEnroll',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/activityEnroll'));
+        cb(null,require('page/system/website-manage/activityEnrollAdd.js'))
+      })
+    }
+  },
     //404
     {
       path: '/404',
