@@ -124,6 +124,17 @@ class ExpertIntroduction extends React.Component{
   //   })
   //
   // }
+  onAdd(){
+    this.props.dispatch({
+      type:'websiteBanner/setNewValue'
+    });
+   this.props.dispatch(routerRedux.push({
+      pathname: '/system/website-manage/addExpert',
+      query: {
+        "type":queryURL('type2')
+      },
+    }))
+  }
   checkPrice = (rule, value, callback) => {
     if(value){
       callback();
@@ -189,9 +200,8 @@ class ExpertIntroduction extends React.Component{
              <Col span ={6}><Button className="one-button" onClick={this.upDateTitle.bind(this)}>修改</Button></Col>
               <Col span={10}>
                 {
-                  expertInitialList && expertInitialList.length > 0? <Link to={`/system/website-manage/addExpert?type=${queryURL('type2')}` } >
-                    <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>添加</Button>
-                  </Link>:''
+                  expertInitialList && expertInitialList.length > 0 ? <Button className="one-button" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button> : ''
+
                 }
 
               </Col>

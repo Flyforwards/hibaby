@@ -20,6 +20,11 @@ class AddExpert extends React.Component{
     super(props);
 
   }
+  componentWillUnmount(){
+    // this.props.dispatch({
+    //   type:'websiterBanner/setNewValue'
+    // })
+  }
   //点击保存信息
   onSave (){
     const { form ,dispatch } = this.props;
@@ -29,30 +34,30 @@ class AddExpert extends React.Component{
     let img1Urls='';
     let img2Urls='';
     form.validateFields((err, values) => {
-      if(this.props.newsImgList1){
+      if(this.props.newsImgList1 && this.props.newsImgList1.length > 0){
         this.props.newsImgList1.map((v,i) => {
-          img1String += v[0].name;
-          img1Urls +=v[0].url;
+          img1String = v[0].name ? v[0].name:'';
+        //  img1Urls +=v[0].url;
         })
       }else if(this.props.defaultFileLists1){
-        img1String += this.props.defaultFileLists1.name;
-        img1Urls +=this.props.defaultFileLists1.url;
+        img1String = this.props.defaultFileLists1.name ? this.props.defaultFileLists1.name:'';
+      //  img1Urls +=this.props.defaultFileLists1.url;
       }
 
       values.img1 = img1String;
-      values.img1Url = img1Urls;
+    //  values.img1Url = img1Urls;
 
-      if(this.props.newsImgList2){
+      if(this.props.newsImgList2 && this.props.newsImgList2.length > 0 ){
         this.props.newsImgList2.map((v,i) => {
-          img2String += v[0].name;
-          img2Urls +=v[0].url;
+          img2String = v[0].name ? v[0].name : '';
+         // img2Urls +=v[0].url;
         })
       }else if(this.props.defaultFileLists2){
-        img2String += this.props.defaultFileLists2.name;
-        img2Urls +=this.props.defaultFileLists2.url;
+        img2String = this.props.defaultFileLists2.name ? this.props.defaultFileLists2.name:'' ;
+       // img2Urls +=this.props.defaultFileLists2.url;
       }
       values.img2 = img2String;
-      values.img2Url = img2Urls;
+     // values.img2Url = img2Urls;
       // this.props.newsImgList1 ? this.props.newsImgList1.map((v,i) => {
       //   if(v.length && v.length>0){
       //     img1String += v[0].name;
@@ -221,7 +226,6 @@ class AddExpert extends React.Component{
 
 function mapStateToProps(state){
   const {ExpertIdMsg,newsImgList1,newsImgList2,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = state.websiteBanner;
-  console.log("img1",defaultFileLists1,defaultFileLists2)
   return {
     img1Btn,
     defaultFileLists1,

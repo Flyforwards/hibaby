@@ -31,6 +31,10 @@ export default {
     modalVisible:false,
   },
   reducers:{
+    //设置为空
+    setNewValue(state){
+      return {...state,newsImgList1:[],newsImgList2:[]}
+    },
     //改变modal状态
     changModal(state,{payload:modalVisible}){
       return { ...state,modalVisible:modalVisible}
@@ -56,7 +60,7 @@ export default {
       let newsArr1 = state.newsImgList1;
       for(let i=0; i < newsArr1.length; i++) {
         if(newsArr1[i].name == todos.name) {
-          newsArr1.splice(i, 1);
+          newsArr1.splice(i,1);
           break;
         }
       }
@@ -67,7 +71,7 @@ export default {
       let newsArr2 = state.newsImgList2;
       for(let i=0; i < newsArr2.length; i++) {
         if(newsArr2[i].name == todos.name) {
-          newsArr2.splice(i, 1);
+          newsArr2.splice(i,1);
           break;
         }
       }
@@ -84,7 +88,7 @@ export default {
       let arr = state.addImglist;
       for(let i=0; i < arr.length; i++) {
         if(arr[i].name == todo.name) {
-          arr.splice(i, 1);
+          arr.splice(i,1);
           break;
         }
       }
