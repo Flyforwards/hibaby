@@ -121,7 +121,11 @@ class WebCourseAdd extends React.Component {
                   initialValue: (initialValue==null ? '' : initialValue.type+""),
                   rules: [{ required: true, message: '请选择类型' }],
                 })(
-                  <Select placeholder="请选择类型">
+                  <Select
+                   /* showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}*/
+                    placeholder="请选择类型">
                     <Option key="1" value="1">会员活动</Option>
                     <Option key="2" value="2">常规课程</Option>
                   </Select>

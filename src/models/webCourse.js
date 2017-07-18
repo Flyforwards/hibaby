@@ -84,8 +84,13 @@ export default {
      *deleteCourse({payload : values}, { call, put,select }){
      const {data: { data, code,err} } = yield call(webCourseService.deleteCourse, values);
      if (code == 0) {
+       const state = yield select(state => state.webCourse);
        yield put({
-         type:'getCoursePageList'
+         type: 'getCoursePageList',
+         payload : {
+           page : state.page,
+           size : state.size
+         }
        });
        message.success("删除成功");
      }
