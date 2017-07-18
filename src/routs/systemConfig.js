@@ -247,6 +247,16 @@ export default (app) => [
       })
     }
   },
+    //官网管理 --- 新增
+  {
+    path:'/system/website-manage/addExpert',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/website'));
+        cb(null,require('page/system/website-manage/addExpert.js'))
+      })
+    }
+  },
   //官网管理---妈妈课程
   {
     path:'/system/website-manage/course',
