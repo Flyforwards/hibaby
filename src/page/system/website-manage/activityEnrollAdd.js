@@ -21,6 +21,19 @@ class ActivityEnrollAdd extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    this.getCourseDropdownData();
+  }
+  //获取课程下拉列表数据
+  getCourseDropdownData(params = {}) {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'activityEnroll/getCourseDropdownList',
+      payload: {
+        ...params
+      }
+    });
+  }
   //返回
   onBack() {
     this.props.dispatch(routerRedux.push({
@@ -68,7 +81,13 @@ class ActivityEnrollAdd extends React.Component {
       const date = new Date(produceTime );
       produceTime  = moment(date, dateFormat);
     }
-
+    const courseData = this.props.activityEnroll.courseList;
+    const courseDataOptions = [];
+    if(courseData != null && courseData.length > 0){
+      courseData.map(function (item,index) {
+        courseDataOptions.push(<Option  key={item.id} value={item.id}>{item.name}</Option>);
+      })
+    }
     const formItemLayout = {
       labelCol:{ span: 6 },
       wrapperCol:{ span:17}
@@ -126,19 +145,19 @@ class ActivityEnrollAdd extends React.Component {
                   rules: [{ required: true, message: '门店为必填项！'}]
                 })(<Input placeholder="请填写门店！"/>)}
               </FormItem>
-              <FormItem {...formItemLayout} label="课程ID">
+              {/*<FormItem {...formItemLayout} label="课程ID">
                 {getFieldDecorator('webCourseId', {
                   initialValue:(initialValue==null ? '' : initialValue.webCourseId),
                   rules: [{ required: true, message: '课程ID为必填项！'}]
                 })(<Input placeholder="请填写课程ID！"/>)}
-              </FormItem>
-              {/*<FormItem
+              </FormItem>*/}
+              <FormItem
                label="课程"
                hasFeedback
                {...formItemLayout}
                >
-               {getFieldDecorator('type',{
-               initialValue: (initialValue==null ? '' : initialValue.type+""),
+               {getFieldDecorator('webCourseId',{
+               initialValue: (initialValue==null ? '' : initialValue.webCourseId+""),
                rules: [{ required: true, message: '请选择类型' }],
                })(
                <Select
@@ -146,12 +165,11 @@ class ActivityEnrollAdd extends React.Component {
                optionFilterProp="children"
                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                placeholder="请选择类型">
-               <Option key="1" value="1">会员活动</Option>
-               <Option key="2" value="2">常规课程</Option>
+                 {courseDataOptions}
                </Select>
 
                )}
-               </FormItem>*/}
+               </FormItem>
             </Col>
           </Row>
 
