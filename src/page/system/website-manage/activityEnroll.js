@@ -59,9 +59,9 @@ class ActivityEnroll extends React.Component{
         key:'store',
         width:'10%'
       },{
-        title:'课程ID',
-        dataIndex:'webCourseId',
-        key:'webCourseId',
+        title:'课程名称',
+        dataIndex:'webCourseName',
+        key:'webCourseName',
         width:'10%'
       },{
         title: '操作',
