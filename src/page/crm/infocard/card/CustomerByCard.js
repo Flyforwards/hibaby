@@ -77,7 +77,7 @@ class CustomerByCard extends Component {
       dataIndex: 'contractNumber',
       key: 'contractNumber'
     },{
-      title: '会员卡编号',
+      title: '会员卡卡号',
       dataIndex: 'cardNumber',
       key: 'cardNumber'
     },{
