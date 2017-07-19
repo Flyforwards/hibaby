@@ -157,7 +157,7 @@ class ActivityEnrollAdd extends React.Component {
                {...formItemLayout}
                >
                {getFieldDecorator('webCourseId',{
-               initialValue: (initialValue==null ? '' : initialValue.webCourseId+""),
+               initialValue: (initialValue==null ? '' : initialValue.webCourseId),
                rules: [{ required: true, message: '请选择类型' }],
                })(
                <Select
