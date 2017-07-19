@@ -25,49 +25,15 @@ class WebJob extends React.Component{
       key:'id',
       width:"10%",
     },{
-      title: '课程名称',
+      title: '岗位',
       dataIndex: 'name',
       key: 'name',
       width: '10%'
     }, {
-      title: '讲师',
-      dataIndex: 'lecturer',
-      key: 'lecturer',
-      width: '10%'
-    },{
-      title:'类型',
-      dataIndex:'type',
-      key:'type',
-      width:'10%',
-      render:(text,record,index) =>{
-        if(text==1){
-          return '会员活动';
-        }else if(text==2){
-          return '常规课程';
-        }else{
-          return text;
-        }
-      }
-    }, {
-      title:'人数限制',
+      title:'人数',
       dataIndex:'number',
       key:'number',
       width:'10%'
-    },{
-      title:'适合人群',
-      dataIndex:'crowd',
-      key:'crowd',
-      width:'10%'
-    },{
-      title:'课程时间',
-      dataIndex:'courseTime',
-      key:'courseTime',
-      width:'10%',
-      render:(text,record,index) =>{
-        var date = new Date(text).format("yyyy-MM-dd HH:mm:ss");
-        return date;
-        //return moment(date, dateFormat);
-      }
     },{
       title:'地址',
       dataIndex:'address',
@@ -79,7 +45,7 @@ class WebJob extends React.Component{
       render: (text, record, index) => {
         return (
           <span>
-          <Link disabled={false} className="one-link" to={`/system/website-manage/addCourse?id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+          <Link disabled={false} className="one-link" to={`/system/website-manage/addJob?id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
           <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
            <Link disabled={false} className="one-link">删除</Link>
           </Popconfirm>
@@ -92,21 +58,21 @@ class WebJob extends React.Component{
   }
   componentDidMount(){
     this.getTableData({
-      page : this.props.webCourse.page,
-      size : this.props.webCourse.size
+      page : this.props.webJob.page,
+      size : this.props.webJob.size
     });
   }
   onTableChange = (pageNumber) =>{
     this.getTableData({
       page : pageNumber,
-      size : this.props.webCourse.size
+      size : this.props.webJob.size
     });
   }
   getTableData(params = {}){
     //console.log(this.props)
     const {dispatch} = this.props;
     dispatch({
-      type: 'webCourse/getCoursePageList',
+      type: 'webJob/getJobPageList',
       payload: {
         ...params
       }
@@ -114,26 +80,26 @@ class WebJob extends React.Component{
   }
   onDeleteOne(record) {
     this.props.dispatch({
-      type:'webCourse/deleteCourse',
+      type:'webJob/deleteJob',
       payload:{
         'dataId':record,
       }
     })
   }
   render(){
-    const dataSource = this.props.webCourse.coursePageList;
+    const dataSource = this.props.webJob.jobPageList;
     const pagination = {
-      total: this.props.webCourse.total,
+      total: this.props.webJob.total,
       showQuickJumper: true,
-      current: this.props.webCourse.page,
-      pageSize: this.props.webCourse.size,
+      current: this.props.webJob.page,
+      pageSize: this.props.webJob.size,
       onChange: this.onTableChange.bind(this)
     };
     return(
 
       <Card className="website-banner">
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
-          <Link to="/system/website-manage/addCourse">
+          <Link to="/system/website-manage/addJob">
             <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>新增</Button>
           </Link>
         </div>
