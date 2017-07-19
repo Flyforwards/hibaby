@@ -107,6 +107,10 @@ class CustomerIndex extends React.Component {
       title: '合同编号',
       dataIndex: 'contractNumber',
       key: 'contractNumber'
+    },{
+      title: '会员卡编号',
+      dataIndex: 'cardNumber',
+      key: 'cardNumber'
     }, {
       title: '添加人',
       render: (record) => {

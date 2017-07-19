@@ -1,7 +1,6 @@
 /**
  * Created by Flyforwards on 2017/5/25.
  */
-
 import moment from 'moment'
 import React, { Component } from 'react';
 import { connect } from 'dva';
@@ -13,6 +12,20 @@ import DictionarySelect from 'common/dictionary_select';
 import {routerRedux} from 'dva/router';
 const { MonthPicker } = DatePicker
 import { parse } from 'qs'
+
+function textforkey(array,value,valuekey = 'name') {
+  if(array){
+    for (let i = 0 ;i<array.length ;i++){
+      let dict = array[i];
+      if(dict['id'] === value){
+        return  dict[valuekey];
+      }
+    }
+  }
+  else {
+    return value
+  }
+}
 
 const createForm = Form.create
 
@@ -44,7 +57,10 @@ class CustomerByCard extends Component {
     }, {
       title: '第几胎',
       dataIndex: 'fetus',
-      key: 'fetus'
+      key: 'fetus',
+      render:(record)=>{
+        return textforkey(this.props.fetusAry,record)
+      }
     },{
       title: '联系方式',
       dataIndex: 'contact',
@@ -52,11 +68,18 @@ class CustomerByCard extends Component {
     },{
       title: '购买套餐',
       dataIndex: 'purchasePackage',
-      key: 'purchasePackage'
+      key: 'purchasePackage',
+      render:(record)=>{
+        return textforkey(this.props.packageAry,record)
+      }
     },{
       title: '合同编号',
       dataIndex: 'contractNumber',
       key: 'contractNumber'
+    },{
+      title: '会员卡编号',
+      dataIndex: 'cardNumber',
+      key: 'cardNumber'
     },{
       title: '添加人',
       dataIndex: 'operator2',
@@ -92,8 +115,10 @@ class CustomerByCard extends Component {
   }
 
 
+
   render() {
     const { form , loading, userPagination,list } = this.props;
+    console.log(this.props)
     const { getFieldDecorator } = form;
     const formChooseOneLayout = {
       labelCol:{ span: 8 },
