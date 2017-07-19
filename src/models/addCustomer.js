@@ -499,8 +499,9 @@ export default {
       let dict = {...baseDict,birthTime:baseDict.birthTime.format('YYYY-MM-DD'),dueDate:baseDict.dueDate.format('YYYY-MM-DD'),
         hospital:baseDict.hospital.key, fetus:baseDict.fetus.key, focus:baseDict.focus.key, resourceCustomer:baseDict.resourceCustomer.key,
         intentionPackage:baseDict.intentionPackage.key, webSearchTerm:baseDict.webSearchTerm.key, province:baseDict.province.key, city:baseDict.city.key,
-        gravidity:baseDict.gravidity.key,focus:focus
-      };
+        gravidity:baseDict.gravidity.key,focus:focus};
+
+      delete dict.gestationalWeeks;
 
       if (state.editCustomer ){
         dict.id = state.baseData.id;
