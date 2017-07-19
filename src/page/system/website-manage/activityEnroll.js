@@ -31,13 +31,13 @@ class ActivityEnroll extends React.Component{
         width: '10%'
       }, {
         title: '产假人数',
-        dataIndex: 'number ',
-        key: 'number ',
+        dataIndex: 'number',
+        key: 'number',
         width: '10%'
       },{
         title:'停车',
-        dataIndex:'parking ',
-        key:'parking ',
+        dataIndex:'parking',
+        key:'parking',
         width:'10%'
       }, {
         title:'电话',
@@ -59,9 +59,9 @@ class ActivityEnroll extends React.Component{
         key:'store',
         width:'10%'
       },{
-        title:'课程ID',
-        dataIndex:'webCourseId ',
-        key:'webCourseId ',
+        title:'课程名称',
+        dataIndex:'webCourseName',
+        key:'webCourseName',
         width:'10%'
       },{
         title: '操作',
@@ -69,7 +69,7 @@ class ActivityEnroll extends React.Component{
         render: (text, record, index) => {
           return (
             <span>
-          <Link disabled={false} className="one-link" to={`/system/website-manage/addCourse?id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+          <Link disabled={false} className="one-link" to={`/system/website-manage/addActivityEnroll?id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
           <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
            <Link disabled={false} className="one-link">删除</Link>
           </Popconfirm>

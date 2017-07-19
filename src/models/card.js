@@ -1,5 +1,6 @@
 
 import * as cardService from '../services/card';
+import * as addCustomerInformation from '../services/addCustomerInformation';
 import * as customerService from '../services/customer';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
@@ -8,6 +9,8 @@ export default {
   namespace: 'card',
   state: {
     postValues: {},
+    packageAry:'',
+    fetusAry:'',
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -61,8 +64,39 @@ export default {
     getCustomerPageSave(state, { payload: { list, userPagination }}) {
       return {...state, list, pagination: {  ...state.userPagination,...userPagination }};
     },
+    addMutDictData(state, { payload: todo }){
+      if(todo.abName === 'YCC'){
+        return {...state,fetusAry:todo.data};
+      }
+      return {...state};
+    },
+    setPackageAry(state, {payload: todo}){
+      return {...state, packageAry: todo.data};
+    },
   },
   effects: {
+    *getDataDict({payload: value}, {call, put}){
+      const parameter = {
+        abName: value.abName,
+        softDelete: 0,
+      };
+      const {data: {code, data}} = yield call(addCustomerInformation.getDataDict, parameter);
+      if (code == 0) {
+        yield put({
+          type: 'addMutDictData',
+          payload: {
+            abName: value.abName,
+            data: data,
+          }
+        });
+      }
+    },
+    *listByMain({payload: values}, {call, put}) {
+      const {data: {code, data}} = yield call(customerService.listByMain);
+      if (code == 0) {
+        yield put({type: 'setPackageAry', payload: {data}});
+      }
+    },
     //获取折扣权限
     *getZhekouInfo({ payload: values }, { call, put }) {
       const { data: { code, data } } = yield call(cardService.getZhekou, values);

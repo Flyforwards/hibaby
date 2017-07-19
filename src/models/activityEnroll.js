@@ -18,6 +18,7 @@ export default {
     page : 1,
     size : 10,
     initialValue : null,
+    courseList:[] //课程下拉列表数据
   },
   //加载页面
   subscriptions: {
@@ -40,6 +41,14 @@ export default {
   },
   //调用服务器端接口
   effects: {
+    //获取课程下拉列表数据
+    *getCourseDropdownList({payload : values}, { call, put }){
+      const {data: { data, total, page, size, code,err} } = yield call(activityEnrollService.getCourseDropdownList, values);
+      if (code == 0) {
+        //更新state
+        yield put({type:'setCourseDropdownList',payload:{data}} );
+      }
+    },
     //获取报名信息分页数据
     *getEnrollPageList({payload : values}, { call, put }){
       const {data: { data, total, page, size, code,err} } = yield call(activityEnrollService.getEnrollPageList, values);
@@ -92,6 +101,9 @@ export default {
   },
   //同步请求，更新state
   reducers: {
+    setCourseDropdownList(state, { payload: {data: data} }){
+      return {...state,courseList: data}
+    },
     setEnrollPageList(state, { payload: {data: enrollPageList, total, page, size/*,nodeId*/} }){
       let enrollData = {
         ...state,

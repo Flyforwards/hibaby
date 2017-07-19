@@ -37,4 +37,11 @@ export function updateEnroll(values){
     method: 'POST',
     body: JSON.stringify(values),
   })
+}
+//获取课程下拉列表
+export function getCourseDropdownList(values){
+  return request('/crm/api/v1/web/webCourse/dropdown',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
 };

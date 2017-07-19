@@ -14,7 +14,7 @@ class LoginIndex extends React.Component {
 
   constructor(props) {
       super(props);
-      this.state = {  visible: false,  };
+      this.state = {  visible: false,  passWordShow:false};
       this.phone = session.get("userPhone")
   }
 
@@ -36,10 +36,19 @@ class LoginIndex extends React.Component {
       });
   }
 
+  eyeClicked(){
+    this.setState({
+      passWordShow:!this.state.passWordShow
+    })
+  }
+
   render() {
       // console.log(moment().format('A hh:mm'))
       // console.log(moment('PM 04:44').format('hh:mm'))
       const { getFieldDecorator } = this.props.form;
+
+      const suffix = <Icon style={{ fontSize: 18}} type={this.state.passWordShow?'eye': "eye-o"} onClick={this.eyeClicked.bind(this)} />
+
       return (
         <div className="login-form-cent login">
         <div className ="login-index" >
@@ -66,7 +75,7 @@ class LoginIndex extends React.Component {
                         required: true,
                         message: '8-20位同时包含数字与字母!'
                     }],
-                })( <Input prefix = { <span> 密码 </span>} type="password" placeholder="请输入您的密码" /> )
+                })( <Input prefix = { <span> 密码 </span>} suffix={suffix} type={this.state.passWordShow?'text': "password"} placeholder="请输入您的密码" /> )
                 }
             </FormItem>
             <FormItem > {

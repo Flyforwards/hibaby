@@ -317,6 +317,26 @@ export default (app) => [
       })
     }
   },
+  //官网管理---招聘信息
+  {
+    path:'/system/website-manage/job',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/WebJob'));
+        cb(null,require('page/system/website-manage/WebJob.js'))
+      })
+    }
+  },
+  //官网管理---添加/修改招聘信息
+  {
+    path:'/system/website-manage/addJob',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/WebJob'));
+        cb(null,require('page/system/website-manage/WebJobAdd.js'))
+      })
+    }
+  },
     //404
     {
       path: '/404',
