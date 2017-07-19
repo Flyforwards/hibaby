@@ -257,6 +257,26 @@ export default (app) => [
       })
     }
   },
+  //官网管理 --- 产前服务
+  {
+    path:'/system/website-manage/babycare',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/babycare'));
+        cb(null,require('page/system/website-manage/WebsiteBabyService.js'))
+      })
+    }
+  },
+  //官网管理 ---产前服务新增
+  {
+    path:'/system/website-manage/addbabycare',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/babycare'));
+        cb(null,require('page/system/website-manage/WebsiteAddBabyCare.js'))
+      })
+    }
+  },
   //官网管理---妈妈课程
   {
     path:'/system/website-manage/course',
