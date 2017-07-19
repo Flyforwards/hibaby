@@ -5,7 +5,7 @@
 import DictionarySelect from 'common/dictionary_select';
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Select, Button, Form, Input, Icon, Card, Radio, Row, Col, Popconfirm, DatePicker, Modal, InputNumber, Table } from 'antd';
+import { Select, Button, Form, Input, Card, Radio, Row, Col, Modal} from 'antd';
 import { Link } from 'react-router';
 import CustomerByCard from './CustomerByCard';
 import './card.scss';
@@ -33,6 +33,15 @@ class CardDetail extends Component {
       type: 'card/getCardKindInfo',
       payload: { dataId }
     })
+    dispatch({
+      type:'card/listByMain',
+    });
+    dispatch({
+      type:'card/getDataDict',
+      payload:{
+        "abName": 'YCC',
+      }
+    });
     dispatch({
       type:'card/getLevelInfo',
       // payload:{
@@ -111,7 +120,7 @@ class CardDetail extends Component {
   }
 
   render() {
-    const { cardKind, form, level,loading, userPagination, list} = this.props;
+    const { cardKind, form, level,loading, userPagination, list,fetusAry,packageAry} = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 8 },
@@ -226,7 +235,7 @@ class CardDetail extends Component {
               </Col>
             </Row>
           </Form>
-          <CustomerByCard {...{loading, userPagination, list}} />
+          <CustomerByCard {...{loading,userPagination, list,packageAry, fetusAry}} />
         </Card>
         <div className="button-group-bottom-common">
           <Link to="/crm/card">
@@ -259,7 +268,8 @@ class CardDetail extends Component {
 
 
 function mapStateToProps(state) {
-  const { cardKind, level, zheKou,userPagination,list } = state.card;
+  const { cardKind, level, zheKou,userPagination,list,packageAry,
+    fetusAry} = state.card;
   const { permissionAlias } = state.layout;
   return {
     loading: state.loading,
@@ -268,7 +278,9 @@ function mapStateToProps(state) {
     cardKind,
     level,
     zheKou,
-    permissionAlias
+    permissionAlias,
+    packageAry,
+    fetusAry
   };
 }
 export default connect(mapStateToProps)(CardDetail)

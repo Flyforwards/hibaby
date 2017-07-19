@@ -44,7 +44,8 @@ class CardDetail extends Component {
   }
 
   render() {
-    const { cardKind, form, level,} = this.props;
+    const { cardKind, form, level,cardBalance} = this.props;
+    console.log(this.props)
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol:{ span: 8 },
@@ -63,30 +64,40 @@ class CardDetail extends Component {
     level? level.map(function(elem,index){
       options.push(<Option key={elem.id}>{elem.name}</Option>)
     }):null;
-    let cardLevel = null;
+
+    let cardLevelAry = [<Col span = { 8 } style={{width:'251px'}}>
+      <FormItem label="会员卡卡号	" {...formItemLayout}>
+        <Input value={cardBalance?cardBalance.cardNumber:''} readOnly/>
+      </FormItem>
+    </Col>];
+
+
     if (cardKind && cardKind.level) {
-      cardLevel = <Row>
-        <Col span = { 8 } style={{width:'251px'}}>
-          <FormItem label="会员卡级别" {...formItemLayout}>
-            {getFieldDecorator('level', {
-              initialValue: cardKind ? cardKind.level+'':''  ,
-              rules: [{ required: true, message: '请选择会员卡级别' }]
-            })(
-              <Select
-                showSearch
-                allowClear
-                placeholder="请选择"
-                optionFilterProp="children"
-                filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                disabled={ true }
-              >
-                { options }
-              </Select>
-            )}
-          </FormItem>
-        </Col>
-      </Row>
+      cardLevelAry.push(<Col span = { 8 } style={{width:'251px'}}>
+        <FormItem label="会员卡级别" {...formItemLayout}>
+          {getFieldDecorator('level', {
+            initialValue: cardKind ? cardKind.level+'':''  ,
+            rules: [{ required: true, message: '请选择会员卡级别' }]
+          })(
+            <Select
+              showSearch
+              allowClear
+              placeholder="请选择"
+              optionFilterProp="children"
+              filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              disabled={ true }
+            >
+              { options }
+            </Select>
+          )}
+        </FormItem>
+      </Col>)
     }
+
+    let cardLevel = cardLevel = <Row>
+      {cardLevelAry}
+    </Row>
+
     return (
       <div className="member-card-cent">
         <Card title="会员卡信息" style={{ width: '100%' }}>
@@ -122,8 +133,9 @@ class CardDetail extends Component {
                   )}
                 </FormItem>
               </Col>
-              {cardLevel}
             </Row>
+            {cardLevel}
+
             <Row>
               <Col span={ 24 } style={{width:'600px'}}>
                 <FormItem {...formTextItemLayout} label="备注">
@@ -145,11 +157,12 @@ class CardDetail extends Component {
 
 
 function mapStateToProps(state) {
-  const {  level,cardKind } = state.membershipcard;
+  const {  level,cardKind,cardBalance } = state.membershipcard;
   return {
     loading: state.loading.models.membershipcard,
     level,
     cardKind,
+    cardBalance
   };
 }
 export default connect(mapStateToProps)(CardDetail)
