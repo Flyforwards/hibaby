@@ -342,13 +342,14 @@ export default {
             }
 
           });
+          yield put({
+            type:'changModal',
+            paylaod:{
+              "modalVisible":false,
+            }
+          })
         }
-        yield put({
-          type:'changModal',
-          paylaod:{
-            "modalVisible":false,
-          }
-        })
+
       }
     }
 

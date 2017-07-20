@@ -13,6 +13,8 @@ const Option = Select.Option;
 import { queryURL } from '../../../utils/index.js';
 import FileUpload from './fileUpload';
 import './WebsiteBanner.scss';
+import LzEditor from 'react-lz-editor';
+let contentHtml = '';
 
 @createForm()
 class AddExpert extends React.Component{
@@ -35,12 +37,14 @@ class AddExpert extends React.Component{
     let img2Urls='';
     form.validateFields((err, values) => {
       if(this.props.newsImgList1 && this.props.newsImgList1.length > 0){
+        console.log("img1===========",this.props.newsImgList1)
         this.props.newsImgList1.map((v,i) => {
           img1String = v[0].name ? v[0].name:'';
         //  img1Urls +=v[0].url;
         })
       }else if(this.props.defaultFileLists1){
-        img1String = this.props.defaultFileLists1.name ? this.props.defaultFileLists1.name:'';
+        console.log("img2xxxxxxxxxxxxxxxxxxxx",this.props.defaultFileLists1);
+        img1String = this.props.defaultFileLists1[0].name ? this.props.defaultFileLists1[0].name:'';
       //  img1Urls +=this.props.defaultFileLists1.url;
       }
 
@@ -53,10 +57,11 @@ class AddExpert extends React.Component{
          // img2Urls +=v[0].url;
         })
       }else if(this.props.defaultFileLists2){
-        img2String = this.props.defaultFileLists2.name ? this.props.defaultFileLists2.name:'' ;
+        img2String = this.props.defaultFileLists2[0].name ? this.props.defaultFileLists2[0].name:'' ;
        // img2Urls +=this.props.defaultFileLists2.url;
       }
       values.img2 = img2String;
+      values.content = contentHtml;
      // values.img2Url = img2Urls;
       // this.props.newsImgList1 ? this.props.newsImgList1.map((v,i) => {
       //   if(v.length && v.length>0){
@@ -132,6 +137,11 @@ class AddExpert extends React.Component{
       payload:values
     })
   }
+  //富文本编辑器
+  receiveHtml(content) {
+    console.log("Recieved content", content);
+    contentHtml=content;
+  }
   render(){
     const { ExpertIdMsg ,newsImgList1,newsImgList2,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = this.props;
     const {getFieldDecorator,} =this.props.form;
@@ -174,13 +184,20 @@ class AddExpert extends React.Component{
               </Col>
             </Row>
             <Row>
-              <Col span={ 24 } style={{width:'400px'}}>
+              <Col span={ 24 } style={{minWidth:'400px'}} className="edit">
                 <FormItem {...formTextItemLayout} label="内容">
                   {getFieldDecorator('content', {
                     initialValue:ExpertIdMsg ? ExpertIdMsg.content : '' ,
-                    rules: [{ required: true, message: '请填写正文内容' }],
+                    rules: [{ required: false, message: '请填写正文内容' }],
                   })(
-                    <Input type="textarea" rows={6} readOnly ={false} />
+                    <LzEditor
+                    active={true}
+                    importContent={ExpertIdMsg ? ExpertIdMsg.content : ''}
+                    cbReceiver={ this.receiveHtml.bind(this)}
+                    //uploadConfig={uploadConfig}
+                    //uploadProps={uploadProps}
+                    fullScreen={false}
+                    convertFormat="html"/>
                   )}
                 </FormItem>
               </Col>
