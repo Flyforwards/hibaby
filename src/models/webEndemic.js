@@ -18,24 +18,22 @@ export default {
     page : 1,
     size : 10,
     initialValue : null,
-    endemicList:[] //地方中心下拉列表数据
+    endemicList:[], //地方中心下拉列表数据
+    addImglist:[],
+    disabledBtn:false,
   },
   //加载页面
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
      return history.listen(({ pathname,query }) => {
-     if (pathname === '/system/website-manage/addEndemic'){
-     if(query.id){
-       dispatch({
-       type: 'getEndemicById',
-       payload:{
-       dataId : query.id
+       if (pathname === '/system/website-manage/addEndemic'){
+         if(query.id){
+           dispatch({type: 'getEndemicById', payload:{dataId : query.id}});
+         }else{
+           dispatch({type:'saveOneList',payload:{data:{}}});
+           dispatch({type : 'clearEndemicDetail'});
+         }
        }
-       });
-     }else{
-       dispatch({type : 'clearEndemicDetail'});
-     }
-     }
      });
      }
   },
@@ -62,25 +60,36 @@ export default {
       const {data: { data, code,err} } = yield call(webEndemicService.getEndemicById, values);
       if (code == 0) {
         //更新state
+        const imgList = [{name:data.img1,url:data.img1Url}];
+        yield put({type:'setImgList', payload:imgList});
+        yield put({type:'saveOneList',payload:{data}});
         yield put({type:'setEndemicDetail',payload:{endemicInfo : data}} );
       }
     },
     //保存地方中心信息
     *saveEndemic({payload : values}, { call, put }){
-      const {data: { data, code,err} } = yield call(webEndemicService.saveEndemic, values);
-      if (code == 0) {
-        //更新state
-        message.success("课程信息保存成功");
-        history.go(-1);
+      if(values && values.img1&&values.img1!='') {
+        const {data: {data, code, err}} = yield call(webEndemicService.saveEndemic, values);
+        if (code == 0) {
+          //更新state
+          message.success("信息保存成功");
+          history.go(-1);
+        }
+      }else{
+        message.error("请上传图片")
       }
     },
     //修改地方中心信息
     *updateEndemic({payload : values}, { call, put,select }){
-      const {data: { data,code,err} } = yield call(webEndemicService.updateEndemic, values);
-      if (code == 0) {
-        message.success("信息修改成功");
-        //yield put({type:'getEndemicPageList'} );
-        history.go(-1);
+      if(values && values.img1&&values.img1!='') {
+        const {data: {data, code, err}} = yield call(webEndemicService.updateEndemic, values);
+        if (code == 0) {
+          message.success("信息修改成功");
+          //yield put({type:'getEndemicPageList'} );
+          history.go(-1);
+        }
+      }else{
+        message.error("请上传图片")
       }
     },
      //删除地方中心信息
@@ -102,6 +111,42 @@ export default {
   },
   //同步请求，更新state
   reducers: {
+    //保存一个图片列表
+    saveOneList(state,{payload:{data:oneList}}){
+      if(oneList != null && oneList.id !=undefined ){
+        let defaultFileList=[{
+          uid:0,
+          name:oneList.img1,
+          url:oneList.img1Url,
+        }];
+        let ontListType = oneList.type;
+        return { ...state,defaultFileList,disabledBtn:true,ontListType};
+      }else{
+        let defaultFileList=null;
+        let ontListType = '';
+        return { ...state,defaultFileList,disabledBtn:false,ontListType};
+      }
+
+    },
+    //保存图片
+    setImgList(state,{payload:todo}){
+      //let ary = state.addImglist;
+      let ary = [];
+      ary.push(todo);
+      return {...state,addImglist:ary,disabledBtn:true};
+    },
+    //删除图片
+    deleteImgList(state,{payload:todo}){
+      let arr = state.addImglist;
+      for(let i=0; i < arr.length; i++) {
+        if(arr[i].name == todo.name) {
+          arr.splice(i,1);
+          break;
+        }
+      }
+      return {...state,addImglist:arr,disabledBtn:false};
+    },
+    //设置下拉列表state
     setEndemicDropdownList(state, { payload: {data: data} }){
       return {...state,endemicList: data}
     },
