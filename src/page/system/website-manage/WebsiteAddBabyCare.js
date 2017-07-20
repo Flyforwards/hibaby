@@ -190,12 +190,12 @@ class WebsiteBabyAdd extends React.Component {
 
 
     return (
-      <div className="WebsiteAddBabyCare">
+      <div className="WebsiteAddBabyCare" style={{overflow:'hidden'}}>
         <Card title="标题">
         <Spin spinning={false}>
           <div className="TabooTital">
-            <Form className="formPadding">
-              <Row style={{height:'70px'}}>
+            <Form className="formPadding" style={{overflow:'hidden'}}>
+              <Row style={{height:'56px'}}>
                 <Col span = {12} style={{width:300}}>
                   <FormItem label="一级标题" {...formItemLayout}>
                   {getFieldDecorator('title', {
@@ -213,7 +213,7 @@ class WebsiteBabyAdd extends React.Component {
               </Row>
             </Form>
           </div>
-          <div className="TabooButton">
+          <div className="TabooButtons">
             <Button  onClick={this.onAdd.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginButtom:'20px',color:'#fff', backgroundColor: 'rgba(255, 102, 0, 1)'}}>添加标题</Button>
             <Button  onClick={this.onSave.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginRight: '40px', color:'#fff', backgroundColor: 'rgba(255, 102, 0, 1)'}}>保存</Button>
             <Button  onClick={this.onBack.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginButtom:'20px',color:'#fff', backgroundColor: 'rgba(255, 102, 0, 1)'}}>返回</Button>

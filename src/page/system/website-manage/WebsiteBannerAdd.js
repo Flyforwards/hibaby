@@ -94,7 +94,7 @@ class WebsiteBannerAdd extends React.Component {
       wrapperCol:{ span:17}
     };
     return (
-      <Card className="websitebannerAdd">
+      <Card className="websitebannerAdd" style={{overflow:'hidden'}}>
         <Form>
           <Row>
             <Col span={12} style = {{width:300}}>

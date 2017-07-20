@@ -177,7 +177,7 @@ class WebsiteBabyService extends React.Component{
       wrapperCol:{ span:17}
     };
     return(
-      <div className="websiteBabyService" key={modalVisible}>
+      <div className="websiteBabyService" style={{overflow:'hidden'}} key={modalVisible}>
       <Card className="website-banner" >
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
           <Form>
@@ -224,14 +224,14 @@ class WebsiteBabyService extends React.Component{
         </div>
         <Row>
           <Col span ={24}>
-            <Button className="one-button" style={{float:'right'}} onClick={this.upDateTitle.bind(this)}>修改</Button>
+            <Button className="btnAdd" style={{float:'right'}} onClick={this.upDateTitle.bind(this)}>修改</Button>
           </Col>
         </Row>
       </Card>
         <Card style={{marginTop:'20px'}}>
           <Row>
             <Col span ={24}>
-              <Button className="one-button" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>新增</Button>
+              <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>新增</Button>
             </Col>
           </Row>
         <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>

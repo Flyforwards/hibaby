@@ -153,7 +153,7 @@ class ExpertIntroduction extends React.Component{
       pagination:false,
     };
     return(
-      <Card className="website-banner">
+      <Card className="expertIntroduction" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
           <Form>
             {/*<Row>*/}
@@ -192,10 +192,10 @@ class ExpertIntroduction extends React.Component{
                 )}
               </FormItem>
               </Col>
-             <Col span ={6}><Button className="one-button" onClick={this.upDateTitle.bind(this)}>修改</Button></Col>
+             <Col span ={6}><Button className="btnAdd" onClick={this.upDateTitle.bind(this)}>修改</Button></Col>
               <Col span={10}>
                 {
-                  expertInitialList && expertInitialList.length > 0 ? <Button className="one-button" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button> : ''
+                  expertInitialList && expertInitialList.length > 0 ? <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button> : ''
 
                 }
 

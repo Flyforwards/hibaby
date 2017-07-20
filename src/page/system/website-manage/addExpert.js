@@ -131,10 +131,10 @@ class AddExpert extends React.Component{
       wrapperCol:{ span:17 }
     };
     return (
-      <div className="addExpert">
+      <div className="addExpert" style={{overflow:'hidden'}}>
         <Card title="添加新闻" style={{ width: '100%' }}>
           <Form>
-            <Row>
+            <Row style={{height:'56px'}}>
               <Col span = { 8 } style={{width:'300px'}} >
                 <FormItem {...formItemLayout} label="标题">
                   {getFieldDecorator('title', {
@@ -157,7 +157,7 @@ class AddExpert extends React.Component{
               </Col>
             </Row>
             <Row>
-              <Col span={ 24 } style={{minWidth:'400px'}} className="edit">
+              <Col span={ 22} style={{minWidth:'400px'}} className="edit">
                 <FormItem {...formTextItemLayout} label="内容">
                   {getFieldDecorator('content', {
                     initialValue:ExpertIdMsg ? ExpertIdMsg.content : '' ,

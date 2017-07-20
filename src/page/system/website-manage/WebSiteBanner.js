@@ -77,10 +77,10 @@ class WebSiteBanner extends React.Component{
       pagination:false,
     };
     return (
-      <Card className="website-banner">
+      <Card className="website-banner" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
           <Link to="/system/website-manage/add">
-            <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>新增</Button>
+            <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}}>新增</Button>
           </Link>
         </div>
         <Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>

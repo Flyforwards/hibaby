@@ -1,4 +1,29 @@
 .website-banner{
+  .btnAdd{
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+
+    font-size: 14px;
+    color: #fff;
+    background-color:#b67233;
+    border-color: #b67233;
+    &:hover,&:visited,&:focus,&:active {
+      color: #fff;
+      background-color:#f89d2d;
+      border-color: #f89d2d;
+    }
+
+    &[disabled] {
+      color: rgba(0, 0, 0, 0.25);
+      background-color: #f7f7f7;
+      border-color: inherit;
+      height: 30px;
+      padding: 0 26px;
+      line-height: 30px;
+      font-size: 14px;
+    }
+  }
   .management-center{
     width:100%;
     .ant-table-thead > tr > th {
@@ -22,6 +47,58 @@
 
     .operation-list {
       width: 100%;
+    }
+  }
+}
+.expertIntroduction{
+  .management-center{
+    width:100%;
+    .ant-table-thead > tr > th {
+      background-color: rgba(102, 102, 102, 1);
+      font-weight: 500;
+      transition: background .3s ease;
+      text-align: center;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+    .ant-table-tbody > tr > td {
+      text-align:center;
+      background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-size: 14px;
+    }
+
+    .operation-list {
+      width: 100%;
+    }
+  }
+  .btnAdd{
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+
+    font-size: 14px;
+    color: #fff;
+    background-color:#b67233;
+    border-color: #b67233;
+    &:hover,&:visited,&:focus,&:active {
+      color: #fff;
+      background-color:#f89d2d;
+      border-color: #f89d2d;
+    }
+
+    &[disabled] {
+      color: rgba(0, 0, 0, 0.25);
+      background-color: #f7f7f7;
+      border-color: inherit;
+      height: 30px;
+      padding: 0 26px;
+      line-height: 30px;
+      font-size: 14px;
     }
   }
 }
@@ -83,6 +160,31 @@
   }
 }
 .websiteBabyService{
+  .btnAdd{
+    height: 30px;
+    padding: 0 26px;
+    line-height: 30px;
+
+    font-size: 14px;
+    color: #fff;
+    background-color:#b67233;
+    border-color: #b67233;
+    &:hover,&:visited,&:focus,&:active {
+      color: #fff;
+      background-color:#f89d2d;
+      border-color: #f89d2d;
+    }
+
+    &[disabled] {
+      color: rgba(0, 0, 0, 0.25);
+      background-color: #f7f7f7;
+      border-color: inherit;
+      height: 30px;
+      padding: 0 26px;
+      line-height: 30px;
+      font-size: 14px;
+    }
+  }
   .management-center{
     width:100%;
     .ant-table-thead > tr > th {
@@ -111,7 +213,7 @@
 }
 .WebsiteAddBabyCare{
   background: #FFFFFF;
-  .TabooButton{
+  .TabooButtons{
     width:98%;
     //margin-left:10%;
     overflow: hidden;
