@@ -17,7 +17,7 @@ const FormItem = Form.Item;
 const createForm = Form.create
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 @createForm()
-class WebCourseAdd extends React.Component {
+class WebEndemicAdd extends React.Component {
   constructor(props) {
     super(props);
   /* this.state={
@@ -177,8 +177,8 @@ class WebCourseAdd extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    webCourse: state.webCourse
+    webEndemic: state.webEndemic
   };
 }
 
-export default connect(mapStateToProps)(WebCourseAdd);
+export default connect(mapStateToProps)(WebEndemicAdd);
