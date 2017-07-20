@@ -24,7 +24,7 @@ class DishesLeft extends React.Component {
       selectedNode: null,//选中树节点
       selectedNodeParentId : null,//选中树节点所属父id
       selectedNodeLevel : null,//选中树节点的级别
-      unfolded:["0"],//默认展开的树节点集合
+      unfolded:[this.props.dishes.nodeId+""],//默认展开的树节点集合
       nodeFormOrDetailModalVisible:false,//节点表单/详情页面弹出框显示状态
       nodeFormOrDetailModalTitle : null,//节点表单/详情页面弹出框标题
       isNodeDetail : false,//是否为查看详情状态
