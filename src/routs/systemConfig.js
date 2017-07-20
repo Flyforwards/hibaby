@@ -337,6 +337,26 @@ export default (app) => [
       })
     }
   },
+  //官网管理---地方中心管理
+  {
+    path:'/system/website-manage/endemic',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/webEndemic'));
+        cb(null,require('page/system/website-manage/WebEndemic.js'))
+      })
+    }
+  },
+  //官网管理---  新增/修改地方中心
+  {
+    path:'/system/website-manage/addEndemic',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/webEndemic'));
+        cb(null,require('page/system/website-manage/WebEndemicAdd.js'))
+      })
+    }
+  },
     //404
     {
       path: '/404',
