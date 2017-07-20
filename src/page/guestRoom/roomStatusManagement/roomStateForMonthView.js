@@ -552,10 +552,11 @@ const monthStateView = (props) => {
         const resizeBarMouseDownHandler = (e) => {
           e.preventDefault();
           e.stopPropagation();
+          console.log(e)
 
           let pageX = e.pageX;
           let target = e.target.parentNode;
-
+          console.log(e)
           let targetWidth = target.offsetWidth;
           let unit = 0;
           let oldStartIndex = parseInt(target.dataset.startIndex);

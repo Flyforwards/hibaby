@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import { Button } from 'antd';
 import { connect } from 'dva';
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 class PermissionButton extends Component {
   constructor(props) {
