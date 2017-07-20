@@ -1,6 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon} from 'antd'
+import _ from 'lodash'
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
