@@ -15,6 +15,7 @@ export default {
     addImglist:[],
     disabledBtn:false,
     selectAble:false,
+
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -33,7 +34,27 @@ export default {
   reducers:{
     //设置为空
     setNewValue(state){
-      return {...state,newsImgList1:[],newsImgList2:[]}
+      return {
+        picarr:[],
+          addImglist:[],
+          disabledBtn:false,
+          selectAble:false,
+
+          pagination: {
+          showQuickJumper: true,
+            showTotal: total => `共 ${total} 条`,
+            current: 1,
+            pageSize:10,
+            total: null,
+        },
+        //主标题 ---专家团队修改判断
+        readAble:false,
+          newsImgList1:[],
+          newsImgList2:[],
+          img1Btn:false,
+          img2Btn:false,
+          modalVisible:false,
+      }
     },
     //改变modal状态
     changModal(state,{payload:{modalVisible}}){
@@ -46,20 +67,18 @@ export default {
     //保存新闻上传图片1
     setNewsImg1(state,{payload:todos}){
       let newsArr1 = state.newsImgList1 ? state.newsImgList1:[];
-      newsArr1.push(todos);
-      return{...state,newsImgList1:newsArr1,img1Btn:true};
+      return{...state,newsImgList1:[...newsArr1,...todos],img1Btn:true};
     },
     //保存新闻上传图片2
     setNewsImg2(state,{payload:todos}){
       let newsArr2 = state.newsImgList2 ? state.newsImgList2:[];
-      newsArr2.push(todos);
-      return{...state,newsImgList2:newsArr2,img2Btn:true};
+      return{...state,newsImgList2:[...newsArr2,...todos],img2Btn:true};
     },
     //删除新闻图片1
     deleteNewsImg1(state,{payload:todos}){
       let newsArr1 = state.newsImgList1;
       for(let i=0; i < newsArr1.length; i++) {
-        if(newsArr1[i].name == todos.name) {
+        if(newsArr1[i].name == todos[0].name) {
           newsArr1.splice(i,1);
           break;
         }
@@ -70,7 +89,7 @@ export default {
     deleteNewsImg2(state,{payload:todos}){
       let newsArr2 = state.newsImgList2;
       for(let i=0; i < newsArr2.length; i++) {
-        if(newsArr2[i].name == todos.name) {
+        if(newsArr2[i].name ==  todos[0].name) {
           newsArr2.splice(i,1);
           break;
         }
@@ -131,43 +150,28 @@ export default {
     //根据ID获取的信息
     saveExpertById(state,{payload:{data:ExpertIdMsg}}){
       if(ExpertIdMsg != null && ExpertIdMsg.id !=undefined ){
+        let img1Ary = '';
+        let img2Ary = '';
+
         if(ExpertIdMsg.img1){
-          let defaultFileLists1=[{
+          img1Ary=[{
             uid:0,
             name:ExpertIdMsg.img1,
             url:ExpertIdMsg.img1Url,
           }];
-          if(ExpertIdMsg.img2){
-            let defaultFileLists2 = [{
-              uid:1,
-              name:ExpertIdMsg.img2,
-              url:ExpertIdMsg.img2Url,
-            }]
-            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:true,ExpertIdMsg}
-          }else{
-            let defaultFileLists2=null;
-            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:true,img2Btn:false,ExpertIdMsg}
-          }
-        }else{
-          let defaultFileLists1=null;
-          if(ExpertIdMsg.img2){
-            let defaultFileLists2 = [{
-              uid:1,
-              name:ExpertIdMsg.img2,
-              url:ExpertIdMsg.img2Url,
-            }]
-            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:false,img2Btn:true,ExpertIdMsg}
-          }else{
-            let defaultFileLists2=null;
-            return{...state,defaultFileLists1,defaultFileLists2,img1Btn:false,img2Btn:false,ExpertIdMsg}
-          }
+
+       }
+
+        if(ExpertIdMsg.img2){
+          img2Ary = [{
+            uid:1,
+            name:ExpertIdMsg.img2,
+            url:ExpertIdMsg.img2Url,
+          }]
         }
-       }else{
-        let defaultFileLists1=null;
-        let defaultFileLists2=null;
-        let ontListType = '';
-        return { ...state,defaultFileLists2,defaultFileLists1,img1Btn:false,img2Btn:false,ExpertIdMsg};
+        return{...state,defaultFileLists1:img1Ary,newsImgList1:img1Ary,newsImgList2:img2Ary,defaultFileLists2:img2Ary,img1Btn:img1Ary?true:false,img2Btn:img2Ary?true:false,ExpertIdMsg}
       }
+      return state
     }
   },
   effects:{
@@ -342,12 +346,7 @@ export default {
             }
 
           });
-          yield put({
-            type:'changModal',
-            paylaod:{
-              "modalVisible":false,
-            }
-          })
+
         }
 
       }

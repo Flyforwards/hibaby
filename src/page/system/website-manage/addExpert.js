@@ -23,42 +23,33 @@ class AddExpert extends React.Component{
 
   }
   componentWillUnmount(){
-    // this.props.dispatch({
-    //   type:'websiterBanner/setNewValue'
-    // })
+    this.props.form.resetFields()
+    this.props.dispatch({
+      type:'websiteBanner/setNewValue',
+    })
+    contentHtml = ''
   }
   //点击保存信息
   onSave (){
-    const { form ,dispatch } = this.props;
+    const { form ,dispatch ,newsImgList1,newsImgList2} = this.props;
     // const id = queryURL("id");
     let img1String = '';
     let img2String = '';
-    let img1Urls='';
-    let img2Urls='';
+
+    if(newsImgList1 && newsImgList1.length > 0){
+      img1String = (newsImgList1[0]).name ? newsImgList1[0].name:'';
+    }
+
+
+    if(newsImgList2 && newsImgList2.length > 0 ){
+      img2String = newsImgList2[0].name ? newsImgList2[0].name:'';
+    }
+
     form.validateFields((err, values) => {
-      if(this.props.newsImgList1 && this.props.newsImgList1.length > 0){
-        this.props.newsImgList1.map((v,i) => {
-          img1String = v[0].name ? v[0].name:'';
-        //  img1Urls +=v[0].url;
-        })
-      }else if(this.props.defaultFileLists1){
-        img1String = this.props.defaultFileLists1[0].name ? this.props.defaultFileLists1[0].name:'';
-      //  img1Urls +=this.props.defaultFileLists1.url;
-      }
 
-      values.img1 = img1String;
-    //  values.img1Url = img1Urls;
 
-      if(this.props.newsImgList2 && this.props.newsImgList2.length > 0 ){
-        this.props.newsImgList2.map((v,i) => {
-          img2String = v[0].name ? v[0].name : '';
-         // img2Urls +=v[0].url;
-        })
-      }else if(this.props.defaultFileLists2){
-        img2String = this.props.defaultFileLists2[0].name ? this.props.defaultFileLists2[0].name:'' ;
-       // img2Urls +=this.props.defaultFileLists2.url;
-      }
       values.img2 = img2String;
+      values.img1 = img1String;
       values.content = contentHtml;
       if (!err) {
         if(queryURL("id")){
@@ -67,7 +58,7 @@ class AddExpert extends React.Component{
             payload:{
               ...values,
               "type":queryURL("type"),
-              "id":queryURL("id")
+              "id":queryURL("id"),
             }
           })
         }else{
@@ -76,6 +67,7 @@ class AddExpert extends React.Component{
             payload: {
               ...values,
               "type":queryURL('type')
+
             },
           })
         }
@@ -116,7 +108,7 @@ class AddExpert extends React.Component{
     contentHtml=content;
   }
   render(){
-    const { ExpertIdMsg ,newsImgList1,newsImgList2,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = this.props;
+    const { ExpertIdMsg ,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = this.props;
     const {getFieldDecorator,} =this.props.form;
     const formItemLayout = {
       labelCol:{ span: 4 },
@@ -132,7 +124,7 @@ class AddExpert extends React.Component{
     };
     return (
       <div className="addExpert" style={{overflow:'hidden'}}>
-        <Card title="添加新闻" style={{ width: '100%' }}>
+        <Card title="新增专家" style={{ width: '100%' }}>
           <Form>
             <Row style={{height:'56px'}}>
               <Col span = { 8 } style={{width:'300px'}} >

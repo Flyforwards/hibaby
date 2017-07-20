@@ -75,12 +75,10 @@ class ExpertIntroduction extends React.Component{
   }
   //隐藏弹框
   hideModel() {
-    this.props.dispatch({
-      type:'websiteBanner/changModal',
-      payload:{
-        "modalVisible":false,
-      }
+    this.setState({
+      modalVisible:false,
     })
+
   }
   //modal确定 保存
   confirmModel() {
@@ -99,15 +97,14 @@ class ExpertIntroduction extends React.Component{
         })
       }
     })
+    form.resetFields()
+    this.hideModel()
   }
   //点击修改
   upDateTitle() {
-   this.props.dispatch({
-     type:'websiteBanner/changModal',
-     payload:{
-       "modalVisible":true,
-     }
-   })
+    this.setState({
+      modalVisible:true,
+    })
   }
   // onSelectType(value){
   //   const { dispatch } = this.props;
@@ -137,7 +134,7 @@ class ExpertIntroduction extends React.Component{
     callback('不能为空');
   }
   render(){
-    const { expertInitialList,loading,oneExpertMsg,oneExpertTitleMsg,readAble,modalVisible} =this.props;
+    const { expertInitialList,loading,oneExpertMsg,oneExpertTitleMsg,readAble} =this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol:{ span: 6 },
@@ -155,42 +152,14 @@ class ExpertIntroduction extends React.Component{
     return(
       <Card className="expertIntroduction" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
-          <Form>
-            {/*<Row>*/}
-              {/*<Col style={{width:'300px'}}>*/}
-                {/*<FormItem label="类型选择" {...formItemLayout}>*/}
-                  {/*{getFieldDecorator('type', {*/}
-                    {/*initialValue:'1-1' ,*/}
-                    {/*rules: [{ required: false, message: '' }]*/}
-                  {/*})(*/}
-                    {/*<Select*/}
-                      {/*showSearch*/}
-                      {/*allowClear*/}
-                      {/*placeholder="请选择"*/}
-                      {/*optionFilterProp="children"*/}
-                      {/*filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}*/}
-                      {/*disabled={false}*/}
-                      {/*onChange={this.onSelectType.bind(this)}*/}
-                    {/*>*/}
-                      {/*<Option key="1-1">首页-专家团队</Option>*/}
-                      {/*<Option key="1-2">首页-活动咨询</Option>*/}
-                      {/*<Option key="1-2-1">首页-活动咨询-活动招募</Option>*/}
-                      {/*<Option key="1-2-2">首页-活动咨询-新闻动态</Option>*/}
-                    {/*</Select>*/}
-                  {/*)}*/}
-                {/*</FormItem>*/}
-              {/*</Col>*/}
-            {/*</Row>*/}
             <Row>
               <Col span={8} style={{width:'300px'}}>
-              <FormItem label="主标题名:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
-                {getFieldDecorator('title', {
-                  initialValue:oneExpertTitleMsg ? oneExpertTitleMsg.title:'',
-                  rules: [{validator:this.checkPrice, required: false, }],
-                })(
-                  <Input placeholder="" readOnly={true}/>
-                )}
-              </FormItem>
+                <Row>
+                  <Col span={6}><p style={{lineHeight:'28px'}}>主标题名:</p></Col>
+                  <Col span={17}><Input placeholder="" value={oneExpertTitleMsg?oneExpertTitleMsg.title:''} readOnly={true}/></Col>
+                </Row>
+
+
               </Col>
              <Col span ={6}><Button className="btnAdd" onClick={this.upDateTitle.bind(this)}>修改</Button></Col>
               <Col span={10}>
@@ -201,24 +170,24 @@ class ExpertIntroduction extends React.Component{
 
               </Col>
             </Row>
-          </Form>
         </div>
         <Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>
         <Modal
           title="主标题修改"
           wrapClassName="vertical-center-modal"
-          visible={modalVisible}
+          visible={this.state.modalVisible}
+
           onOk={this.confirmModel.bind(this)}
           okText="保存"
           cancelText="取消"
           width={500}
-          maskClosable={ false }
+          maskClosable={ true }
           onCancel={this.hideModel.bind(this)}
         >
           <Form>
             <FormItem label="主标题名:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
               {getFieldDecorator('title', {
-                initialValue:oneExpertTitleMsg ? oneExpertTitleMsg.title:'',
+                initialValue:oneExpertTitleMsg?oneExpertTitleMsg.title:'',
                 rules: [{validator:this.checkPrice, required: true, }],
               })(
                 <Input placeholder="请输入主标题名"  />
@@ -235,10 +204,8 @@ class ExpertIntroduction extends React.Component{
 }
 
 function mapStateToProps(state){
-  const {expertInitialList,oneExpertTitleMsg,oneExpertMsg,modalVisible} = state.websiteBanner;
-  console.log("modalVisible",modalVisible)
+  const {expertInitialList,oneExpertTitleMsg,oneExpertMsg} = state.websiteBanner;
   return {
-    modalVisible,
     oneExpertTitleMsg,
     oneExpertMsg,
     expertInitialList,
