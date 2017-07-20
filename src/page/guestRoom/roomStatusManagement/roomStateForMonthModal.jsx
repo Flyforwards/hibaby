@@ -334,6 +334,9 @@ class addCustomer extends React.Component {
   }
 
   componentDidMount(){
+    this.setState({
+      selectItem:[...this.props.users.monthStateCustomers],
+    })
     this.props.dispatch({type: 'roomStatusManagement/getCustomerPage'});
   }
 
@@ -349,6 +352,7 @@ class addCustomer extends React.Component {
         dict.edit = true;
       }
     }
+
     this.props.dispatch({type: 'roomStatusManagement/setMonthStatusCustomers',payload:{data:ary}});
     this.props.dispatch({type: 'roomStatusManagement/setCustomerVisible', payload: false});
   }
@@ -358,7 +362,7 @@ class addCustomer extends React.Component {
   }
 
   selectCustomerFun(record,selected){
-    let ary = this.state.selectItem ? this.state.selectItem : [...this.props.users.monthStateCustomers];
+    let ary = this.state.selectItem ;
     if(selected){
       ary.push(record)
     }
@@ -395,7 +399,7 @@ class addCustomer extends React.Component {
       >
         <CusSearchFormDiv packageAry={this.props.users.packageAry} shipCards={this.props.users.shipCards} dispatch={this.props.dispatch}/>
         <CustomerTable
-          selectItem={this.state.selectItem||[...this.props.users.monthStateCustomers]}
+          selectItem={this.state.selectItem}
           selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
           loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}/>
       </Modal>
