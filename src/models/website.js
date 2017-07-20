@@ -218,6 +218,18 @@ export default {
         })
       }
     },
+    //根据类型获取一个类型列表
+    *getOneById({payload: values},{call,put}){
+      const {data:{data,code}} = yield call(websiteBanner.getBannerById,values);
+      if(code == 0){
+        yield put({
+          type:'saveOneList',
+          payload:{
+            data
+          }
+        })
+      }
+    },
     *updateBanner({payload: values},{call,put}){
       if(values && values.img){
         const {data:{data,code}} = yield call(websiteBanner.upDateBanner,values);
@@ -330,13 +342,14 @@ export default {
             }
 
           });
+          yield put({
+            type:'changModal',
+            paylaod:{
+              "modalVisible":false,
+            }
+          })
         }
-        yield put({
-          type:'changModal',
-          paylaod:{
-            "modalVisible":false,
-          }
-        })
+
       }
     }
 
@@ -351,7 +364,7 @@ export default {
               payload:true,
             });
             dispatch({
-              type:'getOneByType',
+              type:'getOneById',
               payload:{
                 "type":query.type,
                 "dataId":query.id,

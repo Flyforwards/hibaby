@@ -117,6 +117,7 @@ class WebsiteBannerAdd extends React.Component {
                 <Option key="4">活动咨询</Option>
                 <Option key="5">新妈分享</Option>
                 <Option key="6">关于Hibaby</Option>
+                <Option key="11">精致服务</Option>
               </Select>
             )}
           </FormItem>

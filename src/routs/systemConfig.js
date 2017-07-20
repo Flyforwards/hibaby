@@ -257,6 +257,26 @@ export default (app) => [
       })
     }
   },
+  //官网管理 --- 产前服务
+  {
+    path:'/system/website-manage/babycare',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/babycare'));
+        cb(null,require('page/system/website-manage/WebsiteBabyService.js'))
+      })
+    }
+  },
+  //官网管理 ---产前服务新增
+  {
+    path:'/system/website-manage/addbabycare',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/babycare'));
+        cb(null,require('page/system/website-manage/WebsiteAddBabyCare.js'))
+      })
+    }
+  },
   //官网管理---妈妈课程
   {
     path:'/system/website-manage/course',
@@ -294,6 +314,26 @@ export default (app) => [
       require.ensure([],(require) => {
         registerModel(app,require('models/activityEnroll'));
         cb(null,require('page/system/website-manage/activityEnrollAdd.js'))
+      })
+    }
+  },
+  //官网管理---招聘信息
+  {
+    path:'/system/website-manage/job',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/WebJob'));
+        cb(null,require('page/system/website-manage/WebJob.js'))
+      })
+    }
+  },
+  //官网管理---添加/修改招聘信息
+  {
+    path:'/system/website-manage/addJob',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/WebJob'));
+        cb(null,require('page/system/website-manage/WebJobAdd.js'))
       })
     }
   },

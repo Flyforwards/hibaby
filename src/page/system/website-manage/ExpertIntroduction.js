@@ -37,11 +37,6 @@ class ExpertIntroduction extends React.Component{
       dataIndex: 'summary',
       key: 'summary',
       width: '20%',
-    },{
-      title: '正文',
-      dataIndex: 'content',
-      key: 'content',
-      width: '30%',
     }, {
       title: '操作',
       dataIndex: 'operation',

@@ -53,6 +53,9 @@
   }
 }
 .addExpert{
+  .edit>.ant-row>.ant-col-3{
+    width:55px;
+  }
   .bottomBtn{
     width:100%;
     .btn{
@@ -78,4 +81,49 @@
       border-color: #b67233;
     }
   }
+}
+.websiteBabyService{
+  .management-center{
+    width:100%;
+    .ant-table-thead > tr > th {
+      background-color: rgba(102, 102, 102, 1);
+      font-weight: 500;
+      transition: background .3s ease;
+      text-align: center;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+    .ant-table-tbody > tr > td {
+      text-align:center;
+      background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-size: 14px;
+    }
+
+    .operation-list {
+      width: 100%;
+    }
+  }
+}
+.WebsiteAddBabyCare{
+  background: #FFFFFF;
+  .TabooButton{
+    width:98%;
+    //margin-left:10%;
+    overflow: hidden;
+    text-align: right;
+    height:80px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .delDisplan {
+    .ant-calendar-picker {
+      display: block;
+    }
+  }
+
 }
