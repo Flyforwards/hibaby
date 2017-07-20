@@ -37,13 +37,11 @@ class AddExpert extends React.Component{
     let img2Urls='';
     form.validateFields((err, values) => {
       if(this.props.newsImgList1 && this.props.newsImgList1.length > 0){
-        console.log("img1===========",this.props.newsImgList1)
         this.props.newsImgList1.map((v,i) => {
           img1String = v[0].name ? v[0].name:'';
         //  img1Urls +=v[0].url;
         })
       }else if(this.props.defaultFileLists1){
-        console.log("img2xxxxxxxxxxxxxxxxxxxx",this.props.defaultFileLists1);
         img1String = this.props.defaultFileLists1[0].name ? this.props.defaultFileLists1[0].name:'';
       //  img1Urls +=this.props.defaultFileLists1.url;
       }
@@ -62,31 +60,6 @@ class AddExpert extends React.Component{
       }
       values.img2 = img2String;
       values.content = contentHtml;
-     // values.img2Url = img2Urls;
-      // this.props.newsImgList1 ? this.props.newsImgList1.map((v,i) => {
-      //   if(v.length && v.length>0){
-      //     img1String += v[0].name;
-      //     img1Urls +=v[0].url;
-      //   }else{
-      //     img1String += v.name;
-      //     img1Urls +=v.url;
-      //   }
-      //
-      // }):'';
-      // values.img1 = this.props.newsImgList1 ? img1String:'';
-      // values.img1Url = this.props.newsImgList1 ? img1Urls:'';
-      // this.props.newsImgList2 ? this.props.newsImgList2.map((v,i) => {
-      //   if(v.length && v.length > 0){
-      //     img2String += v[0].name;
-      //     img2Urls +=v[0].url;
-      //   }else{
-      //     img2String += v.name;
-      //     img2Urls +=v.url;
-      //   }
-      //
-      // }):'';
-      // values.img2 = this.props.newsImgList2 ? img2String:'';
-      // values.img2Url = this.props.newsImgList2 ? img2Urls:'';
       if (!err) {
         if(queryURL("id")){
           dispatch({
