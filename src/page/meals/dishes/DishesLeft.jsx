@@ -307,7 +307,6 @@ class DishesLeft extends React.Component {
           className="draggable-tree"
           autoExpandParent = { true }
           onExpand={this.expandHandler.bind(this)}
-          defaultSelectedKeys = { this.state.unfolded }
           expandedKeys = { this.state.unfolded }
           onSelect={ this.onSelect.bind(this) }
           >
