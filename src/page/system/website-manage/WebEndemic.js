@@ -23,22 +23,22 @@ class WebEndemic extends React.Component{
       title:"ID",
       dataIndex:'id',
       key:'id',
-      width:"10%",
+      width:"20%",
     },{
       title: '地方中心名称',
       dataIndex: 'endemicName',
       key: 'endemicName',
-      width: '10%'
-    },/*{
+      width: '20%'
+    },{
       title:'创建时间',
       dataIndex:'createTime',
       key:'createTime',
-      width:'10%',
+      width:'20%',
       render:(text,record,index) =>{
         var date = new Date(text).format("yyyy-MM-dd HH:mm:ss");
         return date;
       }
-    },*/{
+    },{
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
