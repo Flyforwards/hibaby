@@ -33,6 +33,8 @@ export default {
            dispatch({type:'saveOneList',payload:{data:{}}});
            dispatch({type : 'clearEndemicDetail'});
          }
+       }else{
+         dispatch({type:'saveOneList',payload:{data:{}}});
        }
      });
      }
@@ -119,12 +121,12 @@ export default {
           name:oneList.img1,
           url:oneList.img1Url,
         }];
-        let ontListType = oneList.type;
-        return { ...state,defaultFileList,disabledBtn:true,ontListType};
+        //let ontListType = oneList.type;
+        return { ...state,defaultFileList,disabledBtn:true/*,ontListType*/};
       }else{
         let defaultFileList=null;
-        let ontListType = '';
-        return { ...state,defaultFileList,disabledBtn:false,ontListType};
+        //let ontListType = '';
+        return { ...state,defaultFileList,disabledBtn:false/*,ontListType*/};
       }
 
     },

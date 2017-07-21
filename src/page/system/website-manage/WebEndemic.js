@@ -30,6 +30,13 @@ class WebEndemic extends React.Component{
       key: 'endemicName',
       width: '20%'
     },{
+      title: '图片',
+      dataIndex: 'img1Url',
+      key: 'img1Url',
+      width: '20%',
+      render:(text,record,index) =><img width={180} height={180} src={text} />
+    },
+      {
       title:'创建时间',
       dataIndex:'createTime',
       key:'createTime',
