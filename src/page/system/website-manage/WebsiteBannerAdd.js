@@ -47,16 +47,9 @@ class WebsiteBannerAdd extends React.Component {
   //保存
   onSave() {
     const { form ,dispatch } = this.props;
-   // const id = queryURL("id");
-    let imgString = '';
-    let imgUrls='';
     form.validateFields((err, values) => {
-      this.props.addImglist ? this.props.addImglist.map((v,i) => {
-        imgString += v[0].name;
-        imgUrls +=v[0].url;
-      }):'';
-      values.img = this.props.addImglist ? imgString:'';
-      values.imgUrl = this.props.addImglist ? imgUrls:'';
+
+      values.img = this.props.addImglist ? this.props.addImglist[0].name:'';
       if (!err) {
         if(queryURL("id")){
           dispatch({
@@ -87,12 +80,21 @@ class WebsiteBannerAdd extends React.Component {
   //
   // }
   render(){
-    const { disabledBtn ,defaultFileList,ontListType,addImglist,selectAble} = this.props;
+    const { disabledBtn ,ontListType,addImglist,selectAble,imgSize} = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol:{ span: 6 },
       wrapperCol:{ span:17}
     };
+
+    let size2 = false
+    if(addImglist ){
+      if( addImglist.length > 0 ){
+        size2 = true
+      }
+    }
+
+
     return (
       <Card className="websitebannerAdd" style={{overflow:'hidden'}}>
         <Form>
@@ -123,20 +125,28 @@ class WebsiteBannerAdd extends React.Component {
           </FormItem>
             </Col>
           </Row>
-          <Row>
+          <Row style = {{width:600}}>
             <Col span = {12}>
-          <FormItem
-            {...formItemLayout}
-          >
-            {getFieldDecorator("url", {
-              //initialValue:addImglist?addImglist:'' ,
-              rules: [{ required: false }]
-            })(
-              <FileUpload  defaultFileList ={defaultFileList} addImgFun={this.onAddImg.bind(this)} deleteImgFun={this.onDeleteImg.bind(this)} imgInputName="url">
-                <Button key="1" disabled={disabledBtn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
-              </FileUpload>
-            )}
-          </FormItem>
+              <FormItem
+                {...formItemLayout}
+              >
+                {getFieldDecorator("url", {
+                  rules: [{ required: false }]
+                })(
+                  <FileUpload  defaultFileList ={addImglist} addImgFun={this.onAddImg.bind(this)} deleteImgFun={this.onDeleteImg.bind(this)} imgInputName="url">
+                    <Button key="1" disabled={disabledBtn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                  </FileUpload>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                {getFieldDecorator('imgSize', {initialValue:imgSize?imgSize:'' ,rules: [{ required: size2, message: '请输入图片尺寸'}],
+                  })(
+                  <Input placeholder="请输入图片尺寸，有图片时必填"/>
+                )}
+              </FormItem>
+
             </Col>
           </Row>
         </Form>
@@ -152,13 +162,13 @@ class WebsiteBannerAdd extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {addImglist,disabledBtn,defaultFileList,ontListType,selectAble} = state.websiteBanner;
+  const {addImglist,disabledBtn,ontListType,selectAble,imgSize} = state.websiteBanner;
   return {
     addImglist,
     disabledBtn,
-    defaultFileList,
     ontListType,
-    selectAble
+    selectAble,
+    imgSize
   };
 }
 

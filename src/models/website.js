@@ -101,15 +101,14 @@ export default {
     },
     //保存图片
     setImgList(state,{payload:todo}){
-      let ary = state.addImglist;
-        ary.push(todo);
-      return {...state,addImglist:ary,disabledBtn:true};
+      todo[0].uid = todo[0].name
+      return {...state,addImglist:todo,disabledBtn:true};
     },
     //删除图片
     deleteImgList(state,{payload:todo}){
       let arr = state.addImglist;
       for(let i=0; i < arr.length; i++) {
-        if(arr[i].name == todo.name) {
+        if(arr[i].name == todo[0].name) {
           arr.splice(i,1);
           break;
         }
@@ -123,17 +122,17 @@ export default {
     //保存一个列表
     saveOneList(state,{payload:{data:oneList}}){
       if(oneList != null && oneList.id !=undefined ){
-        let defaultFileList=[{
+        let addImglist=[{
           uid:0,
           name:oneList.img,
           url:oneList.imgUrl,
         }];
         let ontListType = oneList.type;
-        return { ...state,defaultFileList,disabledBtn:true,ontListType};
+        return { ...state,addImglist,disabledBtn:true,ontListType,imgSize:oneList?oneList.imgSize:''};
       }else{
-        let defaultFileList=null;
+        let addImglist=null;
         let ontListType = '';
-        return { ...state,defaultFileList,disabledBtn:false,ontListType};
+        return { ...state,addImglist,disabledBtn:false,ontListType,imgSize:oneList?oneList.imgSize:''};
       }
 
     },
