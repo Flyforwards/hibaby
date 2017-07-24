@@ -255,11 +255,14 @@ class PhoneSystemIndex extends React.Component {
 
   onClick(){
     console.log(window.callback)
-
-    if (window.callback.type == 'login') {
+    const { type } = window.callback;
+    if (type == 'login') {
       message.success('400电话,登录成功');
       this.toLarge();
-    } else if (window.callback.type == 'logout') {
+    } else if (type == 'loginFailed') {
+      const { token } = window.callback;
+      message.error("400电话 登录失败！" + token.msg);
+    } else if (type == 'logout') {
       message.success('400电话,退出成功');
       this.toNone();
       this.setState({
@@ -267,7 +270,7 @@ class PhoneSystemIndex extends React.Component {
       })
       clearInterval(this.time);
       clearInterval(this.customerTimer)
-    } else if (window.callback.type == 'queueStatus') {
+    } else if (type == 'queueStatus') {
 
       const data = window.callback.data;
       clearInterval(this.time);
@@ -344,7 +347,7 @@ class PhoneSystemIndex extends React.Component {
         1000
       );
 
-    } else if (window.callback.type == 'queue'){
+    } else if (type == 'queue'){
       const json = window.callback.json;
       json.key = json.uniqueId.replace(".",'');
       const dataSource = this.state.dataSource;
@@ -377,7 +380,7 @@ class PhoneSystemIndex extends React.Component {
           dataSource
         })
       }
-    } else if (window.callback.type == 'status') {
+    } else if (type == 'status') {
       const token = window.callback.token;
       switch(token.eventName){
         case 'outRinging' : //外呼座席响铃

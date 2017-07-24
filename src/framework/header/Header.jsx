@@ -45,19 +45,13 @@ class Header extends React.Component {
     }
 
     componentDidMount() {
-        const projectList = this.props.projectList;
-        if (projectList == null) {
-          this.props.dispatch({
-            type : "layout/getProjectAndModuleTree"
-          });
-        }
+        // const projectList = this.props.projectList;
+        // if (projectList == null) {
+        //   this.props.dispatch({
+        //     type : "layout/getProjectAndModuleTree"
+        //   });
+        // }
 
-    }
-
-    getName(event,item){
-        this.setState({
-            name:event.target.innerHTML
-        })
     }
 
     refreshMenu(item, index){
@@ -73,7 +67,7 @@ class Header extends React.Component {
       if (selectEndemic != null && record.id != selectEndemic.id) {
         this.props.dispatch({
           type: "layout/setEndemic",
-          payload: { selClub: record }
+          payload: { club: record }
         })
       }
     }

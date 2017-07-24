@@ -70,7 +70,7 @@ class PhoneSystemEditIndex extends React.Component {
     };
     return (
       <div className="customer-phone-system-cent">
-        <Card title = "添加客服信息:">
+        <Card title = "编辑客服信息:">
           <Form>
             <FormItem {...formItemLayout} label={"热线号码"}>
               {getFieldDecorator('hotLine', {rules: [{ required: true, message: '请填写热线号码!'}],initialValue: item.hotLine

@@ -8,10 +8,10 @@ import logo from 'assets/logo2.png'
 
 function ClubSelect({ dispatch, clubs}){
   const btnClick = (index) => {
-    const selClub = clubs[index];
+    const club = clubs[index];
     dispatch({
       type: 'layout/setEndemic',
-      payload: { selClub },
+      payload: { club },
     });
   };
 

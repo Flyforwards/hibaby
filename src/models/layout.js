@@ -32,7 +32,6 @@ export default {
     setup ({ dispatch }) {
         dispatch({ type: 'getCurrentUserEndemic' });
     },
-
   },
   effects: {
 
@@ -56,59 +55,26 @@ export default {
             payload: { clubs } ,
           })
           try {
-            const {data: {data: selEndemic, code: code3}} = yield call(usersService.getCurrentUserSelectEndemic);
+            const {data: {data: endemic, code: code3}} = yield call(usersService.getCurrentUserSelectEndemic);
             // 判断当前用户是否选择了地方中心
             if (code3 === 0) {
-              // 获取按钮权限
-              yield put({
-                type: "currentUserPermissionAliasList"
-              })
-              session.set("endemic", selEndemic)
-              yield put({
-                type: 'selectEndemic',
-                payload: { endemic: selEndemic }
-              })
-              if (location.pathname === '/login') {
-                yield put(routerRedux.push('/'))
+              let path = undefined;
+              if (location.pathname == '/login' || location.pathname == '/find') {
+                path = '/'
               }
-              try {
-                const {data: {code: code5, data}} = yield call(usersService.getByCurrentUser,);
-                if (code5 == 0) {
-                  window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
-                }
-              } catch (err) {
-
-              }
+              yield put({
+                type: 'setEndemicAfter',
+                payload: { endemic, path }
+              })
             }
             // 未选择地方中心则选择地方中心
           } catch (err) {
             if (clubs !== null && clubs.length === 1) {
               const endemic = clubs[0];
-              try {
-                const {data: {code: code4}} = yield call(usersService.setEndemic, {endemicId: endemic.id});
-                if (code4 === 0) {
-                  session.set("endemic", endemic)
-                  yield put({
-                    type: 'selectEndemic',
-                    payload: { endemic }
-                  })
-                  // 获取按钮权限
-                  yield put({
-                    type: "currentUserPermissionAliasList"
-                  })
-                  yield put(routerRedux.push('/'));
-                  try {
-                    const {data: {code: code5, data}} = yield call(usersService.getByCurrentUser,);
-                    if (code5 == 0) {
-                      // window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
-                    }
-                  } catch (err) {
-
-                  }
-                }
-              } catch (err) {
-                yield put(routerRedux.push('/club'));
-              }
+              yield put({
+                type: 'setEndemic',
+                payload: { club: endemic }
+              })
             } else {
               yield put(routerRedux.push('/club'));
             }
@@ -129,8 +95,64 @@ export default {
       }
     },
 
+    // 设置地方中心
+    *setEndemic({ payload: { club } }, { call, put }) {
+      // 还有切换地方中心退出400电话系统登录功能没有做
+      try {
+        const value = { endemicId : club.id };
+        const { data: { data, code , err } }  = yield call(usersService.setEndemic, value);
+        if (code == 0) {
+          yield put({
+            type: 'setEndemicAfter',
+            payload: { endemic: club, path: '/'}
+          })
+        }
+      } catch (err) {
+        message.error('设置地方中心失败!')
+        yield put(routerRedux.push('/club'));
+      }
+    },
+
+    // 设置地方中心
+    *setEndemicAfter({ payload: { endemic, path } }, { call, put }) {
+      // 设置地方中心成功，刷新菜单数据
+      yield put({
+        type : 'getProjectAndModuleTree',
+      });
+      // 保存地方中心
+      session.set("endemic", endemic);
+      yield put({
+        type: 'selectEndemic',
+        payload: { endemic: endemic }
+      })
+      if (path) {
+        yield put(routerRedux.push(path))
+      }
+
+      // 获取地方中心权限别名列表 即按钮权限
+      yield put({
+        type: "currentUserPermissionAliasList"
+      })
+      // 查看并登录第三方客服系统
+      yield put({
+        type: 'loginThreeCustomerSystem'
+      })
+    },
+
+
+    // 登录第三方客服系统
+    *loginThreeCustomerSystem ({ }, {call}) {
+      try {
+        const {data: {code, data}} = yield call(usersService.getByCurrentUser,);
+        if (code == 0) {
+          window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
+        }
+      } catch (err) {
+      }
+    },
+
     // 获取当前用户可以访问的地方中心列表
-    *getCurrentUserEndemicList ({  payload, }, {call, put}) {
+    *getCurrentUserEndemicList ({ }, {call, put}) {
         const {data: {data: clubs, code : code}} = yield call(usersService.getCurrentUserEndemic)
         if (code == 0) {
           session.set("clubs", clubs);
@@ -142,9 +164,9 @@ export default {
     },
 
     // 获取当前用户当前选择地方中心的权限别名列表
-    *currentUserPermissionAliasList({ payload }, {call, put}){
-      const { data: { data: permissionAlias, code: code5, err: err5}} = yield call(usersService.currentUserPermissionAliasList)
-      if (code5 ===0 && err5 === null) {
+    *currentUserPermissionAliasList({ }, {call, put}){
+      const { data: { data: permissionAlias, code }} = yield call(usersService.currentUserPermissionAliasList)
+      if (code == 0) {
         yield put({
           type: 'permissionAliasSave',
           payload: { permissionAlias }
@@ -152,53 +174,31 @@ export default {
       }
     },
 
-    // 获取主模块信息
-    *getProjectList({ payload }, {call, put}) {
-      const { data: { data, code, err}} = yield call(usersService.getProjectList)
-      if (code == 0 && err == null) {
-        yield put({
-          type: 'getProListSuccess',
-          payload: data ,
-        });
-        yield put({
-          type: 'getCurrUserMenu',
-          payload: { dataId : 3 },
-        });
-      }
-    },
-    // 获取当用户，当前信息区域的某个模块的菜单
-    *getCurrUserMenu({ payload:  value  }, {call, put}) {
-      const { data: { data, code, err } }  = yield call(usersService.getCurrUserMenu, value);
-      if (code == 0) {
-        yield put({
-          type: 'getMenuSuccess',
-          payload: data ,
-        });
-      }
-    },
-
-    // 设置地方中心
-    *setEndemic({ payload: { selClub } }, { call, put }) {
-      const value = { endemicId : selClub.id };
-      const { data: { data, code , err } }  = yield call(usersService.setEndemic, value);
-      if (code == 0) {
-        // 保存地方中心
-        session.set("endemic", selClub);
-        yield put({
-          type: 'selectEndemic',
-          payload: { endemic: selClub }
-        })
-        yield put(routerRedux.push("/"))
-        // 设置地方中心成功刷新数据
-        yield put({
-          type : 'getProjectAndModuleTree',
-        });
-        // 获取地方中心权限别名列表 即按钮权限
-        yield put({
-          type: "currentUserPermissionAliasList"
-        })
-      }
-    },
+    // 动态获取菜单           废弃
+    // // 获取主模块信息
+    // *getProjectList({ payload }, {call, put}) {
+    //   const { data: { data, code, err}} = yield call(usersService.getProjectList)
+    //   if (code == 0 && err == null) {
+    //     yield put({
+    //       type: 'getProListSuccess',
+    //       payload: data ,
+    //     });
+    //     yield put({
+    //       type: 'getCurrUserMenu',
+    //       payload: { dataId : 3 },
+    //     });
+    //   }
+    // },
+    // // 获取当用户，当前信息区域的某个模块的菜单
+    // *getCurrUserMenu({ payload:  value  }, {call, put}) {
+    //   const { data: { data, code, err } }  = yield call(usersService.getCurrUserMenu, value);
+    //   if (code == 0) {
+    //     yield put({
+    //       type: 'getMenuSuccess',
+    //       payload: data ,
+    //     });
+    //   }
+    // },
 
     // 退出登录
     *logout({ payload }, { call, put }) {
@@ -219,7 +219,6 @@ export default {
           type: 'getTimeSuccess',
           payload: { systemTime: data }
         });
-
       }
     },
 
@@ -344,6 +343,7 @@ export default {
       yield put(routerRedux.push('/user/information'));
     },
 
+    // 根据电话号码获取用户信息
     *getCustomerByMobile({ payload: value }, {call, put}) {
       try {
         const {data: {data, code}} = yield call(usersService.getCustomerByMobile, value)
@@ -388,7 +388,7 @@ export default {
   reducers: {
     // 设置地方中心
     selectEndemic (state, { payload: { endemic } }) {
-      return { ...state, endemic, }
+      return { ...state, endemic }
     },
     changeMenu (state, { payload: { subMenu } }) {
       return { ...state, subMenu, }
