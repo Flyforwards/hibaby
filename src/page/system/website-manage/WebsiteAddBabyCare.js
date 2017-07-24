@@ -28,12 +28,7 @@ class WebsiteBabyAdd extends React.Component {
 
   // 返回
   onBack(){
-    this.props.dispatch(routerRedux.push({
-        pathname:'/system/website-manage/babycare',
-        query:{
-          "type1":queryURL("type")
-        }
-      })
+    this.props.dispatch(routerRedux.push({pathname:'/system/websiteActManage',})
     )
     //history.go(-1)
   }

@@ -46,6 +46,9 @@ class FileUpload extends React.Component {
   }
 
   onRemove = (file) => {
+    if(!this.props.deleteImgFun){
+      return false
+    }
     this.props.deleteImgFun({name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
   }
 

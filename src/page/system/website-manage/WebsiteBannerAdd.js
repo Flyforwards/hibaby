@@ -40,7 +40,7 @@ class WebsiteBannerAdd extends React.Component {
   //返回
   onBack() {
     this.props.dispatch(routerRedux.push({
-      pathname:'/system/website-manage',
+      pathname:'/system/websiteHomePageManage',
     }));
   }
 

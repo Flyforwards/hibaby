@@ -18,6 +18,7 @@ export default {
       pageSize:10,
       total: null,
     },
+    actKey:'产前服务',
     //主标题 ---专家团队修改判断
     modalVisible:false,
     imgListArr:[],
@@ -28,6 +29,9 @@ export default {
     //改变modal
     changeModal(state,{payload:{modalVisible}}){
       return {...state,modalVisible}
+    },
+    tabChange(state,{payload:data}){
+      return {...state,actKey:data}
     },
     //新增图片
     onAddImg(state,{payload:imglist}){
@@ -67,29 +71,14 @@ export default {
     //首页 ---- 专家团队
     //获取专家团队初始列表
     *getInitialList({payload:values},{call,put}){
-      if(queryURL('type1')){
-        const str = queryURL('type1');
-        const value = {...values,str};
-        const {data:{data,code}} = yield call(websiteBabyCare.getExpertInitialList,value);
-        console.log("DATA",data)
-        if(code == 0){
-          yield put({
-            type:'addInitialList',
-            payload:{
-              data:data[0]
-            }
-          })
-        }
-      }else{
-        const {data:{data,code}} = yield call(websiteBabyCare.getExpertInitialList,values);
-        if(code == 0){
-          yield put({
-            type:'addInitialList',
-            payload:{
-              data:data[0]
-            }
-          })
-        }
+      const {data:{data,code}} = yield call(websiteBabyCare.getExpertInitialList,values);
+      if(code == 0){
+        yield put({
+          type:'addInitialList',
+          payload:{
+            data:data[0]
+          }
+        })
       }
     },
     //新增专家
@@ -124,31 +113,21 @@ export default {
     },
     //修改专家信息
     *updateExpert({payload:values},{call,put}){
-      // const type1 = queryURL('type1');
-      // const type2 =queryURL('type2');
+
       const { data:{data,code}} = yield call(websiteBabyCare.updateExpert,values);
       if(code == 0) {
         message.success("更新成功");
-        if(queryURL("type1")){
-          yield put({
-            type:'getInitialList',
-          });
-          // yield put(routerRedux.push({
-          //   pathname:'system/website-manage/babycare',
-          //   query:{
-          //     "type1":queryURL("type1")
-          //   }
-          // }));
+        if(queryURL("type")){
+          yield put(routerRedux.push('/system/websiteActManage'));
+        }
+        else{
           yield put({
             type:'changeModal',
             payload:{
               "modalVisible":false,
             }
           })
-        }else{
-          history.go(-1);
         }
-
       }
     }
 
@@ -156,11 +135,6 @@ export default {
   subscriptions:{
     setup({ dispatch,history}){
       return history.listen(({ query,pathname}) => {
-        if(pathname === '/system/website-manage/babycare') {
-          dispatch({
-            type:'getInitialList'
-          })
-        }
         if(pathname === '/system/website-manage/addbabycare') {
           dispatch({
             type:'getInitialList',

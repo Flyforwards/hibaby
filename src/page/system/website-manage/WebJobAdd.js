@@ -40,7 +40,7 @@ class WebJobAdd extends React.Component {
   //返回
   onBack() {
     this.props.dispatch(routerRedux.push({
-      pathname:'/system/website-manage/job',
+      pathname:'/system/websiteHomePageManage',
     }));
   }
   //保存

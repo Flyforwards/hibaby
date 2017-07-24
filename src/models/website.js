@@ -15,7 +15,7 @@ export default {
     addImglist:[],
     disabledBtn:false,
     selectAble:false,
-
+    actKey:'1',
     pagination: {
       showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
@@ -34,7 +34,7 @@ export default {
   reducers:{
     //设置为空
     setNewValue(state){
-      return {
+      return {...state,
         picarr:[],
           addImglist:[],
           disabledBtn:false,
@@ -59,6 +59,9 @@ export default {
     //改变modal状态
     changModal(state,{payload:{modalVisible}}){
       return { ...state,modalVisible}
+    },
+    tabChange(state,{payload:data}){
+      return { ...state,actKey:data}
     },
     //改变select状态
     changeSelect(state,{payload:choiceSelect}){
@@ -296,10 +299,11 @@ export default {
     },
     //删除专家
     *deleteExpert({payload:values},{call,put}){
-      const {data:{data,code}} = yield call(websiteBanner.deleteExpert,values);
+      const {data:{data,code}} = yield call(websiteBanner.deleteExpert,{dataId:values.dataId});
       if(code == 0) {
         yield put({
-          type:'getExpertInitialList'
+          type:'getExpertInitialList',
+          payload:{str:values.type}
         });
         message.success("删除成功");
       }
@@ -330,25 +334,20 @@ export default {
     },
     //修改专家信息
     *updateExpert({payload:values},{call,put}){
-      // const type1 = queryURL('type1');
-      // const type2 =queryURL('type2');
+
       const { data:{data,code}} = yield call(websiteBanner.updateExpert,values);
       if(code == 0) {
         message.success("更新成功");
         if(queryURL('id')){
           history.go(-1);
         }
-        if(queryURL('type1')){
           yield put({
             type:'getExpertByOneType',
             payload:{
-              "str":queryURL('type1'),
+              "str":values.type,
             }
 
           });
-
-        }
-
       }
     }
 
@@ -382,38 +381,7 @@ export default {
             });
           }
         }
-        if(pathname === "/system/website-manage") {
-          dispatch({
-            type:'getInitialList',
-          });
-          dispatch({
-            type:'saveOneList',
-            payload:{},
-          })
-        }
-        if(pathname === '/system/website-manage/expert'){
-          if(query.type2){
-            dispatch({
-              type:'getExpertInitialList',
-              payload:{
-                "str":query.type2,
-              }
-            });
-          }else{
-            dispatch({
-              type:'saveExpertInitialList',
-              payload:{
-                data:[]
-              }
-            })
-          }
-          dispatch({
-            type:'getExpertByOneType',
-            payload:{
-              "str":query.type1,
-            }
-          })
-        }
+
         if(pathname === '/system/website-manage/addExpert'){
           if(query.id){
             dispatch({

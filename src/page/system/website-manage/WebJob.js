@@ -87,7 +87,7 @@ class WebJob extends React.Component{
     })
   }
   render(){
-    const dataSource = this.props.webJob.jobPageList;
+    const dataSource = this.props.webJob.jobPageList || [];
     const pagination = {
       total: this.props.webJob.total,
       showQuickJumper: true,

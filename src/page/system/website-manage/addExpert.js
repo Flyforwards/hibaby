@@ -122,9 +122,25 @@ class AddExpert extends React.Component{
       labelCol:{ span:5},
       wrapperCol:{ span:17 }
     };
+    let cardTitle = ''
+    switch (queryURL("type")){
+      case '1-1-1':
+        cardTitle='新增专家'
+            break;
+      case '1-2-1-1':
+        cardTitle='新增活动招募'
+        break;
+      case '1-2-2-1':
+        cardTitle='新增新闻动态'
+        break;
+      default:
+        cardTitle='增加'
+    }
+
+
     return (
       <div className="addExpert" style={{overflow:'hidden'}}>
-        <Card title="新增专家" style={{ width: '100%' }}>
+        <Card title={cardTitle} style={{ width: '100%' }}>
           <Form>
             <Row style={{height:'56px'}}>
               <Col span = { 8 } style={{width:'300px'}} >
@@ -156,13 +172,13 @@ class AddExpert extends React.Component{
                     rules: [{ required: false, message: '请填写正文内容' }],
                   })(
                     <LzEditor
-                    active={true}
-                    importContent={ExpertIdMsg ? ExpertIdMsg.content : ''}
-                    cbReceiver={ this.receiveHtml.bind(this)}
-                    //uploadConfig={uploadConfig}
-                    //uploadProps={uploadProps}
-                    fullScreen={false}
-                    convertFormat="html"/>
+                      active={true}
+                      importContent={ExpertIdMsg ? ExpertIdMsg.content : ''}
+                      cbReceiver={ this.receiveHtml.bind(this)}
+                      //uploadConfig={uploadConfig}
+                      //uploadProps={uploadProps}
+                      fullScreen={false}
+                      convertFormat="html"/>
                   )}
                 </FormItem>
               </Col>

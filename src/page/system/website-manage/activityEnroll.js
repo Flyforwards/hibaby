@@ -81,6 +81,7 @@ class ActivityEnroll extends React.Component{
       }];
   }
   componentDidMount(){
+    console.log('??')
     this.getTableData({
       page : this.props.activityEnroll.page,
       size : this.props.activityEnroll.size

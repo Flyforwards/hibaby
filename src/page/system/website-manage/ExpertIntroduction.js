@@ -65,11 +65,23 @@ class ExpertIntroduction extends React.Component{
         "content":'甜美小萝莉',
       }];
   }
+
+  componentDidMount() {
+    const dict = {'专家团队':{type1:'1-1',type2:'1-1-1'},'活动咨询':{type1:'1-2'},'活动招募':{type1:'1-2-1',type2:'1-2-1-1'},'新闻动态':{type1:'1-2-2',type2:'1-2-2-1'}}
+
+    const {type1,type2} = dict[this.props.actKey];
+    console.log(dict)
+    this.props.dispatch(type2?{type:'websiteBanner/getExpertInitialList',payload:{"str":type2,}}
+      :{type:'websiteBanner/saveExpertInitialList',payload:{data:[]}});
+    this.props.dispatch({type:'websiteBanner/getExpertByOneType',payload:{str:type1}});
+  }
+
   onDeleteOne(record){
     this.props.dispatch({
       type:'websiteBanner/deleteExpert',
       payload:{
         "dataId":record,
+        'type':this.props.superData.type2
       }
     })
   }
@@ -84,7 +96,7 @@ class ExpertIntroduction extends React.Component{
   confirmModel() {
     const {form,dispatch,oneExpertTitleMsg} = this.props;
     const { validateFields } = form;
-    const typenum = queryURL("type1");
+    const typenum = this.props.superData.type1;
     form.validateFields((err, values) => {
       values.type = typenum;
       if (!err) {
@@ -106,16 +118,6 @@ class ExpertIntroduction extends React.Component{
       modalVisible:true,
     })
   }
-  // onSelectType(value){
-  //   const { dispatch } = this.props;
-  //   dispatch({
-  //     type:'websiteBanner/getExpertByOneType',
-  //     payload:{
-  //       "type":value
-  //     }
-  //   })
-  //
-  // }
   onAdd(){
     this.props.dispatch({
       type:'websiteBanner/setNewValue'
@@ -123,7 +125,7 @@ class ExpertIntroduction extends React.Component{
    this.props.dispatch(routerRedux.push({
       pathname: '/system/website-manage/addExpert',
       query: {
-        "type":queryURL('type2')
+        "type":this.props.superData.type2
       },
     }))
   }
@@ -133,6 +135,7 @@ class ExpertIntroduction extends React.Component{
     }
     callback('不能为空');
   }
+
   render(){
     const { expertInitialList,loading,oneExpertMsg,oneExpertTitleMsg,readAble} =this.props;
     const { getFieldDecorator } = this.props.form;
@@ -140,10 +143,6 @@ class ExpertIntroduction extends React.Component{
       labelCol:{ span: 6 },
       wrapperCol:{ span:17}
     };
-    // let options = [];
-    // level? level.map(function(elem,index){
-    //   options.push(<Option key={elem.type}>{elem.name}</Option>)
-    // }):null;
     const tableProps = {
       loading:loading,
       dataSource:expertInitialList,
@@ -176,7 +175,6 @@ class ExpertIntroduction extends React.Component{
           title="主标题修改"
           wrapClassName="vertical-center-modal"
           visible={this.state.modalVisible}
-
           onOk={this.confirmModel.bind(this)}
           okText="保存"
           cancelText="取消"
@@ -206,9 +204,7 @@ class ExpertIntroduction extends React.Component{
 function mapStateToProps(state){
   const {expertInitialList,oneExpertTitleMsg,oneExpertMsg} = state.websiteBanner;
   return {
-    oneExpertTitleMsg,
-    oneExpertMsg,
-    expertInitialList,
+    ...state.websiteBanner,
     loading:state.loading.models.websiteBanner,
   }
 }

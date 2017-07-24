@@ -17,44 +17,44 @@ class WebSiteBanner extends React.Component{
     this.state={
       visible:false,
     },
-    this.columns = [{
-      title:"ID",
-      dataIndex:'id',
-      key:'id',
-      width:"20%",
-    },{
-      title: '模块名',
-      dataIndex: 'type',
-      key: 'type',
-      width: '25%',
-      render:(text,record,index) => {
+      this.columns = [{
+        title:"ID",
+        dataIndex:'id',
+        key:'id',
+        width:"20%",
+      },{
+        title: '模块名',
+        dataIndex: 'type',
+        key: 'type',
+        width: '25%',
+        render:(text,record,index) => {
           return WebsiteClass[text];
-      }
+        }
 
-    }, {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      width: '25%',
-      render:(text,record,index) =>{
-        return new Date(text).format("yyyy-MM-dd");
-      }
-    }, {
-      title: '操作',
-      dataIndex: 'operation',
-      render: (text, record, index) => {
-        return (
-          <span>
+      }, {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+        width: '25%',
+        render:(text,record,index) =>{
+          return new Date(text).format("yyyy-MM-dd");
+        }
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        render: (text, record, index) => {
+          return (
+            <span>
             <Link disabled={false} className="one-link" to={`/system/website-manage/add?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
             <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
              <Link disabled={false} className="one-link">删除</Link>
             </Popconfirm>
 
           </span>
-        )
-      },
-      width: '30%'
-    }];
+          )
+        },
+        width: '30%'
+      }];
   }
 
   onDeleteOne(record) {
@@ -66,8 +66,10 @@ class WebSiteBanner extends React.Component{
     })
   }
 
-
-
+  componentDidMount() {
+    this.props.dispatch({type: 'websiteBanner/getInitialList'});
+    this.props.dispatch({type: 'websiteBanner/saveOneList',payload:{}});
+  }
 
   render(){
     const { initialList,loading } = this.props;
@@ -92,7 +94,7 @@ class WebSiteBanner extends React.Component{
 
 
 function mapStateToProps(state){
-const {initialList} =state.websiteBanner;
+  const {initialList} =state.websiteBanner;
   return{
     loading:state.loading.models.websiteBanner,
     initialList,
