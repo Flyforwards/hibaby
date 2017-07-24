@@ -35,14 +35,16 @@ class HomePage extends Component {
       tempAry.push(<TabPane tab={key} key={key}><ExpertIntroduction superData={dict[key]}/></TabPane>)
     })
     return (
-      <Tabs tabPosition="left" activeKey={this.props.actKey} onChange={this.callback.bind(this)}>
-        <TabPane tab="Banner 管理" key="1"> <Banner/></TabPane>
-        {tempAry}
-        <TabPane tab="招聘信息管理" key="2"><WebJob/></TabPane>
-        <TabPane tab="地方中心管理" key="3"><WebEndemic/></TabPane>
-        <TabPane tab="妈妈课程管理" key="4"><WebCourse/></TabPane>
-        <TabPane tab="活动报名管理" key="5"><ActivityEnroll/></TabPane>
-      </Tabs>
+      <div style={{width:'100%',height:'100%',backgroundColor:'white'}}>
+        <Tabs tabPosition="left" activeKey={this.props.actKey} onChange={this.callback.bind(this)}>
+          <TabPane tab="Banner 管理" key="1"> <Banner/></TabPane>
+          {tempAry}
+          <TabPane tab="招聘信息管理" key="2"><WebJob/></TabPane>
+          <TabPane tab="地方中心管理" key="3"><WebEndemic/></TabPane>
+          <TabPane tab="妈妈课程管理" key="4"><WebCourse/></TabPane>
+          <TabPane tab="活动报名管理" key="5"><ActivityEnroll/></TabPane>
+        </Tabs>
+      </div>
     )
   }
 }

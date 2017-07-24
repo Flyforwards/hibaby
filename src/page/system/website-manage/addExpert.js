@@ -104,7 +104,6 @@ class AddExpert extends React.Component{
   }
   //富文本编辑器
   receiveHtml(content) {
-    console.log("Recieved content", content);
     contentHtml=content;
   }
   render(){
@@ -122,6 +121,11 @@ class AddExpert extends React.Component{
       labelCol:{ span:5},
       wrapperCol:{ span:17 }
     };
+    const tipItemLayout = {
+      labelCol:{ span:7},
+      wrapperCol:{ span:17 }
+    };
+
     let cardTitle = ''
     switch (queryURL("type")){
       case '1-1-1':
@@ -137,6 +141,19 @@ class AddExpert extends React.Component{
         cardTitle='增加'
     }
 
+    let size1 = false
+    if(defaultFileLists1 ){
+      if( defaultFileLists1.length > 0 ){
+        size1 = true
+      }
+    }
+
+    let size2 = false
+    if(defaultFileLists2 ){
+      if( defaultFileLists2.length > 0 ){
+        size2 = true
+      }
+    }
 
     return (
       <div className="addExpert" style={{overflow:'hidden'}}>
@@ -184,7 +201,7 @@ class AddExpert extends React.Component{
               </Col>
             </Row>
             <Row>
-              <Col span={22} style={{width:'401px' }}>
+              <Col span={8} style={{width:'300px' }}>
                 <FormItem label="原图上传" {...formRadioItemLayout}>
                   {getFieldDecorator('img1', {
                    initialValue: defaultFileLists1 ? defaultFileLists1 : '' ,
@@ -196,9 +213,21 @@ class AddExpert extends React.Component{
                   )}
                 </FormItem>
               </Col>
+
+
+              <Col span={8} style={{width:'300px'}}>
+                <FormItem label="图片尺寸:" {...tipItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                  {getFieldDecorator('img1Size', {rules: [{ required: size1, message: '请输入图片尺寸'}],
+                    initialValue: ExpertIdMsg ? ExpertIdMsg.img1Size:'',})(
+                    <Input placeholder="请输入图片尺寸，有图片时必填"/>
+                  )}
+                </FormItem>
+
+              </Col>
+
             </Row>
             <Row>
-              <Col span={22} style={{width:'401px' }}>
+              <Col span={8} style={{width:'300px' }}>
                 <FormItem label="缩略图上传" {...formRadioItemLayout}>
                   {getFieldDecorator('img2', {
                     initialValue: defaultFileLists2 ?　defaultFileLists2 : '' ,
@@ -207,6 +236,14 @@ class AddExpert extends React.Component{
                     <FileUpload  defaultFileList={defaultFileLists2} addImgFun={this.onAddImg2.bind(this)} deleteImgFun={this.onDeleteImg2.bind(this)} imgInputName="img2">
                       <Button key="1" disabled={img2Btn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
                     </FileUpload>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8} style={{width:'300px'}}>
+                <FormItem label="图片尺寸:" {...tipItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                  {getFieldDecorator('img2Size', {rules: [{ required: size2, message: '请输入图片尺寸'}],
+                    initialValue: ExpertIdMsg ? ExpertIdMsg.img2Size:'',})(
+                    <Input placeholder="请输入图片尺寸，有图片时必填" />
                   )}
                 </FormItem>
               </Col>

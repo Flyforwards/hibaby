@@ -61,6 +61,14 @@ class WebsiteBabyService extends React.Component{
   }
 
   componentDidMount() {
+    this.loadData()
+  }
+
+  componentWillUnmount(){
+    console.log('88')
+  }
+
+  loadData(){
     const dict = {产前服务:'2-1',妈妈服务:'2-2',宝宝服务:'2-3',月子膳食:'2-4',门诊服务:'2-5',星级环境:'2-6'}
     this.props.dispatch({
       type:'websiteBabyCare/getInitialList',
@@ -76,6 +84,8 @@ class WebsiteBabyService extends React.Component{
         "modalVisible":false,
       }
     })
+    this.loadData()
+    this.props.form.resetFields()
   }
   //modal确定 保存
   confirmModel() {
@@ -83,29 +93,25 @@ class WebsiteBabyService extends React.Component{
     const typenum = this.props.superData.type1;
     let img1String = '';
     form.validateFields((err, values) => {
+      if(!err){
+        if(this.props.imgListArr && this.props.imgListArr.length > 0){
+          this.props.imgListArr.map((v,i) => {
+            img1String = v[0].name ? v[0].name:'';
+          })
+        }
+        values.img1 = img1String;
 
-
-      if(this.props.imgListArr && this.props.imgListArr.length > 0){
-        this.props.imgListArr.map((v,i) => {
-          img1String = v[0].name ? v[0].name:'';
-        })
-      }else{
-        this.props.defaultlist.map((v,i) => {
-          img1String = v.name ? v.name:'';
-        })
-      }
-      values.img1 = img1String;
-
-      if (!err) {
-        dispatch({
-          type: 'websiteBabyCare/updateExpert',
-          payload:{
-            ...values,
-            "id":this.props.initialList.id,
-            "type":this.props.initialList.type,
-            "content":this.props.content,
-          }
-        })
+        if (!err) {
+          dispatch({
+            type: 'websiteBabyCare/updateExpert',
+            payload:{
+              ...values,
+              "id":this.props.initialList.id,
+              "type":this.props.initialList.type,
+              "content":this.props.content,
+            }
+          })
+        }
       }
     })
   }
@@ -135,7 +141,7 @@ class WebsiteBabyService extends React.Component{
   }
   //删除图片
   onDeleteImg(...values){
-
+    this.props.form.resetFields()
     this.props.dispatch({
       type:'websiteBabyCare/onDeleteImg',
       payload:values
@@ -144,7 +150,21 @@ class WebsiteBabyService extends React.Component{
 
   render(){
 
-    const {imgArr,imgBtn,initialList,defaultlist,modalVisible,content,imgListArr,loading} =this.props;
+    const {imgBtn,initialList,modalVisible,content,imgListArr,loading} =this.props;
+    let size = false
+    if(imgListArr ){
+      if( imgListArr.length > 0 ){
+        size = true
+      }
+    }
+
+    let btnDisabled = true
+    if( modalVisible){
+      if(!imgBtn ){
+        btnDisabled = false
+      }
+    }
+
     let contentArr = content ? eval(content):[];
     let con =[];
     contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
@@ -172,7 +192,7 @@ class WebsiteBabyService extends React.Component{
                 <Row>
                   <Col style={{width:'300px'}}>
                     <FormItem label="主标题名:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
-                      {getFieldDecorator('title', {initialValue: initialList ? initialList.title:'',})(
+                      {getFieldDecorator('title', {initialValue: this.props.initialList ? this.props.initialList.title:'',})(
                         <Input placeholder="请输入主标题名" readOnly={!modalVisible}/>
                       )}
                     </FormItem>
@@ -180,15 +200,25 @@ class WebsiteBabyService extends React.Component{
 
                 </Row>
                 <Row>
-                  <Col style={{width:'300px'}}>
+                  <Col span={8} style={{width:'300px'}}>
                     <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img1', {initialValue: '',})(
-                        <FileUpload  defaultFileList={defaultlist} addImgFun={this.onAddImg.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg.bind(this)} imgInputName="">
-                          <Button key="1" disabled={imgBtn}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                        <FileUpload  defaultFileList={imgListArr} addImgFun={this.onAddImg.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg.bind(this)} imgInputName="">
+                          <Button key="1" disabled={btnDisabled}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
                         </FileUpload>
                       )}
                     </FormItem>
                   </Col>
+
+                  <Col span={8} style={{width:'300px'}}>
+                    <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                      {getFieldDecorator('img1Size', {rules: [{ required: size, message: '请输入图片尺寸'}],
+                        initialValue: initialList ? initialList.img1Size:'',})(
+                        <Input placeholder="请输入图片尺寸，有图片时必填" readOnly={!modalVisible}/>
+                      )}
+                    </FormItem>
+                  </Col>
+
                 </Row>
                 <Row>
                   <Col style={{width:'480px'}}>

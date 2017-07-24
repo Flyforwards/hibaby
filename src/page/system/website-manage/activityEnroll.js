@@ -81,7 +81,6 @@ class ActivityEnroll extends React.Component{
       }];
   }
   componentDidMount(){
-    console.log('??')
     this.getTableData({
       page : this.props.activityEnroll.page,
       size : this.props.activityEnroll.size
@@ -94,7 +93,6 @@ class ActivityEnroll extends React.Component{
     });
   }
   getTableData(params = {}){
-    //console.log(this.props)
     const {dispatch} = this.props;
     dispatch({
       type: 'activityEnroll/getEnrollPageList',
@@ -130,6 +128,7 @@ class ActivityEnroll extends React.Component{
         </div>
         {/*<Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>*/}
         <Table
+          className="management-center"
           bordered
           dataSource={dataSource}
           columns={this.columns}

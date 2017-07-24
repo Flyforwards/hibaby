@@ -27,9 +27,11 @@ class ActivityManage extends Component {
     })
 
     return (
-      <Tabs tabPosition="left" activeKey={this.props.actKey} onChange={this.callback.bind(this)}>
-        {ary}
-      </Tabs>
+      <div style={{width:'100%',height:'100%',backgroundColor:'white'}}>
+        <Tabs tabPosition="left" activeKey={this.props.actKey} onChange={this.callback.bind(this)}>
+          {ary}
+        </Tabs>
+      </div>
     )
   }
 }

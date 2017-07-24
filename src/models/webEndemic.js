@@ -115,25 +115,20 @@ export default {
   reducers: {
     //保存一个图片列表
     saveOneList(state,{payload:{data:oneList}}){
+      let addImglist=null;
       if(oneList != null && oneList.id !=undefined ){
-        let defaultFileList=[{
-          uid:0,
+           addImglist=[{
+          uid:oneList.img1,
           name:oneList.img1,
           url:oneList.img1Url,
         }];
-        //let ontListType = oneList.type;
-        return { ...state,defaultFileList,disabledBtn:true/*,ontListType*/};
-      }else{
-        let defaultFileList=null;
-        //let ontListType = '';
-        return { ...state,defaultFileList,disabledBtn:false/*,ontListType*/};
       }
-
+      return { ...state,addImglist,disabledBtn:addImglist?true:false};
     },
     //保存图片
     setImgList(state,{payload:todo}){
-      //let ary = state.addImglist;
       let ary = [];
+      todo.uid = todo.name
       ary.push(todo);
       return {...state,addImglist:ary,disabledBtn:true};
     },
@@ -141,7 +136,7 @@ export default {
     deleteImgList(state,{payload:todo}){
       let arr = state.addImglist;
       for(let i=0; i < arr.length; i++) {
-        if(arr[i].name == todo.name) {
+        if(arr[i].name == todo[0].name) {
           arr.splice(i,1);
           break;
         }

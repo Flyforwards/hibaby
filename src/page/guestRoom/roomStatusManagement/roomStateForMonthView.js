@@ -126,8 +126,6 @@ const monthStateView = (props) => {
       })
     }
 
-
-
     dispatch({
       type: 'roomStatusManagement/userDrop',
       payload: {
@@ -839,7 +837,7 @@ const monthStateView = (props) => {
                     <div className="number">
                       {room.roomNo}
                     </div>
-                    <div className="level">
+                    <div style={{display:room.packageInfoLevels?'':'none'}} className="level">
                       {room.packageInfoLevels?`v${room.packageInfoLevels}`:''}
                     </div>
                   </div>
