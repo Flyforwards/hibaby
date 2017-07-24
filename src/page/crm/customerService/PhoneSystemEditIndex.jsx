@@ -73,27 +73,27 @@ class PhoneSystemEditIndex extends React.Component {
         <Card title = "添加客服信息:">
           <Form>
             <FormItem {...formItemLayout} label={"热线号码"}>
-              {getFieldDecorator('hotLine', {rules: [{ required: true, }],initialValue: item.hotLine
+              {getFieldDecorator('hotLine', {rules: [{ required: true, message: '请填写热线号码!'}],initialValue: item.hotLine
               })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"座席号"}>
-              {getFieldDecorator('cno', {rules: [{ required: true, }],initialValue: item.cno
+              {getFieldDecorator('cno', {rules: [{ required: true, message: '请填写坐席号!'}],initialValue: item.cno
               })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"密码"}>
-              {getFieldDecorator('pwd', {rules: [{ required: true, }],initialValue: item.pwd
+              {getFieldDecorator('pwd', {rules: [{ required: true, message: '请填写密码!'}],initialValue: item.pwd
               })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"绑定电话"}>
-              {getFieldDecorator('bindTel', {rules: [{ required: true, }],initialValue: item.bindTel
+              {getFieldDecorator('bindTel', {rules: [{ required: true, message: '请填写绑定电话!'}],initialValue: item.bindTel
               })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"电话类型"}>
-              {getFieldDecorator('bindType', {rules: [{ required: true, }],initialValue: String(item.bindType)
+              {getFieldDecorator('bindType', {rules: [{ required: true,}],initialValue: String(item.bindType)
               })(<Select>
                   <Option value='1' >电话号码</Option>
                   <Option value='2' >分级号码</Option>
@@ -110,7 +110,7 @@ class PhoneSystemEditIndex extends React.Component {
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"绑定员工"}>
-              {getFieldDecorator('userId', {rules: [{ required: true, }],initialValue: item.userName
+              {getFieldDecorator('userId', {rules: [{ required: true, message: '请选择绑定客服的员工!'}],initialValue: item.userName
               })(
                 <Input readOnly/>
               )}
