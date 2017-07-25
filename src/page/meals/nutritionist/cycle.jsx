@@ -5,6 +5,8 @@ import CycleDetail from './cycleDetail.jsx';
 import CycleDishesDetail from './cycleDishesDetail.jsx';
 import CycleTabooDetail from './cycleTabooDetail.jsx';
 import { Form, Icon, Col, Row, Modal, Card, Tabs, Radio, Button, Badge, Select, Spin } from 'antd'
+import PermissionButton from '../../../common/PermissionButton';
+
 const Option = Select.Option;
 
 var curWeek = 1;
@@ -12,16 +14,30 @@ var curWeek = 1;
 // 主页面
 function mealCycle (props) {
   function headerComponent (){
+    let testKey =  null;
+    if(props.curTabsIndex == 0){
+      testKey = "LOOP_CUSTOMER"
+    }else if(props.curTabsIndex == 1){
+      testKey = "LOOP_DISHES";
+    }else if(props.curTabsIndex == 2){
+      testKey = "LOOP_DELIVERY";
+    }
+
 
     return (
       <div>
         <Row type="flex" justify="space-around" align="middle">
           <Col span="1">
-            <Button
+            {/*<Button
               icon="double-left"
               style={{height: '40px',width: '40px'}}
               onClick={prevDateComponent}
-            />
+            />*/}
+            <PermissionButton
+              icon="double-left"
+              testKey={testKey}
+              style={{height: '40px',width: '40px'}}
+              onClick={prevDateComponent} />
           </Col>
           <Col span="22">
             <div className="dayTitle">{props.loopDatas.date} {chineseWeekDay(props.loopDatas.dayOfWeek)}</div>
@@ -35,11 +51,16 @@ function mealCycle (props) {
             <div style={{marginTop: '20px' ,marginBottom: '40px'}}>{ showCurrentComponent(props.curTabsIndex) }</div>
           </Col>
           <Col span="1">
-            <Button
+           {/* <Button
               icon="double-right"
               style={{height: '40px', width: '40px', marginLeft: '20px'}}
               onClick={nextDateComponent}
-            />
+            />*/}
+            <PermissionButton
+              icon="double-right"
+              testKey={testKey}
+              style={{height: '40px',width: '40px', marginLeft: '20px'}}
+              onClick={nextDateComponent} />
           </Col>
         </Row>
 
