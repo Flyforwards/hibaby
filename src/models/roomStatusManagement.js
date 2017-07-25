@@ -653,23 +653,6 @@ export default {
         }
       }
 
-
-
-          if (state.dragUser.roomIndex !== -1) {
-            // 不是新拖入的, 删除之前的
-            yield put({
-              type: 'deleteUserReducer',
-              payload: {
-                ...value,
-                startIndex: state.dragUser.startIndex,
-                endIndex: state.dragUser.endIndex,
-                customerId: state.dragUser.customerId,
-                roomIndex: state.dragUser.roomIndex,
-                status: state.dragUser.status,
-              }
-            });
-          }
-
           if(state.dragUser.roomIndex == -1){
             const {data: {code, data}} = yield call(roomManagement.extendRoomUse, {roomId:state.monthRoomList[value.roomIndex].roomId,customerId:state.dragUser.customerId,});
             if (code == 0){
@@ -704,6 +687,20 @@ export default {
             }
           }
           else{
+
+            // 不是新拖入的, 删除之前的
+            yield put({
+              type: 'deleteUserReducer',
+              payload: {
+                ...value,
+                startIndex: state.dragUser.startIndex,
+                endIndex: state.dragUser.endIndex,
+                customerId: state.dragUser.customerId,
+                roomIndex: state.dragUser.roomIndex,
+                status: state.dragUser.status,
+              }
+            });
+
             let payload = {
               ...value,
               status: state.dragUser.status,
@@ -725,8 +722,6 @@ export default {
               yield put({type: 'monthRoomUpdate',payload:'load'});
             }
           }
-
-        }
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){

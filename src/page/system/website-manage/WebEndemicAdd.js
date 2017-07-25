@@ -40,7 +40,7 @@ class WebEndemicAdd extends React.Component {
   //返回
   onBack() {
     this.props.dispatch(routerRedux.push({
-      pathname:'/system/website-manage/endemic',
+      pathname:'/system/websiteHomePageManage',
     }));
   }
   //保存

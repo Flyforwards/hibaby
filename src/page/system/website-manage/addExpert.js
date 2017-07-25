@@ -202,7 +202,7 @@ class AddExpert extends React.Component{
             </Row>
             <Row>
               <Col span={8} style={{width:'300px' }}>
-                <FormItem label="原图上传" {...formRadioItemLayout}>
+                <FormItem label="原图上传" {...tipItemLayout}>
                   {getFieldDecorator('img1', {
                    initialValue: defaultFileLists1 ? defaultFileLists1 : '' ,
                     rules: [{ required: false, message: '请选择原图' }]
@@ -228,7 +228,7 @@ class AddExpert extends React.Component{
             </Row>
             <Row>
               <Col span={8} style={{width:'300px' }}>
-                <FormItem label="缩略图上传" {...formRadioItemLayout}>
+                <FormItem label="缩略图上传" {...tipItemLayout}>
                   {getFieldDecorator('img2', {
                     initialValue: defaultFileLists2 ?　defaultFileLists2 : '' ,
                     rules: [{ required: false, message: '请选择缩略图' }]

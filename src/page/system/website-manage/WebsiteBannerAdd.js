@@ -151,8 +151,8 @@ class WebsiteBannerAdd extends React.Component {
           </Row>
         </Form>
         <div className = "bottomBtn">
-          <Button className="btn saveBtn" onClick={this.onSave.bind(this)}> 保存</Button>
-          <Button className="btn backBtn" onClick={this.onBack.bind(this)}> 返回</Button>
+          <Button className="btn  button-group-bottom-2" onClick={this.onSave.bind(this)}> 保存</Button>
+          <Button className="btn  button-group-bottom-1" onClick={this.onBack.bind(this)}> 返回</Button>
         </div>
       </Card>
     )
