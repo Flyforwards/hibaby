@@ -580,7 +580,7 @@ function ExtensionInfo(props) {
 
   if (props.users.editCustomer){
     if (props.users.expandData){
-      const selectArray =  {nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
+      const selectArray =  {idType:idTypeAry,nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
       datacompare(expandInfo,props.users.expandData,selectArray);
     }
   }
