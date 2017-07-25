@@ -633,7 +633,7 @@ const monthStateView = (props) => {
                 console.log(moment.unix(roomDate/1000).format('YYYY-MM-DD'))
 
                   if(moment().isAfter(moment.unix(roomDate/1000),'day')){
-                    debounce(message.error("无法将出所日期移动到今天以前"),100,true)
+                    debounce(message.error("无法将出所日期移动到今天以前"),2000,true)
                     ;
                   return;
                 }
