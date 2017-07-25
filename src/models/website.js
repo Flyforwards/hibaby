@@ -63,6 +63,8 @@ export default {
     tabChange(state,{payload:data}){
       return { ...state,actKey:data}
     },
+    actKey:'1',
+
     //改变select状态
     changeSelect(state,{payload:choiceSelect}){
       return { ...state,selectAble:choiceSelect}

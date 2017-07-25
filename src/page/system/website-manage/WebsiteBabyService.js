@@ -64,15 +64,10 @@ class WebsiteBabyService extends React.Component{
     this.loadData()
   }
 
-  componentWillUnmount(){
-    console.log('88')
-  }
-
   loadData(){
-    const dict = {产前服务:'2-1',妈妈服务:'2-2',宝宝服务:'2-3',月子膳食:'2-4',门诊服务:'2-5',星级环境:'2-6'}
     this.props.dispatch({
       type:'websiteBabyCare/getInitialList',
-      payload:{str:dict[this.props.actKey]}
+      payload:{str:this.props.superData?this.props.superData.type1:'2-1'}
     })
   }
 
