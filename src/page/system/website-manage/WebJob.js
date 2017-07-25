@@ -69,7 +69,6 @@ class WebJob extends React.Component{
     });
   }
   getTableData(params = {}){
-    //console.log(this.props)
     const {dispatch} = this.props;
     dispatch({
       type: 'webJob/getJobPageList',
@@ -97,7 +96,7 @@ class WebJob extends React.Component{
     };
     return(
 
-      <Card className="website-banner">
+      <Card className="website-banner ">
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
           <Link to="/system/website-manage/addJob">
             <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>新增</Button>
@@ -105,6 +104,7 @@ class WebJob extends React.Component{
         </div>
         {/*<Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>*/}
         <Table
+          className="management-center"
           bordered
           dataSource={dataSource}
           columns={this.columns}

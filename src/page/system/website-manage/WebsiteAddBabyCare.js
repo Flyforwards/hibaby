@@ -209,9 +209,9 @@ class WebsiteBabyAdd extends React.Component {
             </Form>
           </div>
           <div className="TabooButtons">
-            <Button  onClick={this.onAdd.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginButtom:'20px',color:'#fff', backgroundColor: 'rgba(255, 102, 0, 1)'}}>添加标题</Button>
-            <Button  onClick={this.onSave.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginRight: '40px', color:'#fff', backgroundColor: 'rgba(255, 102, 0, 1)'}}>保存</Button>
-            <Button  onClick={this.onBack.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginButtom:'20px',color:'#fff', backgroundColor: 'rgba(255, 102, 0, 1)'}}>返回</Button>
+            <Button  onClick={this.onAdd.bind(this)}  className='button-group-bottom-1' style={{ marginLeft:'10px', marginButtom:'20px'}}>添加标题</Button>
+            <Button  onClick={this.onSave.bind(this)} className='button-group-bottom-1' style={{ marginLeft:'10px', marginRight: '10px'}}>保存</Button>
+            <Button  onClick={this.onBack.bind(this)} className='button-group-bottom-2' style={{ marginButtom:'20px'}}>返回</Button>
           </div>
         </Spin>
         </Card>

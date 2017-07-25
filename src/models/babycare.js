@@ -35,34 +35,35 @@ export default {
     },
     //新增图片
     onAddImg(state,{payload:imglist}){
-      let imgArr = state.imgListArr;
-      imgArr.push(imglist);
-      return {...state,imgListArr:imgArr,imgBtn:true}
+      imglist[0].uid = imglist[0].name
+      return {...state,imgListArr:imglist,imgBtn:true}
     },
     //删除图片
     onDeleteImg(state,{payload:imglist}){
       let imgArr = state.imgListArr;
+
       for(let i=0; i < imgArr.length; i++) {
-        if(imgArr[i].name == imglist.name) {
-          imglist.splice(i,1);
+        if(imgArr[i].name == imglist[0].name) {
+          imgArr.splice(i,1);
           break;
         }
       }
+
       return { ...state,imgListArr:imgArr,imgBtn:false}
     },
     //添加初始数据
     addInitialList(state,{payload:{data:initialList}}){
       let content = initialList ? initialList.content:null;
       if(initialList != null && initialList.img1 != ""){
-        let defaultlist = [{
+        let imgListArr = [{
           uid:0,
           name:initialList.img1,
           url:initialList.img1Url,
         }]
-        return { ...state,initialList,defaultlist,content,imgBtn:true}
+        return { ...state,initialList,imgListArr,content,imgBtn:true}
       }else{
-        let defaultlist = null;
-        return { ...state,initialList,defaultlist,content,imgBtn:false};
+        let imgListArr = null;
+        return { ...state,initialList,imgListArr,content,imgBtn:false};
       }
     },
 

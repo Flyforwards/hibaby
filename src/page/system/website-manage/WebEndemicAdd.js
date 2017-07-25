@@ -46,16 +46,10 @@ class WebEndemicAdd extends React.Component {
   //保存
   onSave() {
     const { form ,dispatch } = this.props;
-    // const id = queryURL("id");
-    let imgString = '';
-    let imgUrls='';
     form.validateFields((err, values) => {
-      this.props.webEndemic.addImglist ? this.props.webEndemic.addImglist.map((v,i) => {
-        imgString += v[0].name;
-        imgUrls +=v[0].url;
-      }):'';
-      values.img1 = this.props.webEndemic.addImglist ? imgString:'';
-      //values.img1Url = this.props.addImglist ? imgUrls:'';
+
+      values.img1 = this.props.webEndemic.addImglist ? this.props.webEndemic.addImglist[0].name:'';
+
       if (!err) {
         if(queryURL("id")){
           dispatch({
@@ -78,7 +72,7 @@ class WebEndemicAdd extends React.Component {
   onAddImg(...values){
     this.props.dispatch({
       type:'webEndemic/setImgList',
-      payload:values
+      payload:values[0]
     })
   }
   //删除图片
@@ -90,8 +84,7 @@ class WebEndemicAdd extends React.Component {
   }
 
   render(){
-    //const { disabledBtn ,defaultFileList,ontListType,addImglist,selectAble} = this.props;
-    const {initialValue,disabledBtn,addImglist,defaultFileList} = this.props.webEndemic;
+    const {initialValue,disabledBtn,addImglist} = this.props.webEndemic;
     const { getFieldDecorator } = this.props.form;
     //地方中心下拉列表数据
     const endemicData = this.props.webEndemic.endemicList;
@@ -105,11 +98,21 @@ class WebEndemicAdd extends React.Component {
       labelCol:{ span: 6 },
       wrapperCol:{ span:17}
     };
+
+
+    let size1 = false
+    if(addImglist ){
+      if( addImglist.length > 0 ){
+        size1 = true
+      }
+    }
+
+
     return (
       <Card className="websitebannerAdd">
         <Form>
-          <Row>
-            <Col span={12} style = {{width:300}}>
+          <Row style = {{width:300,height:'50px'}}>
+            <Col >
               <FormItem
                 label="地方中心"
                 hasFeedback
@@ -129,16 +132,24 @@ class WebEndemicAdd extends React.Component {
 
                 )}
               </FormItem>
-              <FormItem
-                {...formItemLayout}
-              >
-                {getFieldDecorator("url", {
-                  //initialValue:addImglist?addImglist:'' ,
-                  rules: [{ required: false }]
-                })(
-                  <FileUpload  defaultFileList ={defaultFileList} addImgFun={this.onAddImg.bind(this)} deleteImgFun={this.onDeleteImg.bind(this)} imgInputName="url">
+            </Col>
+          </Row>
+          <Row style = {{width:800}}>
+            <Col span={12}>
+              <FormItem {...formItemLayout}>
+                {getFieldDecorator("url",)(
+                  <FileUpload  defaultFileList ={addImglist} addImgFun={this.onAddImg.bind(this)} deleteImgFun={this.onDeleteImg.bind(this)} imgInputName="url">
                     <Button key="1" disabled={disabledBtn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
                   </FileUpload>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                {getFieldDecorator('imgSize', {rules: [{ required: size1, message: '请输入图片尺寸',initialValue: (initialValue==null ? '' : initialValue.img1Size),
+                }],
+                 })(
+                  <Input placeholder="请输入图片尺寸，有图片时必填" />
                 )}
               </FormItem>
             </Col>

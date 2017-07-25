@@ -111,6 +111,7 @@ class WebEndemic extends React.Component{
         </div>
         {/*<Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>*/}
         <Table
+          className="management-center"
           bordered
           dataSource={dataSource}
           columns={this.columns}

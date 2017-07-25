@@ -223,11 +223,61 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/website'));
-        registerModel(app,require('models/WebJob'));
+        registerModel(app,require('models/AllWebSiteManage'));
         registerModel(app,require('models/webEndemic'));
-        registerModel(app,require('models/webCourse'));
-        registerModel(app,require('models/activityEnroll'));
         cb(null, require('page/system/website-manage/websiteHomePageManage'))
+      })
+    }
+  },
+  // 美研中心
+  {
+    path: '/system/BeautifulResearchCenterManage',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/website'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/babycare'));
+        cb(null, require('page/system/website-manage/BeautifulResearchCenterManage'))
+      })
+    }
+  },
+  // 活动咨询
+  {
+    path: '/system/ActivityConsult',
+    getComponent: (location, cb) => {
+
+      require.ensure([], (require) => {
+        registerModel(app,require('models/webCourse'));
+        registerModel(app, require('models/website'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/activityEnroll'));
+        registerModel(app,require('models/babycare'));
+        cb(null, require('page/system/website-manage/ActivityConsult'))
+      })
+    }
+  },
+  // 新妈分享
+  {
+    path: '/system/NewMotherShare',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/website'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/babycare'));
+        cb(null, require('page/system/website-manage/NewMotherShare'))
+      })
+    }
+  },
+  // 关于hiboby
+  {
+    path: '/system/AboutHiBobyManage',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app,require('models/WebJob'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/babycare'));
+        registerModel(app, require('models/website'));
+        cb(null, require('page/system/website-manage/AboutHiBobyManage'))
       })
     }
   },
@@ -236,7 +286,9 @@ export default (app) => [
     path: '/system/websiteActManage',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
+        registerModel(app, require('models/website'));
         registerModel(app,require('models/babycare'));
+        registerModel(app,require('models/AllWebSiteManage'));
         cb(null, require('page/system/website-manage/websiteActManage'))
       })
     }

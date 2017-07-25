@@ -112,10 +112,13 @@ const monthStateView = (props) => {
 
      dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
 
-    if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
-      message.error("无法移动到过去");
-      return;
+    if(dragUser.status !== 4){
+      if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
+        message.error("无法移动到过去");
+        return;
+      }
     }
+
 
 
     if(dragUser.startIndex == -1 && roomIndex){
@@ -125,8 +128,6 @@ const monthStateView = (props) => {
         }
       })
     }
-
-
 
     dispatch({
       type: 'roomStatusManagement/userDrop',
@@ -586,6 +587,23 @@ const monthStateView = (props) => {
           //   return;
           // }
 
+          var debounce = function (func, threshold, execAsap) {
+            var timeout;
+            return function debounced () {
+              var obj = this, args = arguments;
+              function delayed () {
+                if (!execAsap)
+                  func.apply(obj, args);
+                timeout = null;
+              };
+              if (timeout)
+                clearTimeout(timeout);
+              else if (execAsap)
+                func.apply(obj, args);
+              timeout = setTimeout(delayed, threshold || 100);
+            };
+          }
+
 
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
@@ -615,7 +633,8 @@ const monthStateView = (props) => {
                 console.log(moment.unix(roomDate/1000).format('YYYY-MM-DD'))
 
                   if(moment().isAfter(moment.unix(roomDate/1000),'day')){
-                  message.error("无法将出所日期移动到今天以前");
+                    debounce(message.error("无法将出所日期移动到今天以前"),2000,true)
+                    ;
                   return;
                 }
               }
@@ -839,7 +858,7 @@ const monthStateView = (props) => {
                     <div className="number">
                       {room.roomNo}
                     </div>
-                    <div className="level">
+                    <div style={{display:room.packageInfoLevels?'':'none'}} className="level">
                       {room.packageInfoLevels?`v${room.packageInfoLevels}`:''}
                     </div>
                   </div>

@@ -11,7 +11,6 @@ class FileUpload extends React.Component {
       defaultFileList : this.props.defaultFileList ,
       fileList: [],
     };
-
   };
 
   beforeUpload(file) {
@@ -38,7 +37,6 @@ class FileUpload extends React.Component {
   handleCancel = () => this.setState({ previewVisible: false })
 
   handlePreview = (file) => {
-    console.log("file",file);
     this.setState({
       previewImage: file.url ?file.url: file.response.data.fileUrlList[0],
       previewVisible: true,
@@ -56,13 +54,10 @@ class FileUpload extends React.Component {
     const _this = this;
 
     if (file.status === "uploading"){
-      console.log("图片正在上传....");
     }
 
     if (file.status === 'done') {
-      console.log("img",file.response.data.fileKey);
       _this.props.addImgFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
-      console.log("图片上传成功....");
     }
 
     this.setState({
@@ -73,8 +68,10 @@ class FileUpload extends React.Component {
 
 
   render() {
+
     const { previewVisible, previewImage, fileList} = this.state;
     const { defaultFileList } = this.props;
+
     return (
       <div>
         <Upload

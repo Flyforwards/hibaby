@@ -5,6 +5,8 @@ import { Button, Icon, Modal, Form, Input, Row, Col, message, Spin } from 'antd'
 const FormItem = Form.Item;
 import './prepareMeals.scss'
 import ChooseDishes from './chooseDishesModel'
+import PermissionButton from '../../../common/PermissionButton';
+
 
 class DynamicFieldSet extends Component {
   constructor(props) {
@@ -159,12 +161,18 @@ class DynamicFieldSet extends Component {
           <Col span={15}/>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>
+              {/*<Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>*/}
+              <PermissionButton size="large"  testKey='CUSTOMER_MENU_ADJUST' className="addBtn"  onClick={this.add}>
+                添加菜品
+              </PermissionButton>
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button className="saveBtn" htmlType="submit" size="large">保存</Button>
+              {/*<Button className="saveBtn" htmlType="submit" size="large">保存</Button>*/}
+              <PermissionButton   testKey='CUSTOMER_MENU_ADJUST' className="saveBtn"  htmlType="submit" size="large">
+                保存
+              </PermissionButton>
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>

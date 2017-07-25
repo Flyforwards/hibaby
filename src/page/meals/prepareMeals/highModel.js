@@ -2,6 +2,8 @@ import React, { Component }from 'react';
 import { connect } from 'dva';
 import { Button, Icon, Modal, Form, Input, Row, Col, message, Select } from 'antd';
 import ChooseDishes from './chooseDishesModel'
+import PermissionButton from '../../../common/PermissionButton';
+
 const Option = Select.Option
 const FormItem = Form.Item;
 
@@ -15,7 +17,7 @@ class DynamicFieldSet extends Component {
     }
     this.infoKey = 0;
   }
-  
+
   remove = (k) => {
     const { topMenuInfoByType, dispatch } = this.props;
     let { dishes } = topMenuInfoByType;
@@ -25,8 +27,8 @@ class DynamicFieldSet extends Component {
       payload: { dishes }
     });
   }
-  
-  
+
+
   add = () => {
     const { topMenuInfoByType, dispatch } = this.props;
     const { dishes } = topMenuInfoByType;
@@ -36,8 +38,8 @@ class DynamicFieldSet extends Component {
       payload: { dishes }
     })
   }
-  
-  
+
+
   handleSubmit = (e) => {
     const { dispatch, topMenuInfoByType } = this.props;
     e.preventDefault();
@@ -46,7 +48,7 @@ class DynamicFieldSet extends Component {
         dispatch({
           type: 'prepareMeals/saveTopMenu',
           payload: { ...topMenuInfoByType }
-          
+
         })
       }
     });
@@ -61,7 +63,7 @@ class DynamicFieldSet extends Component {
     const { form } = this.props;
     form.resetFields([`dishesName-${changeKey + 1}`])
   }
-  
+
   changeTopVisible = () => {
     const { dispatch } = this.props;
     dispatch({
@@ -76,7 +78,7 @@ class DynamicFieldSet extends Component {
     this.setState({
       changeKey: k
     })
-    
+
     dispatch({
       type: 'prepareMeals/chooseVisible',
       payload: {
@@ -84,11 +86,11 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  
+
   changePointPackage = (value) => {
     const { dispatch } = this.props;
     const pointPackage = parseInt(value);
-    
+
     dispatch({
       type: 'prepareMeals/changePointPackage',
       payload: {
@@ -96,7 +98,7 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  
+
   changeEatDay = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
@@ -107,7 +109,7 @@ class DynamicFieldSet extends Component {
         eatDayValue, infoKey
       }
     })
-    
+
   }
   changeEatTime = (value) => {
     const { dispatch } = this.props;
@@ -119,7 +121,7 @@ class DynamicFieldSet extends Component {
         eatTimeValue, infoKey
       }
     })
-    
+
   }
   changeFrequency = (value) => {
     const { dispatch } = this.props;
@@ -132,7 +134,7 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  
+
   render() {
     const { form, cardLevelInfo, topMenuInfoByType } = this.props;
     const { changeKey, isLow } = this.state;
@@ -148,7 +150,7 @@ class DynamicFieldSet extends Component {
         sm: { span: 16 }
       }
     }
-    
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
@@ -173,8 +175,8 @@ class DynamicFieldSet extends Component {
             </FormItem>
           </Col>
         </Row>
-        
-        
+
+
         {
           dishes.map((v, k) => {
             return (
@@ -264,26 +266,35 @@ class DynamicFieldSet extends Component {
                 </Col>
                 {
                   v.isDel ? <Col span={2} style={{ textAlign: 'center' }}>
-                    <Button className="btnDelIcon" onClick={() => this.remove(k)}>
+                    {/*<Button className="btnDelIcon" onClick={() => this.remove(k)}>*/}
+                      {/*删除*/}
+                    {/*</Button>*/}
+                    <PermissionButton testKey='MENU_DISHES_DELETE' className="btnDelIcon"  onClick={() => this.remove(k)}>
                       删除
-                    </Button>
+                    </PermissionButton>
                   </Col> : null
                 }
               </Row>
             )
           })
         }
-        
+
         <Row style={{ marginTop: '25px' }}>
           <Col span={15}/>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>
+              <PermissionButton size="large"  testKey='MENU_DISHES_ADD' className="addBtn"  onClick={this.add}>
+                添加菜品
+              </PermissionButton>
+              {/*<Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>*/}
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button className="saveBtn" htmlType="submit" size="large">保存</Button>
+              {/*<Button className="saveBtn" htmlType="submit" size="large">保存</Button>*/}
+              <PermissionButton   testKey='MENU_SAVE' className="saveBtn"  htmlType="submit" size="large">
+                保存
+              </PermissionButton>
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>
@@ -303,7 +314,7 @@ class LowMOdel extends Component {
     super(props)
     this.state = {}
   }
-  
+
   handleOk = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -322,7 +333,7 @@ class LowMOdel extends Component {
       }
     })
   }
-  
+
   render() {
     const { prepareMeals, dispatch } = this.props;
     const { topVisible, cardLevelInfo, topMenuInfoByType } = prepareMeals;
@@ -347,7 +358,7 @@ class LowMOdel extends Component {
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals
   };
