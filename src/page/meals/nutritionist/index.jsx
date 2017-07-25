@@ -7,6 +7,8 @@ import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import DictionarySelect from 'common/dictionary_select';
 import { queryURL } from '../../../utils/index.js';
+import PermissionLink from '../../../common/PermissionLink';
+
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 const monthFormat = 'YYYY';
@@ -79,12 +81,15 @@ class PrepareMealPage extends React.Component {
       title: '操作',
       dataIndex: 'operating',
       render: (text, record, index) => {
-        const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
-        const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
+        // const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
+        // const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div>
-            <Link disabled={detail} className="firstA" onClick={ this.onEdit.bind(this, record)}> 编辑餐单 </Link>
-            <Link disabled={del} className="firstB" onClick={ this.onTaboo.bind(this, record)}> 禁忌 </Link>
+
+            <PermissionLink testKey='CUSTOMER_MENU_EDIT' className="firstA" onClick={ this.onEdit.bind(this, record)}> 编辑餐单 </PermissionLink>
+            <PermissionLink testKey='CUSTOMER_TABOO_EDIT' className="firstB" onClick={ this.onTaboo.bind(this, record)}> 禁忌 </PermissionLink>
+            {/*<Link disabled={detail} className="firstA" onClick={ this.onEdit.bind(this, record)}> 编辑餐单 </Link>*/}
+            {/*<Link disabled={del} className="firstB" onClick={ this.onTaboo.bind(this, record)}> 禁忌 </Link> */}
           </div>
         );
       }

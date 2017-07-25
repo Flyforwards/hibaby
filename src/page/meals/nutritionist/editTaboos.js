@@ -9,6 +9,8 @@ import moment from 'moment';
 import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import { queryURL } from '../../../utils/index';
+import PermissionButton from '../../../common/PermissionButton';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const createForm = Form.create;
@@ -194,7 +196,10 @@ class EditTaboo extends React.Component {
         </div>
         <div className="TabooButton">
           <Button  onClick={this.onAdd.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginButtom:'20px', backgroundColor: 'rgba(255, 102, 0, 1)'}}>添加禁忌</Button>
-          <Button  onClick={this.onSave.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginRight: '40px',  backgroundColor: 'rgba(255, 102, 0, 1)'}}>保存</Button>
+          {/*<Button  onClick={this.onSave.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginRight: '40px',  backgroundColor: 'rgba(255, 102, 0, 1)'}}>保存</Button>*/}
+          <PermissionButton testKey='CUSTOMER_TABOO_SAVE' style={{width: '15%', height: '40px', lineHeight: '40px', marginLeft:'40px', marginRight: '40px',  backgroundColor: 'rgba(255, 102, 0, 1)'}} onClick={this.onSave.bind(this)}>
+            保存
+          </PermissionButton>
           <Button  onClick={this.onBack.bind(this)} style={{width: '15%', height: '40px', lineHeight: '40px', marginButtom:'20px', backgroundColor: 'rgba(255, 102, 0, 1)'}}>返回</Button>
         </div>
         </Spin>

@@ -8,6 +8,8 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
 import $ from 'jquery'
+import PermissionButton from '../../../common/PermissionButton';
+
 
 
 class PrepareMeals extends Component {
@@ -15,7 +17,7 @@ class PrepareMeals extends Component {
     super(props)
     this.state = {};
   }
-  
+
   componentWillMount() {
     this.props.dispatch({
       type: 'prepareMeals/getMenuByDay',
@@ -25,7 +27,7 @@ class PrepareMeals extends Component {
       }
     });
   }
-  
+
   onChange = (e) => {
     const { dispatch } = this.props;
     const postDate = JSON.parse(e.target.value);
@@ -37,7 +39,7 @@ class PrepareMeals extends Component {
       type: 'prepareMeals/changeLowTime',
       payload: { postDate }
     })
-    
+
     postDate.week == '0' ?
       dispatch({
         type: 'prepareMeals/getTopMenuByDay',
@@ -47,7 +49,7 @@ class PrepareMeals extends Component {
       payload: postDate
     })
   }
-  
+
   onSearch = (value) => {
     const { dispatch } = this.props;
     if (!value) {
@@ -60,8 +62,8 @@ class PrepareMeals extends Component {
         }
       })
     }
-    
-    
+
+
   }
   showHighModal = (info) => {
     const { dispatch } = this.props;
@@ -79,8 +81,8 @@ class PrepareMeals extends Component {
       }
     })
   }
-  
-  
+
+
   showLowModal = (info) => {
     const { dispatch } = this.props;
     const { week, day, type } = info;
@@ -96,12 +98,12 @@ class PrepareMeals extends Component {
         week, day, type
       }
     })
-    
+
   }
-  
+
   render() {
-    
-    
+
+
     const { prepareMeals, loading } = this.props;
     const { dayInfo, defaultValueRadio, menuInfo, findMenuInfo, leftDish } = prepareMeals;
     let colorType = '#dddddd';
@@ -181,9 +183,12 @@ class PrepareMeals extends Component {
                         })
                       }
                       <li>
-                        <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
+                        {/*<Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>*/}
+                          {/*编辑/添加*/}
+                        {/*</Button>*/}
+                        <PermissionButton testKey="MENU_EDIT" className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
                           编辑/添加
-                        </Button>
+                        </PermissionButton>
                       </li>
                     </ul>
                   </div>
@@ -197,11 +202,11 @@ class PrepareMeals extends Component {
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals,
     loading: state.loading
-    
+
   };
 }
 export default connect(mapStateToProps)(PrepareMeals);

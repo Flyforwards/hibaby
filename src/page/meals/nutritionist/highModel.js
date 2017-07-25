@@ -3,6 +3,8 @@ import { connect } from 'dva';
 import { Button, Icon, Modal, Form, Input, Row, Col, message, Select } from 'antd';
 import ChooseDishes from './chooseDishesModel'
 import './prepareMeals.scss'
+import PermissionButton from '../../../common/PermissionButton';
+
 const Option = Select.Option
 const FormItem = Form.Item;
 
@@ -266,9 +268,12 @@ class DynamicFieldSet extends Component {
                 </Col>
                 {
                   v.isDel ? <Col span={2} style={{ textAlign: 'center' }}>
-                    <Button className="btnDelIcon" onClick={() => this.remove(k)}>
+                    {/*<Button className="btnDelIcon" onClick={() => this.remove(k)}>*/}
+                      {/*删除*/}
+                    {/*</Button>*/}
+                    <PermissionButton testKey='CUSTOMER_MENU_ADJUST' className="btnDelIcon"  onClick={() => this.remove(k)}>
                       删除
-                    </Button>
+                    </PermissionButton>
                   </Col> : null
                 }
               </Row>
@@ -280,12 +285,18 @@ class DynamicFieldSet extends Component {
           <Col span={15}/>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>
+              <PermissionButton size="large"  testKey='CUSTOMER_MENU_ADJUST' className="addBtn"  onClick={this.add}>
+                添加菜品
+              </PermissionButton>
+              {/*<Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>*/}
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button className="saveBtn" htmlType="submit" size="large">保存</Button>
+              {/*<Button className="saveBtn" htmlType="submit" size="large">保存</Button>*/}
+              <PermissionButton   testKey='CUSTOMER_MENU_ADJUST' className="saveBtn"  htmlType="submit" size="large">
+                保存
+              </PermissionButton>
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>
