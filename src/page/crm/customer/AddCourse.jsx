@@ -9,7 +9,9 @@ import AddCourseModel from './AddCourseModel.jsx'
 import UserServiceinfo from './userServiceinfo.jsx'
 import {keyToText} from '../../../utils';
 import PermissionButton from 'common/PermissionButton';
+import _ from 'lodash';
 let TYPENAME = [];
+
 
 class AddCourse extends Component {
     constructor(props) {

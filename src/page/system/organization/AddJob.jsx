@@ -5,6 +5,7 @@ import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,message} from 
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from 'common/util/storage.js'
 import './AddJob.scss'
+import _ from 'lodash';
 
 const createForm = Form.create
 const FormItem = Form.Item

@@ -4,6 +4,7 @@ import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,Menu,Table} from 'antd'
 import './AddCourse.scss';
 import { Link} from 'react-router'
+import _ from 'lodash';
 
 const SubMenu = Menu.SubMenu;
 
