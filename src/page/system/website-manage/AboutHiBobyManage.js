@@ -20,9 +20,13 @@ class ActivityManage extends Component {
     this.props.dispatch({type:'AllWebSiteManage/tabChange',payload:{AboutActKey:key}})
     if(dict[key]){
       const {type1,type2} = dict[key];
-      this.props.dispatch(type2?{type:'websiteBanner/getExpertInitialList',payload:{"str":type2,}}
-        :{type:'websiteBanner/saveExpertInitialList',payload:{data:[]}});
-      this.props.dispatch({type:'websiteBanner/getExpertByOneType',payload:{str:type1}});
+      if (key === '企业介绍' || key === '品牌文化'){
+        this.props.dispatch({type:'websiteBabyCare/getInitialList',payload:{str:dict[key].type1}});
+      }else {
+        this.props.dispatch(type2?{type:'websiteBanner/getExpertInitialList',payload:{"str":type2,}}
+          :{type:'websiteBanner/saveExpertInitialList',payload:{data:[]}});
+        this.props.dispatch({type:'websiteBanner/getExpertByOneType',payload:{str:type1}});
+      }
     }
   }
 
@@ -30,7 +34,12 @@ class ActivityManage extends Component {
     let ary = []
     Object.keys(dict).map((key) => {
       if (dict[key]){
+        if (key === '企业介绍' || key === '品牌文化'){
+          ary.push(<TabPane tab={key} key={key}><BabyService superData={{type1:dict[key].type1}}/></TabPane>)
+        }
+        else{
           ary.push(<TabPane tab={key} key={key}><ExpertIntroduction superData={dict[key]}/></TabPane>)
+        }
       }
     })
 

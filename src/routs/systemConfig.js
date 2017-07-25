@@ -276,6 +276,7 @@ export default (app) => [
         registerModel(app,require('models/WebJob'));
         registerModel(app,require('models/AllWebSiteManage'));
         registerModel(app,require('models/babycare'));
+        registerModel(app, require('models/website'));
         cb(null, require('page/system/website-manage/AboutHiBobyManage'))
       })
     }

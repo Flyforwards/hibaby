@@ -35,9 +35,8 @@ export default {
     },
     //新增图片
     onAddImg(state,{payload:imglist}){
-      let imgArr = state.imgListArr;
-      imgArr.push(imglist);
-      return {...state,imgListArr:imgArr,imgBtn:true}
+      imglist[0].uid = imglist[0].name
+      return {...state,imgListArr:imglist,imgBtn:true}
     },
     //删除图片
     onDeleteImg(state,{payload:imglist}){

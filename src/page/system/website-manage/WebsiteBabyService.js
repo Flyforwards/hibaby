@@ -163,18 +163,20 @@ class WebsiteBabyService extends React.Component{
 
     let contentArr = []
     let con = content;
-    try {
-      contentArr = eval(content)
-      con =[];
-      contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
-        v.id = i ;
-        con.push(v)
-      }):content;
-    }
-    catch (e){
-      console.log(content)
+    if(content){
+      try {
+        contentArr = eval(content)
+        con =[];
+        contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
+          v.id = i ;
+          con.push(v)
+        }):content;
+      }
+      catch (e){
 
+      }
     }
+
 
 
 
@@ -266,15 +268,17 @@ class WebsiteBabyService extends React.Component{
             </Row>
           </Card>
 
-          <Card style={{marginTop:'20px'}}>
-            <Row>
-              <Col span ={24}>
-                <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>新增</Button>
-              </Col>
-            </Row>
-            {typeof con == 'string' ? '' : <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>}
+          {
+            typeof con == 'string' ? '':<Card style={{marginTop:'20px'}}>
+              <Row>
+                <Col span ={24}>
+                  <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>新增</Button>
+                </Col>
+              </Row>
+              <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>
+            </Card>
+          }
 
-          </Card>
         </div>
       </Spin>
 

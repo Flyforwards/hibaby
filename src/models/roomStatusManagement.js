@@ -874,6 +874,7 @@ export default {
 
         // 调用接口失败
         if (code != 0) {
+          yield put({type: 'monthRoomList'});
           return;
         }
         else{
