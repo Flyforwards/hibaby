@@ -73,7 +73,6 @@ export default {
     //首页 ---- 专家团队
     //获取专家团队初始列表
     *getInitialList({payload:values},{call,put}){
-      console.log(values)
       const {data:{data,code}} = yield call(websiteBabyCare.getExpertInitialList,values);
       if(code == 0){
         yield put({

@@ -90,11 +90,13 @@ class WebsiteBabyService extends React.Component{
     form.validateFields((err, values) => {
       if(!err){
         if(this.props.imgListArr && this.props.imgListArr.length > 0){
-          this.props.imgListArr.map((v,i) => {
-            img1String = v[0].name ? v[0].name:'';
-          })
+          img1String = this.props.imgListArr[0].name ? this.props.imgListArr[0].name:'';
         }
         values.img1 = img1String;
+
+        if (!values.content){
+          values.content = this.props.content
+        }
 
         if (!err) {
           dispatch({
@@ -103,7 +105,6 @@ class WebsiteBabyService extends React.Component{
               ...values,
               "id":this.props.initialList.id,
               "type":this.props.initialList.type,
-              "content":this.props.content,
             }
           })
         }
@@ -160,12 +161,24 @@ class WebsiteBabyService extends React.Component{
       }
     }
 
-    let contentArr = content ? eval(content):[];
-    let con =[];
-    contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
-      v.id = i ;
-      con.push(v)
-    }):null;
+    let contentArr = []
+    let con = content;
+    try {
+      contentArr = eval(content)
+      con =[];
+      contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
+        v.id = i ;
+        con.push(v)
+      }):content;
+    }
+    catch (e){
+      console.log(content)
+
+    }
+
+
+
+
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -175,6 +188,10 @@ class WebsiteBabyService extends React.Component{
     const formItemLayouts = {
       labelCol:{ span: 4 },
       wrapperCol:{ span:17}
+    };
+    const contetnItemLayouts = {
+      labelCol:{ span: 3 },
+      wrapperCol:{ span:21}
     };
     return(
 
@@ -224,6 +241,20 @@ class WebsiteBabyService extends React.Component{
                     </FormItem>
                   </Col>
                 </Row>
+
+                {typeof con == 'string' ?
+                  <Row>
+                  <Col style={{width:'600'}}>
+                    <FormItem label="内容:" {...contetnItemLayouts} style={{fontWeight:'900',textAlign:'left'}}>
+                      {getFieldDecorator('content', {initialValue: initialList ? initialList.content:'',})(
+                        <Input type="textarea" readOnly={!modalVisible} rows={6} />
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row> :''}
+
+
+
               </Form>
             </div>
             <Row>
@@ -241,7 +272,8 @@ class WebsiteBabyService extends React.Component{
                 <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>新增</Button>
               </Col>
             </Row>
-            <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>
+            {typeof con == 'string' ? '' : <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>}
+
           </Card>
         </div>
       </Spin>
