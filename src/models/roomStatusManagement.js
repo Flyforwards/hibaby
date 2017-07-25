@@ -653,13 +653,7 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.extendRoomUse, {roomId:state.monthRoomList[value.roomIndex].roomId,customerId:state.dragUser.customerId,});
-      console.log(code,data)
-      if (code == 0){
-        if(data.status == 1){
-          yield put({type: 'monthRoomList',})
-        }
-        else {
+
 
           if (state.dragUser.roomIndex !== -1) {
             // 不是新拖入的, 删除之前的
@@ -676,33 +670,63 @@ export default {
             });
           }
 
+          if(state.dragUser.roomIndex == -1){
+            const {data: {code, data}} = yield call(roomManagement.extendRoomUse, {roomId:state.monthRoomList[value.roomIndex].roomId,customerId:state.dragUser.customerId,});
+            if (code == 0){
+              if(data.status == 1){
+                yield put({type: 'monthRoomUpdate',payload:'load'});
+              }
+              else {
+                let payload = {
+                  ...value,
+                  status: state.dragUser.status,
+                };
 
+                if (state.dragUser.status == 4) {
+                  payload.dayIndex = state.dragUser.startIndex;
+                }
 
-          let payload = {
-            ...value,
-            status: state.dragUser.status,
-          };
+                // 添加新的
+                yield put({
+                  type: 'userDropReducer',
+                  payload: {
+                    ...payload,
+                  }
+                });
 
-          if (state.dragUser.status == 4) {
-            payload.dayIndex = state.dragUser.startIndex;
-          }
-
-          // 添加新的
-          yield put({
-            type: 'userDropReducer',
-            payload: {
-              ...payload,
+                if(state.dragUser.status !== 7){
+                  yield put({type: 'monthRoomUpdate',payload:'load'});
+                }
+              }
             }
-          });
-
-          if(state.dragUser.status !== 7){
-            yield put({type: 'monthRoomUpdate',payload:'load'});
+            else {
+              return
+            }
           }
+          else{
+            let payload = {
+              ...value,
+              status: state.dragUser.status,
+            };
+
+            if (state.dragUser.status == 4) {
+              payload.dayIndex = state.dragUser.startIndex;
+            }
+
+            // 添加新的
+            yield put({
+              type: 'userDropReducer',
+              payload: {
+                ...payload,
+              }
+            });
+
+            if(state.dragUser.status !== 7){
+              yield put({type: 'monthRoomUpdate',payload:'load'});
+            }
+          }
+
         }
-      }
-      else {
-        return
-      }
     },
 
     *confirmCheckIn({payload: value}, {call, put, select}){

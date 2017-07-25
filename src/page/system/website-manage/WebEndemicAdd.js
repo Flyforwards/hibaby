@@ -146,7 +146,7 @@ class WebEndemicAdd extends React.Component {
             </Col>
             <Col span={12}>
               <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
-                {getFieldDecorator('img1Size', {rules: [{ required: size1, message: '请输入图片尺寸',initialValue: (initialValue==null ? '' : initialValue.img1Size),
+                {getFieldDecorator('imgSize', {rules: [{ required: size1, message: '请输入图片尺寸',initialValue: (initialValue==null ? '' : initialValue.img1Size),
                 }],
                  })(
                   <Input placeholder="请输入图片尺寸，有图片时必填" />
