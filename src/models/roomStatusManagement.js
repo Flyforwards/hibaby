@@ -892,13 +892,13 @@ export default {
               payload:value.ConfirmDict
             })
           }
-          if(value.deleteUse){
+          else if(value.deleteUse){
             yield put({
               type: 'deleteUser',
               payload:value.deleteUse
             })
           }
-          if(value === 'load'){
+          else{
             yield put({type: 'monthRoomList'});
           }
         }
