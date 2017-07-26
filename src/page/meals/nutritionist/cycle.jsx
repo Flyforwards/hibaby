@@ -14,13 +14,18 @@ var curWeek = 1;
 // 主页面
 function mealCycle (props) {
   function headerComponent (){
-    let testKey =  null;
+    let leftTestKey =  null;
+    let rightTestKey = null;
+   
     if(props.curTabsIndex == 0){
-      testKey = "LOOP_CUSTOMER"
+      leftTestKey = "LOOP_DELIVERY";
+      rightTestKey = "LOOP_DISHES";
     }else if(props.curTabsIndex == 1){
-      testKey = "LOOP_DISHES";
+      leftTestKey = "LOOP_CUSTOMER";
+      rightTestKey = "LOOP_DELIVERY";
     }else if(props.curTabsIndex == 2){
-      testKey = "LOOP_DELIVERY";
+      leftTestKey = "LOOP_DISHES";
+      rightTestKey = "LOOP_CUSTOMER";
     }
 
 
@@ -35,7 +40,7 @@ function mealCycle (props) {
             />*/}
             <PermissionButton
               icon="double-left"
-              testKey={testKey}
+              testKey={leftTestKey}
               style={{height: '40px',width: '40px'}}
               onClick={prevDateComponent} />
           </Col>
@@ -58,7 +63,7 @@ function mealCycle (props) {
             />*/}
             <PermissionButton
               icon="double-right"
-              testKey={testKey}
+              testKey={rightTestKey}
               style={{height: '40px',width: '40px', marginLeft: '20px'}}
               onClick={nextDateComponent} />
           </Col>
