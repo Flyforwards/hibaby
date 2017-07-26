@@ -4,6 +4,54 @@
 
 
 .member-card-cent {
+  .button-group-bottom-5 {
+    height: 30px;
+    padding: 0 35px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #ff4a4a;
+    border-color: #ff4a4a;
+    &:hover,&:visited,&:focus,&:active {
+      color: #fff;
+      background-color:#f99d2e;
+      border-color: #f99d2e;
+    }
+
+    &[disabled] {
+      color: rgba(0, 0, 0, 0.25);
+      background-color: #f7f7f7;
+      border-color: inherit;
+      height: 30px;
+      padding: 0 26px;
+      line-height: 30px;
+      font-size: 14px;
+    }
+  }
+  .button-group-bottom-6{
+    height: 30px;
+    padding: 0 35px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #b87636;
+    border-color: #b87636;
+    &:hover,&:visited,&:focus,&:active {
+      color: #fff;
+      background-color:#f99d2e;
+      border-color: #f99d2e;
+    }
+
+    &[disabled] {
+      color: rgba(0, 0, 0, 0.25);
+      background-color: #f7f7f7;
+      border-color: inherit;
+      height: 30px;
+      padding: 0 26px;
+      line-height: 30px;
+      font-size: 14px;
+    }
+  }
   .card{
     margin-top: 10px;
     width: 100%;
@@ -55,25 +103,23 @@
       color:#b87636;
     }
   }
-
-
   .cardBtn{
-    width:150px;
-    height:30px;
-    margin-left: 10px;
-    font-size: 14px;
-    font-family:"微软雅黑";
+    width:150px !important;
+    height:30px !important;
+    margin-left: 10px !important;
+    font-size: 14px !important;
+    font-family:"微软雅黑" !important;
   }
   .cardBtn:hover{
     background: #f99d2e;
     border-color:#f99d2e;
     color:#fff;
   }
-  .PrintBtn{
-    background:#eb7c34;
-    border-color: #eb7c34;
-    color: #fff;
-  }
+  //.PrintBtn{
+  //  background:#eb7c34;
+  //  border-color: #eb7c34;
+  //  color: #fff;
+  //}
   .clearBtn{
     background:#f75555;
     border-color: #f75555;
@@ -95,4 +141,33 @@
     color: #b67233;
   }
 
+}
+.printPagecss{
+  .cardBtn{
+    width:150px ;
+    height:30px ;
+    margin-left: 10px;
+    font-size: 14px;
+    font-family:"微软雅黑";
+  }
+  .cardBtn:hover{
+    background: #f99d2e;
+    border-color:#f99d2e;
+    color:#fff;
+  }
+  .PrintBtn{
+    background:#eb7c34;
+    border-color: #eb7c34;
+    color: #fff;
+  }
+  .lookBtn{
+    background:#ff4a4a;
+    border-color: #ff4a4a;
+    color: #fff;
+  }
+  .BackBtn{
+    background-color: #f1e8df;
+    color: #b67233;
+    border-color: #b67233;
+  }
 }

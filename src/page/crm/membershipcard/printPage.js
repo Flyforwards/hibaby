@@ -12,7 +12,7 @@ const TabPane = Tabs.TabPane;
 import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
 import './index.scss';
-import './printPage.css';
+//import './printPage.css';
 import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY-MM-DD';
@@ -28,9 +28,9 @@ class MemberShipCard extends Component {
       endTime: moment(new Date(), dateFormat),
       data: null
     }
-    
+
   }
-  
+
   //查询
   onSearch() {
     this.props.dispatch({
@@ -49,7 +49,7 @@ class MemberShipCard extends Component {
       }
     })
   }
-  
+
   //日期选择改变
   onChange(dates, dateStrings) {
     // console.log('From: ', dates[0], ', to: ', dates[1]);
@@ -57,7 +57,7 @@ class MemberShipCard extends Component {
     const data = {};
     data.startTime = dateStrings[0];
     data.endTime = dateStrings[1];
-    
+
     this.setState({
       data: data
     })
@@ -68,11 +68,11 @@ class MemberShipCard extends Component {
     //   }
     // })
   }
-  
+
   onPrint() {
     do_print('print-content');
   }
-  
+
   onBack() {
     this.props.dispatch({
       type: 'membershipcard/setAddCustomerTab',
@@ -80,26 +80,27 @@ class MemberShipCard extends Component {
     })
     history.go(-1)
   }
-  
+
   render() {
     const { systemTime, feeRecord, renewRecord, refundRecord } = this.props;
     return (
-      <div className="card" style={{ overflow: 'hidden' }}>
-        <div>
+      <div className="card printPagecss" style={{ overflow: 'hidden' }}>
+        <div style={{overflow:'hidden'}}>
           <RangePicker
+            style={{float:'left'}}
             ranges={{ Today: [moment(), moment()], 'This Month': [moment(), moment().endOf('month')] }}
             showTime
             defaultValue={[moment(systemTime ? new Date(systemTime) : new Date(), dateFormat), moment(systemTime ? new Date(systemTime) : new Date(), dateFormat)]}
             format="YYYY-MM-DD"
             onChange={this.onChange.bind(this)}
           />
-          <Button className="cardBtn PrintBtn" style={{ height: 40 }} onClick={this.onSearch.bind(this)}>查询</Button>
+          <Button className="cardBtn lookBtn" style={{ height: 40,float:'left' }} onClick={this.onSearch.bind(this)}>查询</Button>
           <Button className="cardBtn PrintBtn" style={{ float: 'right', height: 40 }} onClick={this.onPrint.bind(this)}>打印</Button>
           <Button className="cardBtn BackBtn" style={{
             float: 'right',
             height: 40
           }} onClick={this.onBack.bind(this)}>返回</Button>
-        
+
         </div>
         <div id="print-content">
           <PrintPageList />
@@ -115,10 +116,10 @@ class MemberShipCard extends Component {
             <p style={{ paddingLeft: '2%' }}>客户签名：</p>
           </Card>
         </div>
-      
+
       </div>
-    
-    
+
+
     )
   }
 }
