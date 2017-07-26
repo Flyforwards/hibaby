@@ -7,6 +7,8 @@ import SearchBar from './SearchBar'
 import {Button,Card,Modal} from 'antd'
 import { routerRedux, } from 'dva/router';
 import { parse } from 'qs'
+import PermissionButton from '../../../common/PermissionButton';
+
 const confirm = Modal.confirm;
 
 class creatGuestRoom extends React.Component {
@@ -85,14 +87,18 @@ class creatGuestRoom extends React.Component {
 
     let bottomDiv =  <div className='button-group-bottom-common'>
       <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
-      <Button className='button-group-bottom-2' onClick={this.handleSubmit.bind(this)}>保存</Button>
+      {/*<Button className='button-group-bottom-2' onClick={this.handleSubmit.bind(this)}>保存</Button>*/}
+      <PermissionButton testKey="ROOM_ADD" className='button-group-bottom-2' onClick={this.handleSubmit.bind(this)}>保存</PermissionButton>
+
     </div>;
 
     if(isDetail){
       bottomDiv = <div className='button-group-bottom-common'>
         <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
-        <Button className='button-group-bottom-2' onClick={this.onDelete.bind(this)}>删除</Button>
-        <Button className='button-group-bottom-3' onClick={this.editBtnClick.bind(this)}>编辑</Button>
+       {/* <Button className='button-group-bottom-2' onClick={this.onDelete.bind(this)}>删除</Button>
+        <Button className='button-group-bottom-3' onClick={this.editBtnClick.bind(this)}>编辑</Button>*/}
+        <PermissionButton testKey="ROOM_DELETE" className='button-group-bottom-2' onClick={this.onDelete.bind(this)}>删除</PermissionButton>
+        <PermissionButton testKey="ROOM_EDIT" className='button-group-bottom-3' onClick={this.editBtnClick.bind(this)}>编辑</PermissionButton>
       </div>
     }
 

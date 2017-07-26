@@ -6,6 +6,8 @@ import './roomManagementIndex.scss'
 import {Link,routerRedux} from 'react-router'
 import {Button,Row, Col,pagination,Form,Input} from 'antd'
 import DictionarySelect from 'common/dictionary_select';
+import PermissionLink from '../../../common/PermissionLink';
+
 const FormItem = Form.Item;
 
 function SearchBar(props) {
@@ -80,7 +82,9 @@ function SearchBar(props) {
         <div className='option-list'>
             <Button onClick={ onSearch} className='button-group-2'>查询</Button>
             <Button onClick={ reset} className='button-group-1'>重置</Button>
-            <Link to="/chamber/room/creatroom"><Button className='button-group-3'>建立房间</Button></Link>
+            {/*<Link to="/chamber/room/creatroom"><Button className='button-group-3'>建立房间</Button></Link>*/}
+          <PermissionLink testKey='ROOM_ADD'  to="/chamber/room/creatroom"><Button className='button-group-3'>建立房间</Button></PermissionLink>
+
         </div>
       </Col>
     )
