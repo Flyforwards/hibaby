@@ -5,7 +5,7 @@
 import React ,{ Component } from 'react';
 import { connect } from 'dva';
 import './WebsiteBanner.scss';
-import { Table, Input, Icon, Button ,Card,Form,Row,Col,Spin,Select} from 'antd';
+import { Table, Input, Icon, Button,Popconfirm ,Card,Form,Row,Col,Spin,Select} from 'antd';
 import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import { format} from '../../../utils/index.js';
@@ -13,6 +13,7 @@ const FormItem = Form.Item;
 const createForm = Form.create;
 const Option = Select.Option;
 import FileUpload from './fileUpload';
+import { browserHistory } from 'dva/router';
 
 @createForm()
 class WebsiteBabyService extends React.Component{
@@ -61,6 +62,8 @@ class WebsiteBabyService extends React.Component{
   }
 
   componentDidMount() {
+
+
     this.loadData()
   }
 
@@ -69,6 +72,11 @@ class WebsiteBabyService extends React.Component{
       type:'websiteBabyCare/getInitialList',
       payload:{str:this.props.superData?this.props.superData.type1:'2-1'}
     })
+    if(this.props.superData){
+      if(this.props.superData.type2){
+        this.props.dispatch({type:'websiteBabyCare/getExpertInitialList',payload:{"str":this.props.superData.type2,}});
+      }
+    }
   }
 
   //隐藏弹框
@@ -144,9 +152,22 @@ class WebsiteBabyService extends React.Component{
     })
   }
 
+  listOnAdd(){
+    this.props.dispatch({
+      type:'websiteBanner/setNewValue'
+    });
+    this.props.dispatch(routerRedux.push({
+      pathname: '/system/website-manage/addExpert',
+      query: {
+        "type":this.props.superData.type2
+      },
+    }))
+  }
+
+
   render(){
 
-    const {imgBtn,initialList,modalVisible,content,imgListArr,loading} =this.props;
+    const {imgBtn,initialList,modalVisible,content,imgListArr,loading,expertInitialList} =this.props;
     let size = false
     if(imgListArr ){
       if( imgListArr.length > 0 ){
@@ -177,8 +198,43 @@ class WebsiteBabyService extends React.Component{
       }
     }
 
+    const ListColumns = [{
+      title:"ID",
+      dataIndex:'id',
+      key:'id',
+      width:"10%",
+    },{
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',
+      width: '10%',
+    },{
+      title: '摘要',
+      dataIndex: 'summary',
+      key: 'summary',
+      width: '20%',
+    }, {
+      title: '操作',
+      dataIndex: 'operation',
+      render: (text, record, index) => {
+        return (
+          <span>
+            <Link disabled={false} className="one-link" to={`/system/website-manage/addExpert?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
+             <Link disabled={false} className="one-link">删除</Link>
+            </Popconfirm>
 
+          </span>
+        )
+      },
+      width: '30%'
+    }];
 
+    const ListTableProps = {
+      loading:loading.effects['websiteBabyCare/getExpertInitialList'],
+      dataSource:expertInitialList,
+      pagination:false,
+    };
 
 
     const { getFieldDecorator } = this.props.form;
@@ -254,9 +310,6 @@ class WebsiteBabyService extends React.Component{
                     </FormItem>
                   </Col>
                 </Row> :''}
-
-
-
               </Form>
             </div>
             <Row>
@@ -278,6 +331,22 @@ class WebsiteBabyService extends React.Component{
               <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>
             </Card>
           }
+
+
+          { this.props.superData?(this.props.superData.type2?
+            <Card style={{marginTop:'20px'}}>
+              <Row>
+                <Col span ={24}>
+                  <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.listOnAdd.bind(this)}>新增</Button>
+                </Col>
+              </Row>
+                <Table className='management-center' bordered columns={ ListColumns } {...ListTableProps} rowKey="id"/>
+              </Card>
+              :'')
+              :''
+          }
+
+
 
         </div>
       </Spin>

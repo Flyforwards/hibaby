@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import ExpertIntroduction from './ExpertIntroduction'
 import { Tabs } from 'antd'
+import BabyService from './WebsiteBabyService'
+
 const TabPane = Tabs.TabPane;
 import { connect } from 'dva';
 
@@ -18,9 +20,8 @@ class ActivityManage extends Component {
     this.props.dispatch({type:'AllWebSiteManage/tabChange',payload:{BeautifulActKey:key}})
     if(dict[key]){
       const {type1,type2} = dict[key];
-      this.props.dispatch(type2?{type:'websiteBanner/getExpertInitialList',payload:{"str":type2,}}
-        :{type:'websiteBanner/saveExpertInitialList',payload:{data:[]}});
-      this.props.dispatch({type:'websiteBanner/getExpertByOneType',payload:{str:type1}});
+      this.props.dispatch({type:'websiteBabyCare/getInitialList',payload:{str:type1}});
+      this.props.dispatch({type:'websiteBabyCare/getExpertInitialList',payload:{"str":type2,}});
     }
   }
 
@@ -28,8 +29,7 @@ class ActivityManage extends Component {
     let ary = []
     Object.keys(dict).map((key) => {
       if (dict[key]){
-        ary.push(<TabPane tab={key} key={key}><ExpertIntroduction superData={dict[key]}/></TabPane>)
-      }
+        ary.push(<TabPane tab={key} key={key}><BabyService superData={dict[key]}/></TabPane>)      }
     })
 
     return (

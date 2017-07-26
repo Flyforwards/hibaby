@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import BabyService from './WebsiteBabyService'
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane;
 import { connect } from 'dva';

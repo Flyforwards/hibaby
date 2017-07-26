@@ -18,6 +18,7 @@ export default {
       pageSize:10,
       total: null,
     },
+    expertInitialList:[],
     actKey:'产前服务',
     //主标题 ---专家团队修改判断
     modalVisible:false,
@@ -32,6 +33,9 @@ export default {
     },
     tabChange(state,{payload:data}){
       return {...state,actKey:data}
+    },
+    saveExpertInitialList(state,{payload:{data:expertInitialList}}){
+      return { ...state,expertInitialList};
     },
     //新增图片
     onAddImg(state,{payload:imglist}){
@@ -82,6 +86,21 @@ export default {
         })
       }
     },
+
+
+    *getExpertInitialList({payload:values},{call,put}){
+
+        const {data:{data,code}} = yield call(websiteBabyCare.getExpertInitialList,values);
+        if(code == 0){
+          yield put({
+            type:'saveExpertInitialList',
+            payload:{
+              data
+            }
+          })
+        }
+    },
+
     //新增专家
     *addExpert({payload:values},{call,put}){
       const {data:{data,code}} = yield call(websiteBabyCare.addExpert,values);
