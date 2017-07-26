@@ -1,10 +1,9 @@
 
-import React from 'react'
-import { Link} from 'react-router'
-import {Menu} from 'antd';
+import React from 'react';
+import { Link } from 'react-router';
+import { Menu } from 'antd';
 import FAIcon from '../../component/faicon'
 import './index.scss'
-import {local, session} from 'common/util/storage.js'
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
