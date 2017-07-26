@@ -20,6 +20,8 @@ import {
   Spin
 } from 'antd'
 import {routerRedux} from 'dva/router';
+import PermissionButton from '../../../common/PermissionButton';
+
 const { MonthPicker } = DatePicker;
 
 import './roomStatusManagementIndex.scss'
@@ -208,7 +210,7 @@ function CustomerSearch(props) {
   )
 }
 
-function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
+function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem,permissionAlias}) {
   const {allCusList,pagination,monthStateCustomers,fetusAry,packageAry} = props
   const columns = [{title: '客户姓名', dataIndex: 'name',key: 'name'},
     {title: '年龄',dataIndex: 'age',key: 'age'},
@@ -296,26 +298,35 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
     selectCustomerFun(record,false);
 
   }
-
+  //验证用户是否具备取消入住的权限 add by yangjj 2017-07-26 19:00
+  const customerCancel = permissionAlias.contains("MONTH_CUSTOMER_QX");
   let tags = [];
   if(selectItem){
 
     for(let i = 0;i<selectItem.length;i++){
       const dict = selectItem[i] ;
+
       if(!dict.change){
-        tags.push(<Tag key={dict.customerId || dict.id} closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
+        let flag = !disabled(dict);
+        if(!customerCancel){//无权限
+          flag = false
+        }
+        tags.push(<Tag key={dict.customerId || dict.id} closable={flag} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
 
       }
     }
   }
 
+  //验证用户是否有权限，true：有权限，则可以选择客户，false:无权限，不可选择客户 add by yangjj 2017-07-26 18:50
+  const rowSelectFlag =  permissionAlias.contains("MONTH_CUSTOMER_ADD");
 
   return(
     <Card bodyStyle={{padding:'10px'}} title="预约客户">
-      <Card bodyStyle={{padding:'10px', paddingTop:0}}>
+      <Card bodyStyle={{padding:'10px', paddingTop:0}} >
         {tags}
       </Card>
-      <Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
+      {/*<Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>*/}
+      {rowSelectFlag?<Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>:<Table className="CustomerTable"  {...tableProps}/>}
     </Card>
   )
 
@@ -381,6 +392,8 @@ class addCustomer extends React.Component {
 
   render(){
     const {CustomerVisible} = this.props.users;
+    const {permissionAlias} = this.props;
+
 
     return(
       <Modal
@@ -393,7 +406,7 @@ class addCustomer extends React.Component {
         onCancel={this.handleCancel.bind(this)}
         footer={[
           <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
-          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>,
+          <PermissionButton testKey="MONTH_CUSTOMER_SAVE" className='button-group-bottom-2' onClick={this.handleOk.bind(this)}> 确定</PermissionButton>
         ]}
 
       >
@@ -401,7 +414,7 @@ class addCustomer extends React.Component {
         <CustomerTable
           selectItem={this.state.selectItem}
           selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
-          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}/>
+          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch} permissionAlias={permissionAlias} />
       </Modal>
     )
   }
@@ -651,16 +664,21 @@ function RowHousesWay(props) {
       ]}
     >
       <h3>请选择此客户的排房方式</h3>
-      <Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</Button>
-      <Button type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</Button>
+      {/*<Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</Button>*/}
+      <PermissionButton testKey="MONTH_HANDLER_HOUSES" type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</PermissionButton>
+      <PermissionButton testKey="MONTH_AUTO_HOUSES" type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</PermissionButton>
     </Modal>
   )
 }
 
 function mapStateToProps(state) {
+  const { permissionAlias } = state.layout;
+
   return {
     users: state.roomStatusManagement,
     loading: state.loading,
+    permissionAlias
   };
 }
 

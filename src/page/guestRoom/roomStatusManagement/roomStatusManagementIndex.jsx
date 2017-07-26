@@ -31,8 +31,11 @@ const statusDict = {0: '空房', 1: '维修', 2: '脏房', 3: '样板房', 4: '�
 function ScreenBar(props) {
   const {getFieldDecorator} = props.form;
   const {statusChange, selectValue} = props;
-  const {dispatch} = props.supProps;
+  const {dispatch,permissionAlias} = props.supProps;
   const {dayStatusData, packageAry, FloorAry, MainFloorAry, AreaAry, TowardAry} = props.supProps.users;
+  //控制用户是否可以切换视图为月房态 add by yangjj 2017-07-26 17:20
+  const monthRoomStatusDisabled = !permissionAlias.contains("MONTH_STATUS_SHOW");
+
 
 
   function textforkey(array, value, valuekey = 'name') {
@@ -169,7 +172,7 @@ function ScreenBar(props) {
     <div className="ScreenBarDiv">
 
       <div className="headDiv">
-        <Switch className='switchDiv' onChange={roomViewStateChange} checkedChildren={'日房态'} unCheckedChildren={'月房态'}/>
+        <Switch className='switchDiv' disabled={monthRoomStatusDisabled} onChange={roomViewStateChange} checkedChildren={'日房态'} unCheckedChildren={'月房态'}/>
         <span className="titlespan">计划入住 <span
           style={{color: 'rgb(0,185,156)'}}>{dayStatusData.beginCount}</span> 客人</span>
         <span className="titlespan">计划离所 <span
@@ -201,7 +204,7 @@ function ScreenBar(props) {
   )
 }
 
-function CardArray({roomList, dispatch}) {
+function CardArray({roomList, dispatch,roomStatusSelectDisabled}) {
 
   function creatChiCard(dict, key) {
 
@@ -262,7 +265,10 @@ function CardArray({roomList, dispatch}) {
         disabled = true;
       }
     }
-
+    //控制用户没有权限时，下拉框不可操作 add by yangjj 2017-07-26 17:30
+    if(roomStatusSelectDisabled){//无权限
+      disabled = true
+    }
     return (
       <Card className="smallCard" bodyStyle={{padding: '10px'}} key={key} title={dict.roomNo}
             extra={dict.isRepair == 1 ? '维修' : statusDict[dict.status]}>
@@ -348,8 +354,10 @@ class DayRoomStatus extends React.Component{
   render(){
 
     const ScreenBarDiv = Form.create()(ScreenBar);
-    const {loading} = this.props;
+    const {loading,permissionAlias} = this.props;
     const {selectValue, roomList} = this.props.users;
+    //获取用户按钮权限信息 add by yangjj 2017-07-26 17:30
+    const selectDisabled = !permissionAlias.contains("DAY_STATUS_EDIT");
 
     return(
       <div>
@@ -358,7 +366,7 @@ class DayRoomStatus extends React.Component{
         <Spin
           spinning={loading.effects['roomStatusManagement/dayStatus'] !== undefined ? loading.effects['roomStatusManagement/dayStatus'] : false}>
           <CardArray dispatch={this.props.dispatch}
-                     roomList={roomList || this.props.users.dayStatusData.roomList}/>
+                     roomList={roomList || this.props.users.dayStatusData.roomList} roomStatusSelectDisabled={selectDisabled}/>
         </Spin>
       </div>
     )
@@ -391,10 +399,12 @@ class roomStatusIndex extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state){
+  const { permissionAlias } = state.layout;
   return {
     users: state.roomStatusManagement,
     loading: state.loading,
+    permissionAlias
   };
 }
 

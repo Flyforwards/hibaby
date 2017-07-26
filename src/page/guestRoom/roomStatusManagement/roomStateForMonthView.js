@@ -15,6 +15,8 @@ import {
   Popover,
   Spin
 } from 'antd'
+import PermissionButton from '../../../common/PermissionButton';
+
 
 const Option = Select.Option;
 
@@ -902,8 +904,10 @@ const monthStateView = (props) => {
 
     return (
       <div className="bottomBar">
-        <Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
-        <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>
+        {/*<Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
+        <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>*/}
+        <PermissionButton testKey="ONE_KEY" className="button-group-1" onClick={oneKeyClicked}>一键排房</PermissionButton>
+        <PermissionButton testKey="MONTH_STATUS_SAVE" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
       </div>
     )
   };
@@ -1012,7 +1016,8 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
+          {/*<Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>*/}
+          <PermissionButton testKey="MONTH_CUSTOMER_ADD" className="button-group-1" onClick={addCustomer}>+ 添加客户</PermissionButton>
         </div>
       </div>
     )
