@@ -551,10 +551,50 @@ export default {
       }
     },
 
-    *netroomViewStateChange({payload: value}, {call, put}){
+    *netroomViewStateChange({payload: value}, {call, put,select}){
+      const state = yield select(state => state.roomStatusManagement);
+      const {dateSelectList,floorSelect} = state;
+
+      // 去重
+      let years = {};
+
+      for (let dateSelect of dateSelectList) {
+        if (!dateSelect) {
+          continue;
+        }
+
+        if (!years[dateSelect.year]) {
+          years[dateSelect.year] = {};
+        }
+
+        for (let month of dateSelect.monthList) {
+          years[dateSelect.year][month] = "";
+        }
+      }
+
+      // 扁平化
+      let param = [];
+
+      for (let year in years) {
+        param.push({
+          year: year,
+          monthList: Object.keys(years[year]),
+        })
+      }
+
+      if (!param.length) {
+        message.error("请选择时间");
+        return;
+      }
 
 
-        const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers);
+      let dict = {yearList:param}
+
+      if(floorSelect){
+        dict.floor = floorSelect;
+      }
+
+        const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers,dict);
 
         yield put({
           type: 'setMonthStatusCustomers',
