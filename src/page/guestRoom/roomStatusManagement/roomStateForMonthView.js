@@ -279,12 +279,8 @@ const monthStateView = (props) => {
   const renderQueryView = () => {
 
     const queryBtnClickHandler = () => {
-
-      dispatch({
-        type: 'roomStatusManagement/monthRoomList',
-        payload: {}
-      });
-
+      dispatch({type: 'roomStatusManagement/monthRoomList'});
+      dispatch({type: 'roomStatusManagement/netroomViewStateChange'});
     };
 
     const floorChange = (e) => {
