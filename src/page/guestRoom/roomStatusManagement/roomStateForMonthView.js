@@ -55,6 +55,7 @@ const timeToDate = (time) => {
   }
 };
 
+let messageShow = true
 
 const monthStateView = (props) => {
   const {dispatch,loading} = props;
@@ -112,10 +113,13 @@ const monthStateView = (props) => {
 
      dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
 
-    if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
-      message.error("无法移动到过去");
-      return;
+    if(dragUser.status !== 4){
+      if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
+        message.error("无法移动到过去");
+        return;
+      }
     }
+
 
 
     if(dragUser.startIndex == -1 && roomIndex){
@@ -275,12 +279,8 @@ const monthStateView = (props) => {
   const renderQueryView = () => {
 
     const queryBtnClickHandler = () => {
-
-      dispatch({
-        type: 'roomStatusManagement/monthRoomList',
-        payload: {}
-      });
-
+      dispatch({type: 'roomStatusManagement/monthRoomList'});
+      dispatch({type: 'roomStatusManagement/netroomViewStateChange'});
     };
 
     const floorChange = (e) => {
@@ -431,6 +431,11 @@ const monthStateView = (props) => {
             </div>
           )
         });
+
+
+        const messageOnClose = (e)=>{
+          messageShow = true
+        }
 
 
         const userBoxClickHandler = (e) => {
@@ -584,6 +589,23 @@ const monthStateView = (props) => {
           //   return;
           // }
 
+          var debounce = function (func, threshold, execAsap) {
+            var timeout;
+            return function debounced () {
+              var obj = this, args = arguments;
+              function delayed () {
+                if (!execAsap)
+                  func.apply(obj, args);
+                timeout = null;
+              };
+              if (timeout)
+                clearTimeout(timeout);
+              else if (execAsap)
+                func.apply(obj, args);
+              timeout = setTimeout(delayed, threshold || 100);
+            };
+          }
+
 
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
@@ -609,11 +631,12 @@ const monthStateView = (props) => {
             else if (tempUnit < 0) {
               if(status == 4){
                 let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
-
-                console.log(moment.unix(roomDate/1000).format('YYYY-MM-DD'))
-
                   if(moment().isAfter(moment.unix(roomDate/1000),'day')){
-                  message.error("无法将出所日期移动到今天以前");
+                    if(messageShow === true){
+                      console.log('嘻嘻')
+                      messageShow = false
+                      message.error("无法将出所日期移动到今天以前",3,messageOnClose)
+                    }
                   return;
                 }
               }

@@ -5,12 +5,12 @@ import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, TreeSelect} from 'antd'
 import './fromModal.scss'
 import {local, session} from 'common/util/storage.js'
+import _ from 'lodash';
 
 const createForm = Form.create
 const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
-import _ from 'lodash'
 @createForm()
 class FromCreateModal extends Component {
     constructor(props) {

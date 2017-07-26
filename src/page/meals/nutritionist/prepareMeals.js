@@ -4,6 +4,7 @@ import './prepareMeals.scss'
 import { message, Button, Radio, Icon, Modal, Form, Row, Col, Input, Select, Spin } from 'antd';
 import LowModal from './lowModel'
 import HighModal from './highModel'
+import PermissionButton from '../../../common/PermissionButton';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
@@ -181,9 +182,13 @@ class PrepareMeals extends Component {
                         })
                       }
                       <li>
-                        <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
+                        <PermissionButton testKey='CUSTOMER_MENU_ADJUST' className="lastBtn"  onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
                           编辑/添加
-                        </Button>
+                        </PermissionButton>
+
+                        {/*<Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>*/}
+                          {/*编辑/添加*/}
+                        {/*</Button>*/}
                       </li>
                     </ul>
                   </div>

@@ -5,6 +5,7 @@ import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
 import './AddChildNode.scss'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from '../../../common/util/storage.js'
+import _ from 'lodash';
 
 const createForm = Form.create
 const FormItem = Form.Item

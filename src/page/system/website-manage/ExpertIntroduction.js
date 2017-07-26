@@ -67,13 +67,11 @@ class ExpertIntroduction extends React.Component{
   }
 
   componentDidMount() {
-    const dict = {'专家团队':{type1:'1-1',type2:'1-1-1'},'活动咨询':{type1:'1-2'},'活动招募':{type1:'1-2-1',type2:'1-2-1-1'},'新闻动态':{type1:'1-2-2',type2:'1-2-2-1'}}
-
-    const {type1,type2} = dict[this.props.actKey];
-    console.log(dict)
-    this.props.dispatch(type2?{type:'websiteBanner/getExpertInitialList',payload:{"str":type2,}}
+    const {type1,type2} = this.props.superData;
+    console.log(this.props.superData)
+    this.props.dispatch(type2?{type:'websiteBanner/getExpertInitialList',payload:{"str":type2?type2:'1-1-1',}}
       :{type:'websiteBanner/saveExpertInitialList',payload:{data:[]}});
-    this.props.dispatch({type:'websiteBanner/getExpertByOneType',payload:{str:type1}});
+    this.props.dispatch({type:'websiteBanner/getExpertByOneType',payload:{str:type1?type1:'1-1'}});
   }
 
   onDeleteOne(record){
@@ -163,8 +161,8 @@ class ExpertIntroduction extends React.Component{
              <Col span ={6}><Button className="btnAdd" onClick={this.upDateTitle.bind(this)}>修改</Button></Col>
               <Col span={10}>
                 {
-                  expertInitialList && expertInitialList.length > 0 ? <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button> : ''
-
+                  expertInitialList && expertInitialList.length > 0 ?
+                    <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button> : ''
                 }
 
               </Col>
@@ -195,6 +193,7 @@ class ExpertIntroduction extends React.Component{
           </Form>
         </Modal>
       </Card>
+
     )
   }
 

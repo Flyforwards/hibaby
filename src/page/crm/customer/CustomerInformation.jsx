@@ -73,13 +73,8 @@ function cusComponent(dict) {
         tempDiv = (<Select labelInValue={true} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
       break;
     case 'DatePicker':
-      if (dict.fun)
-      {
-        tempDiv = (<DatePicker style={{width: '100%' }} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
-      }
-      else {
-        tempDiv = (<DatePicker style={{width: '100%' }} placeholder='请选择'>{dict.children}</DatePicker>);
-      }
+        tempDiv = (<DatePicker style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
+
       break;
     case 'InputNumber':
       tempDiv = (<InputNumber className="antCli" disabled={dict.disabled} min={1} max={dict.max}/>);
@@ -339,7 +334,7 @@ function BaseInfo(props) {
     {title:'联系电话',component:'Input',submitStr:'contact'},
     {title:'出生日期',component:'DatePicker',submitStr:'birthTime',fun:onChange},
     {title:'年龄',component:'InputNumber',submitStr:'age',disabled:true,max:100},
-    {title:'预产期',component:'DatePicker',submitStr:'dueDate',fun:dueDateChange},
+    {title:'预产期',component:'DatePicker',submitStr:'dueDate',fun:dueDateChange,disabledDate:disabledDate},
     {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disabled:true},
     {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
     {title:'孕次',component:'Select',submitStr:'gravidity',children:gravidityDataChis},
@@ -434,6 +429,10 @@ function BaseInfo(props) {
     });
   }
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current.valueOf() < moment().subtract(6,'months');
+  }
 
 
   function provinceSelect(e) {
@@ -580,7 +579,7 @@ function ExtensionInfo(props) {
 
   if (props.users.editCustomer){
     if (props.users.expandData){
-      const selectArray =  {nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
+      const selectArray =  {idType:idTypeAry,nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
       datacompare(expandInfo,props.users.expandData,selectArray);
     }
   }
