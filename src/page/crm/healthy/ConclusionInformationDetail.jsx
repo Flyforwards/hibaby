@@ -60,6 +60,8 @@ function ConclusionInformationDetail(props) {
     })
   }
 
+  const bigImageData = props.healthInformation.conclusionImg_arr;
+
   return(
     <div className="conclusionInformationContentDiv">
       <Form className="tableForm">
@@ -67,16 +69,18 @@ function ConclusionInformationDetail(props) {
           <Col span="2">
             <div className="uploadOptions">出院小结:</div>
           </Col>
-          <Col span="18">
-            <Button type="primary" className="uploadOptionsButton" onClick={()=>showImg()}>查看附件</Button>
-          </Col>
+          { bigImageData.length>0
+            ?
+            <Col span="18">
+              <Button type="primary" className="uploadOptionsButton" onClick={()=>showImg()}>查看附件</Button>
+            </Col>
+            : <div></div>}
         </Row>
       </Form>
       <div className='button-group-bottom-common'>
         <Button className='button-group-bottom-1' onClick={handleBack}>返回</Button>
         <PermissionButton testKey="HEALTHINFO_EDIT" className='button-group-bottom-2' onClick={handleEdit}>编辑</PermissionButton>
       </div>
-
       <BigImageModal
         images={props.healthInformation.bigImageData}
         isOpen={props.healthInformation.bigImageHidden}
