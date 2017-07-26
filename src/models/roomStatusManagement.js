@@ -868,20 +868,17 @@ export default {
     },
     *resideAddOrCut({payload: value}, {call, put}){
 
-      if(resideOperation){
-
-        const {data: {code, data}} = yield call(roomManagement.resideAddOrCut, resideOperation);
-
-        // 调用接口失败
-        if (code != 0) {
-          yield put({type: 'monthRoomList'});
-          return;
-        }
-        else{
+      if(resideOperation) {
+        try {
+          const {data: {code, data}} = yield call(roomManagement.resideAddOrCut, resideOperation);
           message.success('入住信息更新成功')
+
+        }
+        catch (err) {
+          yield put({type: 'monthRoomList'});
+          throw err
         }
       }
-
     },
     *deleteUser({payload: value}, {call, put}){
 

@@ -55,6 +55,7 @@ const timeToDate = (time) => {
   }
 };
 
+let messageShow = true
 
 const monthStateView = (props) => {
   const {dispatch,loading} = props;
@@ -436,6 +437,11 @@ const monthStateView = (props) => {
         });
 
 
+        const messageOnClose = (e)=>{
+          messageShow = true
+        }
+
+
         const userBoxClickHandler = (e) => {
           let userBoxes = document.querySelectorAll(".userBox");
 
@@ -629,12 +635,12 @@ const monthStateView = (props) => {
             else if (tempUnit < 0) {
               if(status == 4){
                 let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
-
-                console.log(moment.unix(roomDate/1000).format('YYYY-MM-DD'))
-
                   if(moment().isAfter(moment.unix(roomDate/1000),'day')){
-                    debounce(message.error("无法将出所日期移动到今天以前"),2000,true)
-                    ;
+                    if(messageShow === true){
+                      console.log('嘻嘻')
+                      messageShow = false
+                      message.error("无法将出所日期移动到今天以前",3,messageOnClose)
+                    }
                   return;
                 }
               }
