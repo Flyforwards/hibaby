@@ -8,6 +8,8 @@ import './index.scss'
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
 
+const header_key = 'yt_'
+
 class Sidebar extends React.Component {
     constructor(props) {
         super(props)
@@ -38,7 +40,7 @@ class Sidebar extends React.Component {
 
     getSideBarMenu() {
         let menuData = this.props.menuData;
-        return this.convertSidebarMenu(menuData, 'yt_')
+        return this.convertSidebarMenu(menuData, header_key)
     }
 
     getMenuPath(menuData, pathName) {
@@ -67,25 +69,45 @@ class Sidebar extends React.Component {
 
         // menuPath array     current array
         return {
-            menuPath: menuPath.slice(0, menuPath.length - 1).map(v => 'yt_' + v),
-            current: menuPath.slice(menuPath.length - 1, menuPath.length).map(v => 'yt_' + v)
+            menuPath: menuPath.slice(0, menuPath.length - 1).map(v => header_key + v),
+            current: menuPath.slice(menuPath.length - 1, menuPath.length).map(v => header_key + v)
         }
     }
 
-    render() {
 
+    render() {
+        const { menuData } = this.props;
         const mini = this.props.miniMode
         const mode = mini ? 'vertical' : 'inline'
         const pathname = this.props.location.pathname === '/' ? '/home' : this.props.location.pathname
 
-        const {current} = this.getMenuPath(this.props.menuData, pathname)
+        const {current} = this.getMenuPath(menuData, pathname)
+
+        let openKeys = [];
+
+        menuData.map((record)=> {
+           if (record.path == pathname) {
+           } else if (record.children && record.children.length != 0) {
+             record.children.map((item)=> {
+                if (item.path == pathname) {
+                  openKeys = [header_key+record.path];
+                }
+             })
+           }
+        })
+        let key = ''
+        if (menuData && openKeys.length != 0) {
+          key = pathname;
+        }
 
         return (
             <div className="sidebarName">
             <aside className="yt-admin-framework-sidebar">
                 <Menu theme="light"
+                      defaultOpenKeys={openKeys}
                       selectedKeys={current}
                       mode={mode}
+                      key={key}
                 >
                     {
                         this.getSideBarMenu()
