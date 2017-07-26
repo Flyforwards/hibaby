@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import {Card,DatePicker,Table } from 'antd';
 import { Link } from 'react-router';
-import './index.scss';
+//import './index.scss';
 import './printPage.css';
 import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
@@ -99,11 +99,11 @@ class MemberShipCard extends Component {
 
     return (
       <div className="print_all" style={{ width: '100%',margin:'0px auto 0px',border:'1px solid #e5e5e5',background: '#FFFFFF',fontFamily: '微软雅黑 Bold',marginTop: '10px', borderTopLeftRadius: '5px', borderTopRightRadius: '5px',}}>
-        <div className="print_w100" style={{ width:'100%', padding:'16px', overflow: 'hidden', border:'none', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', backgroundColor:'rgba(102, 102, 102, 1)', color: '#FFFFFF', margin:'0px auto 0px'}}>
+        <div className="print_w100" style={{ clear:'both',width:'100%', padding:'16px', overflow: 'hidden', border:'none', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', backgroundColor:'rgba(102, 102, 102, 1)', color: '#FFFFFF', margin:'0px auto 0px'}}>
           <p style={{ width:'62%', float: 'left', textAlign: 'left', fontSize: '28px', fontWeight: 700,}}>{times ? times : ""}账单</p>
-          <p className="print_w_rr_36" style={{ width: '32%', float: 'right', textAlign: 'right', fontSize: '14px'}}>出单时间:<span>{ danTime }</span></p>
+          <p className="print_w_rr_36" style={{ width: '32%', float: 'right', textAlign: 'right', fontSize: '14px',marginTop:'7px'}}>出单时间:<span>{ danTime }</span></p>
         </div>
-        <div className="print_normal" style={{width:'100%', padding:'16px', overflow: 'hidden', backgroundColor:'rgba(102, 102, 102, 1)', color: '#FFFFFF'}}>
+        <div className="print_normal" style={{width:'100%', padding:'16px', overflow: 'hidden', backgroundColor:'rgba(102, 102, 102, 1)', color: '#FFFFFF',clear:'both'}}>
           <p className="print_w_ll_30" style={{width:'30%', float: 'left', textAlign: 'left', fontSize: '14px',}}>客户姓名:<span>{ printBaseMsg ? printBaseMsg.name:'' }</span></p>
           <p className="print_w_lc_30" style={{width:'30%', float: 'left', textAlign: 'center', fontSize: '14px',}}>房间号码:<span>{ printBaseMsg ? printBaseMsg.roomNumber:'' }</span></p>
           <p className="print_w_rr_30" style={{width:'30%', float: 'right', textAlign: 'right', fontSize: '14px',}}>合计金额:<span>{ printBaseMsg ? printBaseMsg.amount:'' }</span></p>
