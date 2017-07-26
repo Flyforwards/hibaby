@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, Radio, Select, Checkbox, Icon,Row, Col } from 'antd';
 import _ from 'lodash';
 import { filterItemList } from 'common/constants'
+
 const createForm = Form.create
 const FormItem = Form.Item
 const Option = Select.Option

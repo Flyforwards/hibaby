@@ -5,7 +5,7 @@ import FileUpload from './fileUpload'
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
 
-import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table,Spin} from 'antd';
+import {Icon, Modal,Input,Select,InputNumber,DatePicker,Row, Col,Form,Button,Table,Spin,message} from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -73,13 +73,8 @@ function cusComponent(dict) {
         tempDiv = (<Select labelInValue={true} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
       break;
     case 'DatePicker':
-      if (dict.fun)
-      {
-        tempDiv = (<DatePicker style={{width: '100%' }} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
-      }
-      else {
-        tempDiv = (<DatePicker style={{width: '100%' }} placeholder='请选择'>{dict.children}</DatePicker>);
-      }
+        tempDiv = (<DatePicker style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
+
       break;
     case 'InputNumber':
       tempDiv = (<InputNumber className="antCli" disabled={dict.disabled} min={1} max={dict.max}/>);
@@ -162,23 +157,25 @@ function cusFromItem(form,dict) {
     rules = { rules: [{ required: true, pattern:/^1[34578]{1}\d{9}$/, message: `请输入正确的${dict.title}!`}]};
   }
 
-  // if (dict.submitStr === 'idcard')
-  // {
-  //   if(form.getFieldValue('idType')){
-  //     if(form.getFieldValue('idType').label === '护照'){
-  //       rules = { rules: [{ required: true, pattern: [/^[a-zA-Z0-9]{3,21}$/,/^(P\d{7})|(G\d{8})$/] , message: `请输入正确的${dict.title}!`}]};
-  //     }
-  //     if(form.getFieldValue('idType').label === '台胞证'){
-  //       rules = { rules: [{ required: true, pattern: /^[a-zA-Z0-9]{5,21}$/, message: `请输入正确的${dict.title}!`}]};
-  //     }
-  //     else{
-  //       rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
-  //     }
-  //   }
-  //   else{
-  //     rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
-  //   }
-  // }
+  if (dict.submitStr === 'idcard')
+  {
+    // if(form.getFieldValue('idType')){
+    //   if(form.getFieldValue('idType').label === '护照'){
+    //     rules = { rules: [{ required: true, pattern: [/^[a-zA-Z0-9]{3,21}$/,/^(P\d{7})|(G\d{8})$/] , message: `请输入正确的${dict.title}!`}]};
+    //   }
+    //   if(form.getFieldValue('idType').label === '台胞证'){
+    //     rules = { rules: [{ required: true, pattern: /^[a-zA-Z0-9]{5,21}$/, message: `请输入正确的${dict.title}!`}]};
+    //   }
+    //   else{
+    //     rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
+    //   }
+    // }
+    // else{
+    //   rules = { rules: [{ required: true, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: `请输入正确的${dict.title}!`}]};
+    // }
+    rules = { rules: [{ required: true, max:18, message: `请输入正确的${dict.title}!`}]};
+
+  }
 
   if (dict.submitStr === 'idcardScan' || dict.submitStr === 'contractAppendices' || dict.submitStr === 'imgURL')
   {
@@ -337,7 +334,7 @@ function BaseInfo(props) {
     {title:'联系电话',component:'Input',submitStr:'contact'},
     {title:'出生日期',component:'DatePicker',submitStr:'birthTime',fun:onChange},
     {title:'年龄',component:'InputNumber',submitStr:'age',disabled:true,max:100},
-    {title:'预产期',component:'DatePicker',submitStr:'dueDate',fun:dueDateChange},
+    {title:'预产期',component:'DatePicker',submitStr:'dueDate',fun:dueDateChange,disabledDate:disabledDate},
     {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disabled:true},
     {title:'分娩医院',component:'Select',submitStr:'hospital',children:hospitals},
     {title:'孕次',component:'Select',submitStr:'gravidity',children:gravidityDataChis},
@@ -423,7 +420,7 @@ function BaseInfo(props) {
   }
 
   function dueDateChange(date, dateString) {
-    let weeks = parseInt((280 - date.diff(moment(),'days'))/7)
+    let weeks = Math.ceil((280 - date.diff(moment(),'days'))/7)
     weeks = weeks > 40 ? 40 : weeks;
     weeks = weeks < 0 ? 0 : weeks;
     props.form.setFieldsValue({
@@ -432,6 +429,10 @@ function BaseInfo(props) {
     });
   }
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current.valueOf() < moment().subtract(6,'months');
+  }
 
 
   function provinceSelect(e) {
@@ -578,7 +579,7 @@ function ExtensionInfo(props) {
 
   if (props.users.editCustomer){
     if (props.users.expandData){
-      const selectArray =  {nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
+      const selectArray =  {idType:idTypeAry,nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
       datacompare(expandInfo,props.users.expandData,selectArray);
     }
   }
@@ -671,7 +672,12 @@ function Remark(props) {
   }
 
   function handleOk(e)  {
-    dispatch({type:'addCustomer/addRemark',payload:(props.form.getFieldValue('tempRemark'))})
+    const str = props.form.getFieldValue('tempRemark') || '';
+    if(str.trim().length == 0){
+      message.error('您未输入任何内容')
+      return
+    }
+    dispatch({type:'addCustomer/addRemark',payload:str})
     props.form.resetFields(['tempRemark']);
   }
 
@@ -687,12 +693,17 @@ function Remark(props) {
         </Row>
         <Table bordered texta dataSource={remarkList} columns={remarkListColumns} />
 
-        <Modal title="添加备注" visible={modal}
-               onOk={handleOk} onCancel={handleCancel}
+        <Modal title="添加备注" visible={modal} bodyStyle={{padding:0}}
+               footer={[
+                 <Button className='backBtn button-group-bottom-1' onClick={handleCancel}>取消</Button>,
+                 <Button className='saveBtn button-group-bottom-2' onClick={handleOk}>确定</Button>,
+               ]
+               }
+               onCancel={handleCancel}
         >
-          <FormItem>
+          <FormItem style={{marginBottom:0}}>
             {getFieldDecorator('tempRemark')(
-              <Input type="textarea" rows={10} />
+              <Input  type="textarea" rows={10} />
             )}
           </FormItem>
         </Modal>
@@ -755,7 +766,10 @@ class customerInformation extends React.Component{
     if (!baseDict) return;
     if (exErr) return;
 
-    this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
+    this.props.dispatch({type:'addCustomer/validationInfo',payload:{baseDict:baseDict,exDict:exDict}})
+
+
+    // this.props.dispatch({type:'addCustomer/savaBaseInfo',payload:{baseDict:baseDict,exDict:exDict}})
 
   }
 
@@ -766,6 +780,35 @@ class customerInformation extends React.Component{
 
 
   render() {
+
+    if(this.props.users.validationStr){
+      let ary = this.props.users.validationStr.split(',')
+
+      ary.map(value=>{
+        if(value === 'name'){
+          this.refs.baseForm.setFieldsValue({
+            name: '',
+          });
+        }
+        if(value === 'contact'){
+          this.refs.baseForm.setFieldsValue({
+            contact: '',
+          });
+        }
+        if(value === 'contractNumber'){
+          this.refs.extensionForm.setFieldsValue({
+            contractNumber: '',
+          });
+        }
+      })
+
+      this.props.dispatch({
+        type:'addCustomer/setValidationStr',
+        payload:''
+      });
+    }
+
+
 
     return (
       <div className="customerContent">

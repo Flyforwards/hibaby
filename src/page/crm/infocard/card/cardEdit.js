@@ -40,6 +40,15 @@ class CardDetail extends Component {
       }
     });
     dispatch({
+      type:'card/listByMain',
+    });
+    dispatch({
+      type:'card/getDataDict',
+      payload:{
+        "abName": 'YCC',
+      }
+    });
+    dispatch({
       type: 'card/getCustomerPage',
       payload: { member: dataId }
     })
@@ -84,7 +93,7 @@ class CardDetail extends Component {
   }
 
   render() {
-    const { cardKind, form, level,loading,userPagination,list } = this.props;
+    const { cardKind, form, level,loading,userPagination,list,packageAry, fetusAry } = this.props;
     const { getFieldDecorator } = form;
     if (cardKind) {
       getFieldDecorator('upgrade', {initialValue: cardKind.upgrade});
@@ -193,7 +202,7 @@ class CardDetail extends Component {
               </Col>
             </Row>
           </Form>
-          <CustomerByCard {...{loading, userPagination, list}} />
+          <CustomerByCard {...{loading, userPagination, list,packageAry, fetusAry}} />
         </Card>
         <div className="button-group-bottom-common">
           <Link to={{ pathname:"/crm/card/detail", query: values}}>
@@ -212,14 +221,14 @@ const CardForms = Form.create()(CardDetail);
 
 
 function mapStateToProps(state) {
-  const { cardKind, level, zheKou,userPagination, list } = state.card;
+  const { cardKind, level, zheKou,userPagination, list,packageAry, fetusAry } = state.card;
   return {
     loading: state.loading,
     cardKind,
     userPagination,
     list,
     level,
-    zheKou,
+    zheKou,packageAry, fetusAry
   };
 }
 export default connect(mapStateToProps)(CardForms)

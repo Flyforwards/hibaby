@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import { connect } from 'dva';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
+import _ from 'lodash'
 
 class PermissionLink extends Component {
   constructor(props) {

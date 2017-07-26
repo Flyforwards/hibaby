@@ -8,10 +8,9 @@ class FileUpload extends React.Component {
     this.state = {
       previewVisible: false,
       previewImage: '',
-      defaultFileList : (typeof this.props.defaultFileList === 'object') ? this.props.defaultFileList : [],
+      defaultFileList : this.props.defaultFileList ,
       fileList: [],
     };
-
   };
 
   beforeUpload(file) {
@@ -39,26 +38,26 @@ class FileUpload extends React.Component {
 
   handlePreview = (file) => {
     this.setState({
-      previewImage: file.url || file.response.data.fileUrlList[0],
+      previewImage: file.url ?file.url: file.response.data.fileUrlList[0],
       previewVisible: true,
     });
   }
 
   onRemove = (file) => {
-    this.props.deleteImgFun(this.props.imgInputName,{name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
+    if(!this.props.deleteImgFun){
+      return false
+    }
+    this.props.deleteImgFun({name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
   }
 
   handleChange = ( {file, fileList} ) => {
     const _this = this;
 
     if (file.status === "uploading"){
-      console.log("图片正在上传....");
     }
 
     if (file.status === 'done') {
-      console.log("img",file.response.data.fileKey);
       _this.props.addImgFun({name:file.response.data.fileKey, url:file.response.data.fileUrlList[0]})
-      console.log("图片上传成功....");
     }
 
     this.setState({
@@ -69,11 +68,14 @@ class FileUpload extends React.Component {
 
 
   render() {
-    const {defaultFileList, previewVisible, previewImage, fileList} = this.state;
+
+    const { previewVisible, previewImage, fileList} = this.state;
+    const { defaultFileList } = this.props;
 
     return (
       <div>
         <Upload
+          key={defaultFileList}
           name="file"
           action="/crm/api/v1/uploadImg"
           headers={{'USER-TOKEN':session.get("token")}}

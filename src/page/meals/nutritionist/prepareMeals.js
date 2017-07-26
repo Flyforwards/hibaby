@@ -4,6 +4,7 @@ import './prepareMeals.scss'
 import { message, Button, Radio, Icon, Modal, Form, Row, Col, Input, Select, Spin } from 'antd';
 import LowModal from './lowModel'
 import HighModal from './highModel'
+import PermissionButton from '../../../common/PermissionButton';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
@@ -14,106 +15,6 @@ class PrepareMeals extends Component {
   constructor(props) {
     super(props)
     this.state = {};
-    //this.infoZero = [
-    //  {
-    //    dishesName: '菜一',
-    //    number: 1
-    //  }, {
-    //    dishesName: '菜二',
-    //    number: 2
-    //  }, {
-    //    dishesName: '菜三',
-    //    number: 3
-    //  }, {
-    //    dishesName: '菜四',
-    //    number: 4
-    //  }, {
-    //    dishesName: '菜五',
-    //    number: 5
-    //  }, {
-    //    dishesName: '菜六',
-    //    number: 6
-    //  }, {
-    //    dishesName: '菜七',
-    //    number: 7
-    //  }
-    //];
-    //this.infoOne = [
-    //  {
-    //    dishesName: '菜一',
-    //    number: 1
-    //  }, {
-    //    dishesName: '菜二',
-    //    number: 2
-    //  }, {
-    //    dishesName: '菜三',
-    //    number: 3
-    //  }, {
-    //    dishesName: '菜四',
-    //    number: 4
-    //  }
-    //];
-    //this.infoTwo = [
-    //  {
-    //    dishesName: '菜一',
-    //    number: 1
-    //  }
-    //]
-    //this.infoThr = [
-    //  {
-    //    dishesName: '菜一',
-    //    number: 1
-    //  }, {
-    //    dishesName: '菜二',
-    //    number: 2
-    //  }, {
-    //    dishesName: '菜三',
-    //    number: 3
-    //  }, {
-    //    dishesName: '菜四',
-    //    number: 4
-    //  }, {
-    //    dishesName: '菜五',
-    //    number: 5
-    //  }
-    //];
-    //this.infoFor = [
-    //  {
-    //    dishesName: '菜一',
-    //    number: 1
-    //  }, {
-    //    dishesName: '菜二',
-    //    number: 2
-    //  }
-    //];
-    //this.infoFiv = [
-    //  {
-    //    dishesName: '菜一',
-    //    number: 1
-    //  }, {
-    //    dishesName: '菜二',
-    //    number: 2
-    //  }, {
-    //    dishesName: '菜三',
-    //    number: 3
-    //  }, {
-    //    dishesName: '菜四',
-    //    number: 4
-    //  }, {
-    //    dishesName: '菜五',
-    //    number: 5
-    //  }
-    //];
-    //this.infoSix = [
-    //  {
-    //    dishesName: '菜一',
-    //    number: 1
-    //  }, {
-    //    dishesName: '菜二',
-    //    number: 2
-    //  }
-    //];
-
   }
 
   componentWillMount() {
@@ -281,9 +182,13 @@ class PrepareMeals extends Component {
                         })
                       }
                       <li>
-                        <Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
+                        <PermissionButton testKey='CUSTOMER_MENU_ADJUST' className="lastBtn"  onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>
                           编辑/添加
-                        </Button>
+                        </PermissionButton>
+
+                        {/*<Button className="lastBtn" onClick={v.week == '0' ? () => {this.showHighModal(v)} : () => {this.showLowModal(v)}}>*/}
+                          {/*编辑/添加*/}
+                        {/*</Button>*/}
                       </li>
                     </ul>
                   </div>

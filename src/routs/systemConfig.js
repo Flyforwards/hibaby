@@ -219,15 +219,82 @@ export default (app) => [
     },
   // 官网管理
   {
-    path: '/system/website-manage',
+    path: '/system/websiteHomePageManage',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/website'));
-        cb(null, require('page/system/website-manage/WebsiteBanner.js'))
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/webEndemic'));
+        cb(null, require('page/system/website-manage/websiteHomePageManage'))
       })
     }
   },
-  //添加图片
+  // 美研中心
+  {
+    path: '/system/BeautifulResearchCenterManage',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/website'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/babycare'));
+        cb(null, require('page/system/website-manage/BeautifulResearchCenterManage'))
+      })
+    }
+  },
+  // 活动咨询
+  {
+    path: '/system/ActivityConsult',
+    getComponent: (location, cb) => {
+
+      require.ensure([], (require) => {
+        registerModel(app,require('models/webCourse'));
+        registerModel(app, require('models/website'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/activityEnroll'));
+        registerModel(app,require('models/babycare'));
+        cb(null, require('page/system/website-manage/ActivityConsult'))
+      })
+    }
+  },
+  // 新妈分享
+  {
+    path: '/system/NewMotherShare',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/website'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/babycare'));
+        cb(null, require('page/system/website-manage/NewMotherShare'))
+      })
+    }
+  },
+  // 关于hiboby
+  {
+    path: '/system/AboutHiBobyManage',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app,require('models/WebJob'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        registerModel(app,require('models/babycare'));
+        registerModel(app, require('models/website'));
+        cb(null, require('page/system/website-manage/AboutHiBobyManage'))
+      })
+    }
+  },
+  //活动管理
+  {
+    path: '/system/websiteActManage',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/website'));
+        registerModel(app,require('models/babycare'));
+        registerModel(app,require('models/AllWebSiteManage'));
+        cb(null, require('page/system/website-manage/websiteActManage'))
+      })
+    }
+  },
+
+  //官网管理 ---添加banner图片
   {
     path: '/system/website-manage/add',
     getComponent: (location, cb) => {
@@ -238,6 +305,80 @@ export default (app) => [
     }
   },
 
+    //官网管理 --- 新增
+  {
+    path:'/system/website-manage/addExpert',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/website'));
+        cb(null,require('page/system/website-manage/addExpert.js'))
+      })
+    }
+  },
+
+  //官网管理 ---产前服务新增
+  {
+    path:'/system/website-manage/addbabycare',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/babycare'));
+        cb(null,require('page/system/website-manage/WebsiteAddBabyCare.js'))
+      })
+    }
+  },
+
+  //官网管理 ---添加妈妈课程
+  {
+    path: '/system/website-manage/addCourse',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/webCourse'));
+        cb(null, require('page/system/website-manage/WebCourseAdd.js'))
+      })
+    }
+  },
+
+  //官网管理---添加活动报名
+  {
+    path:'/system/website-manage/addActivityEnroll',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/activityEnroll'));
+        cb(null,require('page/system/website-manage/activityEnrollAdd.js'))
+      })
+    }
+  },
+
+  //官网管理---添加/修改招聘信息
+  {
+    path:'/system/website-manage/addJob',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/WebJob'));
+        cb(null,require('page/system/website-manage/WebJobAdd.js'))
+      })
+    }
+  },
+  //官网管理---地方中心管理
+  {
+    path:'/system/website-manage/endemic',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/webEndemic'));
+        cb(null,require('page/system/website-manage/WebEndemic.js'))
+      })
+    }
+  },
+  //官网管理---  新增/修改地方中心
+  {
+    path:'/system/website-manage/addEndemic',
+    getComponent:(location,cb) => {
+      require.ensure([],(require) => {
+        registerModel(app,require('models/webEndemic'));
+        cb(null,require('page/system/website-manage/WebEndemicAdd.js'))
+      })
+    }
+  },
     //404
     {
       path: '/404',

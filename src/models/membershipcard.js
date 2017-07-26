@@ -333,7 +333,9 @@ export default {
 
     //查询扣费记录
     *getFeeDuctionRecord({ payload:values }, { call,put,select }){
-      const customerId = queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const customerId = state.dataDetailId
+
       const value = {...values, customerId}
       const { data: { code, data ,page,size,total} } = yield call(cardService.getDeductionRecord, value);
       if ( code == 0) {
@@ -359,7 +361,8 @@ export default {
 
     //查看续费记录
     *getRenewRecord({ payload:values }, { call,put,select}){
-      const customerId=queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const customerId = state.dataDetailId
       const value = { ...values,customerId}
       const { data: { code, data ,page,size,total} } = yield call(cardService.getRenew, value);
       if ( code == 0) {
@@ -385,7 +388,8 @@ export default {
 
     //查看退费记录
     *getRefundRecord({ payload:values }, { call, put, select }){
-      const customerId =queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const customerId = state.dataDetailId
       const value = { ...values,customerId}
       const { data: { code, data ,page,size,total} } = yield call(cardService.getRefund, value);
       if ( code == 0) {
@@ -410,7 +414,8 @@ export default {
     },
     //查询客户会员卡信息
     *getCardInfo({ payload: values }, { call, put,select }) {
-      const dataId = queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const dataId = state.dataDetailId
       const value = {...values, dataId}
       const { data: { code, data,} } = yield call(cardService.getCustomerMembershipcard, value);
       if (code == 0) {
@@ -424,7 +429,8 @@ export default {
     },
     //查询余额信息
     *getBalanceInfo({ payload: values }, { call, put, select }) {
-      const dataId = queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const dataId = state.dataDetailId
       const value = {...values, dataId}
       const { data: { code, data,} } = yield call(cardService.getCustomerBalance, value);
       if (code == 0) {
@@ -452,7 +458,8 @@ export default {
 
     //获取商品信息
     *getGoodsList({ payload: values },{ call, put }){
-      const customerId = queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const customerId = state.dataDetailId
       const value = {...values, customerId}
       const { data: {code,data,err}} = yield call(cardService.getGoodsList,value);
       if(code == 0) {
@@ -466,7 +473,8 @@ export default {
     },
     //获取打印基础信息
     *getPrintBaseMsg({payload:values},{call,put}){
-      const customerId = queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const customerId = state.dataDetailId
       const value = {...values, customerId}
       const { data: { code,data}} = yield call(cardService.getPrintBaseMsg,value);
       if(code == 0){
@@ -520,7 +528,8 @@ export default {
 
     //获取账单打印信息
     *getPrintAccount({payload:values},{call,put}){
-      const customerId = queryURL('dataId')
+      const state = yield select(state => state.addCustomer);
+      const customerId = state.dataDetailId
       const value = {...values, customerId}
       const { data: { code,data}} = yield  call(cardService.getPrintAccountList,value);
       if(code == 0) {

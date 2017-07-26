@@ -4,7 +4,7 @@ import { connect } from 'dva'
 import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
 import '../../system/organization/AddChildNode.scss'
 import AlertModalFrom from 'common/AlertModalFrom'
-
+import _ from 'lodash';
 
 const createForm = Form.create
 const FormItem = Form.Item

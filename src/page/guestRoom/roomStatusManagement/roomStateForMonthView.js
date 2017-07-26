@@ -15,6 +15,8 @@ import {
   Popover,
   Spin
 } from 'antd'
+import PermissionButton from '../../../common/PermissionButton';
+
 
 const Option = Select.Option;
 
@@ -55,6 +57,7 @@ const timeToDate = (time) => {
   }
 };
 
+let messageShow = true
 
 const monthStateView = (props) => {
   const {dispatch,loading} = props;
@@ -79,12 +82,15 @@ const monthStateView = (props) => {
 
   document.ondrop = (event) => {
     event.preventDefault();
+
     if(dragUser.status == 6){
       return
     }
-    if((dragUser.isRepair == 1 )&& !dragUser.customerId){
+
+    if(dragUser.isRepair == 1 && dragUser.status == 0){
       return;
     }
+
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
@@ -109,10 +115,13 @@ const monthStateView = (props) => {
 
      dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
 
-    if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
-      message.error("无法移动到过去");
-      return;
+    if(dragUser.status !== 4){
+      if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
+        message.error("无法移动到过去");
+        return;
+      }
     }
+
 
 
     if(dragUser.startIndex == -1 && roomIndex){
@@ -122,8 +131,6 @@ const monthStateView = (props) => {
         }
       })
     }
-
-
 
     dispatch({
       type: 'roomStatusManagement/userDrop',
@@ -185,7 +192,7 @@ const monthStateView = (props) => {
       };
       const creatCheckbox = (month) => {
         return(
-          <Col span={4}><Checkbox  value={month}>{month}月</Checkbox></Col>
+          <Col key={month} span={4}><Checkbox  value={month}>{month}月</Checkbox></Col>
         )
       }
 
@@ -194,7 +201,7 @@ const monthStateView = (props) => {
       for(let i = 1 ;i<=12;i++){
         tempAry.push(creatCheckbox(i.toString()))
         if(i%6 == 0){
-          RowAry.push(<Row gutter={16} style={{height: "50%"}} type="flex" align="middle">{tempAry}</Row>)
+          RowAry.push(<Row key={'row'+i} gutter={16} style={{height: "50%"}} type="flex" align="middle">{tempAry}</Row>)
           tempAry = []
         }
       }
@@ -235,7 +242,7 @@ const monthStateView = (props) => {
           }
 
           <Col span={5} offset={1}>
-            <Button className="addBtn" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
+            <Button className="button-group-1" onClick={()=>{deleteBtnClickHandler(index)}}>删除</Button>
           </Col>
         </Row>
       );
@@ -260,7 +267,7 @@ const monthStateView = (props) => {
           }
 
           <Col span={5} offset={1}>
-            <Button className="addBtn" onClick={addBtnClickHandler}>添加</Button>
+            <Button className="button-group-1" onClick={addBtnClickHandler}>添加</Button>
           </Col>
         </Row>
         {
@@ -274,12 +281,8 @@ const monthStateView = (props) => {
   const renderQueryView = () => {
 
     const queryBtnClickHandler = () => {
-
-      dispatch({
-        type: 'roomStatusManagement/monthRoomList',
-        payload: {}
-      });
-
+      dispatch({type: 'roomStatusManagement/monthRoomList'});
+      dispatch({type: 'roomStatusManagement/netroomViewStateChange'});
     };
 
     const floorChange = (e) => {
@@ -309,7 +312,7 @@ const monthStateView = (props) => {
         </Col>
 
         <Col span={5} offset={1}>
-          <Button className="queryBtn" onClick={queryBtnClickHandler}>查询</Button>
+          <Button className="button-group-2" onClick={queryBtnClickHandler}>查询</Button>
         </Col>
       </Row>
     );
@@ -325,7 +328,7 @@ const monthStateView = (props) => {
         {
           statusExplain.map(item => {
             return (
-              <span>
+              <span key={item.name}>
                 <div style={{float: 'left'}}>{item.name}</div>
                 <div className="statusItem" style={{background: item.color}}/>
               </span>
@@ -432,6 +435,11 @@ const monthStateView = (props) => {
         });
 
 
+        const messageOnClose = (e)=>{
+          messageShow = true
+        }
+
+
         const userBoxClickHandler = (e) => {
           let userBoxes = document.querySelectorAll(".userBox");
 
@@ -455,14 +463,20 @@ const monthStateView = (props) => {
             return;
           }
 
+
+          if( e.target.dataset.isrepair == 1 && e.target.dataset.status == 0)
+          {
+            return
+          }
+
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4 || e.target.dataset.status == 6) {
             return;
           }
 
           let btn = document.createElement("div");
           btn.innerHTML = "确认入住";
-          btn.className = "userBoxConfirm";
+          btn.className = "userBoxConfirm button-group-1";
 
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -502,14 +516,19 @@ const monthStateView = (props) => {
             return;
           }
 
+          if( e.target.dataset.isrepair == 1 && e.target.dataset.status == 0)
+          {
+            return
+          }
+
           // 如果是已入住状态, 是不能再次确认入住和删除的
-          if (e.target.dataset.status == 4 || e.target.dataset.isRepair == 1 || e.target.dataset.status == 6) {
+          if (e.target.dataset.status == 4  || e.target.dataset.status == 6) {
             return;
           }
 
           let deleteBtn = document.createElement("div");
           deleteBtn.innerHTML = "取消预约";
-          deleteBtn.className = "userBoxConfirm";
+          deleteBtn.className = "userBoxConfirm button-group-1";
           e.target.appendChild(deleteBtn);
 
           deleteBtn.addEventListener("click", (e) => {
@@ -542,7 +561,7 @@ const monthStateView = (props) => {
           let pageX = e.pageX;
           let target = e.target.parentNode;
 
-          let targetWidth = target.offsetWidth;
+          let targetWidth =target? target.offsetWidth:0;
           let unit = 0;
           let oldStartIndex = parseInt(target.dataset.startIndex);
           let oldEndIndex = parseInt(target.dataset.endIndex);
@@ -550,7 +569,7 @@ const monthStateView = (props) => {
           let customerId = parseInt(target.dataset.customerId);
           let customerName = target.dataset.customerName;
           let status = target.dataset.status;
-          let isRepair = target.dataset.isRepair;
+          let isRepair = target.dataset.isrepair;
 
           if(status == 6){
             return
@@ -572,6 +591,23 @@ const monthStateView = (props) => {
           //   return;
           // }
 
+          var debounce = function (func, threshold, execAsap) {
+            var timeout;
+            return function debounced () {
+              var obj = this, args = arguments;
+              function delayed () {
+                if (!execAsap)
+                  func.apply(obj, args);
+                timeout = null;
+              };
+              if (timeout)
+                clearTimeout(timeout);
+              else if (execAsap)
+                func.apply(obj, args);
+              timeout = setTimeout(delayed, threshold || 100);
+            };
+          }
+
 
           document.onmousemove = (ee) => {
             let offsetX = ee.pageX - pageX;
@@ -592,6 +628,19 @@ const monthStateView = (props) => {
                 }
               } catch (e) {
                 return;
+              }
+            }
+            else if (tempUnit < 0) {
+              if(status == 4){
+                let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
+                  if(moment().isAfter(moment.unix(roomDate/1000),'day')){
+                    if(messageShow === true){
+                      console.log('嘻嘻')
+                      messageShow = false
+                      message.error("无法将出所日期移动到今天以前",3,messageOnClose)
+                    }
+                  return;
+                }
               }
             }
 
@@ -646,9 +695,10 @@ const monthStateView = (props) => {
         };
 
         const dragStart = (event, user) => {
+
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
-          console.log(user)
+
           event.target.classList.add("active");
 
           dispatch({
@@ -662,6 +712,7 @@ const monthStateView = (props) => {
                 endIndex: user.startIndex + user.dayCount - 1,
                 status: user.status,
                 startDate: user.startDate,
+                isRepair:user.isRepair,
                 endDate: parseInt(user.startDate) + (user.dayCount - 1) * 86400000,
                 roomIndex: roomIndex,
               },
@@ -679,7 +730,7 @@ const monthStateView = (props) => {
           + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
           + ')'}</div>
           result.push(
-            <Popover content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
+            <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
               <div className="userBox"
                    style={{
                      width: width,
@@ -695,12 +746,13 @@ const monthStateView = (props) => {
                    data-user-dayCount={users[i].dayCount}
                    data-start-date={users[i].startDate}
                    data-status={users[i].status}
-                   data-isRepair={users[i].isRepair}
+                   data-isrepair={users[i].isRepair}
                    onClick={userBoxClickHandler}
                    onDoubleClick={userBoxDbClickHandler}
                    onContextMenu={userBoxRightClickHandler}
               >
-                {users[i].customerName}
+                <span>{users[i].customerName}</span>
+
                 <a href="javascript:void(0)"
                    className="resizeBar"
                    title={users[i].dayCount + '天'}
@@ -751,7 +803,7 @@ const monthStateView = (props) => {
 
         for (let i = 1; i <= fiveDays; i++) {
           result.push(
-            <div className="fiveDayRuler" style={{
+            <div key={'fiveDayRuler'+i} className="fiveDayRuler" style={{
               width: 5 * UNIT_WIDTH + "px",
             }}>
               {i * 5}天
@@ -761,7 +813,7 @@ const monthStateView = (props) => {
 
         if (remainder) {
           result.push(
-            <div className="fiveDayRuler" style={{
+            <div key={'remainder'+i} className="fiveDayRuler" style={{
               width: remainder * UNIT_WIDTH + "px",
             }}>
             </div>
@@ -810,8 +862,8 @@ const monthStateView = (props) => {
                     <div className="number">
                       {room.roomNo}
                     </div>
-                    <div className="level">
-                      v{room.packageInfoLevels}
+                    <div style={{display:room.packageInfoLevels?'':'none'}} className="level">
+                      {room.packageInfoLevels?`v${room.packageInfoLevels}`:''}
                     </div>
                   </div>
                 </div>
@@ -852,8 +904,10 @@ const monthStateView = (props) => {
 
     return (
       <div className="bottomBar">
-        <Button className="oneKeyBtn" onClick={oneKeyClicked}>一键排房</Button>
-        <Button className="saveReserveBtn" onClick={saveReserveClickHandler}>保存</Button>
+        {/*<Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
+        <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>*/}
+        <PermissionButton testKey="ONE_KEY" className="button-group-1" onClick={oneKeyClicked}>一键排房</PermissionButton>
+        <PermissionButton testKey="MONTH_STATUS_SAVE" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
       </div>
     )
   };
@@ -962,7 +1016,8 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          <Button className="addCustomerBtn" onClick={addCustomer}>+ 添加客户</Button>
+          {/*<Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>*/}
+          <PermissionButton testKey="MONTH_CUSTOMER_ADD" className="button-group-1" onClick={addCustomer}>+ 添加客户</PermissionButton>
         </div>
       </div>
     )

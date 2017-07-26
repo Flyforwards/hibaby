@@ -10,7 +10,6 @@
         window.location.href='http://myqianlan.qiniudn.com/upgrade-your-browser.html?refer='+location.href;
     </script>
     <![endif]-->
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript">
         //动态引入JS文件
         var version1 = new Date().getTime();
@@ -18,51 +17,10 @@
         var CCIC2_TOOLBAR_URL = "http://agent.clink.cn";
         document.write("<script src='"+CCIC2_TOOLBAR_URL+"/jws/sourceCode/ccic2Toolbar.js?version="+version1+"' charset='UTF-8'><\/script>");
     </script>
-    <style>
-    .telephone-system-content{
-       border:1px solid #000; background-color:#FFF;
-       background-color: white;
-       z-index: 10;
-       width:1000px;
-       height:800px;
-       position:absolute;
-       left:50%;
-       top:50%;
-       margin-left:-500px;
-       margin-top:-400px;
-       display: none;
-    }
-    </style>
+
 
 </head>
 <body>
-
-<div class='telephone-system-content'>
-  <div style="position:absolute; width:100%; bottom:2px; ">
-      <table border="0" cellspacing="0" cellpadding="0" style="min-width:380px; margin:0;">
-          <td align="left" id="toolbarButton">
-            <input type="button" id="pause" class='system-button2' value="置忙"/>
-            <input type="button" id="online" class='system-button2' value="置闲"/>
-            <input type="button" id="answer" class='system-button2' value="接听"/>
-            <input type="button" id="unLink" class='system-button2' value="挂断"/>
-            <input type="button" id="refused"  class='system-button2' value="拒接"/>
-            <input type="button" id="hold" class='system-button2' value="保持"/>
-            <input type="button" id="unHold"  class="system-button3" value="保持接回"/>
-            <input type="button" id="consult" class='system-button2' value="咨询"/>
-            <input type="button" id="consultBack"  class="system-button3" value="咨询接回"/>
-            <input type="button" id="consultTransfer"  class="system-button3" value="咨询转接"/>
-            <input type="button" id="consultThreeway"  class="system-button3" value="咨询三方"/>
-            <input type="button" id="transfer"  class='system-button2' value="转移"/>
-            <input type="text"   id="phoneCallText" value="" maxlength="12" style="display:none;width:100px;height:28px;line-height:28px;font-family:verdana;border:solid 1px #ddd;vertical-align:top;margin-top:2px;"/>
-            <input type="button" id="phoneCallout"  class="system-button3" value="呼叫"/>
-            <input type="button" id="phoneCallCancel" class="system-button3" value="呼叫取消"/>
-
-          </td>
-        </tr>
-      </table>
-    </div>
-</div>
-
 
 <div id="root"></div>
 <% for (var asset in htmlWebpackPlugin.options.externalsAssets) { %>
@@ -103,7 +61,7 @@
     		orderCallbackCount = token.allCallBackCount;
     		window.executeAction('doQueueStatus');//获取队列数据
     	} else{
-    		alert("400电话 登录失败！" + token.msg);
+    	  sendCallBack({ type:'loginFailed', token: token })
     	}
     }
 
@@ -203,10 +161,9 @@
 
     }
 
-
    function sendCallBack(callback) {
       window.callback = callback
-      $('#bridging-btn').click();
+      document.getElementById(`bridging-btn`).click()
    }
 
 </script>

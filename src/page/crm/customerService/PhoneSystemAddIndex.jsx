@@ -66,22 +66,22 @@ class PhoneSystemAddIndex extends React.Component {
         <Card title = "添加客服信息:">
           <Form>
             <FormItem {...formItemLayout} label={"热线号码"}>
-              {getFieldDecorator('hotLine', {rules: [{ required: true, }],
+              {getFieldDecorator('hotLine', {rules: [{ required: true, message: '请填写热线号码!'}],
               })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"座席号"}>
-              {getFieldDecorator('cno', {rules: [{ required: true, }],
+              {getFieldDecorator('cno', {rules: [{ required: true, message: '请填写坐席号!'}],
               })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"密码"}>
-              {getFieldDecorator('pwd', {rules: [{ required: true, }],
+              {getFieldDecorator('pwd', {rules: [{ required: true, message: '请填写密码'}],
               })(<Input/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"绑定电话"}>
-              {getFieldDecorator('bindTel', {rules: [{ required: true, }],
+              {getFieldDecorator('bindTel', {rules: [{ required: true, message: '请填写绑定电话!'}],
               })(<Input/>
               )}
             </FormItem>
@@ -103,7 +103,7 @@ class PhoneSystemAddIndex extends React.Component {
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={"绑定员工"}>
-              {getFieldDecorator('userId', {rules: [{ required: true, }],
+              {getFieldDecorator('userId', {rules: [{ required: true, message: '请选择绑定客服的员工!'}],
               })(
                 <Input readOnly/>
               )}

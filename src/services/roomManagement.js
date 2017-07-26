@@ -125,4 +125,9 @@ export function resideAddOrCut(values) {
     body: JSON.stringify(values),
   })
 }
-
+export function extendRoomUse(values) {
+  return request('/crm/api/v1/room/extendRoomUse', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

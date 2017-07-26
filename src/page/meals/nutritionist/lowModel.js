@@ -5,6 +5,8 @@ import { Button, Icon, Modal, Form, Input, Row, Col, message, Spin } from 'antd'
 const FormItem = Form.Item;
 import './prepareMeals.scss'
 import ChooseDishes from './chooseDishesModel'
+import PermissionButton from '../../../common/PermissionButton';
+
 
 class DynamicFieldSet extends Component {
   constructor(props) {
@@ -23,24 +25,48 @@ class DynamicFieldSet extends Component {
       type: "prepareMealsDinner/changeMenuInfoByType",
       payload: { dishes }
     });
-  }
-
-  add = (e) => {
-    const { form, menuInfoByType, dispatch } = this.props;
-    let { dishes } = menuInfoByType;
+  };
+  pushData = (num, dishes) => {
+    const { dispatch } = this.props;
     const length = dishes.length;
-
-
-    if (length < 7) {
+    if (length < num) {
       dishes.push({ isDel: true });
       dispatch({
         type: "prepareMealsDinner/changeMenuInfoByType",
         payload: { dishes }
       })
     } else {
-      message.error('菜品不能超过7道！')
+      message.error(`菜品不能超过${num}道!`)
     }
-  }
+  };
+  add = (e) => {
+    const { menuInfoByType } = this.props;
+    let { dishes } = menuInfoByType;
+
+    console.log(menuInfoByType, '??????')
+    switch (menuInfoByType.type) {
+      case 1:
+        this.pushData(7, dishes);
+        break;
+      case 2:
+        this.pushData(4, dishes);
+        break;
+      case 3:
+        this.pushData(6, dishes);
+        break;
+      case 4:
+        this.pushData(4, dishes);
+        break;
+      case 5:
+        this.pushData(6, dishes);
+        break;
+      case 6:
+        this.pushData(4, dishes);
+        break;
+      default:
+        this.pushData(7, dishes);
+    }
+  };
 
 
   handleSubmit = (e) => {
@@ -103,7 +129,7 @@ class DynamicFieldSet extends Component {
           {
             dishes.map((v, k) => {
               return (
-                <Col span={8} className="foodCol" key={v.dishesName&&v.dishesName + k}>
+                <Col span={8} className="foodCol" key={v.dishesName && v.dishesName + k}>
                   <FormItem label={`菜品${k + 1}`} {...formItemLayout} >
                     {getFieldDecorator(`name-${k}`, {
                       initialValue: v.dishesName && v.dishesName,
@@ -135,12 +161,18 @@ class DynamicFieldSet extends Component {
           <Col span={15}/>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>
+              {/*<Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>*/}
+              <PermissionButton size="large"  testKey='CUSTOMER_MENU_ADJUST' className="addBtn"  onClick={this.add}>
+                添加菜品
+              </PermissionButton>
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <Button className="saveBtn" htmlType="submit" size="large">保存</Button>
+              {/*<Button className="saveBtn" htmlType="submit" size="large">保存</Button>*/}
+              <PermissionButton   testKey='CUSTOMER_MENU_ADJUST' className="saveBtn"  htmlType="submit" size="large">
+                保存
+              </PermissionButton>
             </FormItem>
           </Col>
           <Col span={3} className='btnCenter'>

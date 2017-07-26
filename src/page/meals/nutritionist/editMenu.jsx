@@ -7,6 +7,8 @@ import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import PrepareMeals from './prepareMeals.js';
 import { queryURL } from '../../../utils/index.js';
+import PermissionButton from '../../../common/PermissionButton';
+
 const Option = Select.Option;
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -55,14 +57,26 @@ class EditMenu extends React.Component {
     return (
       <div className="CustomerConents">
         <div className="button">
-          <Button  style={{
+
+          <PermissionButton testKey='CUSTOMER_MENU_EXPORT' style={{
             width: '15%',
             height: '40px',
             lineHeight: '40px',
             marginLeft:'40px',
             float:'right',
             backgroundColor: 'rgba(255, 102, 0, 1)'
-          }} onClick={this.onExport.bind(this)}>导出</Button>
+          }} onClick={this.onExport.bind(this)}>
+            导出
+          </PermissionButton>
+
+          {/*<Button  style={{*/}
+            {/*width: '15%',*/}
+            {/*height: '40px',*/}
+            {/*lineHeight: '40px',*/}
+            {/*marginLeft:'40px',*/}
+            {/*float:'right',*/}
+            {/*backgroundColor: 'rgba(255, 102, 0, 1)'*/}
+          {/*}} onClick={this.onExport.bind(this)}>导出</Button>*/}
           <Button  onClick={this.onBack.bind(this)} style={{
             width: '15%',
             height: '40px',

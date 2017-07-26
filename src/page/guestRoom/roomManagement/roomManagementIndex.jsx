@@ -6,6 +6,8 @@ import './roomManagementIndex.scss'
 import {Link,routerRedux} from 'react-router'
 import SearchBar from './SearchBar'
 import {Table,Modal} from 'antd'
+import PermissionLink from '../../../common/PermissionLink';
+
 const confirm = Modal.confirm;
 
 
@@ -49,8 +51,11 @@ function ResultsTable(props) {
             render: (text, record, index) => {
               return (
                 <div>
-                  <Link className="firstA" onClick={ ()=>{onLook(record)}}  > 查看 </Link>
-                  <Link className="firstB" onClick={ ()=>{onDelete(record)}}> 删除 </Link>
+                 {/* <Link className="firstA" onClick={ ()=>{onLook(record)}}  > 查看 </Link>
+                  <Link className="firstB" onClick={ ()=>{onDelete(record)}}> 删除 </Link>*/}
+                  <PermissionLink testKey='ROOM_DETAIL' className="firstA" onClick={ ()=>{onLook(record)} }> 查看 </PermissionLink>
+                  <PermissionLink testKey='ROOM_DELETE' className="firstB" onClick={ ()=>{onDelete(record)} }> 删除 </PermissionLink>
+
                 </div>
               );
             },
