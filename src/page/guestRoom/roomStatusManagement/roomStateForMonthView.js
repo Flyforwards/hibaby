@@ -479,7 +479,8 @@ const monthStateView = (props) => {
           btn.className = "userBoxConfirm button-group-1";
 
           btn.addEventListener("click", (e) => {
-            const flag =  props.permissionAlias.contains("MONTH_CUSTOMER_ADD");
+            //确认入住权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
+            const flag =  props.permissionAlias.contains("MONTH_QRRZ");
             if(!flag){
               message.warn("该用户无权限");
               return false;
@@ -538,7 +539,8 @@ const monthStateView = (props) => {
           e.target.appendChild(deleteBtn);
 
           deleteBtn.addEventListener("click", (e) => {
-            const flag = props.permissionAlias.contains("MONTH_CUSTOMER_QX");
+            //取消预约权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
+            const flag = props.permissionAlias.contains("MONTH_QXRZ");
             if(!flag){
               message.warn("该用户无权限");
               return false;
@@ -567,10 +569,8 @@ const monthStateView = (props) => {
          * @param e
          */
         const resizeBarMouseDownHandler = (e) => {
-          console.log("-----------------------")
-          console.log("yjj============>",props)
           //入住调整权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
-          const flag = props.permissionAlias.contains("MONTH_STATUS_SAVE");
+          const flag = props.permissionAlias.contains("MONTH_RZTZ");
           if(!flag){
             message.warn("该用户无权限");
             return false;
@@ -929,7 +929,7 @@ const monthStateView = (props) => {
     return (
       <div className="bottomBar">
         <PermissionButton testKey="ONE_KEY" className="button-group-1" onClick={oneKeyClicked}>一键排房</PermissionButton>
-        <PermissionButton testKey="MONTH_CUSTOMER_ADD" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
+        <PermissionButton testKey="MONTH_YYRZ" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
       </div>
     )
   };
