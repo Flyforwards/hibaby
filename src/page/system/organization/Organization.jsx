@@ -157,7 +157,8 @@ class Organization extends React.Component {
       tissueProperty: endemic.tissueProperty,
       statusType: false,
       default: null,
-      current: 1
+      current: 1,
+      disabled_add: false // 是否禁用添加按钮
     }
     this.query = false
   }
@@ -282,10 +283,11 @@ class Organization extends React.Component {
     })
   }
 
-  ObtainOrganization(nodeid, tissueProperty) {
+  ObtainOrganization(nodeid, tissueProperty, disabled_add) {
     this.setState({
       nodeid: nodeid,
-      tissueProperty: tissueProperty
+      tissueProperty: tissueProperty,
+      disabled_add: disabled_add
     })
   }
 
@@ -386,9 +388,9 @@ class Organization extends React.Component {
                 </Link>
                 {this.state.tissueProperty == 3 ?
                   <Link to={{ pathname: '/system/organization/addUser', query: { nodeid: this.state.nodeid } }}>
-                    <Button className="button-group-1" disabled={!add}>新增员工</Button></Link> :
+                    <Button className="button-group-1" disabled={!add || this.state.disabled_add}>新增员工</Button></Link> :
                   <Link to="/system/organization/addUser">
-                    <Button className='button-group-1' disabled={!add}>新增员工</Button>
+                    <Button className='button-group-1' disabled={!add || this.state.disabled_add}>新增员工</Button>
                   </Link>
                 }
               </div>

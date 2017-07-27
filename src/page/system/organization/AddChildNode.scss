@@ -6,25 +6,7 @@
 		text-align: center;
 		background-color: rgba(228, 228, 228, 1);
 	}
-  .ant-form-item{
-    .ant-form-item-label{
-      line-height: 40px;
-    }
-    height: 40px;
-    margin-bottom: 5px;
-    .ant-input[disabled]{
-      height:40px;
-    }
-    .ant-select-selection--single{
-      height:40px;
-    }
-  }
-  .formText{
-    height:50px;
-    .ant-form-item-label{
-      line-height: 50px;
-    }
-  }
+
   .leaderNode{
     height: 50px;
     .nodeLeaderIput{
@@ -45,6 +27,12 @@
         margin:5px 0;
   	}
   }
+
+  .right-button {
+    position: absolute;
+    top: 0;
+    margin-left: 10px;
+  }
   .nodeInput{
     height:40px;
   }
@@ -63,77 +51,10 @@
 		text-align: center;
 		background-color: rgba(228, 228, 228, 1);
 	}
-	.edit{
-		background-color: rgba(22, 155, 213, 1);
-		border: 0;
-	}
-	.delBtn{
-		background-color:#b67233;
-		border-color:#b67233;
-	}
-	.nodeLeaderIput{
-		width:70%;
-		margin-left: 42px;
-	}
-  .nodeLeader{
-      width: 80px;
-      height: 35px;
-		  margin-right: 92px;
-	    float: right;
-	    margin-top: -44px;
-	}
-  .selBtn{
-    width:80px;
-    height:35px;
-    background:#693d20;
-    border-color:#693d20;
-    color: #fff;
-  }
 
-	.SaveBtn{
-		float:right;
-		margin-right:40px;
-		margin-top:10px;
-	}
-  .BackBtn{
-    float: right;
-    margin-right:10px;
-  }
-  .ant-modal-body{
-    overflow: hidden;
-    button{
-  		width: 80px;
-      margin-top: 10px;
-      float: left;
-      margin-left:10px;
-  		.ant-btn{
-  			width: 80px;
-  			float: left;
-        font:14px "微软雅黑";
-  		}
-  	}
-    .BackBtn{
-      float: left;
-      background:#693d20;
-      border-color:#693d20;
-      color:#fff;
-      margin-right: 0;
-      margin-left: 300px;
-    }
-    .delBtn{
-      float: left;
-      background: #f75555;
-      border-color: #f75555;
-      color:#fff;
-    }
-    .SaveBtn{
-      float: left;
-      background: #eb7c34;
-      border-color: #eb7c34;
-      color:#fff;
-    }
-  }
+
 }
+
 .Disabled{
 	.ant-modal-header{
 		text-align: center;
