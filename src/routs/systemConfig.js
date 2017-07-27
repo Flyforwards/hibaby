@@ -277,6 +277,7 @@ export default (app) => [
         registerModel(app,require('models/AllWebSiteManage'));
         registerModel(app,require('models/babycare'));
         registerModel(app, require('models/website'));
+        registerModel(app, require('models/activityEnroll'));
         cb(null, require('page/system/website-manage/AboutHiBobyManage'))
       })
     }
