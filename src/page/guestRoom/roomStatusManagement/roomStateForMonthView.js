@@ -890,6 +890,10 @@ const monthStateView = (props) => {
 
     const saveReserveClickHandler = () => {
       dispatch({
+        type: 'roomStatusManagement/changeModalH',
+        payload: true
+      });
+      dispatch({
         type: 'roomStatusManagement/monthRoomUpdate',
         payload: {}
       });
@@ -904,8 +908,6 @@ const monthStateView = (props) => {
 
     return (
       <div className="bottomBar">
-        {/*<Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
-        <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>*/}
         <PermissionButton testKey="ONE_KEY" className="button-group-1" onClick={oneKeyClicked}>一键排房</PermissionButton>
         <PermissionButton testKey="MONTH_STATUS_SAVE" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
       </div>
