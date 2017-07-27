@@ -17,10 +17,10 @@
 		margin-top: -6px;
 	}
 	.basicInformationForm{
-		width:1280px;
-		background-color: #fff;
-		margin-left:10px;
-		margin-top:-10px;
+    width:1280px;
+    height:160px;
+    background-color: #fff;
+    margin: 0px 0px 10px 10px;
 		.ant-form-item-label{
 			margin-right:10px;
 		}
@@ -99,7 +99,6 @@
 		line-height:40px;
 		font-size:14px;
 		color:#fff;
-		margin: 10px 0px 10px 10px;
 		text-indent:20px;
 		background-color: rgba(102, 102, 102, 1);
 	}
@@ -108,7 +107,6 @@
 		width:1280px;
 		background-color: #fff;
 		margin-left:10px;
-		margin-top: -10px;
 		padding-left: 60px;
 		.ant-form-item-label{
 			margin-right:10px;
@@ -173,7 +171,6 @@
 		background-color: #fff;
 		margin-left:10px;
 		margin-bottom: 20px;
-		margin-top:-10px;
 		.ant-form-item-label{
 			margin-right:10px;
 		}
@@ -230,7 +227,6 @@
 		line-height:40px;
 		font-size:14px;
 		color:#fff;
-		margin: 10px 0px 0px 10px;
 		text-indent:20px;
 		background-color: rgba(102, 102, 102, 1);
 	}
@@ -303,7 +299,6 @@
 		}
 	}
 	.basicInformationContent{
-		padding-bottom: 10px;
 		.img{
 			width:100px;
 			height:100px;
@@ -319,9 +314,9 @@
 			margin-top:30px;
 			margin-bottom:20px;
 			font-weight: 400;
-		    font-style: normal;
-		    font-size: 14px;
-		    color: rgba(0, 0, 0, 0.8);
+      font-style: normal;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.8);
 			span{
 				display: inline-block;
 			}
