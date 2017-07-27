@@ -466,7 +466,7 @@ function SearchForm(props){
     return (
       <Col span={8}>
         <FormItem key={dict.subMitStr} {...formItemLayout} label={dict.title}>
-          {getFieldDecorator(dict.subMitStr,{ rules: [{ required:true,  message: `请输入${dict.title || '此项'}!`}],})
+          {getFieldDecorator(dict.subMitStr,{ rules: [{ required:(dict.subMitStr === 'packageInfoId'?false: true),  message: `请输入${dict.title || '此项'}!`}],})
           (
             dict.componentStyle  === 'select'?
               (dict.subMitStr === 'packageInfoId' ?

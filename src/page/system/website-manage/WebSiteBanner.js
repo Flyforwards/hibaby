@@ -21,7 +21,7 @@ class WebSiteBanner extends React.Component{
         title:"ID",
         dataIndex:'id',
         key:'id',
-        width:"20%",
+        width:"10%",
       },{
         title: '模块名',
         dataIndex: 'type',
@@ -39,7 +39,13 @@ class WebSiteBanner extends React.Component{
         render:(text,record,index) =>{
           return new Date(text).format("yyyy-MM-dd");
         }
-      }, {
+      },
+        {
+          title: '图片大小',
+          dataIndex: 'imgSize',
+          key: 'imgSize',
+          width: '10%',
+        }, {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record, index) => {

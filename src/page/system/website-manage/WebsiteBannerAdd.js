@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import './WebsiteBanner.scss';
 import { Card,Input,Button ,Form,Col,Row,Select,Icon,message } from 'antd';
+import { WebsiteClass } from './moduleClass';
 import FileUpload from './fileUpload';
 import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
@@ -68,20 +69,15 @@ class WebsiteBannerAdd extends React.Component {
       }
     })
   }
-  //验证图片
-  // checkImg = (rule, value, callback) => {
-  //   console.log("ssss",value)
-  //   if (value.length >=1) {
-  //     callback();
-  //     return;
-  //   }else{
-  //     callback('请上传文件');
-  //   }
-  //
-  // }
+
   render(){
     const { disabledBtn ,ontListType,addImglist,selectAble,imgSize} = this.props;
     const { getFieldDecorator } = this.props.form;
+
+    let Options = Object.keys(WebsiteClass).map(key=>{
+      return <Option key={key}>{WebsiteClass[key]}</Option>
+    })
+
     const formItemLayout = {
       labelCol:{ span: 6 },
       wrapperCol:{ span:17}
@@ -93,7 +89,6 @@ class WebsiteBannerAdd extends React.Component {
         size2 = true
       }
     }
-
 
     return (
       <Card className="websitebannerAdd" style={{overflow:'hidden'}}>
@@ -113,14 +108,7 @@ class WebsiteBannerAdd extends React.Component {
                 filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 disabled={selectAble}
               >
-                <Option key="1">首页</Option>
-                <Option key="2">hibaby服务</Option>
-                <Option key="3">美研中心</Option>
-                <Option key="4">活动咨询</Option>
-                <Option key="5">新妈分享</Option>
-                <Option key="6">关于Hibaby</Option>
-                <Option key="12">3D实景</Option>
-                <Option key="11">精致服务</Option>
+                {Options}
               </Select>
             )}
           </FormItem>

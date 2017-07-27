@@ -9,6 +9,8 @@ const WebsiteClass = {
   "4":"活动咨询",
   "5":"新妈分享",
   "6":"关于Hibaby",
+  '11':'精致服务',
+  '12':'3D实景'
 }
 
 module.exports={

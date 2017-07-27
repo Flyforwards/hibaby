@@ -23,7 +23,7 @@ class WebEndemic extends React.Component{
       title:"ID",
       dataIndex:'id',
       key:'id',
-      width:"20%",
+      width:"10%",
     },{
       title: '地方中心名称',
       dataIndex: 'endemicName',
@@ -37,6 +37,11 @@ class WebEndemic extends React.Component{
       render:(text,record,index) =><img width={180} height={180} src={text} />
     },
       {
+        title: '图片大小',
+        dataIndex: 'img1Size',
+        key: 'img1Size',
+        width: '10%',
+      },{
       title:'创建时间',
       dataIndex:'createTime',
       key:'createTime',

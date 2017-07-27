@@ -39,7 +39,8 @@ class WebsiteBabyService extends React.Component{
           });
           return str;
         }
-      },{
+      },
+        {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record, index) => {
@@ -53,7 +54,7 @@ class WebsiteBabyService extends React.Component{
           </span>
           )
         },
-        width: '30%'
+        width: '20%'
       }];
     this.dataSorce=[];
   }
@@ -213,7 +214,19 @@ class WebsiteBabyService extends React.Component{
       dataIndex: 'summary',
       key: 'summary',
       width: '20%',
-    }, {
+    },
+      {
+        title: '图1大小',
+        dataIndex: 'img1Size',
+        key: 'img1Size',
+        width: '5%',
+      },
+      {
+        title: '图2大小',
+        dataIndex: 'img2Size',
+        key: 'img2Size',
+        width: '5%',
+      },{
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
@@ -227,7 +240,7 @@ class WebsiteBabyService extends React.Component{
           </span>
         )
       },
-      width: '30%'
+      width: '20%'
     }];
 
     const ListTableProps = {
