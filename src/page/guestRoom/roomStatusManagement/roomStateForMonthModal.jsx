@@ -20,7 +20,6 @@ import {
   Spin
 } from 'antd'
 import {routerRedux} from 'dva/router';
-import PermissionButton from '../../../common/PermissionButton';
 
 const { MonthPicker } = DatePicker;
 
@@ -298,8 +297,7 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem,perm
     selectCustomerFun(record,false);
 
   }
-  //验证用户是否具备取消入住的权限 add by yangjj 2017-07-26 19:00
-  const customerCancel = permissionAlias.contains("MONTH_CUSTOMER_QX");
+
   let tags = [];
   if(selectItem){
 
@@ -308,25 +306,18 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem,perm
 
       if(!dict.change){
         let flag = !disabled(dict);
-        if(!customerCancel){//无权限
-          flag = false
-        }
         tags.push(<Tag key={dict.customerId || dict.id} closable={flag} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
 
       }
     }
   }
 
-  //验证用户是否有权限，true：有权限，则可以选择客户，false:无权限，不可选择客户 add by yangjj 2017-07-26 18:50
-  const rowSelectFlag =  permissionAlias.contains("MONTH_CUSTOMER_ADD");
-
   return(
     <Card bodyStyle={{padding:'10px'}} title="预约客户">
       <Card bodyStyle={{padding:'10px', paddingTop:0}} >
         {tags}
       </Card>
-      {/*<Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>*/}
-      {rowSelectFlag?<Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>:<Table className="CustomerTable"  {...tableProps}/>}
+      <Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
     </Card>
   )
 
@@ -406,7 +397,7 @@ class addCustomer extends React.Component {
         onCancel={this.handleCancel.bind(this)}
         footer={[
           <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
-          <PermissionButton testKey="MONTH_CUSTOMER_SAVE" className='button-group-bottom-2' onClick={this.handleOk.bind(this)}> 确定</PermissionButton>
+          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}> 确定</Button>
         ]}
 
       >
@@ -664,10 +655,8 @@ function RowHousesWay(props) {
       ]}
     >
       <h3>请选择此客户的排房方式</h3>
-      {/*<Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</Button>
-      <Button type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</Button>*/}
-      <PermissionButton testKey="MONTH_HANDLER_HOUSES" type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</PermissionButton>
-      <PermissionButton testKey="MONTH_AUTO_HOUSES" type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</PermissionButton>
+      <Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</Button>
     </Modal>
   )
 }

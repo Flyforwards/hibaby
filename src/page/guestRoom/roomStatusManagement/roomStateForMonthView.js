@@ -479,6 +479,12 @@ const monthStateView = (props) => {
           btn.className = "userBoxConfirm button-group-1";
 
           btn.addEventListener("click", (e) => {
+            const flag =  props.permissionAlias.contains("MONTH_CUSTOMER_ADD");
+            if(!flag){
+              message.warn("该用户无权限");
+              return false;
+            }
+
             e.stopPropagation();
 
             let parentNode = e.target.parentNode;
@@ -532,6 +538,12 @@ const monthStateView = (props) => {
           e.target.appendChild(deleteBtn);
 
           deleteBtn.addEventListener("click", (e) => {
+            const flag = props.permissionAlias.contains("MONTH_CUSTOMER_QX");
+            if(!flag){
+              message.warn("该用户无权限");
+              return false;
+            }
+
             e.stopPropagation();
             let parentNode = e.target.parentNode;
             dispatch({
@@ -555,6 +567,14 @@ const monthStateView = (props) => {
          * @param e
          */
         const resizeBarMouseDownHandler = (e) => {
+          console.log("-----------------------")
+          console.log("yjj============>",props)
+          //入住调整权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
+          const flag = props.permissionAlias.contains("MONTH_STATUS_SAVE");
+          if(!flag){
+            message.warn("该用户无权限");
+            return false;
+          }
           e.preventDefault();
           e.stopPropagation();
 
@@ -907,7 +927,7 @@ const monthStateView = (props) => {
         {/*<Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
         <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>*/}
         <PermissionButton testKey="ONE_KEY" className="button-group-1" onClick={oneKeyClicked}>一键排房</PermissionButton>
-        <PermissionButton testKey="MONTH_STATUS_SAVE" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
+        <PermissionButton testKey="MONTH_CUSTOMER_ADD" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
       </div>
     )
   };
@@ -1016,8 +1036,7 @@ const monthStateView = (props) => {
         }
 
         <div style={{textAlign: 'center'}}>
-          {/*<Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>*/}
-          <PermissionButton testKey="MONTH_CUSTOMER_ADD" className="button-group-1" onClick={addCustomer}>+ 添加客户</PermissionButton>
+          <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
         </div>
       </div>
     )
