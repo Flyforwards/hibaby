@@ -20,6 +20,7 @@ class CardModal extends Component {
     const _this=this;
     this.state={
       showVisible:false,
+      upgeadeValue:false,
     }
 
   }
@@ -52,10 +53,17 @@ class CardModal extends Component {
     form.validateFields((err, values) => {
       console.log('cardinfo>>', values);
       if (!err) {
-        dispatch({
-          type: 'card/saveCard',
-          payload:{  ...values }
-        })
+        if(this.state.upgeadeValue){
+          dispatch({
+            type: 'card/saveCard',
+            payload:{  ...values,upgrade:0 }
+          })
+        }else{
+          dispatch({
+            type: 'card/saveCard',
+            payload:{  ...values }
+          })
+        }
       }
     })
   }
@@ -90,13 +98,15 @@ class CardModal extends Component {
     if(e.target.value == 1){
       this.setState({
        showVisible:true,
+        upgeadeValue:false,
       });
     }else if(e.target.value == 2) {
-      // this.props.form.setFieldsValue({"upgrade":0})
+     // this.props.form.setFieldsValue({"upgrade":0})
       // this.props.form.setFieldsValue({"level":1})
       this.props.form.getFieldDecorator('upgrade', {initialValue: 0});
       this.setState({
         showVisible:false,
+        upgeadeValue:true,
       });
     }
 
@@ -225,10 +235,10 @@ class CardModal extends Component {
               <Col span = { 16 }>
               </Col>
               <Col span = { 4 }>
-                <Link to="/crm/card"><Button className="BackBtn" >返回</Button></Link>
+                <Link to="/crm/card"><Button className="BackBtn button-group-bottom-1" >返回</Button></Link>
               </Col>
               <Col span = { 4 }>
-                <Button className="SaveBtn"  onClick={this.handleSubmit.bind(this)}>保存</Button>
+                <Button className="SaveBtn button-group-bottom-2"  onClick={this.handleSubmit.bind(this)}>保存</Button>
               </Col>
             </Row>
           </Form>
