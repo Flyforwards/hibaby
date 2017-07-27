@@ -90,31 +90,16 @@ class ViewTheInformationed extends React.Component {
     render() {
       let USER = []
       let SEX = []
-      let roles = []
       let entrys = []
       let time = null
       let JobInformation = []
-      let identifier =null
       let selectData = local.get("rolSelectData")
-      const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+      let identifier =null
       if(this.props.userID != null){
          USER = this.props.userID
          SEX = USER.sex == 0?"男":"女"
          entrys = USER.entrys
-        USER.entrys.map((item)=>{
-          if(item.type == 0){
-            identifier = item.identifier
-          }
-          item.roles.map((data)=>{
-            selectData.map((list)=>{
-              if(data.roleId == list.id){
-              roles.push(list.name+"  ")
-              }
-            })
-          })
-         })
-         const set = new Set(roles);
-         let temp = [...set]
+
          let lendata = USER.entrys.length
          for(var i=0;i<lendata;i++){
            let endemicName = null
@@ -142,6 +127,21 @@ class ViewTheInformationed extends React.Component {
               }
             })
            }
+           let roles = []
+           const entry = USER.entrys[i]
+           if (entry.type == 0) {
+             identifier = entry.identifier;
+           }
+           entry.roles.map((data)=>{
+             selectData.map((list)=>{
+               if(data.roleId == list.id){
+                 roles.push(list.name+"  ")
+               }
+             })
+           })
+
+           const set = new Set(roles);
+           let temp = [...set]
             JobInformation.push(<div key={i.toString()}>
                 <div className="entryInformation">入职信息{i}</div>
                 <div className="entryInformationContent">
@@ -172,6 +172,7 @@ class ViewTheInformationed extends React.Component {
       const add_position = !this.props.permissionAlias.contains("POSITION_ADD");
       let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
       let edit = !this.props.permissionAlias.contains('EMPLOYEE_EDIT');
+      console.log(USER)
       return(
         <div className="view-info">
           <div className="basicInformation">基本信息</div>

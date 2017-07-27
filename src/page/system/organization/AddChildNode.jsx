@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,message} from 'antd'
+import { Modal, Form, Input, Select, Icon, Button} from 'antd'
 import './AddChildNode.scss'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from '../../../common/util/storage.js'
@@ -9,72 +9,49 @@ import _ from 'lodash'
 
 const createForm = Form.create
 const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
+
 @createForm()
 class AddChildNodeed extends Component {
     constructor(props) {
-        super(props)
-        this.state = {
-          visible:false,
-          TableData:null,
-          NodeDisplay:"none"
-        }
+      super(props)
+      this.state = {
+        visible:false,
+        TableData:null
+      }
     }
     handleCancel() {
-       this.setState({
-          TableData:"",
-          NodeDisplay:"none"
-        })
+      this.setState({
+        TableData:null
+      })
       this.props.onCancel()
     }
-    handleOk() {
-        const fields = this.props.form.getFieldsValue();
-        if(fields.localCenter){
-          if(fields.fullName){
-            if(fields.referredTo){
-              if(fields.englishName){
-                this.props.dispatch({
-                    type: 'organization/saveDepartment',
-                    payload: {
-                      abbreviation: fields.referredTo,
-                      englishName: fields.englishName,
-                      leaderId: this.state.TableData?this.state.TableData.id:null,
-                      leaderName: this.state.TableData?this.state.TableData.name:null,
-                      name: fields.fullName,
-                      parentId:this.props.ID,
-                      tissueProperty: fields.localCenter
-                    }
-                })
-                 this.props.onCancel()
-              }else{
-              message.warning("请输入节点的英文信息");
-              }
-
-            }else{
-              message.warning("请输入节点的简称信息");
+    handleOk(e) {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          this.props.dispatch({
+            type: 'organization/saveDepartment',
+            payload: {
+              abbreviation: values.abbreviation,
+              englishName: values.englishName,
+              leaderId: this.state.TableData?this.state.TableData.id:null,
+              leaderName: this.state.TableData?this.state.TableData.name:null,
+              name: values.fullName,
+              parentId: this.props.ID,
+              tissueProperty: values.tissueProperty
             }
-
-          }else{
-            message.warning("请输入节点的全称信息");
-          }
-
-        }else{
-          message.warning("请输入节点的组织性质");
+          })
+          this.handleCancel()
         }
-        this.props.dispatch({
-            type: 'organization/getDepartmentNodes',
-            payload: { }
-        });
-        this.setState({
-          TableData:"",
-          NodeDisplay:"block"
-        })
-    }
-    checkbox() {
-        //console.log("checkbox")
+        // this.props.dispatch({
+        //   type: 'organization/getDepartmentNodes',
+        //   payload: { }
+        // });
+      })
 
     }
+
     handleAfterClose() {
         this.props.form.resetFields()
     }
@@ -95,10 +72,8 @@ class AddChildNodeed extends Component {
     directLeader = ()=>{
       let endemic  = session.get("endemic")
       this.setState({
-        visible:true,
-        NodeDisplay:"block"
+        visible:true
       })
-    //  console.log("endemic",endemic.tissueProperty)
       this.props.dispatch({
         type: 'organization/getLeagerDepartmentNodes',
         payload: {
@@ -119,9 +94,11 @@ class AddChildNodeed extends Component {
             }
         }, 1000)
     }
+
+
     render() {
         const {visible, form, confirmLoading} = this.props
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator } = form;
         let localCenterData = []
         const formItemLayout = {
           labelCol: {
@@ -131,6 +108,16 @@ class AddChildNodeed extends Component {
           wrapperCol: {
             xs: { span: 24 },
             sm: { span: 14 },
+          },
+        };
+        const bottomItemLayout = {
+          labelCol: {
+            xs: { span: 24 },
+            sm: { span: 6 },
+          },
+          wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 12 },
           },
         };
         if(this.props.TissueProperty != null){
@@ -158,24 +145,24 @@ class AddChildNodeed extends Component {
                 width={ 600 }
             >
             <div className="AddChildNode">
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleOk.bind(this)}>
                     <FormItem
                      {...formItemLayout}
                       label="ID"
                     >
                       {getFieldDecorator('id', {
                         initialValue:this.props.ID,
-                        rules: [],
+                        rules: [{ required: true}],
                       })(
-                        <Input disabled={ true }/>
+                        <Input readOnly={ true }/>
                       )}
                     </FormItem>
                     <FormItem
                      {...formItemLayout}
                       label="组织性质"
                     >
-                      {getFieldDecorator('localCenter', {
-                        rules: [],
+                      {getFieldDecorator('tissueProperty', {
+                        rules: [{ required: true, message: '请选择组织性质！'}],
                       })(
                         <Select>
                             {
@@ -184,63 +171,54 @@ class AddChildNodeed extends Component {
                         </Select>
                       )}
                     </FormItem>
-                    <FormItem className="formText"
+                    <FormItem
                      {...formItemLayout}
                       label="全称"
                     >
                       {getFieldDecorator('fullName', {
-                        rules: [{
-                          max: 100, message: '输入内容过长'
+                        rules: [{ required: true, message: '请输入全称！'},{
+                          max: 15, message: '全称不能太长！'
                         }],
                       })(
-                        <Input type="textarea" />
+                        <Input />
                       )}
                     </FormItem>
-                    <FormItem className="formText"
+                    <FormItem
                      {...formItemLayout}
                       label="简称"
                     >
-                      {getFieldDecorator('referredTo', {
-                        rules: [{
-                          max: 100, message: '输入内容过长'
+                      {getFieldDecorator('abbreviation', {
+                        rules: [{ required: true, message: '请输入简称！'},{
+                          max: 15, message: '简称不能太长！'
                         }],
                       })(
-                        <Input type="textarea" />
+                        <Input />
                       )}
                     </FormItem>
-                    <FormItem className="formText"
+                    <FormItem
                      {...formItemLayout}
                       label="英文名称"
                     >
                       {getFieldDecorator('englishName', {
-                        rules: [{
-                          max: 100, message: '输入内容过长'
+                        rules: [{ required: true, message: '请输入英文名称！'},{
+                          max: 15, message: '英文名称不能太长！'
                         }],
                       })(
-                        <Input type="textarea" />
+                        <Input />
                       )}
                     </FormItem>
-                    <div className="leaderNode">
                     <FormItem
-                     {...formItemLayout}
+                     {...bottomItemLayout}
                       label="节点负责人"
-                      className="nodeLeaderIput"
-                    >
-                      {getFieldDecorator('nodeLeaderIput', {
-                        initialValue:this.state.TableData?this.state.TableData.name:null
-                      })(
-                        <Input style={{display:this.state.NodeDisplay}} disabled = {true}/>
-                      )}
-                    </FormItem>
-                    <FormItem
-                    className="nodeLeader"
                     >
                       {getFieldDecorator('nodeLeader', {
+                        rules: [{ required: true, message: '请选择节点负责人！'}],
+                        initialValue:this.state.TableData?this.state.TableData.name:null
                       })(
-                        <Button className="selBtn" onClick={this.directLeader.bind(this)}>选择</Button>
+                        <Input readOnly = {true}/>
                       )}
+                      <Button className="right-button selBtn" onClick={this.directLeader.bind(this)}>选择</Button>
                     </FormItem>
-                    </div>
                 </Form>
                 <SelectTheNodeFrom
                  visible={ this.state.visible}
@@ -249,27 +227,11 @@ class AddChildNodeed extends Component {
                  headelReturnTabal= {this.headelReturnTabal.bind(this)}
                 />
             </div>
-            </Modal>
+          </Modal>
         )
     }
 }
 
-AddChildNode.propTypes = {}
-AddChildNode.defaultProps = {}
-function AddChildNode({
-  dispatch,
-  LeagerData
-}) {
-  return ( < div >
-    <AddChildNodeed dispatch = {
-      dispatch
-    }
-    LeagerData = {
-      LeagerData
-    }
-    /> </div >
-  )
-}
 function mapStateToProps(state) {
   const {
     LeagerData
@@ -277,6 +239,7 @@ function mapStateToProps(state) {
   return {
     loading: state.loading.models.organization,
     LeagerData
-    };
+  };
 }
+
 export default connect(mapStateToProps)(AddChildNodeed)

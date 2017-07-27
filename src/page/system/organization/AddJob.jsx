@@ -298,35 +298,7 @@ class AddJobed extends Component {
     }
 }
 
-AddJob.propTypes = {}
-AddJob.defaultProps = {}
-function AddJob({
-  dispatch,
-  data,
-  dataEndemicId,
-  dataId,
-  LeagerData,
-  code
-}) {
-  return ( < div >
-    <AddJobed dispatch = {
-      dispatch
-    }
-    data = {
-      data
-    }
-    dataEndemicId = {
-       dataEndemicId
-    }
-    dataId = {
-      dataId
-    }
-    LeagerData = {
-      LeagerData
-    }
-    /> </div >
-  )
-}
+
 function mapStateToProps(state) {
   const {
     data,

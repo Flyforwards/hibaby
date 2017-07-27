@@ -2,10 +2,10 @@
 
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import { Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
 import './AddChildNode.scss'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
-import {local, session} from '../../../common/util/storage.js'
+import { local, session} from '../../../common/util/storage.js'
 import NodeEdit from './NodeEdit.jsx'
 import PermissionButton from 'common/PermissionButton';
 import _ from 'lodash'
@@ -13,8 +13,8 @@ import _ from 'lodash'
 const createForm = Form.create
 const FormItem = Form.Item
 const endemic  = session.get("endemic")
-const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
+
 @createForm()
 class SeeDtailed extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class SeeDtailed extends Component {
         this.state = {
           visible:false,
           TableData:null,
-          display:"block",
+          display:"inline-block",
           NodeEditVisible:false
         }
     }
@@ -48,7 +48,7 @@ class SeeDtailed extends Component {
     componentDidMount() {
       this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
-    delet(id){
+    deleteNode(id){
       this.props.dispatch({
         type: 'organization/deleteDepartment',
           payload: {
@@ -57,7 +57,8 @@ class SeeDtailed extends Component {
       })
       this.props.onCancel()
     }
-    EditNode(node){
+
+    editNode(node){
       this.setState({
         NodeEditVisible: true
       })
@@ -102,7 +103,7 @@ class SeeDtailed extends Component {
       let Nodesdata = {}
       let tissueProperty = ""
       let tissuePropertyId = ""
-      let display = "block"
+      let display = 'inline-block'
       let dataIndex = this.props.dataIndex
       let AllTissueProperty= this.props.AllTissueProperty
       if(dataIndex !=null && AllTissueProperty !=null){
@@ -117,7 +118,7 @@ class SeeDtailed extends Component {
         Nodesdata = this.props.Nodesdata
       }
         if(this.props.ID == 1 || this.props.ID == 3){
-            display = "none"
+            display = 'none'
         }
         const {visible, form, confirmLoading} = this.props
         const { getFieldDecorator } = this.props.form;
@@ -131,6 +132,12 @@ class SeeDtailed extends Component {
             sm: { span: 14 },
           },
         };
+      const footer = (<div>
+          <Button onClick={this.ReturnLeader.bind(this)}>返回</Button>
+          <PermissionButton testKey='NODE_DELETE' onClick={this.deleteNode.bind(this,this.props.ID)} style={{display:display}}>删除</PermissionButton>
+          <PermissionButton testKey='NODE_EDIT'  onClick={this.editNode.bind(this,Nodesdata)}>编辑</PermissionButton>
+        </div>)
+
         return (
             <Modal
                 visible={visible}
@@ -144,6 +151,7 @@ class SeeDtailed extends Component {
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
                 maskClosable={!confirmLoading}
                 width={ 600 }
+                footer={ footer }
             >
             <div className="SeeChildNode">
                 <Form onSubmit={this.handleSubmit}>
@@ -155,7 +163,7 @@ class SeeDtailed extends Component {
                         initialValue:this.props.ID,
                         rules: [],
                       })(
-                        <Input disabled={ true }/>
+                        <Input readOnly={ true }/>
                       )}
                     </FormItem>
                     <FormItem
@@ -166,7 +174,7 @@ class SeeDtailed extends Component {
                         initialValue:tissueProperty,
                         rules: [],
                       })(
-                       <Input disabled={ true }/>
+                       <Input readOnly={ true }/>
                       )}
                     </FormItem>
                     <FormItem
@@ -177,7 +185,7 @@ class SeeDtailed extends Component {
                         initialValue:Nodesdata.name,
                         rules: [],
                       })(
-                        <Input disabled={true}/>
+                        <Input readOnly={true}/>
                       )}
                     </FormItem>
                     <FormItem
@@ -188,7 +196,7 @@ class SeeDtailed extends Component {
                         initialValue:Nodesdata.abbreviation,
                         rules: [],
                       })(
-                        <Input disabled={ true }/>
+                        <Input readOnly={ true }/>
                       )}
                     </FormItem>
                     <FormItem
@@ -199,7 +207,7 @@ class SeeDtailed extends Component {
                         initialValue:Nodesdata.englishName,
                         rules: [],
                       })(
-                        <Input disabled={ true }/>
+                        <Input readOnly={ true }/>
                       )}
                     </FormItem>
                     <FormItem
@@ -210,13 +218,11 @@ class SeeDtailed extends Component {
                         initialValue:Nodesdata.leaderName,
                         rules: [],
                       })(
-                        <Input disabled={ true }/>
+                        <Input readOnly={ true }/>
                       )}
                     </FormItem>
                 </Form>
-                 <Button  className="BackBtn" onClick={this.ReturnLeader.bind(this)}>返回</Button>
-                  <Button testKey='NODE_DELETE' className="delet delBtn" onClick={this.delet.bind(this,this.props.ID)} style={{display:display}}>删除</Button>
-                 <PermissionButton testKey='NODE_EDIT' className="SaveBtn" onClick={this.EditNode.bind(this,Nodesdata)}>编辑</PermissionButton>
+
 
                 <NodeEdit
                     visible={ this.state.NodeEditVisible }

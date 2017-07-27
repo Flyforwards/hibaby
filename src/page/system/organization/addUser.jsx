@@ -20,7 +20,7 @@ const { MonthPicker, RangePicker } = DatePicker;
 const department = local.get("department")
 let traversalDataId = []
 
-class AddUsered extends React.Component {
+class AddUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -190,10 +190,6 @@ class AddUsered extends React.Component {
       let endemic = session.get("endemic")
       let SelectData = local.get("rolSelectData")
       let NODEID = window.location.search.split("=")[1];
-      let departmentDisabled = false
-      if(NODEID){
-        departmentDisabled = true
-      }
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
 
       if(this.props.dataEndemicId != null){
@@ -287,7 +283,7 @@ class AddUsered extends React.Component {
             { getFieldDecorator("affiliatedDepartment",{
                initialValue:NODEID
             })(
-              <Select placeholder="请选择" onSelect={this.affiliatedDepartment.bind(this)} disabled = { departmentDisabled }>
+              <Select placeholder="请选择" onSelect={this.affiliatedDepartment.bind(this)}>
                 { traversalEndemicId }
               </Select>
             )}
@@ -414,33 +410,6 @@ class AddUsered extends React.Component {
   }
 }
 
-function AddUser({
-    dispatch,
-    data,
-    dataEndemicId,
-    dataId,
-    LeagerData,
-    code
-}) {
-  return ( <div>
-    <AddUsered dispatch = {
-      dispatch
-    }
-    data = {
-      data
-    }
-    dataEndemicId = {
-      dataEndemicId
-    }
-    dataId = {
-      dataId
-    }
-    LeagerData = {
-      LeagerData
-    }
-    /> </div>
-  )
-}
 function mapStateToProps(state) {
   const {
     data,
@@ -460,5 +429,5 @@ function mapStateToProps(state) {
   };
 }
 
-const addUser = Form.create()(AddUsered);
+const addUser = Form.create()(AddUser);
 export default connect(mapStateToProps)(addUser)

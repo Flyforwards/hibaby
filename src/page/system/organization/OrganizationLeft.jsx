@@ -20,7 +20,7 @@ const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 let plusEnter = false;
 
-class OrganizationLefted extends React.Component {
+class OrganizationLeft extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -35,6 +35,7 @@ class OrganizationLefted extends React.Component {
     }
     this.addDisplay = "block";
     this.nodes = null;
+    this.parentTissue = null;
     this.unfolded = null;
   }
 
@@ -60,20 +61,21 @@ class OrganizationLefted extends React.Component {
   onSelect(value, node) {
     this.addDisplay = "block"
     this.deleteDisplay = "block"
+    let is_head = false;
+    const endemic = session.get('endemic');
+    if (endemic && endemic.tissueProperty == 1 ) { // 是总部
+      is_head = true;
+    }
     if (value[0] != null) {
-      this.nodes = node.selectedNodes[0].props.dataIndex
-      // console.log("node节点",node.selectedNodes[0].key)
+
+      // 该节点组织性质
       let TissueProperty = node.selectedNodes[0].props.dataIndex
-      if (TissueProperty == 0) {
-        this.deleteDisplay = "none"
-      } else {
-        this.deleteDisplay = "block"
-      }
-      if (TissueProperty == 3) {
-        this.addDisplay = "none"
-      } else {
-        this.addDisplay = "block"
-      }
+      this.nodes = TissueProperty;
+      // 父节点组织性质
+      const parentTissue = node.selectedNodes[0].props.parentTissue
+      this.parentTissue = parentTissue;
+      this.changeNodeMenu(is_head, TissueProperty, parentTissue)
+
       if (node.selectedNodes[0].key != 1) {
         // console.log("value>>>>>",node.selectedNodes[0])
         if(node.selectedNodes[0].props.dataIndex != 3){
@@ -94,8 +96,17 @@ class OrganizationLefted extends React.Component {
             TissueProperty:node.selectedNodes[0].props.dataIndex
           })
         }
-        
-        this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex)
+
+        let disabled_add = false;
+        if (TissueProperty == 2 || (TissueProperty == 3 && parentTissue != 1)) {
+          disabled_add = true;
+        }
+
+        // 总部以外的子部门不回调回去
+        // if (is_head && parentTissue != 1) {
+        this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex, disabled_add)
+        // }
+
         this.props.statusType(false,1)
         // console.log("this.state.current",node.selectedNodes[0].props.dataIndex)
         if(node.selectedNodes[0].props.dataIndex != 0){
@@ -126,18 +137,50 @@ class OrganizationLefted extends React.Component {
         }
       })
     } else {
-      if (this.nodes == 0) {
+      this.changeNodeMenu(is_head, this.nodes, this.parentTissue)
+    }
+  }
+
+  changeNodeMenu(is_head, TissueProperty, parentTissue) {
+    // 总部可以看见所有节点，可以删除地方中心，不可更改除总部以外的地方中心。
+    if (is_head) {
+      // 凯贝姆节点
+      if (TissueProperty == 0) {
+        this.deleteDisplay = "none"
+        this.addDisplay = "block"
+      }
+      // 总部
+      if (TissueProperty == 1) {
+        this.deleteDisplay = "block"
+        this.addDisplay = "block"
+      }
+      // 其它节点
+      if (TissueProperty == 2) {
+        this.deleteDisplay = "block"
+        this.addDisplay = "none"
+      }
+      // 部门节点
+      if (TissueProperty == 3) {
+        if (parentTissue == 1) { // 总部部门
+          this.deleteDisplay = "block"
+          this.addDisplay = "none"
+        } else { // 其它节点部门
+          this.deleteDisplay = "none"
+          this.addDisplay = "none"
+        }
+      }
+    } else {
+      if (TissueProperty == 0) {
         this.deleteDisplay = "none"
       } else {
         this.deleteDisplay = "block"
       }
-      if (this.nodes == 3) {
+      if (TissueProperty == 3) {
         this.addDisplay = "none"
       } else {
         this.addDisplay = "block"
       }
     }
-     // console.log("this.state.unfolded",this.state.ID)
   }
 
   seeDetails() {
@@ -242,7 +285,7 @@ class OrganizationLefted extends React.Component {
       }
     })
     // $(".Organization-left li").find(".ant-tree-title").after("<span class='plus'>+</span>");
-    
+
     if (userInfo != null && userInfo.categoryId != 0) {
       $("li").find(".plus").eq(0).css('display', 'none');
     }
@@ -255,32 +298,33 @@ class OrganizationLefted extends React.Component {
       upblock: "none"
     })
   }
+
   render() {
+    const { permissionAlias, leftList } = this.props;
+
     let loops = []
-    let tissueProperty = null
-    const nodesIteration = (nodes) => {
+    const nodesIteration = (nodes, parentTissue) => {
       return nodes.map((item) => {
         if (item.nodes && item.nodes.length) {
           return <TreeNode key={item.id} title={item.name + "(" + String(item.count) + ")"}
                            dataIndex={item.tissueProperty}
-                           parentId={item.parentId}>{nodesIteration(item.nodes)}</TreeNode>;
+                           parentId={item.parentId}>{nodesIteration(item.nodes, item.tissueProperty)}</TreeNode>;
         }
         return <TreeNode key={item.id} title={item.name + "(" + String(item.count) + ")"}
-                         dataIndex={item.tissueProperty} parentId={item.parentId}/>;
+                         dataIndex={item.tissueProperty} parentTissue={parentTissue} parentId={item.parentId}/>;
       })
     }
-    if (this.props.leftList != null) {
-      let nodes = this.props.leftList.nodes;
-      loops = nodesIteration(nodes);
-      loops = [<TreeNode key={this.props.leftList.id} title={this.props.leftList.name}
-                         dataIndex={this.props.leftList.tissueProperty}
-                         parentId={this.props.leftList.parentId}>{loops}</TreeNode>]
+    if (leftList) {
+      loops = nodesIteration(leftList.nodes, leftList.TissueProperty);
+      loops = [<TreeNode key={leftList.id} title={leftList.name}
+                         dataIndex={leftList.tissueProperty}
+                         parentId={leftList.parentId}>{loops}</TreeNode>]
     }
 
-    const add = !this.props.permissionAlias.contains('NODE_ADD');
-    const detail = !this.props.permissionAlias.contains('NODE_DETAIL');
-    const del = !this.props.permissionAlias.contains('NODE_DELETE');
-    // console.log("this.state.unfolded>>>>",this.state.unfolded)
+    const add = !permissionAlias.contains('NODE_ADD');
+    const detail = !permissionAlias.contains('NODE_DETAIL');
+    const del = !permissionAlias.contains('NODE_DELETE');
+
     return (
       <div className="Organization-left">
         <Tree
@@ -354,4 +398,4 @@ function mapStateToProps(state) {
     permissionAlias
   };
 }
-export default connect(mapStateToProps)(OrganizationLefted)
+export default connect(mapStateToProps)(OrganizationLeft)
