@@ -45,6 +45,7 @@ let resideOperation = '';
 export default {
   namespace: 'roomStatusManagement',
   state: {
+    modalH:false,
     packageAry: [],
     roomList: '',
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
@@ -411,6 +412,13 @@ export default {
       return {
         ...state,
         dateSelectViews: dateSelectViews
+      }
+    },
+    changeModalH(state, {payload: data}){
+
+      return {
+        ...state,
+        modalH: data
       }
     },
 
@@ -900,19 +908,27 @@ export default {
           }
         }
 
-        if(data){
-          if(typeof data === 'object'){
-            let str = ''
-            for(let i = 0;i<data.length;i++){
-              str += data[i]
-              str += '\n'
+
+
+        if(state.modalH){
+          yield put({type: 'changeModalH',payload:false});
+          if(data){
+            if(typeof data === 'object'){
+              let str = ''
+              for(let i = 0;i<data.length;i++){
+                str += data[i]
+                str += '    '
+              }
+
+              Modal.success({
+                title: '保存成功',
+                content:str,
+              });
+
             }
-            Modal.success({
-              title: '保存成功',
-              content: str ,
-            });
           }
         }
+
       }
       catch (e){
 
