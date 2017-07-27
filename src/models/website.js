@@ -34,27 +34,7 @@ export default {
   reducers:{
     //设置为空
     setNewValue(state){
-      return {...state,
-        picarr:[],
-          addImglist:[],
-          disabledBtn:false,
-          selectAble:false,
-
-          pagination: {
-          showQuickJumper: true,
-            showTotal: total => `共 ${total} 条`,
-            current: 1,
-            pageSize:10,
-            total: null,
-        },
-        //主标题 ---专家团队修改判断
-        readAble:false,
-          newsImgList1:[],
-          newsImgList2:[],
-          img1Btn:false,
-          img2Btn:false,
-          modalVisible:false,
-      }
+      return {...state,}
     },
     //改变modal状态
     changModal(state,{payload:{modalVisible}}){
@@ -175,7 +155,7 @@ export default {
         }
         return{...state,defaultFileLists1:img1Ary,newsImgList1:img1Ary,newsImgList2:img2Ary,defaultFileLists2:img2Ary,img1Btn:img1Ary?true:false,img2Btn:img2Ary?true:false,ExpertIdMsg}
       }
-      return state
+      return{...state,defaultFileLists1:null,newsImgList1:null,defaultFileLists2:null,newsImgList2:null,img1Btn:false,img2Btn:false,ExpertIdMsg:null}
     }
   },
   effects:{
@@ -335,6 +315,7 @@ export default {
     },
     //修改专家信息
     *updateExpert({payload:values},{call,put}){
+
 
       const { data:{data,code}} = yield call(websiteBanner.updateExpert,values);
       if(code == 0) {

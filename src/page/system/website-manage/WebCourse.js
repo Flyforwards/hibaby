@@ -132,7 +132,7 @@ class WebCourse extends React.Component{
       <Card className="website-banner">
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
           <Link to="/system/website-manage/addCourse">
-            <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>新增</Button>
+            <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>添加</Button>
           </Link>
         </div>
         {/*<Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>*/}

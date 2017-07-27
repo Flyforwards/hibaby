@@ -13,43 +13,52 @@ const FormItem = Form.Item;
 const createForm = Form.create;
 import './WebsiteBanner.scss';
 
-let ids = 2;
+const formItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 17 }
+};
+
 @createForm()
 class WebsiteBabyAdd extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      addList:[],
-      uids:6,
-    };
-    this.uids = 6;
-    this.list=[];
+    this.state={ikeys:[]}
   }
 
   // 返回
   onBack(){
     this.props.dispatch(routerRedux.push({pathname:'/system/websiteActManage',})
     )
-    //history.go(-1)
   }
   //移除当前
   remove = (k) => {
-    const { form } = this.props;
-    const ikeys = form.getFieldValue('ikeys');
-    form.setFieldsValue({
-      ikeys: ikeys.filter(key => key !== k)
-    });
+    let ikeys = this.state.ikeys;
+    for (let i = 0;i<ikeys.length;i++){
+      ikeys.splice(i,1)
+    }
+    this.setState({
+      ikeys:ikeys
+    })
   }
   //保存禁忌信息
   onSave(){
     const fields = this.props.form.getFieldsValue();
-    const { dispatch ,initialList} =this.props;
+    const {content, dispatch ,initialList} =this.props;
+
+    let tempAry = []
+    if(content){
+      eval(content).map((v,i) => {
+        if(i !== queryURL("id")){
+          tempAry.push(v)
+        }
+      })
+    }
+
+
     let itemStr ='';
     for(var item in fields){
       if(item.match("taboo")){
-        if(fields[item] !=　undefined &&　fields[item].trim()){
           itemStr+= fields[item]+'#';
-        }
       }
     }
     itemStr = itemStr.substr(0,itemStr.length-1);
@@ -57,8 +66,18 @@ class WebsiteBabyAdd extends React.Component {
     contents.title = fields.title;
     contents.data = itemStr;
     let contentList = {};
-    contentList = this.list.concat(contents);
+
+
+    if(queryURL('id')){
+      tempAry.splice(parseInt(queryURL('id')),0,contents);
+      contentList = tempAry
+    }
+    else{
+      contentList = tempAry.concat(contents);
+    }
+
     contentList = JSON.stringify(contentList);
+
     if(queryURL("type")){
       dispatch({
         type:'websiteBabyCare/updateExpert',
@@ -72,116 +91,78 @@ class WebsiteBabyAdd extends React.Component {
         }
       })
     }
-    // dispatch({
-    //   type:'dinner/setTabooFood',
-    //   payload:{
-    //   "customerId":customerId,
-    //     "sugar":fields.sugar,
-    //     "taboo":itemStr,
-    //     "id":this.props.tabooData ?this.props.tabooData.id :'',
-    //   }
-    // })
-
   }
 
   //添加禁忌
   onAdd() {
-    this.uids =  this.uids + 1
-    const { form } = this.props;
-    const ikeys = form.getFieldValue('ikeys');
-    const nextKeys = ikeys.concat(this.uids);
-    form.setFieldsValue({
-      ikeys: nextKeys
-    });
+    let ikeys = this.state.ikeys;
+    ikeys.push('')
+    this.setState({
+      ikeys:ikeys
+    })
   }
+
   render() {
-    const {loading, dispatch, form,initialList,content } = this.props;
-    console.log("content",content)
-    const { getFieldDecorator, getFieldValue } = form;
-    const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 17 }
-    };
-    getFieldDecorator('keys', {initialValue: [0,1,2,3,4,5]});
-    getFieldDecorator('ikeys', {initialValue: []});
-    let con =[];
+    const { form,content } = this.props;
+    const {getFieldDecorator} = form
+
     let init;
-    this.list =[];
-    content ? eval(content).map((v,i) => {
-      if(i == queryURL("id")){
-        init = v;
+
+    let array = ['','','','','','']
+    if(queryURL("id")){
+      let ary = eval(content);
+      init = ary[queryURL("id")]
+      array = init.data.split('#')
+    }
+
+    let itemAry = []
+
+    let tempAry = []
+
+    function creatCol(i){
+      return <Col key={i} span={8}>
+        <FormItem
+          {...formItemLayout}
+          label="二级标题"
+          required={false}
+        >
+          {getFieldDecorator(`taboo-${i}`, {
+            initialValue:array[i] == undefined ? '':array[i]
+          })(
+            <Input placeholder="请输入二级标题"/>
+          )}
+        </FormItem>
+      </Col>
+    }
+
+
+    for(let i = 0;i<array.length;i++){
+      if(tempAry.length == 3){
+        itemAry.push(<Row style={{height:'56px'}}>{tempAry}</Row>)
+        tempAry = []
+        tempAry.push( creatCol(i))
       }else{
-        this.list.push(v)
+        tempAry.push( creatCol(i))
       }
-      con.push(v);
-    }):null;
-    const formChooseOneSugar = {
-      labelCol: { span:3},
-      wrapperCol: { span: 19 }
-    };
+    }
 
-    const keys = getFieldValue('keys');
-    //添加禁忌
-    const ikeys = getFieldValue('ikeys');
-    const initArr = init ? init.data.split("#"):[];
+    for(let i = 0;i<this.state.ikeys.length;i++){
+      if(tempAry.length == 3){
+        itemAry.push(<Row style={{height:'56px'}}>{tempAry}</Row>)
+        tempAry = []
+        tempAry.push( creatCol(i+array.length))
+      }else{
+        tempAry.push( creatCol(i+array.length))
+      }
+      console.log(i+array.length)
+    }
 
-    const item = initArr.length > keys.length ? initArr.map((i,index) => {
-      return(
-        <Col key={i} span={8} className="delDisplan">
-          <FormItem
-            {...formItemLayout}
-            label="二级标题"
-            required={false}
-            key={i}
-          >
-            {getFieldDecorator(`taboo-${i}`, {
-              initialValue:initArr[index] == undefined ? '':initArr[index]
-            })(
-              <Input placeholder="请输入二级标题"/>
-            )}
-          </FormItem>
-        </Col>
-      )
-    }): keys.map((k,index) => {
-      return(
-        <Col key={k} span={8} className="delDisplan">
-          <FormItem
-            {...formItemLayout}
-            label="二级标题"
-            required={false}
-            key={k}
-          >
-            {getFieldDecorator(`taboo-${k}`, {
-              initialValue:initArr[index] == undefined ? '':initArr[index]
-            })(
-              <Input placeholder="请输入二级标题"/>
-            )}
-          </FormItem>
-        </Col>
-      )
-    });
+    if(tempAry.length > 0){
+      itemAry.push(<Row style={{height:'56px'}}>{tempAry}</Row>)
+      tempAry = [];
+    }
+    console.log(itemAry)
 
-    const newItems = ikeys .map((v,index) => {
-      return(
-        <Col key={v} span={8} className="delDisplan">
-          <FormItem
-            {...formItemLayout}
-            label="二级标题"
-            required={false}
-            key={v}
-          >
-            {getFieldDecorator(`taboo-${v}`, {
-            })(
-              <Input placeholder="请输入二级标题"  style={{ width: '90%', marginRight: 8 }}/>
-            )}
-            <Icon
-              type="minus-circle-o"
-              onClick={() => this.remove(v)}
-            />
-          </FormItem>
-        </Col>
-      )
-    });
 
 
     return (
@@ -190,8 +171,7 @@ class WebsiteBabyAdd extends React.Component {
         <Spin spinning={false}>
           <div className="TabooTital">
             <Form className="formPadding" style={{overflow:'hidden'}}>
-              <Row style={{height:'56px'}}>
-                <Col span = {12} style={{width:300}}>
+              <Row style={{height:'56px',width:300}}>
                   <FormItem label="一级标题" {...formItemLayout}>
                   {getFieldDecorator('title', {
                   initialValue:init? init.title:'',
@@ -200,11 +180,9 @@ class WebsiteBabyAdd extends React.Component {
                   <Input placeholder="请输入一级标题"/>
                   )}
                   </FormItem>
-                </Col>
               </Row>
               <Row>
-                {item}
-                {newItems}
+                {itemAry}
               </Row>
             </Form>
           </div>

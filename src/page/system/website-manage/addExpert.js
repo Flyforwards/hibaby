@@ -47,7 +47,6 @@ class AddExpert extends React.Component{
 
     form.validateFields((err, values) => {
 
-
       values.img2 = img2String;
       values.img1 = img1String;
       values.content = contentHtml;
