@@ -2,7 +2,7 @@ import * as roomManagement from '../services/roomManagement';
 import * as customerService from '../services/customer';
 import * as addCustomerInformation from '../services/addCustomerInformation';
 import * as systemService from '../services/system';
-import {message} from 'antd'
+import {message,Modal} from 'antd'
 import {routerRedux} from 'dva/router';
 import moment from 'moment';
 import {parse} from 'qs'
@@ -875,11 +875,8 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
-
-      if (code == 0) {
-        // 更新原始集合的状态
-        message.success('保存成功')
+      try{
+        const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
         if(param === value){
           yield put({
             type: 'monthRoomList',
@@ -903,8 +900,23 @@ export default {
           }
         }
 
+        if(data){
+          if(typeof data === 'object'){
+            let str = ''
+            for(let i = 0;i<data.length;i++){
+              str += data[i]
+              str += '\n'
+            }
+            Modal.success({
+              title: '保存成功',
+              content: str ,
+            });
+          }
+        }
       }
+      catch (e){
 
+      }
     },
     *resideAddOrCut({payload: value}, {call, put}){
 
