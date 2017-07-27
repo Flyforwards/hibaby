@@ -2,7 +2,7 @@ import * as roomManagement from '../services/roomManagement';
 import * as customerService from '../services/customer';
 import * as addCustomerInformation from '../services/addCustomerInformation';
 import * as systemService from '../services/system';
-import {message} from 'antd'
+import {message,Modal} from 'antd'
 import {routerRedux} from 'dva/router';
 import moment from 'moment';
 import {parse} from 'qs'
@@ -45,6 +45,7 @@ let resideOperation = '';
 export default {
   namespace: 'roomStatusManagement',
   state: {
+    modalH:false,
     packageAry: [],
     roomList: '',
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
@@ -411,6 +412,13 @@ export default {
       return {
         ...state,
         dateSelectViews: dateSelectViews
+      }
+    },
+    changeModalH(state, {payload: data}){
+
+      return {
+        ...state,
+        modalH: data
       }
     },
 
@@ -875,11 +883,8 @@ export default {
         }
       }
 
-      const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
-
-      if (code == 0) {
-        // 更新原始集合的状态
-        message.success('保存成功')
+      try{
+        const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
         if(param === value){
           yield put({
             type: 'monthRoomList',
@@ -892,19 +897,42 @@ export default {
               payload:value.ConfirmDict
             })
           }
-          if(value.deleteUse){
+          else if(value.deleteUse){
             yield put({
               type: 'deleteUser',
               payload:value.deleteUse
             })
           }
-          if(value === 'load'){
+          else{
             yield put({type: 'monthRoomList'});
           }
         }
 
-      }
 
+
+        if(state.modalH){
+          yield put({type: 'changeModalH',payload:false});
+          if(data){
+            if(typeof data === 'object'){
+              let str = ''
+              for(let i = 0;i<data.length;i++){
+                str += data[i]
+                str += '    '
+              }
+
+              Modal.success({
+                title: '保存成功',
+                content:str,
+              });
+
+            }
+          }
+        }
+
+      }
+      catch (e){
+
+      }
     },
     *resideAddOrCut({payload: value}, {call, put}){
 

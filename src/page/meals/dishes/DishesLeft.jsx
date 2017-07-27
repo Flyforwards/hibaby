@@ -293,9 +293,9 @@ class DishesLeft extends React.Component {
 
 
   render() {
-    const add = !this.props.permissionAlias.contains('NODE_ADD');
-    const detail = !this.props.permissionAlias.contains('NODE_DETAIL');
-    const del = !this.props.permissionAlias.contains('NODE_DELETE');
+    const add = !this.props.permissionAlias.contains('LIBRARY_ADD');
+    const detail = !this.props.permissionAlias.contains('LIBRARY_DETAIL');
+    const del = !this.props.permissionAlias.contains('LIBRARY_DELETE');
 
 
     const {dishesLibraryNodes} = this.props.dishes;

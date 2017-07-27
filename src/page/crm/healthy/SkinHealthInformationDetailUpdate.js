@@ -89,22 +89,34 @@ class SkinHealthInformationDetailUpdate extends React.Component {
       if (!err) {
         const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
         const healthInfo_ = JSON.stringify(values);
-        dispatch({
-          type: 'healthInformation/updateHealthInformation',
-          payload: {
-            healthInfo : healthInfo_,
-            type : type,
-            customerId : this.props.customerId,
-            id : skinHealthInformation.id
-          }
-        })
+        if (skinHealthInformation){
+          dispatch({
+            type: 'healthInformation/updateHealthInformation',
+            payload: {
+              healthInfo : healthInfo_,
+              type : type,
+              customerId : this.props.customerId,
+              id : skinHealthInformation.id
+            }
+          })
+        }
+        else {
+          dispatch({
+            type: 'healthInformation/saveHealthInformation',
+            payload: {
+              healthInfo : healthInfo_,
+              type : type,
+              customerId : this.props.customerId
+            }
+          });
+        }
       }
     });
   }
 
   render(){
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
-    this.healthInfo = JSON.parse(skinHealthInformation.healthInfo);
+    this.healthInfo =skinHealthInformation ? JSON.parse(skinHealthInformation.healthInfo):{};
     return (
       <div className="skinHealthInformationDiv">
           <Form className="tableForm">

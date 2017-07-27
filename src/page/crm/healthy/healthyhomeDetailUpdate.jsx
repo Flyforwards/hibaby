@@ -19,7 +19,7 @@ function HealthyhomeDetailUpdate(props) {
   let disabled = false;
   const type = 1;
   const medicalHealthInformation = props.healthInformation.medicalHealthInformation;
-  const healthInfo = JSON.parse(medicalHealthInformation.healthInfo);
+  const healthInfo = medicalHealthInformation ? JSON.parse(medicalHealthInformation.healthInfo):{};
 
   const formItemLayout = {
     labelCol: { span: 10 },
@@ -383,15 +383,27 @@ function HealthyhomeDetailUpdate(props) {
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
-        dispatch({
-          type: 'healthInformation/updateHealthInformation',
-          payload: {
-            healthInfo : healthInfo,
-            type : type,
-            customerId : props.customerId,
-            id : medicalHealthInformation.id
-          }
-        })
+        if(medicalHealthInformation){
+          dispatch({
+            type: 'healthInformation/updateHealthInformation',
+            payload: {
+              healthInfo : healthInfo,
+              type : type,
+              customerId : props.customerId,
+              id : medicalHealthInformation.id
+            }
+          })
+        }
+        else {
+          dispatch({
+            type: 'healthInformation/saveHealthInformation',
+            payload: {
+              healthInfo : healthInfo,
+              type : type,
+              customerId : props.customerId
+            }
+          })
+        }
       }
     });
   }
@@ -670,7 +682,7 @@ function HealthyhomeDetailUpdate(props) {
             {radioInputRow(radioNames[22], inputNames[9], {title: '产后出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
             {radioAllRow(radioNames[23],{title: '血压异常',radioItems: ['无','低血压','高血压'],value:healthInfo['radio_23']})}
             {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开'],value:healthInfo['radio_24']})}
-            {radioAllRow2(radioNames[24],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染'],value:healthInfo['radio_24']})}
+            {radioAllRow(radioNames[25],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染'],value:healthInfo['radio_25']})}
             {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26'],info:healthInfo['input_10']},'体温',false,'℃')}
             {radioAllRow(radioNames[27],{title: '乳房肿胀',radioItems: ['无','有'],value:healthInfo['radio_27']})}
             {radioAllRow(radioNames[28],{title: '哺乳困难',radioItems: ['无','有'],value:healthInfo['radio_28']})}

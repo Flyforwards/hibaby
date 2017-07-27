@@ -20,6 +20,7 @@ class CardModal extends Component {
     const _this=this;
     this.state={
       showVisible:false,
+      upgeadeValue:false,
     }
 
   }
@@ -50,12 +51,11 @@ class CardModal extends Component {
     const { cardKind, form, dispatch } = this.props;
     const { validateFields } = form;
     form.validateFields((err, values) => {
-      console.log('cardinfo>>', values);
       if (!err) {
-        dispatch({
-          type: 'card/saveCard',
-          payload:{  ...values }
-        })
+          dispatch({
+            type: 'card/saveCard',
+            payload:{  ...values}
+          })
       }
     })
   }
@@ -86,17 +86,20 @@ class CardModal extends Component {
 
   //选择验证卡种
   onCradTypeChange = (e) => {
-    console.log('radio checked', e.target.value);
+   // console.log('radio checked', e.target.value);
     if(e.target.value == 1){
+      this.props.form.setFieldsValue({"upgrade":''})
       this.setState({
        showVisible:true,
+        upgeadeValue:false,
       });
     }else if(e.target.value == 2) {
-      // this.props.form.setFieldsValue({"upgrade":0})
+     this.props.form.setFieldsValue({"upgrade":0+''})
       // this.props.form.setFieldsValue({"level":1})
-      this.props.form.getFieldDecorator('upgrade', {initialValue: 0});
+      //this.props.form.getFieldDecorator('upgrade', {initialValue: 0});
       this.setState({
         showVisible:false,
+        upgeadeValue:true,
       });
     }
 
@@ -174,13 +177,13 @@ class CardModal extends Component {
                 </FormItem>
               </Col>
             </Row>
-            { this.state.showVisible ? (<span><Row>
+            <Row>
               <Col span={22} style={{width:'401px' }}>
                 <FormItem label="此卡是否允许升级" {...formItemLayoutRadio}>
                   {getFieldDecorator('upgrade', {
                     rules: [{ required: true, message: '请选择是否为可升级卡' }]
                   })(
-                    <RadioGroup >
+                    <RadioGroup disabled={this.state.upgeadeValue}>
                       <Radio value="1">是</Radio>
                       <Radio value="0">否</Radio>
                     </RadioGroup>
@@ -188,8 +191,7 @@ class CardModal extends Component {
                 </FormItem>
               </Col>
             </Row>
-
-            <Row>
+            { this.state.showVisible ? <Row>
               <Col span = { 8 } style={{width:'251px'}}>
                 <FormItem label="会员卡级别" {...formItemLayout}>
                   {getFieldDecorator('level', {
@@ -207,7 +209,7 @@ class CardModal extends Component {
                   )}
                 </FormItem>
               </Col>
-            </Row></span>):''}
+            </Row> : ''}
 
             <Row>
               <Col span={ 24 } style={{width:'400px'}}>
@@ -225,10 +227,10 @@ class CardModal extends Component {
               <Col span = { 16 }>
               </Col>
               <Col span = { 4 }>
-                <Link to="/crm/card"><Button className="BackBtn" >返回</Button></Link>
+                <Link to="/crm/card"><Button className="BackBtn button-group-bottom-1" >返回</Button></Link>
               </Col>
               <Col span = { 4 }>
-                <Button className="SaveBtn"  onClick={this.handleSubmit.bind(this)}>保存</Button>
+                <Button className="SaveBtn button-group-bottom-2"  onClick={this.handleSubmit.bind(this)}>保存</Button>
               </Col>
             </Row>
           </Form>

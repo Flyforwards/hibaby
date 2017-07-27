@@ -4,6 +4,7 @@ import BabyService from './WebsiteBabyService'
 import WebJob from './WebJob'
 import { Tabs } from 'antd'
 import ExpertIntroduction from './ExpertIntroduction'
+import ActivityEnroll from './activityEnroll'
 const TabPane = Tabs.TabPane;
 import { connect } from 'dva';
 
@@ -48,6 +49,7 @@ class ActivityManage extends Component {
         <Tabs tabPosition="left" activeKey={this.props.all.AboutActKey} onChange={this.callback.bind(this)}>
           {ary}
           <TabPane tab="招聘信息" key="招聘信息"><WebJob/></TabPane>
+          <TabPane tab="活动报名管理" key="活动报名管理"><ActivityEnroll/></TabPane>
         </Tabs>
       </div>
     )

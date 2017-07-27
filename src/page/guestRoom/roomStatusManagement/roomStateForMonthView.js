@@ -15,6 +15,8 @@ import {
   Popover,
   Spin
 } from 'antd'
+import PermissionButton from '../../../common/PermissionButton';
+
 
 const Option = Select.Option;
 
@@ -477,6 +479,13 @@ const monthStateView = (props) => {
           btn.className = "userBoxConfirm button-group-1";
 
           btn.addEventListener("click", (e) => {
+            //确认入住权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
+            const flag =  props.permissionAlias.contains("MONTH_QRRZ");
+            if(!flag){
+              message.warn("该用户无权限");
+              return false;
+            }
+
             e.stopPropagation();
 
             let parentNode = e.target.parentNode;
@@ -530,6 +539,13 @@ const monthStateView = (props) => {
           e.target.appendChild(deleteBtn);
 
           deleteBtn.addEventListener("click", (e) => {
+            //取消预约权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
+            const flag = props.permissionAlias.contains("MONTH_QXRZ");
+            if(!flag){
+              message.warn("该用户无权限");
+              return false;
+            }
+
             e.stopPropagation();
             let parentNode = e.target.parentNode;
             dispatch({
@@ -553,6 +569,12 @@ const monthStateView = (props) => {
          * @param e
          */
         const resizeBarMouseDownHandler = (e) => {
+          //入住调整权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
+          const flag = props.permissionAlias.contains("MONTH_RZTZ");
+          if(!flag){
+            message.warn("该用户无权限");
+            return false;
+          }
           e.preventDefault();
           e.stopPropagation();
 
@@ -888,6 +910,10 @@ const monthStateView = (props) => {
 
     const saveReserveClickHandler = () => {
       dispatch({
+        type: 'roomStatusManagement/changeModalH',
+        payload: true
+      });
+      dispatch({
         type: 'roomStatusManagement/monthRoomUpdate',
         payload: {}
       });
@@ -902,8 +928,8 @@ const monthStateView = (props) => {
 
     return (
       <div className="bottomBar">
-        <Button className="button-group-1" onClick={oneKeyClicked}>一键排房</Button>
-        <Button className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</Button>
+        <PermissionButton testKey="ONE_KEY" className="button-group-1" onClick={oneKeyClicked}>一键排房</PermissionButton>
+        <PermissionButton testKey="MONTH_YYRZ" className="saveReserveBtn button-group-3" onClick={saveReserveClickHandler}>保存</PermissionButton>
       </div>
     )
   };
@@ -912,11 +938,15 @@ const monthStateView = (props) => {
    * 月房态主视图区
    */
   const monthMainView = () => {
+    //控制用户是否可以切换视图为日房态 add by yangjj 2017-07-27 17:20
+    const dayRoomStatusDisabled =  !props.permissionAlias.contains("DAY_STATUS_SHOW");
+
     return (
 
         <div className="main">
           <div className="headDiv">
             <Switch className='switch'
+                    disabled={dayRoomStatusDisabled}
                     onChange={roomViewStateChange}
                     checkedChildren={'日房态'}
                     unCheckedChildren={'月房态'}

@@ -15,7 +15,7 @@ function NutritionHealthInformationDetailUpdate(props) {
   const type = 2;
 
   const nutritionHealthInformation = props.healthInformation.nutritionHealthInformation;
-  const healthInfo = JSON.parse(nutritionHealthInformation.healthInfo);
+  const healthInfo = nutritionHealthInformation ? JSON.parse(nutritionHealthInformation.healthInfo):{};
   const formItemLayout = {
     labelCol: { span: 7 },
     wrapperCol: { span: 16 }
@@ -296,15 +296,27 @@ function NutritionHealthInformationDetailUpdate(props) {
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(values);
-        dispatch({
-          type: 'healthInformation/updateHealthInformation',
-          payload: {
-            healthInfo : healthInfo,
-            type : type,
-            customerId : props.customerId,
-            id : nutritionHealthInformation.id
-          }
-        })
+        if (nutritionHealthInformation){
+          dispatch({
+            type: 'healthInformation/updateHealthInformation',
+            payload: {
+              healthInfo : healthInfo,
+              type : type,
+              customerId : props.customerId,
+              id : nutritionHealthInformation.id
+            }
+          })
+        }
+        else {
+          dispatch({
+            type: 'healthInformation/saveHealthInformation',
+            payload: {
+              healthInfo : healthInfo,
+              type : type,
+              customerId : props.customerId
+            }
+          })
+        }
       }
     });
   }

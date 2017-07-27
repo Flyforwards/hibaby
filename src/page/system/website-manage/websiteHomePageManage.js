@@ -2,10 +2,7 @@
 import React, { Component } from 'react';
 import Banner from './WebSiteBanner'
 import ExpertIntroduction from './ExpertIntroduction'
-import WebJob from './WebJob'
 import WebEndemic from './WebEndemic'
-import WebCourse from './webCourse'
-import ActivityEnroll from './activityEnroll'
 import { Tabs } from 'antd'
 import { connect } from 'dva';
 

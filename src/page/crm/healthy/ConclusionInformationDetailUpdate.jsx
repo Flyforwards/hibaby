@@ -61,15 +61,27 @@ function ConclusionInformationUpdate(props) {
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const healthInfo = JSON.stringify(conclusionImg_arr);
-        dispatch({
-          type: 'healthInformation/updateHealthInformation',
-          payload: {
-            healthInfo : healthInfo,
-            type : type,
-            customerId : props.customerId,
-            id : conclusionInformation.id
-          }
-        })
+        if(conclusionInformation){
+          dispatch({
+            type: 'healthInformation/updateHealthInformation',
+            payload: {
+              healthInfo : healthInfo,
+              type : type,
+              customerId : props.customerId,
+              id : conclusionInformation.id
+            }
+          })
+        }
+        else {
+          dispatch({
+            type: 'healthInformation/saveHealthInformation',
+            payload: {
+              healthInfo : healthInfo,
+              type : type,
+              customerId : props.customerId
+            }
+          })
+        }
       }
     });
 

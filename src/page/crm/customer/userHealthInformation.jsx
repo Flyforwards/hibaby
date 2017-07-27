@@ -50,19 +50,19 @@ class userHealthInformation extends React.Component {
     const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
     const conclusionInformation = this.props.healthInformation.conclusionInformation;
 
-    let HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthy />;
+    let HospitalHealthyDiv = (saveDone || isDetail )&&medicalHealthInformation ? <HospitalHealthyDetail/>:<HospitalHealthyDetail />;
     if(editMedicalFlag){
       HospitalHealthyDiv = <HospitalHealthyDetailUpdate/>;
     }
-    let NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformation />;
+    let NutritionHealthInformationDiv = (saveDone || isDetail)&&nutritionHealthInformation ? <NutritionHealthInformationDetail/>:<NutritionHealthInformationDetail />;
     if(editNutritionFlag){
       NutritionHealthInformationDiv = <NutritionHealthInformationDetailUpdate />
     }
-    let SkinHealthInformationDiv = (saveDone || isDetail)&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformation />;
+    let SkinHealthInformationDiv = (saveDone || isDetail)&&skinHealthInformation ? <SkinHealthInformationDetail/>:<SkinHealthInformationDetail />;
     if(editSkinFlag){
       SkinHealthInformationDiv = <SkinHealthInformationDetailUpdate/>
     }
-    let ConclusionInformationDiv = (saveDone || isDetail)&&conclusionInformation ? <ConclusionInformationDetail/>:<ConclusionInformation />;
+    let ConclusionInformationDiv = (saveDone || isDetail)&&conclusionInformation ? <ConclusionInformationDetail/>:<ConclusionInformationDetail />;
     if(editConclusionFlag){
       ConclusionInformationDiv = <ConclusionInformationDetailUpdate/>;
     }

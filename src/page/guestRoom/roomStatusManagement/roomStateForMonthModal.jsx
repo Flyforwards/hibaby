@@ -20,6 +20,7 @@ import {
   Spin
 } from 'antd'
 import {routerRedux} from 'dva/router';
+
 const { MonthPicker } = DatePicker;
 
 import './roomStatusManagementIndex.scss'
@@ -208,7 +209,7 @@ function CustomerSearch(props) {
   )
 }
 
-function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
+function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem,permissionAlias}) {
   const {allCusList,pagination,monthStateCustomers,fetusAry,packageAry} = props
   const columns = [{title: '客户姓名', dataIndex: 'name',key: 'name'},
     {title: '年龄',dataIndex: 'age',key: 'age'},
@@ -302,17 +303,18 @@ function CustomerTable({props,loading,selectCustomerFun,dispatch,selectItem}) {
 
     for(let i = 0;i<selectItem.length;i++){
       const dict = selectItem[i] ;
+
       if(!dict.change){
-        tags.push(<Tag key={dict.customerId || dict.id} closable={!disabled(dict)} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
+        let flag = !disabled(dict);
+        tags.push(<Tag key={dict.customerId || dict.id} closable={flag} onClose={()=>{onClose(dict)}}>{dict.customerName||dict.name}</Tag>)
 
       }
     }
   }
 
-
   return(
     <Card bodyStyle={{padding:'10px'}} title="预约客户">
-      <Card bodyStyle={{padding:'10px', paddingTop:0}}>
+      <Card bodyStyle={{padding:'10px', paddingTop:0}} >
         {tags}
       </Card>
       <Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
@@ -381,6 +383,8 @@ class addCustomer extends React.Component {
 
   render(){
     const {CustomerVisible} = this.props.users;
+    const {permissionAlias} = this.props;
+
 
     return(
       <Modal
@@ -393,7 +397,7 @@ class addCustomer extends React.Component {
         onCancel={this.handleCancel.bind(this)}
         footer={[
           <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
-          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>,
+          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}> 确定</Button>
         ]}
 
       >
@@ -401,7 +405,7 @@ class addCustomer extends React.Component {
         <CustomerTable
           selectItem={this.state.selectItem}
           selectCustomerFun={(record,selected)=>{this.selectCustomerFun(record,selected)}}
-          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}/>
+          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch} permissionAlias={permissionAlias} />
       </Modal>
     )
   }
@@ -658,9 +662,12 @@ function RowHousesWay(props) {
 }
 
 function mapStateToProps(state) {
+  const { permissionAlias } = state.layout;
+
   return {
     users: state.roomStatusManagement,
     loading: state.loading,
+    permissionAlias
   };
 }
 

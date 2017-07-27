@@ -286,6 +286,7 @@ class MealCycleDetailPage extends React.Component {
 
   componentWillUnmount() {
     clearInterval(refreshInterval);
+    changeWeek = 0;
   }
 
   render(){

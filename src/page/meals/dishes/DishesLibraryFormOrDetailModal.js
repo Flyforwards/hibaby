@@ -85,8 +85,8 @@ class DishesLibraryFormOrDetailModal extends React.Component{
       <Button className='myBtn RemoveBtn' onClick={this.handleRemove.bind(this)}>删除</Button>
  */}
 
-      <PermissionButton testKey="DISHES_EDIT" className='myBtn SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
-      <PermissionButton testKey="DISHES_DELETE" className='myBtn RemoveBtn' onClick={this.handleRemove.bind(this)}>删除</PermissionButton>
+      <PermissionButton testKey="LIBRARY_EDIT" className='myBtn SaveBtn' onClick={this.handleEdit.bind(this)}>编辑</PermissionButton>
+      <PermissionButton testKey="LIBRARY_DELETE" className='myBtn RemoveBtn' onClick={this.handleRemove.bind(this)}>删除</PermissionButton>
       <Button className='myBtn BackBtn' onClick={this.handleCancel.bind(this)}>返回</Button>
 
 
