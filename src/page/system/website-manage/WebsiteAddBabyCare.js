@@ -48,7 +48,7 @@ class WebsiteBabyAdd extends React.Component {
     let tempAry = []
     if(content){
       eval(content).map((v,i) => {
-        if(i !== queryURL("id")){
+        if(i != queryURL("id")){
           tempAry.push(v)
         }
       })
@@ -58,7 +58,9 @@ class WebsiteBabyAdd extends React.Component {
     let itemStr ='';
     for(var item in fields){
       if(item.match("taboo")){
+        if(fields[item]){
           itemStr+= fields[item]+'#';
+        }
       }
     }
     itemStr = itemStr.substr(0,itemStr.length-1);
