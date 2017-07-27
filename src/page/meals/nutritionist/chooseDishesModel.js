@@ -1,7 +1,7 @@
 import { connect } from 'dva';
 import React, { Component }from 'react';
 import { Modal, Button } from 'antd';
-import { Tree, Input, Row, Col, Table } from 'antd';
+import { Tree, Input, Row, Col, Table,message } from 'antd';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import './prepareMeals.scss'
@@ -118,9 +118,11 @@ class App extends Component {
     })
   }
 
+
   render() {
     const { prepareMeals } = this.props;
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
+
     const { nodes } = nodesInfo;
     const { expandedKeys, autoExpandParent } = this.state;
     const columns = [
@@ -133,22 +135,28 @@ class App extends Component {
         dataIndex: 'mvType',
         key: 'mvType',
         render: (text, record, index) => {
+          let result = null;
           mvType.map(function (item) {
-            if (text == item.id) {
-              return ( <span>{item.name}</span>);
+            if (text == item.id){
+              result = ( <span>{item.name}</span>);
+              return;
             }
           });
+          return result;
         }
       }, {
         title: '菜品类型',
         dataIndex: 'vdType',
         key: 'vdType',
         render: (text, record, index) => {
+          let result = null;
           vdType.map(function (item) {
             if (text == item.id) {
-              return ( <span>{item.name}</span>);
+              result = ( <span>{item.name}</span>);
+              return;
             }
           });
+          return result;
         }
       }, {
         title: '使用状态',
