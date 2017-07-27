@@ -13,14 +13,14 @@ class App extends Component {
     selectedKeys: [],
     name: ''
   }
-  
+
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false
     });
   }
-  
+
   onChange = (value) => {
     const { dispatch } = this.props;
     dispatch({
@@ -63,7 +63,7 @@ class App extends Component {
       selectedKeys: []
     })
   }
-  
+
   getInfo = (data) => {
     const { changeKey, isLow, dispatch, reset } = this.props;
     const { id, name } = data;
@@ -93,9 +93,9 @@ class App extends Component {
         topVisible: false
       }
     })
-    
+
   }
-  
+
   handleTableChange = (pagination, filters, sorter) => {
     const { dispatch, prepareMeals } = this.props;
     const { name } = this.state;
@@ -116,7 +116,7 @@ class App extends Component {
       }
     })
   }
-  
+
   render() {
     const { prepareMeals } = this.props;
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
@@ -132,22 +132,28 @@ class App extends Component {
         dataIndex: 'mvType',
         key: 'mvType',
         render: (text, record, index) => {
+          let result = null;
           mvType.map(function (item) {
             if (text == item.id) {
-              return ( <span>{item.name}</span>);
+              result = ( <span>{item.name}</span>);
+              return;
             }
           });
+          return result;
         }
       }, {
         title: '菜品类型',
         dataIndex: 'vdType',
         key: 'vdType',
         render: (text, record, index) => {
+          let result = null;
           vdType.map(function (item) {
             if (text == item.id) {
-              return ( <span>{item.name}</span>);
+              result =  ( <span>{item.name}</span>);
+              return;
             }
           });
+          return result;
         }
       }, {
         title: '使用状态',
@@ -168,7 +174,7 @@ class App extends Component {
           )
         }
       }]
-    
+
     const loop = data => data.map((item) => {
       if (item.nodes) {
         return (
@@ -222,7 +228,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals
   };
