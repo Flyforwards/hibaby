@@ -938,11 +938,15 @@ const monthStateView = (props) => {
    * 月房态主视图区
    */
   const monthMainView = () => {
+    //控制用户是否可以切换视图为日房态 add by yangjj 2017-07-27 17:20
+    const dayRoomStatusDisabled =  !props.permissionAlias.contains("DAY_STATUS_SHOW");
+
     return (
 
         <div className="main">
           <div className="headDiv">
             <Switch className='switch'
+                    disabled={dayRoomStatusDisabled}
                     onChange={roomViewStateChange}
                     checkedChildren={'日房态'}
                     unCheckedChildren={'月房态'}
