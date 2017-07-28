@@ -265,14 +265,10 @@ export default {
     //根据用户id查看用户信息
     *getUserListById({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.getUserListById, values);
-      console.log("根据用户id查看用户信息",code)
       if (code == 0) {
         yield put({
           type: 'getUserListByIdSave',
-          payload: {
-            data,
-            code
-          }
+          payload: { data  }
         });
       }
     },
@@ -332,12 +328,13 @@ export default {
     },
     //添加用户入职信息
     *addUserEntry({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(organizationService.addUserEntrydata, values);
+      const { data: { code } } = yield call(organizationService.addUserEntrydata, values);
       if (code == 0) {
         message.success("添加用户入职信息成功");
-        setTimeout(function () {
-          window.location.reload();
-        }, 50)
+        yield put({
+          type: 'getUserListById',
+          payload: { dataId: values.userId }
+        })
       }
     },
     //根据地方中心id查询下属部门
@@ -428,7 +425,6 @@ export default {
             total,
             page,
             size,
-            code
           }
         });
       }
