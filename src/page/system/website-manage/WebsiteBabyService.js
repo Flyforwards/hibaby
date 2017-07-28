@@ -99,10 +99,6 @@ class WebsiteBabyService extends React.Component{
         values.img2 = img2String;
         values.img1 = img1String;
 
-
-        if (!values.content){
-          values.content = this.props.content
-        }
         if (!err) {
           dispatch({
             type: 'websiteBabyCare/updateExpert',

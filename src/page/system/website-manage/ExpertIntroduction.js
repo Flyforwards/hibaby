@@ -115,7 +115,6 @@ class ExpertIntroduction extends React.Component{
   }
   //点击修改
   upDateTitle() {
-    console.log('??')
     this.setState({
       modalVisible:true,
     })
