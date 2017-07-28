@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select} from 'antd'
+import {Table,Input,Icon,Button,Form,Select} from 'antd'
 import {Link} from 'react-router'
 import './addUser.scss'
 import moment from 'moment'
@@ -10,9 +10,11 @@ import {local, session} from 'common/util/storage.js'
 import Disabled from './Disabled.jsx'
 import AddJobed from './AddJob.jsx'
 import IMG from 'assets/img.png'
+const createForm = Form.create;
 
 
-class ViewTheInformationed extends React.Component {
+@createForm()
+class ViewTheInformation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -112,7 +114,6 @@ class ViewTheInformationed extends React.Component {
               }
             })
            }
-           //console.log("getPosition职位>>>>",this.props.getPosition)
            if(this.props.getPosition){
             this.props.getPosition.map((item)=>{
               if(entrys[i].positionId == item.id){
@@ -172,7 +173,6 @@ class ViewTheInformationed extends React.Component {
       const add_position = !this.props.permissionAlias.contains("POSITION_ADD");
       let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
       let edit = !this.props.permissionAlias.contains('EMPLOYEE_EDIT');
-      console.log(USER)
       return(
         <div className="view-info">
           <div className="basicInformation">基本信息</div>
@@ -232,5 +232,4 @@ function mapStateToProps(state) {
     permissionAlias
   };
 }
-const viewTheInformation = Form.create()(ViewTheInformationed);
-export default connect(mapStateToProps)(viewTheInformation)
+export default connect(mapStateToProps)(ViewTheInformation)

@@ -8,8 +8,6 @@ import { Link } from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
 
-
-
 @createForm()
 class AddGroupChar extends React.Component {
   constructor(props) {
@@ -20,7 +18,6 @@ class AddGroupChar extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        //console.log(values);
         this.props.dispatch({
           type: 'activity/saveActivity',
           payload: values

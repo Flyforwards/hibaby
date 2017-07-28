@@ -63,12 +63,6 @@ class EditModule extends Component {
     const { visible, record , permissionList, projectList, menu } = this.props
     const { getFieldDecorator } = this.props.form;
     let modalTitle = "菜单模块：";
-    const formItemLayout = {
-      wrapperCol: {
-        xs: { span: 22 },
-        sm: { span: 25 },
-      },
-    };
     const children = projectList.map((res,index)=>{
       return (<Option key={res.id}>{res.name}</Option>)
     });

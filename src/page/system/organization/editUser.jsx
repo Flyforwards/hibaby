@@ -13,11 +13,8 @@ import UPload from 'common/Upload.js'
 import DeleteEnery from './DeleteEnery.jsx'
 
 const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
 const Option = Select.Option;
-const { MonthPicker, RangePicker } = DatePicker;
 const dateFormat = 'YYYY-MM-DD';
-let len = null
 let gmt_entry =null
 //地方中心字段
 let traversalDataId = []

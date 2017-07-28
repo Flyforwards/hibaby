@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,message} from 'antd'
+import {Modal, Form, Input, Radio, Select, Row, Col, Icon, Button,message} from 'antd'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import {local, session} from 'common/util/storage.js'
 import './AddJob.scss'
@@ -9,14 +9,12 @@ import _ from 'lodash';
 
 const createForm = Form.create
 const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 
-const departmentData = local.set("department")
 let traversalDataId = []
 
 @createForm()
-class AddJobed extends Component {
+class AddJob extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -25,78 +23,57 @@ class AddJobed extends Component {
         }
     }
     handleCancel() {
-       this.setState({
+      this.setState({
         TableData:null
       })
-        this.props.onCancel()
+      this.props.onCancel()
     }
-    handleOk() {
-        let endemic  = session.get("endemic")
-        let ID = window.location.search.split("=")[1]
-        const fields = this.props.form.getFieldsValue();
-        let roles = []
-        if(fields.affiliatedDepartment){
-          if(fields.position){
-            if(fields.systemRole){
-              fields.systemRole.map((item)=>{
-                roles.push({"roleId":item})
-              })
-              if(fields.information){
-                if(fields.companyEmail){
-                    this.props.dispatch({
-                        type: 'organization/addUserEntry',
-                        payload: {
-                          "contact":fields.information,
-                          "deptId": endemic.id,
-                          "emaill": fields.companyEmail,
-                          "extension":fields.internalExtension?fields.internalExtension:"",
-                          "leaderId": fields.directLeadership,//直系领导
-                          "positionId": fields.position,
-                          "roles":roles,
-                          "userId": this.props.ID
-                        }
-                    })
-                  this.props.onCancel()
-                    this.setState({
-                      TableData:null
-                    })
-                }else{
-                  message.warning('请填写公司邮箱')
-                }
 
-              }else{
-                 message.warning('请填写联系方式')
-              }
+    handleOk(e) {
+      e.preventDefault();
+      const { form, dispatch, ID } = this.props;
+      form.validateFields((err, values) => {
+        if (!err) {
+          const { TableData } = this.state;
+          let roles = []
 
-            }else{
-              message.warning('请选择系统角色')
+          values.roles.map((item)=>{
+            roles.push({"roleId":item})
+          })
+          dispatch({
+            type: 'organization/addUserEntry',
+            payload: {
+              "contact":values.contact,
+              "deptId": values.deptId,
+              "email": values.email,
+              "extension":values.extension,
+              "leaderId": TableData ? TableData.id:'', //直系领导
+              "positionId": values.positionId,
+              "roles": roles,
+              "userId": ID
             }
-
-          }else{
-            message.warning('请选择职位')
-          }
-
-        }else{
-          message.warning('请选择隶属部门')
-        }
-    }
-    checkbox() {
-        //console.log("checkbox")
-
-    }
-  //隶属部门被选中时调用的函数
-  affiliatedDepartment = (value,node, extra) => {
-    traversalDataId = []
-     this.props.dispatch({
-        type: 'organization/position',
-        payload: {
-          dataId: value
+          })
+          this.handleCancel()
         }
       })
-  }
+    }
+
+
+    // 隶属部门被选中时调用的函数
+    affiliatedDepartment = (value,node, extra) => {
+      traversalDataId = []
+       this.props.dispatch({
+          type: 'organization/position',
+          payload: {
+            dataId: value
+          }
+        })
+    }
+
     handleAfterClose() {
         this.props.form.resetFields()
     }
+
     select(){
       let endemic  = session.get("endemic")
       this.setState({
@@ -111,7 +88,6 @@ class AddJobed extends Component {
       })
     }
     headelReturnTabal(data){
-    //  console.log("data",data)
       this.setState({
         TableData:data[0]
       })
@@ -124,9 +100,9 @@ class AddJobed extends Component {
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
-    // 在componentDidMount里面使用函数节流防抖等功能
+     // 在componentDidMount里面使用函数节流防抖等功能
     asyncValidator(rule, value, callback) {
-      //  console.log(Date.now())
+        console.log(Date.now())
         setTimeout(() => {
             let now = Date.now()
             if (now % 2 === 1) {
@@ -141,7 +117,7 @@ class AddJobed extends Component {
       const SelectData = local.get("rolSelectData")
       let selectDataList = []
       const {visible, form, confirmLoading} = this.props;
-      const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+      const { getFieldDecorator } = form;
       if(this.props.dataEndemicId != null){
           traversalEndemicId = this.props.dataEndemicId.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
@@ -161,130 +137,154 @@ class AddJobed extends Component {
         })
       }
       let endemic  = session.get("endemic")
-        return (
-            <Modal
-                visible={visible}
-                title="添加职位"
-                okText="保存"
-                cancelText="返回"
-                wrapClassName="AddJob"
-                closable={false}
-                confirmLoading={confirmLoading}
-                afterClose={this.handleAfterClose.bind(this)}
-                onCancel={this.handleCancel.bind(this)}
-                onOk={this.handleOk.bind(this)}
-                style={{pointerEvents: confirmLoading ? 'none' : ''}}
-                maskClosable={!confirmLoading}
-                width={ 900 }
-            >
-            <div className="AddChildNode">
-              <div className="entryInformation">职位信息</div>
-              <Form layout="inline" className="entryInformationForm">
-            <FormItem
-             label="地方中心"
-             className="localCenter"
-             required
-            >
-              {getFieldDecorator('localCenter', {
-                initialValue: endemic.name,
-              })(
-             <Input  disabled = { true }/>
-              )}
-            </FormItem>
-            <FormItem
-             label="隶属部门"
-             className="affiliatedDepartment"
-             required
-            >
-            { getFieldDecorator("affiliatedDepartment",{
-            })(
-              <Select placeholder="请选择" onSelect = {this.affiliatedDepartment.bind(this)}>
-                { traversalEndemicId }
-              </Select>
-            )}
-            </FormItem>
-            <FormItem
-             label="直系领导"
-             className="directLeadership"
-            >
-              {getFieldDecorator('directLeadership', {
-                initialValue: this.state.TableData?this.state.TableData.id:"",
-              })(
-                <Input disabled={true}/>
-              )}
-            </FormItem>
-            <FormItem
-             className="button"
-            >
-            <Button type="primary" onClick={this.select.bind(this)}>选择</Button>
-            </FormItem>
-            <FormItem
-             label="职位"
-             className="position"
-             required
-            >
-            { getFieldDecorator("position",{
-            })(
-              <Select placeholder="请选择">
-                { traversalDataId }
-              </Select>
-            )}
-            </FormItem>
-            <br/>
-            <FormItem
-             label="系统角色"
-             className="systemRole"
-             required
-            >
-            { getFieldDecorator("systemRole",{
-            })(
-              <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
-                { selectDataList }
-              </Select>
-            )}
-            </FormItem>
-          </Form>
-          <div className="contactInformation">联系方式</div>
-          <Form layout="inline" className="contactInformationForm">
-            <FormItem
-             label="联系方式"
-             className="information"
-             required
-            >
-              {getFieldDecorator('information', {
-                rules: [{
-                    pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '联系方式不正确'
-                }],
-              })(
-                <Input/>
-              )}
-            </FormItem>
-            <FormItem
-             label="公司邮箱"
-             className="companyEmail"
-             required
-            >
-              {getFieldDecorator('companyEmail', {
-                 rules: [{
-                    type: 'email', message: '邮箱格式不正确'
-                  }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <br/>
-             <FormItem
-             label="内部分机"
-             className="internalExtension"
-            >
-              {getFieldDecorator('internalExtension', {
-                rules: [{
-                  pattern:/^[0-9\-]{0,20}$/, message: '请正确输入内部分机'
-                }],
-              })(
-                <Input />
-              )}
-            </FormItem>
+
+      const formItemLayout = {
+        labelCol: {
+           span: 6
+        },
+        wrapperCol: {
+           span: 13
+        },
+      };
+      return (
+          <Modal
+              visible={visible}
+              title="添加职位"
+              okText="保存"
+              cancelText="返回"
+              closable={false}
+              confirmLoading={confirmLoading}
+              afterClose={this.handleAfterClose.bind(this)}
+              onCancel={this.handleCancel.bind(this)}
+              onOk={this.handleOk.bind(this)}
+              style={{pointerEvents: confirmLoading ? 'none' : ''}}
+              maskClosable={!confirmLoading}
+              wrapClassName="AddJob"
+              width={ 900 }
+          >
+            <Form style={{ margin: '10px' }}>
+              <div className="title-information">职位信息</div>
+              <Row>
+                <Col span={12}>
+                  <FormItem
+                    label="地方中心"
+                    {...formItemLayout}
+                  >
+                    {getFieldDecorator('localCenter', {
+                      initialValue: endemic.name,
+                      rules: [{ required: true }]
+                    })(
+                      <Input  readOnly = { true }/>
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="隶属部门"
+                    {...formItemLayout}
+                  >
+                    { getFieldDecorator("deptId",{
+                      rules: [{ required: true, message: '请选择隶属部门!'}]
+                    })(
+                      <Select placeholder="请选择" onSelect = {this.affiliatedDepartment.bind(this)}>
+                        { traversalEndemicId }
+                      </Select>
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>
+                  <FormItem
+                    label="直系领导"
+                    {...formItemLayout}
+                  >
+                    {getFieldDecorator('leaderId', {
+                      initialValue: this.state.TableData?this.state.TableData.name:"",
+                    })(
+                      <Input readOnly={true}/>
+                    )}
+                    <Button className='right-button' onClick={this.select.bind(this)}>选择</Button>
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="职位"
+                    {...formItemLayout}
+                  >
+                    { getFieldDecorator("positionId",{
+                      rules: [{ required: true, message: '请选择职位!'}]
+                    })(
+                      <Select placeholder="请选择">
+                        { traversalDataId }
+                      </Select>
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>
+                  <FormItem
+                    label="系统角色"
+                    {...formItemLayout}
+                  >
+                    { getFieldDecorator("roles",{
+                      rules: [{ required: true, message: '请选择系统角色!'}]
+                    })(
+                      <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
+                        { selectDataList }
+                      </Select>
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <div className="title-information">联系方式</div>
+              <Row>
+                <Col span={12}>
+                  <FormItem
+                    label="联系方式"
+                    {...formItemLayout}
+                  >
+                    {getFieldDecorator('contact', {
+                      rules: [{ required: true}, {
+                        pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '联系方式不正确'
+                      }],
+                    })(
+                      <Input/>
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="公司邮箱"
+                    {...formItemLayout}
+                  >
+                    {getFieldDecorator('email', {
+                      rules: [{ required: true}, {
+                        type: 'email', message: '邮箱格式不正确'
+                      }],
+                    })(
+                      <Input />
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>
+                  <FormItem
+                    label="内部分机"
+                    {...formItemLayout}
+                  >
+                    {getFieldDecorator('extension', {
+                      rules: [ {
+                        pattern:/^[0-9\-]{0,20}$/, message: '请正确输入内部分机'
+                      }],
+                    })(
+                      <Input />
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
           </Form>
           <SelectTheNodeFrom
            visible={ this.state.visible}
@@ -292,9 +292,8 @@ class AddJobed extends Component {
            treeData = {this.props.LeagerData}
            headelReturnTabal= {this.headelReturnTabal.bind(this)}
           />
-          </div>
-          </Modal>
-        )
+        </Modal>
+      )
     }
 }
 
@@ -316,4 +315,4 @@ function mapStateToProps(state) {
     code
   }
 }
-export default connect(mapStateToProps)(AddJobed)
+export default connect(mapStateToProps)(AddJob)
