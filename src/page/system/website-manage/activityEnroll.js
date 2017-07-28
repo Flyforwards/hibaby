@@ -109,6 +109,50 @@ class ActivityEnroll extends React.Component{
       }
     })
   }
+
+  exportMethod(tableid) {
+
+    var curTbl = <table id="tableExcel" width="100%" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="5" align="center">html 表格导出道Excel</td>
+      </tr>
+      <tr>
+        <td>列标题1</td>
+        <td>列标题2</td>
+        <td>类标题3</td>
+        <td>列标题4</td>
+        <td>列标题5</td>
+      </tr>
+      <tr>
+        <td>aaa</td>
+        <td>bbb</td>
+        <td>ccc</td>
+        <td>ddd</td>
+        <td>eee</td>
+      </tr>
+      <tr>
+        <td>AAA</td>
+        <td>BBB</td>
+        <td>CCC</td>
+        <td>DDD</td>
+        <td>EEE</td>
+      </tr>
+      <tr>
+        <td>FFF</td>
+        <td>GGG</td>
+        <td>HHH</td>
+        <td>III</td>
+        <td>JJJ</td>
+      </tr>
+    </table>  ;
+    this.tableToExcel(curTbl)
+  }
+
+
+   tableToExcel(table) {
+      window.location.href = 'http://dev.hbbcare.com:8087/crm/api/v1/web/webApply/getExcel'
+  }
+
   render(){
     const dataSource = this.props.activityEnroll.enrollPageList;
     const pagination = {
@@ -121,10 +165,12 @@ class ActivityEnroll extends React.Component{
     return(
 
       <Card className="website-banner">
-        <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
+        <div className = "websiteAddBtn" style = {{height:'40px'}}>
           <Link to="/system/website-manage/addActivityEnroll">
             <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>新增</Button>
           </Link>
+          <Button className="one-button" onClick={this.exportMethod.bind(this)} style={{float:'right',marginBottom:'10px',marginRight:'10px'}}>导出</Button>
+
         </div>
         {/*<Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>*/}
         <Table

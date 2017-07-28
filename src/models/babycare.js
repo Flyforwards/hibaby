@@ -23,8 +23,10 @@ export default {
     //主标题 ---专家团队修改判断
     modalVisible:false,
     imgListArr:[],
+    imgList2Arr:[],
     //上传图片按钮
     imgBtn:false,
+    img2Btn:false,
   },
   reducers:{
     //改变modal
@@ -42,6 +44,11 @@ export default {
       imglist[0].uid = imglist[0].name
       return {...state,imgListArr:imglist,imgBtn:true}
     },
+    //新增图片
+    onAddImg2(state,{payload:imglist}){
+      imglist[0].uid = imglist[0].name
+      return {...state,imgList2Arr:imglist,img2Btn:true}
+    },
     //删除图片
     onDeleteImg(state,{payload:imglist}){
       let imgArr = state.imgListArr;
@@ -55,20 +62,42 @@ export default {
 
       return { ...state,imgListArr:imgArr,imgBtn:false}
     },
+    //删除图片
+    onDeleteImg2(state,{payload:imglist}){
+      let imgArr = state.imgList2Arr;
+
+      for(let i=0; i < imgArr.length; i++) {
+        if(imgArr[i].name == imglist[0].name) {
+          imgArr.splice(i,1);
+          break;
+        }
+      }
+
+      return { ...state,imgList2Arr:imgArr,img2Btn:false}
+    },
     //添加初始数据
     addInitialList(state,{payload:{data:initialList}}){
       let content = initialList ? initialList.content:null;
-      if(initialList != null && initialList.img1 != ""){
-        let imgListArr = [{
-          uid:0,
-          name:initialList.img1,
-          url:initialList.img1Url,
-        }]
-        return { ...state,initialList,imgListArr,content,imgBtn:true}
-      }else{
-        let imgListArr = null;
-        return { ...state,initialList,imgListArr,content,imgBtn:false};
+      let imgListArr = null
+      let imgList2Arr = null
+      if(initialList != null){
+        if(initialList.img1 != ""){
+          imgListArr = [{
+            uid:0,
+            name:initialList.img1,
+            url:initialList.img1Url,
+          }]
+        }
+        if(initialList.img2 != ""){
+          imgList2Arr = [{
+            uid:0,
+            name:initialList.img2,
+            url:initialList.img2Url,
+          }]
+        }
       }
+
+      return { ...state,initialList,imgList2Arr,imgListArr,content,imgBtn:imgListArr,img2Btn:imgList2Arr}
     },
 
   },
@@ -84,6 +113,8 @@ export default {
             data:data[0]
           }
         })
+        yield put({type:'changeModal', payload:{"modalVisible":false,}})
+
       }
     },
 

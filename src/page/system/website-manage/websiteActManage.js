@@ -18,6 +18,7 @@ class ActivityManage extends Component {
   callback(key) {
     this.props.dispatch({type:'AllWebSiteManage/tabChange',payload:{ServiceActKey:key}})
     this.props.dispatch({type:'websiteBabyCare/getInitialList',payload:{str:dict[key]}});
+
   }
 
   render() {

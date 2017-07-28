@@ -44,13 +44,8 @@ class WebsiteBabyService extends React.Component{
         title: '操作',
         dataIndex: 'operation',
         render: (text, record, index) => {
-          return (
-            <span>
+          return (<span>
             <Link disabled={false} className="one-link" to={`/system/website-manage/addbabycare?type=${this.props.initialList ? this.props.initialList.type:''}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
-              {/*<Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>*/}
-              {/*<Link disabled={false} className="one-link">删除</Link>*/}
-              {/*</Popconfirm>*/}
-
           </span>
           )
         },
@@ -63,9 +58,7 @@ class WebsiteBabyService extends React.Component{
   }
 
   componentDidMount() {
-
-
-    this.loadData()
+    this.hideModel()
   }
 
   loadData(){
@@ -82,26 +75,23 @@ class WebsiteBabyService extends React.Component{
 
   //隐藏弹框
   hideModel() {
-    this.props.dispatch({
-      type:'websiteBabyCare/changeModal',
-      payload:{
-        "modalVisible":false,
-      }
-    })
     this.loadData()
     this.props.form.resetFields()
   }
   //modal确定 保存
   confirmModel() {
     const {form,dispatch} = this.props;
-    const typenum = this.props.superData.type1;
     let img1String = '';
+    let img2String = '';
     form.validateFields((err, values) => {
       if(!err){
         if(this.props.imgListArr && this.props.imgListArr.length > 0){
           img1String = this.props.imgListArr[0].name ? this.props.imgListArr[0].name:'';
         }
-        values.img1 = img1String;
+        if(this.props.imgList2Arr && this.props.imgList2Arr.length > 0){
+          img1String = this.props.imgList2Arr[0].name ? this.props.imgList2Arr[0].name:'';
+        }
+        values.img2 = img2String;
 
         if (!values.content){
           values.content = this.props.content
@@ -153,6 +143,23 @@ class WebsiteBabyService extends React.Component{
     })
   }
 
+  //添加图片
+  onAddImg2(...values){
+    this.props.dispatch({
+      type:'websiteBabyCare/onAddImg2',
+      payload:values
+    })
+  }
+  //删除图片
+  onDeleteImg2(...values){
+    this.props.form.resetFields()
+    this.props.dispatch({
+      type:'websiteBabyCare/onDeleteImg2',
+      payload:values
+    })
+  }
+
+
   listOnAdd(){
     this.props.dispatch({
       type:'websiteBanner/setNewValue'
@@ -168,7 +175,7 @@ class WebsiteBabyService extends React.Component{
 
   render(){
 
-    const {imgBtn,initialList,modalVisible,content,imgListArr,loading,expertInitialList} =this.props;
+    const {imgBtn,imgList2Arr,img2Btn,initialList,modalVisible,content,imgListArr,loading,expertInitialList} =this.props;
     let size = false
     if(imgListArr ){
       if( imgListArr.length > 0 ){
@@ -176,10 +183,22 @@ class WebsiteBabyService extends React.Component{
       }
     }
 
+    let size2 = false
+    if(imgList2Arr ){
+      if( imgList2Arr.length > 0 ){
+        size2 = true
+      }
+    }
+
     let btnDisabled = true
+    let btnDisabled2 = true
+
     if( modalVisible){
       if(!imgBtn ){
         btnDisabled = false
+      }
+      if(!img2Btn ){
+        btnDisabled2 = false
       }
     }
 
@@ -282,6 +301,7 @@ class WebsiteBabyService extends React.Component{
                   </Col>
 
                 </Row>
+
                 <Row>
                   <Col span={8} style={{width:'300px'}}>
                     <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
@@ -301,8 +321,30 @@ class WebsiteBabyService extends React.Component{
                       )}
                     </FormItem>
                   </Col>
-
                 </Row>
+
+
+                {this.props.superData.type1 == '2-2' ?  <Row>
+                  <Col span={8} style={{width:'300px'}}>
+                    <FormItem label="图片展示2:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                      {getFieldDecorator('img2', {initialValue: '',})(
+                        <FileUpload  defaultFileList={imgList2Arr} addImgFun={this.onAddImg2.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg2.bind(this)} imgInputName="">
+                          <Button key="1" disabled={btnDisabled2}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                        </FileUpload>
+                      )}
+                    </FormItem>
+                  </Col>
+
+                  <Col span={8} style={{width:'300px'}}>
+                    <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                      {getFieldDecorator('img2Size', {rules: [{ required: size2, message: '请输入图片尺寸'}],
+                        initialValue: initialList ? initialList.img2Size:'',})(
+                        <Input placeholder="请输入图片尺寸，有图片时必填" readOnly={!modalVisible}/>
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>:''}
+
                 <Row>
                   <Col style={{width:'480px'}}>
                     <FormItem label="内容摘要:" {...formItemLayouts} style={{fontWeight:'900',textAlign:'left'}}>
