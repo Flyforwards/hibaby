@@ -170,7 +170,7 @@ export default {
     },
     //修改专家信息
     *updateExpert({payload:values},{call,put}){
-
+      console.log('修改2')
       const { data:{data,code}} = yield call(websiteBabyCare.updateExpert,values);
       if(code == 0) {
         message.success("更新成功");

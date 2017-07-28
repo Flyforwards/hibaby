@@ -223,7 +223,7 @@ class moduleIndex extends Component {
               <div className="button-group">
                   <Button className="button-group-1" onClick={this.handleSearch.bind(this)}>查询</Button>
                   <Button className="button-group-2" onClick={this.handleReset.bind(this)}>清空</Button>
-                  <Button className="button-group-3" onClick={this.addMenuList.bind(this)}>新增</Button>
+                  <Button className="button-group-3" onClick={this.addMenuList.bind(this)}>添加</Button>
               </div>
           </Form>
         </div>

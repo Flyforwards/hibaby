@@ -122,7 +122,7 @@ class permissionInside extends Component {
                 <div className="button-group">
                   <Button className="button-group-1" onClick={ this.Inquire.bind(this)}>查询</Button>
                   <Button className="button-group-2" onClick={ this.emptied.bind(this) }>重置</Button>
-                  <Button className="button-group-3" onClick={ this.addList.bind(this) }>新增</Button>
+                  <Button className="button-group-3" onClick={ this.addList.bind(this) }>添加</Button>
                 </div>
               </div>
               <TabalList form={form} />

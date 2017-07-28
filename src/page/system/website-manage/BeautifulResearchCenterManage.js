@@ -29,7 +29,8 @@ class ActivityManage extends Component {
     let ary = []
     Object.keys(dict).map((key) => {
       if (dict[key]){
-        ary.push(<TabPane tab={key} key={key}><BabyService superData={dict[key]}/></TabPane>)      }
+        const div = <BabyService superData={dict[key]}/>
+        ary.push(<TabPane tab={key} key={key}>{div}</TabPane>)      }
     })
 
     return (

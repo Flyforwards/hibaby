@@ -100,14 +100,9 @@ class WebsiteBabyService extends React.Component{
         values.img1 = img1String;
 
 
-        console.log(values.content)
-        return;
-
         if (!values.content){
           values.content = this.props.content
         }
-
-        console.log(values)
         if (!err) {
           dispatch({
             type: 'websiteBabyCare/updateExpert',
@@ -118,6 +113,7 @@ class WebsiteBabyService extends React.Component{
             }
           })
         }
+
       }
     })
   }
@@ -396,7 +392,7 @@ class WebsiteBabyService extends React.Component{
             typeof con === 'object' ?<Card style={{marginTop:'20px'}}>
               <Row>
                 <Col span ={24}>
-                  <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>新增</Button>
+                  <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button>
                 </Col>
               </Row>
               <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>
@@ -408,7 +404,7 @@ class WebsiteBabyService extends React.Component{
             <Card style={{marginTop:'20px'}}>
               <Row>
                 <Col span ={24}>
-                  <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.listOnAdd.bind(this)}>新增</Button>
+                  <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.listOnAdd.bind(this)}>添加</Button>
                 </Col>
               </Row>
                 <Table className='management-center' bordered columns={ ListColumns } {...ListTableProps} rowKey="id"/>
