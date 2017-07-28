@@ -100,14 +100,9 @@ class WebsiteBabyService extends React.Component{
         values.img1 = img1String;
 
 
-        console.log(values.content)
-        return;
-
         if (!values.content){
           values.content = this.props.content
         }
-
-        console.log(values)
         if (!err) {
           dispatch({
             type: 'websiteBabyCare/updateExpert',
@@ -118,6 +113,7 @@ class WebsiteBabyService extends React.Component{
             }
           })
         }
+
       }
     })
   }
