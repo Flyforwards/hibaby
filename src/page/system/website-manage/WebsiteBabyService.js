@@ -54,7 +54,12 @@ class WebsiteBabyService extends React.Component{
     this.dataSorce=[];
   }
   onDeleteOne(record){
-
+    this.props.dispatch({
+      type:'websiteBabyCare/deleteExpert',
+      payload:{
+        'dataId':record,
+      }
+    })
   }
 
   componentDidMount() {
@@ -89,14 +94,20 @@ class WebsiteBabyService extends React.Component{
           img1String = this.props.imgListArr[0].name ? this.props.imgListArr[0].name:'';
         }
         if(this.props.imgList2Arr && this.props.imgList2Arr.length > 0){
-          img1String = this.props.imgList2Arr[0].name ? this.props.imgList2Arr[0].name:'';
+          img2String = this.props.imgList2Arr[0].name ? this.props.imgList2Arr[0].name:'';
         }
         values.img2 = img2String;
+        values.img1 = img1String;
+
+
+        console.log(values.content)
+        return;
 
         if (!values.content){
           values.content = this.props.content
         }
 
+        console.log(values)
         if (!err) {
           dispatch({
             type: 'websiteBabyCare/updateExpert',
@@ -207,16 +218,21 @@ class WebsiteBabyService extends React.Component{
     if(content){
       try {
         contentArr = eval(content)
-        con =[];
-        contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
-          v.id = i ;
-          con.push(v)
-        }):content;
+        if(contentArr && contentArr.length > 0 ){
+          con =[];
+          contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
+            v.id = i ;
+            con.push(v)
+          }):content;
+        }
+
       }
       catch (e){
 
       }
     }
+
+    console.log(content)
 
     const ListColumns = [{
       title:"ID",
@@ -355,7 +371,7 @@ class WebsiteBabyService extends React.Component{
                   </Col>
                 </Row>
 
-                {typeof con == 'string' ?
+                {typeof con === 'object' ?'':
                   <Row>
                   <Col style={{width:'600'}}>
                     <FormItem label="内容:" {...contetnItemLayouts} style={{fontWeight:'900',textAlign:'left'}}>
@@ -364,7 +380,7 @@ class WebsiteBabyService extends React.Component{
                       )}
                     </FormItem>
                   </Col>
-                </Row> :''}
+                </Row> }
               </Form>
             </div>
             <Row>
@@ -377,14 +393,14 @@ class WebsiteBabyService extends React.Component{
           </Card>
 
           {
-            typeof con == 'string' ? '':<Card style={{marginTop:'20px'}}>
+            typeof con === 'object' ?<Card style={{marginTop:'20px'}}>
               <Row>
                 <Col span ={24}>
                   <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>新增</Button>
                 </Col>
               </Row>
               <Table className='management-center' bordered columns={ this.columns } dataSource={con} rowKey="id"/>
-            </Card>
+            </Card>:''
           }
 
 

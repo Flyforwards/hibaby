@@ -8,6 +8,8 @@ import * as websiteBabyCare from '../services/babycare';
 import { TypeKey } from '../page/system/website-manage/TypeKey';
 import { format,queryURL } from '../utils/index';
 
+let tempType = ''
+
 export default {
   namespace:'websiteBabyCare',
   state:{
@@ -120,7 +122,7 @@ export default {
 
 
     *getExpertInitialList({payload:values},{call,put}){
-
+      tempType = values
         const {data:{data,code}} = yield call(websiteBabyCare.getExpertInitialList,values);
         if(code == 0){
           yield put({
@@ -145,6 +147,10 @@ export default {
     *deleteExpert({payload:values},{call,put}){
       const {data:{data,code}} = yield call(websiteBabyCare.deleteExpert,values);
       if(code == 0) {
+        yield put({
+          type: 'getExpertInitialList',
+          payload : tempType
+        });
 
         message.success("删除成功");
       }
@@ -181,7 +187,6 @@ export default {
         }
       }
     }
-
   },
   subscriptions:{
     setup({ dispatch,history}){

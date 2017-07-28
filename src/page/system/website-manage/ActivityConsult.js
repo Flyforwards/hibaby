@@ -24,7 +24,6 @@ class ActivityManage extends Component {
     }  }
 
   render() {
-    console.log(this.props)
     let ary = []
     Object.keys(dict).map((key) => {
       if (dict[key]){
