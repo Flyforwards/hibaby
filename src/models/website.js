@@ -30,6 +30,8 @@ export default {
     img1Btn:false,
     img2Btn:false,
     modalVisible:false,
+    subMitImg:'',
+
   },
   reducers:{
     //设置为空
@@ -129,7 +131,18 @@ export default {
     },
     //保存一个专家信息
     saveOneExpert(state,{payload:{data:oneExpertMsg}}){
-        return {...state,oneExpertTitleMsg:oneExpertMsg};
+      let subMitImg = oneExpertMsg?(oneExpertMsg.img1?{
+        uid:0,
+        name:oneExpertMsg.img1,
+        url:oneExpertMsg.img1Url
+      }:''):''
+      console.log('图片')
+      console.log(subMitImg)
+        return {...state,oneExpertTitleMsg:oneExpertMsg,subMitImg};
+    },
+    savaSubMitImg(state,{payload:data}){
+
+      return {...state,subMitImg:data};
     },
     //根据ID获取的信息
     saveExpertById(state,{payload:{data:ExpertIdMsg}}){

@@ -4,6 +4,7 @@
 import React ,{ Component } from 'react';
 import { connect } from 'dva';
 import './WebsiteBanner.scss';
+import FileUpload from './fileUpload';
 import { Table, Input, Icon, Button, Popconfirm, Pagination ,Card,Form,Row,Col,Modal,Select} from 'antd';
 import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
@@ -65,17 +66,6 @@ class ExpertIntroduction extends React.Component{
       },
       width: '20%'
     }];
-    this.dataSorce=[{
-        "id":1,
-        "title":'展架',
-        "summary":'我是测试的',
-        "content":'我是正文',
-      },{
-        "id":2,
-        "title":'安其拉',
-        "summary":'法师',
-        "content":'甜美小萝莉',
-      }];
   }
 
   componentDidMount() {
@@ -97,16 +87,17 @@ class ExpertIntroduction extends React.Component{
   //隐藏弹框
   hideModel() {
     this.setState({
-      modalVisible:false,
-    })
+      modalVisible:false,})
 
   }
   //modal确定 保存
   confirmModel() {
     const {form,dispatch,oneExpertTitleMsg} = this.props;
-    const { validateFields } = form;
     const typenum = this.props.superData.type1;
     form.validateFields((err, values) => {
+      if(this.props.subMitImg){
+        values.img1 = this.props.subMitImg.name
+      }
       values.type = typenum;
       if (!err) {
         dispatch({
@@ -117,12 +108,14 @@ class ExpertIntroduction extends React.Component{
           }
         })
       }
+      form.resetFields()
+      this.hideModel()
     })
-    form.resetFields()
-    this.hideModel()
+
   }
   //点击修改
   upDateTitle() {
+    console.log('??')
     this.setState({
       modalVisible:true,
     })
@@ -145,9 +138,31 @@ class ExpertIntroduction extends React.Component{
     callback('不能为空');
   }
 
-  render(){
-    const { expertInitialList,loading,oneExpertMsg,oneExpertTitleMsg,readAble} =this.props;
+  onDeleteImg(){
+    this.props.dispatch({
+      type:'websiteBanner/savaSubMitImg',
+      payload:''
+    })
+  }
+
+  onAddImg(...values){
+    let value = values[0]
+    value.uid = value.name
+    this.props.dispatch({
+      type:'websiteBanner/savaSubMitImg',
+      payload:value
+    })
+
+  }
+
+
+
+render(){
+    const { expertInitialList,loading,oneExpertTitleMsg,subMitImg} =this.props;
     const { getFieldDecorator } = this.props.form;
+    const {modalVisible} = this.state
+
+
     const formItemLayout = {
       labelCol:{ span: 6 },
       wrapperCol:{ span:17}
@@ -157,19 +172,41 @@ class ExpertIntroduction extends React.Component{
       dataSource:expertInitialList,
       pagination:false,
     };
+
+  let btnDisabled = true
+
+  if( modalVisible){
+    if(!subMitImg ){
+      btnDisabled = false
+    }
+  }
+
+    console.log(subMitImg)
     return(
       <Card className="expertIntroduction" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
+
+
+
+          <Form>
             <Row>
               <Col span={8} style={{width:'300px'}}>
-                <Row>
-                  <Col span={6}><p style={{lineHeight:'28px'}}>主标题名:</p></Col>
-                  <Col span={17}><Input placeholder="" value={oneExpertTitleMsg?oneExpertTitleMsg.title:''} readOnly={true}/></Col>
-                </Row>
+                <FormItem label="主标题名:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                  {getFieldDecorator('title', {
+                    initialValue:oneExpertTitleMsg?oneExpertTitleMsg.title:'',
+                    rules: [{validator:this.checkPrice, required: true, }],
+                  })(
+                    <Input placeholder="请输入主标题名"  />
+                  )}
+                </FormItem>
 
 
               </Col>
-             <Col span ={6}><Button className="btnAdd" onClick={this.upDateTitle.bind(this)}>修改</Button></Col>
+              <Col span ={6}>
+                <Button className="btnAdd" style={{float:'left'}} onClick={!modalVisible?this.upDateTitle.bind(this):this.confirmModel.bind(this)}>
+                  {!modalVisible?'修改':'确定'}</Button>
+                <Button className="btnAdd" display style={{display:!modalVisible?'none':'',float:'left',marginLeft:'10px'}} onClick={this.hideModel.bind(this)}>取消</Button>
+              </Col>
               <Col span={10}>
                 {
                   this.props.superData && this.props.superData.type2 ?
@@ -178,34 +215,34 @@ class ExpertIntroduction extends React.Component{
 
               </Col>
             </Row>
-        </div>
-        <Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>
-        <Modal
-          title="主标题修改"
-          wrapClassName="vertical-center-modal"
-          visible={this.state.modalVisible}
-          onOk={this.confirmModel.bind(this)}
-          okText="保存"
-          cancelText="取消"
-          width={500}
-          maskClosable={ true }
-          onCancel={this.hideModel.bind(this)}
-        >
-          <Form>
-            <FormItem label="主标题名:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
-              {getFieldDecorator('title', {
-                initialValue:oneExpertTitleMsg?oneExpertTitleMsg.title:'',
-                rules: [{validator:this.checkPrice, required: true, }],
-              })(
-                <Input placeholder="请输入主标题名"  />
-              )}
-            </FormItem>
+
+          {(this.props.superData.type1 === '4-1'|| this.props.superData.type1 === '7-3'|| this.props.superData.type1 === '1-2-2') ?
+            <Row>
+              <Col span={8} style={{width:'300px'}}>
+                <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                  {getFieldDecorator('img1', {initialValue: '',})(
+                    <FileUpload  defaultFileList={subMitImg?[subMitImg]:''} addImgFun={this.onAddImg.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg.bind(this)} imgInputName="">
+                      <Button key="1" disabled={btnDisabled}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                    </FileUpload>
+                  )}
+                </FormItem>
+              </Col>
+
+              <Col span={8} style={{width:'300px'}}>
+                <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                  {getFieldDecorator('img1Size', {rules: [{ required: subMitImg?true:false, message: '请输入图片尺寸'}],
+                    initialValue: oneExpertTitleMsg ? oneExpertTitleMsg.img1Size:'',})(
+                    <Input placeholder="请输入图片尺寸，有图片时必填" readOnly={!modalVisible}/>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+            :
+            ''}
           </Form>
 
-
-
-
-        </Modal>
+        </div>
+        <Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>
       </Card>
 
     )
@@ -215,7 +252,6 @@ class ExpertIntroduction extends React.Component{
 }
 
 function mapStateToProps(state){
-  const {expertInitialList,oneExpertTitleMsg,oneExpertMsg} = state.websiteBanner;
   return {
     ...state.websiteBanner,
     loading:state.loading.models.websiteBanner,
