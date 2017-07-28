@@ -83,6 +83,7 @@ class CustomerCompDetailIndex extends React.Component {
     const backBtn = <Button key='1' className="button-group-bottom-1" onClick={this.back.bind(this)}>返回</Button>
     const delBtn = <Button key='2' disabled={!del} className="button-group-bottom-2" onClick={ this.delete.bind(this) }>删除</Button>
     const saveBtn = <Button key='3' disabled={!save} className="button-group-bottom-3" onClick={ this.handleSubmit.bind(this) }>保存</Button>;
+    const finishBtn = <Button key='4' disabled={!finish} className="button-group-bottom-3" onClick={ this.finish.bind(this) }>已处理</Button>
     let buttons = (
       <div className="button-group-bottom-common">
         { [backBtn, delBtn] }
@@ -110,7 +111,7 @@ class CustomerCompDetailIndex extends React.Component {
       if (finish) {
         buttons = (
           <div className="button-group-bottom-common">
-            { [backBtn, delBtn, saveBtn] }
+            { [backBtn, delBtn, finishBtn] }
           </div>)
       }
       card = (
