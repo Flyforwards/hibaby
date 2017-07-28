@@ -8,7 +8,7 @@ import ActivityEnroll from './activityEnroll'
 const TabPane = Tabs.TabPane;
 import { connect } from 'dva';
 
-const dict = {'城市布局':{type1:'6-1',type2:'6-1-1'},'企业介绍':{type1:'7-1'},'品牌文化':{type1:'7-2'},
+const dict = {'城市布局':{type1:'6-1',type2:'6-1-1'},'企业介绍':{type1:'7-1'},'品牌文化':{type1:'7-2'},'联系我们':{type1:'7-4'},
   '新闻动态':{type1:'7-3',type2:'7-3-1'}}
 
 class ActivityManage extends Component {
@@ -21,7 +21,7 @@ class ActivityManage extends Component {
     this.props.dispatch({type:'AllWebSiteManage/tabChange',payload:{AboutActKey:key}})
     if(dict[key]){
       const {type1,type2} = dict[key];
-      if (key === '企业介绍' || key === '品牌文化'){
+      if (key === '企业介绍' || key === '品牌文化'|| key === '联系我们'){
         this.props.dispatch({type:'websiteBabyCare/getInitialList',payload:{str:dict[key].type1}});
       }else {
         this.props.dispatch(type2?{type:'websiteBanner/getExpertInitialList',payload:{"str":type2,}}
@@ -35,7 +35,7 @@ class ActivityManage extends Component {
     let ary = []
     Object.keys(dict).map((key) => {
       if (dict[key]){
-        if (key === '企业介绍' || key === '品牌文化'){
+        if (key === '企业介绍' || key === '品牌文化'|| key === '联系我们'){
           ary.push(<TabPane tab={key} key={key}><BabyService superData={{type1:dict[key].type1}}/></TabPane>)
         }
         else{

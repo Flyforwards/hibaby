@@ -181,7 +181,6 @@ render(){
     }
   }
 
-    console.log(subMitImg)
     return(
       <Card className="expertIntroduction" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>

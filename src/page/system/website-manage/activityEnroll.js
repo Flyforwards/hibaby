@@ -167,7 +167,7 @@ class ActivityEnroll extends React.Component{
       <Card className="website-banner">
         <div className = "websiteAddBtn" style = {{height:'40px'}}>
           <Link to="/system/website-manage/addActivityEnroll">
-            <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>新增</Button>
+            <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>添加</Button>
           </Link>
           <Button className="one-button" onClick={this.exportMethod.bind(this)} style={{float:'right',marginBottom:'10px',marginRight:'10px'}}>导出</Button>
 

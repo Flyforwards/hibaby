@@ -88,7 +88,7 @@ class WebSiteBanner extends React.Component{
       <Card className="website-banner" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
           <Link to="/system/website-manage/add">
-            <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}}>新增</Button>
+            <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}}>添加</Button>
           </Link>
         </div>
         <Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>
