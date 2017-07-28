@@ -40,7 +40,6 @@ class AddGroupChar extends React.Component {
       },
     };
 
-
     return (
       <div className="activity-cent">
           <Card title = "活动信息:">
