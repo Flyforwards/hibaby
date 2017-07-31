@@ -1,13 +1,13 @@
 "use strict"
+
 import React, {Component} from 'react'
 import {connect} from 'dva'
 import {Icon, Card, Input, Select, DatePicker, Button, Table, Popconfirm, Pagination} from 'antd'
 import Page from '../../../framework/page'
-import request from '../../../common/request/request.js'
-import FileUpload from '../../../component/file-upload/FileUpload.jsx'
 import './LogView.scss'
 import Current from '../../Current'
 const Option = Select.Option;
+
 class EditableCell extends React.Component {
   state = {
     value: this.props.value,
@@ -58,7 +58,7 @@ class EditableCell extends React.Component {
     );
   }
 }
-class LogViewed extends Component {
+class LogView extends Component {
     constructor(props) {
         super(props)
          this.columns = [{
@@ -174,38 +174,6 @@ class LogViewed extends Component {
     }
 }
 
-function LogView({
-  dispatch,
-  loading,
-  data: list,
-  total,
-  page,
-  results,
-  range,
-  code
-}) {
-
-  return ( < div >
-    < LogViewed dispatch = {
-      dispatch
-    }
-    list = {
-      list
-    }
-    loading = {
-      loading
-    }
-
-    total = {
-      total
-    }
-    page={page}
-    results={results}
-    range={range}
-    /> </div>
-  )
-
-}
 function mapStateToProps(state) {
   const {
     data,
