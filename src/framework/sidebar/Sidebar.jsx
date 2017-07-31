@@ -89,7 +89,7 @@ class Sidebar extends React.Component {
            if (record.path == pathname) {
            } else if (record.children && record.children.length != 0) {
              record.children.map((item)=> {
-                if (item.path == pathname) {
+                if (pathname.includes(item.path)) {
                   openKeys = [header_key+record.path];
                 }
              })
