@@ -47,6 +47,7 @@ export default {
   state: {
     modalH:false,
     selectMem:'',
+    manualSelect:'',
     packageAry: [],
     roomList: '',
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
@@ -118,6 +119,10 @@ export default {
         dict.resultsRowHouses = ''
       }
       return {...state, ...dict,selectMem};
+    },
+    setManualSelect(state, {payload: data}) {
+
+      return {...state,manualSelect:data};
     },
     setRowHousesWayVisible(state, {payload: data}) {
       return {...state, RowHousesWayVisible: data};

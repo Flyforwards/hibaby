@@ -648,6 +648,17 @@ function RowHousesWay(props) {
     });
   }
 
+  function handleManual() {
+    handleCancel()
+    props.dispatch({
+      type: 'roomStatusManagement/setManualSelect',
+      payload: SELECT_CUSTOMER
+    });
+
+  }
+
+
+
   return(
     <Modal
       title="提示"
@@ -661,7 +672,7 @@ function RowHousesWay(props) {
       ]}
     >
       <h3>请选择此客户的排房方式</h3>
-      <Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleManual()}>手动排房</Button>
       <Button type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</Button>
     </Modal>
   )
