@@ -8,6 +8,7 @@ import { Link } from 'react-router';
 import { message } from 'antd';
 const FormItem = Form.Item
 const createForm = Form.create
+import PermissionLink from 'common/PermissionLink';
 
 class EditableCell extends Component {
   state = {
@@ -317,10 +318,9 @@ class LocalizedModal extends Component {
         );
       });
     }
-    const detail = !this.props.permissionAlias.contains('POSITION_DETAIL');
     return (
       <div className="editPositionIndex">
-        <Link disabled={detail} onClick={  this.showModal.bind(this, record.id) }>查看</Link>
+        <PermissionLink testKey='POSITION_DETAIL' onClick={  this.showModal.bind(this, record.id) }>查看</PermissionLink>
         <Modal width="500px"
                title="职位详情"
                onCancel={ cancel }
