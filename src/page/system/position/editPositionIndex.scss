@@ -2,8 +2,10 @@
     .ant-modal-content{
       .ant-form-item{margin-bottom:0px;}
       .ant-form-item-control{
+        font-size: 15px;
         margin-top: 10px;
         h4{
+          color: rgba(0, 0, 0, 0.65);
           width:100px;
           float:left;
           height:30px;
@@ -13,6 +15,7 @@
           border:1px solid #d9d9d9;
         }
         .ant-input{
+          font-size: 15px;
           width:200px;
           float:left;
           margin-left:5px;
@@ -31,10 +34,34 @@
         width: 50px;
       }
     }
-    .detail-table-cell .col-left {
-      border: none;
+
+  .detail-table-cell{
+    font-size: 15px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    height: 42px;
+    .col-left{
+      text-align: center;
+      //border-radius: 2px;
+      margin-top: 10px;
+      //border:1px solid #999999;
+
     }
-    .detail-table-cell .col-right{
-      border: none;
+    .col-right{
+      margin-top: 10px;
+      margin-left: 10px;
+      //width: 100%;
+      //display: inline-block;
+      //border-radius: 2px;
+      //padding: 6px 0px;
+      //border:1px solid #999999;
+      //span {
+      //  margin-left: 20px;
+      //}
     }
+    //.col-last{
+    //  margin-left: 20px;
+    //  width: 80%;
+    //  height: 30px;
+    //}
   }
+}

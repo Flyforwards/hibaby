@@ -71,35 +71,5 @@
       margin-bottom: 4px;
     }
   }
-  .detail-table-cell{
-    font-size: 15px;
-    font-family: '微软雅黑 Regular', '微软雅黑';
-    margin-top: 10px;
-    .col-left{
-      width: 100%;
-      text-align: center;
-      display: inline-block;
-      border-radius: 2px;
-      padding: 6px 0px;
-      border:1px solid #999999;
-
-    }
-    .col-right{
-      margin-left: 10px;
-      width: 100%;
-      display: inline-block;
-      border-radius: 2px;
-      padding: 6px 0px;
-      border:1px solid #999999;
-      span {
-        margin-left: 20px;
-      }
-    }
-    .col-last{
-      margin-left: 20px;
-      width: 80%;
-      height: 35px;
-    }
-  }
 }
 

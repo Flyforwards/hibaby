@@ -280,7 +280,7 @@ class LocalizedModal extends Component {
 
     let cancel = this.handleCancel.bind(this);
     let right = this.edit.bind(this);
-    let formItems = (<DetailTable positionInfo={positionInfo}/>)
+    let subItem = (<DetailTable positionInfo={positionInfo}/>)
     let rightText = "编辑";
 
     if (!this.state.isDetail){
@@ -291,7 +291,7 @@ class LocalizedModal extends Component {
       cancel = this.cancelEdit.bind(this);
       right = this.handleOk.bind(this);
       rightText = "保存";
-      formItems = keys.map((k, index) => {
+      const formItems = keys.map((k, index) => {
         const initValue = this.positionInfo[index] ? this.positionInfo[index].name : ""
         let rightItem = (<Button onClick={ this.remove.bind(this,k) } > 删除 </Button>)
         if (index==0) {
@@ -301,7 +301,7 @@ class LocalizedModal extends Component {
           <FormItem
             key={ k }
           >
-            <h4  >{ `选项${String(index+1)}` }</h4>
+            <h4>{ `选项${String(index+1)}` }</h4>
             <div >
               { getFieldDecorator(`names-${k}`, {
                 validateTrigger: ['onChange', 'onBlur'],
@@ -317,7 +317,13 @@ class LocalizedModal extends Component {
           </FormItem>
         );
       });
+      subItem = <Form key={  this.state.visible }>
+        {
+          formItems
+        }
+      </Form>
     }
+
     return (
       <div className="editPositionIndex">
         <PermissionLink testKey='POSITION_DETAIL' onClick={  this.showModal.bind(this, record.id) }>查看</PermissionLink>
@@ -332,11 +338,9 @@ class LocalizedModal extends Component {
                visible={ this.state.visible }
         >
           <p className="position-name"><span>职位所属：</span>{name}</p>
-          <Form key={  this.state.visible }>
-            {
-              formItems
-            }
-          </Form>
+          {
+            subItem
+          }
         </Modal>
       </div>
     );
