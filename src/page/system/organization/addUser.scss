@@ -17,7 +17,7 @@
 		margin-top: -6px;
 	}
 	.basicInformationForm{
-    width:1280px;
+    max-width:1280px;
     height:160px;
     background-color: #fff;
     margin: 0px 0px 10px 10px;
@@ -104,7 +104,7 @@
 	}
 
 	.entryInformationForm{
-		width:1280px;
+		max-width:1280px;
 		background-color: #fff;
 		margin-left:10px;
 		padding-left: 60px;
@@ -167,7 +167,7 @@
 		}
 	}
 	.contactInformationForm{
-		width:1280px;
+		max-width:1280px;
 		background-color: #fff;
 		margin-left:10px;
 		margin-bottom: 20px;
@@ -231,7 +231,7 @@
 		background-color: rgba(102, 102, 102, 1);
 	}
 	.entryInformationContent,.basicInformationContent,.contactInformationContent{
-		width:1280px;
+		max-width:1280px;
 		height:160px;
 		background-color: #fff;
 		margin: 0px 0px 10px 10px;
