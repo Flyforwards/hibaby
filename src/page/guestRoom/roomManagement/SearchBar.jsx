@@ -83,7 +83,7 @@ function SearchBar(props) {
             <Button onClick={ onSearch} className='button-group-2'>查询</Button>
             <Button onClick={ reset} className='button-group-1'>重置</Button>
             {/*<Link to="/chamber/room/creatroom"><Button className='button-group-3'>建立房间</Button></Link>*/}
-          <PermissionLink testKey='ROOM_ADD'  to="/chamber/room/creatroom"><Button className='button-group-3'>建立房间</Button></PermissionLink>
+          <PermissionLink testKey='ROOM_ADD'  to="/chamber/roomindex/creatroom"><Button className='button-group-3'>建立房间</Button></PermissionLink>
 
         </div>
       </Col>

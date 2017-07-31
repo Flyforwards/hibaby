@@ -46,6 +46,9 @@ class PicturesWall extends React.Component {
   }
 
   onRemove = (file) => {
+    if(!this.props.deleteFun){
+      return false
+    }
     this.props.deleteFun({name:file.response?file.response.data.fileKey:file.name, url:file.response?file.response.data.fileUrlList[0]:file.url})
   }
 

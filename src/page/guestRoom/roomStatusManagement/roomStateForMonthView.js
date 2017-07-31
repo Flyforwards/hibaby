@@ -922,7 +922,7 @@ const monthStateView = (props) => {
     const oneKeyClicked = () => {
       dispatch({
         type: 'roomStatusManagement/setRowHousesVisible',
-        payload: true
+        payload: [true,'']
       });
     };
 

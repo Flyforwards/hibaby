@@ -214,7 +214,7 @@ render(){
               </Col>
             </Row>
 
-          {(this.props.superData.type1 === '4-1'|| this.props.superData.type1 === '7-3'|| this.props.superData.type1 === '1-2-2') ?
+          {(this.props.superData.type1 === '4-1'|| this.props.superData.type1 === '7-3'|| this.props.superData.type1 === '1-2-2'|| this.props.superData.type1 === '4-2' ) ?
             <Row>
               <Col span={8} style={{width:'300px'}}>
                 <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>

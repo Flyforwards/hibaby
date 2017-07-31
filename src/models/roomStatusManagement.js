@@ -46,6 +46,7 @@ export default {
   namespace: 'roomStatusManagement',
   state: {
     modalH:false,
+    selectMem:'',
     packageAry: [],
     roomList: '',
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
@@ -111,11 +112,12 @@ export default {
       return {...state, ...dict};
     },
     setRowHousesVisible(state, {payload: data}) {
-      let dict = {RowHousesVisible: data};
+      let dict = {RowHousesVisible: data[0]};
+      let selectMem = data[1]
       if (data === false) {
         dict.resultsRowHouses = ''
       }
-      return {...state, ...dict};
+      return {...state, ...dict,selectMem};
     },
     setRowHousesWayVisible(state, {payload: data}) {
       return {...state, RowHousesWayVisible: data};

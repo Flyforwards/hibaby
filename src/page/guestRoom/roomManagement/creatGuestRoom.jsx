@@ -76,7 +76,7 @@ class creatGuestRoom extends React.Component {
 
   editBtnClick(){
     this.props.dispatch(routerRedux.push({
-      pathname:'/chamber/room/creatroom',
+      pathname:'/chamber/roomindex/creatroom',
       query:{dataId:this.state.dataId}
     }))
   }

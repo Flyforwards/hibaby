@@ -224,7 +224,6 @@ class WebsiteBabyService extends React.Component{
       }
     }
 
-    console.log(content)
 
     const ListColumns = [{
       title:"ID",

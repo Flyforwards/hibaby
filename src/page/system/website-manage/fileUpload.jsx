@@ -1,7 +1,7 @@
 import { Upload, message, Modal } from 'antd';
 import React from 'react';
 import {local, session} from 'common/util/storage.js'
-
+//此组件只支持单文件上传  多文件请选择其他上传组件
 class FileUpload extends React.Component {
   constructor(props) {
     super(props);
@@ -69,9 +69,13 @@ class FileUpload extends React.Component {
 
   render() {
 
-    const { previewVisible, previewImage, fileList} = this.state;
+    const { previewVisible, fileList} = this.state;
     const { defaultFileList } = this.props;
-
+    let previewImage =  ""
+    if(defaultFileList){
+      if(defaultFileList.length > 0)
+       previewImage = defaultFileList[0].url
+    }
     return (
       <div>
         <Upload
