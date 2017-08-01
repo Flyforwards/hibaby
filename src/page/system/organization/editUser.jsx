@@ -285,7 +285,7 @@ class EditUsered extends React.Component {
                       initialValue: endemic.name,
                       rules: [{ required: true, message: '此项为必选项' }],
                     })(
-                   <Input  disabled = { true }/>
+                   <Input  readOnly = { true }/>
                     )}
                   </FormItem>
                   <FormItem
@@ -366,7 +366,7 @@ class EditUsered extends React.Component {
                           pattern: /^1[34578]\d{9}$/, message: '手机号不正确'
                       }],
                     })(
-                      <Input disabled ={ true }/>
+                      <Input readOnly ={ true }/>
                     )}
                   </FormItem>
                   { entryContent.type==0?
@@ -459,7 +459,7 @@ class EditUsered extends React.Component {
               {getFieldDecorator('userName', {
                 initialValue:USER.name
               })(
-                <Input disabled = {true}/>
+                <Input readOnly = {true}/>
               )}
             </FormItem>
 
