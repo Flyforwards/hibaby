@@ -156,7 +156,7 @@ class ViewTheInformation extends React.Component {
                 <div className="contactInformationContent">
                     <p className="localCenter"><span>登陆手机号 :</span><span className="Two">{USER.mobile}</span></p>
                     <p className="affiliatedDepartment"><span>联系方式 :</span><span className="Two">{entrys[i].contact}</span></p>
-                    <p className="directLeadership"><span>公司邮箱 :</span><span className="Two">{entrys[i].emaill}</span></p>
+                    <p className="directLeadership"><span>公司邮箱 :</span><span className="Two">{entrys[i].email}</span></p>
                     <p className="position"><span>内部分机 :</span><span className="Two">{entrys[i].extension}</span></p>
                 </div>
               </div>)

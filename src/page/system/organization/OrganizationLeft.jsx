@@ -4,7 +4,8 @@ import "./OrganizationLeft.scss"
 import {Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree, Menu} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
-import {routerRedux} from 'dva/router'
+import {routerRedux} from 'dva/router';
+
 import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
 import SeeDtail from './SeeDtail.jsx'
@@ -102,7 +103,6 @@ class OrganizationLeft extends React.Component {
           disabled_add = true;
         }
 
-        // 总部以外的子部门不回调回去
         // if (is_head && parentTissue != 1) {
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex, disabled_add)
         // }
@@ -199,7 +199,6 @@ class OrganizationLeft extends React.Component {
   }
 
   DeleteNode() {
-    // console.log("DeleteNode>>>>>",this.state.unfolded)
     this.setState({
       DeleteNodeVisible: true,
       unfolded:this.state.unfolded

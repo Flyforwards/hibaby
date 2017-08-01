@@ -31,7 +31,7 @@ function CreatUserInfoIndex(props,dispatch,isEdit,validate,editingFun,editFun) {
   if (props){
     infoChiAry = [{title:'编号',value:textforkey(props,'identifier')},{title:'性别',value:props.sex === 1 ? '女': '男' },{title:'地方中心',value:textforkey(props,'locCenter'),},
       {title:'隶属部门',value:textforkey(props,'dept')}, {title:'直系领导',value:textforkey(props,'leaderName')},{title:'职位', value:textforkey(props,'position')},
-      {title:'登录手机号',value:textforkey(props,'mobile')}, {title:'联系方式',value:textforkey(props,'contact')},{title:'公司邮箱',value:textforkey(props,'emaill')},
+      {title:'登录手机号',value:textforkey(props,'mobile')}, {title:'联系方式',value:textforkey(props,'contact')},{title:'公司邮箱',value:textforkey(props,'email')},
       {title:'内部分机',value:textforkey(props,'extension')}]
 
     for(let i = 0;i<infoChiAry.length - 4;i++){

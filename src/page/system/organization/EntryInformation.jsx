@@ -180,7 +180,7 @@ class EntryInformationed extends Component {
              className="companyEmail"
             >
               {getFieldDecorator('companyEmail', {
-                initialValue:entryContent.emaill,
+                initialValue:entryContent.email,
                  rules: [{
                     type: 'email'
                   }],
