@@ -1,5 +1,16 @@
 .addUserInfo{
   background-color: white;
+
+  .right-button {
+    position: absolute;
+    top: 0;
+    margin-left: 10px;
+  }
+
+  img {
+    width: 100px;
+    height: 100px;
+  }
 	.anticon-close{
 		float:right;
 		margin-right: 37px;
@@ -91,8 +102,9 @@
 		}
 
 }
-	.basicInformation,.entryInformation,.contactInformation{
+	.information{
 		width:100%;
+    margin-bottom: 40px;
 		height:40px;
 		line-height:40px;
 		font-size:14px;

@@ -1,24 +1,21 @@
 "use strict"
 
 import React from 'react'
-import {connect} from 'dva'
-import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select,message} from 'antd'
-import {routerRedux} from 'dva/router'
-import {Link} from 'react-router'
+import { connect } from 'dva'
+import { Input, Button, Form, Radio, DatePicker, Select, message, Row, Col } from 'antd'
+import { Link } from 'react-router'
 import './addUserInfo.scss'
-import {local, session} from '../../../common/util/storage.js'
-import DropDownMenued from './dropDownMenu.jsx'
-import AddMemberLeader from './AddMemberLeader.js'
+import { local, session } from '../../../common/util/storage.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import UPload from 'common/Upload.js'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-const Option = Select.Option;
-const { MonthPicker, RangePicker } = DatePicker;
 //地方中心字段
 const department = local.get("department")
 let traversalDataId = []
+
+const Option = Select.Option
 
 class AddUser extends React.Component {
   constructor(props) {
@@ -149,7 +146,7 @@ class AddUser extends React.Component {
                                 }else{
                                   message.warning('请上传头像')
                                 }
-                              }else{
+                              }else{Option
                               message.warning('请填写公司邮箱')
                               }
                             }else{
@@ -190,7 +187,7 @@ class AddUser extends React.Component {
       let endemic = session.get("endemic")
       let SelectData = local.get("rolSelectData")
       let NODEID = window.location.search.split("=")[1];
-      const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+      const { getFieldDecorator } = this.props.form;
 
       if(this.props.dataEndemicId != null){
           traversalEndemicId = this.props.dataEndemicId.map((item)=>{
@@ -209,65 +206,74 @@ class AddUser extends React.Component {
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
         })
       }
+      const formItemLayout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 }
+      }
       return(
         <div className="addUserInfo">
-         <div className="basicInformation">基本信息</div>
-          <Form layout="inline" className="basicInformationForm">
-           <FormItem
-            >
-              {getFieldDecorator('userImg', {
-                rules: [],
-              })(
-               <div className="img"><UPload urlList={"Img"} headelUserImg={this.headelImg.bind(this)}/></div>
-
-              )}
-            </FormItem>
+          <div>
+          <Form>
+         <div className="information">基本信息</div>
+            <Row>
+              <Col span="4">
+             <FormItem {...formItemLayout}
+              >
+                {getFieldDecorator('userImg', {
+                  rules: [],
+                })(
+                 <UPload urlList={"Img"} headelUserImg={this.headelImg.bind(this)}/>
+                )}
+              </FormItem>
+              </Col>
+              <Col span="20">
+                <Row>
+                  <Col span="6">
+                    <FormItem
+                      label="姓名" {...formItemLayout}
+                    >
+                      {getFieldDecorator('userName', {
+                        rules: [{ max: 10, message: '请按要求输入' }, { required: true, message: '必填项！' }],
+                      })(
+                        <Input/>
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span="6">
+                    <FormItem
+                      label="性别" {...formItemLayout}
+                    >
+                      {getFieldDecorator('gender', {
+                        rules: [{ required: true, message: '必选项！' }],
+                      })(
+                        <RadioGroup>
+                          <Radio value={0}>男</Radio>
+                          <Radio value={1}>女</Radio>
+                        </RadioGroup>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span="6">
+                    <FormItem
+                      label="入职日期" {...formItemLayout}
+                    >
+                      {getFieldDecorator('entryTime', {
+                        rules: [{ required: true, message: '必填项！' }],
+                      })(
+                        <DatePicker />
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          <div className="information">入职信息</div>
+            <Row>
+              <Col span="9">
             <FormItem
-             label="姓名"
-             className="userName"
-             required
-            >
-              {getFieldDecorator('userName', {
-                 rules: [{
-                    max: 10, message: '请按要求输入'
-                  }],
-              })(
-                <Input/>
-              )}
-            </FormItem>
-
-            <FormItem
-             label="性别"
-             required
-             className="Numbering"
-            >
-              {getFieldDecorator('gender', {
-              })(
-                <RadioGroup>
-                <Radio value={0}>男</Radio>
-                <Radio value={1}>女</Radio>
-              </RadioGroup>
-              )}
-            </FormItem>
-            <br/>
-
-            <FormItem
-             label="入职日期"
-             className="gender"
-             required
-            >
-              {getFieldDecorator('entryTime', {
-              })(
-                 <DatePicker />
-              )}
-            </FormItem>
-          </Form>
-          <div className="entryInformation">入职信息</div>
-          <Form layout="inline" className="entryInformationForm">
-            <FormItem
-             label="地方中心"
-             className="localCenter"
-             required
+             label="地方中心" {...formItemLayout}
             >
               {getFieldDecorator('localCenter', {
                 initialValue: endemic.name,
@@ -275,10 +281,10 @@ class AddUser extends React.Component {
                 <Input disabled = { true }/>
               )}
             </FormItem>
+              </Col>
+              <Col span="9">
             <FormItem
-             label="隶属部门"
-             className="affiliatedDepartment"
-             required
+             label="隶属部门" {...formItemLayout}
             >
             { getFieldDecorator("affiliatedDepartment",{
                initialValue:NODEID
@@ -288,25 +294,25 @@ class AddUser extends React.Component {
               </Select>
             )}
             </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="9">
             <FormItem
-             label="直系领导"
-             className="directLeadership"
+             label="直系领导" {...formItemLayout}
             >
               {getFieldDecorator('directLeadership', {
                 initialValue: this.state.TableData?this.state.TableData.name:"",
               })(
                 <Input disabled={true}/>
               )}
+              <Button className="right-button" onClick={this.directLeader.bind(this)}>选择</Button>
             </FormItem>
+
+              </Col>
+              <Col span="9">
             <FormItem
-             className="button"
-            >
-            <Button type="primary" onClick={this.directLeader.bind(this)}>选择</Button>
-            </FormItem>
-            <FormItem
-             label="职位"
-             className="position"
-             required
+             label="职位" {...formItemLayout}
             >
             { getFieldDecorator("position",{
 
@@ -316,26 +322,27 @@ class AddUser extends React.Component {
               </Select>
             )}
             </FormItem>
-            <br/>
+                  </Col>
+            </Row>
+                <Row>
+                  <Col span="9">
+                    <FormItem
+                      label="系统角色" {...formItemLayout}
+                    >
+                      { getFieldDecorator("systemRole",{
+                      })(
+                        <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
+                          { selectDataList }
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
+            <div className="information">联系方式</div>
+            <Row>
+              <Col span="9">
             <FormItem
-             label="系统角色"
-             className="systemRole"
-             required
-            >
-            { getFieldDecorator("systemRole",{
-            })(
-              <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
-                { selectDataList }
-              </Select>
-            )}
-            </FormItem>
-          </Form>
-          <div className="contactInformation">联系方式</div>
-          <Form layout="inline" className="contactInformationForm">
-            <FormItem
-             label="登录手机号"
-             className="phoneNumber"
-             required
+             label="登录手机号" {...formItemLayout}
             >
               {getFieldDecorator('phoneNumber', {
                  rules: [{
@@ -345,22 +352,23 @@ class AddUser extends React.Component {
                 <Input />
               )}
             </FormItem>
+              </Col>
+              <Col span="9">
             <FormItem
-             label="登录密码"
-             className="password"
-             required
+             label="登录密码" {...formItemLayout}
             >
               {getFieldDecorator('password', {
-                initialValue: "kbm12345",
+                initialValue: "Kbm12345",
               })(
-                <Input disabled={ true }/>
+                <Input readOnly={ true }/>
               )}
             </FormItem>
-            <br/>
+              </Col>
+            </Row>
+          <Row>
+            <Col span="9">
             <FormItem
-             label="联系方式"
-             className="information"
-             required
+             label="联系方式" {...formItemLayout}
             >
               {getFieldDecorator('information', {
                   rules: [{
@@ -370,10 +378,10 @@ class AddUser extends React.Component {
                 <Input/>
               )}
             </FormItem>
+            </Col>
+              <Col span="9">
             <FormItem
-             label="公司邮箱"
-             className="companyEmail"
-             required
+             label="公司邮箱" {...formItemLayout}
             >
               {getFieldDecorator('companyEmail', {
                  rules: [{
@@ -383,10 +391,12 @@ class AddUser extends React.Component {
                 <Input />
               )}
             </FormItem>
-            <br/>
+            </Col>
+          </Row>
+              <Row>
+                <Col span="9">
              <FormItem
-             label="内部分机"
-             className="internalExtension"
+             label="内部分机" {...formItemLayout}
             >
               {getFieldDecorator('internalExtension', {
                   rules: [{
@@ -396,9 +406,14 @@ class AddUser extends React.Component {
                 <Input />
               )}
             </FormItem>
+              </Col>
+              </Row>
           </Form>
-           <Button className="saveButton SaveBtn" onClick={this.handleSave}>保存</Button>
-           <Button className="returnButton BackBtn" onClick={this.handelReturn}>返回</Button>
+          </div>
+          <div className="button-group-bottom">
+            <Button className="button-group-bottom-1" onClick={ this.handelReturn }>返回</Button>
+            <Button className="button-group-bottom-2" onClick={ this.handleSave }>保存</Button>
+          </div>
           <SelectTheNodeFrom
            visible={ this.state.visible}
            onCancel ={ this.handleCreateModalCancel.bind(this) }
