@@ -184,8 +184,6 @@ render(){
       <Card className="expertIntroduction" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
 
-
-
           <Form>
             <Row>
               <Col span={7} >
@@ -216,7 +214,7 @@ render(){
               </Col>
             </Row>
 
-          {(this.props.superData.type1 === '4-1'|| this.props.superData.type1 === '7-3'|| this.props.superData.type1 === '1-2-2'|| this.props.superData.type1 === '4-2' ) ?
+          {(this.props.superData.type1 ==='1-2-1'||this.props.superData.type1 === '4-1'|| this.props.superData.type1 === '7-3'|| this.props.superData.type1 === '1-2-2'|| this.props.superData.type1 === '4-2' ) ?
             <Row>
               <Col span={7}>
                 <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
@@ -242,7 +240,8 @@ render(){
           </Form>
 
         </div>
-        <Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>
+        {this.props.superData?(this.props.superData.type2?<Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>:""):''}
+
       </Card>
 
     )
