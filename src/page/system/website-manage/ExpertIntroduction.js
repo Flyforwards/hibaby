@@ -188,7 +188,7 @@ render(){
 
           <Form>
             <Row>
-              <Col span={8} style={{width:'300px'}}>
+              <Col span={6} >
                 <FormItem label="主标题名:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                   {getFieldDecorator('title', {
                     initialValue:oneExpertTitleMsg?oneExpertTitleMsg.title:'',
@@ -200,7 +200,7 @@ render(){
 
 
               </Col>
-              <Col span ={6}>
+              <Col span ={8}>
                 <Button className="btnAdd" style={{float:'left'}} onClick={!modalVisible?this.upDateTitle.bind(this):this.confirmModel.bind(this)}>
                   {!modalVisible?'修改':'确定'}</Button>
                 <Button className="btnAdd" display style={{display:!modalVisible?'none':'',float:'left',marginLeft:'10px'}} onClick={this.hideModel.bind(this)}>取消</Button>
@@ -216,7 +216,7 @@ render(){
 
           {(this.props.superData.type1 === '4-1'|| this.props.superData.type1 === '7-3'|| this.props.superData.type1 === '1-2-2'|| this.props.superData.type1 === '4-2' ) ?
             <Row>
-              <Col span={8} style={{width:'300px'}}>
+              <Col span={6}>
                 <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                   {getFieldDecorator('img1', {initialValue: '',})(
                     <FileUpload  defaultFileList={subMitImg?[subMitImg]:''} addImgFun={this.onAddImg.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg.bind(this)} imgInputName="">
@@ -226,7 +226,7 @@ render(){
                 </FormItem>
               </Col>
 
-              <Col span={8} style={{width:'300px'}}>
+              <Col span={6}>
                 <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                   {getFieldDecorator('img1Size', {rules: [{ required: subMitImg?true:false, message: '请输入图片尺寸'}],
                     initialValue: oneExpertTitleMsg ? oneExpertTitleMsg.img1Size:'',})(

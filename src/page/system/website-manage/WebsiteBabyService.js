@@ -15,6 +15,50 @@ const Option = Select.Option;
 import FileUpload from './fileUpload';
 import { browserHistory } from 'dva/router';
 
+const ListColumns = [{
+  title:"ID",
+  dataIndex:'id',
+  key:'id',
+  width:"10%",
+},{
+  title: '标题',
+  dataIndex: 'title',
+  key: 'title',
+  width: '10%',
+},{
+  title: '摘要',
+  dataIndex: 'summary',
+  key: 'summary',
+  width: '20%',
+},
+  {
+    title: '图1大小',
+    dataIndex: 'img1Size',
+    key: 'img1Size',
+    width: '5%',
+  },
+  {
+    title: '图2大小',
+    dataIndex: 'img2Size',
+    key: 'img2Size',
+    width: '5%',
+  },{
+    title: '操作',
+    dataIndex: 'operation',
+    render: (text, record, index) => {
+      return (
+        <span>
+            <Link disabled={false} className="one-link" to={`/system/website-manage/addExpert?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
+             <Link disabled={false} className="one-link">删除</Link>
+            </Popconfirm>
+
+          </span>
+      )
+    },
+    width: '20%'
+  }];
+
 @createForm()
 class WebsiteBabyService extends React.Component{
   constructor(props){
@@ -179,6 +223,12 @@ class WebsiteBabyService extends React.Component{
   render(){
 
     const {imgBtn,imgList2Arr,img2Btn,initialList,modalVisible,content,imgListArr,loading,expertInitialList} =this.props;
+    let isTab = this.props.superData.type1 === '2-1'||this.props.superData.type1 === '2-2'||
+      this.props.superData.type1 === '2-3'||this.props.superData.type1 === '2-4';
+    let isTwoImage = this.props.superData.type1 === '2-2' ||this.props.superData.type1 === '2-16'
+      ||this.props.superData.type1 === '2-17'||this.props.superData.type1 === '2-18'||this.props.superData.type1 === '2-19';
+
+
     let size = false
     if(imgListArr ){
       if( imgListArr.length > 0 ){
@@ -207,7 +257,7 @@ class WebsiteBabyService extends React.Component{
 
     let contentArr = []
     let con = content;
-    if(content){
+    if(isTab){
       try {
         contentArr = eval(content)
         if(contentArr && contentArr.length > 0 ){
@@ -224,60 +274,12 @@ class WebsiteBabyService extends React.Component{
       }
     }
 
-
-    const ListColumns = [{
-      title:"ID",
-      dataIndex:'id',
-      key:'id',
-      width:"10%",
-    },{
-      title: '标题',
-      dataIndex: 'title',
-      key: 'title',
-      width: '10%',
-    },{
-      title: '摘要',
-      dataIndex: 'summary',
-      key: 'summary',
-      width: '20%',
-    },
-      {
-        title: '图1大小',
-        dataIndex: 'img1Size',
-        key: 'img1Size',
-        width: '5%',
-      },
-      {
-        title: '图2大小',
-        dataIndex: 'img2Size',
-        key: 'img2Size',
-        width: '5%',
-      },{
-      title: '操作',
-      dataIndex: 'operation',
-      render: (text, record, index) => {
-        return (
-          <span>
-            <Link disabled={false} className="one-link" to={`/system/website-manage/addExpert?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
-            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
-             <Link disabled={false} className="one-link">删除</Link>
-            </Popconfirm>
-
-          </span>
-        )
-      },
-      width: '20%'
-    }];
-
     const ListTableProps = {
       loading:loading.effects['websiteBabyCare/getExpertInitialList'],
       dataSource:expertInitialList,
       pagination:false,
     };
-
-
     const { getFieldDecorator } = this.props.form;
-
     const formItemLayout = {
       labelCol:{ span: 6 },
       wrapperCol:{ span:17}
@@ -290,8 +292,10 @@ class WebsiteBabyService extends React.Component{
       labelCol:{ span: 3 },
       wrapperCol:{ span:21}
     };
-    return(
 
+
+
+    return(
       <Spin
         spinning={loading.effects['websiteBabyCare/getInitialList'] !== undefined ? loading.effects['websiteBabyCare/getInitialList'] : false}>
         <div className="websiteBabyService" style={{overflow:'hidden'}}>
@@ -306,7 +310,6 @@ class WebsiteBabyService extends React.Component{
                       )}
                     </FormItem>
                   </Col>
-
                 </Row>
 
                 <Row>
@@ -331,7 +334,7 @@ class WebsiteBabyService extends React.Component{
                 </Row>
 
 
-                {this.props.superData.type1 == '2-2' ?  <Row>
+                {isTwoImage?  <Row>
                   <Col span={8} style={{width:'300px'}}>
                     <FormItem label="图片展示2:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img2', {initialValue: '',})(
@@ -362,16 +365,17 @@ class WebsiteBabyService extends React.Component{
                   </Col>
                 </Row>
 
-                {typeof con === 'object' ?'':
+                {isTab ?'':
                   <Row>
-                  <Col style={{width:'600'}}>
-                    <FormItem label="内容:" {...contetnItemLayouts} style={{fontWeight:'900',textAlign:'left'}}>
-                      {getFieldDecorator('content', {initialValue: initialList ? initialList.content:'',})(
-                        <Input type="textarea" readOnly={!modalVisible} rows={6} />
-                      )}
-                    </FormItem>
-                  </Col>
-                </Row> }
+                    <Col style={{width:'600'}}>
+                      <FormItem label="内容:" {...contetnItemLayouts} style={{fontWeight:'900',textAlign:'left'}}>
+                        {getFieldDecorator('content', {initialValue: con ? con:'',})(
+                          <Input type="textarea" readOnly={!modalVisible} rows={6} />
+                        )}
+                      </FormItem>
+                    </Col>
+                  </Row>
+                }
               </Form>
             </div>
             <Row>
@@ -384,7 +388,7 @@ class WebsiteBabyService extends React.Component{
           </Card>
 
           {
-            typeof con === 'object' ?<Card style={{marginTop:'20px'}}>
+            (isTab && typeof con === 'object')?<Card style={{marginTop:'20px'}}>
               <Row>
                 <Col span ={24}>
                   <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button>
