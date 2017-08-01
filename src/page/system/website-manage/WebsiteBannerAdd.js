@@ -124,7 +124,7 @@ class WebsiteBannerAdd extends React.Component {
                   rules: [{ required: false }]
                 })(
                   <FileUpload  defaultFileList ={addImglist} addImgFun={this.onAddImg.bind(this)} deleteImgFun={this.onDeleteImg.bind(this)} imgInputName="url">
-                    <Button key="1" disabled={disabledBtn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                    <Button key="1" disabled={disabledBtn}  className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                   </FileUpload>
                 )}
               </FormItem>
