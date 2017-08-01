@@ -922,7 +922,7 @@ const monthStateView = (props) => {
     const oneKeyClicked = () => {
       dispatch({
         type: 'roomStatusManagement/setRowHousesVisible',
-        payload: true
+        payload: [true,'']
       });
     };
 
@@ -989,6 +989,7 @@ const monthStateView = (props) => {
     const customers = props.users.monthStateCustomers;
 
     const dragStart = (dragUser, event) => {
+
       dragOffsetX = event.nativeEvent.offsetX;
       dragOffsetY = event.nativeEvent.offsetY;
       dispatch({
@@ -1033,7 +1034,7 @@ const monthStateView = (props) => {
               return (
                 <div className="customerItem" onClick={() => {
                   onClicked(costomer)
-                }} draggable="true" onDragStart={(event) => dragStart(costomer, event)}>
+                }} draggable= {costomer === props.users.manualSelect} onDragStart={(event) => dragStart(costomer, event)}>
                   {costomer.customerName}
                 </div>
               )

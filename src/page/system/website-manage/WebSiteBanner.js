@@ -9,7 +9,6 @@ import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import moment from 'moment'
 import { format } from '../../../utils/index.js';
-import { WebsiteClass } from './moduleClass';
 
 class WebSiteBanner extends React.Component{
   constructor(props){
@@ -28,7 +27,12 @@ class WebSiteBanner extends React.Component{
         key: 'type',
         width: '25%',
         render:(text,record,index) => {
-          return WebsiteClass[text];
+          let ary = this.props.typeList
+          for(let i = 0 ;i < ary.length;i++){
+            if(ary[i].typeId === text){
+              return ary[i].typeValue
+            }
+          }
         }
 
       }, {
@@ -51,7 +55,7 @@ class WebSiteBanner extends React.Component{
         render: (text, record, index) => {
           return (
             <span>
-            <Link disabled={false} className="one-link" to={`/system/website-manage/add?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+            <Link disabled={false} className="one-link" to={`/system/websiteHomePageManage/addBanner?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
             <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
              <Link disabled={false} className="one-link">删除</Link>
             </Popconfirm>
@@ -74,6 +78,7 @@ class WebSiteBanner extends React.Component{
 
   componentDidMount() {
     this.props.dispatch({type: 'websiteBanner/getInitialList'});
+    this.props.dispatch({type: 'websiteBanner/getTypeList'});
     this.props.dispatch({type: 'websiteBanner/saveOneList',payload:{}});
   }
 
@@ -87,7 +92,7 @@ class WebSiteBanner extends React.Component{
     return (
       <Card className="website-banner" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
-          <Link to="/system/website-manage/add">
+          <Link to="/system/websiteHomePageManage/addBanner">
             <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}}>添加</Button>
           </Link>
         </div>
@@ -100,10 +105,11 @@ class WebSiteBanner extends React.Component{
 
 
 function mapStateToProps(state){
-  const {initialList} =state.websiteBanner;
+  const {initialList,typeList} =state.websiteBanner;
   return{
     loading:state.loading.models.websiteBanner,
     initialList,
+    typeList
   }
 }
 export default connect(mapStateToProps)(WebSiteBanner);

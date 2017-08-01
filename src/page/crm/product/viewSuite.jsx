@@ -10,8 +10,6 @@ import Current from '../../Current'
  import Delete from './DeleteSuite.jsx'
 
 const FormItem = Form.Item;
-const Option = Select.Option;
-let roomId = []
 
 class ViewSuiteed extends Component {
     constructor(props) {
@@ -79,7 +77,7 @@ class ViewSuiteed extends Component {
                       initialValue:this.props.roomFindById?this.props.roomFindById.name:null,
                       rules: [],
                     })(
-                      <Input disabled = { true }/>
+                      <Input readOnly = { true }/>
                     )}
                   </FormItem>
                   <FormItem
@@ -92,7 +90,7 @@ class ViewSuiteed extends Component {
                     })(
                     <Input
                       addonBefore="￥"
-                      disabled = { true }
+                      readOnly = { true }
                     />
                     )}
                   </FormItem>

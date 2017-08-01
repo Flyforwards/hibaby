@@ -85,14 +85,14 @@ export default {
       if(initialList != null){
         if(initialList.img1 != ""){
           imgListArr = [{
-            uid:0,
+            uid:initialList.img1,
             name:initialList.img1,
             url:initialList.img1Url,
           }]
         }
         if(initialList.img2 != ""){
           imgList2Arr = [{
-            uid:0,
+            uid:initialList.img2,
             name:initialList.img2,
             url:initialList.img2Url,
           }]
@@ -136,10 +136,22 @@ export default {
 
     //新增专家
     *addExpert({payload:values},{call,put}){
-      const {data:{data,code}} = yield call(websiteBabyCare.addExpert,values);
-      if(code == 0){
-        history.go(-1);
+      try{
+        const {data:{data,code}} = yield call(websiteBabyCare.addExpert,values);
         message.success("添加成功");
+        if(queryURL("type")) {
+          history.go(-1);
+        }
+        else{
+          yield put({
+            type:'changeModal',
+            payload:{
+              "modalVisible":false,
+            }
+          })
+        }
+      }
+      catch (err){
 
       }
     },
@@ -170,7 +182,6 @@ export default {
     },
     //修改专家信息
     *updateExpert({payload:values},{call,put}){
-      console.log('修改2')
       const { data:{data,code}} = yield call(websiteBabyCare.updateExpert,values);
       if(code == 0) {
         message.success("更新成功");
@@ -191,7 +202,7 @@ export default {
   subscriptions:{
     setup({ dispatch,history}){
       return history.listen(({ query,pathname}) => {
-        if(pathname === '/system/website-manage/addbabycare') {
+        if(pathname === '/system/websiteHomePageManage/addbabycare') {
           dispatch({
             type:'getInitialList',
             payload:{

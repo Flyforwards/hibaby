@@ -130,7 +130,7 @@ class AddUser extends React.Component {
                                           {
                                             "contact":fields.information, //fields.information,//联系方式
                                             "deptId":fields.affiliatedDepartment,//fields.affiliatedDepartment,//隶属部门
-                                            "emaill":fields.companyEmail,//fields.companyEmail,//公司邮箱
+                                            "email":fields.companyEmail,//fields.companyEmail,//公司邮箱
                                             "extension":fields.internalExtension, //fields.internalExtension,//内部分机
                                             "leaderId": this.state.TableData ? this.state.TableData.id : null,//直系领导
                                             "positionId": fields.position,//职位

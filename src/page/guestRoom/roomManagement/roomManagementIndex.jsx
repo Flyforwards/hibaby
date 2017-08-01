@@ -75,7 +75,7 @@ function ResultsTable(props) {
 
   function onLook(record) {
     dispatch(routerRedux.push({
-      pathname: '/chamber/room/roomdetail',
+      pathname: '/chamber/roomindex/roomdetail',
       query: {dataId:record.id}
     }))
   }

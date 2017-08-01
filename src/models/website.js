@@ -23,6 +23,7 @@ export default {
       pageSize:10,
       total: null,
     },
+    typeList:[],
     //主标题 ---专家团队修改判断
     readAble:false,
     newsImgList1:[],
@@ -50,6 +51,9 @@ export default {
     //改变select状态
     changeSelect(state,{payload:choiceSelect}){
       return { ...state,selectAble:choiceSelect}
+    },
+    savaTypeList(state,{payload:data}){
+      return { ...state,typeList:data}
     },
     //保存新闻上传图片1
     setNewsImg1(state,{payload:todos}){
@@ -107,7 +111,7 @@ export default {
     saveOneList(state,{payload:{data:oneList}}){
       if(oneList != null && oneList.id !=undefined ){
         let addImglist=[{
-          uid:0,
+          uid:oneList.img,
           name:oneList.img,
           url:oneList.imgUrl,
         }];
@@ -132,12 +136,10 @@ export default {
     //保存一个专家信息
     saveOneExpert(state,{payload:{data:oneExpertMsg}}){
       let subMitImg = oneExpertMsg?(oneExpertMsg.img1?{
-        uid:0,
+        uid:oneExpertMsg.img1,
         name:oneExpertMsg.img1,
         url:oneExpertMsg.img1Url
       }:''):''
-      console.log('图片')
-      console.log(subMitImg)
         return {...state,oneExpertTitleMsg:oneExpertMsg,subMitImg};
     },
     savaSubMitImg(state,{payload:data}){
@@ -152,7 +154,7 @@ export default {
 
         if(ExpertIdMsg.img1){
           img1Ary=[{
-            uid:0,
+            uid:ExpertIdMsg.img1,
             name:ExpertIdMsg.img1,
             url:ExpertIdMsg.img1Url,
           }];
@@ -161,7 +163,7 @@ export default {
 
         if(ExpertIdMsg.img2){
           img2Ary = [{
-            uid:1,
+            uid:ExpertIdMsg.img2,
             name:ExpertIdMsg.img2,
             url:ExpertIdMsg.img2Url,
           }]
@@ -314,6 +316,19 @@ export default {
         })
       }
     },
+
+    //根据类型获取单一信息
+    *getTypeList({payload:values},{call,put}){
+      const { data:{data,code}} = yield call(websiteBanner.typeList);
+      if(code == 0) {
+        yield put({
+          type:'savaTypeList',
+          payload: data
+        })
+      }
+    },
+
+
     //根据Id获取专家信息
     *getExpertById({payload:values},{call,put}){
       const { data:{data,code}} = yield call(websiteBanner.getExpertById,values);
@@ -350,7 +365,9 @@ export default {
   subscriptions:{
     setup({ dispatch,history}){
       return history.listen(({ query,pathname}) => {
-        if(pathname === "/system/website-manage/add"){
+        if(pathname === "/system/websiteHomePageManage/addBanner"){
+
+          dispatch({type:'getTypeList',});
           if(query.type){
             dispatch({
               type:'changeSelect',

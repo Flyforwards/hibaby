@@ -554,9 +554,13 @@ class RowHouses extends React.Component{
   }
 
   selectFun(index){
-    this.setState({
-      currSelect:index
-    })
+    const {selectMem} = this.props.users;
+    if(selectMem){
+      this.setState({
+        currSelect:index
+      })
+    }
+
   }
 
   handleOk(){
@@ -590,13 +594,17 @@ class RowHouses extends React.Component{
 
     this.props.dispatch({
       type: 'roomStatusManagement/setRowHousesVisible',
-      payload: false
+      payload: [false,'']
     });
   }
 
   render(){
-    const {packageAry,resultsRowHouses, RowHousesVisible} = this.props.users;
+    const {packageAry,resultsRowHouses, RowHousesVisible,selectMem} = this.props.users;
     const {loading} = this.props;
+    let footerDiv = [<Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>]
+    if(selectMem){
+      footerDiv.push( <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>)
+    }
     return(
 
       <Modal
@@ -607,11 +615,7 @@ class RowHouses extends React.Component{
         maskClosable
         closable={false}
         onCancel={this.handleCancel.bind(this)}
-
-        footer={[
-          <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
-          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>,
-        ]}
+        footer={footerDiv}
       >
         <SearchFormDiv packageAry={packageAry} dispatch={this.props.dispatch}/>
         <Spin
@@ -625,12 +629,14 @@ class RowHouses extends React.Component{
 
 function RowHousesWay(props) {
   const {RowHousesWayVisible} = props.users;
-  const selectCuntomer = props.selectCuntomer;
-  SELECT_CUSTOMER = selectCuntomer;
+
+
+  SELECT_CUSTOMER = props.selectCuntomer;
+
   function handleCancel(){
     props.dispatch({
       type: 'roomStatusManagement/setRowHousesWayVisible',
-      payload: false
+      payload: false,
     });
   }
 
@@ -638,9 +644,20 @@ function RowHousesWay(props) {
     handleCancel()
     props.dispatch({
       type: 'roomStatusManagement/setRowHousesVisible',
-      payload: true
+      payload: [true,SELECT_CUSTOMER]
     });
   }
+
+  function handleManual() {
+    handleCancel()
+    props.dispatch({
+      type: 'roomStatusManagement/setManualSelect',
+      payload: SELECT_CUSTOMER
+    });
+
+  }
+
+
 
   return(
     <Modal
@@ -655,7 +672,7 @@ function RowHousesWay(props) {
       ]}
     >
       <h3>请选择此客户的排房方式</h3>
-      <Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleCancel()}>手动排房</Button>
+      <Button type="primary" style={{marginRight:'10px'}} className='button-group-1' onClick={()=>handleManual()}>手动排房</Button>
       <Button type="primary" className='button-group-1' onClick={()=>autoRowHouses()}>自动排房</Button>
     </Modal>
   )

@@ -297,7 +297,7 @@ export default (app) => [
 
   //官网管理 ---添加banner图片
   {
-    path: '/system/website-manage/add',
+    path: '/system/websiteHomePageManage/addBanner',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/website'));
@@ -330,7 +330,7 @@ export default (app) => [
 
   //官网管理 ---添加妈妈课程
   {
-    path: '/system/website-manage/addCourse',
+    path: '/system/ActivityConsult/addCourse',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/webCourse'));
@@ -372,7 +372,7 @@ export default (app) => [
   },
   //官网管理---  新增/修改地方中心
   {
-    path:'/system/website-manage/addEndemic',
+    path:'/system/websiteHomePageManage/addEndemic',
     getComponent:(location,cb) => {
       require.ensure([],(require) => {
         registerModel(app,require('models/webEndemic'));

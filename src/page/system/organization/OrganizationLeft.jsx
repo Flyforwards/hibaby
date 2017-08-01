@@ -4,7 +4,8 @@ import "./OrganizationLeft.scss"
 import {Select, Button, DatePicker, Table, Input, Icon, Popconfirm, Pagination, Tree, Menu} from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
-import {routerRedux} from 'dva/router'
+import {routerRedux} from 'dva/router';
+
 import {Link} from 'react-router'
 import AddChildNode from './AddChildNode.jsx'
 import SeeDtail from './SeeDtail.jsx'
@@ -102,7 +103,6 @@ class OrganizationLeft extends React.Component {
           disabled_add = true;
         }
 
-        // 总部以外的子部门不回调回去
         // if (is_head && parentTissue != 1) {
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex, disabled_add)
         // }
@@ -143,20 +143,37 @@ class OrganizationLeft extends React.Component {
 
   changeNodeMenu(is_head, TissueProperty, parentTissue) {
     // 总部可以看见所有节点，可以删除地方中心，不可更改除总部以外的地方中心。
+
+    const userInfo = session.get("userInfo");
+    // 管理员
+    const manager = userInfo.categoryId == 0
+
     if (is_head) {
       // 凯贝姆节点
       if (TissueProperty == 0) {
         this.deleteDisplay = "none"
-        this.addDisplay = "block"
+        if (manager) {
+          this.addDisplay = "block"
+        } else {
+          this.addDisplay = "none"
+        }
       }
       // 总部
       if (TissueProperty == 1) {
-        this.deleteDisplay = "block"
         this.addDisplay = "block"
+        if (manager) {
+          this.deleteDisplay = "block"
+        } else {
+          this.deleteDisplay = "none"
+        }
       }
       // 其它节点
       if (TissueProperty == 2) {
-        this.deleteDisplay = "block"
+        if (manager) {
+          this.deleteDisplay = "block"
+        } else {
+          this.deleteDisplay = "none"
+        }
         this.addDisplay = "none"
       }
       // 部门节点
@@ -174,6 +191,24 @@ class OrganizationLeft extends React.Component {
         this.deleteDisplay = "none"
       } else {
         this.deleteDisplay = "block"
+      }
+      // 总部
+      if (TissueProperty == 1) {
+        this.addDisplay = "block"
+        if (manager) {
+          this.deleteDisplay = "block"
+        } else {
+          this.deleteDisplay = "none"
+        }
+      }
+      // 其它节点
+      if (TissueProperty == 2) {
+        if (manager) {
+          this.deleteDisplay = "block"
+        } else {
+          this.deleteDisplay = "none"
+        }
+        this.addDisplay = "none"
       }
       if (TissueProperty == 3) {
         this.addDisplay = "none"
@@ -199,7 +234,6 @@ class OrganizationLeft extends React.Component {
   }
 
   DeleteNode() {
-    // console.log("DeleteNode>>>>>",this.state.unfolded)
     this.setState({
       DeleteNodeVisible: true,
       unfolded:this.state.unfolded
