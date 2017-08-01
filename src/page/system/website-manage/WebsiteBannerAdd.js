@@ -5,9 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import './WebsiteBanner.scss';
 import { Card,Input,Button ,Form,Col,Row,Select,Icon,message } from 'antd';
-import { WebsiteClass } from './moduleClass';
 import FileUpload from './fileUpload';
-import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
 import { queryURL } from '../../../utils/index.js';
 const Option = Select.Option;
@@ -71,12 +69,15 @@ class WebsiteBannerAdd extends React.Component {
   }
 
   render(){
-    const { disabledBtn ,ontListType,addImglist,selectAble,imgSize} = this.props;
+    const { disabledBtn ,ontListType,addImglist,selectAble,imgSize,typeList} = this.props;
     const { getFieldDecorator } = this.props.form;
+    let Options = [];
+    if(typeList){
+      Options = typeList.map(key=>{
+        return <Option key={key.typeId}>{key.typeValue}</Option>
+      })
+    }
 
-    let Options = Object.keys(WebsiteClass).map(key=>{
-      return <Option key={key}>{WebsiteClass[key]}</Option>
-    })
 
     const formItemLayout = {
       labelCol:{ span: 6 },
@@ -97,7 +98,7 @@ class WebsiteBannerAdd extends React.Component {
             <Col span={12} style = {{width:300}}>
           <FormItem label="模块类名" {...formItemLayout}>
             {getFieldDecorator('type', {
-              initialValue:ontListType ? ontListType+'':'',
+              initialValue:ontListType ? ontListType:null,
               rules: [{ required: true, message: '请选择模块类名' }]
             })(
               <Select
@@ -151,14 +152,7 @@ class WebsiteBannerAdd extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {addImglist,disabledBtn,ontListType,selectAble,imgSize} = state.websiteBanner;
-  return {
-    addImglist,
-    disabledBtn,
-    ontListType,
-    selectAble,
-    imgSize
-  };
+  return state.websiteBanner
 }
 
 export default connect(mapStateToProps)(WebsiteBannerAdd);
