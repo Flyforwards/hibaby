@@ -8,8 +8,7 @@ import { connect } from 'dva';
 
 const TabPane = Tabs.TabPane;
 
-const dict = {'专家团队':{type1:'1-1',type2:'1-1-1'},'活动咨询':{type1:'1-2'},'活动招募':{type1:'1-2-1',type2:'1-2-1-1'},
-  '新闻动态':{type1:'1-2-2',type2:'1-2-2-1'},'3D实景':{type1:'1-3'}}
+const dict = {'活动咨询':{type1:'1-2'},'活动招募':{type1:'1-2-1',type2:'1-2-1-1'}, '新闻动态':{type1:'1-2-2',type2:'1-2-2-1'},'3D实景':{type1:'1-3'}}
 
 class HomePage extends Component {
 

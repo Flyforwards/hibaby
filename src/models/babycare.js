@@ -26,9 +26,11 @@ export default {
     modalVisible:false,
     imgListArr:[],
     imgList2Arr:[],
+    imgList3Arr:[],
     //上传图片按钮
     imgBtn:false,
     img2Btn:false,
+    img3Btn:false,
   },
   reducers:{
     //改变modal
@@ -50,6 +52,10 @@ export default {
     onAddImg2(state,{payload:imglist}){
       imglist[0].uid = imglist[0].name
       return {...state,imgList2Arr:imglist,img2Btn:true}
+    },
+    onAddImg3(state,{payload:imglist}){
+      imglist[0].uid = imglist[0].name
+      return {...state,imgList3Arr:imglist,img3Btn:true}
     },
     //删除图片
     onDeleteImg(state,{payload:imglist}){
@@ -77,11 +83,25 @@ export default {
 
       return { ...state,imgList2Arr:imgArr,img2Btn:false}
     },
+    //删除图片
+    onDeleteImg3(state,{payload:imglist}){
+      let imgArr = state.imgList3Arr;
+
+      for(let i=0; i < imgArr.length; i++) {
+        if(imgArr[i].name == imglist[0].name) {
+          imgArr.splice(i,1);
+          break;
+        }
+      }
+
+      return { ...state,imgList3Arr:imgArr,img3Btn:false}
+    },
     //添加初始数据
     addInitialList(state,{payload:{data:initialList}}){
       let content = initialList ? initialList.content:null;
       let imgListArr = null
       let imgList2Arr = null
+      let imgList3Arr = null
       if(initialList != null){
         if(initialList.img1 != ""){
           imgListArr = [{
@@ -97,9 +117,15 @@ export default {
             url:initialList.img2Url,
           }]
         }
+        if(initialList.img3 != ""){
+          imgList3Arr = [{
+            uid:initialList.img3,
+            name:initialList.img3,
+            url:initialList.img3Url,
+          }]
+        }
       }
-
-      return { ...state,initialList,imgList2Arr,imgListArr,content,imgBtn:imgListArr,img2Btn:imgList2Arr}
+      return { ...state,initialList,imgList2Arr,imgList3Arr,imgListArr,content,imgBtn:imgListArr,img2Btn:imgList2Arr,img3Btn:imgList3Arr}
     },
 
   },

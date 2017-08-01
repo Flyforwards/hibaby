@@ -132,6 +132,7 @@ class WebsiteBabyService extends React.Component{
     const {form,dispatch} = this.props;
     let img1String = '';
     let img2String = '';
+    let img3String = '';
     form.validateFields((err, values) => {
       if(!err){
         if(this.props.imgListArr && this.props.imgListArr.length > 0){
@@ -140,8 +141,13 @@ class WebsiteBabyService extends React.Component{
         if(this.props.imgList2Arr && this.props.imgList2Arr.length > 0){
           img2String = this.props.imgList2Arr[0].name ? this.props.imgList2Arr[0].name:'';
         }
+        if(this.props.imgList3Arr && this.props.imgList3Arr.length > 0){
+          img3String = this.props.imgList3Arr[0].name ? this.props.imgList3Arr[0].name:'';
+        }
         values.img2 = img2String;
         values.img1 = img1String;
+        values.img3 = img3String;
+        
         values.type = this.props.superData.type1;
         if (!err) {
           if(!this.props.initialList){
@@ -202,6 +208,22 @@ class WebsiteBabyService extends React.Component{
     })
   }
 
+  //添加图片
+  onAddImg3(...values){
+    this.props.dispatch({
+      type:'websiteBabyCare/onAddImg3',
+      payload:values
+    })
+  }
+  //删除图片
+  onDeleteImg3(...values){
+    this.props.form.resetFields()
+    this.props.dispatch({
+      type:'websiteBabyCare/onDeleteImg3',
+      payload:values
+    })
+  }
+
 
   listOnAdd(){
     this.props.dispatch({
@@ -218,11 +240,12 @@ class WebsiteBabyService extends React.Component{
 
   render(){
 
-    const {imgBtn,imgList2Arr,img2Btn,initialList,modalVisible,content,imgListArr,loading,expertInitialList} =this.props;
-    let isTab = this.props.superData.type1 === '2-1'||this.props.superData.type1 === '2-2'||
-      this.props.superData.type1 === '2-3'||this.props.superData.type1 === '2-4';
-    let isTwoImage = this.props.superData.type1 === '2-2' ||this.props.superData.type1 === '2-16'
-      ||this.props.superData.type1 === '2-17'||this.props.superData.type1 === '2-18'||this.props.superData.type1 === '2-19';
+    const {imgBtn,imgList2Arr,imgList3Arr,img2Btn,img3Btn,initialList,modalVisible,content,imgListArr,loading,expertInitialList} =this.props;
+    const type1 = this.props.superData.type1;
+    let isTab = type1 === '2-1'||type1 === '2-2'|| type1 === '2-3'||type1 === '2-4';
+    let isTwoImage = type1 === '2-2' ||type1 === '2-16' ||type1 === '2-17'||type1 === '2-18'||type1 === '2-19';
+    let isThreeImage = type1 === '2-12' ||type1 === '2-13' ||type1 === '2-14'||type1 === '2-15'||
+      type1 === '2-20'||type1 === '2-21'||type1 === '2-22'||type1 === '2-23';
 
 
     let size = false
@@ -239,8 +262,16 @@ class WebsiteBabyService extends React.Component{
       }
     }
 
+    let size3 = false
+    if(imgList3Arr ){
+      if( imgList3Arr.length > 0 ){
+        size3 = true
+      }
+    }
+
     let btnDisabled = true
     let btnDisabled2 = true
+    let btnDisabled3 = true
 
     if( modalVisible){
       if(!imgBtn ){
@@ -248,6 +279,9 @@ class WebsiteBabyService extends React.Component{
       }
       if(!img2Btn ){
         btnDisabled2 = false
+      }
+      if(!img3Btn ){
+        btnDisabled3 = false
       }
     }
 
@@ -330,7 +364,7 @@ class WebsiteBabyService extends React.Component{
                 </Row>
 
 
-                {isTwoImage?  <Row>
+                {isTwoImage||isThreeImage?  <Row>
                   <Col span={8} style={{width:'300px'}}>
                     <FormItem label="图片展示2:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img2', {initialValue: '',})(
@@ -350,6 +384,29 @@ class WebsiteBabyService extends React.Component{
                     </FormItem>
                   </Col>
                 </Row>:''}
+
+
+                {isThreeImage?  <Row>
+                  <Col span={8} style={{width:'300px'}}>
+                    <FormItem label="图片展示3:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                      {getFieldDecorator('img3', {initialValue: '',})(
+                        <FileUpload  defaultFileList={imgList3Arr} addImgFun={this.onAddImg3.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg3.bind(this)} imgInputName="">
+                          <Button key="1" disabled={btnDisabled3}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                        </FileUpload>
+                      )}
+                    </FormItem>
+                  </Col>
+
+                  <Col span={8} style={{width:'300px'}}>
+                    <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                      {getFieldDecorator('img3Size', {rules: [{ required: size3, message: '请输入图片尺寸'}],
+                        initialValue: initialList ? initialList.img3Size:'',})(
+                        <Input placeholder="请输入图片尺寸，有图片时必填" readOnly={!modalVisible}/>
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>:''}
+
 
                 <Row>
                   <Col style={{width:'480px'}}>

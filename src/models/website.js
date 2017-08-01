@@ -57,35 +57,21 @@ export default {
     },
     //保存新闻上传图片1
     setNewsImg1(state,{payload:todos}){
-      let newsArr1 = state.newsImgList1 ? state.newsImgList1:[];
-      return{...state,newsImgList1:[...newsArr1,...todos],img1Btn:true};
+      todos[0].uid = todos[0].name
+      return{...state,newsImgList1:todos,img1Btn:true};
     },
     //保存新闻上传图片2
     setNewsImg2(state,{payload:todos}){
-      let newsArr2 = state.newsImgList2 ? state.newsImgList2:[];
-      return{...state,newsImgList2:[...newsArr2,...todos],img2Btn:true};
+      todos[0].uid = todos[0].name
+      return{...state,newsImgList2:todos,img2Btn:true};
     },
     //删除新闻图片1
     deleteNewsImg1(state,{payload:todos}){
-      let newsArr1 = state.newsImgList1;
-      for(let i=0; i < newsArr1.length; i++) {
-        if(newsArr1[i].name == todos[0].name) {
-          newsArr1.splice(i,1);
-          break;
-        }
-      }
-      return {...state,newsImgList1:newsArr1,img1Btn:false};
+      return {...state,newsImgList1:[],img1Btn:false};
     },
     //删除新闻图片2
     deleteNewsImg2(state,{payload:todos}){
-      let newsArr2 = state.newsImgList2;
-      for(let i=0; i < newsArr2.length; i++) {
-        if(newsArr2[i].name ==  todos[0].name) {
-          newsArr2.splice(i,1);
-          break;
-        }
-      }
-      return {...state,newsImgList2:newsArr2,img2Btn:false};
+      return {...state,newsImgList2:[],img2Btn:false};
     },
     //保存图片
     setImgList(state,{payload:todo}){

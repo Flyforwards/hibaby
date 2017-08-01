@@ -14,6 +14,8 @@ export default {
     HomePageActKey:'1',
     //活动咨询
     ActivityActKey:'新闻动态',
+    tabSelect:['产前服务','环保智能','专家团队Our team','园林景观'],
+    mainSelect:'精致服务'
   },
   reducers: {
     tabChange(state,{payload:data}){

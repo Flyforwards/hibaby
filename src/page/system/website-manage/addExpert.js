@@ -50,24 +50,22 @@ class AddExpert extends React.Component{
       values.img2 = img2String;
       values.img1 = img1String;
       values.content = contentHtml;
+      values.type = queryURL("type");
+      console.log(values)
+
       if (!err) {
         if(queryURL("id")){
           dispatch({
             type: 'websiteBanner/updateExpert',
             payload:{
               ...values,
-              "type":queryURL("type"),
               "id":queryURL("id"),
             }
           })
         }else{
           dispatch({
             type: 'websiteBanner/addExpert',
-            payload: {
-              ...values,
-              "type":queryURL('type')
-
-            },
+            payload:values,
           })
         }
       }
@@ -106,7 +104,7 @@ class AddExpert extends React.Component{
     contentHtml=content;
   }
   render(){
-    const { ExpertIdMsg ,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = this.props;
+    const { ExpertIdMsg ,img1Btn,img2Btn,newsImgList1,newsImgList2} = this.props;
     const {getFieldDecorator,} =this.props.form;
     const formItemLayout = {
       labelCol:{ span: 4 },
@@ -141,15 +139,15 @@ class AddExpert extends React.Component{
     }
 
     let size1 = false
-    if(defaultFileLists1 ){
-      if( defaultFileLists1.length > 0 ){
+    if(newsImgList1 ){
+      if( newsImgList1.length > 0 ){
         size1 = true
       }
     }
 
     let size2 = false
-    if(defaultFileLists2 ){
-      if( defaultFileLists2.length > 0 ){
+    if(newsImgList2 ){
+      if( newsImgList2.length > 0 ){
         size2 = true
       }
     }
@@ -203,10 +201,10 @@ class AddExpert extends React.Component{
               <Col span={8} style={{width:'300px' }}>
                 <FormItem label="原图上传" {...tipItemLayout}>
                   {getFieldDecorator('img1', {
-                   initialValue: defaultFileLists1 ? defaultFileLists1 : '' ,
+                   initialValue: newsImgList1 ? newsImgList1 : '' ,
                     rules: [{ required: false, message: '请选择原图' }]
                   })(
-                    <FileUpload  defaultFileList={defaultFileLists1} addImgFun={this.onAddImg1.bind(this)} deleteImgFun={this.onDeleteImg1.bind(this)} imgInputName="">
+                    <FileUpload  defaultFileList={newsImgList1} addImgFun={this.onAddImg1.bind(this)} deleteImgFun={this.onDeleteImg1.bind(this)} imgInputName="">
                       <Button key="1" disabled={img1Btn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
                     </FileUpload>
                   )}
@@ -229,10 +227,10 @@ class AddExpert extends React.Component{
               <Col span={8} style={{width:'300px' }}>
                 <FormItem label="缩略图上传" {...tipItemLayout}>
                   {getFieldDecorator('img2', {
-                    initialValue: defaultFileLists2 ?　defaultFileLists2 : '' ,
+                    initialValue: newsImgList2 ?　newsImgList2 : '' ,
                     rules: [{ required: false, message: '请选择缩略图' }]
                   })(
-                    <FileUpload  defaultFileList={defaultFileLists2} addImgFun={this.onAddImg2.bind(this)} deleteImgFun={this.onDeleteImg2.bind(this)} imgInputName="img2">
+                    <FileUpload  defaultFileList={newsImgList2} addImgFun={this.onAddImg2.bind(this)} deleteImgFun={this.onDeleteImg2.bind(this)} imgInputName="img2">
                       <Button key="1" disabled={img2Btn}  className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
                     </FileUpload>
                   )}
@@ -259,11 +257,9 @@ class AddExpert extends React.Component{
 }
 
 function mapStateToProps(state){
-  const {ExpertIdMsg,newsImgList1,newsImgList2,img1Btn,img2Btn,defaultFileLists1,defaultFileLists2} = state.websiteBanner;
+  const {ExpertIdMsg,newsImgList1,newsImgList2,img1Btn,img2Btn} = state.websiteBanner;
   return {
     img1Btn,
-    defaultFileLists1,
-    defaultFileLists2,
     img2Btn,
     ExpertIdMsg,
     newsImgList1,
