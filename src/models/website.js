@@ -23,6 +23,7 @@ export default {
       pageSize:10,
       total: null,
     },
+    typeList:[],
     //主标题 ---专家团队修改判断
     readAble:false,
     newsImgList1:[],
@@ -50,6 +51,9 @@ export default {
     //改变select状态
     changeSelect(state,{payload:choiceSelect}){
       return { ...state,selectAble:choiceSelect}
+    },
+    savaTypeList(state,{payload:data}){
+      return { ...state,typeList:data}
     },
     //保存新闻上传图片1
     setNewsImg1(state,{payload:todos}){
@@ -312,6 +316,19 @@ export default {
         })
       }
     },
+
+    //根据类型获取单一信息
+    *getTypeList({payload:values},{call,put}){
+      const { data:{data,code}} = yield call(websiteBanner.typeList);
+      if(code == 0) {
+        yield put({
+          type:'savaTypeList',
+          payload: data
+        })
+      }
+    },
+
+
     //根据Id获取专家信息
     *getExpertById({payload:values},{call,put}){
       const { data:{data,code}} = yield call(websiteBanner.getExpertById,values);
@@ -349,6 +366,8 @@ export default {
     setup({ dispatch,history}){
       return history.listen(({ query,pathname}) => {
         if(pathname === "/system/websiteHomePageManage/addBanner"){
+
+          dispatch({type:'getTypeList',});
           if(query.type){
             dispatch({
               type:'changeSelect',

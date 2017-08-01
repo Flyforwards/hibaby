@@ -95,6 +95,13 @@ export function getExpertByOneType(values) {
     body:JSON.stringify(values)
   })
 }
+//类型列表
+export function typeList(values) {
+  return request('/crm/api/v1/web/banner/typeList',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
 //根据id获取专家信息
 export function getExpertById(values) {
   return request('/crm/api/v1/web/news/findOneById',{

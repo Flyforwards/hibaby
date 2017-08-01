@@ -54,6 +54,10 @@ export default {
     saveCustomerMsg(state, {payload: {data: customerData}}){
       return {...state, customerData}
     },
+    //获取字段值
+    saveDictionary(state, {payload: {data:dictionary}}) {
+      return { ...state,dictionary}
+    },
     //根据筛选条件查询成单信息客户列表
     saveCustomerList(state, {payload: {list, pagination}}) {
       return {...state, list, pagination: {...state.pagination, ...pagination}};
@@ -74,6 +78,8 @@ export default {
     setPackageList(state, {payload: todo}){
       return {...state, packageList: todo.data};
     },
+
+
   },
   effects: {
 
@@ -217,7 +223,18 @@ export default {
         })
       }
     },
-
+    //获取字典对应值
+    *getDictionary({payload: values}, {call, put}){
+      const {data: {code, data}} = yield  call(dinnerService.getDictionary, values);
+      if (code == 0) {
+        yield put({
+          type: 'saveDictionary',
+          payload: {
+            data,
+          }
+        })
+      }
+    },
 
   },
   subscriptions: {
@@ -265,6 +282,13 @@ export default {
         }
         if(pathname === '/meals/nutritionist/taboo'){
           //禁忌
+          dispatch({
+            type:'getDictionary',
+            payload:{
+              'abName':'YCC',
+              'softDelete':'0'
+            }
+          })
           dispatch({
             type:"getTabooFood",
             // payload:{

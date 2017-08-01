@@ -9,7 +9,6 @@ import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
 import moment from 'moment'
 import { format } from '../../../utils/index.js';
-import { WebsiteClass } from './moduleClass';
 
 class WebSiteBanner extends React.Component{
   constructor(props){
@@ -28,7 +27,12 @@ class WebSiteBanner extends React.Component{
         key: 'type',
         width: '25%',
         render:(text,record,index) => {
-          return WebsiteClass[text];
+          let ary = this.props.typeList
+          for(let i = 0 ;i < ary.length;i++){
+            if(ary[i].typeId === text){
+              return ary[i].typeValue
+            }
+          }
         }
 
       }, {
@@ -74,6 +78,7 @@ class WebSiteBanner extends React.Component{
 
   componentDidMount() {
     this.props.dispatch({type: 'websiteBanner/getInitialList'});
+    this.props.dispatch({type: 'websiteBanner/getTypeList'});
     this.props.dispatch({type: 'websiteBanner/saveOneList',payload:{}});
   }
 
@@ -100,10 +105,11 @@ class WebSiteBanner extends React.Component{
 
 
 function mapStateToProps(state){
-  const {initialList} =state.websiteBanner;
+  const {initialList,typeList} =state.websiteBanner;
   return{
     loading:state.loading.models.websiteBanner,
     initialList,
+    typeList
   }
 }
 export default connect(mapStateToProps)(WebSiteBanner);
