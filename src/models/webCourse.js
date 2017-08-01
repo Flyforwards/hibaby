@@ -27,7 +27,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
      return history.listen(({ pathname,query }) => {
-     if (pathname === '/system/website-manage/addCourse'){
+     if (pathname === '/system/ActivityConsult/addCourse'){
      if(query.id){
        dispatch({
        type: 'getCourseById',

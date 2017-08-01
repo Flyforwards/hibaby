@@ -136,10 +136,22 @@ export default {
 
     //新增专家
     *addExpert({payload:values},{call,put}){
-      const {data:{data,code}} = yield call(websiteBabyCare.addExpert,values);
-      if(code == 0){
-        history.go(-1);
+      try{
+        const {data:{data,code}} = yield call(websiteBabyCare.addExpert,values);
         message.success("添加成功");
+        if(queryURL("type")) {
+          history.go(-1);
+        }
+        else{
+          yield put({
+            type:'changeModal',
+            payload:{
+              "modalVisible":false,
+            }
+          })
+        }
+      }
+      catch (err){
 
       }
     },

@@ -26,7 +26,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
      return history.listen(({ pathname,query }) => {
-       if (pathname === '/system/website-manage/addEndemic'){
+       if (pathname === '/system/websiteHomePageManage/addEndemic'){
          if(query.id){
            dispatch({type: 'getEndemicById', payload:{dataId : query.id}});
          }else{

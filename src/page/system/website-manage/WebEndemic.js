@@ -56,7 +56,7 @@ class WebEndemic extends React.Component{
       render: (text, record, index) => {
         return (
           <span>
-          <Link disabled={false} className="one-link" to={`/system/website-manage/addEndemic?id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+          <Link disabled={false} className="one-link" to={`/system/websiteHomePageManage/addEndemic?id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
           <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
            <Link disabled={false} className="one-link">删除</Link>
           </Popconfirm>
@@ -110,11 +110,10 @@ class WebEndemic extends React.Component{
 
       <Card className="website-banner">
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
-          <Link to="/system/website-manage/addEndemic">
+          <Link to="/system/websiteHomePageManage/addEndemic">
             <Button className="one-button" style={{float:'right',marginBottom:'10px'}}>添加</Button>
           </Link>
         </div>
-        {/*<Table className='management-center' bordered columns={ this.columns } {...tableProps} rowKey="id"/>*/}
         <Table
           className="management-center"
           bordered

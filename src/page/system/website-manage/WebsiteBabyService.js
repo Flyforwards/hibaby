@@ -142,18 +142,14 @@ class WebsiteBabyService extends React.Component{
         }
         values.img2 = img2String;
         values.img1 = img1String;
-
+        values.type = this.props.superData.type1;
         if (!err) {
-          dispatch({
-            type: 'websiteBabyCare/updateExpert',
-            payload:{
-              ...values,
-              "id":this.props.initialList.id,
-              "type":this.props.initialList.type,
-            }
-          })
+          if(!this.props.initialList){
+            dispatch({type: 'websiteBabyCare/addExpert', payload:values})
+          }
+          else {
+            dispatch({type: 'websiteBabyCare/updateExpert', payload:{...values, "id":this.props.initialList.id,}})}
         }
-
       }
     })
   }

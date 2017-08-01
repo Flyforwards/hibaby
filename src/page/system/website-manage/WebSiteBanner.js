@@ -51,7 +51,7 @@ class WebSiteBanner extends React.Component{
         render: (text, record, index) => {
           return (
             <span>
-            <Link disabled={false} className="one-link" to={`/system/website-manage/add?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+            <Link disabled={false} className="one-link" to={`/system/websiteHomePageManage/addBanner?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
             <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
              <Link disabled={false} className="one-link">删除</Link>
             </Popconfirm>
@@ -87,7 +87,7 @@ class WebSiteBanner extends React.Component{
     return (
       <Card className="website-banner" style={{overflow:'hidden'}}>
         <div className = "websiteAddBtn" style = {{overflow:'hidden'}}>
-          <Link to="/system/website-manage/add">
+          <Link to="/system/websiteHomePageManage/addBanner">
             <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}}>添加</Button>
           </Link>
         </div>

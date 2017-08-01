@@ -348,7 +348,7 @@ export default {
   subscriptions:{
     setup({ dispatch,history}){
       return history.listen(({ query,pathname}) => {
-        if(pathname === "/system/websiteHomePageManage/add"){
+        if(pathname === "/system/websiteHomePageManage/addBanner"){
           if(query.type){
             dispatch({
               type:'changeSelect',
