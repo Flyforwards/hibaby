@@ -88,8 +88,21 @@ class EditTaboo extends React.Component {
       ikeys: nextKeys
     });
   }
+//获取字段第几胎
+  getFetus(data,num){
+    let name ='';
+    data.map((elem,index) => {
+      if(elem.id == num){
+        name = elem.name;
+      }
+    });
+
+    return name;
+  }
+
   render() {
-    const {loading, dispatch, form,tabooData,customerData } = this.props;
+    //distionary 第几胎
+    const {loading, dispatch, form,tabooData,customerData,dictionary } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const formItemLayout = {
       labelCol: { span: 5 },
@@ -172,7 +185,7 @@ class EditTaboo extends React.Component {
           <p className="basicInformation">
             <span>客户姓名 : {customerData ? customerData.name:''}</span>
             <span>客户年龄 :{customerData ? customerData.age:''} </span>
-            <span>第几胎 : {customerData ? customerData.fetus :''}</span>
+            <span>第几胎 : {dictionary && customerData ? this.getFetus(dictionary,customerData.fetus) :''}</span>
           </p>
           <Form className="formPadding">
             <Row>
@@ -210,9 +223,10 @@ class EditTaboo extends React.Component {
 
 
 function mapStateToProps(state) {
-  const { tabooData,customerData } = state.dinner;
+  const { tabooData,customerData,dictionary } = state.dinner;
   return {
     customerData,
+    dictionary,
     tabooData,
     loading: state.loading,
   };
