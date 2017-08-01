@@ -1,17 +1,11 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import { Modal,  Button } from 'antd'
 import './AddChildNode.scss'
 import _ from 'lodash'
 
 
-const createForm = Form.create
-const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
-const Option = Select.Option
-
-@createForm()
 class DeleteNode extends Component {
     constructor(props) {
         super(props)
@@ -20,7 +14,6 @@ class DeleteNode extends Component {
         this.props.onCancel()
     }
     handleOk() {
-      console.log("ok",this.props.TissueProperty)
         this.props.dispatch({
             type: 'organization/deleteDepartment',
             payload: {
@@ -30,13 +23,7 @@ class DeleteNode extends Component {
         })
         this.props.onCancel()
     }
-    checkbox() {
-      //  console.log("checkbox")
 
-    }
-    handleAfterClose() {
-        this.props.form.resetFields()
-    }
     componentDidMount() {
         this.asyncValidator = _.debounce(this.asyncValidator, 1000 * 3)
     }
@@ -53,7 +40,7 @@ class DeleteNode extends Component {
         }, 1000)
     }
     render() {
-        const {visible, form, confirmLoading} = this.props
+        const {visible, confirmLoading} = this.props
         return (
             <Modal
                 visible={visible}
@@ -63,7 +50,6 @@ class DeleteNode extends Component {
                 wrapClassName="Disabled"
                 closable={false}
                 confirmLoading={confirmLoading}
-                afterClose={this.handleAfterClose.bind(this)}
                 onCancel={this.handleCancel.bind(this)}
                 onOk={this.handleOk.bind(this)}
                 style={{pointerEvents: confirmLoading ? 'none' : ''}}
@@ -78,23 +64,4 @@ class DeleteNode extends Component {
     }
 }
 
-DeleteNode.propTypes = {}
-DeleteNode.defaultProps = {}
-function Disabled({
-  dispatch
-}) {
-  return ( < div >
-    <DeleteNode dispatch = {
-      dispatch
-    }
-    /> </div >
-  )
-}
-function mapStateToProps(state) {
-  const {
-  } = state.organization;
-  return {
-    loading: state.loading.models.organization
-    };
-}
-export default connect(mapStateToProps)(DeleteNode)
+export default connect()(DeleteNode)

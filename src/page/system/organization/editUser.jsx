@@ -142,7 +142,7 @@ class EditUsered extends React.Component {
             entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
-              "emaill":fields[`companyEmail${i}`],//fields.companyEmail,//公司邮箱
+              "email":fields[`companyEmail${i}`],//fields.companyEmail,//公司邮箱
               "extension":fields[`internalExtension${i}`], //fields.internalExtension,//内部分机
               "leaderId": fields[`directLeadership${i}`][0],//直系领导
               "positionId": fields[`position${i}`],//职位
@@ -154,7 +154,7 @@ class EditUsered extends React.Component {
           entrysData.push({
               "contact":fields[`information${i}`], //fields.information,//联系方式
               "deptId":fields[`affiliatedDepartment${i}`],//fields.affiliatedDepartment,//隶属部门
-              "emaill":fields[`companyEmail${i}`],//fields.companyEmail,//公司邮箱
+              "email":fields[`companyEmail${i}`],//fields.companyEmail,//公司邮箱
               "extension":fields[`internalExtension${i}`], //fields.internalExtension,//内部分机
               "leaderId": fields[`directLeadership${i}`][0],//直系领导
               "positionId": fields[`position${i}`],//职位
@@ -407,7 +407,7 @@ class EditUsered extends React.Component {
                    key = { i * 100 + 4 }
                   >
                     {getFieldDecorator(`companyEmail${i}`, {
-                      initialValue:entryContent.emaill,
+                      initialValue:entryContent.email,
                        rules: [
                          { required: true, message: '此项为必选项' },
                          {
