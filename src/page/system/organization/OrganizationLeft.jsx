@@ -219,7 +219,6 @@ class OrganizationLeft extends React.Component {
   }
 
   seeDetails() {
-    //console.log("this.state.ID>>>>",this.state.unfolded)
     if(this.state.ID){
       this.props.dispatch({
         type: 'organization/getDepartment',
@@ -350,6 +349,7 @@ class OrganizationLeft extends React.Component {
     }
     if (leftList) {
       loops = nodesIteration(leftList.nodes, leftList.TissueProperty);
+      console.log(leftList)
       loops = [<TreeNode key={leftList.id} title={leftList.name}
                          dataIndex={leftList.tissueProperty}
                          parentId={leftList.parentId}>{loops}</TreeNode>]
@@ -366,8 +366,9 @@ class OrganizationLeft extends React.Component {
           onSelect={ this.onSelect.bind(this) }
           onExpand={this.expandHandler.bind(this)}
           autoExpandParent = { true }
+          defaultExpandedKeys = { ['1'] } // 根节点
           defaultSelectedKeys = { this.state.unfolded }
-          expandedKeys = { this.state.unfolded }
+          // expandedKeys = { this.state.unfolded }
         >
           { loops }
         </Tree>
