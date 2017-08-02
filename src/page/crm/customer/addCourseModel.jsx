@@ -1,46 +1,15 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button,Menu,Table} from 'antd'
+import { Modal, Menu, Row, Col} from 'antd'
 import './AddCourse.scss';
 import { Link} from 'react-router'
 import _ from 'lodash';
 
-const SubMenu = Menu.SubMenu;
-
+const MenuItem = Menu.Item;
 class AddCourseModel extends Component {
     constructor(props) {
         super(props)
-        this.columns = [{
-          title: 'name',
-          dataIndex: 'name',
-          width: '25%',
-
-        }, {
-          title: 'age',
-          dataIndex: 'age',
-          width: '15%',
-          render:(text,record,index) => {
-            let suiteName = null
-            if(record.suiteName){
-                suiteName="套房 :"+record.suiteName
-            }
-
-            return (
-              suiteName
-            )
-          }
-        }, {
-          title: 'address',
-          dataIndex: 'address',
-          width: '40%',
-          render:(text,record,index) => {
-            let price ="套餐价格 :"+record.price
-            return (
-              price
-            )
-          }
-        }]
     }
     handleCancel() {
         this.props.onCancel()
@@ -48,15 +17,11 @@ class AddCourseModel extends Component {
     handleOk() {
 
     }
-    checkbox() {
-        /*console.log("checkbox")*/
 
-    }
     handleAfterClose() {
 
     }
     handleClick = (e) => {
-        //console.log('Clicked: ', e.key);
         this.props.dispatch({
             type: 'addCourse/listByType',
             payload: {
@@ -94,19 +59,16 @@ class AddCourseModel extends Component {
     render() {
         let leftList = []
         let rightList = []
-        const columns = this.columns;
-        const {visible} = this.props
-        if(this.props.getDictionary != null){
-            this.props.getDictionary.map((item)=>{
-                leftList.push(<Menu.Item key={item.id}>{item.name}</Menu.Item>)
+        const { visible, getDictionary, listByType} = this.props
+        let selectKeys = [];
+        if(getDictionary != null){
+            getDictionary.map((item)=>{
+                leftList.push(<MenuItem key={item.id}>{item.name}</MenuItem>)
             })
+          selectKeys = [String(getDictionary[0].id)]
         }
-        if(this.props.listByType != null){
-            // this.props.listByType.map((item)=>{
-            //    item.key=item.id
-            // })
-            // rightList = this.props.listByType
-            this.props.listByType.map((item)=>{
+        if(listByType != null){
+            listByType.map((item)=>{
                 if(item.suiteName){
                  rightList.push(
                     <Link className="rightList" to={{ pathname: '/crm/customer/Add/bindingPackages',query: { dataId:item.id } }}>
@@ -124,6 +86,7 @@ class AddCourseModel extends Component {
 
             })
         }
+
         return (
             <Modal
                 visible={visible}
@@ -134,21 +97,23 @@ class AddCourseModel extends Component {
                 wrapClassName={"addCourseModal"}
                 onCancel={this.handleCancel.bind(this)}
                 footer={null}
-                width={ 1000 }
+                width={ 900 }
             >
-            <div className="AddCourseModel">
-                <div className="left">
-                    <Menu
-                    onClick={this.handleClick.bind(this)}
-                    >
-                    {leftList}
+            <div className="addCourseModel">
+              <Row>
+                <Col span="5">
+                    <Menu defaultSelectedKeys={selectKeys} onClick={this.handleClick.bind(this)} >
+                    { leftList }
                     </Menu>
-                </div>
-                <div className="right">
-                   {
-                    rightList
-                   }
-                </div>
+                </Col>
+                <Col span="19">
+                  <div style={{ marginLeft: '10px'}}>
+                    {
+                      rightList
+                    }
+                  </div>
+                </Col>
+              </Row>
             </div>
             </Modal>
         )

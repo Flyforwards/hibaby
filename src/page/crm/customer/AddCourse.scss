@@ -114,69 +114,59 @@
     }
   }
 }
-.ant-form .ant-form-horizontal{
-  width:100%;
-  height:100%;
-}
-.AddCourseModel{
+//.ant-form .ant-form-horizontal{
+//  width:100%;
+//  height:100%;
+//}
+.addCourseModel{
   overflow: hidden;
-  .left{
-    width:194px;
-    height:auto;
-    float: left;
-    .ant-menu{
-      background: none;
-      .ant-menu-item{
-        height: 45px;
-        text-align: center;
-        font:14px "微软雅黑";
-        line-height: 45px;
-      }
-    }
-    .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-        background-color: #e6e6e6;
-    }
-    .ant-menu-item-selected {
-        color: #f5b55d;
+  .ant-menu{
+    background: none;
+    .ant-menu-item{
+      height: 45px;
+      text-align: center;
+      font:14px "微软雅黑";
+      line-height: 45px;
     }
   }
-  .right{
-    width:774px;
-    height:auto;
-    float: right;
-    overflow: hidden;
-    .rightList{
-      display: inline-block;
-      width:758px;
-      border:1px solid #ccc;
-      height:45px;
-      line-height:45px;
-      color:#000;
-      margin:8px 0 0 10px;
-      border-radius: 5px;
-      .tital{
-        font-size: 16px;
-        font-weight: blod;
-        float: left;
-        text-indent: 50px;
-      }
-      .room{
-        font-size: 16px;
-        text-indent:50px;
-        float: left;
-      }
-      .price{
-        font-size: 16px;
-        text-indent:50px;
-        float: left;
-      }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #e6e6e6;
+  }
+  .ant-menu-item-selected {
+    color: #f5b55d;
+  }
+  .rightList{
+    width: 98%;
+    display: inline-block;
+    border:1px solid #ccc;
+    height:45px;
+    line-height:45px;
+    color:#000;
+    margin:8px 0 0 10px;
+    border-radius: 5px;
+    .tital{
+      font-size: 16px;
+      float: left;
+      text-indent: 50px;
     }
-    .rightList:hover{
-      border: 1px solid #f5b55d;
+    .room{
+      font-size: 16px;
+      text-indent:50px;
+      float: left;
+    }
+    .price{
+      font-size: 16px;
+      text-indent:50px;
+      float: left;
     }
   }
+  .rightList:hover{
+    border: 1px solid #f5b55d;
+  }
+
+  .ant-modal-title {
+    text-align: center;
+  }
+
 }
 
-.ant-modal-title {
-  text-align: center;
-}
