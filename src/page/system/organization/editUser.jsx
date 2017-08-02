@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {connect} from 'dva'
-import {Table,Input,Icon,Button,Popconfirm,Pagination,Form,Radio,DatePicker,Select,Upload,Modal,message} from 'antd'
+import {Table,Input,Icon,Button,Popconfirm,Form,DatePicker,Select,Upload,Modal,message} from 'antd'
 import {routerRedux} from 'dva/router'
 import {Link} from 'react-router'
 import './addUser.scss'

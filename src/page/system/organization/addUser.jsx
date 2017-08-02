@@ -5,15 +5,13 @@ import { connect } from 'dva'
 import { Input, Button, Form, Radio, DatePicker, Select, message, Row, Col } from 'antd'
 import { Link } from 'react-router'
 import './addUserInfo.scss'
-import { local, session } from '../../../common/util/storage.js'
+import { local, session } from 'common/util/storage.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import UPload from 'common/Upload.js'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-//地方中心字段
-const department = local.get("department")
-let traversalDataId = []
+
 
 const Option = Select.Option
 
@@ -24,7 +22,7 @@ class AddUser extends React.Component {
       value:1,
       visible:false,
       TableData:null,
-      NewuserImg:null
+      img:null
     }
   }
   componentDidMount(){
@@ -64,15 +62,15 @@ class AddUser extends React.Component {
     this.props.dispatch({
       type: 'organization/getLeagerDepartmentNodes',
       payload: {
-          "nodeId": endemic.id,
-          "tissueProperty": endemic.tissueProperty
+        "nodeId": endemic.id,
+        "tissueProperty": endemic.tissueProperty
       }
     })
     this.props.dispatch({
       type: "organization/organizationList",
       payload: {
-        nodeid:endemic.id,
-        tissueProperty:endemic.tissueProperty,
+        nodeid: endemic.id,
+        tissueProperty: endemic.tissueProperty,
         page:1,
         size: 10,
       }
@@ -83,102 +81,60 @@ class AddUser extends React.Component {
    this.props.history.go(-1)
   }
   //隶属部门被选中时调用的函数
-  affiliatedDepartment = (value,node, extra) => {
-    this.props.form.resetFields(['position']);
-     this.props.dispatch({
-        type: 'organization/position',
-        payload: {
-          dataId: value
-        }
-      })
+  chooseDepartment = (value,node, extra) => {
+    const { form, dispatch } = this.props;
+    form.resetFields(['positionId']);
+    dispatch({
+       type: 'organization/position',
+       payload: {
+         dataId: value
+       }
+    })
   }
   //保存按键
   handleSave = ()=>{
     let endemic  = session.get("endemic")
-    this.props.form.validateFields((err, fieldsValue) => {
-      if(!err){
-        const values = {
-          ...fieldsValue,
-          'entryTime': fieldsValue['entryTime']
-        }
-        const fields = this.props.form.getFieldsValue();
+    this.props.form.validateFields((err, values) => {
+      if (!this.state.img) {
+        message.error('请上传照片！')
+        return;
+      }
+      if(!err) {
         let roleIdData = []
-        if(fields.systemRole){
-          fields.systemRole.map((item)=>{
-          roleIdData.push({"roleId":item})
-        })
+        if (values.systemRole) {
+          values.systemRole.map((item) => {
+            roleIdData.push({"roleId": item})
+          })
         }
-        if(fields.userName){
-          if(fields.gender==0 || fields.gender==1){
-            if(values.entryTime){
-              if(fields.affiliatedDepartment){
-                    if(fields.position){
-                        if(roleIdData.length>=1){
-                          if(fields.phoneNumber){
-                            if(fields.information){
-                              if(fields.companyEmail){
-                                console.log(this.state.NewuserImg)
-                                if(this.state.NewuserImg){
-                                    this.props.dispatch({
-                                      type: 'organization/addUser',
-                                      payload:{
-                                        categoryId: endemic.id,
-                                        entrys: [
-                                          {
-                                            "contact":fields.information, //fields.information,//联系方式
-                                            "deptId":fields.affiliatedDepartment,//fields.affiliatedDepartment,//隶属部门
-                                            "email":fields.companyEmail,//fields.companyEmail,//公司邮箱
-                                            "extension":fields.internalExtension, //fields.internalExtension,//内部分机
-                                            "leaderId": this.state.TableData ? this.state.TableData.id : null,//直系领导
-                                            "positionId": fields.position,//职位
-                                            "identifier": fields.Numbering,//编号//fields.Numbering
-                                            "roles": roleIdData
-                                          }
-                                        ],
-                                        "gmt_entry": values.entryTime,//入职日期
-                                        "mobile": fields.phoneNumber,//手机号fields.
-                                        "name": fields.userName,//用户名//fields.userName
-                                        "password": fields.password,//密码//fields.userName
-                                        "sex": fields.gender,//性别//fields.gender
-                                        "img":this.state.NewuserImg
-                                      }
-                                    })
-                                }else{
-                                  message.warning('请上传头像')
-                                }
-                              }else{Option
-                              message.warning('请填写公司邮箱')
-                              }
-                            }else{
-                              message.warning('请填写联系方式')
-                            }
-                          }else{
-                            message.warning('请填写手机号')
-                          }
-                        }else{
-                          message.warning('请选择系统角色')
-                        }
-                    }else{
-                      message.warning('请选择职位信息')
-                    }
-              }else{
-                message.warning('请选择隶属部门')
+        this.props.dispatch({
+          type: 'organization/addUser',
+          payload: {
+            categoryId: endemic.id,
+            entrys: [
+              {
+                "contact": values.contact,  //联系方式
+                "deptId": values.deptId, //隶属部门
+                "email": values.email, //公司邮箱
+                "extension": values.extension, //内部分机
+                "leaderId": this.state.TableData ? this.state.TableData.id : null,//直系领导
+                "positionId": values.positionId,//职位
+                "roles": roleIdData
               }
-            }else{
-              message.warning('请选择入职日期')
-            }
-          }else{
-            message.warning('请选择性别')
+            ],
+            "gmt_entry": values.gmt_entry,//入职日期
+            "mobile": values.mobile, //手机号
+            "name": values.name, //用户名
+            "password": values.password, //密码
+            "sex": values.sex, //性别
+            "img": this.state.img
           }
-        }else{
-          message.warning('请输入姓名')
-        }
+        })
       }
     })
   }
-  headelImg(NewuserImg){
+  uploadImg(img){
     this.setState({
-      NewuserImg:NewuserImg
+      img:img
     })
   }
     render() {
@@ -194,6 +150,9 @@ class AddUser extends React.Component {
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
         })
       }
+      //地方中心字段
+      let traversalDataId = []
+
       if(this.props.dataId != null){
           traversalDataId = this.props.dataId.map((item)=>{
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
@@ -210,42 +169,50 @@ class AddUser extends React.Component {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 }
       }
+      const rowLayout= {
+        offset: 2,
+        span: 9
+      }
+      const rowTopLayout = {
+        span: 10
+      }
+      const rowTopLayout2 = {
+        span: 10,
+        offset: 2,
+      }
       return(
-        <div className="addUserInfo">
-          <div>
+        <div className="add-user-info">
           <Form>
          <div className="information">基本信息</div>
-            <Row>
-              <Col span="4">
-             <FormItem {...formItemLayout}
+            <div className="information-item">
+            <Row >
+              <Col offset='1' span="2">
+             <FormItem
               >
-                {getFieldDecorator('userImg', {
-                  rules: [],
+                {getFieldDecorator('img', {
                 })(
-                 <UPload urlList={"Img"} headelUserImg={this.headelImg.bind(this)}/>
+                  <UPload urlList={"Img"} headelUserImg={ this.uploadImg.bind(this)}/>
                 )}
               </FormItem>
               </Col>
               <Col span="20">
                 <Row>
-                  <Col span="6">
+                  <Col {...rowTopLayout}>
                     <FormItem
                       label="姓名" {...formItemLayout}
                     >
-                      {getFieldDecorator('userName', {
+                      {getFieldDecorator('name', {
                         rules: [{ max: 10, message: '请按要求输入' }, { required: true, message: '必填项！' }],
                       })(
                         <Input/>
                       )}
                     </FormItem>
                   </Col>
-                </Row>
-                <Row>
-                  <Col span="6">
+                  <Col {...rowTopLayout2}>
                     <FormItem
                       label="性别" {...formItemLayout}
                     >
-                      {getFieldDecorator('gender', {
+                      {getFieldDecorator('sex', {
                         rules: [{ required: true, message: '必选项！' }],
                       })(
                         <RadioGroup>
@@ -255,11 +222,13 @@ class AddUser extends React.Component {
                       )}
                     </FormItem>
                   </Col>
-                  <Col span="6">
+                </Row>
+                <Row>
+                  <Col {...rowTopLayout}>
                     <FormItem
                       label="入职日期" {...formItemLayout}
                     >
-                      {getFieldDecorator('entryTime', {
+                      {getFieldDecorator('gmt_entry', {
                         rules: [{ required: true, message: '必填项！' }],
                       })(
                         <DatePicker />
@@ -269,27 +238,31 @@ class AddUser extends React.Component {
                 </Row>
               </Col>
             </Row>
+            </div>
           <div className="information">入职信息</div>
+            <div className="information-item">
             <Row>
-              <Col span="9">
+              <Col {...rowLayout}>
             <FormItem
              label="地方中心" {...formItemLayout}
             >
               {getFieldDecorator('localCenter', {
                 initialValue: endemic.name,
+                rules: [ { required: true, message: '必填项！' }],
               })(
-                <Input disabled = { true }/>
+                <Input readOnly = { true }/>
               )}
             </FormItem>
               </Col>
-              <Col span="9">
+              <Col {...rowLayout}>
             <FormItem
              label="隶属部门" {...formItemLayout}
             >
-            { getFieldDecorator("affiliatedDepartment",{
-               initialValue:NODEID
+            { getFieldDecorator("deptId",{
+               initialValue: NODEID,
+               rules: [ { required: true, message: '必填项！' }],
             })(
-              <Select placeholder="请选择" onSelect={this.affiliatedDepartment.bind(this)}>
+              <Select placeholder="请选择" onSelect={this.chooseDepartment.bind(this)}>
                 { traversalEndemicId }
               </Select>
             )}
@@ -297,25 +270,25 @@ class AddUser extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col span="9">
+              <Col {...rowLayout}>
             <FormItem
              label="直系领导" {...formItemLayout}
             >
               {getFieldDecorator('directLeadership', {
                 initialValue: this.state.TableData?this.state.TableData.name:"",
               })(
-                <Input disabled={true}/>
+                <Input readOnly={true}/>
               )}
               <Button className="right-button" onClick={this.directLeader.bind(this)}>选择</Button>
             </FormItem>
 
               </Col>
-              <Col span="9">
+              <Col {...rowLayout}>
             <FormItem
              label="职位" {...formItemLayout}
             >
-            { getFieldDecorator("position",{
-
+            { getFieldDecorator("positionId",{
+              rules: [ { required: true, message: '必填项！' }],
             })(
               <Select placeholder="请选择" className="po">
                 { traversalDataId }
@@ -325,11 +298,12 @@ class AddUser extends React.Component {
                   </Col>
             </Row>
                 <Row>
-                  <Col span="9">
+                  <Col {...rowLayout}>
                     <FormItem
                       label="系统角色" {...formItemLayout}
                     >
                       { getFieldDecorator("systemRole",{
+                        rules: [ { required: true, message: '必填项！' }],
                       })(
                         <Select placeholder="请选择" dropdownMatchSelectWidth mode="multiple">
                           { selectDataList }
@@ -338,27 +312,29 @@ class AddUser extends React.Component {
                     </FormItem>
                   </Col>
                 </Row>
+            </div>
             <div className="information">联系方式</div>
+            <div className="information-item">
             <Row>
-              <Col span="9">
+              <Col {...rowLayout}>
             <FormItem
              label="登录手机号" {...formItemLayout}
             >
-              {getFieldDecorator('phoneNumber', {
-                 rules: [{
-                    pattern: /^1[34578]\d{9}$/, message: '手机号不正确'
-                  }],
+              {getFieldDecorator('mobile', {
+                 rules: [ { pattern: /^1[34578]\d{9}$/, message: '手机号不正确' },
+                  { required: true, message: '必填项！' }],
               })(
                 <Input />
               )}
             </FormItem>
               </Col>
-              <Col span="9">
+              <Col {...rowLayout}>
             <FormItem
              label="登录密码" {...formItemLayout}
             >
               {getFieldDecorator('password', {
                 initialValue: "Kbm12345",
+                rules: [ { required: true, message: '必填项！' }],
               })(
                 <Input readOnly={ true }/>
               )}
@@ -366,27 +342,27 @@ class AddUser extends React.Component {
               </Col>
             </Row>
           <Row>
-            <Col span="9">
+            <Col {...rowLayout}>
             <FormItem
              label="联系方式" {...formItemLayout}
             >
-              {getFieldDecorator('information', {
-                  rules: [{
-                    pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '手机号不正确'
-                  }],
+              {getFieldDecorator('contact', {
+                  rules: [
+                    { required: true, message: '必填项！' },
+                    { pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '手机号不正确' }],
               })(
                 <Input/>
               )}
             </FormItem>
             </Col>
-              <Col span="9">
+              <Col {...rowLayout}>
             <FormItem
              label="公司邮箱" {...formItemLayout}
             >
-              {getFieldDecorator('companyEmail', {
-                 rules: [{
-                    type: 'email', message: '邮箱格式不正确'
-                  }],
+              {getFieldDecorator('email', {
+                 rules: [
+                   { required: true, message: '必填项！' },
+                   { type: 'email', message: '邮箱格式不正确' }],
               })(
                 <Input />
               )}
@@ -394,11 +370,11 @@ class AddUser extends React.Component {
             </Col>
           </Row>
               <Row>
-                <Col span="9">
+                <Col {...rowLayout}>
              <FormItem
              label="内部分机" {...formItemLayout}
             >
-              {getFieldDecorator('internalExtension', {
+              {getFieldDecorator('extension', {
                   rules: [{
                     pattern:/^[0-9\-]{0,20}$/, message: '请正确输入内部分机'
                   }],
@@ -408,9 +384,9 @@ class AddUser extends React.Component {
             </FormItem>
               </Col>
               </Row>
+            </div>
           </Form>
-          </div>
-          <div className="button-group-bottom">
+          <div className="button-group-bottom-common">
             <Button className="button-group-bottom-1" onClick={ this.handelReturn }>返回</Button>
             <Button className="button-group-bottom-2" onClick={ this.handleSave }>保存</Button>
           </div>
