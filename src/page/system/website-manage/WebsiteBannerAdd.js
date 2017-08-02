@@ -69,7 +69,7 @@ class WebsiteBannerAdd extends React.Component {
   }
 
   render(){
-    const { disabledBtn ,ontListType,addImglist,selectAble,imgSize,typeList} = this.props;
+    const { disabledBtn ,ontListType,addImglist,selectAble,imgSize,imgLink,typeList} = this.props;
     const { getFieldDecorator } = this.props.form;
     let Options = [];
     if(typeList){
@@ -134,6 +134,18 @@ class WebsiteBannerAdd extends React.Component {
                 {getFieldDecorator('imgSize', {initialValue:imgSize?imgSize:'' ,rules: [{ required: size2, message: '请输入图片尺寸'}],
                   })(
                   <Input placeholder="请输入图片尺寸，有图片时必填"/>
+                )}
+              </FormItem>
+
+            </Col>
+          </Row>
+
+          <Row style = {{width:600}}>
+
+            <Col span={12}>
+              <FormItem label="跳转网址:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
+                {getFieldDecorator('imgLink', {initialValue:imgLink?imgLink:''})(
+                  <Input placeholder="请输入banner跳转的网址，非必填"/>
                 )}
               </FormItem>
 
