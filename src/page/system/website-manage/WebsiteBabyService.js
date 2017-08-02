@@ -15,50 +15,6 @@ const Option = Select.Option;
 import FileUpload from './fileUpload';
 import { browserHistory } from 'dva/router';
 
-const ListColumns = [{
-  title:"ID",
-  dataIndex:'id',
-  key:'id',
-  width:"10%",
-},{
-  title: '标题',
-  dataIndex: 'title',
-  key: 'title',
-  width: '10%',
-},{
-  title: '摘要',
-  dataIndex: 'summary',
-  key: 'summary',
-  width: '20%',
-},
-  {
-    title: '图1大小',
-    dataIndex: 'img1Size',
-    key: 'img1Size',
-    width: '5%',
-  },
-  {
-    title: '图2大小',
-    dataIndex: 'img2Size',
-    key: 'img2Size',
-    width: '5%',
-  },{
-    title: '操作',
-    dataIndex: 'operation',
-    render: (text, record, index) => {
-      return (
-        <span>
-            <Link disabled={false} className="one-link" to={`/system/website-manage/addExpert?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
-            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
-             <Link disabled={false} className="one-link">删除</Link>
-            </Popconfirm>
-
-          </span>
-      )
-    },
-    width: '20%'
-  }];
-
 @createForm()
 class WebsiteBabyService extends React.Component{
   constructor(props){
@@ -147,7 +103,7 @@ class WebsiteBabyService extends React.Component{
         values.img2 = img2String;
         values.img1 = img1String;
         values.img3 = img3String;
-        
+
         values.type = this.props.superData.type1;
         if (!err) {
           if(!this.props.initialList){
@@ -248,6 +204,51 @@ class WebsiteBabyService extends React.Component{
       type1 === '2-20'||type1 === '2-21'||type1 === '2-22'||type1 === '2-23';
 
 
+    const ListColumns = [
+      {
+      title:"ID",
+      dataIndex:'id',
+      key:'id',
+      width:"10%",
+    },{
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',
+      width: '10%',
+    },{
+      title: '摘要',
+      dataIndex: 'summary',
+      key: 'summary',
+      width: '20%',
+    },
+      {
+        title: '图1大小',
+        dataIndex: 'img1Size',
+        key: 'img1Size',
+        width: '5%',
+      },
+      {
+        title: '图2大小',
+        dataIndex: 'img2Size',
+        key: 'img2Size',
+        width: '5%',
+      },{
+        title: '操作',
+        dataIndex: 'operation',
+        render: (text, record, index) => {
+          return (
+            <span>
+            <Link disabled={false} className="one-link" to={`/system/website-manage/addExpert?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
+             <Link disabled={false} className="one-link">删除</Link>
+            </Popconfirm>
+
+          </span>
+          )
+        },
+        width: '20%'
+      }];
+
     let size = false
     if(imgListArr ){
       if( imgListArr.length > 0 ){
@@ -347,7 +348,7 @@ class WebsiteBabyService extends React.Component{
                     <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img1', {initialValue: '',})(
                         <FileUpload  defaultFileList={imgListArr} addImgFun={this.onAddImg.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg.bind(this)} imgInputName="">
-                          <Button key="1" disabled={btnDisabled}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                          <Button key="1" disabled={btnDisabled}   className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                         </FileUpload>
                       )}
                     </FormItem>
@@ -369,7 +370,7 @@ class WebsiteBabyService extends React.Component{
                     <FormItem label="图片展示2:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img2', {initialValue: '',})(
                         <FileUpload  defaultFileList={imgList2Arr} addImgFun={this.onAddImg2.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg2.bind(this)} imgInputName="">
-                          <Button key="1" disabled={btnDisabled2}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                          <Button key="1" disabled={btnDisabled2}   className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                         </FileUpload>
                       )}
                     </FormItem>
@@ -391,7 +392,7 @@ class WebsiteBabyService extends React.Component{
                     <FormItem label="图片展示3:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img3', {initialValue: '',})(
                         <FileUpload  defaultFileList={imgList3Arr} addImgFun={this.onAddImg3.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg3.bind(this)} imgInputName="">
-                          <Button key="1" disabled={btnDisabled3}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                          <Button key="1" disabled={btnDisabled3}   className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                         </FileUpload>
                       )}
                     </FormItem>
