@@ -26,6 +26,9 @@
           height: 60px;
           border: 1px solid #fff;
         }
+        .ant-radio-button-wrapper:not(:first-child)::before{
+          background-color: #fff;
+        }
         .ant-radio-button-wrapper:last-child {
           border-radius: inherit;
         }
