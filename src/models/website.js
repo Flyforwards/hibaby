@@ -102,11 +102,11 @@ export default {
           url:oneList.imgUrl,
         }];
         let ontListType = oneList.type;
-        return { ...state,addImglist,disabledBtn:true,ontListType,imgSize:oneList?oneList.imgSize:''};
+        return { ...state,addImglist,disabledBtn:true,ontListType,imgSize:oneList?oneList.imgSize:'',oneList};
       }else{
         let addImglist=null;
         let ontListType = '';
-        return { ...state,addImglist,disabledBtn:false,ontListType,imgSize:oneList?oneList.imgSize:''};
+        return { ...state,addImglist,disabledBtn:false,ontListType,imgSize:oneList?oneList.imgSize:'',oneList};
       }
 
     },

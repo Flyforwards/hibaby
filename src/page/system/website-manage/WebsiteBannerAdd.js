@@ -69,7 +69,15 @@ class WebsiteBannerAdd extends React.Component {
   }
 
   render(){
-    const { disabledBtn ,ontListType,addImglist,selectAble,imgSize,imgLink,typeList} = this.props;
+    const { disabledBtn ,ontListType,addImglist,selectAble,imgSize,oneList,typeList} = this.props;
+    let imgLink = '';
+
+    if(oneList){
+      if(oneList.imgLink){
+        imgLink = oneList.imgLink
+      }
+    }
+
     const { getFieldDecorator } = this.props.form;
     let Options = [];
     if(typeList){
