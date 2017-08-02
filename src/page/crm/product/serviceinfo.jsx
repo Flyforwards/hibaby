@@ -8,7 +8,7 @@ import {routerRedux} from 'dva/router';
 import './serviceinfo.scss'
 import AlertModalFrom from 'common/AlertModalFrom'
 
-class Serviceinfo extends Component {
+class ServiceInfo extends Component {
 
     constructor(props) {
         super(props)
@@ -163,6 +163,7 @@ function mapStateToProps(state) {
     list,
     pagination,
     selectData
-    };
+  };
 }
-export default connect(mapStateToProps)(Serviceinfo)
+
+export default connect(mapStateToProps)(ServiceInfo)
