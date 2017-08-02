@@ -134,14 +134,7 @@ export default {
     },
     //删除图片
     deleteImgList(state,{payload:todo}){
-      let arr = state.addImglist;
-      for(let i=0; i < arr.length; i++) {
-        if(arr[i].name == todo[0].name) {
-          arr.splice(i,1);
-          break;
-        }
-      }
-      return {...state,addImglist:arr,disabledBtn:false};
+      return {...state,addImglist:[],disabledBtn:false};
     },
     //设置下拉列表state
     setEndemicDropdownList(state, { payload: {data: data} }){

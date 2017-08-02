@@ -220,7 +220,7 @@ render(){
                 <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                   {getFieldDecorator('img1', {initialValue: '',})(
                     <FileUpload  defaultFileList={subMitImg?[subMitImg]:''} addImgFun={this.onAddImg.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg.bind(this)} imgInputName="">
-                      <Button key="1" disabled={btnDisabled}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                      <Button key="1" disabled={btnDisabled}   className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                     </FileUpload>
                   )}
                 </FormItem>

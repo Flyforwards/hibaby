@@ -29,7 +29,6 @@
     "react-document-title": "^2.0.3",
     "react-dom": "^15.6.1",
     "react-images": "^0.5.4",
-    "react-lz-editor": "^0.10.20",
     "react-quill":"^1.0.0"
   },
   "devDependencies": {

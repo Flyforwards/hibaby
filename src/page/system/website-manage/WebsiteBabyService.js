@@ -348,7 +348,7 @@ class WebsiteBabyService extends React.Component{
                     <FormItem label="图片展示:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img1', {initialValue: '',})(
                         <FileUpload  defaultFileList={imgListArr} addImgFun={this.onAddImg.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg.bind(this)} imgInputName="">
-                          <Button key="1" disabled={btnDisabled}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                          <Button key="1" disabled={btnDisabled}   className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                         </FileUpload>
                       )}
                     </FormItem>
@@ -370,7 +370,7 @@ class WebsiteBabyService extends React.Component{
                     <FormItem label="图片展示2:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img2', {initialValue: '',})(
                         <FileUpload  defaultFileList={imgList2Arr} addImgFun={this.onAddImg2.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg2.bind(this)} imgInputName="">
-                          <Button key="1" disabled={btnDisabled2}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                          <Button key="1" disabled={btnDisabled2}   className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                         </FileUpload>
                       )}
                     </FormItem>
@@ -392,7 +392,7 @@ class WebsiteBabyService extends React.Component{
                     <FormItem label="图片展示3:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
                       {getFieldDecorator('img3', {initialValue: '',})(
                         <FileUpload  defaultFileList={imgList3Arr} addImgFun={this.onAddImg3.bind(this)} deleteImgFun={!modalVisible?'': this.onDeleteImg3.bind(this)} imgInputName="">
-                          <Button key="1" disabled={btnDisabled3}   className="uploadOptionsButton"><Icon type="upload"/>上传图片</Button>
+                          <Button key="1" disabled={btnDisabled3}   className="uploadBtn"><Icon type="upload"/>上传图片</Button>
                         </FileUpload>
                       )}
                     </FormItem>

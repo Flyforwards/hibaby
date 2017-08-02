@@ -4,7 +4,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import './WebsiteBanner.scss';
-import { Card,Input,Button ,Form,Col,Row,Select,Icon,message,DatePicker } from 'antd';
+import { Card,Input,Button ,Form,Col,Row,Select,Icon,Radio } from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -12,6 +12,7 @@ import FileUpload from './fileUpload';
 import { Link } from 'react-router';
 import { routerRedux } from 'dva/router';
 import { queryURL } from '../../../utils/index.js';
+const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 const createForm = Form.create
@@ -111,8 +112,8 @@ class WebEndemicAdd extends React.Component {
     return (
       <Card className="websitebannerAdd">
         <Form>
-          <Row style = {{width:300,height:'50px'}}>
-            <Col >
+          <Row style = {{width:600,height:'50px'}}>
+            <Col span={12}>
               <FormItem
                 label="地方中心"
                 hasFeedback
@@ -133,6 +134,20 @@ class WebEndemicAdd extends React.Component {
                 )}
               </FormItem>
             </Col>
+            <Col span={12}>
+              <FormItem
+                {...formItemLayout}
+                label="是否已开通"
+              >
+                {getFieldDecorator('opened',{initialValue: (!initialValue ? '1' :(initialValue.opened === null ? '1':(initialValue.opened == 0 ? '0' : '1'))),})(
+                  <RadioGroup>
+                    <Radio value="0">未开通</Radio>
+                    <Radio value="1">已开通</Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+
+            </Col>
           </Row>
           <Row style = {{width:800}}>
             <Col span={12}>
@@ -146,9 +161,7 @@ class WebEndemicAdd extends React.Component {
             </Col>
             <Col span={12}>
               <FormItem label="图片尺寸:" {...formItemLayout} style={{fontWeight:'900',textAlign:'left'}}>
-                {getFieldDecorator('img1Size', {rules: [{ required: size1, message: '请输入图片尺寸',initialValue: (initialValue==null ? '' : initialValue.img1Size),
-                }],
-                 })(
+                {getFieldDecorator('img1Size', {rules: [{ required: size1, message: '请输入图片尺寸'}],initialValue: (!initialValue ? '' : initialValue.img1Size)})(
                   <Input placeholder="请输入图片尺寸，有图片时必填" />
                 )}
               </FormItem>
@@ -157,8 +170,8 @@ class WebEndemicAdd extends React.Component {
 
         </Form>
         <div className = "bottomBtn">
-          <Button className="btn saveBtn" onClick={this.onSave.bind(this)}> 保存</Button>
-          <Button className="btn backBtn" onClick={this.onBack.bind(this)}> 返回</Button>
+          <Button className="btn button-group-bottom-2" onClick={this.onSave.bind(this)}> 保存</Button>
+          <Button className="btn button-group-bottom-1" onClick={this.onBack.bind(this)}> 返回</Button>
         </div>
       </Card>
     )
