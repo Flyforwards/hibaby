@@ -306,10 +306,15 @@
   }
 }
 
-.uploadBtn {
+.uploadBtn  {
   background: #f1e8df;
   color: #b67233;
-  border-color: #b67233
+  border-color: #b67233;
+  &:hover,&:visited,&:focus,&:active{
+    background: #f1e8df;
+    color: #b67233;
+    border-color: #b67233;
+  }
 }
 
 

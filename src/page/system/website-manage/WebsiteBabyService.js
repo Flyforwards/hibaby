@@ -15,50 +15,6 @@ const Option = Select.Option;
 import FileUpload from './fileUpload';
 import { browserHistory } from 'dva/router';
 
-const ListColumns = [{
-  title:"ID",
-  dataIndex:'id',
-  key:'id',
-  width:"10%",
-},{
-  title: '标题',
-  dataIndex: 'title',
-  key: 'title',
-  width: '10%',
-},{
-  title: '摘要',
-  dataIndex: 'summary',
-  key: 'summary',
-  width: '20%',
-},
-  {
-    title: '图1大小',
-    dataIndex: 'img1Size',
-    key: 'img1Size',
-    width: '5%',
-  },
-  {
-    title: '图2大小',
-    dataIndex: 'img2Size',
-    key: 'img2Size',
-    width: '5%',
-  },{
-    title: '操作',
-    dataIndex: 'operation',
-    render: (text, record, index) => {
-      return (
-        <span>
-            <Link disabled={false} className="one-link" to={`/system/website-manage/addExpert?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
-            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
-             <Link disabled={false} className="one-link">删除</Link>
-            </Popconfirm>
-
-          </span>
-      )
-    },
-    width: '20%'
-  }];
-
 @createForm()
 class WebsiteBabyService extends React.Component{
   constructor(props){
@@ -147,7 +103,7 @@ class WebsiteBabyService extends React.Component{
         values.img2 = img2String;
         values.img1 = img1String;
         values.img3 = img3String;
-        
+
         values.type = this.props.superData.type1;
         if (!err) {
           if(!this.props.initialList){
@@ -247,6 +203,51 @@ class WebsiteBabyService extends React.Component{
     let isThreeImage = type1 === '2-12' ||type1 === '2-13' ||type1 === '2-14'||type1 === '2-15'||
       type1 === '2-20'||type1 === '2-21'||type1 === '2-22'||type1 === '2-23';
 
+
+    const ListColumns = [
+      {
+      title:"ID",
+      dataIndex:'id',
+      key:'id',
+      width:"10%",
+    },{
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',
+      width: '10%',
+    },{
+      title: '摘要',
+      dataIndex: 'summary',
+      key: 'summary',
+      width: '20%',
+    },
+      {
+        title: '图1大小',
+        dataIndex: 'img1Size',
+        key: 'img1Size',
+        width: '5%',
+      },
+      {
+        title: '图2大小',
+        dataIndex: 'img2Size',
+        key: 'img2Size',
+        width: '5%',
+      },{
+        title: '操作',
+        dataIndex: 'operation',
+        render: (text, record, index) => {
+          return (
+            <span>
+            <Link disabled={false} className="one-link" to={`/system/website-manage/addExpert?type=${record.type}&id=${record.id}` } style={{marginRight:'30px'}}> 查看 </Link>
+            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDeleteOne(record.id)}>
+             <Link disabled={false} className="one-link">删除</Link>
+            </Popconfirm>
+
+          </span>
+          )
+        },
+        width: '20%'
+      }];
 
     let size = false
     if(imgListArr ){
