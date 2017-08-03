@@ -442,7 +442,7 @@ class WebsiteBabyService extends React.Component{
           </Card>
 
           {
-            (isTab && typeof con === 'object')?<Card style={{marginTop:'20px'}}>
+            (isTab )?<Card style={{marginTop:'20px'}}>
               <Row>
                 <Col span ={24}>
                   <Button className="btnAdd" style={{float:'right',marginBottom:'10px'}} onClick={this.onAdd.bind(this)}>添加</Button>
