@@ -11,15 +11,12 @@
     background-color: #fff;
     margin-bottom: 10px;
     .ant-fullcalendar-selected-day .ant-fullcalendar-value, .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {
-      background: #FFFFFF !important;
       color: rgba(0, 0, 0, 0.65);
       box-shadow: 0 0 0 1px #fff !important;
     }
     .ant-fullcalendar-today .ant-fullcalendar-value, .ant-fullcalendar-month-panel-current-cell .ant-fullcalendar-value{
       box-shadow: 0 0 0 1px #fff !important;
-
     }
-
   }
   .planInfo {
     background: #fff;
