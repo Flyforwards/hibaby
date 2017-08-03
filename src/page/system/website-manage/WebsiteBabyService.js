@@ -197,7 +197,9 @@ class WebsiteBabyService extends React.Component{
   render(){
 
     const {imgBtn,imgList2Arr,imgList3Arr,img2Btn,img3Btn,initialList,modalVisible,content,imgListArr,loading,expertInitialList} =this.props;
-    const type1 = this.props.superData.type1;
+
+
+    const type1 = initialList?initialList.type:this.props.superData.type1;
     let isTab = type1 === '2-1'||type1 === '2-2'|| type1 === '2-3'||type1 === '2-4';
     let isTwoImage = type1 === '2-2' ||type1 === '2-16' ||type1 === '2-17'||type1 === '2-18'||type1 === '2-19';
     let isThreeImage = type1 === '2-12' ||type1 === '2-13' ||type1 === '2-14'||type1 === '2-15'||
@@ -291,6 +293,7 @@ class WebsiteBabyService extends React.Component{
     if(isTab){
       try {
         contentArr = eval(content)
+
         if(contentArr && contentArr.length > 0 ){
           con =[];
           contentArr && contentArr.length > 0 ? contentArr.map((v,i) => {
@@ -301,7 +304,10 @@ class WebsiteBabyService extends React.Component{
 
       }
       catch (e){
+        console.log(content)
+        console.log(type1)
 
+        console.log('失败了')
       }
     }
 

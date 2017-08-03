@@ -97,7 +97,7 @@ export default {
       return { ...state,imgList3Arr:imgArr,img3Btn:false}
     },
     //添加初始数据
-    addInitialList(state,{payload:{data:initialList}}){
+    addInitialList(state,{payload:initialList}){
       let content = initialList ? initialList.content:null;
       let imgListArr = null
       let imgList2Arr = null
@@ -133,13 +133,11 @@ export default {
     //首页 ---- 专家团队
     //获取专家团队初始列表
     *getInitialList({payload:values},{call,put}){
-      const {data:{data,code}} = yield call(websiteBabyCare.getExpertInitialList,values);
+      const {data:{data,code}} = yield call(websiteBabyCare.getExpertByOneType,values);
       if(code == 0){
         yield put({
           type:'addInitialList',
-          payload:{
-            data:data[0]
-          }
+          payload: data
         })
         yield put({type:'changeModal', payload:{"modalVisible":false,}})
 
