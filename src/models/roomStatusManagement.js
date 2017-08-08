@@ -105,6 +105,22 @@ export default {
     memberShipCardSave(state, { payload: { shipCards }}) {
       return {...state, shipCards};
     },
+    removeData(state, { payload: data }) {
+      return {...state,     dateSelectList: [
+        {year:moment().format('YYYY'),monthList:function (){
+          const month = moment().format('M');
+          let ary = [month];
+          if(parseInt(month) + 1 <= 12){
+            ary.push((parseInt(month) + 1).toString())
+          }
+          if(parseInt(month) + 2 <= 12){
+            ary.push((parseInt(month) + 2).toString())
+          }
+          return(ary)
+        }()
+        }
+      ],dateSelectViews:[]};
+    },
     setFloorSelect(state, {payload: data}) {
       return {...state,floorSelect:data };
     },
@@ -269,37 +285,17 @@ export default {
     selectedYearChange(state, {payload: data}){
       let dateSelectList = state.dateSelectList;
 
-      if (!state.dateSelectList[data.selectViewIndex]) {
-        state.dateSelectList[data.selectViewIndex] = {
-          monthList: [],
-          year: state.defaultYear,
-        }
-      }
-
       state.dateSelectList[data.selectViewIndex].year = data.selectedYear;
 
-      return {
-        ...state,
-        dateSelectList: dateSelectList,
-      }
+      return {...state, dateSelectList: dateSelectList,}
     },
 
     selectedMonthChange(state, {payload: data}){
       let dateSelectList = state.dateSelectList;
 
-      if (!dateSelectList[data.selectViewIndex]) {
-        dateSelectList[data.selectViewIndex] = {
-          monthList: [],
-          year: state.defaultYear,
-        }
-      }
-
       dateSelectList[data.selectViewIndex].monthList = data.selectedMonthList;
 
-      return {
-        ...state,
-        dateSelectList: dateSelectList,
-      }
+      return {...state, dateSelectList: dateSelectList,}
     },
 
 
@@ -414,12 +410,16 @@ export default {
       }
     },
     addDateSelectView(state, {payload: data}){
+
       let dateSelectViews = state.dateSelectViews;
+
+      let dateSelectList = state.dateSelectList;
+
       dateSelectViews.push(data.dateSelectView);
-      return {
-        ...state,
-        dateSelectViews: dateSelectViews
-      }
+
+      dateSelectList.push({year:moment().format('YYYY'),monthList:[]});
+
+      return {...state,dateSelectViews,dateSelectList}
     },
     changeModalH(state, {payload: data}){
 
@@ -627,6 +627,7 @@ export default {
     *monthRoomList({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
       const {dateSelectList,floorSelect} = state;
+
 
       // 去重
       let years = {};

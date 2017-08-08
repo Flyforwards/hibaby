@@ -177,10 +177,13 @@ const monthStateView = (props) => {
       )
     };
 
-    const renderMonthSelectView = (index) => {
-
+    const renderChiMonthSelectView = (index) => {
       const checkboxChangeHandler = (value) => {
+
         value.sort((a, b) => a - b);
+
+        console.log('操作了')
+        console.log(value)
 
         dispatch({
           type: 'roomStatusManagement/selectedMonthChange',
@@ -219,6 +222,7 @@ const monthStateView = (props) => {
 
 
     const deleteBtnClickHandler = (index) => {
+      console.log(index)
       dispatch({
         type: 'roomStatusManagement/deleteDateSelectView',
         payload: {
@@ -229,7 +233,7 @@ const monthStateView = (props) => {
 
     const addBtnClickHandler = () => {
 
-      let index = ++selectViewIndex;
+       const index = ++selectViewIndex;
 
       let dateSelectView = (
         <Row type="flex" justify="center" align="middle" className="timeSelectBox">
@@ -238,7 +242,7 @@ const monthStateView = (props) => {
           }
 
           {
-            renderMonthSelectView(index)
+            renderChiMonthSelectView(index)
           }
 
           <Col span={5} offset={1}>
@@ -259,11 +263,11 @@ const monthStateView = (props) => {
       <div>
         <Row type="flex" justify="center" align="middle" className="timeSelectBox">
           {
-            renderYearSelectView(selectViewIndex)
+            renderYearSelectView(0)
           }
 
           {
-            renderMonthSelectView(selectViewIndex)
+            renderChiMonthSelectView(0)
           }
 
           <Col span={5} offset={1}>
@@ -655,7 +659,6 @@ const monthStateView = (props) => {
                 let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
                   if(moment().isAfter(moment.unix(roomDate/1000),'day')){
                     if(messageShow === true){
-                      console.log('嘻嘻')
                       messageShow = false
                       message.error("无法将出所日期移动到今天以前",3,messageOnClose)
                     }
@@ -1075,6 +1078,11 @@ class MonthStateClass extends React.Component{
   componentDidMount(){
     this.props.dispatch({type: 'roomStatusManagement/monthRoomList'});
     this.props.dispatch({type: 'roomStatusManagement/netroomViewStateChange'});
+  }
+
+  componentWillUnmount(){
+    selectViewIndex = 0;
+    this.props.dispatch({type: 'roomStatusManagement/removeData'});
   }
 
   render(){
