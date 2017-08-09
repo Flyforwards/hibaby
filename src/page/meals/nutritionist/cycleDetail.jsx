@@ -166,7 +166,7 @@ function mainCycleDetail(props) {
           </Col>
           <Col>
             <div style={{minHeight: '40px'}}>
-              <div className="tabooUser-detail-content">禁忌: {user['taboo']}</div>
+              <div className="tabooUser-detail-content">禁忌:  {user['sugar']==1?'无糖  ':''}{user['taboo']}</div>
             </div>
           </Col>
         </Row>
