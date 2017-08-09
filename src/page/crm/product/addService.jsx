@@ -2,16 +2,15 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form ,InputNumber, message} from 'antd'
+import { Button,Table, Input,Select,Form ,InputNumber, message} from 'antd'
 import { Link} from 'react-router'
 import './serviceinfo.scss'
-import Current from '../../Current'
  import {local, session} from 'common/util/storage.js'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class AddServiceed extends Component {
+class AddService extends Component {
 
     constructor(props) {
         super(props)
@@ -202,20 +201,18 @@ class AddServiceed extends Component {
                 <Form layout="inline">
                   <FormItem
                    label="套餐名称"
-                   className="name"
                   >
                     {getFieldDecorator('name', { rules: [{ required: true, message: '请填写套餐名称！限30字',max: 30 }],
                     })(
-                      <Input />
+                      <Input size="large"/>
                     )}
                   </FormItem>
                   <FormItem
                      label="套餐价格"
-                     className="price"
                   >
                   {getFieldDecorator('price', {  rules: [{ required: true,pattern: /^\d{0,7}$/, message: '请输入0-7位数字' }],
                     })(
-                    <Input addonBefore="￥" />
+                    <Input size="large" addonBefore="￥" />
                     )}
                   </FormItem>
                    <FormItem
@@ -223,7 +220,7 @@ class AddServiceed extends Component {
                    >
                     {getFieldDecorator('type', { rules: [{ required: true, message: '请选择套餐类型！' }],
                     })(
-                    <Select dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}} onSelect = {this.onSelect.bind(this)} >
+                    <Select size="large" dropdownStyle= {{height:`${len*40}px`,overflow:"auto"}} onSelect = {this.onSelect.bind(this)} >
                      {
                       roomList
                      }
@@ -268,5 +265,5 @@ function mapStateToProps(state) {
     grade
     };
 }
-const addService = Form.create()(AddServiceed);
+const addService = Form.create()(AddService);
 export default connect(mapStateToProps)(addService)

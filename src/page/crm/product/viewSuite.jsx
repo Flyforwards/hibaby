@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
+import { Button, Input, Form } from 'antd'
 import { Link} from 'react-router'
 import './viewSuite.scss'
 import Current from '../../Current'
@@ -102,7 +102,7 @@ class ViewSuiteed extends Component {
                       initialValue:this.props.roomFindById?this.props.roomFindById.description:null,
                       rules: [],
                     })(
-                    <Input type="textarea" autosize={{ minRows: 2, maxRows: 6 }} className="input" disabled = { true }/>
+                    <Input type="textarea" rows={6} readOnly = { true }/>
                     )}
                   </FormItem>
                 </Form>

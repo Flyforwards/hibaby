@@ -17,33 +17,32 @@
 		}
 		.name{
 			margin-left: 50px;
-			margin-bottom: 10px;
-			width:42%;
+			width: 300px;
 			label{
 				font:14px "微软雅黑";
 			}
 		}
 		.price{
 			margin-left: 10px;
+      width: 300px;
 			label{
 				font:14px "微软雅黑";
 			}
 		}
 		.input{
-			width: 400px;
+			width: 200px;
 		}
 		.introduction{
+      width: 80%;
 			margin-left:50px;
 			margin-bottom: 20px;
-			margin-top: 10px;
+			margin-top: 20px;
 			label{
 				font:14px "微软雅黑";
 			}
-			.ant-input-lg{
-				width:880px;
-				height:40px;
-				font-size:12px;
-			}
+      .ant-input {
+        width: 600px;
+      }
 		}
 		.ant-input-lg{
 			width:145%;
@@ -110,23 +109,5 @@
       color:#bb7c41;
       padding: 0 10px;
 		}
-	}
-	.ant-btn {
-		margin-left:67%;
-		width:150px;
-		height:30px;
-    background:#b67233 ;
-    border-color: #b67233;
-    color: #fff;
-    font:14px "微软雅黑";
-	}
-	.ant-btn-primary{
-    	margin-left:30px;
-    	width:150px;
-    	height:30px;
-      background:#f1e8df;
-      border-color:#d4ad89;
-      color:#b67233;
-      font:14px "微软雅黑";
 	}
 }

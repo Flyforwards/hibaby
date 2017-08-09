@@ -212,7 +212,6 @@ class AddChildNodeed extends Component {
                       label="节点负责人"
                     >
                       {getFieldDecorator('nodeLeader', {
-                        rules: [{ required: true, message: '请选择节点负责人！'}],
                         initialValue:this.state.TableData?this.state.TableData.name:null
                       })(
                         <Input readOnly = {true}/>

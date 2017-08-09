@@ -16,15 +16,11 @@ class AddSuiteed extends Component {
     constructor(props) {
         super(props)
         this.state = {
-          selectedRows: [],
           loading: false
         };
     }
     componentWillMount() {
     }
-     onSelectChange = (selectedRowKeys,selectedRows) => {
-        this.setState({ selectedRows });
-      }
     componentDidMount() {
         this.props.dispatch({
             type: 'packageInfo/serviceListByPage',
@@ -122,61 +118,58 @@ class AddSuiteed extends Component {
             return (<Option value={item.id+""} key={item.name}>{item.name}</Option>)
           })
         }
-        const { loading, selectedRows } = this.state;
-        const rowSelection = {
-            selectedRows,
-            onChange: this.onSelectChange,
-        };
-        return (
-            <div className="addSuite">
-                <div className="addSuiteList">
-                <p>套房信息:</p>
-                <Form layout="inline">
-                  <FormItem
-                   label="套房名称"
-                   className="name"
-                  >
-                    {getFieldDecorator('name', {
-                       rules: [],
-                    })(
-                      <Input />
-                    )}
-                  </FormItem>
-                  <FormItem
-                     label="套房价格"
-                     className="price"
-                  >
-                  {getFieldDecorator('price', {
-                  rules: [{
-                    pattern: /^\d{0,7}$/, message: '请输入0-7位数字'
-                  }],
-                    })(
-                    <Input
-                      addonBefore="￥"
-                    />
-                    )}
-                  </FormItem>
-                   <FormItem
-                   label="套房简介"
-                   className="introduction"
-                   >
-                    {getFieldDecorator('introduction', {
-                      rules: [],
-                    })(
-                    <Input type="textarea" autosize={{ minRows: 2, maxRows: 6 }} className="input" />
-                    )}
-                  </FormItem>
-                </Form>
-                </div>
-                <div className="roomName">
-                 <p>房间信息:</p>
-                  {
-                    roomInformation
-                  }
-                </div>
 
-                <Button className="BackBtn" onClick={this.handleSubmit}>返回</Button>
-                <Button className="SaveBtn" type="primary" onClick={this.handleAdd.bind(this)}>保存</Button>
+        return (
+          <div className="addSuite">
+              <div className="addSuiteList">
+              <p>套房信息:</p>
+              <Form layout="inline">
+                <FormItem
+                 label="套房名称"
+                 className="name"
+                >
+                  {getFieldDecorator('name', {
+                     rules: [],
+                  })(
+                    <Input />
+                  )}
+                </FormItem>
+                <FormItem
+                   label="套房价格"
+                   className="price"
+                >
+                {getFieldDecorator('price', {
+                rules: [{
+                  pattern: /^\d{0,7}$/, message: '请输入0-7位数字'
+                }],
+                  })(
+                  <Input
+                    addonBefore="￥"
+                  />
+                  )}
+                </FormItem>
+                 <FormItem
+                 label="套房简介"
+                 className="introduction"
+                 >
+                  {getFieldDecorator('introduction', {
+                    rules: [],
+                  })(
+                  <Input type="textarea" rows={6} />
+                  )}
+                </FormItem>
+              </Form>
+              </div>
+              <div className="roomName">
+               <p>房间信息:</p>
+                {
+                  roomInformation
+                }
+              </div>
+              <div className="button-group-bottom-common">
+                <Button className="button-group-bottom-1" onClick={this.handleSubmit}>返回</Button>
+                <Button className="button-group-bottom-2" onClick={this.handleAdd.bind(this)}>保存</Button>
+              </div>
             </div>
         )
     }

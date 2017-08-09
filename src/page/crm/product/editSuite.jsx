@@ -2,14 +2,12 @@
 
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Icon, Card, Button,Table, Input,Select,Form } from 'antd'
+import { Button,message, Input,Select,Form } from 'antd'
 import { Link} from 'react-router'
 import './viewSuite.scss'
  import {local, session} from 'common/util/storage.js'
- import Delete from './DeleteSuite.jsx'
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 class EditSuiteed extends Component {
 
@@ -71,6 +69,7 @@ class EditSuiteed extends Component {
         }
       });
     }
+
     roomClick(data,e){
       if(e.target.className == "roomColor"){
         e.target.className = "roomColorA"
@@ -129,7 +128,7 @@ class EditSuiteed extends Component {
                       initialValue:this.props.roomFindById?this.props.roomFindById.description:null,
                       rules: [],
                     })(
-                    <Input type="textarea" autosize={{ minRows: 2, maxRows: 6 }} className="input"/>
+                    <Input type="textarea" rows="6"/>
                     )}
                   </FormItem>
                 </Form>

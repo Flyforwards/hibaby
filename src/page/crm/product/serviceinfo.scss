@@ -54,7 +54,7 @@
 	.addServiceinfoList{
 		width:100%;
 		background-color:#fff;
-		height:20%;
+		min-height: 100px;
 		border-radius: 4px;
 		border:1px solid #999;
 		p{
@@ -67,12 +67,6 @@
 		.name{
 			margin-left: 40px;
 			margin-bottom: 10px;
-			label{
-				font:14px "微软雅黑";
-			}
-			input{
-				font: 14px "微软雅黑";
-			}
 		}
 		.ant-form-item{
 			margin:0 0 10px 40px;
@@ -120,8 +114,6 @@
 		}
 		.span{
 			input{
-				//width:50%;
-				//height:40px;
 				text-align: center;
 				font-size:14px;
 			}
@@ -136,11 +128,10 @@
 		}
 	}
 	.addServiceinfoSuite {
-
 		width:100%;
 		background-color:#fff;
 		height:20%;
-		margin:10px;
+		margin-top:10px;
 		border-radius: 4px;
 		border:1px solid #999;
 		p{
@@ -161,51 +152,27 @@
 				font:14px "微软雅黑";
 			}
 			.ant-select{
-				font-size:14px "微软雅黑";
+				font-size:14px;
 			}
 		}
 		.ant-select{
 			width:270px;
 			margin-left: 20px;
-			font-size:14px "微软雅黑";
+			font-size:14px;
 		}
 		.ant-select-selection__rendered{
 			line-height: 40px;
-			font-size:14px "微软雅黑";
+			font-size:14px;
 		}
 		.ant-select-selection--single {
 		    height: 40px;
 		    line-height: 40px;
 				.ant-select-selection-selected-value{
-					font-size:14px "微软雅黑";
+					font-size:14px;
 				}
 		}
 		.ant-select-arrow:before{
 			font-size: 20px;
 		}
 	}
-  .BackBtn{
-    margin-left:68%;
-    width:150px;
-    height:30px;
-    line-height: 30px;
-    background:#b67233;
-    color:#fff;
-    font: 14px "微软雅黑";
-    border-color:#b67233;
-  }
-
-  .SaveBtn{
-    margin-left:30px;
-    width:150px;
-    height:30px;
-    background:#f1e8df ;
-    border-color:#d4ad89;
-    color:#b67233;
-    line-height: 30px;
-    span{
-      font: 14px "微软雅黑";
-      color:#b67233;
-    }
-  }
 }

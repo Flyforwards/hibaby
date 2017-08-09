@@ -349,7 +349,6 @@ class OrganizationLeft extends React.Component {
     }
     if (leftList) {
       loops = nodesIteration(leftList.nodes, leftList.TissueProperty);
-      console.log(leftList)
       loops = [<TreeNode key={leftList.id} title={leftList.name}
                          dataIndex={leftList.tissueProperty}
                          parentId={leftList.parentId}>{loops}</TreeNode>]

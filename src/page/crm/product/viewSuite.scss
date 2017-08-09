@@ -15,42 +15,35 @@
 		    font-size: 14px;
 				margin:10px 0 10px 20px;
 		}
-		.name{
-			margin-left: 50px;
-			margin-bottom: 10px;
-			label{
-				font:14px "微软雅黑";
-			}
-			width:42%;
-			input{
-				font: 12px "微软雅黑";
-			}
-		}
-		.price{
-			margin-left: 10px;
-			label{
-				font:14px "微软雅黑";
-			}
-			input{
-				font: 12px "微软雅黑";
-			}
-		}
-		.input{
-			width: 400px;
-		}
-		.introduction{
-			margin-left: 50px;
-			margin-bottom: 20px;
-			margin-top: 10px;
-			label{
-				font:14px "微软雅黑";
-			}
-			.ant-input-lg{
-				width:880px;
-				height:40px;
-				font-size:12px;
-			}
-		}
+    .name{
+      margin-left: 50px;
+      width: 300px;
+      label{
+        font:14px "微软雅黑";
+      }
+    }
+    .price{
+      margin-left: 10px;
+      width: 300px;
+      label{
+        font:14px "微软雅黑";
+      }
+    }
+    .input{
+      width: 200px;
+    }
+    .introduction{
+      width: 80%;
+      margin-left:50px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      label{
+        font:14px "微软雅黑";
+      }
+      .ant-input {
+        width: 600px;
+      }
+    }
 		.ant-input-lg{
 			width:145%;
 			height:40px;
@@ -109,27 +102,6 @@
       padding: 0 10px;
 		}
 	}
-
-  .back-btn{
-    margin-top:10px;
-    background:#b67233;
-    font:14px "微软雅黑";
-    color:#fff;
-  }
-  .save-btn{
-    margin-top:10px;
-    background:#f1e8df;
-    border-color:#bb7c41 ;
-    font: 14px "微软雅黑";
-    color:#bb7c41;
-  }
-  .del-btn{
-    margin-top:10px;
-    background:#f75555;
-    border-color: #f75555;
-    color:#fff;
-    font: 14px "微软雅黑";
-  }
 }
 .editSuite{
 	height:100%;
@@ -147,36 +119,35 @@
 		    font-size: 14px;
 		    margin: 10px 0 10px 20px;
 		}
-		.name{
-			margin-left: 50px;
-			margin-bottom: 10px;
-			width:42%;
-			label{
-				font: 14px "微软雅黑";
-			}
-		}
-		.price{
-			margin-left: 10px;
-			label{
-				font: 14px "微软雅黑";
-			}
-		}
-		.input{
-			width: 400px;
-		}
-		.introduction{
-			margin-left:50px;
-			margin-bottom: 20px;
-			margin-top: 10px;
-			label{
-				font: 14px "微软雅黑";
-			}
-			.ant-input-lg{
-				width:880px;
-				height:40px;
-				font-size:12px;
-			}
-		}
+    .name{
+      margin-left: 50px;
+      width: 300px;
+      label{
+        font:14px "微软雅黑";
+      }
+    }
+    .price{
+      margin-left: 10px;
+      width: 300px;
+      label{
+        font:14px "微软雅黑";
+      }
+    }
+    .input{
+      width: 200px;
+    }
+    .introduction{
+      width: 80%;
+      margin-left:50px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      label{
+        font:14px "微软雅黑";
+      }
+      .ant-input {
+        width: 600px;
+      }
+    }
 		.ant-input-lg{
 			width:145%;
 			height:40px;
@@ -234,17 +205,4 @@
       color:#bb7c41;
 		}
 	}
-  .back-btn{
-    margin-top:10px;
-    background:#b67233;
-    font:14px "微软雅黑";
-    color:#fff;
-  }
-  .save-btn{
-    margin-top:10px;
-    background:#f1e8df;
-    border-color:#bb7c41 ;
-    font: 14px "微软雅黑";
-    color:#bb7c41;
-  }
 }
