@@ -11,6 +11,7 @@ import {local, session} from 'common/util/storage.js'
 import SelectTheNodeFrom from './SelectTheNodeFrom.js'
 import UPload from 'common/Upload.js'
 import DeleteEnery from './DeleteEnery.jsx'
+import { parse } from 'qs'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -37,13 +38,11 @@ class EditUsered extends React.Component {
     this.dataIndex = null
   }
   componentDidMount(){
-    let ID = window.location.search.split("=")[1]
+    const param = parse(location.search.substr(1))
     let endemic  = session.get("endemic")
     this.props.dispatch({
       type: 'organization/getUserListById',
-      payload: {
-       dataId:ID
-      }
+      payload: param
     })
     this.props.dispatch({
         type: 'organization/getDeptListByEndemicId',
@@ -73,12 +72,10 @@ class EditUsered extends React.Component {
     this.setState({
         DeleteVisible: false,
       })
-    let ID = window.location.search.split("=")[1]
+    const param = parse(location.search.substr(1))
     this.props.dispatch({
       type: 'organization/getUserListById',
-      payload: {
-        dataId:ID
-      }
+      payload: param
     })
   }
   headelReturnTabal(data){

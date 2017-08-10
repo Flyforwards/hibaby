@@ -2,12 +2,13 @@
 import React from 'react'
 import { connect } from 'dva'
 import './PhoneSystemIndex.scss'
-import { Table,Input,Icon,Button,Popconfirm, Modal, DatePicker, Card,Timeline } from 'antd'
+import { Table } from 'antd'
 import { routerRedux } from 'dva/router'
 import { Link } from 'react-router'
 import {local, session} from 'common/util/storage.js';
 import { VISIT_TIME } from 'common/constants.js'
 import PermissionButton from 'common/PermissionButton';
+import PermissionLink from 'common/PermissionLink';
 
 class CustomerVisIndex extends React.Component {
 
@@ -80,8 +81,8 @@ class CustomerVisIndex extends React.Component {
       width: '15%',
       render: (text, record, index) => {
         return (<div className="operation-list" key={ index }>
-          <Link className="one-link link-style" to={{ pathname: '/crm/phone-system/edit', query:{ dataId:record.id }  }}> 编辑 </Link>
-          <Link className="two-link link-style" onClick={ this.del.bind(this, record) }> 删除 </Link>
+          <PermissionLink testKey='PHONE_SETTING' className="one-link link-style" to={{ pathname: '/crm/phone-system/edit', query:{ dataId:record.id }  }}> 编辑 </PermissionLink>
+          <PermissionLink testKey='PHONE_SETTING' className="two-link link-style" onClick={ this.del.bind(this, record) }> 删除 </PermissionLink>
         </div>)
       }
     }];
@@ -116,7 +117,7 @@ class CustomerVisIndex extends React.Component {
       <div className = "customer-phone-system-cent">
         <div className = "top-button">
           <Link to = '/crm/phone-system/add'>
-            <PermissionButton testKey='ACTIVITY_ADD' className="one-button" style={{ float:'right', marginBottom:'10px' }}> 添加 </PermissionButton>
+            <PermissionButton testKey='PHONE_SETTING' className="one-button" style={{ float:'right', marginBottom:'10px' }}> 添加 </PermissionButton>
           </Link>
         </div>
         <Table className='customer-phone-system-center' {...tableProps}  bordered  columns = { this.columns } rowKey={record => record.userId}/>

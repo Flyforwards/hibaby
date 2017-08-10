@@ -3,6 +3,8 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
 import { PAGE_SIZE } from 'common/constants.js'
+import { parse } from 'qs'
+
 export default {
   namespace: 'organization',
   state: {
@@ -24,9 +26,9 @@ export default {
   },
   reducers: {
     getDeptListSave(state, { payload: { data: getDeptList } }){
-      let getDeptListSavedata = { ...state, getDeptList };
-      return getDeptListSavedata
+      return { ...state, getDeptList }
     },
+
     getEndemicSave(state, { payload: { data: getEndemic } }){
       let getEndemicSavedata = { ...state, getEndemic };
       return getEndemicSavedata
@@ -162,10 +164,7 @@ export default {
       if (code == 0) {
         yield put({
           type: 'getDeptListSave',
-          payload: {
-            data,
-            code
-          }
+          payload: { data, }
         });
       }
     },
@@ -311,6 +310,7 @@ export default {
         });
       }
     },
+
     //保存组织架构节点信息
     *saveDepartment({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.saveDepartment, values);
@@ -326,14 +326,16 @@ export default {
         });
       }
     },
+
     //添加用户入职信息
     *addUserEntry({ payload: values }, { call, put }) {
       const { data: { code } } = yield call(organizationService.addUserEntrydata, values);
       if (code == 0) {
         message.success("添加用户入职信息成功");
+        const param = parse(location.search.substr(1))
         yield put({
           type: 'getUserListById',
-          payload: { dataId: values.userId }
+          payload: param
         })
       }
     },

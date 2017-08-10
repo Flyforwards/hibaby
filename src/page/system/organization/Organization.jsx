@@ -1,3 +1,4 @@
+
 import React from 'react'
 import './Organization.scss'
 import { connect } from 'dva'
@@ -11,7 +12,6 @@ import OrganizationLeft from './OrganizationLeft.jsx'
 import { local, session } from 'common/util/storage.js'
 import Disabled from './Disabled.jsx';
 import { keyToText } from '../../../utils';
-
 
 const Option = Select.Option
 const FormItem = Form.Item;
@@ -130,14 +130,20 @@ class Organization extends React.Component {
         let Forbidden = "禁用"
         const detail = !this.props.permissionAlias.contains('EMPLOYEE_DETAIL');
         let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
+        // 如果改用户不是该地方中心的则不可禁用。
+        let endemic = session.get("endemic")
+        if (record.endemicId != endemic.id){
+          Forbidden = "禁用"
+          disable = true;
+        }
         if (record.status == 1) {
           Forbidden = "已禁用"
           disable = true;
         }
-
+        console.log(record)
         return (
           <div className="operation-list">
-            <Link className="one-link" style={{ width: '50%' }} disabled={ detail} to={{ pathname: '/system/organization/view-info', query: { data: record.id } }}>查看</Link>
+            <Link className="one-link" style={{ width: '50%' }} disabled={ detail } to={{ pathname: '/system/organization/view-info', query: { userId: record.id, endemicId:record.endemicId  } }}>查看</Link>
             <Link className="two-link" style={{ width: '50%' }} disabled={ disable } onClick={this.disabled.bind(this, record)}>{ Forbidden }</Link>
           </div>
         );

@@ -1,16 +1,15 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import { Modal, Form, } from 'antd'
 import './AddChildNode.scss'
+import { parse } from 'qs'
 
 import _ from 'lodash';
 const createForm = Form.create
-const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
-const Option = Select.Option
+
 @createForm()
-class DeleteEnery extends Component {
+class DeleteEntry extends Component {
     constructor(props) {
         super(props)
     }
@@ -18,8 +17,7 @@ class DeleteEnery extends Component {
         this.props.onCancel()
     }
     handleOk(index) {
-        let ID = window.location.search.split("=")[1]
-      //  console.log("Id",ID)
+        const param = parse(location.search.substr(1))
         this.props.dispatch({
            type: 'organization/deleteUserEntry',
             payload: {
@@ -28,16 +26,9 @@ class DeleteEnery extends Component {
         })
         this.props.dispatch({
           type: 'organization/getUserListById',
-          payload: {
-           dataId:ID
-          }
+          payload: param
         })
         window.location.reload( true )
-        // this.props.onCancel()
-    }
-    checkbox() {
-      //  console.log("checkbox")
-
     }
     handleAfterClose() {
         this.props.form.resetFields()
@@ -58,7 +49,7 @@ class DeleteEnery extends Component {
         }, 1000)
     }
     render() {
-        const {visible, form, confirmLoading} = this.props
+        const {visible, confirmLoading} = this.props
         return (
             <Modal
                 visible={visible}
@@ -83,23 +74,10 @@ class DeleteEnery extends Component {
     }
 }
 
-DeleteEnery.propTypes = {}
-DeleteEnery.defaultProps = {}
-function DeleteEneryed({
-  dispatch
-}) {
-  return ( < div >
-    <DeleteNode dispatch = {
-      dispatch
-    }
-    /> </div >
-  )
-}
+
 function mapStateToProps(state) {
-  const {
-  } = state.organization;
   return {
-    loading: state.loading.models.organization
+     loading: state.loading.models.organization
     };
 }
-export default connect(mapStateToProps)(DeleteEnery)
+export default connect(mapStateToProps)(DeleteEntry)

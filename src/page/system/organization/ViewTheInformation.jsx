@@ -10,6 +10,7 @@ import {local, session} from 'common/util/storage.js'
 import Disabled from './Disabled.jsx'
 import AddJobed from './AddJob.jsx'
 import IMG from 'assets/img.png'
+import { parse } from 'qs'
 const createForm = Form.create;
 
 
@@ -25,13 +26,12 @@ class ViewTheInformation extends React.Component {
     }
   }
   componentDidMount(){
-    let dataID = window.location.search.split("=")[1]
-    let endemic  = session.get("endemic")
+    const param = parse(location.search.substr(1))
+    const endemic  = session.get("endemic")
+    this.endemic = endemic;
     this.props.dispatch({
       type: 'organization/getUserListById',
-      payload: {
-       dataId:dataID
-      }
+      payload: param
     })
     this.props.dispatch({
         type: 'organization/getDeptListByEndemicId',
@@ -63,15 +63,13 @@ class ViewTheInformation extends React.Component {
     })
   }
   AddJobVisibleCancel() {
-    let dataID = window.location.search.split("=")[1]
+    const param = parse(location.search.substr(1))
     this.setState({
         AddJobVisible: false
     })
     this.props.dispatch({
       type: 'organization/getUserListById',
-      payload: {
-       dataId:dataID
-      }
+      payload: param
     })
   }
    onError() {
@@ -166,13 +164,24 @@ class ViewTheInformation extends React.Component {
       }
       let imageUrl = USER.imgURL;
 
-      let dataID = window.location.search.split("=")[1];
+      const param = parse(location.search.substr(1))
+
       if ( this.state.error ) {
         imageUrl = IMG;
       }
-      const add_position = !this.props.permissionAlias.contains("POSITION_ADD");
+      let add_position = !this.props.permissionAlias.contains("POSITION_ADD");
       let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
       let edit = !this.props.permissionAlias.contains('EMPLOYEE_EDIT');
+      if (!this.endemic) {
+        this.endemic = session.get("endemic");
+      } else {
+        if (this.endemic.id != param.endemicId) {
+          add_position = true;
+          disable = true;
+          edit = true;
+        }
+      }
+
       return(
         <div className="view-info">
           <div className="basicInformation">基本信息</div>
@@ -189,7 +198,7 @@ class ViewTheInformation extends React.Component {
                 <Button className="button-group-bottom-1" onClick={this.headelReturn.bind(this)}>返回</Button>
               </Link>
               <Button disabled={add_position} className="button-group-bottom-2" onClick={this.headelSave.bind(this)}>添加职位</Button>
-              <Link to={{ pathname: '/system/organization/editUser', query: { userID:dataID} }}>
+              <Link to={{ pathname: '/system/organization/editUser', query:{ ...param }  }}>
                 <Button disabled={edit} className="button-group-bottom-3">编辑</Button>
               </Link>
               <Button disabled={disable} className="button-group-bottom-4" onClick={this.headelDisabled}>禁用</Button>
@@ -198,13 +207,13 @@ class ViewTheInformation extends React.Component {
               visible={ this.state.toViewVisible }
               handleOk={this.state.handleOk}
               onCancel={ this.handleCreateModalCancel.bind(this) }
-              ID = { dataID }
+              param = { param }
             />
             <AddJobed
               visible={ this.state.AddJobVisible }
               handleOk={this.state.handleOk}
               onCancel={ this.AddJobVisibleCancel.bind(this) }
-              ID = { dataID }
+              param = { param }
             />
         </div>
       )

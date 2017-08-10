@@ -31,7 +31,7 @@ class AddJob extends Component {
 
     handleOk(e) {
       e.preventDefault();
-      const { form, dispatch, ID } = this.props;
+      const { form, dispatch, param } = this.props;
       form.validateFields((err, values) => {
         if (!err) {
           const { TableData } = this.state;
@@ -50,7 +50,7 @@ class AddJob extends Component {
               "leaderId": TableData ? TableData.id:'', //直系领导
               "positionId": values.positionId,
               "roles": roles,
-              "userId": ID
+              "userId": param.userId
             }
           })
           this.handleCancel()
@@ -304,7 +304,6 @@ function mapStateToProps(state) {
     dataEndemicId,
     dataId,
     LeagerData,
-    code
   } = state.organization;
   return {
     loading: state.loading.models.organization,
@@ -312,7 +311,6 @@ function mapStateToProps(state) {
     dataId,
     LeagerData,
     dataEndemicId,
-    code
   }
 }
 export default connect(mapStateToProps)(AddJob)

@@ -6,11 +6,9 @@ import './AddChildNode.scss'
 import _ from 'lodash';
 
 const createForm = Form.create
-const FormItem = Form.Item
-const CheckboxGroup = Checkbox.Group
-const Option = Select.Option
+
 @createForm()
-class Disabl extends Component {
+class DisabledView extends Component {
     constructor(props) {
         super(props)
     }
@@ -20,15 +18,10 @@ class Disabl extends Component {
     handleOk() {
         this.props.dispatch({
             type: 'organization/forbiddenUser',
-            payload: {
-              dataId:Number(this.props.ID),
-            }
+            payload: this.props.param,
+
         })
         this.props.onCancel()
-    }
-    checkbox() {
-      //  console.log("checkbox")
-
     }
     handleAfterClose() {
         this.props.form.resetFields()
@@ -74,23 +67,10 @@ class Disabl extends Component {
     }
 }
 
-Disabl.propTypes = {}
-Disabl.defaultProps = {}
-function Disabled({
-  dispatch
-}) {
-  return ( < div >
-    <Disabl dispatch = {
-      dispatch
-    }
-    /> </div >
-  )
-}
+
 function mapStateToProps(state) {
-  const {
-  } = state.organization;
   return {
     loading: state.loading.models.organization
     };
 }
-export default connect(mapStateToProps)(Disabl)
+export default connect(mapStateToProps)(DisabledView)
