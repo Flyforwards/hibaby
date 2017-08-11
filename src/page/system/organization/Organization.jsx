@@ -132,7 +132,7 @@ class Organization extends React.Component {
         let disable = !this.props.permissionAlias.contains('EMPLOYEE_DISABLE');
         // 如果改用户不是该地方中心的则不可禁用。
         let endemic = session.get("endemic")
-        if (record.endemicId != endemic.id){
+        if (endemic && (record.endemicId != endemic.id)){
           Forbidden = "禁用"
           disable = true;
         }
@@ -140,7 +140,6 @@ class Organization extends React.Component {
           Forbidden = "已禁用"
           disable = true;
         }
-        console.log(record)
         return (
           <div className="operation-list">
             <Link className="one-link" style={{ width: '50%' }} disabled={ detail } to={{ pathname: '/system/organization/view-info', query: { userId: record.id, endemicId:record.endemicId  } }}>查看</Link>
@@ -222,7 +221,6 @@ class Organization extends React.Component {
     this.setState({
       current: current
     })
-    // console.log("current",current)
     if (this.state.statusType) {
       this.props.dispatch({
         type: 'organization/organizationList',
@@ -413,7 +411,7 @@ class Organization extends React.Component {
               visible={ this.state.toViewVisible }
               handleOk={this.state.handleOk}
               onCancel={ this.handleCreateModalCancel.bind(this) }
-              ID={this.state.ID}
+              userId={ this.state.ID }
             />
           </div>
         </main>

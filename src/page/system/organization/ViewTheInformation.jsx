@@ -77,13 +77,15 @@ class ViewTheInformation extends React.Component {
       error: true,
     })
   }
-  headelDisabled = ()=>{
-    let dataID = window.location.search.split("=")[1]
+
+  handleDisabled = ()=>{
+    const param = parse(location.search.substr(1))
     this.setState({
         toViewVisible:true,
-        ID:dataID
+        ID: param.userID
       })
   }
+
   headelReturn = ()=>{
     window.history.back(-1);
   }
@@ -94,7 +96,8 @@ class ViewTheInformation extends React.Component {
       let time = null
       let JobInformation = []
       let selectData = local.get("rolSelectData")
-      let identifier =null
+      let identifier =null;
+      let isDisabled = false; // 判断该用户在该地方中心是否被禁用
       if(this.props.userID != null){
          USER = this.props.userID
          SEX = USER.sex == 0?"男":"女"
@@ -130,6 +133,7 @@ class ViewTheInformation extends React.Component {
            const entry = USER.entrys[i]
            if (entry.type == 0) {
              identifier = entry.identifier;
+             isDisabled = entry.status;
            }
            entry.roles.map((data)=>{
              selectData.map((list)=>{
@@ -181,6 +185,10 @@ class ViewTheInformation extends React.Component {
           edit = true;
         }
       }
+      // 已经被禁用
+      if (isDisabled) {
+        disable = true;
+      }
 
       return(
         <div className="view-info">
@@ -201,19 +209,19 @@ class ViewTheInformation extends React.Component {
               <Link to={{ pathname: '/system/organization/editUser', query:{ ...param }  }}>
                 <Button disabled={edit} className="button-group-bottom-3">编辑</Button>
               </Link>
-              <Button disabled={disable} className="button-group-bottom-4" onClick={this.headelDisabled}>禁用</Button>
+              <Button disabled={disable} className="button-group-bottom-4" onClick={this.handleDisabled.bind(this)}>{ isDisabled? '已禁用': '禁用'}</Button>
             </div>
             <Disabled
               visible={ this.state.toViewVisible }
               handleOk={this.state.handleOk}
               onCancel={ this.handleCreateModalCancel.bind(this) }
-              param = { param }
+              userId = { param.userId }
             />
             <AddJobed
               visible={ this.state.AddJobVisible }
               handleOk={this.state.handleOk}
               onCancel={ this.AddJobVisibleCancel.bind(this) }
-              param = { param }
+              userId = { param.userId }
             />
         </div>
       )

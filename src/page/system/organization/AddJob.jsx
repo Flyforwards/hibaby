@@ -31,7 +31,7 @@ class AddJob extends Component {
 
     handleOk(e) {
       e.preventDefault();
-      const { form, dispatch, param } = this.props;
+      const { form, dispatch, userId } = this.props;
       form.validateFields((err, values) => {
         if (!err) {
           const { TableData } = this.state;
@@ -50,7 +50,7 @@ class AddJob extends Component {
               "leaderId": TableData ? TableData.id:'', //直系领导
               "positionId": values.positionId,
               "roles": roles,
-              "userId": param.userId
+              "userId": userId
             }
           })
           this.handleCancel()

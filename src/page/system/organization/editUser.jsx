@@ -122,7 +122,7 @@ class EditUsered extends React.Component {
   //保存按键
   headelSave = (entrys,USER)=>{
     let endemic  = session.get("endemic")
-    let ID = window.location.search.split("=")[1]
+    const userId =parse(location.search.substr(1)).userId
     this.props.form.validateFields((err, fieldsValue) => {
       if(!err){
         const fields = this.props.form.getFieldsValue();
@@ -131,7 +131,7 @@ class EditUsered extends React.Component {
           let roleIdData = []
           if(fields[`systemRole${i}`]){
             fields[`systemRole${i}`].map((item)=>{
-              roleIdData.push({"roleId":item,"userID":ID})
+              roleIdData.push({"roleId":item,"userID": userId})
             })
           }
           if(entrys[i].type == 0){
@@ -171,8 +171,8 @@ class EditUsered extends React.Component {
             "mobile": fields.phoneNumber,
             "name": fields.userName,
             "password": fields.password?fields.password:null,
-            "id":ID,
-            "sex":USER.sex,
+            "id": userId,
+            "sex": USER.sex,
             "img":this.state.NewuserImg?this.state.NewuserImg:USER.img
           }
         })

@@ -1,7 +1,7 @@
 "use strict"
 import React, {Component} from 'react'
 import { connect } from 'dva'
-import {Modal, Form, Input, Radio, Select, Checkbox, Icon, Button} from 'antd'
+import { Modal, Form,  } from 'antd'
 import './AddChildNode.scss'
 import _ from 'lodash';
 
@@ -16,12 +16,13 @@ class DisabledView extends Component {
         this.props.onCancel()
     }
     handleOk() {
-        this.props.dispatch({
-            type: 'organization/forbiddenUser',
-            payload: this.props.param,
+      const dataId = this.props.userId;
+      this.props.dispatch({
+          type: 'organization/forbiddenUser',
+          payload: { dataId  },
 
-        })
-        this.props.onCancel()
+      })
+      this.props.onCancel()
     }
     handleAfterClose() {
         this.props.form.resetFields()
