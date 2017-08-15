@@ -8,9 +8,14 @@ export const DictionaryArray = {
     abName: 'HYKJB',
     softDelete: 0
   },
-  // 孕产次
+  // 产次
   'FETUS': {
     abName: 'YCC',
+    softDelete: 0
+  },
+  // 孕次
+  'GRAVIDITY': {
+    abName: 'YC',
     softDelete: 0
   },
   // 客资来源
