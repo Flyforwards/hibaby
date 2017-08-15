@@ -1,6 +1,8 @@
 import React from 'react'
 import './CustomerIndex.scss'
 import { connect } from 'dva'
+import { browserHistory } from 'react-router';
+
 import { Select, Button, DatePicker, Table, Input, Card, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal } from 'antd'
 import moment from 'moment'
 import  CreateModal from './CreateModal.jsx'
@@ -176,19 +178,17 @@ class CustomerIndex extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (values.dueDate1) {
-          values.dueDate1 = values.dueDate1.format("YYYY-MM-DD HH:mm:ss");
+          values.dueDate1 = values.dueDate1.format("YYYY-MM-DD");
         }
         else{
           values.dueDate2 = undefined
         }
         if (values.dueDate2) {
-          values.dueDate2 = values.dueDate2.format("YYYY-MM-DD HH:mm:ss");
+          values.dueDate2 = values.dueDate2.format("YYYY-MM-DD");
         }
         else{
           values.dueDate2 = undefined
         }
-        console.log(values)
-
 
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
@@ -226,6 +226,19 @@ class CustomerIndex extends React.Component {
     this.props.dispatch({ type: 'customer/listByMain' });
     this.props.dispatch({ type: 'customer/getMemberShipCard' });
     this.props.dispatch({ type: 'customer/getDataDict', payload: { "abName": 'YCC' } });
+
+    window.addEventListener('keydown', this.handleKeyDown.bind(this))
+  }
+
+  handleKeyDown(event){
+    console.log(location)
+    if(location.pathname === '/crm/customer'){
+      var e = event || window.event || arguments.callee.caller.arguments[0];
+      if(e && e.keyCode==13){
+        this.onSearch()
+      }
+    }
+
   }
 
   render() {
