@@ -332,7 +332,7 @@ function HealthyhomeDetailUpdate(props) {
       <Row>
         <Col>
           <div className="rightItemBg">
-            {secondRadioForm2(radioName, dict,4)}
+            {secondRadioForm2(radioName, dict,6)}
           </div>
         </Col>
       </Row>
@@ -545,7 +545,7 @@ function HealthyhomeDetailUpdate(props) {
             <Row>
               <Col span="12">
                 <div className="topItembg">
-                  {myRadioForm(radioNames[10],{title: '高血压',radioItems: ['否','是'],value:healthInfo['radio_10']})}
+                  {myRadioForm(radioNames[10],{title: '血压异常',radioItems: ['否','是'],value:healthInfo['radio_10']})}
                 </div>
               </Col>
               <Col span="12">
@@ -553,7 +553,7 @@ function HealthyhomeDetailUpdate(props) {
                   <FormItem
                     labelCol={{span: 6}}
                     wrapperCol={{span: 16}}
-                    label={'孕期最高血压'}>
+                    label={'血压'}>
                     {getFieldDecorator(`${inputNames[2]}`, {
                       initialValue : healthInfo['input_2'],
                       rules: [{ required: false, message: '  ' }]
@@ -680,9 +680,9 @@ function HealthyhomeDetailUpdate(props) {
           <Col span="22">
             {radioAllRow(radioNames[21],{title: '产后清宫',radioItems: ['无','有'],value:healthInfo['radio_21']})}
             {radioInputRow(radioNames[22], inputNames[9], {title: '产后出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
-            {radioAllRow(radioNames[23],{title: '血压异常',radioItems: ['无','低血压','高血压'],value:healthInfo['radio_23']})}
-            {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开'],value:healthInfo['radio_24']})}
-            {radioAllRow(radioNames[25],{title: '腹部伤口',radioItems: ['正常','水肿','裂开','感染'],value:healthInfo['radio_25']})}
+            {radioInputRow(radioNames[23], inputNames[18], {title: '血压异常',radioItems: ['无','有'],value:healthInfo['radio_23'],info:healthInfo['input_18']},'血压',false,'mmHg')}
+            {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开','感染','无'],value:healthInfo['radio_24']})}
+            {radioAllRow2(radioNames[24],{title: '腹部伤口',radioItems: ['正常','红肿','裂开','感染','无'],value:healthInfo['radio_24']})}
             {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26'],info:healthInfo['input_10']},'体温',false,'℃')}
             {radioAllRow(radioNames[27],{title: '乳房肿胀',radioItems: ['无','有'],value:healthInfo['radio_27']})}
             {radioAllRow(radioNames[28],{title: '哺乳困难',radioItems: ['无','有'],value:healthInfo['radio_28']})}
@@ -779,11 +779,11 @@ function HealthyhomeDetailUpdate(props) {
               </Col>
             </Row>
             {radioAllRow(radioNames[37],{title: '羊水污染',radioItems: ['无','1度','2度','3度'],value:healthInfo['radio_37']})}
-            {radioInputRow(radioNames[38], inputNames[15], {title: '发热史',radioItems: ['否','是'],value:healthInfo['radio_38'],info:healthInfo['input_15']},'体温',false,'℃')}
+            {radioInputRow(radioNames[38], inputNames[15], {title: '发热史',radioItems: ['无','有'],value:healthInfo['radio_38'],info:healthInfo['input_15']},'体温',false,'℃')}
             {radioAllRow(radioNames[39],{title: '低血糖史',radioItems: ['无','有'],value:healthInfo['radio_39']})}
             {radioAllRow(radioNames[40],{title: '呼吸困难',radioItems: ['无','有'],value:healthInfo['radio_40']})}
             {radioAllRow(radioNames[41],{title: '出生后窒息',radioItems: ['无','有'],value:healthInfo['radio_41']})}
-            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['否','是'],value:healthInfo['radio_42'],info:healthInfo['input_16']},'体温',false,'℃')}
+            {radioInputRow(radioNames[42], inputNames[16], {title: '新生儿肺炎',radioItems: ['无','有'],value:healthInfo['radio_42'],info:healthInfo['input_16']},'治疗方案',false,null)}
             {radioAllRow(radioNames[43],{title: '心脏杂音',radioItems: ['无','有'],value:healthInfo['radio_43']})}
             {radioAllRow(radioNames[44],{title: '皮疹',radioItems: ['无','有'],value:healthInfo['radio_44']})}
             {radioAllRow(radioNames[45],{title: '尿量少',radioItems: ['无','有'],value:healthInfo['radio_45']})}

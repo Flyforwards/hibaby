@@ -24,12 +24,12 @@
           line-height: 60px;
           height: 60px;
           border: 1px solid #fff;
-        }
-        .ant-radio-button-wrapper:not(:first-child)::before{
-          background-color: #fff;
-        }
-        .ant-radio-button-wrapper:last-child {
-          border-radius: inherit;
+          &:not(:first-child)::before{
+            background:none!important;
+          }
+          &:last-child{
+            border-radius: inherit;
+          }
         }
         .ant-radio-button-wrapper-checked {
           color: #b67233;
