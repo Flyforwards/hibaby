@@ -316,7 +316,7 @@ function HealthyhomeMainComponent(props) {
       <Row>
         <Col>
           <div className="rightItemBg">
-            {secondRadioForm2(radioName, dict,4)}
+            {secondRadioForm2(radioName, dict,6)}
           </div>
         </Col>
       </Row>

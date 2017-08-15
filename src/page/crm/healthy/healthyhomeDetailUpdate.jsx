@@ -332,7 +332,7 @@ function HealthyhomeDetailUpdate(props) {
       <Row>
         <Col>
           <div className="rightItemBg">
-            {secondRadioForm2(radioName, dict,4)}
+            {secondRadioForm2(radioName, dict,6)}
           </div>
         </Col>
       </Row>
@@ -682,7 +682,7 @@ function HealthyhomeDetailUpdate(props) {
             {radioInputRow(radioNames[22], inputNames[9], {title: '产后出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
             {radioInputRow(radioNames[23], inputNames[18], {title: '血压异常',radioItems: ['无','有'],value:healthInfo['radio_23'],info:healthInfo['input_18']},'血压',false,'mmHg')}
             {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开','感染','无'],value:healthInfo['radio_24']})}
-            {radioAllRow(radioNames[25],{title: '腹部伤口',radioItems: ['正常','红肿','裂开','感染','无'],value:healthInfo['radio_25']})}
+            {radioAllRow2(radioNames[24],{title: '腹部伤口',radioItems: ['正常','红肿','裂开','感染','无'],value:healthInfo['radio_24']})}
             {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26'],info:healthInfo['input_10']},'体温',false,'℃')}
             {radioAllRow(radioNames[27],{title: '乳房肿胀',radioItems: ['无','有'],value:healthInfo['radio_27']})}
             {radioAllRow(radioNames[28],{title: '哺乳困难',radioItems: ['无','有'],value:healthInfo['radio_28']})}
