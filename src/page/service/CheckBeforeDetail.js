@@ -5,24 +5,24 @@ import PermissionButton from 'common/PermissionButton';
 
 // 基本信息
 const baseInfoAry = [
-  {title:'客户姓名',component:'Input',submitStr:'name'},
-  {title:'年龄',component:'Input',submitStr:'contact'},
-  {title:'宝宝性别',component:'Input',submitStr:'contact'},
-  {title:'分娩日期',component:'DatePicker',submitStr:'contact'},
-  {title:'入住日期',component:'DatePicker',submitStr:'contact'},
-  {title:'房间',component:'Input',submitStr:'contact'},
-  {title:'产次',component:'Input',submitStr:'contact',selectName:'FETUS'},
-  {title:'孕次',component:'Input',submitStr:'contact',selectName:'GRAVIDITY'},
-  {title:'孕周',component:'Input',submitStr:'contact'},
-  {title:'分娩医院',component:'Input',submitStr:'contact',selectName:'Hospital'},
-  {title:'产妇电话',component:'Input',submitStr:'contact'},
-  {title:'家属电话',component:'Input',submitStr:'contact'},
+  {title:'客户姓名',component:'Input'},
+  {title:'年龄',component:'Input'},
+  {title:'宝宝性别',component:'gender'},
+  {title:'分娩日期',component:'DatePicker'},
+  {title:'入住日期',component:'DatePicker'},
+  {title:'房间',component:'Input'},
+  {title:'产次',component:'Input',selectName:'FETUS'},
+  {title:'孕次',component:'Input',selectName:'GRAVIDITY'},
+  {title:'孕周',component:'InputNumber'},
+  {title:'分娩医院',component:'Input',selectName:'Hospital'},
+  {title:'产妇电话',component:'InputNumber'},
+  {title:'家属电话',component:'InputNumber'},
 ]
 
 // 既往史
 const PastMedicalHistoryAry = [
-  {title:'既往疾病史',component:'InputGroup',submitStr:'name',span:24},
-  {title:'既往手术史',component:'InputGroup',submitStr:'contact',span:24},
+  {title:'既往疾病史',component:'InputGroup',span:24},
+  {title:'既往手术史',component:'InputGroup',span:24},
 ]
 
 // 孕期合并症
@@ -31,7 +31,7 @@ const PregnancyComplicationsAry = [
   {title:'丙肝病毒感染或携带',component:'RadioGroup'},
   {title:'梅毒感染或携带',component:'RadioGroup'},
   {title:'艾滋病毒感染或携带',component:'RadioGroup'},
-  {title:'高血压',component:'Input'},
+  {title:'高血压',component:'InputGroup',unit:'mmHg'},
   {title:'贫血',component:'RadioGroup'},
   {title:'糖尿病',component:'RadioGroup'},
   {title:'子宫肌瘤',component:'RadioGroup'},
@@ -42,8 +42,8 @@ const PregnancyComplicationsAry = [
 const DeliveryProcessAry = [
   {title:'分娩方式',component:'Input'},
   {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度']},
-  {title:'产时出血',component:'Input'},
-  {title:'胎盘早破',component:'Input'},
+  {title:'产时出血',component:'InputGroup',unit:'ml'},
+  {title:'胎盘早破',component:'InputGroup',unit:'小时'},
   {title:'前置胎盘',component:'RadioGroup'},
   {title:'胎盘早剥',component:'RadioGroup'},
   {title:'胎盘残留',component:'RadioGroup'},
@@ -53,11 +53,11 @@ const DeliveryProcessAry = [
 // 产后情况
 const PostpartumSituationAry = [
   {title:'产后清宫',component:'RadioGroup'},
-  {title:'产后出血',component:'InputGroup'},
-  {title:'血压异常',component:'InputGroup'},
+  {title:'产后出血',component:'InputGroup',unit:'ml'},
+  {title:'血压异常',component:'Select',chiAry:['无','160/100mmHg', '85/45mmHg']},
   {title:'会阴伤口',component:'Select',chiAry:['正常','水肿', '血肿', '裂开','感染']},
   {title:'腹部伤口',component:'Select',chiAry:['正常','红肿', '裂开','感染']},
-  {title:'产后发热',component:'InputGroup'},
+  {title:'产后发热',component:'InputGroup',unit:'℃'},
   {title:'乳房肿胀',component:'RadioGroup'},
   {title:'下肢水肿',component:'RadioGroup'},
   {title:'排尿困难',component:'RadioGroup'},
@@ -67,23 +67,22 @@ const PostpartumSituationAry = [
 
 // 新生儿情况
 const newbornAry = [
-  {title:'性别',component:'Input'},
-  {title:'出生体重',component:'Input'},
-  {title:'出生身长',component:'Input'},
-  {title:'Apgar评分',component:'Input'},
-  {title:'喂养方式',component:'Input'},
-  {title:'产时胎心异常',component:'Input'},
+  {title:'性别',component:'gender'},
+  {title:'出生体重',component:'Input',unit:'g'},
+  {title:'出生身长',component:'Input',unit:'cm'},
+  {title:'Apgar评分',component:'Input',unit:'分'},
+  {title:'喂养方式',component:'Select',chiAry:['纯母乳','混合', '人工']},
+  {title:'产时胎心异常',component:'Select',chiAry:['无','胎心快', '胎心慢']},
   {title:'高胆红素血症',component:'RadioGroup'},
-  {title:'蓝光治疗史',component:'Input'},
-  {title:'产时胎心异常',component:'Input'},
-  {title:'羊水污染',component:'Input'},
-  {title:'排便困难',component:'Input'},
+  {title:'蓝光治疗史',component:'InputGroup',unit:'小时'},
+  {title:'羊水污染',component:'Select',chiAry:['无','1度', '2度','3度']},
+  {title:'排便困难',component:'RadioGroup'},
   {title:'出生后窒息',component:'RadioGroup'},
-  {title:'呼吸困难',component:'Input'},
-  {title:'新生儿肺炎',component:'Input'},
-  {title:'发热史',component:'Input'},
-  {title:'心脏杂音',component:'Input'},
-  {title:'尿量少',component:'Input'},
+  {title:'呼吸困难',component:'RadioGroup'},
+  {title:'新生儿肺炎',component:'RadioGroup'},
+  {title:'发热史',component:'InputGroup',unit:'℃'},
+  {title:'心脏杂音',component:'RadioGroup'},
+  {title:'尿量少',component:'RadioGroup'},
   {title:'尿结晶',component:'RadioGroup'},
   {title:'皮疹',component:'RadioGroup'},
   {title:'其他',component:'Input',span:24},
@@ -108,7 +107,11 @@ class Detail extends Component {
   }
 
   editBtnClick(){
-
+      this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log(values)
+      }
+    });
   }
 
   render() {
