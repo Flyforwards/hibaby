@@ -8,6 +8,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/CustomerListIndex.jsx'))
       })
     }
