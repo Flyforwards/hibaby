@@ -23,10 +23,12 @@ function onChange(dict) {
 }
 
 function creatInput(dict) {
-  return  <Input style={dict.component === 'Input' ? {width:'100%'} : {width:'80%'}} addonAfter={dict.unit}   disabled={dict.disabled}/>
+  return  <Input readOnly={dict.readOnly} style={dict.component === 'Input' ? {width:'100%'} : {width:'80%'}} addonAfter={dict.unit}   disabled={dict.disabled}/>
 }
 
 function creatComponent(form,dict) {
+
+  dict.readOnly =  location.pathname.indexOf('detail') != -1
 
   const { getFieldDecorator } = form;
 
@@ -39,7 +41,7 @@ function creatComponent(form,dict) {
   }
 
   if (dict.selectName){
-    tempDiv = (<DictionarySelect className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
+    tempDiv = (<DictionarySelect readOnly={dict.readOnly} className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
   }
   else{
     switch (dict.component) {
@@ -47,36 +49,36 @@ function creatComponent(form,dict) {
         tempDiv = creatInput(dict);
         break;
       case 'TextArea':
-        tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
+        tempDiv = <TextArea readOnly={dict.readOnly} style={{width:'100%'}} disabled={dict.disabled}/>;
         break;
 
       case 'Select':
-        tempDiv = (<Select style={{width: '100%' }} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
+        tempDiv = (<Select readOnly={dict.readOnly} style={{width: '100%' }} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
         break;
       case 'DatePicker':
-        tempDiv = (<DatePicker style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{children}</DatePicker>);
+        tempDiv = (<DatePicker readOnly={dict.readOnly} style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{children}</DatePicker>);
         break;
       case 'InputNumber':
-        tempDiv = (<InputNumber style={{width: '100%' }} disabled={dict.disabled} min={1} max={dict.max}/>);
+        tempDiv = (<InputNumber readOnly={dict.readOnly} style={{width: '100%' }} disabled={dict.disabled} min={1} max={dict.max}/>);
         break;
       case 'Switch':
-        tempDiv = (<Switch checkedChildren="是" unCheckedChildren="否" disabled={dict.disabled}/>);
+        tempDiv = (<Switch readOnly={dict.readOnly} checkedChildren="是" unCheckedChildren="否" disabled={dict.disabled}/>);
         break;
       case 'gender':
-        tempDiv = (<RadioGroup >
+        tempDiv = (<RadioGroup readOnly={dict.readOnly}>
           <Radio value={1}>男</Radio>
           <Radio value={0}>女</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroup':
-        tempDiv = (<RadioGroup >
+        tempDiv = (<RadioGroup readOnly={dict.readOnly}>
           <Radio value={1}>是</Radio>
           <Radio value={0}>否</Radio>
         </RadioGroup>);
         break;
       case 'InputGroup':
           tempDiv = (
-            <InputGroup compact>
+            <InputGroup readOnly={dict.readOnly} compact>
               <Radio style={{ width: '30px' }} value={0}>无</Radio>
                 {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
                    creatInput(dict)
@@ -85,7 +87,7 @@ function creatComponent(form,dict) {
         break;
       case 'TextAreaGroup':
         tempDiv = (
-          <InputGroup compact>
+          <InputGroup readOnly={dict.readOnly} compact>
             <Radio style={{ width: '30px' }} value={0}>无</Radio>
             {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
               <TextArea style={{width:'90%'}} disabled={dict.disabled}/>
@@ -96,7 +98,7 @@ function creatComponent(form,dict) {
       case 'UploadButton':
       {
         tempDiv =
-          <FileUpload fun={dict.fun} deleteFun={dict.deleteFun}>
+          <FileUpload readOnly={dict.readOnly} fun={dict.fun} deleteFun={dict.deleteFun}>
             <Button><Icon type="upload"/> 上传附件</Button>
           </FileUpload>
       }
@@ -201,6 +203,14 @@ export function creatButton(title,onclick) {
   if(title === '确定'){
     className = 'bottomButton button-group-bottom-2'
   }
-
+  if(title === '编辑'){
+    className = 'bottomButton button-group-bottom-2'
+  }
+  if(title === '打印'){
+    className = 'bottomButton button-group-bottom-3'
+  }
+  if(title === '删除'){
+    className = 'bottomButton button-group-2'
+  }
   return (<Button className={className} onClick={onclick}>{title}</Button>)
 }

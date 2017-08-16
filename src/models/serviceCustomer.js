@@ -24,7 +24,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname,query }) => {
-        if (pathname === '/service/check-before/detail') {
+        if (pathname === '/service/check-before/detail'||pathname === '/service/check-before/edit') {
           console.log(query)
           let dict = {...query,type:1}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
@@ -89,7 +89,9 @@ export default {
       try {
         const {data: {data,code}} = yield call(serviceAssessment.saveAssessment, values);
         message.success("保存成功");
-        console.log(data)
+        if(values.type == 1){
+          yield put(routerRedux.push('/service/check-before'))
+        }
       }
       catch (err){
         console.log(err)

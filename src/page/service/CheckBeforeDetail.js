@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {CreatCard,creatButton} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button} from 'antd';
+import {Card ,Input,Form,Button,Spin} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
-
-
+import { parse } from 'qs'
+import { routerRedux } from 'dva/router'
 
 // 基本信息
 const baseInfoAry = [
@@ -111,6 +111,22 @@ class Detail extends Component {
   }
 
   editBtnClick(){
+    this.props.dispatch(routerRedux.push(`/service/check-before/edit?${location.search.substr(1)}`));
+  }
+
+  backClicked(){
+
+  }
+
+  editBackClicked(){
+    this.props.dispatch(routerRedux.push(`/service/check-before/detail?${location.search.substr(1)}`));
+  }
+
+  print(){
+
+  }
+
+  submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const assessmentInfo =  JSON.stringify(values);
@@ -121,8 +137,17 @@ class Detail extends Component {
 
   render() {
 
+    const {loading} = this.props
+
+    const bottomDiv = location.pathname === '/service/check-before/edit' ? ( <div className='button-group-bottom-common'>
+      {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
+      </div>) : ( <div className='button-group-bottom-common'>
+      {creatButton('删除',this.onDelete.bind(this))}{creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
+    </div>)
+
     return (
-      <div>
+      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
+
         <Card style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {CreatCard(this.props.form,{title:'基本信息',ary:baseInfoAry})}
           {CreatCard(this.props.form,{title:'既往史',ary:PastMedicalHistoryAry})}
@@ -132,14 +157,9 @@ class Detail extends Component {
           {CreatCard(this.props.form,{title:'新生儿情况',ary:newbornAry})}
           {CreatCard(this.props.form,{title:'新生儿情况',ary:newbornTwoAry})}
 
-          <div className='button-group-bottom-common'>
-            {creatButton('返回',this.onDelete.bind(this))}
-            {creatButton('确定',this.editBtnClick.bind(this))}
-
-            {/*<PermissionButton testKey='CUSTOMER_EDIT' className='button-group-bottom-3' onClick={this.editBtnClick.bind(this)}>打印</PermissionButton>*/}
-          </div>
+          {bottomDiv}
         </Card>
-      </div>
+      </Spin>
     )
   }
 }
