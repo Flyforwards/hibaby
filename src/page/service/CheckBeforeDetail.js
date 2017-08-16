@@ -115,7 +115,7 @@ class Detail extends Component {
   }
 
   backClicked(){
-
+    this.props.dispatch(routerRedux.push('/service/check-before'));
   }
 
   editBackClicked(){
@@ -139,23 +139,29 @@ class Detail extends Component {
 
     const {loading} = this.props
 
-    const bottomDiv = location.pathname === '/service/check-before/edit' ? ( <div className='button-group-bottom-common'>
-      {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
-      </div>) : ( <div className='button-group-bottom-common'>
-      {creatButton('删除',this.onDelete.bind(this))}{creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
-    </div>)
+    const ary = [{title:'基本信息',ary:baseInfoAry},{title:'既往史',ary:PastMedicalHistoryAry},{title:'孕期合并症',ary:PregnancyComplicationsAry},
+      {title:'分娩过程',ary:DeliveryProcessAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'新生儿情况',ary:newbornAry},{title:'新生儿情况',ary:newbornTwoAry}]
+
+    let chiAry = ary.map(value=>{
+      value.netData = this.props.CheckBeforeData
+      return CreatCard(this.props.form,value)
+    })
+
+
+    const bottomDiv = location.pathname === '/service/check-before/edit' ?
+      <div className='button-group-bottom-common'>
+        {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
+      </div> :
+       <div className='button-group-bottom-common'>
+        {creatButton('返回',this.backClicked.bind(this))}{creatButton('删除',this.onDelete.bind(this))}
+        {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
+      </div>
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
 
-        <Card style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          {CreatCard(this.props.form,{title:'基本信息',ary:baseInfoAry})}
-          {CreatCard(this.props.form,{title:'既往史',ary:PastMedicalHistoryAry})}
-          {CreatCard(this.props.form,{title:'孕期合并症',ary:PregnancyComplicationsAry})}
-          {CreatCard(this.props.form,{title:'分娩过程',ary:DeliveryProcessAry})}
-          {CreatCard(this.props.form,{title:'产后情况',ary:PostpartumSituationAry})}
-          {CreatCard(this.props.form,{title:'新生儿情况',ary:newbornAry})}
-          {CreatCard(this.props.form,{title:'新生儿情况',ary:newbornTwoAry})}
+        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+          {chiAry}
 
           {bottomDiv}
         </Card>

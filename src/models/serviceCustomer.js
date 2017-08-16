@@ -25,7 +25,6 @@ export default {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname,query }) => {
         if (pathname === '/service/check-before/detail'||pathname === '/service/check-before/edit') {
-          console.log(query)
           let dict = {...query,type:1}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
         }
@@ -94,15 +93,16 @@ export default {
         }
       }
       catch (err){
-        console.log(err)
       }
     },
 
     *getAssessmentByCustomerId({payload: values}, { call, put }) {
-      console.log(values)
       try {
         const {data: {data,code}} = yield call(serviceAssessment.getAssessmentByCustomerId, values);
-        console.log(data)
+        yield put({
+          type: 'savaAssessment',
+          payload: data
+        });
       }
       catch (err){
         console.log(err)
@@ -141,6 +141,13 @@ export default {
         return {...state,fetusAry:todo.data};
       }
       return {...state};
+    },
+    savaAssessment(state,{ payload: todo }){
+      let dict = {}
+      if(todo.type === 1){
+        dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
+      }
+      return { ...state,...dict}
     },
     clearAllProps(state){
       return { ...state,page : 1}

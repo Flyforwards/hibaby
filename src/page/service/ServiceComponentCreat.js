@@ -23,12 +23,12 @@ function onChange(dict) {
 }
 
 function creatInput(dict) {
-  return  <Input readOnly={dict.readOnly} style={dict.component === 'Input' ? {width:'100%'} : {width:'80%'}} addonAfter={dict.unit}   disabled={dict.disabled}/>
+  return  <Input style={dict.component === 'Input' ? {width:'100%'} : {width:'80%'}} addonAfter={dict.unit}   disabled={dict.disabled}/>
 }
 
 function creatComponent(form,dict) {
 
-  dict.readOnly =  location.pathname.indexOf('detail') != -1
+  dict.disabled =  location.pathname.indexOf('detail') != -1
 
   const { getFieldDecorator } = form;
 
@@ -41,7 +41,7 @@ function creatComponent(form,dict) {
   }
 
   if (dict.selectName){
-    tempDiv = (<DictionarySelect readOnly={dict.readOnly} className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
+    tempDiv = (<DictionarySelect className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
   }
   else{
     switch (dict.component) {
@@ -49,37 +49,37 @@ function creatComponent(form,dict) {
         tempDiv = creatInput(dict);
         break;
       case 'TextArea':
-        tempDiv = <TextArea readOnly={dict.readOnly} style={{width:'100%'}} disabled={dict.disabled}/>;
+        tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
         break;
 
       case 'Select':
-        tempDiv = (<Select readOnly={dict.readOnly} style={{width: '100%' }} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
+        tempDiv = (<Select style={{width: '100%' }} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
         break;
       case 'DatePicker':
-        tempDiv = (<DatePicker readOnly={dict.readOnly} style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{children}</DatePicker>);
+        tempDiv = (<DatePicker style={{width: '100%' }} disabled={dict.disabled} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{children}</DatePicker>);
         break;
       case 'InputNumber':
-        tempDiv = (<InputNumber readOnly={dict.readOnly} style={{width: '100%' }} disabled={dict.disabled} min={1} max={dict.max}/>);
+        tempDiv = (<InputNumber style={{width: '100%' }} disabled={dict.disabled} min={1} max={dict.max}/>);
         break;
       case 'Switch':
-        tempDiv = (<Switch readOnly={dict.readOnly} checkedChildren="是" unCheckedChildren="否" disabled={dict.disabled}/>);
+        tempDiv = (<Switch checkedChildren="是" unCheckedChildren="否" disabled={dict.disabled}/>);
         break;
       case 'gender':
-        tempDiv = (<RadioGroup readOnly={dict.readOnly}>
+        tempDiv = (<RadioGroup disabled={dict.disabled}>
           <Radio value={1}>男</Radio>
           <Radio value={0}>女</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroup':
-        tempDiv = (<RadioGroup readOnly={dict.readOnly}>
+        tempDiv = (<RadioGroup disabled={dict.disabled}>
           <Radio value={1}>是</Radio>
           <Radio value={0}>否</Radio>
         </RadioGroup>);
         break;
       case 'InputGroup':
           tempDiv = (
-            <InputGroup readOnly={dict.readOnly} compact>
-              <Radio style={{ width: '30px' }} value={0}>无</Radio>
+            <InputGroup compact>
+              <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
                 {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
                    creatInput(dict)
                 )}
@@ -87,8 +87,8 @@ function creatComponent(form,dict) {
         break;
       case 'TextAreaGroup':
         tempDiv = (
-          <InputGroup readOnly={dict.readOnly} compact>
-            <Radio style={{ width: '30px' }} value={0}>无</Radio>
+          <InputGroup compact>
+            <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
             {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
               <TextArea style={{width:'90%'}} disabled={dict.disabled}/>
             )}
@@ -98,7 +98,7 @@ function creatComponent(form,dict) {
       case 'UploadButton':
       {
         tempDiv =
-          <FileUpload readOnly={dict.readOnly} fun={dict.fun} deleteFun={dict.deleteFun}>
+          <FileUpload  fun={dict.fun} deleteFun={dict.deleteFun}>
             <Button><Icon type="upload"/> 上传附件</Button>
           </FileUpload>
       }
@@ -151,13 +151,16 @@ function cusFromItem(form,dict) {
 
 export function CreatCard(form,superDict) {
 
-  const {title,ary} = superDict
+  const {title,ary,netData} = superDict
 
   let chiAry = []
   let tempAry = []
 
   for(let i = 0;i<ary.length;i++){
     const dict = ary[i];
+    if(netData){
+      dict.initValue = netData[dict.submitStr]
+    }
     if(dict.span === 24){
       if(tempAry.length > 0){
         chiAry.push(<Row>{tempAry}</Row>)
