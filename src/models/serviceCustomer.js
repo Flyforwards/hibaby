@@ -105,6 +105,9 @@ export default {
       }
       return {...state};
     },
+    clearAllProps(state){
+      return { ...state,page : 1}
+    }
   }
 
 }

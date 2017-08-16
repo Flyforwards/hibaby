@@ -142,6 +142,15 @@ class CustomerListPage extends Component {
     });
   }
 
+  //页面生命周期结束时调用
+  componentWillUnmount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'serviceCustomer/clearAllProps'
+    })
+
+  }
+
 
   onTableChange = (pageNumber) =>{
     const {searchParams} = this.state;
