@@ -134,8 +134,10 @@ class CustomerListPage extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch({
-      type: 'customer/listByMain'
+      type: 'serviceCustomer/listByMain'
     });
+    dispatch({type: 'serviceCustomer/getMemberShipCard',});
+    dispatch({ type: 'serviceCustomer/getDataDict',payload:{"abName": 'YCC',}});
 
     this.getTableData({
       page : this.props.serviceCustomer.page,
@@ -145,9 +147,11 @@ class CustomerListPage extends Component {
 
 
   onTableChange = (pageNumber) =>{
+    const {searchParams} = this.state;
     this.getTableData({
       page : pageNumber,
-      size : this.props.serviceCustomer.size
+      size : this.props.serviceCustomer.size,
+      ...searchParams
     });
   }
 
@@ -344,10 +348,31 @@ class CustomerListPage extends Component {
 
   }
 
+  textforkey(array, value, valuekey = 'name') {
+    if(array){
+      for (let i = 0; i < array.length; i++) {
+        let dict = array[i];
+        if (dict['id'] === value) {
+          return dict[valuekey];
+        }
+      }
+      return value;
+    }
+  }
+
   render() {
-    const { serviceCustomer } = this.props;
+    const { serviceCustomer,fetusAry,packageList } = this.props;
 
     const dataSource = serviceCustomer.customerPageList;
+
+   if(dataSource){
+      for (let i = 0; i < dataSource.length; i++) {
+        let dict = dataSource[i];
+        dict.fetus = this.textforkey(fetusAry, dict.fetus)
+        dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
+      }
+    }
+
 
     const pagination = {
       total: serviceCustomer.total,
@@ -383,13 +408,15 @@ class CustomerListPage extends Component {
 function mapStateToProps(state) {
   const {
     shipCards,
-    packageList
-  } = state.customer;
+    packageList,
+    fetusAry
+  } = state.serviceCustomer;
   const { permissionAlias } = state.layout;
   return {
     serviceCustomer : state.serviceCustomer,
     shipCards,
     packageList,
+    fetusAry,
     permissionAlias
   };
 }
