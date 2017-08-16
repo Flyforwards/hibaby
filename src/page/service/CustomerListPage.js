@@ -86,10 +86,17 @@ class CustomerListPage extends Component {
         );
       }
     }];
+
+
+    this.state = {
+      searchParams : {},
+    }
   }
 
 
-  onSearch() {
+
+  onSearch(){
+    const this_ = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (values.time != undefined) {
@@ -101,23 +108,35 @@ class CustomerListPage extends Component {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
 
-        this.props.dispatch(routerRedux.push({
-          pathname: "/crm/customer",
-          query: values
-        }))
+        this_.setState({
+          searchParams : values
+        })
+
+        values.page = 1;
+        values.size = this.props.serviceCustomer.size;
+        this.getTableData(values);
       }
     })
   }
 
+
   reset() {
-    const { pathname } = location;
-    this.props.dispatch(routerRedux.push({
-      pathname
-    }))
-    this.props.form.resetFields()
+    this.props.form.resetFields();
+    this.setState({
+      searchParams : {}
+    });
+    this.getTableData({
+      page : 1,
+      size : this.props.serviceCustomer.size
+    });
   }
 
   componentDidMount() {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'customer/listByMain'
+    });
+
     this.getTableData({
       page : this.props.serviceCustomer.page,
       size : this.props.serviceCustomer.size
@@ -137,7 +156,7 @@ class CustomerListPage extends Component {
     dispatch({
       type: 'serviceCustomer/getCustomerPageList',
       payload: {
-        ...params
+        ...params,
       }
     });
   }
