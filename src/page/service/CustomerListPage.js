@@ -69,19 +69,16 @@ class CustomerListPage extends Component {
         if (record.operator2 != null) {
           return record.operator2;
         } else {
-          return record.operator;CUSTOMER_DELETE
+          return record.operator;
         }
       }
     }, {
       title: '操作',
       dataIndex: 'operating',
       render: (text, record, index) => {
-        const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
-        const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div className="operation-list">
-            <Link disabled={detail} className="one-link link-style" > 查看 </Link>
-            <Link disabled={del} className="two-link link-style" > 删除 </Link>
+            <Link className="one-link link-style" > 查看 </Link>
           </div>
         );
       }
