@@ -69,19 +69,16 @@ class CustomerListPage extends Component {
         if (record.operator2 != null) {
           return record.operator2;
         } else {
-          return record.operator;CUSTOMER_DELETE
+          return record.operator;
         }
       }
     }, {
       title: '操作',
       dataIndex: 'operating',
       render: (text, record, index) => {
-        const detail = !this.props.permissionAlias.contains('CUSTOMER_DETAIL');
-        const del = !this.props.permissionAlias.contains('CUSTOMER_DELETE');
         return (
           <div className="operation-list">
-            <Link disabled={detail} className="one-link link-style" > 查看 </Link>
-            <Link disabled={del} className="two-link link-style" > 删除 </Link>
+            <Link className="one-link link-style" onClick={ this.onLook.bind(this, record)} > 查看 </Link>
           </div>
         );
       }
@@ -91,6 +88,12 @@ class CustomerListPage extends Component {
     this.state = {
       searchParams : {},
     }
+  }
+
+
+  onLook=(record)=>{
+    const {dispatch,detailLinkUrl} = this.props;
+    dispatch(routerRedux.push(`${detailLinkUrl+"?customerid="+record.id}`));
   }
 
 
@@ -134,8 +137,10 @@ class CustomerListPage extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch({
-      type: 'customer/listByMain'
+      type: 'serviceCustomer/listByMain'
     });
+    dispatch({type: 'serviceCustomer/getMemberShipCard',});
+    dispatch({ type: 'serviceCustomer/getDataDict',payload:{"abName": 'YCC',}});
 
     this.getTableData({
       page : this.props.serviceCustomer.page,
@@ -143,11 +148,22 @@ class CustomerListPage extends Component {
     });
   }
 
+  //页面生命周期结束时调用
+  componentWillUnmount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'serviceCustomer/clearAllProps'
+    })
+
+  }
+
 
   onTableChange = (pageNumber) =>{
+    const {searchParams} = this.state;
     this.getTableData({
       page : pageNumber,
-      size : this.props.serviceCustomer.size
+      size : this.props.serviceCustomer.size,
+      ...searchParams
     });
   }
 
@@ -344,10 +360,31 @@ class CustomerListPage extends Component {
 
   }
 
+  textforkey(array, value, valuekey = 'name') {
+    if(array){
+      for (let i = 0; i < array.length; i++) {
+        let dict = array[i];
+        if (dict['id'] === value) {
+          return dict[valuekey];
+        }
+      }
+      return value;
+    }
+  }
+
   render() {
-    const { serviceCustomer } = this.props;
+    const { serviceCustomer,fetusAry,packageList } = this.props;
 
     const dataSource = serviceCustomer.customerPageList;
+
+   if(dataSource){
+      for (let i = 0; i < dataSource.length; i++) {
+        let dict = dataSource[i];
+        dict.fetus = this.textforkey(fetusAry, dict.fetus)
+        dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
+      }
+    }
+
 
     const pagination = {
       total: serviceCustomer.total,
@@ -383,13 +420,15 @@ class CustomerListPage extends Component {
 function mapStateToProps(state) {
   const {
     shipCards,
-    packageList
-  } = state.customer;
+    packageList,
+    fetusAry
+  } = state.serviceCustomer;
   const { permissionAlias } = state.layout;
   return {
     serviceCustomer : state.serviceCustomer,
     shipCards,
     packageList,
+    fetusAry,
     permissionAlias
   };
 }

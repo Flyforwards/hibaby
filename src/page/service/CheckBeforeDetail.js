@@ -114,7 +114,7 @@ class Detail extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const assessmentInfo =  JSON.stringify(values);
-        this.props.dispatch({type:'serviceAssessment/saveAssessment',payload:{ "assessmentInfo": assessmentInfo, "customerId": 16,'id':1, "type": 1}})
+        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:{ "assessmentInfo": assessmentInfo, "customerId": 16,'id':1, "type": 1}})
       }
     });
   }
@@ -148,7 +148,7 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  return {...state.serviceAssessment,loading:state.loading}
+  return {...state.serviceCustomer,loading:state.loading}
 }
 
 export default connect(mapStateToProps)(DetailForm) ;

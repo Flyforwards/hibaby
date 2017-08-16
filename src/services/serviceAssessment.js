@@ -7,3 +7,11 @@ export function saveAssessment(values) {
     body: JSON.stringify(values),
   })
 }
+
+export function getAssessmentByCustomerId(values) {
+  return request('/crm/api/v1/assessment/getAssessmentByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
