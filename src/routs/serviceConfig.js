@@ -18,7 +18,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/customer'));
-        cb(null, require('page/service/CheckBeforeIndex.jsx'))
+        cb(null, require('page/service/CheckBeforeDetail.js'))
       })
     }
   },
