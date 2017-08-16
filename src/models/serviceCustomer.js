@@ -66,7 +66,6 @@ export default {
       };
       const { data: { code, data } } = yield call(addCustomerInformation.getDataDict,parameter);
       if (code == 0) {
-        console.log("data",data);
         yield put({
           type: 'addMutDictData',
           payload: {
