@@ -231,7 +231,6 @@ class CustomerIndex extends React.Component {
   }
 
   handleKeyDown(event){
-    console.log(location)
     if(location.pathname === '/crm/customer'){
       var e = event || window.event || arguments.callee.caller.arguments[0];
       if(e && e.keyCode==13){

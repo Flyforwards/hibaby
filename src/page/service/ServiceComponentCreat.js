@@ -6,6 +6,7 @@ import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Butt
 const Option = Select.Option;
 const InputGroup = Input.Group;
 const RadioGroup = Radio.Group;
+const { TextArea } = Input;
 const FormItem = Form.Item;
 
 
@@ -18,7 +19,6 @@ export function ServiceComponentCreat(form,dict) {
 }
 
 function onChange(dict) {
-  console.log(dict)
   // dict.disabled = dict
 }
 
@@ -46,8 +46,12 @@ function creatComponent(form,dict) {
       case 'Input':
         tempDiv = creatInput(dict);
         break;
+      case 'TextArea':
+        tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
+        break;
+
       case 'Select':
-        tempDiv = (<Select style={{width: '100%' }} labelInValue={true} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
+        tempDiv = (<Select style={{width: '100%' }} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
         break;
       case 'DatePicker':
         tempDiv = (<DatePicker style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{children}</DatePicker>);
@@ -79,6 +83,16 @@ function creatComponent(form,dict) {
                 )}
             </InputGroup>);
         break;
+      case 'TextAreaGroup':
+        tempDiv = (
+          <InputGroup compact>
+            <Radio style={{ width: '30px' }} value={0}>无</Radio>
+            {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
+              <TextArea style={{width:'90%'}} disabled={dict.disabled}/>
+            )}
+          </InputGroup>);
+        break;
+
       case 'UploadButton':
       {
         tempDiv =
@@ -90,7 +104,6 @@ function creatComponent(form,dict) {
       default:
     }
   }
-
   return (tempDiv)
 }
 
@@ -136,15 +149,13 @@ function cusFromItem(form,dict) {
 
 export function CreatCard(form,superDict) {
 
-  const {title,key,ary} = superDict
+  const {title,ary} = superDict
 
   let chiAry = []
   let tempAry = []
 
   for(let i = 0;i<ary.length;i++){
     const dict = ary[i];
-    dict.submitStr = key+i
-
     if(dict.span === 24){
       if(tempAry.length > 0){
         chiAry.push(<Row>{tempAry}</Row>)
@@ -153,7 +164,14 @@ export function CreatCard(form,superDict) {
       chiAry.push(<Row>{ServiceComponentCreat(form,dict)}</Row> )
     }
     else{
-      if(i % 4 === 0){
+      let span = 0;
+      for(let j = 0;j<tempAry.length;j++){
+        const chiDict = tempAry[j].props
+        span += chiDict.span;
+        span += chiDict.offset;
+      }
+
+      if(span == 24){
         chiAry.push(<Row>{tempAry}</Row>)
         tempAry = [];
         tempAry.push(ServiceComponentCreat(form,dict))
@@ -163,6 +181,7 @@ export function CreatCard(form,superDict) {
       }
     }
   }
+
 
   if(tempAry.length > 0){
     chiAry.push(<Row>{tempAry}</Row>)
@@ -175,11 +194,13 @@ export function CreatCard(form,superDict) {
   )
 }
 
-export function CreatIndexSearch() {
-  return(
-    <Row>
+export function creatButton(title,onclick) {
 
-    </Row>
-  )
+  let className = 'bottomButton button-group-bottom-1'
+
+  if(title === '确定'){
+    className = 'bottomButton button-group-bottom-2'
+  }
+
+  return (<Button className={className} onClick={onclick}>{title}</Button>)
 }
-

@@ -18,7 +18,7 @@ export default (app) => [
     path: '/service/check-before',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceAssessment'));
         cb(null, require('page/service/CheckBeforeDetail.js'))
       })
     }
