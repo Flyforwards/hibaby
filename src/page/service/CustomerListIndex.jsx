@@ -8,7 +8,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-        <CustomerListPage/>
+        <CustomerListPage detailLinkUrl="/service/check-before"/>
       </div>
     )
   }

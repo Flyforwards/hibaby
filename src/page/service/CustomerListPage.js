@@ -78,7 +78,7 @@ class CustomerListPage extends Component {
       render: (text, record, index) => {
         return (
           <div className="operation-list">
-            <Link className="one-link link-style" > 查看 </Link>
+            <Link className="one-link link-style" onClick={ this.onLook.bind(this, record)} > 查看 </Link>
           </div>
         );
       }
@@ -88,6 +88,12 @@ class CustomerListPage extends Component {
     this.state = {
       searchParams : {},
     }
+  }
+
+
+  onLook=(record)=>{
+    const {dispatch,detailLinkUrl} = this.props;
+    dispatch(routerRedux.push(`${detailLinkUrl+"?customerId="+record.id}`));
   }
 
 
