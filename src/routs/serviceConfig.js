@@ -17,7 +17,7 @@ export default (app) => [
     path: '/service/check-before',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/CheckBeforeDetail.js'))
       })
     }
@@ -27,7 +27,7 @@ export default (app) => [
     path: '/service/check-in',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/CheckInIndex.jsx'))
       })
     }
@@ -37,7 +37,7 @@ export default (app) => [
     path: '/service/child-check-in',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ChildCheckInIndex.jsx'))
       })
     }
@@ -47,7 +47,7 @@ export default (app) => [
     path: '/service/diagnosis',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/DiagnosisIndex.jsx'))
       })
     }
@@ -57,7 +57,7 @@ export default (app) => [
     path: '/service/diagnosis-record',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
       })
     }
@@ -67,7 +67,7 @@ export default (app) => [
     path: '/service/obstetric-record',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -77,7 +77,7 @@ export default (app) => [
     path: '/service/puerpera-body',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/PuerperaBodyIndex.jsx'))
       })
     }
@@ -87,7 +87,7 @@ export default (app) => [
     path: '/service/baby-nursing',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -97,7 +97,7 @@ export default (app) => [
     path: '/service/baby-manual',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -107,7 +107,7 @@ export default (app) => [
     path: '/service/puerpera-record',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -117,7 +117,7 @@ export default (app) => [
     path: 'service/edinburgh-birth',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -127,7 +127,7 @@ export default (app) => [
     path: '/service/baby-feed',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -137,7 +137,7 @@ export default (app) => [
     path: '/service/baby-grow',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -147,7 +147,7 @@ export default (app) => [
     path: '/service/baby-swimming',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -157,7 +157,7 @@ export default (app) => [
     path: '/service/butler-rounds',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -167,7 +167,7 @@ export default (app) => [
     path: '/service/send-message',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -177,7 +177,7 @@ export default (app) => [
     path: '/service/nutrition-evaluate',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
@@ -187,7 +187,7 @@ export default (app) => [
     path: '/service/nutrition-record',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/customer'));
+        registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
       })
     }
