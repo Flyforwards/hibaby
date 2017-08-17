@@ -138,7 +138,7 @@ class Detail extends Component {
           }
         })
         const assessmentInfo =  JSON.stringify(values);
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": location.search.substr(1).customerid,"type": 1};
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1};
 
         if(this.props.CheckBeforeID){
           dict.id = this.props.CheckBeforeID
