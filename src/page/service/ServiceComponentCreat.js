@@ -122,7 +122,7 @@ function cusFromItem(form,dict) {
 
   const { getFieldDecorator } = form;
 
-  let rules = { rules: [{ required: false,  message: `请输入${dict.title || '此项'}!`}],};
+  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || '此项'}!`}],};
 
   if (dict.component === 'UploadButton')
   {
@@ -139,6 +139,14 @@ function cusFromItem(form,dict) {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     }
+  }
+
+  if(dict.component === 'TextAreaGroup'||dict.component === 'InputGroup'){
+    return(
+      <FormItem  {...formItemLayout} label={dict.title}>
+        {creatComponent(form,dict)}
+      </FormItem>
+    )
   }
 
   return(

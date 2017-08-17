@@ -135,7 +135,11 @@ class Detail extends Component {
           }
         })
         const assessmentInfo =  JSON.stringify(values);
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:{ "assessmentInfo": assessmentInfo, "customerId": 16,'id':1, "type": 1}})
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": 16,"type": 1};
+        if(this.props.CheckBeforeID){
+          dict.id = this.props.CheckBeforeID
+        }
+        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
     });
   }

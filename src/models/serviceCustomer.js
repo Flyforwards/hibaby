@@ -110,9 +110,6 @@ export default {
     },
 
 
-
-
-
   },
   reducers: {
     setCustomerPageList(state, { payload: {data: customerPageList, total, page, size} }){
@@ -147,7 +144,7 @@ export default {
       if(todo.type === 1){
         dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
       }
-      return { ...state,...dict}
+      return { ...state,...dict,CheckBeforeID:todo.id}
     },
     clearAllProps(state){
       return { ...state,page : 1}
