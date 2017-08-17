@@ -26,7 +26,7 @@ export default {
       return history.listen(({ pathname,query }) => {
         if (pathname === '/service/check-before/detail'||pathname === '/service/check-before/edit') {
           let dict = {...query,type:1}
-          dispatch({type: 'getDoctorNoteById',payload:dict});
+          dispatch({type: 'getAssessmentByCustomerId',payload:dict});
         }
       });
     }
@@ -96,9 +96,9 @@ export default {
       }
     },
 
-    *getDoctorNoteById({payload: values}, { call, put }) {
+    *getAssessmentByCustomerId({payload: values}, { call, put }) {
       try {
-        const {data: {data,code}} = yield call(serviceAssessment.getDoctorNoteById, values);
+        const {data: {data,code}} = yield call(serviceAssessment.getAssessmentByCustomerId, values);
         yield put({
           type: 'savaAssessment',
           payload: data
@@ -147,7 +147,8 @@ export default {
           dict.CheckBeforeID = todo.id
         }
       }
-      return { ...state,...dict}
+
+      return { ...state,...dict,}
     },
     clearAllProps(state){
       return { ...state,page : 1}
