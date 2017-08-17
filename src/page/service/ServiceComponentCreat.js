@@ -78,18 +78,11 @@ function creatComponent(form,dict) {
         </RadioGroup>);
         break;
       case 'InputGroup':
-        tempDiv = <InputClass dict={dict} getFieldDecorator={getFieldDecorator}/>;
+        tempDiv = <InputClass dict={dict} form={form}/>;
         break;
       case 'TextAreaGroup':
-        tempDiv = (
-          <InputGroup compact>
-            <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
-            {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
-              <TextArea style={{width:'90%'}} disabled={dict.disabled}/>
-            )}
-          </InputGroup>);
+        tempDiv = <InputClass Area dict={dict} form={form}/>
         break;
-
       case 'UploadButton':
       {
         tempDiv =
@@ -217,27 +210,39 @@ export class InputClass extends React.Component{
 
   constructor(props){
     super(props)
+    this.state={radio:''}
   }
 
   radioChange(){
-
+    const {dict,form} = this.props;
+    this.setState({radio:true})
+    let tempDict = {};
+    tempDict[dict['submitStr']] = ''
+    form.setFieldsValue(tempDict)
   }
 
-
+  inputChange(){
+    this.setState({radio:false})
+  }
 
   render(){
-    const {dict,getFieldDecorator} = this.props;
-
+    const {dict,form,Area} = this.props;
+    const {getFieldDecorator} = form
     return(
       <InputGroup compact>
-        <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
+        <Radio disabled={dict.disabled} checked={this.state.radio !== ''? this.state.radio:!dict.initValue } style={{ width: '30px' }} onChange={this.radioChange.bind(this)} value={0}>无</Radio>
         {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
-          creatInput(dict)
+          Area === true
+              ?
+            <TextArea style={{width:'90%'}} onChange={this.inputChange.bind(this)} disabled={dict.disabled}/>
+            :
+            <Input style={{width:'80%',height: '30px'}} addonAfter={dict.unit} onChange={this.inputChange.bind(this)}  disabled={dict.disabled}/>
         )}
       </InputGroup>
     )
   }
 }
+
 
 export function creatButton(title,onclick) {
 
