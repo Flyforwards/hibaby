@@ -152,7 +152,7 @@ export default {
     savaAssessment(state,{ payload: todo }){
       let dict = {}
       if(todo){
-        if(todo.type === 1){
+        if(todo.type === 1||todo.type ===4){
           dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
           dict.CheckBeforeID = todo.id
         }
