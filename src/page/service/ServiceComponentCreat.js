@@ -13,11 +13,11 @@ const FormItem = Form.Item;
 
 
 export function ServiceComponentCreat(form,dict) {
-    return (
-      <Col span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
-        {cusFromItem(form,dict)}
-      </Col>
-    );
+  return (
+    <Col span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
+      {cusFromItem(form,dict)}
+    </Col>
+  );
 }
 
 function onChange(dict) {
@@ -107,30 +107,24 @@ function creatComponent(form,dict) {
         </RadioGroup>);
         break;
       case 'InputGroup':
-          tempDiv = (
-            <InputGroup compact>
-              <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
-                {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
-                   creatInput(dict)
-                )}
-            </InputGroup>);
+        tempDiv = <InputClass dict={dict} form={form}/>;
         break;
       case 'TextAreaGroup':
-        tempDiv = (
-          <InputGroup compact>
-            <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
-            {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
-              <TextArea style={{width:'90%'}} disabled={dict.disabled}/>
-            )}
-          </InputGroup>);
+        tempDiv = <InputClass Area dict={dict} form={form}/>
         break;
-
       case 'UploadButton':
       {
         tempDiv =
           <FileUpload  fun={dict.fun} deleteFun={dict.deleteFun}>
             <Button><Icon type="upload"/> 上传附件</Button>
           </FileUpload>
+      }
+        break;
+      //客户签字
+      case 'Signature':
+      {
+        tempDiv =
+         <div></div>
       }
         break;
       default:
@@ -191,11 +185,11 @@ function cusFromItem(form,dict) {
   }
 
   return(
-       <FormItem  {...formItemLayout} label={dict.title}>
-        {getFieldDecorator((dict.component === 'InputGroup' ? dict.submitStr+'big' : dict.submitStr ),{...rules,initialValue:dict.initValue})(
-          creatComponent(form,dict)
-        )}
-      </FormItem>
+    <FormItem  {...formItemLayout} label={dict.title}>
+      {getFieldDecorator((dict.component === 'InputGroup' ? dict.submitStr+'big' : dict.submitStr ),{...rules,initialValue:dict.initValue})(
+        creatComponent(form,dict)
+      )}
+    </FormItem>
   )
 }
 
@@ -259,6 +253,44 @@ export function CreatCard(form,superDict) {
     </Card>
   )
 }
+
+export class InputClass extends React.Component{
+
+  constructor(props){
+    super(props)
+    this.state={radio:''}
+  }
+
+  radioChange(){
+    const {dict,form} = this.props;
+    this.setState({radio:true})
+    let tempDict = {};
+    tempDict[dict['submitStr']] = ''
+    form.setFieldsValue(tempDict)
+  }
+
+  inputChange(){
+    this.setState({radio:false})
+  }
+
+  render(){
+    const {dict,form,Area} = this.props;
+    const {getFieldDecorator} = form
+    return(
+      <InputGroup compact>
+        <Radio disabled={dict.disabled} checked={this.state.radio !== ''? this.state.radio:!dict.initValue } style={{ width: '30px' }} onChange={this.radioChange.bind(this)} value={0}>无</Radio>
+        {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
+          Area === true
+              ?
+            <TextArea style={{width:'90%'}} onChange={this.inputChange.bind(this)} disabled={dict.disabled}/>
+            :
+            <Input style={{width:'80%',height: '30px'}} addonAfter={dict.unit} onChange={this.inputChange.bind(this)}  disabled={dict.disabled}/>
+        )}
+      </InputGroup>
+    )
+  }
+}
+
 
 export function creatButton(title,onclick) {
 

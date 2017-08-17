@@ -32,6 +32,12 @@ export default {
           let dict = {...query,type:3}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
         }
+        //中医见诊记录单详情页
+        if (pathname === '/service/diagnosis/detail' || pathname === '/service/diagnosis/edit') {
+          let dict = { ...query, type: 4 }
+          dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
+        }
+        
       });
     }
   },
@@ -146,7 +152,7 @@ export default {
     savaAssessment(state,{ payload: todo }){
       let dict = {}
       if(todo){
-        if(todo.type === 1){
+        if(todo.type === 1||todo.type ===4){
           dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
           dict.CheckBeforeID = todo.id
         }

@@ -17,6 +17,13 @@
     .ant-fullcalendar-today .ant-fullcalendar-value, .ant-fullcalendar-month-panel-current-cell .ant-fullcalendar-value{
       box-shadow: 0 0 0 1px #fff !important;
     }
+    .ant-radio-group{
+      display: none;
+    }
+    .removeRef .ant-fullcalendar-date .ant-fullcalendar-value{
+      background-color: #FFFFFF !important;
+    }
+
   }
   .planInfo {
     background: #fff;

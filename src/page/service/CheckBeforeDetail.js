@@ -138,6 +138,7 @@ class Detail extends Component {
           }
         })
         const assessmentInfo =  JSON.stringify(values);
+
         let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1};
 
         if(this.props.CheckBeforeID){
@@ -148,7 +149,7 @@ class Detail extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {/**/
     this.props.dispatch({type: 'serviceCustomer/removeData',})
   }
 

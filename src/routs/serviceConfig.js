@@ -113,6 +113,36 @@ export default (app) => [
       })
     }
   },
+  
+  // 中医见诊记录单详情
+  {
+    path: '/service/diagnosis/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/diagnosisDetail.js'))
+      })
+    }
+  },
+  // 中医见诊记录单编辑
+  {
+    path: '/service/diagnosis/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/diagnosisDetail.js'))
+      })
+    }
+  },
+  
+  
+  
+  
+  
+  
+  
+  
+  
   // 中医查房记录单
   {
     path: '/service/diagnosis-record',
