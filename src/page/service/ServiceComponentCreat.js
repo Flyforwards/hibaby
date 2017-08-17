@@ -3,10 +3,11 @@ import FileUpload from '../crm/customer/fileUpload'
 import DictionarySelect from 'common/dictionary_select';
 import './serviceComponent.scss'
 import moment from 'moment';
-import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,message} from 'antd';
+import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,message,Checkbox} from 'antd';
 const Option = Select.Option;
 const InputGroup = Input.Group;
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
@@ -39,6 +40,20 @@ function creatComponent(form,dict) {
     for(let i = 0;i<dict.chiAry.length;i++){
       children.push(<Option key={i}>{dict.chiAry[i]}</Option>)
     }
+  }
+  //radio 自定义单选
+  let radioChildren = [];
+  if(dict.radioAry) {
+    dict.radioAry.map(function(elem,index){
+      radioChildren.push(
+        <Radio value={elem.value}>{elem.name}</Radio>
+      )
+    })
+  }
+  //checkbox自定义多选
+  let checkChildren ;
+  if(dict.checkAry) {
+    checkChildren = dict.checkAry;
   }
 
   if (dict.selectName){
@@ -75,6 +90,20 @@ function creatComponent(form,dict) {
         tempDiv = (<RadioGroup disabled={dict.disabled}>
           <Radio value={1}>是</Radio>
           <Radio value={0}>否</Radio>
+        </RadioGroup>);
+        break;
+      case 'RadioGroups':
+        tempDiv = (<RadioGroup disabled={dict.disabled}>
+          { radioChildren }
+        </RadioGroup>);
+        break;
+      case 'CheckBoxGroup':
+        tempDiv = (
+          <CheckboxGroup options={checkChildren} />
+        );
+        break;
+        tempDiv = (<RadioGroup disabled={dict.disabled}>
+          { radioChildren }
         </RadioGroup>);
         break;
       case 'InputGroup':
@@ -138,6 +167,12 @@ function cusFromItem(form,dict) {
     formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
+    }
+  }
+  if(dict.formItems === "TwoWords" ){
+    formItemLayout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
     }
   }
 

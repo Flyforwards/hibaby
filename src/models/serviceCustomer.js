@@ -28,6 +28,10 @@ export default {
           let dict = {...query,type:1}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
         }
+        if (pathname === '/service/child-check-in/detail'|| pathname === '/service/child-check-in/edit') {
+          let dict = {...query,type:3}
+          dispatch({type: 'getAssessmentByCustomerId',payload:dict});
+        }
       });
     }
   },
