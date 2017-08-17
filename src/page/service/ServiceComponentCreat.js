@@ -51,9 +51,13 @@ function creatComponent(form,dict) {
     })
   }
   //checkbox自定义多选
-  let checkChildren ;
+  let checkChildren = [] ;
   if(dict.checkAry) {
-    checkChildren = dict.checkAry;
+   dict.checkAry.map(function(elem,index){
+     checkChildren.push(
+       <Checkbox value={elem.value}>{elem.label}</Checkbox>
+     )
+   });
   }
 
   if (dict.selectName){
@@ -99,7 +103,9 @@ function creatComponent(form,dict) {
         break;
       case 'CheckBoxGroup':
         tempDiv = (
-          <CheckboxGroup options={checkChildren} disabled={dict.disabled}/>
+          <CheckboxGroup  disabled={dict.disabled}>
+            {checkChildren}
+          </CheckboxGroup>
         );
         break;
         tempDiv = (<RadioGroup disabled={dict.disabled}>

@@ -24,7 +24,7 @@ const baseInfoAry = [
   {title:'产次',span:8,component:'Input',selectName:'FETUS',submitStr:'fetus'},
   {title:'生产数量',span:8,component:'Input',submitStr:'babyNum'},
   {title:'周数',span:8,component:'Input',submitStr:'weekNum'},
-  {title:'生产方式',span:8,component:'Input',submitStr:'babyWay'},
+  {title:'生产方式',component:'RadioGroups',span:8,submitStr:'babyWay',radioAry:[{'name':'自然生产','value':'0'},{'name':'剖腹生产','value':'1','Element':'Input'}]},
 ]
 // 新生儿情况
 const newbornAry = [
@@ -37,11 +37,11 @@ const newbornAry = [
   {title:'眼睛',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead4',checkAry:[{'label':'正常','value':'0'},{'label':'日落眼','value':'1'},{'label':'分泌物','value':'2'},{'label':'眼睑肿胀','value':'3'},{'label':'巩膜出血','value':'4'},{'label':'其他','value':'5'}]},
   {title:'瞳孔大小',formItems:'FourWords',component:'RadioGroups',span:12,submitStr:'babyhead5',radioAry:[{'name':'对称','value':'0'},{'name':'不对称','value':'1'}]},
   {title:'耳朵',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead6',checkAry:[{'label':'正常','value':'0'},{'label':'红','value':'1'},{'label':'肿','value':'2'},{'label':'分泌物','value':'3'},{'label':'低下','value':'4'},{'label':'畸形','value':'5'},{'label':'耳边瘜肉','value':'6'}]},
-  {title:'口腔',component:'Input',submitStr:'babyhead7'},
-  {title:'鼻子',component:'Input',submitStr:'babyhead8'},
-  {title:'颈部',component:'Input',submitStr:'babyhead9'},
-  {title:'胸部',component:'Input',submitStr:'babyhead10'},
-  {title:'腹部',component:'Input',submitStr:'babyhead11'},
+  {title:'口腔',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead7',checkAry:[{'label':'正常','value':'0'},{'label':'腭裂','value':'1'},{'label':'唇裂','value':'2'},{'label':'歪嘴','value':'3'},{'label':'舌苔','value':'4'},{'label':'鹅口疮','value':'5'},{'label':'溃疡','value':'6'},{'label':'舌系代短','value':'7'}]},
+  {title:'鼻子',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead8',checkAry:[{'label':'正常','value':'0'},{'label':'肿胀','value':'1'},{'label':'鼻塞','value':'2'},{'label':'鼻分泌物','value':'3'},{'label':'出血','value':'4'},{'label':'鼻道畸形','value':'5'},{'label':'其他','value':'6'},]},
+  {title:'颈部',formItems:'TwoWords',span:12,component:'Input',submitStr:'babyhead9',checkAry:[{'label':'正常','value':'0'},{'label':'肿胀','value':'1'},{'label':'疑斜颈','value':'2'},{'label':'僵硬','value':'3'},]},
+  {title:'胸部',formItems:'TwoWords',span:12,component:'Input',submitStr:'babyhead10',checkAry:[{'label':'正常','value':'0'},{'label':'胸骨凹陷','value':'1'},{'label':'水桶胸','value':'2'},]},
+  {title:'腹部',formItems:'TwoWords',span:12,component:'Input',submitStr:'babyhead11',checkAry:[{'label':'正常','value':'0'},{'label':'疤痕','value':'1'},{'label':'脐膨出','value':'2'},]},
   {title:'脐带脱落',component:'Input',submitStr:'babyhead12'},
   {title:'脐带状态',component:'Input',submitStr:'babyhead13'},
   {title:'交付状态',component:'Input',submitStr:'babyhead14'},
