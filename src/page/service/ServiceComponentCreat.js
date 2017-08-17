@@ -116,6 +116,13 @@ function creatComponent(form,dict) {
           </FileUpload>
       }
         break;
+      //客户签字
+      case 'Signature':
+      {
+        tempDiv =
+         <div></div>
+      }
+        break;
       default:
     }
   }
