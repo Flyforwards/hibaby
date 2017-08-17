@@ -100,6 +100,9 @@ const newbornTwoAry = [
   {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'newborn_4'},
 ]
 
+
+let chiAry = []
+
 class Detail extends Component {
 
   constructor(props) {
@@ -144,6 +147,10 @@ class Detail extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({type: 'serviceCustomer/removeData',})
+  }
+
   render() {
 
     const {loading} = this.props
@@ -152,7 +159,7 @@ class Detail extends Component {
       {title:'分娩过程',ary:DeliveryProcessAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'新生儿情况',ary:newbornAry},{title:'新生儿情况',ary:newbornTwoAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckBeforeData
+      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
       return CreatCard(this.props.form,value)
     })
 

@@ -141,13 +141,19 @@ export default {
     },
     savaAssessment(state,{ payload: todo }){
       let dict = {}
-      if(todo.type === 1){
-        dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
+      if(todo){
+        if(todo.type === 1){
+          dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
+          dict.CheckBeforeID = todo.id
+        }
       }
-      return { ...state,...dict,CheckBeforeID:todo.id}
+      return { ...state,...dict}
     },
     clearAllProps(state){
       return { ...state,page : 1}
+    },
+    removeData(state,{ payload: todo }){
+      return {...state,CheckBeforeData:'',CheckBeforeID:''}
     }
   }
 

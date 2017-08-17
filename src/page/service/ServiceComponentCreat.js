@@ -173,6 +173,9 @@ export function CreatCard(form,superDict) {
         if(netData[dict.submitStr]){
           dict.initValue = moment(netData[dict.submitStr]);
         }
+        else {
+          dict.initValue = null
+        }
       }
       else{
         dict.initValue = netData[dict.submitStr]
