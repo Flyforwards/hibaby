@@ -14,7 +14,7 @@ const FormItem = Form.Item;
 
 export function ServiceComponentCreat(form,dict) {
   return (
-    <Col span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
+    <Col style={{display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
       {cusFromItem(form,dict)}
     </Col>
   );
@@ -22,10 +22,6 @@ export function ServiceComponentCreat(form,dict) {
 
 function onChange(dict) {
   // dict.disabled = dict
-}
-
-function creatInput(dict) {
-  return  <Input style={dict.component === 'Input' ? {width:'100%'} : {width:'80%'}} addonAfter={dict.unit}   disabled={dict.disabled}/>
 }
 
 function creatComponent(form,dict) {
@@ -62,7 +58,7 @@ function creatComponent(form,dict) {
   else{
     switch (dict.component) {
       case 'Input':
-        tempDiv = creatInput(dict);
+        tempDiv = <Input style={ {width:'100%'} } addonAfter={dict.unit}   disabled={dict.disabled}/>;
         break;
       case 'TextArea':
         tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
@@ -93,7 +89,7 @@ function creatComponent(form,dict) {
         </RadioGroup>);
         break;
       case 'RadioGroups':
-        tempDiv = (<RadioGroup disabled={dict.disabled}>
+        tempDiv = (<RadioGroup onChange={dict.fun} disabled={dict.disabled}>
           { radioChildren }
         </RadioGroup>);
         break;
@@ -168,6 +164,12 @@ function cusFromItem(form,dict) {
       wrapperCol: { span: 18 },
     }
   }
+  if(dict.title === '手术指征'){
+    formItemLayout = {
+      labelCol: { span: 3 },
+      wrapperCol: { span: 21 },
+    }
+  }
 
   if(dict.component === 'TextAreaGroup'||dict.component === 'InputGroup'){
     return(
@@ -220,8 +222,12 @@ export function CreatCard(form,superDict) {
       let span = 0;
       for(let j = 0;j<tempAry.length;j++){
         const chiDict = tempAry[j].props
-        span += chiDict.span;
-        span += chiDict.offset;
+
+        if(chiDict.style.display !== 'none'){
+          span += chiDict.span;
+          span += chiDict.offset;
+        }
+
       }
 
       if(span == 24){

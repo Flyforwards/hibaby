@@ -41,18 +41,6 @@ const PregnancyComplicationsAry = [
   {title:'甲状腺功能减退',component:'RadioGroup',span:24,submitStr:'radio_14'},
 ]
 
-// 分娩过程
-const DeliveryProcessAry = [
-  {title:'分娩方式',component:'Input',submitStr:'radio_15'},
-  {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16'},
-  {title:'产时出血',component:'InputGroup',unit:'ml',submitStr:'input_6'},
-  {title:'胎盘早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
-  {title:'前置胎盘',component:'RadioGroup',submitStr:'radio_18'},
-  {title:'胎盘早剥',component:'RadioGroup',submitStr:'radio_19'},
-  {title:'胎盘残留',component:'RadioGroup',submitStr:'radio_20'},
-  {title:'其他',component:'TextArea',span:24,submitStr:'input_8'},
-]
-
 // 产后情况
 const PostpartumSituationAry = [
   {title:'产后清宫',component:'RadioGroup',submitStr:'radio_21'},
@@ -79,7 +67,7 @@ const newbornAry = [
   {title:'高胆红素血症',component:'RadioGroup',submitStr:'radioNam_35'},
   {title:'蓝光治疗史',component:'InputGroup',unit:'小时',submitStr:'input_14'},
   {title:'羊水污染',component:'Select',chiAry:['无','1度', '2度','3度'],submitStr:'radio_37'},
-  {title:'排便困难',component:'RadioGroup',submitStr:'input_11'},
+  {title:'排便困难',component:'RadioGroup',submitStr:'radio_31_1'},
   {title:'出生后窒息',component:'RadioGroup',submitStr:'radio_41'},
   {title:'呼吸困难',component:'RadioGroup',submitStr:'radio_40'},
   {title:'新生儿肺炎',component:'RadioGroup',submitStr:'radio_42'},
@@ -107,6 +95,7 @@ class Detail extends Component {
 
   constructor(props) {
     super(props);
+    this.state={}
   }
 
   onDelete(){
@@ -127,6 +116,10 @@ class Detail extends Component {
 
   print(){
 
+  }
+
+  radioChange(e) {
+    this.setState({childbirth:e.target.value})
   }
 
   submitClicked(){
@@ -154,6 +147,28 @@ class Detail extends Component {
   }
 
   render() {
+
+    let hide = 2
+    if(this.props.CheckBeforeData){
+      hide = this.props.CheckBeforeData;
+    }
+
+    if(this.state.childbirth){
+      hide = this.state.childbirth == 1 ? false : true;
+    }
+    // 分娩过程
+    const DeliveryProcessAry = [
+      {title:'分娩方式',component:'RadioGroups',submitStr:'radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
+      {title:'手术指征',component:'Input',submitStr:'input_5',span:18,hide:hide === 2 ? true : hide},
+      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:!hide},
+      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:!hide},
+      {title:'产时出血',component:'InputGroup',unit:'ml',submitStr:'input_6'},
+      {title:'胎盘早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
+      {title:'前置胎盘',component:'RadioGroup',submitStr:'radio_18'},
+      {title:'胎盘早剥',component:'RadioGroup',submitStr:'radio_19'},
+      {title:'胎盘残留',component:'RadioGroup',submitStr:'radio_20'},
+      {title:'其他',component:'TextArea',span:24,submitStr:'input_8'},
+    ]
 
     const {loading} = this.props
 
