@@ -53,6 +53,26 @@ export default (app) => [
       })
     }
   },
+  // 产妇入住评估详情
+  {
+    path: '/service/check-in/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CheckInDetail.js'))
+      })
+    }
+  },
+  // 产妇入住评估编辑
+  {
+    path: '/service/check-in/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CheckInDetail.js'))
+      })
+    }
+  },
   // 婴儿入住评估
   {
     path: '/service/child-check-in',
@@ -60,6 +80,26 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ChildCheckInIndex.jsx'))
+      })
+    }
+  },
+  // 婴儿入住评估详情
+  {
+    path: '/service/child-check-in/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ChildCheckIndexDetail.js'))
+      })
+    }
+  },
+  // 婴儿入住评估编辑
+  {
+    path: '/service/child-check-in/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ChildCheckIndexDetail.js'))
       })
     }
   },
@@ -73,6 +113,36 @@ export default (app) => [
       })
     }
   },
+  
+  // 中医见诊记录单详情
+  {
+    path: '/service/diagnosis/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/diagnosisDetail.js'))
+      })
+    }
+  },
+  // 中医见诊记录单编辑
+  {
+    path: '/service/diagnosis/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/diagnosisDetail.js'))
+      })
+    }
+  },
+  
+  
+  
+  
+  
+  
+  
+  
+  
   // 中医查房记录单
   {
     path: '/service/diagnosis-record',
