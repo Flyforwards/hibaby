@@ -12,11 +12,11 @@ const FormItem = Form.Item;
 
 
 export function ServiceComponentCreat(form,dict) {
-    return (
-      <Col span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
-        {cusFromItem(form,dict)}
-      </Col>
-    );
+  return (
+    <Col span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
+      {cusFromItem(form,dict)}
+    </Col>
+  );
 }
 
 function onChange(dict) {
@@ -78,13 +78,7 @@ function creatComponent(form,dict) {
         </RadioGroup>);
         break;
       case 'InputGroup':
-          tempDiv = (
-            <InputGroup compact>
-              <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
-                {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
-                   creatInput(dict)
-                )}
-            </InputGroup>);
+        tempDiv = <InputClass dict={dict} getFieldDecorator={getFieldDecorator}/>;
         break;
       case 'TextAreaGroup':
         tempDiv = (
@@ -150,11 +144,11 @@ function cusFromItem(form,dict) {
   }
 
   return(
-       <FormItem  {...formItemLayout} label={dict.title}>
-        {getFieldDecorator((dict.component === 'InputGroup' ? dict.submitStr+'big' : dict.submitStr ),{...rules,initialValue:dict.initValue})(
-          creatComponent(form,dict)
-        )}
-      </FormItem>
+    <FormItem  {...formItemLayout} label={dict.title}>
+      {getFieldDecorator((dict.component === 'InputGroup' ? dict.submitStr+'big' : dict.submitStr ),{...rules,initialValue:dict.initValue})(
+        creatComponent(form,dict)
+      )}
+    </FormItem>
   )
 }
 
@@ -217,6 +211,32 @@ export function CreatCard(form,superDict) {
       {chiAry}
     </Card>
   )
+}
+
+export class InputClass extends React.Component{
+
+  constructor(props){
+    super(props)
+  }
+
+  radioChange(){
+
+  }
+
+
+
+  render(){
+    const {dict,getFieldDecorator} = this.props;
+
+    return(
+      <InputGroup compact>
+        <Radio disabled={dict.disabled} style={{ width: '30px' }} value={0}>无</Radio>
+        {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
+          creatInput(dict)
+        )}
+      </InputGroup>
+    )
+  }
 }
 
 export function creatButton(title,onclick) {
