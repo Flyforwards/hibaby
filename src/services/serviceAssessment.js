@@ -8,8 +8,8 @@ export function saveAssessment(values) {
   })
 }
 
-export function getAssessmentByCustomerId(values) {
-  return request('/crm/api/v1/assessment/getAssessmentByCustomerId', {
+export function getDoctorNoteById(values) {
+  return request('/crm/api/v1/assessment/getDoctorNoteById', {
     method: 'POST',
     body: JSON.stringify(values),
   })
