@@ -175,6 +175,12 @@ function cusFromItem(form,dict) {
       wrapperCol: { span: 20 },
     }
   }
+  if(dict.formItems === "FourWords" ){
+    formItemLayout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 },
+    }
+  }
 
   if(dict.component === 'TextAreaGroup'||dict.component === 'InputGroup'){
     return(
