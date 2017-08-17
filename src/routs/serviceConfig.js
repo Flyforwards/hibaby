@@ -83,6 +83,26 @@ export default (app) => [
       })
     }
   },
+  // 婴儿入住评估详情
+  {
+    path: '/service/child-check-in/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ChildCheckIndexDetail.js'))
+      })
+    }
+  },
+  // 婴儿入住评估编辑
+  {
+    path: '/service/child-check-in/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ChildCheckIndexDetail.js'))
+      })
+    }
+  },
   // 中医见诊记录单
   {
     path: '/service/diagnosis',
