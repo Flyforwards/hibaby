@@ -11,6 +11,9 @@ class WorkPlanIndex extends React.Component {
   
   constructor(props) {
     super(props);
+    this.state={
+      bgClass:'removeRef'
+    }
     this.columns = [{
       title: '日期',
       dataIndex: 'planTime',
@@ -48,6 +51,13 @@ class WorkPlanIndex extends React.Component {
   }
   
   onPanelChange = (value) => {
+    console.log(2)
+    this.setState({
+      bgClass:'removeRef'
+    })
+    $('.calendar').find('.ant-fullcalendar-today').addClass(this.state.bgClass)
+    //$('.calendar').find('.ant-fullcalendar-selected-day').addClass(this.state.bgClass)
+    console.log(3)
     const { dispatch } = this.props;
     const month = value.format('YYYY-MM');
     //console.log(month)
@@ -111,6 +121,11 @@ class WorkPlanIndex extends React.Component {
   }
   
   onSelect = (value) => {
+    console.log(1)
+    //$('.calendar').find('.removeRef').removeClass('removeRef')
+    this.setState({
+      bgClass:''
+    })
     const { dispatch } = this.props;
     const date = value.format('YYYY-MM-DD');
     dispatch({
@@ -130,6 +145,7 @@ class WorkPlanIndex extends React.Component {
   
   render() {
     const { planListInfo } = this.props;
+    $('.calendar').find('.ant-fullcalendar-today').addClass(this.state.bgClass)
     return (
       <div className="workPlanIndex">
         <Button className='addBtn'>
