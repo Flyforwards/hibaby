@@ -129,6 +129,11 @@ class Detail extends Component {
   submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        Object.keys(values).map(key=>{
+          if(typeof values[key] === 'object'){
+            values[key] = values[key].format()
+          }
+        })
         const assessmentInfo =  JSON.stringify(values);
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:{ "assessmentInfo": assessmentInfo, "customerId": 16,'id':1, "type": 1}})
       }

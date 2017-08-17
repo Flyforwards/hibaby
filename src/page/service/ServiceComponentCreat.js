@@ -2,6 +2,7 @@ import React from 'react';
 import FileUpload from '../crm/customer/fileUpload'
 import DictionarySelect from 'common/dictionary_select';
 import './serviceComponent.scss'
+import moment from 'moment';
 import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,message} from 'antd';
 const Option = Select.Option;
 const InputGroup = Input.Group;
@@ -158,8 +159,16 @@ export function CreatCard(form,superDict) {
 
   for(let i = 0;i<ary.length;i++){
     const dict = ary[i];
+
     if(netData){
-      dict.initValue = netData[dict.submitStr]
+      if(dict.component === 'DatePicker'){
+        if(netData[dict.submitStr]){
+          dict.initValue = moment(netData[dict.submitStr]);
+        }
+      }
+      else{
+        dict.initValue = netData[dict.submitStr]
+      }
     }
     if(dict.span === 24){
       if(tempAry.length > 0){
