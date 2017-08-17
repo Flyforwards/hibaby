@@ -12,33 +12,20 @@ import { routerRedux } from 'dva/router'
 
 // 基本信息
 const baseInfoAry = [
-  {title:'客户姓名',component:'Input',submitStr:'name'},
-  {title:'年龄',component:'Input',submitStr:'age'},
-  {title:'宝宝性别',component:'gender',submitStr:'baseInfo0'},
-  {title:'分娩日期',component:'DatePicker',submitStr:'baseInfo1'},
-  {title:'入住日期',component:'DatePicker',submitStr:'baseInfo2'},
-  {title:'房间',component:'Input',submitStr:'baseInfo3'},
-  {title:'破水时间',component:'Input',submitStr:'baseTime0'},
-  {title:'APGAR SCORE',component:'Input',submitStr:'select_0'},
-  {title:'孕次',component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity'},
-  {title:'产次',component:'Input',selectName:'FETUS',submitStr:'fetus'},
-  {title:'生产数量',component:'Input',submitStr:'babyNum'},
-  {title:'周数',component:'Input',submitStr:'weekNum'},
-  {title:'生产方式',component:'Input',submitStr:'babyWay'},
+  {title:'客户姓名',span:8,component:'Input',submitStr:'name'},
+  {title:'年龄',span:8,component:'Input',submitStr:'age'},
+  {title:'宝宝性别',span:8,component:'gender',submitStr:'baseInfo0'},
+  {title:'分娩日期',span:8,component:'DatePicker',submitStr:'baseInfo1'},
+  {title:'入住日期',span:8,component:'DatePicker',submitStr:'baseInfo2'},
+  {title:'房间',span:8,component:'Input',submitStr:'baseInfo3'},
+  {title:'破水时间',span:8,component:'Input',submitStr:'baseTime0'},
+  {title:'APGAR SCORE',span:8,component:'Input',submitStr:'select_0'},
+  {title:'孕次',span:8,component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity'},
+  {title:'产次',span:8,component:'Input',selectName:'FETUS',submitStr:'fetus'},
+  {title:'生产数量',span:8,component:'Input',submitStr:'babyNum'},
+  {title:'周数',span:8,component:'Input',submitStr:'weekNum'},
+  {title:'生产方式',span:8,component:'Input',submitStr:'babyWay'},
 ]
-// 孕期合并症
-const PregnancyComplicationsAry = [
-  {title:'乙肝病毒感染或携带',component:'Select',chiAry:['否','大三阳', '小三阳', '单纯表面抗原阳性'],submitStr:'radio_6'},
-  {title:'丙肝病毒感染或携带',component:'RadioGroup',submitStr:'radio_7'},
-  {title:'梅毒感染或携带',component:'RadioGroup',submitStr:'radio_8'},
-  {title:'艾滋病毒感染或携带',component:'RadioGroup',submitStr:'radio_9'},
-  {title:'高血压',component:'InputGroup',unit:'mmHg',submitStr:'input_2'},
-  {title:'贫血',component:'RadioGroup',submitStr:'radio_11'},
-  {title:'糖尿病',component:'RadioGroup',submitStr:'radio_12'},
-  {title:'子宫肌瘤',component:'RadioGroup',submitStr:'radio_13'},
-  {title:'甲状腺功能减退',component:'RadioGroup',span:24,submitStr:'radio_14'},
-]
-
 // 新生儿情况
 const newbornAry = [
   {title:'出生体重',component:'Input',unit:'g',submitStr:'input_12'},
@@ -47,9 +34,9 @@ const newbornAry = [
   {title:'出生时胸围',component:'Input',unit:'cm',submitStr:'babyHead1'},
   {title:'囱门',formItems:'TwoWords',component:'RadioGroups',span:12,submitStr:'babyHead2',radioAry:[{'name':'平坦柔软','value':'0'},{'name':'紧绷鼓出','value':'1'},{'name':'凹陷','value':'2'}]},
   {title:'头皮',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead3', checkAry:[{'label':'正常','value':'0'},{'label':'破皮','value':'1'},{'label':'产瘤','value':'2'},{'label':'头血肿','value':'3'},{'label':'其他','value':'4'}]},
-  {title:'眼睛',formItems:'TwoWords',component:'CheckBoxGroup',span:13,submitStr:'babyhead4',checkAry:[{'label':'正常','value':'0'},{'label':'日落眼','value':'1'},{'label':'分泌物','value':'2'},{'label':'眼睑肿胀','value':'3'},{'label':'巩膜出血','value':'4'},{'label':'其他','value':'5'}]},
-  {title:'瞳孔大小',formItems:'FourWords',component:'RadioGroups',span:11,submitStr:'babyhead5',radioAry:[{'name':'对称','value':'0'},{'name':'不对称','value':'1'}]},
-  {title:'耳朵',component:'Input',submitStr:'babyhead6'},
+  {title:'眼睛',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead4',checkAry:[{'label':'正常','value':'0'},{'label':'日落眼','value':'1'},{'label':'分泌物','value':'2'},{'label':'眼睑肿胀','value':'3'},{'label':'巩膜出血','value':'4'},{'label':'其他','value':'5'}]},
+  {title:'瞳孔大小',formItems:'FourWords',component:'RadioGroups',span:12,submitStr:'babyhead5',radioAry:[{'name':'对称','value':'0'},{'name':'不对称','value':'1'}]},
+  {title:'耳朵',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead6',checkAry:[{'label':'正常','value':'0'},{'label':'红','value':'1'},{'label':'肿','value':'2'},{'label':'分泌物','value':'3'},{'label':'低下','value':'4'},{'label':'畸形','value':'5'},{'label':'耳边瘜肉','value':'6'}]},
   {title:'口腔',component:'Input',submitStr:'babyhead7'},
   {title:'鼻子',component:'Input',submitStr:'babyhead8'},
   {title:'颈部',component:'Input',submitStr:'babyhead9'},

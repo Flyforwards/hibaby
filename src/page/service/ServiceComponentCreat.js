@@ -99,7 +99,7 @@ function creatComponent(form,dict) {
         break;
       case 'CheckBoxGroup':
         tempDiv = (
-          <CheckboxGroup options={checkChildren} />
+          <CheckboxGroup options={checkChildren} disabled={dict.disabled}/>
         );
         break;
         tempDiv = (<RadioGroup disabled={dict.disabled}>
