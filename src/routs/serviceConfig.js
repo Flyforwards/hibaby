@@ -53,6 +53,26 @@ export default (app) => [
       })
     }
   },
+  // 产妇入住评估详情
+  {
+    path: '/service/check-in/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CheckInDetail.js'))
+      })
+    }
+  },
+  // 产妇入住评估编辑
+  {
+    path: '/service/check-in/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CheckInDetail.js'))
+      })
+    }
+  },
   // 婴儿入住评估
   {
     path: '/service/child-check-in',
