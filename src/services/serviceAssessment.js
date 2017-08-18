@@ -15,3 +15,10 @@ export function getAssessmentByCustomerId(values) {
   })
 }
 
+export function DelAssessment(values) {
+  return request('/crm/api/v1/assessment/DelAssessment', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+

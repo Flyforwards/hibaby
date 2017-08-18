@@ -3,9 +3,10 @@ import FileUpload from '../crm/customer/fileUpload'
 import DictionarySelect from 'common/dictionary_select';
 import './serviceComponent.scss'
 import moment from 'moment';
-import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,message,Checkbox} from 'antd';
+import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,Modal,Checkbox} from 'antd';
 const Option = Select.Option;
 const InputGroup = Input.Group;
+const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const { TextArea } = Input;
@@ -188,7 +189,7 @@ function cusFromItem(form,dict) {
 
   return(
     <FormItem  {...formItemLayout} label={dict.title}>
-      {getFieldDecorator((dict.component === 'InputGroup' ? dict.submitStr+'big' : dict.submitStr ),{...rules,initialValue:dict.initValue})(
+      {getFieldDecorator((dict.submitStr ),{...rules,initialValue:dict.initValue})(
         creatComponent(form,dict)
       )}
     </FormItem>
@@ -314,5 +315,15 @@ export function creatButton(title,onclick) {
   if(title === '删除'){
     className = 'bottomButton button-group-2'
   }
-  return (<Button className={className} onClick={onclick}>{title}</Button>)
+  return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
+}
+
+function showConfirm(fun) {
+  confirm({
+    title: '确定删除吗?',
+    onOk() {
+      fun()
+    },
+    onCancel() {},
+  });
 }
