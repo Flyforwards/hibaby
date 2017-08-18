@@ -5,6 +5,7 @@ import * as customerService from '../services/customer';
 import * as serviceAssessment from '../services/serviceAssessment';
 import * as addCustomerInformation from '../services/addCustomerInformation';
 import * as systemService from '../services/system';
+import moment from  'moment'
 import { routerRedux } from 'dva/router';
 import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
@@ -40,6 +41,11 @@ export default {
         if (pathname === '/service/diagnosis/detail' || pathname === '/service/diagnosis/edit') {
           let dict = { ...query, type: 4 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
+        }
+        //中医见诊记录单详情页
+        if (pathname === '/service/puerpera-body/detail') {
+          let dict = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
+          dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList', payload: dict });
         }
 
       });
@@ -126,7 +132,7 @@ export default {
     },
     *DelAssessment({payload: values}, { call, put }) {
       try {
-        const {data: {data,code}} = yield call(serviceAssessment.DelAssessment, values);
+        const {data: {data,code}} = yield call(serviceAssessment.DelAssessment, {dataId:values.dataId});
         message.success("删除成功");
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
@@ -136,6 +142,20 @@ export default {
         console.log(err)
       }
     },
+
+    *getMaternalEverydayPhysicalEvaluationList({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.getMaternalEverydayPhysicalEvaluationList, values);
+        yield put({
+          type: 'savaMaternalEverydayPhysicalEvaluationList',
+          payload: data
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
+
 
   },
   reducers: {
@@ -177,7 +197,6 @@ export default {
           dict.CheckInID = todo.id
         }
       }
-
       return { ...state,...dict,}
     },
     clearAllProps(state){
@@ -185,6 +204,9 @@ export default {
     },
     removeData(state,{ payload: todo }){
       return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
+    },
+    savaMaternalEverydayPhysicalEvaluationList(state,{ payload: todo }){
+      console.log(todo)
     }
   }
 
