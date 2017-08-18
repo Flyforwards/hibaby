@@ -15,7 +15,7 @@ const FormItem = Form.Item;
 
 export function ServiceComponentCreat(form,dict) {
   return (
-    <Col style={{display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
+    <Col style={{height:'56px',display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
       {cusFromItem(form,dict)}
     </Col>
   );
@@ -38,6 +38,7 @@ function creatComponent(form,dict) {
       children.push(<Option key={i}>{dict.chiAry[i]}</Option>)
     }
   }
+
   //radio 自定义单选
   let radioChildren = [];
   if(dict.radioAry) {
@@ -201,57 +202,25 @@ export function CreatCard(form,superDict) {
   const {title,ary,netData} = superDict
 
   let chiAry = []
-  let tempAry = []
 
-  for(let i = 0;i<ary.length;i++){
+  for(let i = 0;i<ary.length;i++) {
     const dict = ary[i];
 
-    if(netData){
-      if(dict.component === 'DatePicker'){
-        if(netData[dict.submitStr]){
+    if (netData) {
+      if (dict.component === 'DatePicker') {
+        if (netData[dict.submitStr]) {
           dict.initValue = moment(netData[dict.submitStr]);
         }
         else {
           dict.initValue = null
         }
       }
-      else{
+      else {
         dict.initValue = netData[dict.submitStr]
       }
     }
-    if(dict.span === 24){
-      if(tempAry.length > 0){
-        chiAry.push(<Row>{tempAry}</Row>)
-        tempAry = [];
-      }
-      chiAry.push(<Row>{ServiceComponentCreat(form,dict)}</Row> )
-    }
-    else{
-      let span = 0;
-      for(let j = 0;j<tempAry.length;j++){
-        const chiDict = tempAry[j].props
 
-        if(chiDict.style.display !== 'none'){
-          span += chiDict.span;
-          span += chiDict.offset;
-        }
-
-      }
-
-      if(span == 24){
-        chiAry.push(<Row>{tempAry}</Row>)
-        tempAry = [];
-        tempAry.push(ServiceComponentCreat(form,dict))
-      }
-      else{
-        tempAry.push(ServiceComponentCreat(form,dict))
-      }
-    }
-  }
-
-
-  if(tempAry.length > 0){
-    chiAry.push(<Row>{tempAry}</Row>)
+    chiAry.push(ServiceComponentCreat(form, dict))
   }
 
   return (
@@ -276,8 +245,9 @@ export class InputClass extends React.Component{
     form.setFieldsValue(tempDict)
   }
 
-  inputChange(){
-    this.setState({radio:false})
+  inputChange(e){
+    const str = e.target.value;
+    this.setState({radio:(str?false:true)})
   }
 
   render(){
@@ -291,7 +261,7 @@ export class InputClass extends React.Component{
               ?
             <TextArea style={{width:'90%'}} onChange={this.inputChange.bind(this)} disabled={dict.disabled}/>
             :
-            <Input style={{width:'80%',height: '30px'}} addonAfter={dict.unit} onChange={this.inputChange.bind(this)}  disabled={dict.disabled}/>
+            <Input placeholder={dict.placeholder?dict.placeholder:null} style={{width:'80%',height: '30px'}} addonAfter={dict.unit} onChange={this.inputChange.bind(this)}  disabled={dict.disabled}/>
         )}
       </InputGroup>
     )

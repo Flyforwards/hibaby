@@ -126,7 +126,7 @@ export default {
     },
     *DelAssessment({payload: values}, { call, put }) {
       try {
-        const {data: {data,code}} = yield call(serviceAssessment.DelAssessment, values);
+        const {data: {data,code}} = yield call(serviceAssessment.DelAssessment, {dataId:values.dataId});
         message.success("删除成功");
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
