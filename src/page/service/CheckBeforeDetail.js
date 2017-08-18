@@ -13,13 +13,13 @@ const baseInfoAry = [
   {title:'宝宝性别',component:'gender',submitStr:'baseInfo0'},
   {title:'分娩日期',component:'DatePicker',submitStr:'baseInfo1'},
   {title:'入住日期',component:'DatePicker',submitStr:'baseInfo2'},
-  {title:'房间',component:'Input',submitStr:'baseInfo3'},
+  {title:'房间',component:'Input',submitStr:'associatedRooms'},
   {title:'产次',component:'Input',selectName:'FETUS',submitStr:'fetus'},
   {title:'孕次',component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity'},
   {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks'},
   {title:'分娩医院',component:'Input',selectName:'Hospital',submitStr:'hospital'},
   {title:'产妇电话',component:'InputNumber',submitStr:'contact'},
-  {title:'家属电话',component:'InputNumber',submitStr:'baseInfo4'},
+  {title:'家属电话',component:'InputNumber',submitStr:'contact_1'},
 ]
 
 // 既往史
