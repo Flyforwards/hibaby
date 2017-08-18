@@ -117,6 +117,7 @@ class Detail extends Component {
   }
 
   componentWillUnmount() {
+
     this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
@@ -127,7 +128,7 @@ class Detail extends Component {
     const ary = [{title:'基本信息',ary:baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckInData
+      value.netData = this.props.CheckInData?this.props.CheckInData:{}
       return CreatCard(this.props.form,value)
     })
 
