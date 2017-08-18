@@ -22,3 +22,10 @@ export function DelAssessment(values) {
   })
 }
 
+export function getMaternalEverydayPhysicalEvaluationList(values) {
+  return request('/crm/api/v1/maternalEverydayPhysicalEvaluation/getMaternalEverydayPhysicalEvaluationList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+

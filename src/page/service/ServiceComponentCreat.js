@@ -230,6 +230,7 @@ export function CreatCard(form,superDict) {
   )
 }
 
+
 export class InputClass extends React.Component{
 
   constructor(props){

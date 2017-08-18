@@ -113,7 +113,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 中医见诊记录单详情
   {
     path: '/service/diagnosis/detail',
@@ -134,15 +134,14 @@ export default (app) => [
       })
     }
   },
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
   // 中医查房记录单
   {
     path: '/service/diagnosis-record',
@@ -170,6 +169,26 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/PuerperaBodyIndex.jsx'))
+      })
+    }
+  },
+  // 产妇每日身体评估单详情
+  {
+    path: '/service/puerpera-body/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/PuerperaBodyDetail.js'))
+      })
+    }
+  },
+  // 产妇每日身体评估单编辑
+  {
+    path: '/service/puerpera-body/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/PuerperaBodyEdit.js'))
       })
     }
   },
