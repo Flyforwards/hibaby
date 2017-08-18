@@ -125,6 +125,11 @@ class Detail extends Component {
   submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+
+
+        console.log(values)
+        return
+
         Object.keys(values).map(key=>{
           if(typeof values[key] === 'object'){
             values[key] = values[key].format()
@@ -152,9 +157,6 @@ class Detail extends Component {
     if(this.props.CheckBeforeData){
       hide = this.props.CheckBeforeData;
     }
-
-
-
     if(this.state.childbirth){
       hide = this.state.childbirth == 1 ? false : true;
     }
