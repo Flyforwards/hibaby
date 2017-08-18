@@ -37,7 +37,7 @@ export default {
           let dict = { ...query, type: 4 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-        
+
       });
     }
   },
@@ -118,7 +118,18 @@ export default {
         console.log(err)
       }
     },
-
+    *DelAssessment({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.DelAssessment, values);
+        message.success("删除成功");
+        if(values.type == 1){
+          yield put(routerRedux.push('/service/check-before'))
+        }
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
 
   },
   reducers: {

@@ -4,7 +4,7 @@ import {Card ,Input,Form,Button,Spin} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
-import { routerRedux } from 'dva/router'
+import { routerRedux,Link } from 'dva/router'
 
 // 基本信息
 const baseInfoAry = [
@@ -99,7 +99,7 @@ class Detail extends Component {
   }
 
   onDelete(){
-
+    this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:{dataId:this.props.CheckBeforeID}})
   }
 
   editBtnClick(){
@@ -153,6 +153,8 @@ class Detail extends Component {
       hide = this.props.CheckBeforeData;
     }
 
+
+
     if(this.state.childbirth){
       hide = this.state.childbirth == 1 ? false : true;
     }
@@ -160,8 +162,8 @@ class Detail extends Component {
     const DeliveryProcessAry = [
       {title:'分娩方式',component:'RadioGroups',submitStr:'radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
       {title:'手术指征',component:'Input',submitStr:'input_5',span:18,hide:hide === 2 ? true : hide},
-      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:!hide},
-      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:!hide},
+      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:hide === 2 ? true : !hide},
+      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:hide === 2 ? true : !hide},
       {title:'产时出血',component:'InputGroup',unit:'ml',submitStr:'input_6'},
       {title:'胎盘早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
       {title:'前置胎盘',component:'RadioGroup',submitStr:'radio_18'},
@@ -194,6 +196,7 @@ class Detail extends Component {
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+
           {chiAry}
 
           {bottomDiv}
