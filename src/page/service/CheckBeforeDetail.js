@@ -38,7 +38,7 @@ const PregnancyComplicationsAry = [
   {title:'贫血',component:'RadioGroup',submitStr:'radio_11'},
   {title:'糖尿病',component:'RadioGroup',submitStr:'radio_12'},
   {title:'子宫肌瘤',component:'RadioGroup',submitStr:'radio_13'},
-  {title:'甲状腺功能减退',component:'RadioGroup',span:24,submitStr:'radio_14'},
+  {title:'甲状腺功能减退',component:'InputGroup',span:24,submitStr:'radio_14',placeholder:'用药'},
 ]
 
 // 产后情况
@@ -99,7 +99,7 @@ class Detail extends Component {
   }
 
   onDelete(){
-    this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:{dataId:this.props.CheckBeforeID}})
+    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:1,dataId:this.props.CheckBeforeID}})
   }
 
   editBtnClick(){
@@ -126,10 +126,6 @@ class Detail extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
 
-
-        console.log(values)
-        return
-
         Object.keys(values).map(key=>{
           if(typeof values[key] === 'object'){
             values[key] = values[key].format()
@@ -155,17 +151,20 @@ class Detail extends Component {
 
     let hide = 2
     if(this.props.CheckBeforeData){
-      hide = this.props.CheckBeforeData;
+      if(this.props.CheckBeforeData.radio_15 ){
+        hide = this.props.CheckBeforeData.radio_15 == 0?true:false;
+      }
     }
     if(this.state.childbirth){
       hide = this.state.childbirth == 1 ? false : true;
     }
+
     // 分娩过程
     const DeliveryProcessAry = [
       {title:'分娩方式',component:'RadioGroups',submitStr:'radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
-      {title:'手术指征',component:'Input',submitStr:'input_5',span:18,hide:hide === 2 ? true : hide},
-      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:hide === 2 ? true : !hide},
-      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:hide === 2 ? true : !hide},
+      {title:'手术指征',component:'Input',submitStr:'input_5',span:18,hide:hide === 2 ? true : hide,noRequired:hide === 2 ? false : hide},
+      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
+      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
       {title:'产时出血',component:'InputGroup',unit:'ml',submitStr:'input_6'},
       {title:'胎盘早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
       {title:'前置胎盘',component:'RadioGroup',submitStr:'radio_18'},
@@ -190,7 +189,7 @@ class Detail extends Component {
         {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
       </div> :
        <div className='button-group-bottom-common'>
-        {creatButton('返回',this.backClicked.bind(this))}{creatButton('删除',this.onDelete.bind(this))}
+        {creatButton('返回',this.backClicked.bind(this))}{this.props.CheckBeforeData?creatButton('删除',this.onDelete.bind(this)):''}
         {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
       </div>
 
