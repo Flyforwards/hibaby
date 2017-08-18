@@ -141,7 +141,7 @@ function cusFromItem(form,dict) {
   }
 
   const { getFieldDecorator } = form;
-
+  //
   let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || '此项'}!`}],};
 
   if (dict.component === 'UploadButton')
