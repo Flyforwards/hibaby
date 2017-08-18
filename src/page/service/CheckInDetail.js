@@ -55,11 +55,11 @@ const checkInMedical = [
   {title:'副乳',component:'RadioGroup',submitStr:'medical_13'},
   // {title:'腹部',component:'Input',submitStr:'medical_14'},
   {title:'外痔',component:'RadioGroup',submitStr:'medical_15'},
-  {title:'下肢水肿',component:'InputGroup',submitStr:'radio_29'},
+  {title:'下肢水肿',component:'RadioGroup',submitStr:'radio_29'},
   {title:'宫底高度',component:'Input',submitStr:'medical_16'},
   {title:'子宫压痛',component:'Input',submitStr:'medical_17'},
-  {title:'会阴伤口愈合',component:'Select',chiAry:['良好', '水肿', '血肿' ,'裂开' ,'感染'],submitStr:'radio_24'},
-  {title:'腹部伤口愈合',component:'Select',chiAry:['良好', '敷料覆盖未见渗出物', '红肿', '裂开', '感染'],submitStr:'radio_25'},
+  {title:'会阴伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'0'},{'name':'水肿','value':'1'},{'name':'血肿','value':'2'},{'name':'裂开','value':'3'},{'name':'感染','value':'4'}],submitStr:'radio_24'},
+  {title:'腹部伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'5'},{'name':'敷料覆盖未见渗出物','value':'6'},{'name':'红肿','value':'7'},{'name':'裂开','value':'8'},{'name':'感染','value':'9'}],submitStr:'radio_24',key:'radio_24_1'},
   {title:'恶露性质',component:'Select',chiAry:['血性', '浆液性', '白色'],submitStr:'medical_18'},
   {title:'恶露量',component:'Select',chiAry:['多', '中', '少'],submitStr:'medical_19'},
   {title:'异味',component:'RadioGroup',submitStr:'medical_20'},
@@ -106,15 +106,6 @@ class Detail extends Component {
   submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        Object.keys(values).map(key=>{
-          if(typeof values[key] === 'object'){
-            if(values[key].length > 0){
-              values[key] = values[key].join(",");
-            }else{
-              values[key] = values[key].format();
-            }
-          }
-        })
         const assessmentInfo =  JSON.stringify(values);
         let dict = { "assessmentInfo": assessmentInfo, "customerId": 16,"type": 2};
         if(this.props.CheckInID){
@@ -125,6 +116,10 @@ class Detail extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({type: 'serviceCustomer/removeData'})
+  }
+
   render() {
 
     const {loading} = this.props
@@ -132,7 +127,7 @@ class Detail extends Component {
     const ary = [{title:'基本信息',ary:baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckBeforeData
+      value.netData = this.props.CheckInData
       return CreatCard(this.props.form,value)
     })
 
@@ -147,7 +142,7 @@ class Detail extends Component {
       </div>
 
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
+      <Spin key="CheckIn" spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}

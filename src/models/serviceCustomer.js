@@ -28,6 +28,10 @@ export default {
           let dict = {...query,type:1}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
         }
+        if (pathname === '/service/check-in/detail'|| pathname === '/service/check-in/edit') {
+          let dict = {...query,type:2}
+          dispatch({type: 'getAssessmentByCustomerId',payload:dict});
+        }
         if (pathname === '/service/child-check-in/detail'|| pathname === '/service/child-check-in/edit') {
           let dict = {...query,type:3}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
@@ -169,7 +173,7 @@ export default {
       return { ...state,page : 1}
     },
     removeData(state,{ payload: todo }){
-      return {...state,CheckBeforeData:'',CheckBeforeID:''}
+      return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
     }
   }
 
