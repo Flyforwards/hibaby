@@ -127,7 +127,10 @@ function mainCycleDishesDetail(props) {
         if (k != 0){
           dishesStr += '、';
         }
-        dishesStr += dishObj['dishesName'];
+        dishesStr +=  dishObj['dishesName'];
+        if (dishObj['sugar'] == 1){
+          dishesStr += <span style={{color:"#ac672c",fontSize:"16"}} >  糖</span>;
+        }
       }
 
       colDivs.push(
