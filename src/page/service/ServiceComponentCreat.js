@@ -3,9 +3,10 @@ import FileUpload from '../crm/customer/fileUpload'
 import DictionarySelect from 'common/dictionary_select';
 import './serviceComponent.scss'
 import moment from 'moment';
-import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,message,Checkbox} from 'antd';
+import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,Modal,Checkbox} from 'antd';
 const Option = Select.Option;
 const InputGroup = Input.Group;
+const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const { TextArea } = Input;
@@ -14,7 +15,7 @@ const FormItem = Form.Item;
 
 export function ServiceComponentCreat(form,dict) {
   return (
-    <Col span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
+    <Col style={{display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
       {cusFromItem(form,dict)}
     </Col>
   );
@@ -24,13 +25,6 @@ function onChange(dict) {
   // dict.disabled = dict
 }
 
-function creatInput(dict) {
-  return  <Input style={dict.component === 'Input' ? {width:'100%'} : {width:'80%'}} addonAfter={dict.unit}   disabled={dict.disabled}/>
-}
-//checkBox 函数
-// function checkBoxChild(form,elem){
-//
-// }
 function creatComponent(form,dict) {
 
   dict.disabled =  location.pathname.indexOf('detail') != -1
@@ -48,45 +42,15 @@ function creatComponent(form,dict) {
   let radioChildren = [];
   if(dict.radioAry) {
     dict.radioAry.map(function(elem,index){
-      if(elem.Element){
-        radioChildren.push(
-            <span>
-              <Radio value={elem.value}>{elem.name}</Radio>
-              {getFieldDecorator(elem.submitStr,{initialValue:elem.initValue})(
-              <Input style={{width:'40%'}}/>)}
-              </span>
-        )
-      }else{
-        radioChildren.push(
-          <Radio value={elem.value}>{elem.name}</Radio>
-        )
-      }
-
+      radioChildren.push(
+        <Radio value={elem.value}>{elem.name}</Radio>
+      )
     })
   }
-
-
   //checkbox自定义多选
-  let checkChildren = [] ;
+  let checkChildren ;
   if(dict.checkAry) {
-   dict.checkAry.map(function(elem,index){
-     if(elem.Element){
-       checkChildren.push(
-         <span>
-           <Checkbox value={elem.value}>{elem.label}</Checkbox>
-           {getFieldDecorator(elem.submitStr,{initialValue:elem.initValue})(
-             <Input style={{width:'40%'}}/>)}
-              </span>
-
-       )
-
-     }else{
-       checkChildren.push(
-         <Checkbox value={elem.value}>{elem.label}</Checkbox>
-       )
-     }
-
-   });
+    checkChildren = dict.checkAry;
   }
 
   if (dict.selectName){
@@ -95,7 +59,7 @@ function creatComponent(form,dict) {
   else{
     switch (dict.component) {
       case 'Input':
-        tempDiv = creatInput(dict);
+        tempDiv = <Input style={ {width:'100%'} } addonAfter={dict.unit}   disabled={dict.disabled}/>;
         break;
       case 'TextArea':
         tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
@@ -126,15 +90,13 @@ function creatComponent(form,dict) {
         </RadioGroup>);
         break;
       case 'RadioGroups':
-        tempDiv = (<RadioGroup disabled={dict.disabled}>
+        tempDiv = (<RadioGroup onChange={dict.fun} disabled={dict.disabled}>
           { radioChildren }
         </RadioGroup>);
         break;
       case 'CheckBoxGroup':
         tempDiv = (
-          <CheckboxGroup  disabled={dict.disabled}>
-            {checkChildren}
-          </CheckboxGroup>
+          <CheckboxGroup onChange={dict.fun} options={checkChildren} disabled={dict.disabled}/>
         );
         break;
         tempDiv = (<RadioGroup disabled={dict.disabled}>
@@ -153,6 +115,13 @@ function creatComponent(form,dict) {
           <FileUpload  fun={dict.fun} deleteFun={dict.deleteFun}>
             <Button><Icon type="upload"/> 上传附件</Button>
           </FileUpload>
+      }
+        break;
+      //客户签字
+      case 'Signature':
+      {
+        tempDiv =
+         <div></div>
       }
         break;
       default:
@@ -193,20 +162,20 @@ function cusFromItem(form,dict) {
   }
   if(dict.formItems === "TwoWords" ){
     formItemLayout = {
-      labelCol: { span: 3 },
-      wrapperCol: { span: 21 },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
     }
   }
   if(dict.formItems === "FourWords" ){
     formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 19 },
-    }
-  }
-  if(dict.formItems === "FiveWords" ){
-    formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
+    }
+  }
+  if(dict.title === '手术指征'){
+    formItemLayout = {
+      labelCol: { span: 3 },
+      wrapperCol: { span: 21 },
     }
   }
 
@@ -220,7 +189,7 @@ function cusFromItem(form,dict) {
 
   return(
     <FormItem  {...formItemLayout} label={dict.title}>
-      {getFieldDecorator((dict.component === 'InputGroup' ? dict.submitStr+'big' : dict.submitStr ),{...rules,initialValue:dict.initValue})(
+      {getFieldDecorator((dict.submitStr ),{...rules,initialValue:dict.initValue})(
         creatComponent(form,dict)
       )}
     </FormItem>
@@ -261,8 +230,12 @@ export function CreatCard(form,superDict) {
       let span = 0;
       for(let j = 0;j<tempAry.length;j++){
         const chiDict = tempAry[j].props
-        span += chiDict.span;
-        span += chiDict.offset;
+
+        if(chiDict.style.display !== 'none'){
+          span += chiDict.span;
+          span += chiDict.offset;
+        }
+
       }
 
       if(span == 24){
@@ -342,5 +315,15 @@ export function creatButton(title,onclick) {
   if(title === '删除'){
     className = 'bottomButton button-group-2'
   }
-  return (<Button className={className} onClick={onclick}>{title}</Button>)
+  return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
+}
+
+function showConfirm(fun) {
+  confirm({
+    title: '确定删除吗?',
+    onOk() {
+      fun()
+    },
+    onCancel() {},
+  });
 }

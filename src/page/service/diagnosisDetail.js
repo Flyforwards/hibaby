@@ -13,7 +13,7 @@ const baseInfoAry = [
   { title: '分娩日期', component: 'DatePicker', submitStr: 'baseInfo1', span: 8 },
   { title: '入住日期', component: 'DatePicker', submitStr: 'baseInfo2', span: 8 },
   { title: '房间', component: 'Input', submitStr: 'baseInfo3', span: 8 },
-  { title: '气色情况', component: 'gender', selectName: 'FETUS', submitStr: 'baseInfo4', span: 8 },
+  { title: '气色情况', component: 'Select',chiAry: ['健康色泽', '气色不佳'],  submitStr: 'baseInfo4', span: 8 },
   { title: '体型情况', component: 'Select', chiAry: ['肥胖', '适中', '消瘦'], submitStr: 'baseInfo5', span: 8 },
   { title: '精神情况', component: 'Select', chiAry: ['良好', '一般', '不佳'], submitStr: 'baseInfo6', span: 8 },
   { title: '舌质情况', component: 'Select', chiAry: ['正常', '淡', '红', '暗紫', '瘀斑'], submitStr: 'baseInfo7', span: 8 },
@@ -92,8 +92,9 @@ const baseInfoAry = [
   
   { title: '切脉', component: 'TextArea', span: 24, submitStr: 'baseInfo19' },
   { title: '脉象和脏腑情况', component: 'TextArea', span: 24, submitStr: 'baseInfo20' },
-  { title: '评估者', component: 'Input', span: 6, submitStr: 'baseInfo21' },
-  { title: '评估时间', component: 'DatePicker', offset: 12, span: 6, submitStr: 'baseInfo22' }
+  { title: '评估者', component: 'Input', span: 8, submitStr: 'baseInfo21' },
+  { title: '客户签字', component: 'Signature',  span: 8, submitStr: 'baseInfo23','noRequired':true},
+  { title: '评估时间', component: 'DatePicker',  span: 8, submitStr: 'baseInfo22' }
 
 ]
 
@@ -124,13 +125,14 @@ class Detail
   print() {
   
   }
-  
+  componentWillUnmount() {
+    this.props.dispatch({type: 'serviceCustomer/removeData',})
+  }
   submitClicked() {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         Object.keys(values).map(key => {
-          if (typeof values[key] === 'object') {
-            console.log(values[key],'>>>>>')
+          if (typeof values[key] === 'object' && typeof values[key].length !== 'number') {
             values[key] = values[key].format()
           }
         })
@@ -156,7 +158,7 @@ class Detail
     const ary = [{ title: '基本信息', ary: baseInfoAry }]
     
     let chiAry = ary.map(value => {
-      value.netData = this.props.CheckBeforeData
+      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
       return CreatCard(this.props.form, value)
     })
     
@@ -175,7 +177,6 @@ class Detail
         
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
           {chiAry}
-          
           {bottomDiv}
         </Card>
       </Spin>

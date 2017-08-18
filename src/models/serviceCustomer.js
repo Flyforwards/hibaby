@@ -28,6 +28,10 @@ export default {
           let dict = {...query,type:1}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
         }
+        if (pathname === '/service/check-in/detail'|| pathname === '/service/check-in/edit') {
+          let dict = {...query,type:2}
+          dispatch({type: 'getAssessmentByCustomerId',payload:dict});
+        }
         if (pathname === '/service/child-check-in/detail'|| pathname === '/service/child-check-in/edit') {
           let dict = {...query,type:3}
           dispatch({type: 'getAssessmentByCustomerId',payload:dict});
@@ -37,7 +41,7 @@ export default {
           let dict = { ...query, type: 4 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-        
+
       });
     }
   },
@@ -100,6 +104,10 @@ export default {
         message.success("保存成功");
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
+        }else if(values.type == 2){
+          yield put(routerRedux.push('/service/check-in'))
+        } else if(values.type == 3){
+          yield put(routerRedux.push('/service/child-check-in'))
         }
       }
       catch (err){
@@ -118,7 +126,18 @@ export default {
         console.log(err)
       }
     },
-
+    *DelAssessment({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.DelAssessment, values);
+        message.success("删除成功");
+        if(values.type == 1){
+          yield put(routerRedux.push('/service/check-before'))
+        }
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
 
   },
   reducers: {
@@ -152,9 +171,15 @@ export default {
     savaAssessment(state,{ payload: todo }){
       let dict = {}
       if(todo){
-        if(todo.type === 1){
+        if(todo.type === 1||todo.type ===4){
           dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
           dict.CheckBeforeID = todo.id
+        }else if(todo.type === 2){
+          dict.CheckInData = JSON.parse(todo.assessmentInfo)
+          dict.CheckInID = todo.id
+        }else if(todo.type === 3){
+          dict.ChildCheckInData = JSON.parse(todo.assessmentInfo)
+          dict.ChildCheckInID = todo.id
         }
       }
 
@@ -164,7 +189,7 @@ export default {
       return { ...state,page : 1}
     },
     removeData(state,{ payload: todo }){
-      return {...state,CheckBeforeData:'',CheckBeforeID:''}
+      return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
     }
   }
 

@@ -14,12 +14,11 @@ const baseInfoAry = [
   {title:'分娩日期',component:'DatePicker',submitStr:'baseInfo1'},
   {title:'入住日期',component:'DatePicker',submitStr:'baseInfo2'},
   {title:'房间',component:'Input',submitStr:'baseInfo3'},
-
-  {title:'分娩方式',component:'Input',submitStr:'radio_15'},//new
+  {title:'分娩方式',component:'Input',submitStr:'radio_15'},
   {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16'},
-  {title:'产程延长',component:'Input',submitStr:'baseInfo4'},//new
-  {title:'剖宫产手术指证',component:'Input',submitStr:'baseInfo5'},//new
-  {title:'处理措施',component:'Input',submitStr:'baseInfo6'},//new
+  {title:'产程延长',component:'Input',submitStr:'baseInfo4'},
+  {title:'剖宫产手术指证',component:'Input',submitStr:'baseInfo5'},
+  {title:'处理措施',component:'Select',chiAry:['宫缩剂','填宫纱'],submitStr:'baseInfo6'},
   {title:'胎膜早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
   {title:'产后出血',component:'InputGroup',unit:'ml',submitStr:'input_9'},
 ]
@@ -28,43 +27,43 @@ const baseInfoAry = [
 // 产后情况
 const PostpartumSituationAry = [
   {title:'产后发热',component:'InputGroup',unit:'℃',submitStr:'input_10'},
-  {title:'恶露异常',component:'InputGroup',unit:'℃',submitStr:'postpartum_0'},//new
+  {title:'恶露异常',component:'RadioGroup',submitStr:'postpartum_0'},
   {title:'排尿困难',component:'RadioGroup',submitStr:'radio_30'},
   {title:'排便困难',component:'RadioGroup',submitStr:'radio_31'},
-  {title:'初次吸吮',component:'Input',submitStr:'postpartum_1'},//new
-  {title:'添加配方奶',component:'Input',submitStr:'postpartum_2'},//new
-  {title:'哺乳问题',component:'Input',submitStr:'postpartum_3'},//new
+  {title:'初次吸吮',component:'Input',unit:'分钟',submitStr:'postpartum_1'},
+  {title:'添加配方奶',component:'InputGroup',submitStr:'postpartum_2'},
+  {title:'喂养方式',component:'CheckBoxGroup',checkAry:['纯母乳','混合','人工' ],submitStr:'postpartum_3'},
+  {title:'哺乳问题',component:'CheckBoxGroup',checkAry:['无', '有', '乳头错觉', '疼痛', '乳房肿胀', '乳汁少', '乳汁多', '其他' ],submitStr:'postpartum_4'},
 ]
 
 //入所查体
 const checkInMedical = [
-  {title:'血压',component:'Select',chiAry:['无','160/100mmHg', '85/45mmHg'],submitStr:'input_18'},
+  {title:'血压',component:'Input',submitStr:'medical_'},
   {title:'体温',component:'Input',unit:'℃',submitStr:'input_12'},
-  {title:'脉搏',component:'Input',submitStr:'medical_0'},
+  {title:'脉搏',component:'Input',unit:'次/分',submitStr:'medical_0'},
   {title:'孕前体重',component:'Input',unit:'kg',submitStr:'medical_1'},
   {title:'分娩前体重',component:'Input',unit:'kg',submitStr:'medical_2'},
   {title:'孕期增重',component:'Input',unit:'kg',submitStr:'medical_3'},
   {title:'现体重',component:'Input',unit:'kg',submitStr:'medical_4'},
-  {title:'精神状态',component:'Input',submitStr:'medical_5'},
-  {title:'皮肤黏膜',component:'Input',submitStr:'medical_6'},
-  {title:'左乳房',component:'Input',submitStr:'medical_7'},
-  {title:'左乳头',component:'Input',submitStr:'medical_8'},
-  {title:'右乳房',component:'Input',submitStr:'medical_9'},
-  {title:'硬结',component:'Input',submitStr:'medical_10'},
-  {title:'右乳头',component:'Input',submitStr:'medical_11'},
-  {title:'乳汁量',component:'Input',submitStr:'medical_12'},
-  {title:'副乳',component:'Input',submitStr:'medical_13'},
-  {title:'腹部',component:'Input',submitStr:'medical_14'},
-  {title:'外痔',component:'Input',submitStr:'medical_15'},
+  {title:'精神状态',component:'CheckBoxGroup',checkAry:[ '良好', '一般', '淡漠', '疲乏', '焦虑', '烦躁', '抑郁', '其他'],submitStr:'medical_5'},
+  {title:'皮肤黏膜',component:'Select',chiAry:['红润', '一般', '苍白' ,'皮疹'],submitStr:'medical_6'},
+  {title:'左乳房',component:'CheckBoxGroup',checkAry:['软' ,'充盈', '肿胀' ,'硬结'],submitStr:'medical_7'},
+  {title:'左乳头',component:'CheckBoxGroup',checkAry:['凸', '平坦' ,'凹陷', '皲裂'],submitStr:'medical_8'},
+  {title:'右乳房',component:'CheckBoxGroup',checkAry:['软' ,'充盈', '肿胀' ,'硬结'],submitStr:'medical_9'},
+  {title:'右乳头',component:'CheckBoxGroup',checkAry:['凸', '平坦' ,'凹陷', '皲裂'],submitStr:'medical_11'},
+  {title:'乳汁量',component:'Select',chiAry:['少', '中','多' ],submitStr:'medical_12'},
+  {title:'副乳',component:'RadioGroup',submitStr:'medical_13'},
+  // {title:'腹部',component:'Input',submitStr:'medical_14'},
+  {title:'外痔',component:'RadioGroup',submitStr:'medical_15'},
   {title:'下肢水肿',component:'RadioGroup',submitStr:'radio_29'},
   {title:'宫底高度',component:'Input',submitStr:'medical_16'},
   {title:'子宫压痛',component:'Input',submitStr:'medical_17'},
-  {title:'会阴伤口愈合',component:'Input',submitStr:'medical_18'},
-  {title:'腹部伤口愈合',component:'Input',submitStr:'medical_19'},
-  {title:'恶露性质',component:'Input',submitStr:'medical_20'},
-  {title:'恶露量',component:'Input',submitStr:'medical_21'},
-  {title:'异味',component:'Input',submitStr:'medical_22'},
-  {title:'其他',component:'TextArea',span:24,submitStr:'medical_23'},
+  {title:'会阴伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'0'},{'name':'水肿','value':'1'},{'name':'血肿','value':'2'},{'name':'裂开','value':'3'},{'name':'感染','value':'4'}],submitStr:'radio_24'},
+  {title:'腹部伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'5'},{'name':'敷料覆盖未见渗出物','value':'6'},{'name':'红肿','value':'7'},{'name':'裂开','value':'8'},{'name':'感染','value':'9'}],submitStr:'radio_24',key:'radio_24_1'},
+  {title:'恶露性质',component:'Select',chiAry:['血性', '浆液性', '白色'],submitStr:'medical_18'},
+  {title:'恶露量',component:'Select',chiAry:['多', '中', '少'],submitStr:'medical_19'},
+  {title:'异味',component:'RadioGroup',submitStr:'medical_20'},
+  {title:'其他',component:'TextArea',span:24,submitStr:'medical_21'},
 ]
 
 
@@ -108,9 +107,17 @@ class Detail extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const assessmentInfo =  JSON.stringify(values);
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:{ "assessmentInfo": assessmentInfo, "customerId": 16,'id':1, "type": 1}})
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": 16,"type": 2};
+        if(this.props.CheckInID){
+          dict.id = this.props.CheckInID
+        }
+        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
   render() {
@@ -120,12 +127,12 @@ class Detail extends Component {
     const ary = [{title:'基本信息',ary:baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckBeforeData
+      value.netData = this.props.CheckInData
       return CreatCard(this.props.form,value)
     })
 
 
-    const bottomDiv = location.pathname === '/service/check-before/edit' ?
+    const bottomDiv = location.pathname === '/service/check-in/edit' ?
       <div className='button-group-bottom-common'>
         {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
       </div> :
@@ -135,7 +142,7 @@ class Detail extends Component {
       </div>
 
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
+      <Spin key="CheckIn" spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
