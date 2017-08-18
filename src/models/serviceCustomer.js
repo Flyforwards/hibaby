@@ -37,7 +37,7 @@ export default {
           let dict = { ...query, type: 4 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-        
+
       });
     }
   },
@@ -100,6 +100,8 @@ export default {
         message.success("保存成功");
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
+        }else if(values.type == 2){
+          yield put(routerRedux.push('/service/check-in'))
         }
       }
       catch (err){
@@ -155,6 +157,9 @@ export default {
         if(todo.type === 1||todo.type ===4){
           dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
           dict.CheckBeforeID = todo.id
+        }else if(todo.type === 2){
+          dict.CheckInData = JSON.parse(todo.assessmentInfo)
+          dict.CheckInID = todo.id
         }
       }
 

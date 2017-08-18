@@ -33,7 +33,7 @@ const PostpartumSituationAry = [
   {title:'初次吸吮',component:'Input',unit:'分钟',submitStr:'postpartum_1'},
   {title:'添加配方奶',component:'InputGroup',submitStr:'postpartum_2'},
   {title:'喂养方式',component:'CheckBoxGroup',checkAry:['纯母乳','混合','人工' ],submitStr:'postpartum_3'},
-  {title:'哺乳问题',component:'CheckBoxGroup',checkAry:['无', '有', '乳头错觉', '疼痛', '乳房肿胀', '乳汁少', '乳汁多', '其他' ],submitStr:'postpartum_3'},
+  {title:'哺乳问题',component:'CheckBoxGroup',checkAry:['无', '有', '乳头错觉', '疼痛', '乳房肿胀', '乳汁少', '乳汁多', '其他' ],submitStr:'postpartum_4'},
 ]
 
 //入所查体
@@ -60,10 +60,10 @@ const checkInMedical = [
   {title:'子宫压痛',component:'Input',submitStr:'medical_17'},
   {title:'会阴伤口愈合',component:'Select',chiAry:['良好', '水肿', '血肿' ,'裂开' ,'感染'],submitStr:'radio_24'},
   {title:'腹部伤口愈合',component:'Select',chiAry:['良好', '敷料覆盖未见渗出物', '红肿', '裂开', '感染'],submitStr:'radio_25'},
-  {title:'恶露性质',component:'Select',chiAry:['血性', '浆液性', '白色'],submitStr:'medical_20'},
-  {title:'恶露量',component:'Select',chiAry:['多', '中', '少'],submitStr:'medical_21'},
-  {title:'异味',component:'RadioGroup',submitStr:'medical_22'},
-  {title:'其他',component:'TextArea',span:24,submitStr:'medical_23'},
+  {title:'恶露性质',component:'Select',chiAry:['血性', '浆液性', '白色'],submitStr:'medical_18'},
+  {title:'恶露量',component:'Select',chiAry:['多', '中', '少'],submitStr:'medical_19'},
+  {title:'异味',component:'RadioGroup',submitStr:'medical_20'},
+  {title:'其他',component:'TextArea',span:24,submitStr:'medical_21'},
 ]
 
 
@@ -106,8 +106,21 @@ class Detail extends Component {
   submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        Object.keys(values).map(key=>{
+          if(typeof values[key] === 'object'){
+            if(values[key].length > 0){
+              values[key] = values[key].join(",");
+            }else{
+              values[key] = values[key].format();
+            }
+          }
+        })
         const assessmentInfo =  JSON.stringify(values);
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:{ "assessmentInfo": assessmentInfo, "customerId": 16,'id':1, "type": 1}})
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": 16,"type": 2};
+        if(this.props.CheckInID){
+          dict.id = this.props.CheckInID
+        }
+        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
     });
   }
@@ -124,7 +137,7 @@ class Detail extends Component {
     })
 
 
-    const bottomDiv = location.pathname === '/service/check-before/edit' ?
+    const bottomDiv = location.pathname === '/service/check-in/edit' ?
       <div className='button-group-bottom-common'>
         {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
       </div> :
