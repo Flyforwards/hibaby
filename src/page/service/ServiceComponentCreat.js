@@ -27,7 +27,10 @@ function onChange(dict) {
 function creatInput(dict) {
   return  <Input style={dict.component === 'Input' ? {width:'100%'} : {width:'80%'}} addonAfter={dict.unit}   disabled={dict.disabled}/>
 }
-
+//checkBox 函数
+// function checkBoxChild(form,elem){
+//
+// }
 function creatComponent(form,dict) {
 
   dict.disabled =  location.pathname.indexOf('detail') != -1
@@ -45,18 +48,44 @@ function creatComponent(form,dict) {
   let radioChildren = [];
   if(dict.radioAry) {
     dict.radioAry.map(function(elem,index){
-      radioChildren.push(
-        <Radio value={elem.value}>{elem.name}</Radio>
-      )
+      if(elem.Element){
+        radioChildren.push(
+            <span>
+              <Radio value={elem.value}>{elem.name}</Radio>
+              {getFieldDecorator(elem.submitStr,{initialValue:elem.initValue})(
+              <Input style={{width:'40%'}}/>)}
+              </span>
+        )
+      }else{
+        radioChildren.push(
+          <Radio value={elem.value}>{elem.name}</Radio>
+        )
+      }
+
     })
   }
+
+
   //checkbox自定义多选
   let checkChildren = [] ;
   if(dict.checkAry) {
    dict.checkAry.map(function(elem,index){
-     checkChildren.push(
-       <Checkbox value={elem.value}>{elem.label}</Checkbox>
-     )
+     if(elem.Element){
+       checkChildren.push(
+         <span>
+           <Checkbox value={elem.value}>{elem.label}</Checkbox>
+           {getFieldDecorator(elem.submitStr,{initialValue:elem.initValue})(
+             <Input style={{width:'40%'}}/>)}
+              </span>
+
+       )
+
+     }else{
+       checkChildren.push(
+         <Checkbox value={elem.value}>{elem.label}</Checkbox>
+       )
+     }
+
    });
   }
 
@@ -164,11 +193,17 @@ function cusFromItem(form,dict) {
   }
   if(dict.formItems === "TwoWords" ){
     formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+      labelCol: { span: 3 },
+      wrapperCol: { span: 21 },
     }
   }
   if(dict.formItems === "FourWords" ){
+    formItemLayout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 19 },
+    }
+  }
+  if(dict.formItems === "FiveWords" ){
     formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
