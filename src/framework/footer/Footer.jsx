@@ -21,6 +21,8 @@ class Footer extends React.Component {
       })
     }
 
+    
+
 
     render() {
       const { style } = this.state;
