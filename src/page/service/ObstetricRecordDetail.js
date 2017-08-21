@@ -10,19 +10,6 @@ import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
 
-// 基本信息
-const baseInfoAry = [
-  {title:'客户姓名',submitStr:'name'},
-  {title:'年龄',submitStr:'age'},
-  {title:'宝宝性别',submitStr:'babySex'},
-  {title:'分娩日期',submitStr:'brithDate'},
-  {title:'入住日期',submitStr:'checkDate'},
-  {title:'房间',submitStr:'roomNo'},
-  {title:'妈妈入住',submitStr:'checkDay'},
-  {title:'宝宝入住',submitStr:'birthDay'},
-]
-
-
 const assessment = [
   {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
   {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
@@ -94,14 +81,7 @@ class Detail extends Component {
   render() {
 
     const {loading,baseInfoDict} = this.props
-
-    if(baseInfoDict){
-      baseInfoAry.map((value)=>{
-        value.initValue = baseInfoDict[value.submitStr]
-      })
-    }
-
-    let baseInfoDivAry = detailComponent(baseInfoAry)
+    let baseInfoDivAry = detailComponent(baseInfoDict)
 
     const bottomDiv = location.pathname === '/service/baby-nursing/edit' ?
       <div className='button-group-bottom-common'>
