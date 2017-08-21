@@ -17,7 +17,7 @@ const baseInfoAry = [
   {title:'分娩方式',component:'Input',submitStr:'radio_15'},
   {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16'},
   {title:'产程延长',component:'Input',submitStr:'baseInfo4'},
-  {title:'剖宫产手术指证',component:'Input',submitStr:'baseInfo5'},
+  {title:'剖宫产手术指证',component:'Input',submitStr:'input_5'},
   {title:'处理措施',component:'Select',chiAry:['宫缩剂','填宫纱'],submitStr:'baseInfo6'},
   {title:'胎膜早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
   {title:'产后出血',component:'InputGroup',unit:'ml',submitStr:'input_9'},
@@ -84,7 +84,7 @@ class Detail extends Component {
   }
 
   onDelete(){
-
+    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:2,dataId:this.props.CheckBeforeID}})
   }
 
   editBtnClick(){
@@ -107,7 +107,7 @@ class Detail extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const assessmentInfo =  JSON.stringify(values);
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": 16,"type": 2};
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 2};
         if(this.props.CheckInID){
           dict.id = this.props.CheckInID
         }
