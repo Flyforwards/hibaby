@@ -61,6 +61,15 @@ export default {
           let dict_ = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
           dispatch({ type: 'getBabyNursingNoteList', payload: dict_ });
         }
+        //宣教手册
+        if (pathname === '/service/baby-manual/detail') {
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
+
+          let dict_ = { dataId:query.customerid, date: moment().format('YYYY-MM-DD') }
+          dispatch({ type: 'getBrouchurDetailById', payload: dict_ });
+        }
+
       });
     }
   },
@@ -198,7 +207,19 @@ export default {
         console.log(err)
       }
     },
-
+    //宣教手册详情
+    *getBrouchurDetailById({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.getBrouchurDetailById, values);
+        yield put({
+          type: 'saveBrouchurDetailById',
+          payload: data
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
   },
   reducers: {
     setCustomerPageList(state, { payload: {data: customerPageList, total, page, size} }){
@@ -248,14 +269,19 @@ export default {
       return { ...state,page : 1}
     },
     removeData(state,{ payload: todo }){
-      return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
+      return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null,ChildCheckInData:null,ChildCheckInID:null}
     },
     savaMaternalEverydayPhysicalEvaluationList(state,{ payload: todo }){
       return {...state,PuerperaBodyList:todo}
     },
     savaCustomerInfo(state,{ payload: todo }){
       return {...state,baseInfoDict:todo}
+    },
+    //宣教手册详情
+    saveBrouchurDetailById(state,{ payload: todo}) {
+      return { ...state,MissionManualData:todo}
     }
+
   }
 
 }
