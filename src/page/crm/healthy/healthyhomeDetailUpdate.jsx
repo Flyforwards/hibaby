@@ -82,7 +82,7 @@ function HealthyhomeDetailUpdate(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i} disabled={disabled}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={i+""} disabled={disabled}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -109,7 +109,7 @@ function HealthyhomeDetailUpdate(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i} disabled={disabled}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={i+""} disabled={disabled}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -346,7 +346,7 @@ function HealthyhomeDetailUpdate(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i+index}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={(i+index)+""}>{dict.radioItems[i]}</Radio>
       );
     }
 

@@ -43,9 +43,9 @@ function creatComponent(form,dict) {
   let radioChildren = [];
   if(dict.radioAry) {
     dict.radioAry.map(function(elem,index){
-      radioChildren.push(
-        <Radio value={elem.value}>{elem.name}</Radio>
-      )
+        radioChildren.push(
+          <Radio value={elem.value}>{elem.name}</Radio>
+        )
     })
   }
   //checkbox自定义多选
@@ -60,7 +60,7 @@ function creatComponent(form,dict) {
   else{
     switch (dict.component) {
       case 'Input':
-        tempDiv = <Input style={ {width:'100%'} } addonAfter={dict.unit}   disabled={dict.disabled}/>;
+        tempDiv = <Input style={ {width:'100%'} } addonAfter={dict.unit}  placeholder={dict.placeholder} disabled={dict.disabled}/>;
         break;
       case 'TextArea':
         tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
@@ -80,14 +80,14 @@ function creatComponent(form,dict) {
         break;
       case 'gender':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={1}>男</Radio>
-          <Radio value={0}>女</Radio>
+          <Radio value={'1'}>男</Radio>
+          <Radio value={'0'}>女</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroup':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={1}>是</Radio>
-          <Radio value={0}>否</Radio>
+          <Radio value={'1'}>是</Radio>
+          <Radio value={'0'}>否</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroups':
@@ -97,7 +97,7 @@ function creatComponent(form,dict) {
         break;
       case 'CheckBoxGroup':
         tempDiv = (
-          <CheckboxGroup options={checkChildren} disabled={dict.disabled}/>
+          <CheckboxGroup onChange={dict.fun} options={checkChildren} disabled={dict.disabled}/>
         );
         break;
         tempDiv = (<RadioGroup disabled={dict.disabled}>
@@ -107,6 +107,9 @@ function creatComponent(form,dict) {
       case 'InputGroup':
         tempDiv = <InputClass dict={dict} form={form}/>;
         break;
+      case 'RadioClass':
+        tempDiv = <RadioClass dict={dict} form={form}/>;
+          break;
       case 'TextAreaGroup':
         tempDiv = <InputClass Area dict={dict} form={form}/>
         break;
@@ -163,14 +166,26 @@ function cusFromItem(form,dict) {
   }
   if(dict.formItems === "TwoWords" ){
     formItemLayout = {
+      labelCol: { span: 3 },
+      wrapperCol: { span: 21 },
+    }
+  }
+  if(dict.span === 16 ){
+    formItemLayout = {
+      labelCol: { span: 2 },
+      wrapperCol: { span: 21 },
+    }
+  }
+  if(dict.span === 15 ){
+    formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
     }
   }
   if(dict.formItems === "FourWords" ){
     formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
     }
   }
   if(dict.title === '手术指征'){
@@ -268,8 +283,39 @@ export class InputClass extends React.Component{
     )
   }
 }
+export class RadioClass extends React.Component{
 
+  constructor(props){
+    super(props)
+    this.state={radio:''}
+  }
 
+  radioChange(){
+    const {dict,form} = this.props;
+    this.setState({radio:true})
+    let tempDict = {};
+    tempDict[dict['submitStr']] = ''
+    form.setFieldsValue(tempDict)
+  }
+
+  inputChange(e){
+    const str = e.target.value;
+    this.setState({radio:(str?false:true)})
+  }
+
+  render(){
+    const {dict,form,Area} = this.props;
+    const {getFieldDecorator} = form
+    return(
+      <InputGroup compact>
+        <Radio disabled={dict.disabled} checked={this.state.radio !== ''? this.state.radio:!dict.initValue } style={{ width: '30px',marginRight:'20px' }} onChange={this.radioChange.bind(this)} value={0}>正常</Radio>
+        {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
+            <Input placeholder={dict.placeholder?dict.placeholder:null} style={{width:'50%',height: '30px'}} addonAfter={dict.unit} onChange={this.inputChange.bind(this)}  disabled={dict.disabled}/>
+        )}
+      </InputGroup>
+    )
+  }
+}
 export function creatButton(title,onclick) {
 
   let className = 'bottomButton button-group-bottom-1'
@@ -287,6 +333,55 @@ export function creatButton(title,onclick) {
     className = 'bottomButton button-group-2'
   }
   return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
+}
+
+
+
+
+
+export function detailComponent(baseInfoDict) {
+
+  // 基本信息
+  const baseInfoAry = [
+    {title:'客户姓名',submitStr:'name'},
+    {title:'年龄',submitStr:'age'},
+    {title:'宝宝性别',submitStr:'babySex'},
+    {title:'分娩日期',submitStr:'brithDate'},
+    {title:'入住日期',submitStr:'checkDate'},
+    {title:'房间',submitStr:'roomNo'},
+    {title:'妈妈入住',submitStr:'checkDay'},
+    {title:'宝宝入住',submitStr:'birthDay'},
+  ]
+
+  if(baseInfoDict){
+    baseInfoAry.map((value)=>{
+      value.initValue = baseInfoDict[value.submitStr]
+    })
+  }
+
+
+  let titSpan = 8;
+    let contentSpan = 16;
+
+    let chiArray = baseInfoAry.map((dict)=>{
+      return (
+          <Col  style={{lineHeight:'50px'}} span={6} className='rowHeight'>
+            <Row>
+              <Col style={{textAlign:'right'}} span={titSpan}>{`${dict.title}：`}</Col>
+              <Col style={{textAlign:'left'}} span={contentSpan}>{dict.initValue}</Col>
+            </Row>
+          </Col>
+      )
+    })
+
+    return(
+      <div>
+        <h3 style={{marginLeft:'40px',marginTop:'20px'}} >基本信息</h3>
+        <Row>
+          {chiArray}
+        </Row>
+      </div>
+    )
 }
 
 function showConfirm(fun) {

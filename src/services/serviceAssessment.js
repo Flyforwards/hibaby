@@ -29,3 +29,17 @@ export function getMaternalEverydayPhysicalEvaluationList(values) {
   })
 }
 
+export function getCustomerInfoByCustomerId(values) {
+  return request('/crm/api/v1/customer/getCustomerInfoByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function saveMaternalEverydayPhysicalEvaluation(values) {
+  return request('/crm/api/v1/maternalEverydayPhysicalEvaluation/saveMaternalEverydayPhysicalEvaluation', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+

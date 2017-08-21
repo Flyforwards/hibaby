@@ -21,6 +21,7 @@ export default {
     packageList:[],//主套餐列表
     shipCards:[],
     fetusAry:[],
+    PuerperaBodyList:[],
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -42,12 +43,24 @@ export default {
           let dict = { ...query, type: 4 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-        //中医见诊记录单详情页
+
+        if (pathname === '/service/puerpera-body/detail'||pathname === '/service/puerpera-body/edit') {
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
+        }
         if (pathname === '/service/puerpera-body/detail') {
           let dict = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList', payload: dict });
         }
 
+        //婴儿护理记录详情
+        if (pathname === '/service/baby-nursing/detail'||pathname === '/service/baby-nursing/edit') {
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
+
+          let dict_ = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
+          dispatch({ type: 'getBabyNursingNoteList', payload: dict_ });
+        }
       });
     }
   },
@@ -112,6 +125,8 @@ export default {
           yield put(routerRedux.push('/service/check-before'))
         }else if(values.type == 2){
           yield put(routerRedux.push('/service/check-in'))
+        } else if(values.type == 3){
+          yield put(routerRedux.push('/service/child-check-in'))
         }
       }
       catch (err){
@@ -137,6 +152,9 @@ export default {
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
         }
+        if(values.type == 3){
+          yield put(routerRedux.push('/service/child-check-in'))
+        }
       }
       catch (err){
         console.log(err)
@@ -156,6 +174,30 @@ export default {
       }
     },
 
+    *saveMaternalEverydayPhysicalEvaluation({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.saveMaternalEverydayPhysicalEvaluation, values);
+        message.success("保存成功");
+        yield put(routerRedux.push('/service/puerpera-body'))
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
+
+
+    *getCustomerInfoByCustomerId({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.getCustomerInfoByCustomerId, values);
+        yield put({
+          type: 'savaCustomerInfo',
+          payload: data
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
 
   },
   reducers: {
@@ -195,6 +237,9 @@ export default {
         }else if(todo.type === 2){
           dict.CheckInData = JSON.parse(todo.assessmentInfo)
           dict.CheckInID = todo.id
+        }else if(todo.type === 3){
+          dict.ChildCheckInData = JSON.parse(todo.assessmentInfo)
+          dict.ChildCheckInID = todo.id
         }
       }
       return { ...state,...dict,}
@@ -206,7 +251,10 @@ export default {
       return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
     },
     savaMaternalEverydayPhysicalEvaluationList(state,{ payload: todo }){
-      console.log(todo)
+      return {...state,PuerperaBodyList:todo}
+    },
+    savaCustomerInfo(state,{ payload: todo }){
+      return {...state,baseInfoDict:todo}
     }
   }
 
