@@ -60,7 +60,7 @@ function creatComponent(form,dict) {
   else{
     switch (dict.component) {
       case 'Input':
-        tempDiv = <Input style={ {width:'100%'} } addonAfter={dict.unit}   disabled={dict.disabled}/>;
+        tempDiv = <Input style={ {width:'100%'} } addonAfter={dict.unit}  placeholder={dict.placeholder} disabled={dict.disabled}/>;
         break;
       case 'TextArea':
         tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
@@ -174,6 +174,12 @@ function cusFromItem(form,dict) {
     formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 21 },
+    }
+  }
+  if(dict.span === 15 ){
+    formItemLayout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
     }
   }
   if(dict.formItems === "FourWords" ){
