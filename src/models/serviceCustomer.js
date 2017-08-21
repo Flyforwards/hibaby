@@ -133,6 +133,9 @@ export default {
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
         }
+        if(values.type == 3){
+          yield put(routerRedux.push('/service/child-check-in'))
+        }
       }
       catch (err){
         console.log(err)

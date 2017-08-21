@@ -43,9 +43,9 @@ function creatComponent(form,dict) {
   let radioChildren = [];
   if(dict.radioAry) {
     dict.radioAry.map(function(elem,index){
-      radioChildren.push(
-        <Radio value={elem.value}>{elem.name}</Radio>
-      )
+        radioChildren.push(
+          <Radio value={elem.value}>{elem.name}</Radio>
+        )
     })
   }
   //checkbox自定义多选
@@ -107,6 +107,9 @@ function creatComponent(form,dict) {
       case 'InputGroup':
         tempDiv = <InputClass dict={dict} form={form}/>;
         break;
+      case 'RadioClass':
+        tempDiv = <RadioClass dict={dict} form={form}/>;
+          break;
       case 'TextAreaGroup':
         tempDiv = <InputClass Area dict={dict} form={form}/>
         break;
@@ -273,8 +276,39 @@ export class InputClass extends React.Component{
     )
   }
 }
+export class RadioClass extends React.Component{
 
+  constructor(props){
+    super(props)
+    this.state={radio:''}
+  }
 
+  radioChange(){
+    const {dict,form} = this.props;
+    this.setState({radio:true})
+    let tempDict = {};
+    tempDict[dict['submitStr']] = ''
+    form.setFieldsValue(tempDict)
+  }
+
+  inputChange(e){
+    const str = e.target.value;
+    this.setState({radio:(str?false:true)})
+  }
+
+  render(){
+    const {dict,form,Area} = this.props;
+    const {getFieldDecorator} = form
+    return(
+      <InputGroup compact>
+        <Radio disabled={dict.disabled} checked={this.state.radio !== ''? this.state.radio:!dict.initValue } style={{ width: '30px',marginRight:'20px' }} onChange={this.radioChange.bind(this)} value={0}>正常</Radio>
+        {getFieldDecorator(dict.submitStr,{initialValue:dict.initValue})(
+            <Input placeholder={dict.placeholder?dict.placeholder:null} style={{width:'50%',height: '30px'}} addonAfter={dict.unit} onChange={this.inputChange.bind(this)}  disabled={dict.disabled}/>
+        )}
+      </InputGroup>
+    )
+  }
+}
 export function creatButton(title,onclick) {
 
   let className = 'bottomButton button-group-bottom-1'
