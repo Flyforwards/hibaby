@@ -21,6 +21,7 @@ export default {
     packageList:[],//主套餐列表
     shipCards:[],
     fetusAry:[],
+    PuerperaBodyList:[],
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -42,7 +43,7 @@ export default {
           let dict = { ...query, type: 4 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-        //中医见诊记录单详情页
+
         if (pathname === '/service/puerpera-body/detail'||pathname === '/service/puerpera-body/edit') {
           let dict = {dataId:query.customerid}
           dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
@@ -242,7 +243,7 @@ export default {
       return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
     },
     savaMaternalEverydayPhysicalEvaluationList(state,{ payload: todo }){
-      return state
+      return {...state,PuerperaBodyList:todo}
     },
     savaCustomerInfo(state,{ payload: todo }){
       return {...state,baseInfoDict:todo}

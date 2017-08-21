@@ -58,7 +58,7 @@ class Detail extends Component {
           }
         })
 
-        let dict = { "assessmentInfo": {...values}, "customerId": parse(location.search.substr(1)).customerid};
+        let dict = { ...values, "customerId": parse(location.search.substr(1)).customerid};
 
         if(this.props.CheckBeforeID){
           dict.id = this.props.CheckBeforeID
