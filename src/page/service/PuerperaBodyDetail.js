@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
-import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin,Table} from 'antd';
+import {chiDetailComponent,creatButton,detailComponent} from './ServiceComponentCreat'
+import {Card ,Row,Form,Col,Spin,Table} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
+import moment from 'moment'
 import { routerRedux,Link } from 'dva/router'
 
+
 const assessment = [
-  {title:'体重',component:'Input',submitStr:'weight',unit:'Kg'},
+  {title: '体温', key: 'temperature',unit:'℃'},
+  {title: '脉搏',key: 'pulse',unit:'次/分'},
+  {title: '体重',key: 'weight',unit:'Kg'},
+  {title: '血压',key: 'bloodPressure',unit:'mmHg'},
+  {title: '大便',key: 'shit',unit:'次数/天'},
+  {title: '恶露',key: 'lochia',chiAry:['红/多','红/中', '淡红/少']},
+  {title: '子宫收缩',key: 'uterusShrink',chiAry:['软','硬']},
+  {title: '伤口',key: 'wound',chiAry:['正常','微红']},
+  {title: '乳房',key: 'breast',chiAry:['正常','红','涨硬','痛']},
+  {title: '乳头',key: 'papilla',chiAry:['正常','破皮', '结痂']},
+  {title: '食欲',key: 'appetite',chiAry:['差','佳']},
+  {title: '情绪评分',key: 'emotionScore'},
 ]
 
-
-const columns = [
-  {title: '体温', dataIndex: 'temperature',key: 'temperature'},
-  {title: '脉搏',dataIndex: 'pulse',key: 'pulse'},
-  {title: '体重',dataIndex: 'weight',key: 'weight'},
-  {title: '血压',dataIndex: 'bloodPressure',key: 'bloodPressure'},
-  {title: '大便',dataIndex: 'shit',key: 'shit'},
-  {title: '恶露',dataIndex: 'lochia',key: 'lochia'},
-  {title: '子宫收缩',dataIndex: 'uterusShrink',key: 'uterusShrink'},
-  {title: '伤口',dataIndex: 'wound',key: 'wound'},
-  {title: '乳房',dataIndex: 'breast',key: 'breast'},
-  {title: '乳头',dataIndex: 'papilla',key: 'papilla'},
-  {title: '食欲',dataIndex: 'appetite',key: 'appetite'},
-  {title: '情绪评分',dataIndex: 'emotionScore',key: 'emotionScore'},
-  {title: '操作人',dataIndex: 'operator',key: 'operator'},
-  {title: '操作时间',dataIndex: 'operatorTime',key: 'operatorTime'},
-];
 
 class Detail extends Component {
 
@@ -55,6 +51,26 @@ class Detail extends Component {
 
   }
 
+  CreatDetailCard(dict) {
+    assessment.map((subDict)=>{
+      if(subDict.chiAry){
+        subDict.initValue =subDict.chiAry[dict[subDict.key]]
+      }
+      else {
+        subDict.initValue = dict[subDict.key]
+      }
+    })
+
+    return (
+      <Card bodyStyle={{ padding:'0 15px 0 15px'}} style={{ width: '100%' }}>
+        {chiDetailComponent(assessment)}
+        <Row>
+          <Col span={12}/>
+          {chiDetailComponent([ {title: '操作人',initValue: dict.operator}, {title: '操作时间',initValue: moment(dict.operatorTime).format('YYYY-MM-DD') },])}
+        </Row>
+      </Card>
+    )
+  }
 
   submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -85,21 +101,12 @@ class Detail extends Component {
 
     const {loading,baseInfoDict,PuerperaBodyList} = this.props
 
-    // const ary = [{title:'表单信息',ary:baseInfoAry}]
-
-
-    const tableProps = {
-      loading: loading.effects['serviceCustomer/getMaternalEverydayPhysicalEvaluationList'],
-      dataSource: PuerperaBodyList,
-      // pagination,
-      columns,
-      // onChange (page) {
-      //   dispatch({type:'serviceCustomer/getMaternalEverydayPhysicalEvaluationList',payload:{page:page.current}})
-      // }
-    }
-
-
     let baseInfoDivAry = detailComponent(baseInfoDict)
+    let detailCard = (PuerperaBodyList).map((dict)=>{
+      return this.CreatDetailCard(dict)
+    })
+
+    console.log(detailCard)
 
     const bottomDiv = location.pathname === '/service/puerpera-body/edit' ?
       <div className='button-group-bottom-common'>
@@ -114,14 +121,14 @@ class Detail extends Component {
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
-          <Table className="CustomerTable" {...tableProps}/>
-
+          {detailCard}
           {bottomDiv}
         </Card>
       </Spin>
     )
   }
 }
+
 
 const DetailForm = Form.create()(Detail);
 

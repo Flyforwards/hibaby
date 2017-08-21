@@ -8,17 +8,17 @@ import { routerRedux,Link } from 'dva/router'
 
 // 基本信息
 const baseInfoAry = [
-  {title:'客户姓名',component:'Input',submitStr:'name'},
-  {title:'年龄',component:'Input',submitStr:'age'},
-  {title:'宝宝性别',component:'gender',submitStr:'baseInfo0'},
-  {title:'分娩日期',component:'DatePicker',submitStr:'baseInfo1'},
-  {title:'入住日期',component:'DatePicker',submitStr:'baseInfo2'},
-  {title:'房间',component:'Input',submitStr:'associatedRooms'},
-  {title:'产次',component:'Input',selectName:'FETUS',submitStr:'fetus'},
-  {title:'孕次',component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity'},
-  {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks'},
-  {title:'分娩医院',component:'Input',selectName:'Hospital',submitStr:'hospital'},
-  {title:'产妇电话',component:'InputNumber',submitStr:'contact'},
+  {title:'客户姓名',component:'Input',submitStr:'name',disable:true},
+  {title:'年龄',component:'Input',submitStr:'age',disable:true},
+  {title:'宝宝性别',component:'gender',submitStr:'babySex',disable:true},
+  {title:'分娩日期',component:'DatePicker',submitStr:'brithDate',disable:true},
+  {title:'入住日期',component:'DatePicker',submitStr:'checkDate',disable:true},
+  {title:'房间',component:'Input',submitStr:'associatedRooms',disable:true},
+  {title:'产次',component:'Input',selectName:'FETUS',submitStr:'fetus',disable:true},
+  {title:'孕次',component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity',disable:true},
+  {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disable:true},
+  {title:'分娩医院',component:'Input',selectName:'Hospital',submitStr:'hospital',disable:true},
+  {title:'产妇电话',component:'InputNumber',submitStr:'contact',disable:true},
   {title:'家属电话',component:'InputNumber',submitStr:'contact_1'},
 ]
 
@@ -180,6 +180,7 @@ class Detail extends Component {
 
     let chiAry = ary.map(value=>{
       value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
+      value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{}
       return CreatCard(this.props.form,value)
     })
 

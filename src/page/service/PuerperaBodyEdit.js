@@ -93,7 +93,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
           {CreatCard(this.props.form,{title:'产妇今日身体评估',ary:assessment})}
           {bottomDiv}

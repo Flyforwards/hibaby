@@ -27,7 +27,7 @@ function onChange(dict) {
 
 function creatComponent(form,dict) {
 
-  dict.disabled =  location.pathname.indexOf('detail') != -1
+  dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
 
   const { getFieldDecorator } = form;
 
@@ -214,7 +214,7 @@ function cusFromItem(form,dict) {
 
 export function CreatCard(form,superDict) {
 
-  const {title,ary,netData} = superDict
+  const {title,ary,netData,baseInfoDict} = superDict
 
   let chiAry = []
 
@@ -232,6 +232,18 @@ export function CreatCard(form,superDict) {
       }
       else {
         dict.initValue = netData[dict.submitStr]
+      }
+    }
+
+    if(baseInfoDict){
+      if (baseInfoDict[dict.submitStr]) {
+        if (dict.component === 'DatePicker') {
+          dict.initValue = moment(baseInfoDict[dict.submitStr]);
+
+        }
+        else {
+          dict.initValue = baseInfoDict[dict.submitStr]
+        }
       }
     }
 
@@ -336,9 +348,6 @@ export function creatButton(title,onclick) {
 }
 
 
-
-
-
 export function detailComponent(baseInfoDict) {
 
   // 基本信息
@@ -359,29 +368,33 @@ export function detailComponent(baseInfoDict) {
     })
   }
 
+  return(
+    <div style={{margin:'15px'}}>
+      <h3>基本信息</h3>
+      <Row>
+        {chiDetailComponent(baseInfoAry)}
+      </Row>
+    </div>
+  )
 
-  let titSpan = 8;
-    let contentSpan = 16;
+}
 
-    let chiArray = baseInfoAry.map((dict)=>{
-      return (
-          <Col  style={{lineHeight:'50px'}} span={6} className='rowHeight'>
-            <Row>
-              <Col style={{textAlign:'right'}} span={titSpan}>{`${dict.title}：`}</Col>
-              <Col style={{textAlign:'left'}} span={contentSpan}>{dict.initValue}</Col>
-            </Row>
-          </Col>
-      )
-    })
+export function chiDetailComponent(baseInfoAry) {
+  let titSpan = 9;
+  let contentSpan = 15;
 
-    return(
-      <div>
-        <h3 style={{marginLeft:'40px',marginTop:'20px'}} >基本信息</h3>
-        <Row>
-          {chiArray}
+  let chiArray = baseInfoAry.map((dict)=>{
+    return (
+      <Col span={6}>
+        <Row >
+          <Col style={{textAlign:'right'}} span={titSpan}><span className="detailTitle">{`${dict.title}：`}</span></Col>
+          <Col style={{textAlign:'left'}} span={contentSpan}><span className="detailTitle">{dict.initValue?dict.initValue+(dict.unit?dict.unit:''):''}</span></Col>
         </Row>
-      </div>
+      </Col>
     )
+  })
+
+  return chiArray
 }
 
 function showConfirm(fun) {
