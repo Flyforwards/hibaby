@@ -80,14 +80,14 @@ function creatComponent(form,dict) {
         break;
       case 'gender':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={1}>男</Radio>
-          <Radio value={0}>女</Radio>
+          <Radio value={'1'}>男</Radio>
+          <Radio value={'0'}>女</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroup':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={1}>是</Radio>
-          <Radio value={0}>否</Radio>
+          <Radio value={'1'}>是</Radio>
+          <Radio value={'0'}>否</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroups':
@@ -199,6 +199,8 @@ function cusFromItem(form,dict) {
 
 export function CreatCard(form,superDict) {
 
+  console.log(superDict)
+
   const {title,ary,netData} = superDict
 
   let chiAry = []
@@ -287,6 +289,32 @@ export function creatButton(title,onclick) {
     className = 'bottomButton button-group-2'
   }
   return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
+}
+
+export function detailComponent(array) {
+
+    let titSpan = 8;
+    let contentSpan = 16;
+
+    let chiArray = array.map((dict)=>{
+      return (
+          <Col  style={{lineHeight:'50px'}} span={6} className='rowHeight'>
+            <Row>
+              <Col style={{textAlign:'right'}} span={titSpan}>{`${dict.title}：`}</Col>
+              <Col style={{textAlign:'left'}} span={contentSpan}>{dict.initValue}</Col>
+            </Row>
+          </Col>
+      )
+    })
+
+    return(
+      <div>
+        <h3 style={{marginLeft:'40px',marginTop:'20px'}} >基本信息</h3>
+        <Row className='detailDiv'>
+          {chiArray}
+        </Row>
+      </div>
+    )
 }
 
 function showConfirm(fun) {

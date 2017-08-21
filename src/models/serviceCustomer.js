@@ -43,11 +43,14 @@ export default {
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
         //中医见诊记录单详情页
+        if (pathname === '/service/puerpera-body/detail'||pathname === '/service/puerpera-body/edit') {
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
+        }
         if (pathname === '/service/puerpera-body/detail') {
           let dict = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList', payload: dict });
         }
-
       });
     }
   },
@@ -156,6 +159,18 @@ export default {
       }
     },
 
+    *getCustomerInfoByCustomerId({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.getCustomerInfoByCustomerId, values);
+        yield put({
+          type: 'savaCustomerInfo',
+          payload: data
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
 
   },
   reducers: {
@@ -206,7 +221,10 @@ export default {
       return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
     },
     savaMaternalEverydayPhysicalEvaluationList(state,{ payload: todo }){
-      console.log(todo)
+      return state
+    },
+    savaCustomerInfo(state,{ payload: todo }){
+      return {...state,baseInfoDict:todo}
     }
   }
 

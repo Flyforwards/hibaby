@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {CreatCard,creatButton} from './ServiceComponentCreat'
+import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
 import {Card ,Input,Form,Button,Spin} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
@@ -8,26 +8,29 @@ import { routerRedux,Link } from 'dva/router'
 
 // 基本信息
 const baseInfoAry = [
-  {title:'客户姓名',component:'Input',submitStr:'name'},
-  {title:'年龄',component:'Input',submitStr:'age'},
-  {title:'宝宝性别',component:'gender',submitStr:'baseInfo0'},
-  {title:'分娩日期',component:'DatePicker',submitStr:'baseInfo1'},
-  {title:'入住日期',component:'DatePicker',submitStr:'baseInfo2'},
-  {title:'房间',component:'Input',submitStr:'associatedRooms'},
-  {title:'妈妈入住',component:'Input',submitStr:'InputNumber0',unit:'天'},
-  {title:'宝宝入住',component:'Input',submitStr:'InputNumber1',unit:'天'},
-  {title:'体温',component:'Input',submitStr:'radio_21',unit:'℃'},
-  {title:'脉搏',component:'Input',unit:'ml',submitStr:'input_9',unit:'次/分'},
-  {title:'体重',component:'Input',submitStr:'input_18',unit:'Kg'},
-  {title:'血压',component:'Input',submitStr:'radio_24',unit:'mmHg'},
-  {title:'大便',component:'Input',submitStr:'radio_24_1',unit:'次数/天'},
-  {title:'恶露',component:'Select',chiAry:['红/多','红/中', '淡红/少'],submitStr:'radio_32'},
-  {title:'子宫收缩',component:'Select',chiAry:['软','硬'],submitStr:'radio_27'},
-  {title:'伤口',component:'Select',chiAry:['正常','微红'],submitStr:'radio_29'},
-  {title:'乳房',component:'Select',chiAry:['正常','红','涨硬','痛'],submitStr:'radio_30'},
-  {title:'乳头',component:'Select',chiAry:['正常','破皮', '结痂'],submitStr:'radio_31'},
-  {title:'食欲',component:'Select',chiAry:['差','佳'],submitStr:'input_11'},
-  {title:'情绪评分',component:'InputNumber',submitStr:'input_12'},
+  {title:'客户姓名',submitStr:'name'},
+  {title:'年龄',submitStr:'age'},
+  {title:'宝宝性别',submitStr:'babySex'},
+  {title:'分娩日期',submitStr:'brithDate'},
+  {title:'入住日期',submitStr:'checkDate'},
+  {title:'房间',submitStr:'roomNo'},
+  {title:'妈妈入住',submitStr:'checkDay'},
+  {title:'宝宝入住',submitStr:'birthDay'},
+]
+
+const assessment = [
+  {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
+  {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
+  {title:'体重',component:'Input',submitStr:'weight',unit:'Kg'},
+  {title:'血压',component:'Input',submitStr:'bloodPressure',unit:'mmHg'},
+  {title:'大便',component:'Input',submitStr:'shit',unit:'次数/天'},
+  {title:'恶露',component:'Select',chiAry:['红/多','红/中', '淡红/少'],submitStr:'lochia'},
+  {title:'子宫收缩',component:'Select',chiAry:['软','硬'],submitStr:'uterusShrink'},
+  {title:'伤口',component:'Select',chiAry:['正常','微红'],submitStr:'wound'},
+  {title:'乳房',component:'Select',chiAry:['正常','红','涨硬','痛'],submitStr:'breast'},
+  {title:'乳头',component:'Select',chiAry:['正常','破皮', '结痂'],submitStr:'papilla'},
+  {title:'食欲',component:'Select',chiAry:['差','佳'],submitStr:'appetite'},
+  {title:'情绪评分',component:'InputNumber',submitStr:'emotionScore'},
 ]
 
 class Detail extends Component {
@@ -84,15 +87,18 @@ class Detail extends Component {
 
   render() {
 
-    const {loading} = this.props
+    const {loading,baseInfoDict} = this.props
 
-    const ary = [{title:'表单信息',ary:baseInfoAry}]
+    // const ary = [{title:'表单信息',ary:baseInfoAry}]
 
-    let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
-      return CreatCard(this.props.form,value)
-    })
 
+    if(baseInfoDict){
+      baseInfoAry.map((value)=>{
+        value.initValue = baseInfoDict[value.submitStr]
+      })
+    }
+
+    let baseInfoDivAry = detailComponent(baseInfoAry)
 
     const bottomDiv = location.pathname === '/service/puerpera-body/edit' ?
       <div className='button-group-bottom-common'>
@@ -106,7 +112,8 @@ class Detail extends Component {
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          {chiAry}
+          {baseInfoDivAry}
+          {CreatCard(this.props.form,{title:'产妇今日身体评估',ary:assessment})}
           {bottomDiv}
         </Card>
       </Spin>

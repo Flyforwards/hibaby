@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {CreatCard,creatButton} from './ServiceComponentCreat'
+import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
 import {Card ,Input,Form,Button,Spin} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
@@ -8,14 +8,14 @@ import { routerRedux,Link } from 'dva/router'
 
 // 基本信息
 const baseInfoAry = [
-  {title:'客户姓名',component:'Input',submitStr:'customerName'},
-  {title:'年龄',component:'Input',submitStr:'age'},
-  {title:'宝宝性别',component:'gender',submitStr:'sex'},
-  {title:'分娩日期',component:'DatePicker',submitStr:'deliveryTime'},
-  {title:'入住日期',component:'DatePicker',submitStr:'checkTime'},
-  {title:'房间',component:'Input',submitStr:'associatedRooms'},
-  {title:'妈妈入住',component:'Input',submitStr:'checkDay',unit:'天'},
-  {title:'宝宝入住',component:'Input',submitStr:'birthDay',unit:'天'},
+  {title:'客户姓名',submitStr:'name'},
+  {title:'年龄',submitStr:'age'},
+  {title:'宝宝性别',submitStr:'babySex'},
+  {title:'分娩日期',submitStr:'brithDate'},
+  {title:'入住日期',submitStr:'checkDate'},
+  {title:'房间',submitStr:'roomNo'},
+  {title:'妈妈入住',submitStr:'checkDay'},
+  {title:'宝宝入住',submitStr:'birthDay'},
 ]
 
 const assessment = [
@@ -87,15 +87,17 @@ class Detail extends Component {
 
   render() {
 
-    const {loading} = this.props
+    const {loading,baseInfoDict} = this.props
 
-    const ary = [{title:'表单信息',ary:baseInfoAry}]
+    // const ary = [{title:'表单信息',ary:baseInfoAry}]
 
-    let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
-      return CreatCard(this.props.form,value)
-    })
+    if(baseInfoDict){
+      baseInfoAry.map((value)=>{
+        value.initValue = baseInfoDict[value.submitStr]
+      })
+    }
 
+    let baseInfoDivAry = detailComponent(baseInfoAry)
 
     const bottomDiv = location.pathname === '/service/puerpera-body/edit' ?
       <div className='button-group-bottom-common'>
@@ -109,7 +111,7 @@ class Detail extends Component {
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          {chiAry}
+          {baseInfoDivAry}
           {bottomDiv}
         </Card>
       </Spin>
