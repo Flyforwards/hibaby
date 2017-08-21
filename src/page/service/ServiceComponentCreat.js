@@ -198,9 +198,7 @@ function cusFromItem(form,dict) {
 }
 
 export function CreatCard(form,superDict) {
-
-  console.log(superDict)
-
+  
   const {title,ary,netData} = superDict
 
   let chiAry = []
@@ -291,12 +289,35 @@ export function creatButton(title,onclick) {
   return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
 }
 
-export function detailComponent(array) {
 
-    let titSpan = 8;
+
+
+
+export function detailComponent(baseInfoDict) {
+
+  // 基本信息
+  const baseInfoAry = [
+    {title:'客户姓名',submitStr:'name'},
+    {title:'年龄',submitStr:'age'},
+    {title:'宝宝性别',submitStr:'babySex'},
+    {title:'分娩日期',submitStr:'brithDate'},
+    {title:'入住日期',submitStr:'checkDate'},
+    {title:'房间',submitStr:'roomNo'},
+    {title:'妈妈入住',submitStr:'checkDay'},
+    {title:'宝宝入住',submitStr:'birthDay'},
+  ]
+
+  if(baseInfoDict){
+    baseInfoAry.map((value)=>{
+      value.initValue = baseInfoDict[value.submitStr]
+    })
+  }
+
+
+  let titSpan = 8;
     let contentSpan = 16;
 
-    let chiArray = array.map((dict)=>{
+    let chiArray = baseInfoAry.map((dict)=>{
       return (
           <Col  style={{lineHeight:'50px'}} span={6} className='rowHeight'>
             <Row>

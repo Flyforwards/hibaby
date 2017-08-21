@@ -6,18 +6,6 @@ import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
 
-// 基本信息
-const baseInfoAry = [
-  {title:'客户姓名',submitStr:'name'},
-  {title:'年龄',submitStr:'age'},
-  {title:'宝宝性别',submitStr:'babySex'},
-  {title:'分娩日期',submitStr:'brithDate'},
-  {title:'入住日期',submitStr:'checkDate'},
-  {title:'房间',submitStr:'roomNo'},
-  {title:'妈妈入住',submitStr:'checkDay'},
-  {title:'宝宝入住',submitStr:'birthDay'},
-]
-
 const assessment = [
   {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
   {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
@@ -69,14 +57,13 @@ class Detail extends Component {
             values[key] = values[key].format()
           }
         })
-        const assessmentInfo =  JSON.stringify(values);
 
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 6};
+        let dict = { "assessmentInfo": {...values}, "customerId": parse(location.search.substr(1)).customerid};
 
         if(this.props.CheckBeforeID){
           dict.id = this.props.CheckBeforeID
         }
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
+        this.props.dispatch({type:'serviceCustomer/saveMaternalEverydayPhysicalEvaluation',payload:dict})
       }
     });
   }
@@ -92,13 +79,8 @@ class Detail extends Component {
     // const ary = [{title:'表单信息',ary:baseInfoAry}]
 
 
-    if(baseInfoDict){
-      baseInfoAry.map((value)=>{
-        value.initValue = baseInfoDict[value.submitStr]
-      })
-    }
 
-    let baseInfoDivAry = detailComponent(baseInfoAry)
+    let baseInfoDivAry = detailComponent(baseInfoDict)
 
     const bottomDiv = location.pathname === '/service/puerpera-body/edit' ?
       <div className='button-group-bottom-common'>

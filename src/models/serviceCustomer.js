@@ -159,6 +159,18 @@ export default {
       }
     },
 
+    *saveMaternalEverydayPhysicalEvaluation({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.saveMaternalEverydayPhysicalEvaluation, values);
+        message.success("保存成功");
+        yield put(routerRedux.push('/service/puerpera-body'))
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
+
+
     *getCustomerInfoByCustomerId({payload: values}, { call, put }) {
       try {
         const {data: {data,code}} = yield call(serviceAssessment.getCustomerInfoByCustomerId, values);
