@@ -163,14 +163,20 @@ function cusFromItem(form,dict) {
   }
   if(dict.formItems === "TwoWords" ){
     formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+      labelCol: { span: 3 },
+      wrapperCol: { span: 21 },
+    }
+  }
+  if(dict.span === 16 ){
+    formItemLayout = {
+      labelCol: { span: 2 },
+      wrapperCol: { span: 21 },
     }
   }
   if(dict.formItems === "FourWords" ){
     formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
     }
   }
   if(dict.title === '手术指征'){
