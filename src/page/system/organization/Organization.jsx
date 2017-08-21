@@ -86,9 +86,9 @@ class Organization extends React.Component {
         if (record.roleId) {
           roleId = record.roleId.split(",")
           let len = roleId.length - 1
-          if (local.get("rolSelectData")) {
+          if (local.get("roleSelectData")) {
             roleId.map((data, index) => {
-              local.get("rolSelectData").map((item) => {
+              local.get("roleSelectData").map((item) => {
                 if (item.id == Number(data)) {
 
                   if (len == index) {
@@ -305,7 +305,7 @@ class Organization extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const fields = this.props.form.getFieldsValue();
-    let roleId = local.get("rolSelectData")
+    let roleId = local.get("roleSelectData")
     let ListLnformation = []
     if (this.props.list != null) {
       ListLnformation = this.props.list;

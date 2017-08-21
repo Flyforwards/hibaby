@@ -77,10 +77,17 @@ export default {
       let getDeptListByEndemicIddata = { ...state, dataEndemicId };
       return getDeptListByEndemicIddata
     },
+
+    // 保存 所有地方中信的角色信息
     roleSelectAllDataSave(state, { payload: { data: selectData } }){
-      local.set("rolSelectData", selectData)
-      return { ...state, selectData }
+      // local.set("roleAllData", selectData)
+      local.set("roleSelectData", selectData)
     },
+    roleCurrentDataSave (state, { payload: { data: selectData } }){
+      local.set("roleCurrentData", selectData)
+      // return { ...state, selectData }
+    },
+
     positionSave(state, { payload: { data: dataId } }){
       let Positiondata = { ...state, dataId };
       return Positiondata
@@ -296,12 +303,24 @@ export default {
 
       }
     },
-    //系统角色下拉列表
+    //所有系统角色下拉列表
     *roleSelectAllData({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(organizationService.roleSelectAllData, values);
       if (code == 0) {
         yield put({
           type: 'roleSelectAllDataSave',
+          payload: {
+            data,
+          }
+        });
+      }
+    },
+
+    *roleCurrentData ({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(organizationService.roleSelectData, values);
+      if (code == 0) {
+        yield put({
+          type: 'roleCurrentDataSave',
           payload: {
             data,
           }
@@ -438,6 +457,11 @@ export default {
             type: 'roleSelectAllData',
             payload: query
           });
+          dispatch({
+            type: 'roleCurrentData',
+            payload: query
+          });
+
           dispatch({
             type: 'getDepartmentNodes',
             payload: query

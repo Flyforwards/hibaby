@@ -53,7 +53,9 @@ export function getDeptListByEndemicId(values) {
     body: JSON.stringify(values),
   })
 }
-//系统角色下拉列表
+
+
+// 查询当前地方中心的角色。
 export function roleSelectData(values) {
   return request('/crm/api/v1/role/selectData', {
     method: 'POST',
@@ -61,6 +63,8 @@ export function roleSelectData(values) {
   })
 }
 
+
+// 查询所有地方中心的所有角色。
 export function roleSelectAllData(values) {
   return request('/crm/api/v1/role/selectAllData', {
     method: 'POST',

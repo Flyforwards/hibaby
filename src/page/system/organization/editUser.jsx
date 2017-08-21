@@ -212,7 +212,7 @@ class EditUsered extends React.Component {
       let display = 'block'
       let endemic  = session.get("endemic")
       let LeaderTableList = null
-      const SelectData = local.get("rolSelectData")
+      const SelectData = local.get("roleCurrentData")
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       if(this.props.userID != null){
          USER = this.props.userID

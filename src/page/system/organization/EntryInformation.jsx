@@ -10,7 +10,7 @@ const FormItem = Form.Item
 const CheckboxGroup = Checkbox.Group
 const Option = Select.Option
 const endemic  = session.get("endemic")
-const SelectData = local.get("rolSelectData")
+const SelectData = local.get("roleSelectData")
 const departmentData = local.set("department")
 
 
