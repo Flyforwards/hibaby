@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin} from 'antd';
+import {Card ,Input,Form,Button,Spin,Table} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -8,21 +8,24 @@ import { routerRedux,Link } from 'dva/router'
 
 const assessment = [
   {title:'体重',component:'Input',submitStr:'weight',unit:'Kg'},
-  {title:'血压',component:'Input',submitStr:'bloodPressure',unit:'mmHg'},
-  {title:'大便',component:'Input',submitStr:'shit',unit:'次数/天'},
-  {title:'恶露',component:'Select',chiAry:['红/多','红/中', '淡红/少'],submitStr:'lochia'},
-  {title:'子宫收缩',component:'Select',chiAry:['软','硬'],submitStr:'uterusShrink'},
-  {title:'伤口',component:'Select',chiAry:['正常','微红'],submitStr:'wound'},
-  {title:'乳房',component:'Select',chiAry:['正常','红','涨硬','痛'],submitStr:'breast'},
-  {title:'乳头',component:'Select',chiAry:['正常','破皮', '结痂'],submitStr:'papilla'},
-  {title:'食欲',component:'Select',chiAry:['差','佳'],submitStr:'appetite'},
-  {title:'情绪评分',component:'InputNumber',submitStr:'emotionScore'},
 ]
 
 
-const columns = [{title: '体温', dataIndex: 'temperature',key: 'temperature'},
+const columns = [
+  {title: '体温', dataIndex: 'temperature',key: 'temperature'},
   {title: '脉搏',dataIndex: 'pulse',key: 'pulse'},
-
+  {title: '体重',dataIndex: 'weight',key: 'weight'},
+  {title: '血压',dataIndex: 'bloodPressure',key: 'bloodPressure'},
+  {title: '大便',dataIndex: 'shit',key: 'shit'},
+  {title: '恶露',dataIndex: 'lochia',key: 'lochia'},
+  {title: '子宫收缩',dataIndex: 'uterusShrink',key: 'uterusShrink'},
+  {title: '伤口',dataIndex: 'wound',key: 'wound'},
+  {title: '乳房',dataIndex: 'breast',key: 'breast'},
+  {title: '乳头',dataIndex: 'papilla',key: 'papilla'},
+  {title: '食欲',dataIndex: 'appetite',key: 'appetite'},
+  {title: '情绪评分',dataIndex: 'emotionScore',key: 'emotionScore'},
+  {title: '操作人',dataIndex: 'operator',key: 'operator'},
+  {title: '操作时间',dataIndex: 'operatorTime',key: 'operatorTime'},
 ];
 
 class Detail extends Component {
@@ -52,6 +55,7 @@ class Detail extends Component {
 
   }
 
+
   submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -79,9 +83,20 @@ class Detail extends Component {
 
   render() {
 
-    const {loading,baseInfoDict} = this.props
+    const {loading,baseInfoDict,PuerperaBodyList} = this.props
 
     // const ary = [{title:'表单信息',ary:baseInfoAry}]
+
+
+    const tableProps = {
+      loading: loading.effects['serviceCustomer/getMaternalEverydayPhysicalEvaluationList'],
+      dataSource: PuerperaBodyList,
+      // pagination,
+      columns,
+      // onChange (page) {
+      //   dispatch({type:'serviceCustomer/getMaternalEverydayPhysicalEvaluationList',payload:{page:page.current}})
+      // }
+    }
 
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
@@ -97,8 +112,10 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
+          <Table className="CustomerTable" {...tableProps}/>
+
           {bottomDiv}
         </Card>
       </Spin>

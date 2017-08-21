@@ -331,7 +331,7 @@ export function detailComponent(baseInfoDict) {
     return(
       <div>
         <h3 style={{marginLeft:'40px',marginTop:'20px'}} >基本信息</h3>
-        <Row className='detailDiv'>
+        <Row>
           {chiArray}
         </Row>
       </div>

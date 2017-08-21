@@ -21,6 +21,7 @@ export default {
     packageList:[],//主套餐列表
     shipCards:[],
     fetusAry:[],
+    PuerperaBodyList:[],
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -233,7 +234,7 @@ export default {
       return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
     },
     savaMaternalEverydayPhysicalEvaluationList(state,{ payload: todo }){
-      return state
+      return {...state,PuerperaBodyList:todo}
     },
     savaCustomerInfo(state,{ payload: todo }){
       return {...state,baseInfoDict:todo}
