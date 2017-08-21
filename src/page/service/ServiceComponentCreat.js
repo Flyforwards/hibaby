@@ -80,14 +80,14 @@ function creatComponent(form,dict) {
         break;
       case 'gender':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={1}>男</Radio>
-          <Radio value={0}>女</Radio>
+          <Radio value={'1'}>男</Radio>
+          <Radio value={'0'}>女</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroup':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={1}>是</Radio>
-          <Radio value={0}>否</Radio>
+          <Radio value={'1'}>是</Radio>
+          <Radio value={'0'}>否</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroups':
@@ -245,6 +245,7 @@ export function CreatCard(form,superDict) {
   )
 }
 
+
 export class InputClass extends React.Component{
 
   constructor(props){
@@ -332,6 +333,55 @@ export function creatButton(title,onclick) {
     className = 'bottomButton button-group-2'
   }
   return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
+}
+
+
+
+
+
+export function detailComponent(baseInfoDict) {
+
+  // 基本信息
+  const baseInfoAry = [
+    {title:'客户姓名',submitStr:'name'},
+    {title:'年龄',submitStr:'age'},
+    {title:'宝宝性别',submitStr:'babySex'},
+    {title:'分娩日期',submitStr:'brithDate'},
+    {title:'入住日期',submitStr:'checkDate'},
+    {title:'房间',submitStr:'roomNo'},
+    {title:'妈妈入住',submitStr:'checkDay'},
+    {title:'宝宝入住',submitStr:'birthDay'},
+  ]
+
+  if(baseInfoDict){
+    baseInfoAry.map((value)=>{
+      value.initValue = baseInfoDict[value.submitStr]
+    })
+  }
+
+
+  let titSpan = 8;
+    let contentSpan = 16;
+
+    let chiArray = baseInfoAry.map((dict)=>{
+      return (
+          <Col  style={{lineHeight:'50px'}} span={6} className='rowHeight'>
+            <Row>
+              <Col style={{textAlign:'right'}} span={titSpan}>{`${dict.title}：`}</Col>
+              <Col style={{textAlign:'left'}} span={contentSpan}>{dict.initValue}</Col>
+            </Row>
+          </Col>
+      )
+    })
+
+    return(
+      <div>
+        <h3 style={{marginLeft:'40px',marginTop:'20px'}} >基本信息</h3>
+        <Row>
+          {chiArray}
+        </Row>
+      </div>
+    )
 }
 
 function showConfirm(fun) {

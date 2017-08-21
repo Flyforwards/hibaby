@@ -38,7 +38,7 @@ const PostpartumSituationAry = [
 
 //入所查体
 const checkInMedical = [
-  {title:'血压',component:'Input',submitStr:'medical_'},
+  {title:'血压',component:'Input',submitStr:'input_11'},
   {title:'体温',component:'Input',unit:'℃',submitStr:'input_12'},
   {title:'脉搏',component:'Input',unit:'次/分',submitStr:'medical_0'},
   {title:'孕前体重',component:'Input',unit:'kg',submitStr:'medical_1'},
@@ -53,11 +53,11 @@ const checkInMedical = [
   {title:'右乳头',component:'CheckBoxGroup',checkAry:['凸', '平坦' ,'凹陷', '皲裂'],submitStr:'medical_11'},
   {title:'乳汁量',component:'Select',chiAry:['少', '中','多' ],submitStr:'medical_12'},
   {title:'副乳',component:'RadioGroup',submitStr:'medical_13'},
-  // {title:'腹部',component:'Input',submitStr:'medical_14'},
+  {title:'腹部',component:'Select',chiAry:['平软', '腹胀','压痛','无', '有', ],submitStr:'medical_14'},
   {title:'外痔',component:'RadioGroup',submitStr:'medical_15'},
   {title:'下肢水肿',component:'RadioGroup',submitStr:'radio_29'},
   {title:'宫底高度',component:'Input',submitStr:'medical_16'},
-  {title:'子宫压痛',component:'Input',submitStr:'medical_17'},
+  {title:'子宫收缩',component:'RadioGroups',radioAry:[{'name':'软','value':'0'},{'name':'硬','value':'1'}],submitStr:'medical_17'},
   {title:'会阴伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'0'},{'name':'水肿','value':'1'},{'name':'血肿','value':'2'},{'name':'裂开','value':'3'},{'name':'感染','value':'4'}],submitStr:'radio_24'},
   {title:'腹部伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'5'},{'name':'敷料覆盖未见渗出物','value':'6'},{'name':'红肿','value':'7'},{'name':'裂开','value':'8'},{'name':'感染','value':'9'}],submitStr:'radio_24',key:'radio_24_1'},
   {title:'恶露性质',component:'Select',chiAry:['血性', '浆液性', '白色'],submitStr:'medical_18'},
@@ -117,6 +117,7 @@ class Detail extends Component {
   }
 
   componentWillUnmount() {
+
     this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
@@ -127,7 +128,7 @@ class Detail extends Component {
     const ary = [{title:'基本信息',ary:baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckInData
+      value.netData = this.props.CheckInData?this.props.CheckInData:{}
       return CreatCard(this.props.form,value)
     })
 

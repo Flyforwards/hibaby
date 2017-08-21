@@ -84,11 +84,17 @@ class SkinHealthInformationDetailUpdate extends React.Component {
 
   handleSubmit(){
     //console.log("您点击了保存按钮");
-    const {dispatch} = this.props;
+    const {dispatch,form} = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const skinHealthInformation = this.props.healthInformation.skinHealthInformation;
-        const healthInfo_ = JSON.stringify(values);
+        const allValue = form.getFieldsValue();
+        Object.keys(allValue).map(key=>{
+          if(!allValue[key]){
+            allValue[key] = null
+          }
+        })
+        const healthInfo_ = JSON.stringify(allValue);
         if (skinHealthInformation){
           dispatch({
             type: 'healthInformation/updateHealthInformation',

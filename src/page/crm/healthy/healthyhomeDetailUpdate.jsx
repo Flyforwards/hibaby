@@ -82,7 +82,7 @@ function HealthyhomeDetailUpdate(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i} disabled={disabled}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={i+""} disabled={disabled}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -109,7 +109,7 @@ function HealthyhomeDetailUpdate(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i} disabled={disabled}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={i+""} disabled={disabled}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -346,7 +346,7 @@ function HealthyhomeDetailUpdate(props) {
     const radioItemDivs = [];
     for (let i = 0; i < dict.radioItems.length; i++) {
       radioItemDivs.push(
-        <Radio key={i} value={i+index}>{dict.radioItems[i]}</Radio>
+        <Radio key={i} value={(i+index)+""}>{dict.radioItems[i]}</Radio>
       );
     }
 
@@ -382,7 +382,13 @@ function HealthyhomeDetailUpdate(props) {
     form.setFieldsValue({imgInput_8 : (imgInput_8_arr&&imgInput_8_arr.length>0)?JSON.stringify(imgInput_8_arr):null});
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const healthInfo = JSON.stringify(values);
+        const allValue = props.form.getFieldsValue();
+        Object.keys(allValue).map(key=>{
+          if(!allValue[key]){
+            allValue[key] = null
+          }
+        })
+        const healthInfo = JSON.stringify(allValue);
         if(medicalHealthInformation){
           dispatch({
             type: 'healthInformation/updateHealthInformation',

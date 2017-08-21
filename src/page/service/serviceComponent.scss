@@ -23,3 +23,25 @@
   }
 }
 
+.detailDiv{
+  font:12px "微软雅黑";
+  .bottomButton{
+    margin-bottom: 15px;
+    margin-right: 10px;
+  }
+  .ant-table-wrapper{
+    margin: 0 10px;
+  }
+  .ant-table-thead > tr > th {
+    background-color: rgba(102, 102, 102, 1);
+    font-weight: 500;
+    transition: background .3s ease;
+    text-align: center;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #FFFFFF;
+    padding: 10px 5px;
+  }
+}
