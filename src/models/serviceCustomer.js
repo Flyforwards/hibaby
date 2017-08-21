@@ -125,6 +125,8 @@ export default {
           yield put(routerRedux.push('/service/check-before'))
         }else if(values.type == 2){
           yield put(routerRedux.push('/service/check-in'))
+        } else if(values.type == 3){
+          yield put(routerRedux.push('/service/child-check-in'))
         }
       }
       catch (err){
@@ -149,6 +151,9 @@ export default {
         message.success("删除成功");
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
+        }
+        if(values.type == 3){
+          yield put(routerRedux.push('/service/child-check-in'))
         }
       }
       catch (err){
@@ -232,6 +237,9 @@ export default {
         }else if(todo.type === 2){
           dict.CheckInData = JSON.parse(todo.assessmentInfo)
           dict.CheckInID = todo.id
+        }else if(todo.type === 3){
+          dict.ChildCheckInData = JSON.parse(todo.assessmentInfo)
+          dict.ChildCheckInID = todo.id
         }
       }
       return { ...state,...dict,}
