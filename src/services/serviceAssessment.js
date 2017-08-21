@@ -36,4 +36,10 @@ export function getCustomerInfoByCustomerId(values) {
   })
 }
 
+export function saveMaternalEverydayPhysicalEvaluation(values) {
+  return request('/crm/api/v1/maternalEverydayPhysicalEvaluation/saveMaternalEverydayPhysicalEvaluation', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
