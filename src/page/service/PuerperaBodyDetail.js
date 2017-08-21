@@ -4,6 +4,7 @@ import {Card ,Row,Form,Col,Spin,Table} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
+import moment from 'moment'
 import { routerRedux,Link } from 'dva/router'
 
 
@@ -13,12 +14,12 @@ const assessment = [
   {title: '体重',key: 'weight',unit:'Kg'},
   {title: '血压',key: 'bloodPressure',unit:'mmHg'},
   {title: '大便',key: 'shit',unit:'次数/天'},
-  {title: '恶露',key: 'lochia'},
-  {title: '子宫收缩',key: 'uterusShrink'},
-  {title: '伤口',key: 'wound'},
-  {title: '乳房',key: 'breast'},
-  {title: '乳头',key: 'papilla'},
-  {title: '食欲',key: 'appetite'},
+  {title: '恶露',key: 'lochia',chiAry:['红/多','红/中', '淡红/少']},
+  {title: '子宫收缩',key: 'uterusShrink',chiAry:['软','硬']},
+  {title: '伤口',key: 'wound',chiAry:['正常','微红']},
+  {title: '乳房',key: 'breast',chiAry:['正常','红','涨硬','痛']},
+  {title: '乳头',key: 'papilla',chiAry:['正常','破皮', '结痂']},
+  {title: '食欲',key: 'appetite',chiAry:['差','佳']},
   {title: '情绪评分',key: 'emotionScore'},
 ]
 
@@ -50,13 +51,22 @@ class Detail extends Component {
 
   }
 
-  CreatDetailCard(ary) {
+  CreatDetailCard(dict) {
+    assessment.map((subDict)=>{
+      if(subDict.chiAry){
+        subDict.initValue =subDict.chiAry[dict[subDict.key]]
+      }
+      else {
+        subDict.initValue = dict[subDict.key]
+      }
+    })
+
     return (
       <Card bodyStyle={{ padding:'0 15px 0 15px'}} style={{ width: '100%' }}>
-        {chiDetailComponent(ary)}
+        {chiDetailComponent(assessment)}
         <Row>
           <Col span={12}/>
-          {chiDetailComponent([ {title: '操作人',key: 'operator'}, {title: '操作时间',key: 'operatorTime'},])}
+          {chiDetailComponent([ {title: '操作人',initValue: dict.operator}, {title: '操作时间',initValue: moment(dict.operatorTime).format('YYYY-MM-DD') },])}
         </Row>
       </Card>
     )
@@ -92,8 +102,8 @@ class Detail extends Component {
     const {loading,baseInfoDict,PuerperaBodyList} = this.props
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
-    let detailCard = ([1,2,3]).map(()=>{
-      return this.CreatDetailCard(assessment)
+    let detailCard = (PuerperaBodyList).map((dict)=>{
+      return this.CreatDetailCard(dict)
     })
 
     console.log(detailCard)

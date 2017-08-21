@@ -27,7 +27,7 @@ function onChange(dict) {
 
 function creatComponent(form,dict) {
 
-  dict.disabled =  location.pathname.indexOf('detail') != -1
+  dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
 
   const { getFieldDecorator } = form;
 
@@ -214,7 +214,7 @@ function cusFromItem(form,dict) {
 
 export function CreatCard(form,superDict) {
 
-  const {title,ary,netData} = superDict
+  const {title,ary,netData,baseInfoDict} = superDict
 
   let chiAry = []
 
@@ -232,6 +232,18 @@ export function CreatCard(form,superDict) {
       }
       else {
         dict.initValue = netData[dict.submitStr]
+      }
+    }
+
+    if(baseInfoDict){
+      if (baseInfoDict[dict.submitStr]) {
+        if (dict.component === 'DatePicker') {
+          dict.initValue = moment(baseInfoDict[dict.submitStr]);
+
+        }
+        else {
+          dict.initValue = baseInfoDict[dict.submitStr]
+        }
       }
     }
 
@@ -376,7 +388,7 @@ export function chiDetailComponent(baseInfoAry) {
       <Col span={6}>
         <Row >
           <Col style={{textAlign:'right'}} span={titSpan}><span className="detailTitle">{`${dict.title}：`}</span></Col>
-          <Col style={{textAlign:'left'}} span={contentSpan}><span className="detailTitle">{dict.initValue}</span></Col>
+          <Col style={{textAlign:'left'}} span={contentSpan}><span className="detailTitle">{dict.initValue?dict.initValue+(dict.unit?dict.unit:''):''}</span></Col>
         </Row>
       </Col>
     )

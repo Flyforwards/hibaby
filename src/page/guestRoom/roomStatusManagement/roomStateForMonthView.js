@@ -746,7 +746,7 @@ const monthStateView = (props) => {
         for (let i = 0; i < users.length; i++) {
 
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
-          const content = <div>{(users[i].customerName?users[i].customerName:(users[i].isRepair == 1 ? '维修中' :'' )) + '('
+          const content = <div style={{zIndex:99999}}>{(users[i].customerName?users[i].customerName:(users[i].isRepair == 1 ? '维修中' :'' )) + '('
           + users[i].dayCount + '天, '
           + timeToDate(users[i].startDate)
           + '-'

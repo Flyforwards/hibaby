@@ -27,8 +27,10 @@ export default {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname,query }) => {
         if (pathname === '/service/check-before/detail'||pathname === '/service/check-before/edit') {
-          let dict = {...query,type:1}
-          dispatch({type: 'getAssessmentByCustomerId',payload:dict});
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
+          let dictTwo = {...query,type:1}
+          dispatch({type: 'getAssessmentByCustomerId',payload:dictTwo});
         }
         if (pathname === '/service/check-in/detail'|| pathname === '/service/check-in/edit') {
           let dict = {...query,type:2}
