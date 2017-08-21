@@ -202,6 +202,26 @@ export default (app) => [
       })
     }
   },
+  // 婴儿护理记录单详情
+  {
+    path: '/service/baby-nursing/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ObstetricRecordDetail.js'))
+      })
+    }
+  },
+  // 编辑婴儿护理记录单
+  {
+    path: '/service/baby-nursing/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ObstetricRecordDetail.js'))
+      })
+    }
+  },
   // 宣教手册
   {
     path: '/service/baby-manual',

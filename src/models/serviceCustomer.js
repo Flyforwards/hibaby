@@ -51,6 +51,15 @@ export default {
           let dict = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList', payload: dict });
         }
+
+        //婴儿护理记录详情
+        if (pathname === '/service/baby-nursing/detail'||pathname === '/service/baby-nursing/edit') {
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
+
+          let dict_ = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
+          dispatch({ type: 'getBabyNursingNoteList', payload: dict_ });
+        }
       });
     }
   },
