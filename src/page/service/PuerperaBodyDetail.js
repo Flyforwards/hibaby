@@ -6,21 +6,7 @@ import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
 
-// 基本信息
-const baseInfoAry = [
-  {title:'客户姓名',submitStr:'name'},
-  {title:'年龄',submitStr:'age'},
-  {title:'宝宝性别',submitStr:'babySex'},
-  {title:'分娩日期',submitStr:'brithDate'},
-  {title:'入住日期',submitStr:'checkDate'},
-  {title:'房间',submitStr:'roomNo'},
-  {title:'妈妈入住',submitStr:'checkDay'},
-  {title:'宝宝入住',submitStr:'birthDay'},
-]
-
 const assessment = [
-  {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
-  {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
   {title:'体重',component:'Input',submitStr:'weight',unit:'Kg'},
   {title:'血压',component:'Input',submitStr:'bloodPressure',unit:'mmHg'},
   {title:'大便',component:'Input',submitStr:'shit',unit:'次数/天'},
@@ -32,6 +18,12 @@ const assessment = [
   {title:'食欲',component:'Select',chiAry:['差','佳'],submitStr:'appetite'},
   {title:'情绪评分',component:'InputNumber',submitStr:'emotionScore'},
 ]
+
+
+const columns = [{title: '体温', dataIndex: 'temperature',key: 'temperature'},
+  {title: '脉搏',dataIndex: 'pulse',key: 'pulse'},
+
+];
 
 class Detail extends Component {
 
@@ -91,13 +83,8 @@ class Detail extends Component {
 
     // const ary = [{title:'表单信息',ary:baseInfoAry}]
 
-    if(baseInfoDict){
-      baseInfoAry.map((value)=>{
-        value.initValue = baseInfoDict[value.submitStr]
-      })
-    }
 
-    let baseInfoDivAry = detailComponent(baseInfoAry)
+    let baseInfoDivAry = detailComponent(baseInfoDict)
 
     const bottomDiv = location.pathname === '/service/puerpera-body/edit' ?
       <div className='button-group-bottom-common'>

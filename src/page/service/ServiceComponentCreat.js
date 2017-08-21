@@ -198,7 +198,7 @@ function cusFromItem(form,dict) {
 }
 
 export function CreatCard(form,superDict) {
-  
+
   const {title,ary,netData} = superDict
 
   let chiAry = []
