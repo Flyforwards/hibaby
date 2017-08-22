@@ -141,7 +141,7 @@ class AddUser extends React.Component {
       let traversalEndemicId = []
       let selectDataList = []
       let endemic = session.get("endemic")
-      let SelectData = local.get("rolSelectData")
+      let SelectData = local.get("roleCurrentData")
       let NODEID = window.location.search.split("=")[1];
       const { getFieldDecorator } = this.props.form;
 

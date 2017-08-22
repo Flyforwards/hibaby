@@ -144,6 +144,7 @@ export default {
     *loginThreeCustomerSystem ({ }, {call}) {
       try {
         const {data: {code, data}} = yield call(usersService.getByCurrentUser,);
+
         if (code == 0) {
           window.executeAction('doLogin', data );//执行登陆 ccic2里面的js类
         }

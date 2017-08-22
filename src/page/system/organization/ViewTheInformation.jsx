@@ -95,7 +95,7 @@ class ViewTheInformation extends React.Component {
       let entrys = []
       let time = null
       let JobInformation = []
-      let selectData = local.get("rolSelectData")
+      let selectData = local.get("roleSelectData")
       let identifier =null;
       let isDisabled = false; // 判断该用户在该地方中心是否被禁用
       if(this.props.userID != null){

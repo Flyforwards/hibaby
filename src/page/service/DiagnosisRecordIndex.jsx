@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import CustomerListPage from './CustomerListPage';
 
 
-
-
 class Index extends Component {
 
   render() {
