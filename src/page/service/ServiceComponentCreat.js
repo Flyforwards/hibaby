@@ -55,6 +55,7 @@ function creatComponent(form,dict) {
   }
 
   if (dict.selectName){
+    console.log(dict)
     tempDiv = (<DictionarySelect className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
   }
   else{
@@ -251,7 +252,7 @@ export function CreatCard(form,superDict) {
   }
 
   return (
-    <Card title={title} bodyStyle={{ padding:'15px 15px 0 15px'}} bordered={false}  style={{ width: '100%' }}>
+    <Card noHovering={true} title={title} bodyStyle={{ padding:'15px 15px 0 15px'}} bordered={false}  style={{ width: '100%' }}>
       {chiAry}
     </Card>
   )
