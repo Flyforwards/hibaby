@@ -149,19 +149,19 @@ class Detail extends Component {
      console.log(babyhead20allboy)
     // 基本信息
     const baseInfoAry = [
-      {title:'客户姓名',span:8,component:'Input',submitStr:'name'},
-      {title:'年龄',span:8,component:'Input',submitStr:'age'},
-      {title:'宝宝性别',span:8,component:'gender',submitStr:'     '},
-      {title:'分娩日期',span:8,component:'DatePicker',submitStr:'baseInfo1'},
-      {title:'入住日期',span:8,component:'DatePicker',submitStr:'baseInfo2'},
-      {title:'房间',span:8,component:'Input',submitStr:'baseInfo3'},
+      {title:'客户姓名',span:8,component:'Input',submitStr:'name',disable:true},
+      {title:'年龄',span:8,component:'Input',submitStr:'age',disable:true},
+      {title:'宝宝性别',span:8,component:'gender',submitStr:'babySex',disable:true},
+      {title:'分娩日期',span:8,component:'DatePicker',submitStr:'baseInfo1',disable:true},
+      {title:'入住日期',span:8,component:'DatePicker',submitStr:'baseInfo2',disable:true},
+      {title:'房间',span:8,component:'Input',submitStr:'baseInfo3',disable:true},
       {title:'破水时间',span:8,component:'DatePicker',submitStr:'baseTime0'},
-      {title:'Apgar评分',span:8,component:'Input',submitStr:'select_0'},
-      {title:'孕次',span:8,component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity'},
-      {title:'产次',span:8,component:'Input',selectName:'FETUS',submitStr:'fetus'},
+      {title:'Apgar评分',span:8,component:'Input',submitStr:'select_0',disable:true},
+      {title:'孕次',span:8,component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity',disable:true},
+      {title:'产次',span:8,component:'Input',selectName:'FETUS',submitStr:'fetus',disable:true},
       {title:'生产数量',span:15,component:'RadioGroups',submitStr:'babyNum',radioAry:[{'name':'单胞胎','value':'0'},{'name':'双胞胎','value':'1'},{'name':'','value':'3'}]},
       {title:'周数',span:8,component:'Input',submitStr:'weekNum'},
-      {title:'生产方式',component:'RadioGroups',span:15,submitStr:'radio_15',radioAry:[{'name':'自然生产','value':'0'},{'name':'剖腹生产','value':'1'}]},
+      {title:'生产方式',component:'RadioGroups',span:15,submitStr:'radio_15',disable:true,radioAry:[{'name':'自然生产','value':'0'},{'name':'剖腹生产','value':'1'}]},
     ]
 // 新生儿情况
     const newbornAry = [
@@ -222,7 +222,8 @@ class Detail extends Component {
     const ary = [{title:'基本信息',ary:baseInfoAry},{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.ChildCheckInData
+      value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
+      value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
 
