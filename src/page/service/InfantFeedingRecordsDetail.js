@@ -91,10 +91,6 @@ class Detail extends Component {
     )
   }
 
-  componentWillUnmount() {
-    this.props.dispatch({type: 'serviceCustomer/removeData',})
-  }
-
   onChange(date, dateString) {
 
     let query = {customerid:parse(location.search.substr(1)).customerid}
@@ -112,9 +108,9 @@ class Detail extends Component {
     const {loading,baseInfoDict,PuerperaBodyList} = this.props
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
-    let detailCard = (PuerperaBodyList).map((dict)=>{
+    let detailCard = PuerperaBodyList ? (PuerperaBodyList).map((dict)=>{
       return this.CreatDetailCard(dict)
-    })
+    }):''
 
     const bottomDiv =
       <div className='button-group-bottom-common'>
@@ -124,7 +120,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
           {detailCard}
           {bottomDiv}

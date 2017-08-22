@@ -24,6 +24,13 @@
 }
 
 .detailDiv{
+  .detailTitle{
+    font:13px "微软雅黑";
+    line-height:40px;
+    height: 40px;
+  }
+}
+.bigDetailDiv{
   .ant-card-extra{
     top:9px
   }

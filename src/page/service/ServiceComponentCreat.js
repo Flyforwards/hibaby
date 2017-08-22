@@ -370,7 +370,7 @@ export function detailComponent(baseInfoDict) {
   }
 
   return(
-    <div style={{margin:'15px'}}>
+    <div className='detailDiv' style={{margin:'15px'}}>
       <h3>基本信息</h3>
       <Row>
         {chiDetailComponent(baseInfoAry)}

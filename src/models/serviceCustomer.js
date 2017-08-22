@@ -461,7 +461,8 @@ export default {
         CheckInData: null,
         CheckInID: null,
         ChildCheckInData: null,
-        ChildCheckInID: null
+        ChildCheckInID: null,
+        PuerperaBodyList:null,
       }
     },
     savaMaternalEverydayPhysicalEvaluationList(state, { payload: todo }){
@@ -482,8 +483,7 @@ export default {
     //儿科、中医、产科记录单详情
     getDescribe(state, { payload: data }){
       return { ...state, describeInfo: data }
-    }
-
+    },
   }
 
 }
