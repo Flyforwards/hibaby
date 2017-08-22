@@ -162,36 +162,7 @@ export default (app) => [
       })
     }
   },
-  // 产妇每日身体评估单
-  {
-    path: '/service/puerpera-body',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/PuerperaBodyIndex.jsx'))
-      })
-    }
-  },
-  // 产妇每日身体评估单详情
-  {
-    path: '/service/puerpera-body/detail',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/PuerperaBodyDetail.js'))
-      })
-    }
-  },
-  // 产妇每日身体评估单编辑
-  {
-    path: '/service/puerpera-body/edit',
-    getComponent: (location, cb) => {
-      require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/PuerperaBodyEdit.js'))
-      })
-    }
-  },
+
   // 婴儿护理记录单
   {
     path: '/service/baby-nursing',
@@ -254,11 +225,62 @@ export default (app) => [
   },
   // 婴儿喂养记录单
   {
+
     path: '/service/baby-feed',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/InfantFeedingRecordsIndex.js'))
+      })
+    }
+  },
+  // 婴儿喂养记录单编辑
+  {
+    path: '/service/baby-feed/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InfantFeedingRecordsEdit.js'))
+      })
+    }
+  },
+  // 婴儿喂养记录单详情
+  {
+    path: '/service/baby-feed/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InfantFeedingRecordsDetail.js'))
+      })
+    }
+  },
+  // 产妇每日身体评估单
+  {
+    path: '/service/puerpera-body',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InfantFeedingRecordsIndex.js'))
+      })
+    }
+  },
+  // 产妇每日身体评估单详情
+  {
+    path: '/service/puerpera-body/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InfantFeedingRecordsDetail.js'))
+      })
+    }
+  },
+  // 产妇每日身体评估单编辑
+  {
+    path: '/service/puerpera-body/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InfantFeedingRecordsEdit.js'))
       })
     }
   },
@@ -268,7 +290,27 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/InfantFeedingRecordsIndex.js'))
+      })
+    }
+  },
+  // 婴儿成长记录单编辑
+  {
+    path: '/service/baby-grow/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InfantFeedingRecordsEdit.js'))
+      })
+    }
+  },
+  // 婴儿成长记录单详情
+  {
+    path: '/service/baby-grow/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InfantFeedingRecordsDetail.js'))
       })
     }
   },
