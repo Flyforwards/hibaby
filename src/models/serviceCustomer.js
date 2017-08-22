@@ -22,6 +22,7 @@ export default {
     shipCards:[],
     fetusAry:[],
     PuerperaBodyList:[],
+    babyNursingList : [],//婴儿护理记录列表
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -36,8 +37,10 @@ export default {
           dispatch({type: 'getAssessmentByCustomerId',payload:dictTwo});
         }
         if (pathname === '/service/check-in/detail'|| pathname === '/service/check-in/edit') {
-          let dict = {...query,type:2}
-          dispatch({type: 'getAssessmentByCustomerId',payload:dict});
+          let dictTwo = {...query,type:2}
+          dispatch({type: 'getAssessmentByCustomerId',payload:dictTwo});
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
         }
         if (pathname === '/service/child-check-in/detail'|| pathname === '/service/child-check-in/edit') {
           let dict = {...query,type:3}
@@ -66,6 +69,14 @@ export default {
           let dict_ = { customerId:query.customerid, date: moment().format('YYYY-MM-DD') }
           dispatch({ type: 'getBabyNursingNoteList', payload: dict_ });
         }
+        if (pathname === '/service/baby-manual/detail') {
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
+
+          let dict_ = { dataId:query.customerid, date: moment().format('YYYY-MM-DD') }
+          dispatch({ type: 'getBrouchurDetailById', payload: dict_ });
+        }
+
 
         //婴儿喂养记录
         if (pathname === '/service/baby-feed/detail'||pathname === '/service/baby-feed/edit') {
@@ -180,8 +191,9 @@ export default {
         message.success("删除成功");
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
-        }
-        if(values.type == 3){
+        }else if(values.type == 2){
+          yield put(routerRedux.push('/service/check-in'))
+        }else if (values.type == 3){
           yield put(routerRedux.push('/service/child-check-in'))
         }
       }
@@ -316,6 +328,32 @@ export default {
       }
     },
 
+    //宣教手册详情
+    *getBrouchurDetailById({payload: values}, { call, put }) {
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.getBrouchurDetailById, values);
+        yield put({
+          type: 'saveBrouchurDetailById',
+          payload: data
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
+
+    *getBabyNursingNoteList({payload: values}, { call, put }){
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.getBabyNursingNoteList, values);
+        yield put({
+          type: 'saveBabyNursingNoteList',
+          payload: data
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
   },
   reducers: {
     setCustomerPageList(state, { payload: {data: customerPageList, total, page, size} }){
@@ -365,7 +403,7 @@ export default {
       return { ...state,page : 1}
     },
     removeData(state,{ payload: todo }){
-      return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null}
+      return {...state,CheckBeforeData:'',CheckBeforeID:'',CheckInData:null,CheckInID:null,ChildCheckInData:null,ChildCheckInID:null}
     },
     savaMaternalEverydayPhysicalEvaluationList(state,{ payload: todo }){
       return {...state,PuerperaBodyList:todo}
@@ -373,9 +411,16 @@ export default {
     savaCustomerInfo(state,{ payload: todo }){
       return {...state,baseInfoDict:todo}
     },
+    saveBrouchurDetailById(state,{ payload: todo}) {
+      return {...state, MissionManualData: todo}
+    },
+    saveBabyNursingNoteList(state,{ payload: todo }){
+      return {...state,babyNursingList:todo}
+    },
     savaSingleInformation(state,{ payload: todo }){
       return {...state,SingleInformationDict:todo}
     }
+
   }
 
 }

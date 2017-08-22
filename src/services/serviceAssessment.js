@@ -43,6 +43,14 @@ export function saveMaternalEverydayPhysicalEvaluation(values) {
   })
 }
 
+
+export function getBrouchurDetailById(values) {
+  return request('/crm/api/v1/brochure/getBrochureById', {
+  method: 'POST',
+  body: JSON.stringify(values),
+   })
+  }
+
 export function getBabyFeedingNoteList(values) {
   return request('/crm/api/v1/babyFeedingNote/getBabyFeedingNoteList', {
     method: 'POST',

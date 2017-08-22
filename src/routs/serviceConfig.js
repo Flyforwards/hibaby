@@ -230,7 +230,17 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/InfantFeedingRecordsIndex.js'))
+        cb(null, require('page/service/MissionManualIndex.js'))
+      })
+    }
+  },
+  //宣教手册详情
+  {
+    path: '/service/baby-manual/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/MissionManualDetail.js'))
       })
     }
   },
