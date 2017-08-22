@@ -7,25 +7,12 @@
  */
 import React, { Component } from 'react';
 import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin} from 'antd';
+import {Card ,Input,Form,Button,Spin,Row,Col} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
 
-const assessment = [
-  {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
-  {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
-  {title:'呼吸',component:'Input',submitStr:'breathing',unit:'次/分'},
-  {title:'体重',component:'Input',submitStr:'weight',unit:'g'},
-  {title:'身长',component:'Input',submitStr:'length',unit:'cm'},
-  {title:'脐带',component:'Input',submitStr:'umbilicalCord'},
-  {title:'黄疸',component:'Input',unit:'mg/dl',submitStr:'jaundice'},
-  {title:'托管状态',component:'Select',chiAry:['托管','未托管'],submitStr:'towState'},
-  {title:'托管起始',component:'Input',submitStr:'towStart'},
-  {title:'操作人',component:'Input',submitStr:'operator'},
-  {title:'操作时间',component:'DatePicker',submitStr:'operatorTime'}
-]
 const manualKey =[
   {title:'正确洗手时机及方法',submitStr:'washHandsMethod'},
   {title:'恶露的观察',submitStr:'lochiaObservation'},
@@ -41,6 +28,14 @@ const manualKey =[
   {title:'擠奶技巧(手挤及吸奶器使用方法)',submitStr:'milkingSkills'},
   {title:'母乳的储存方法',submitStr:'breastMilkStorageMethod'},
   {title:'母乳的复温及解冻',submitStr:'breastMilkRewarmingThaw'},
+];
+const baseKey = [
+  {title:'客户姓名',submitStr:'name'},
+  {title:'年龄',submitStr:'age'},
+  {title:'宝宝性别',submitStr:'babySex'},
+  {title:'分娩日期',submitStr:'brithDate'},
+  {title:'入住日期',submitStr:'checkDate'},
+  {title:'房间',submitStr:'roomNo'},
 ]
 
 
@@ -82,8 +77,37 @@ class Detail extends Component {
 
   render() {
     const {loading,baseInfoDict} = this.props
-    let baseInfoDivAry = detailComponent(baseInfoDict)
-    const baseMsgRow ='';
+    const MissionManualData = {
+      "washHandsMethod":'是',
+      "lochiaObservation":'是',
+      "constipationPrevention":'是',
+      "stegmonthSweatReason":'是',
+      "operation":'鲁班',
+      "time":'2017-12-08',
+      "breastMilkRewarmingThaw":'',
+      "breastMilkStorageMethod":''
+
+
+    }
+
+  //  let baseInfoDivAry = detailComponent(baseInfoDict)
+    const baseMsgRow = manualKey.map(function(elem,index){
+      if(MissionManualData && MissionManualData[elem.submitStr] != '' ) {
+        return <Col span={8} style={{marginTop:'20px'}}>
+            <span> {elem.title} : {MissionManualData[elem.submitStr]} </span>
+          </Col>
+
+      }else{
+        return '';
+      }
+    });
+    const baseInfoDivAry = baseKey.map(function(elem,index){
+      if(baseInfoDict) {
+        return <Col span={8} style={{marginTop:'20px'}}>
+          <span> {elem.title} : {baseInfoDict[elem.submitStr]} </span>
+        </Col>
+      }
+    });
     const bottomDiv = <div className='button-group-bottom-common'>
         {creatButton('返回',this.editBackClicked.bind(this))}
       </div>
@@ -91,8 +115,39 @@ class Detail extends Component {
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          {baseInfoDivAry}
-          {baseMsgRow}
+          <div style={{margin:'15px', width:'90%',margin:'0 auto',padding:'20px'}}>
+            <h3>基本信息</h3>
+            <Row>
+              {baseInfoDivAry}
+            </Row>
+          </div>
+
+          <Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>
+            {baseMsgRow}
+            <Col span={24} style={{textAlign:'right',marginTop:'40px'}}>
+              <Row>
+                <Col span = {12}>
+                  操作者: {MissionManualData.operation}
+                </Col>
+                <Col span ={12}>
+                   {MissionManualData.time}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>
+            {baseMsgRow}
+            <Col span={24} style={{textAlign:'right',marginTop:'40px'}}>
+              <Row>
+                <Col span = {12}>
+                  操作者: {MissionManualData.operation}
+                </Col>
+                <Col span ={12}>
+                  {MissionManualData.time}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
           {bottomDiv}
         </Card>
       </Spin>

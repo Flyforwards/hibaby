@@ -151,7 +151,7 @@ class Detail extends Component {
     const baseInfoAry = [
       {title:'客户姓名',span:8,component:'Input',submitStr:'name'},
       {title:'年龄',span:8,component:'Input',submitStr:'age'},
-      {title:'宝宝性别',span:8,component:'gender',submitStr:'baseInfo0'},
+      {title:'宝宝性别',span:8,component:'gender',submitStr:'     '},
       {title:'分娩日期',span:8,component:'DatePicker',submitStr:'baseInfo1'},
       {title:'入住日期',span:8,component:'DatePicker',submitStr:'baseInfo2'},
       {title:'房间',span:8,component:'Input',submitStr:'baseInfo3'},
