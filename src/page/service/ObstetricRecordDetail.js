@@ -4,7 +4,7 @@
  */
 import React, { Component } from 'react';
 import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin} from 'antd';
+import {Card ,Input,Form,Button,Spin,Row,Col} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -33,70 +33,53 @@ class Detail extends Component {
     this.state={}
   }
 
-  onDelete(){
-    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:1,dataId:this.props.CheckBeforeID}})
-  }
 
-  editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/baby-nursing/edit?${location.search.substr(1)}`));
-  }
 
-  backClicked(){
-    this.props.dispatch(routerRedux.push('/service/baby-nursing'));
-  }
-
-  editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/baby-nursing/detail?${location.search.substr(1)}`));
-  }
-
-  print(){
-
-  }
-
-  submitClicked(){
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-
-        Object.keys(values).map(key=>{
-          if(typeof values[key] === 'object'){
-            values[key] = values[key].format()
-          }
-        })
-        const assessmentInfo =  JSON.stringify(values);
-
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 6};
-
-        if(this.props.CheckBeforeID){
-          dict.id = this.props.CheckBeforeID
-        }
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
-      }
-    });
-  }
 
   componentWillUnmount() {
-    this.props.dispatch({type: 'serviceCustomer/removeData',})
+    this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
   render() {
-
     const {loading,baseInfoDict} = this.props
-    let baseInfoDivAry = detailComponent(baseInfoDict)
-
-    const bottomDiv = location.pathname === '/service/baby-nursing/edit' ?
-      <div className='button-group-bottom-common'>
-        {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
-      </div> :
-      <div className='button-group-bottom-common'>
-        {creatButton('返回',this.backClicked.bind(this))}{this.props.CheckBeforeData?creatButton('删除',this.onDelete.bind(this)):''}
-        {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
-      </div>
-
+    let baseInfoDivAry = detailComponent(baseInfoDict);
+    const colSpan = {
+      span: 6
+    }
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
-          {bottomDiv}
+        </Card>
+        <Card style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+          <Row>
+            <Col span={2} >体温</Col>
+            <Col span={2}>心跳</Col>
+            <Col span={2}>呼吸</Col>
+            <Col span={2}>体重</Col>
+            <Col span={2}>身长</Col>
+            <Col span={2}>脐带</Col>
+            <Col span={2}>黄疸</Col>
+            <Col span={2}>托管状态</Col>
+            <Col span={2}>托管时长</Col>
+            <Col span={2}>操作者</Col>
+            <Col span={2}>修改时间</Col>
+            <Col span={2}>操作</Col>
+          </Row>
+          <Row>
+            <Col span={2} >体温</Col>
+            <Col span={2}>心跳</Col>
+            <Col span={2}>呼吸</Col>
+            <Col span={2}>体重</Col>
+            <Col span={2}>身长</Col>
+            <Col span={2}>脐带</Col>
+            <Col span={2}>黄疸</Col>
+            <Col span={2}>托管状态</Col>
+            <Col span={2}>托管时长</Col>
+            <Col span={2}>操作者</Col>
+            <Col span={2}>修改时间</Col>
+            <Col span={2}><Link >返回</Link><Link >编辑</Link><Link >删除</Link></Col>
+          </Row>
         </Card>
       </Spin>
     )
