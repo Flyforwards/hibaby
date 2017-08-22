@@ -199,7 +199,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/MissionManualIndex.js'))
       })
     }
   },
