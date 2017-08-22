@@ -50,21 +50,21 @@ export function getDoctorNoteById(values) {
     body: JSON.stringify(values)
   })
 }
-//根据客户id和记录单类型以及筛选条件查询记录单列表
+//2.根据客户id和记录单类型以及筛选条件查询记录单列表
 export function getdoctornoteList(values) {
   return request('/crm/api/v1/doctornote/getdoctornoteList', {
     method: 'POST',
     body: JSON.stringify(values)
   })
 }
-//保存或编辑记录单
+//3.保存或编辑记录单
 export function saveDoctorNote(values) {
   return request('/crm/api/v1/doctornote/saveDoctorNote', {
     method: 'POST',
     body: JSON.stringify(values)
   })
 }
-//根据id删除记录
+//4.根据id删除记录
 export function DelDoctornote(values) {
   return request('/crm/api/v1/doctornote/DelDoctornote', {
     method: 'POST',
