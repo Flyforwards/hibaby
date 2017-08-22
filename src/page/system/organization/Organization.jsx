@@ -86,9 +86,10 @@ class Organization extends React.Component {
         if (record.roleId) {
           roleId = record.roleId.split(",")
           let len = roleId.length - 1
-          if (local.get("roleSelectData")) {
+          const { roleSelectData } = this.props;
+          if (roleSelectData) {
             roleId.map((data, index) => {
-              local.get("roleSelectData").map((item) => {
+              roleSelectData.map((item) => {
                 if (item.id == Number(data)) {
 
                   if (len == index) {
@@ -253,7 +254,6 @@ class Organization extends React.Component {
   //按条件查询用户
   OrganizationInquire() {
     const fields = this.props.form.getFieldsValue();
-    //console.log("fields>>>>",fields)
     this.setState({
       userName: fields.userName,
       status: fields.OrganizationType,
@@ -303,9 +303,9 @@ class Organization extends React.Component {
   }
 
   render() {
+    const { roleSelectData } = this.props;
     const { getFieldDecorator } = this.props.form;
     const fields = this.props.form.getFieldsValue();
-    let roleId = local.get("roleSelectData")
     let ListLnformation = []
     if (this.props.list != null) {
       ListLnformation = this.props.list;
@@ -325,12 +325,10 @@ class Organization extends React.Component {
       pageSize: 10,
       onChange: this.onChange.bind(this)
     };
-    const traversalRoleId = (roleId) => {
-      return roleId.map((item) => {
-        return <Option value={item.id + ""} key={item.id}>{item.name}</Option>
-      })
-    }
-    const traversalRoleIdData = traversalRoleId(roleId);
+
+    const traversalRoleIdData = roleSelectData.map((item) => {
+      return <Option value={item.id + ""} key={item.id}>{item.name}</Option>
+    })
 
     const add = this.props.permissionAlias.contains('EMPLOYEE_ADD')
     return (
@@ -429,7 +427,8 @@ function mapStateToProps(state) {
     getEndemic,
     page,
     results,
-    range
+    range,
+    roleSelectData
   } = state.organization;
   const { permissionAlias } = state.layout;
   return {
@@ -442,7 +441,8 @@ function mapStateToProps(state) {
     page,
     results,
     range,
-    permissionAlias
+    roleSelectData,
+    permissionAlias,
   };
 }
 

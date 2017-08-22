@@ -22,7 +22,8 @@ export default {
     AllTissueProperty: null,
     getPosition: null,
     getDeptList: null,
-    getEndemic: null
+    getEndemic: null,
+    roleSelectData: [],
   },
   reducers: {
     getDeptListSave(state, { payload: { data: getDeptList } }){
@@ -79,13 +80,15 @@ export default {
     },
 
     // 保存 所有地方中信的角色信息
-    roleSelectAllDataSave(state, { payload: { data: selectData } }){
-      // local.set("roleAllData", selectData)
-      local.set("roleSelectData", selectData)
+    roleSelectAllDataSave(state, { payload: { data: roleSelectData } }){
+      local.set("roleSelectData", roleSelectData)
+      return { ...state, roleSelectData}
     },
-    roleCurrentDataSave (state, { payload: { data: selectData } }){
-      local.set("roleCurrentData", selectData)
-      // return { ...state, selectData }
+
+
+    roleCurrentDataSave (state, { payload: { data: roleCurrentData } }){
+      local.set("roleCurrentData", roleCurrentData)
+      return { ...state, roleCurrentData }
     },
 
     positionSave(state, { payload: { data: dataId } }){
