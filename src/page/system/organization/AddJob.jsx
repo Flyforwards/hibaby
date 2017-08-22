@@ -114,7 +114,7 @@ class AddJob extends Component {
     }
     render() {
       let traversalEndemicId = []
-      const SelectData = local.get("rolSelectData")
+      const SelectData = local.get("roleCurrentData")
       let selectDataList = []
       const {visible, form, confirmLoading} = this.props;
       const { getFieldDecorator } = form;
