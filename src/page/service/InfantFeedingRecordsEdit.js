@@ -6,6 +6,27 @@ import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
 
+const feeding = [
+  {title:'喂养方式',component:'Select',submitStr:'feedingMode',chiAry:['亲喂','母乳','配方奶']},
+  {title:'喂养时间',component:'Input',unit:'分钟',submitStr:'feedingTime'},
+  {title:'喂养计量',component:'Input',submitStr:'feedingMeasurement',unit:'ml'},
+  {title:'小便颜色',component:'Select',chiAry:['清','黄'],submitStr:'urineColor'},
+  {title:'小便量',component:'Select',chiAry:['少','中'],submitStr:'urineOutput'},
+  {title:'大便颜色',component:'Select',chiAry:['浅棕','棕'],submitStr:'stoolColor'},
+  {title:'大便量',component:'Select',chiAry:['少','中'],submitStr:'stoolVolume'},
+  {title:'形状',component:'Select',chiAry:['软','糊状'],submitStr:'shape'},
+]
+
+const growth = [
+  {title:'体重',component:'Input',submitStr:'weight',unit:'gm'},
+  {title:'身长',component:'Input',submitStr:'length',unit:'cm'},
+  {title:'亲喂',component:'Input',submitStr:'personallyFeed',unit:'次'},
+  {title:'母乳',component:'Input',submitStr:'breastMilk',unit:'ml'},
+  {title:'配方奶',component:'Input',submitStr:'powderedFormulas',unit:'ml'},
+  {title:'大便',component:'Input',submitStr:'shit',unit:'次'},
+  {title:'小便',component:'Input',submitStr:'urine',unit:'次'},
+]
+
 const assessment = [
   {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
   {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
@@ -25,7 +46,9 @@ class Detail extends Component {
 
   constructor(props) {
     super(props);
-    this.state={}
+    this.state={
+      urlAddress:location.pathname.indexOf('baby-grow') !== -1? 'baby-grow': (location.pathname.indexOf('baby-feed') !== -1?'baby-feed':'puerpera-body')
+    }
   }
 
   onDelete(){
@@ -33,15 +56,11 @@ class Detail extends Component {
   }
 
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/puerpera-body/edit?${location.search.substr(1)}`));
-  }
-
-  backClicked(){
-    this.props.dispatch(routerRedux.push('/service/puerpera-body'));
+    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?${location.search.substr(1)}`));
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/puerpera-body/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/detail?${location.search.substr(1)}`));
   }
 
   print(){
@@ -58,12 +77,22 @@ class Detail extends Component {
           }
         })
 
-        let dict = { ...values, "customerId": parse(location.search.substr(1)).customerid};
+        const tempDict = parse(location.search.substr(1));
 
-        if(this.props.CheckBeforeID){
-          dict.id = this.props.CheckBeforeID
+        let dict = { ...values, "customerId": tempDict.customerid};
+        if(tempDict.dataId){
+          dict.id = tempDict.dataId
         }
-        this.props.dispatch({type:'serviceCustomer/saveMaternalEverydayPhysicalEvaluation',payload:dict})
+
+        let typeStr = 'serviceCustomer/saveBabyGrowthNote'
+        if(this.state.urlAddress === 'baby-feed'){
+          typeStr = 'serviceCustomer/saveBabyFeedingNote'
+        }
+        if(this.state.urlAddress === 'puerpera-body'){
+          typeStr = 'serviceCustomer/saveMaternalEverydayPhysicalEvaluation'
+        }
+
+        this.props.dispatch({type:typeStr,payload:dict})
       }
     });
   }
@@ -74,28 +103,22 @@ class Detail extends Component {
 
   render() {
 
-    const {loading,baseInfoDict} = this.props
+    const {loading,baseInfoDict,SingleInformationDict} = this.props
 
-    // const ary = [{title:'表单信息',ary:baseInfoAry}]
-
-
+    let ary = this.state.urlAddress === 'baby-feed' ? feeding : (this.state.urlAddress === 'baby-grow'?growth:assessment);
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
 
-    const bottomDiv = location.pathname === '/service/puerpera-body/edit' ?
+    const bottomDiv =
       <div className='button-group-bottom-common'>
         {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
-      </div> :
-      <div className='button-group-bottom-common'>
-        {creatButton('返回',this.backClicked.bind(this))}{this.props.CheckBeforeData?creatButton('删除',this.onDelete.bind(this)):''}
-        {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
       </div>
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
-          {CreatCard(this.props.form,{title:'产妇今日身体评估',ary:assessment})}
+          {CreatCard(this.props.form,{title:'产妇今日身体评估',ary:ary,netData:SingleInformationDict?SingleInformationDict:{}})}
           {bottomDiv}
         </Card>
       </Spin>

@@ -7,12 +7,12 @@ import { routerRedux } from 'dva/router'
 
 // 表单信息
 const baseInfoAry = [
-  { title: '客户姓名', component: 'Input', submitStr: 'name', span: 8 },
-  { title: '年龄', component: 'Input', submitStr: 'age', span: 8 },
-  { title: '宝宝性别', component: 'gender', submitStr: 'baseInfo0', span: 8 },
-  { title: '分娩日期', component: 'DatePicker', submitStr: 'baseInfo1', span: 8 },
-  { title: '入住日期', component: 'DatePicker', submitStr: 'baseInfo2', span: 8 },
-  { title: '房间', component: 'Input', submitStr: 'baseInfo3', span: 8 },
+  { title: '客户姓名', component: 'Input', submitStr: 'name', span: 8 ,disable:true},
+  { title: '年龄', component: 'Input', submitStr: 'age', span: 8,disable:true },
+  { title: '宝宝性别', component: 'gender', submitStr: 'baseInfo0', span: 8 ,disable:true},
+  { title: '分娩日期', component: 'DatePicker', submitStr: 'baseInfo1', span: 8 ,disable:true},
+  { title: '入住日期', component: 'DatePicker', submitStr: 'baseInfo2', span: 8 ,disable:true},
+  { title: '房间', component: 'Input', submitStr: 'baseInfo3', span: 8 ,disable:true},
   { title: '气色情况', component: 'Select',chiAry: ['健康色泽', '气色不佳'],  submitStr: 'baseInfo4', span: 8 },
   { title: '体型情况', component: 'Select', chiAry: ['肥胖', '适中', '消瘦'], submitStr: 'baseInfo5', span: 8 },
   { title: '精神情况', component: 'Select', chiAry: ['良好', '一般', '不佳'], submitStr: 'baseInfo6', span: 8 },
@@ -158,7 +158,8 @@ class Detail
     const ary = [{ title: '基本信息', ary: baseInfoAry }]
     
     let chiAry = ary.map(value => {
-      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
+      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{};
+      value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{}
       return CreatCard(this.props.form, value)
     })
     

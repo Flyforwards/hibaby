@@ -76,7 +76,7 @@ class SelectTheNodeFrom extends Component {
         let selectName=[];
         if(roleId){
           roleIdData=roleId.split(",")
-          const selectData=local.get("rolSelectData");
+          const selectData=local.get("roleSelectData");
           let roleData=[];
           selectData.map((res,index)=>{
             roleData.push(res.id)

@@ -43,3 +43,51 @@ export function saveMaternalEverydayPhysicalEvaluation(values) {
   })
 }
 
+export function getBabyFeedingNoteList(values) {
+  return request('/crm/api/v1/babyFeedingNote/getBabyFeedingNoteList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function saveBabyFeedingNote(values) {
+  return request('/crm/api/v1/babyFeedingNote/saveBabyFeedingNote', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function getBabyGrowthNoteById(values) {
+  return request('/crm/api/v1/babyGrowthNote/getBabyGrowthNoteById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function getBabyFeedingNoteById(values) {
+  return request('/crm/api/v1/babyFeedingNote/getBabyFeedingNoteById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function getMaternalEverydayPhysicalEvaluationById(values) {
+  return request('/crm/api/v1/maternalEverydayPhysicalEvaluation/getMaternalEverydayPhysicalEvaluationById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function getBabyGrowthNoteList(values) {
+  return request('/crm/api/v1/babyGrowthNote/getBabyGrowthNoteList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+export function saveBabyGrowthNote(values) {
+  return request('/crm/api/v1/babyGrowthNote/saveBabyGrowthNote', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+

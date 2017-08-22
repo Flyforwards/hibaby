@@ -99,9 +99,12 @@ class OrganizationLeft extends React.Component {
         }
 
         let disabled_add = false;
-        if (TissueProperty == 2 || (TissueProperty == 3 && parentTissue != 1)) {
-          disabled_add = true;
+        if (is_head) {
+          if (TissueProperty == 2 || (TissueProperty == 3 && parentTissue != 1)) {
+            disabled_add = true;
+          }
         }
+
 
         // if (is_head && parentTissue != 1) {
         this.props.onBtain(Number(node.selectedNodes[0].key), node.selectedNodes[0].props.dataIndex, disabled_add)
