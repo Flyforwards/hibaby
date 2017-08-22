@@ -22,6 +22,7 @@ export default {
     shipCards:[],
     fetusAry:[],
     PuerperaBodyList:[],
+    babyNursingList : [],//婴儿护理记录列表
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -33,8 +34,10 @@ export default {
           dispatch({type: 'getAssessmentByCustomerId',payload:dictTwo});
         }
         if (pathname === '/service/check-in/detail'|| pathname === '/service/check-in/edit') {
-          let dict = {...query,type:2}
-          dispatch({type: 'getAssessmentByCustomerId',payload:dict});
+          let dictTwo = {...query,type:2}
+          dispatch({type: 'getAssessmentByCustomerId',payload:dictTwo});
+          let dict = {dataId:query.customerid}
+          dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
         }
         if (pathname === '/service/child-check-in/detail'|| pathname === '/service/child-check-in/edit') {
           let dict = {...query,type:3}
@@ -153,8 +156,9 @@ export default {
         message.success("删除成功");
         if(values.type == 1){
           yield put(routerRedux.push('/service/check-before'))
-        }
-        if(values.type == 3){
+        }else if(values.type == 2){
+          yield put(routerRedux.push('/service/check-in'))
+        }else if (values.type == 3){
           yield put(routerRedux.push('/service/child-check-in'))
         }
       }
@@ -193,6 +197,19 @@ export default {
         const {data: {data,code}} = yield call(serviceAssessment.getCustomerInfoByCustomerId, values);
         yield put({
           type: 'savaCustomerInfo',
+          payload: data
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
+    },
+
+    *getBabyNursingNoteList({payload: values}, { call, put }){
+      try {
+        const {data: {data,code}} = yield call(serviceAssessment.getBabyNursingNoteList, values);
+        yield put({
+          type: 'saveBabyNursingNoteList',
           payload: data
         });
       }
@@ -257,6 +274,9 @@ export default {
     },
     savaCustomerInfo(state,{ payload: todo }){
       return {...state,baseInfoDict:todo}
+    },
+    saveBabyNursingNoteList(state,{ payload: todo }){
+      return {...state,babyNursingList:todo}
     }
   }
 
