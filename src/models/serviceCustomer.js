@@ -56,8 +56,7 @@ export default {
 
         }
         if (pathname === '/service/puerpera-body/detail') {
-          let dict = { customerId:query.customerid }
-          dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList', payload: dict });
+          dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList'});
         }
         if (pathname === '/service/puerpera-body/edit') {
           let dict_ = { dataId:query.dataId}
@@ -82,8 +81,7 @@ export default {
         if (pathname === '/service/baby-feed/detail'||pathname === '/service/baby-feed/edit') {
 
           if(pathname === '/service/baby-feed/detail'){
-            let dict_ = { customerId:query.customerid}
-            dispatch({ type: 'getBabyFeedingNoteList', payload: dict_ });
+            dispatch({ type: 'getBabyFeedingNoteList'});
           }
           else{
             let dict_ = { dataId:query.dataId}
@@ -93,11 +91,9 @@ export default {
         //婴儿成长记录
         if (pathname === '/service/baby-grow/detail'||pathname === '/service/baby-grow/edit') {
           if(pathname === '/service/baby-grow/detail'){
-            let dict_ = { customerId:query.customerid }
-            dispatch({ type: 'getBabyGrowthNoteList', payload: dict_ });
+            dispatch({ type: 'getBabyGrowthNoteList'});
           }
           else {
-            let dict_ = { dataId:query.dataId}
             dispatch({ type: 'getBabyGrowthNoteById', payload: dict_ });
           }
         }
@@ -204,7 +200,14 @@ export default {
 
     *getMaternalEverydayPhysicalEvaluationList({payload: values}, { call, put }) {
       try {
-        const {data: {data,code}} = yield call(serviceAssessment.getMaternalEverydayPhysicalEvaluationList, values);
+
+        let query = parse(location.search.substr(1))
+        let dict = { customerId:query.customerid }
+        if(query.date){
+          dict.date = query.date
+        }
+
+        const {data: {data,code}} = yield call(serviceAssessment.getMaternalEverydayPhysicalEvaluationList, dict);
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: data
@@ -218,7 +221,12 @@ export default {
 
     *getBabyFeedingNoteList({payload: values}, { call, put }) {
       try {
-        const {data: {data,code}} = yield call(serviceAssessment.getBabyFeedingNoteList, values);
+        let query = parse(location.search.substr(1))
+        let dict = { customerId:query.customerid }
+        if(query.date){
+          dict.date = query.date
+        }
+        const {data: {data,code}} = yield call(serviceAssessment.getBabyFeedingNoteList, dict);
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: data
@@ -230,7 +238,12 @@ export default {
     },
     *getBabyGrowthNoteList({payload: values}, { call, put }) {
       try {
-        const {data: {data,code}} = yield call(serviceAssessment.getBabyGrowthNoteList, values);
+        let query = parse(location.search.substr(1))
+        let dict = { customerId:query.customerid }
+        if(query.date){
+          dict.date = query.date
+        }
+        const {data: {data,code}} = yield call(serviceAssessment.getBabyGrowthNoteList, dict);
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: data

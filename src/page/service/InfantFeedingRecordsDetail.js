@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {chiDetailComponent,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Row,Form,Col,Spin,Table} from 'antd';
+import {Card ,Row,Form,Col,Spin,DatePicker} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -99,6 +99,19 @@ class Detail extends Component {
     this.props.dispatch({type: 'serviceCustomer/removeData',})
   }
 
+  onChange(date, dateString) {
+    console.log(date, dateString);
+
+    let query = {customerid:parse(location.search.substr(1)).customerid}
+    if(dateString){
+      query.date = dateString
+    }
+    this.props.dispatch(routerRedux.push({
+      pathname:location.pathname,
+      query
+    }));
+  }
+
   render() {
 
     const {loading,baseInfoDict,PuerperaBodyList} = this.props
@@ -116,7 +129,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
           {detailCard}
           {bottomDiv}
