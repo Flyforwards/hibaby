@@ -32,29 +32,27 @@ export default {
           dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
         }
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
-          let dictTwo = { ...query, type: 1 }
-          if( pathname === '/service/check-before/edit'){
-            dictTwo.operatorItem = 1;
-          }
+          let dictTwo = { ...query, type: 1, operatorItem: 1 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
+        if (pathname === '/service/nutrition-evaluate/detail' || pathname === '/service/nutrition-evaluate/edit') {
+          let dictTwo = { ...query, type: 5, operatorItem: 5 }
+            dictTwo.operatorItem = 5;
+          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+        }
+
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
-          let dictTwo = { ...query, type: 2 }
-          if( pathname === '/service/check-before/edit'){
+          let dictTwo = { ...query, type: 2, operatorItem: 2 }
             dictTwo.operatorItem = 2;
-          }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
         if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
-          let dict = { ...query, type: 3 }
-          if( pathname === '/service/check-before/edit'){
-            dictTwo.operatorItem = 3;
-          }
+          let dict = { ...query, type: 3 ,operatorItem:3}
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
         //中医见诊记录单详情页
         if (pathname === '/service/diagnosis/detail' || pathname === '/service/diagnosis/edit') {
-          let dict = { ...query, type: 4 }
+          let dict = { ...query, type: 4 , operatorItem: 4}
           if( pathname === '/service/check-before/edit'){
             dictTwo.operatorItem = 4;
           }
@@ -178,6 +176,9 @@ export default {
         } else if (values.type == 3) {
           yield put(routerRedux.push('/service/child-check-in'))
         }
+        else if (values.type == 5) {
+          yield put(routerRedux.push('/service/nutrition-evaluate'))
+        }
       }
       catch (err) {
       }
@@ -205,6 +206,9 @@ export default {
           yield put(routerRedux.push('/service/check-in'))
         } else if (values.type == 3) {
           yield put(routerRedux.push('/service/child-check-in'))
+        }
+       else if (values.type == 5) {
+          yield put(routerRedux.push('/nutrition-evaluate'))
         }
       }
       catch (err) {
@@ -449,7 +453,7 @@ export default {
     savaAssessment(state, { payload: todo }){
       let dict = {}
       if (todo) {
-        if (todo.type === 1 || todo.type === 4) {
+        if (todo.type === 1 || todo.type === 4||todo.type === 5) {
           dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
           dict.CheckBeforeID = todo.id
         } else if (todo.type === 2) {

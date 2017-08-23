@@ -364,7 +364,27 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/NutritionEvaluateIndex.js'))
+      })
+    }
+  },
+  // 营养产后入住评估详情
+  {
+    path: '/service/nutrition-evaluate/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/NutritionEvaluateDetail.js'))
+      })
+    }
+  },
+  // 营养产后入住评估编辑
+  {
+    path: '/service/nutrition-evaluate/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/NutritionEvaluateDetail.js'))
       })
     }
   },
