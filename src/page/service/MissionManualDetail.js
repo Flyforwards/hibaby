@@ -1,17 +1,14 @@
 /**
  * Created by Flyforardds on 2017/8/21.
  */
-/**
- *  婴儿护理记录单详情
- * Created by yangjingjing on 2017/8/21.
- */
 import React, { Component } from 'react';
 import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin,Row,Col} from 'antd';
+import {Card ,Input,Form,Button,Spin,Row,Col,DatePicker } from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
+import { queryURL ,format} from '../../utils/index.js';
 
 const manualKey =[
   {title:'正确洗手时机及方法',submitStr:'washHandsMethod'},
@@ -69,8 +66,16 @@ class Detail extends Component {
 
   }
 
-
-
+//日期选择框
+  handleChange(value, dateString) {
+   this.props.dispatch({
+     type:'serviceCustomer/getBrouchurDetailById',
+     payload:{
+       dataId:queryURL('customerid'),
+       date: dateString
+     }
+   })
+  }
   // componentWillUnmount() {
   //   this.props.dispatch({type: 'serviceCustomer/removeData',})
   // }
@@ -114,7 +119,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card title="宣教手册详情" extra={ <DatePicker onChange={this.handleChange.bind(this)} />} className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           <div style={{margin:'15px', width:'90%',margin:'0 auto',padding:'20px'}}>
             <h3>基本信息</h3>
             <Row>

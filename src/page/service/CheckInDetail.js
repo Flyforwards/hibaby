@@ -41,10 +41,10 @@ const checkInMedical = [
   {title:'血压',component:'Input',submitStr:'health_1_input_11'},
   {title:'体温',component:'Input',unit:'℃',submitStr:'health_1_input_12'},
   {title:'脉搏',component:'Input',unit:'次/分',submitStr:'medical_0'},
-  {title:'孕前体重',component:'Input',unit:'kg',submitStr:'medical_1'},
+  {title:'孕前体重',component:'Input',unit:'kg',submitStr:'health_2_input_2'},
   {title:'分娩前体重',component:'Input',unit:'kg',submitStr:'medical_2'},
   {title:'孕期增重',component:'Input',unit:'kg',submitStr:'medical_3'},
-  {title:'现体重',component:'Input',unit:'kg',submitStr:'medical_4'},
+  {title:'现体重',component:'Input',unit:'kg',submitStr:'health_2_input_3'},
   {title:'精神状态',component:'CheckBoxGroup',checkAry:[ '良好', '一般', '淡漠', '疲乏', '焦虑', '烦躁', '抑郁', '其他'],submitStr:'medical_5'},
   {title:'皮肤黏膜',component:'Select',chiAry:['红润', '一般', '苍白' ,'皮疹'],submitStr:'medical_6'},
   {title:'左乳房',component:'CheckBoxGroup',checkAry:['软' ,'充盈', '肿胀' ,'硬结'],submitStr:'medical_7'},
@@ -89,7 +89,7 @@ class Detail extends Component {
   }
 
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/check-in/edit?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckInID}`));
   }
 
   backClicked(){
@@ -97,7 +97,7 @@ class Detail extends Component {
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/check-in/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/check-in/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){
@@ -111,6 +111,7 @@ class Detail extends Component {
         let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": type};
         if(this.props.CheckInID){
           dict.id = this.props.CheckInID
+          dict.operatorItem = 2
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
@@ -134,7 +135,6 @@ class Detail extends Component {
 
       return CreatCard(this.props.form,value)
     })
-    debugger;
     let bottomDiv = null;
     if(location.pathname === '/service/check-in/edit'){
       bottomDiv = (<div className='button-group-bottom-common'>

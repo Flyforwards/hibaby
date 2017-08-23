@@ -27,15 +27,13 @@ function onChange(dict) {
 
 function creatComponent(form,dict) {
 
-  dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
-
   const { getFieldDecorator } = form;
 
   let tempDiv = (<Input/>);
   let children = []
   if(dict.chiAry){
     for(let i = 0;i<dict.chiAry.length;i++){
-      children.push(<Option key={i}>{dict.chiAry[i]}</Option>)
+        children.push(<Option key={i}>{dict.chiAry[i]}</Option>)
     }
   }
 
@@ -145,8 +143,8 @@ function cusFromItem(form,dict) {
   }
 
   const { getFieldDecorator } = form;
-  //
-  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || '此项'}!`}],};
+
+  let rules = { rules: [{ required: (dict.noRequired || dict.disabled)?false:true,  message: `请输入${dict.title || '此项'}!`}],};
 
   if (dict.component === 'UploadButton')
   {
@@ -165,10 +163,18 @@ function cusFromItem(form,dict) {
     }
   }
   if(dict.formItems === "TwoWords" ){
-    formItemLayout = {
-      labelCol: { span: 3 },
-      wrapperCol: { span: 21 },
+    if(dict.items){
+      formItemLayout = {
+        labelCol: { span: 3 },
+        wrapperCol: { span: 10 },
+      }
+    }else{
+      formItemLayout = {
+        labelCol: { span: 3 },
+        wrapperCol: { span: 21 },
+      }
     }
+
   }
   if(dict.span === 16 ){
     formItemLayout = {
@@ -183,9 +189,16 @@ function cusFromItem(form,dict) {
     }
   }
   if(dict.formItems === "FourWords" ){
-    formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+    if(dict.items) {
+      formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 10 },
+      }
+    }else{
+      formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
+      }
     }
   }
   if(dict.title === '手术指征'){
@@ -221,6 +234,8 @@ export function CreatCard(form,superDict) {
   for(let i = 0;i<ary.length;i++) {
     const dict = ary[i];
 
+    dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
+
     if (netData) {
       if (dict.component === 'DatePicker') {
         if (netData[dict.submitStr]) {
@@ -231,7 +246,7 @@ export function CreatCard(form,superDict) {
         }
       }
       else {
-        dict.initValue = netData[dict.submitStr]
+          dict.initValue = netData[dict.submitStr]
       }
     }
 
@@ -239,10 +254,14 @@ export function CreatCard(form,superDict) {
       if (baseInfoDict[dict.submitStr]) {
         if (dict.component === 'DatePicker') {
           dict.initValue = moment(baseInfoDict[dict.submitStr]);
-
         }
         else {
-          dict.initValue = baseInfoDict[dict.submitStr]
+          if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'||dict.submitStr === 'hospital'){
+            dict.initValue = baseInfoDict[dict.submitStr].toString()
+          }
+          else{
+            dict.initValue = baseInfoDict[dict.submitStr]
+          }
         }
       }
     }
@@ -251,7 +270,7 @@ export function CreatCard(form,superDict) {
   }
 
   return (
-    <Card title={title} bodyStyle={{ padding:'15px 15px 0 15px'}} bordered={false}  style={{ width: '100%' }}>
+    <Card noHovering={true} title={title} bodyStyle={{ padding:'15px 15px 0 15px'}} bordered={false}  style={{ width: '100%' }}>
       {chiAry}
     </Card>
   )
@@ -369,7 +388,7 @@ export function detailComponent(baseInfoDict) {
   }
 
   return(
-    <div style={{margin:'15px'}}>
+    <div className='detailDiv' style={{margin:'15px'}}>
       <h3>基本信息</h3>
       <Row>
         {chiDetailComponent(baseInfoAry)}

@@ -135,13 +135,6 @@ export default (app) => [
     }
   },
 
-
-
-
-
-
-
-
   // 中医查房记录单
   {
     path: '/service/diagnosis-record',
@@ -159,6 +152,17 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+      })
+    }
+  },
+
+  //儿科、中医、产科查房记录单详情页
+  {
+    path: '/service/checkRoomDetail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkRoomDetail.js'))
       })
     }
   },
@@ -199,7 +203,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/MissionManualIndex.js'))
       })
     }
   },
@@ -230,7 +234,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/MissionManualIndex.js'))
+        cb(null, require('page/service/InfantFeedingRecordsIndex.js'))
       })
     }
   },

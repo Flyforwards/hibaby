@@ -3,7 +3,22 @@
  * Created by yangjingjing on 2017/8/15.
  */
 import React, { Component } from 'react';
-import { Select, Button, DatePicker, Table, Input, Form, Icon, Popconfirm, Pagination, Cascader, Col, Row, InputNumber, Modal } from 'antd'
+import {
+  Select,
+  Button,
+  DatePicker,
+  Table,
+  Input,
+  Form,
+  Icon,
+  Popconfirm,
+  Pagination,
+  Cascader,
+  Col,
+  Row,
+  InputNumber,
+  Modal
+} from 'antd'
 import { connect } from 'dva'
 import moment from 'moment'
 import { Link } from 'react-router'
@@ -11,7 +26,6 @@ import '../crm/customer/CustomerIndex.scss'
 import DictionarySelect from 'common/dictionary_select';
 import { routerRedux } from 'dva/router'
 import Current from '../Current';
-
 
 
 const Option = Select.Option
@@ -22,7 +36,7 @@ const createForm = Form.create
 
 @createForm()
 class CustomerListPage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.columns = [{
       title: '客户姓名',
@@ -42,7 +56,7 @@ class CustomerListPage extends Component {
       title: '怀孕周期',
       dataIndex: 'gestationalWeeks',
       key: 'gestationalWeeks'
-
+      
     }, {
       title: '第几胎',
       dataIndex: 'fetus',
@@ -59,7 +73,7 @@ class CustomerListPage extends Component {
       title: '合同编号',
       dataIndex: 'contractNumber',
       key: 'contractNumber'
-    },{
+    }, {
       title: '会员卡卡号',
       dataIndex: 'cardNumber',
       key: 'cardNumber'
@@ -78,27 +92,30 @@ class CustomerListPage extends Component {
       render: (text, record, index) => {
         return (
           <div className="operation-list">
-            <Link className="one-link link-style" onClick={ this.onLook.bind(this, record)} > 查看 </Link>
+            <Link className="one-link link-style" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
           </div>
         );
       }
     }];
-
-
+    
+    
     this.state = {
-      searchParams : {},
+      searchParams: {}
     }
   }
-
-
-  onLook=(record)=>{
-    const {dispatch,detailLinkUrl} = this.props;
-    dispatch(routerRedux.push(`${detailLinkUrl+"?customerid="+record.id}`));
+  
+  
+  onLook = (record) => {
+    const { dispatch, detailLinkUrl } = this.props;
+    dispatch(routerRedux.push(
+      this.props.moreLink ?
+        `${detailLinkUrl + "?customerid=" + record.id + this.props.moreLink}` :
+        `${detailLinkUrl + "?customerid=" + record.id}`
+    ))
   }
-
-
-
-  onSearch(){
+  
+  
+  onSearch() {
     const this_ = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -106,92 +123,90 @@ class CustomerListPage extends Component {
           values.year = values.time.get('year');
           values.month = values.time.get('month') + 1;
         }
-
+        
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
-
+        
         this_.setState({
-          searchParams : values
+          searchParams: values
         })
-
+        
         values.page = 1;
         values.size = this.props.serviceCustomer.size;
         this.getTableData(values);
       }
     })
   }
-
-
+  
+  
   reset() {
     this.props.form.resetFields();
     this.setState({
-      searchParams : {}
+      searchParams: {}
     });
     this.getTableData({
-      page : 1,
-      size : this.props.serviceCustomer.size
+      page: 1,
+      size: this.props.serviceCustomer.size
     });
   }
-
+  
   componentDidMount() {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'serviceCustomer/listByMain'
     });
-    dispatch({type: 'serviceCustomer/getMemberShipCard',});
-    dispatch({ type: 'serviceCustomer/getDataDict',payload:{"abName": 'YCC',}});
-
+    dispatch({ type: 'serviceCustomer/getMemberShipCard' });
+    dispatch({ type: 'serviceCustomer/getDataDict', payload: { "abName": 'YCC' } });
+    
     this.getTableData({
-      page : this.props.serviceCustomer.page,
-      size : this.props.serviceCustomer.size
+      page: this.props.serviceCustomer.page,
+      size: this.props.serviceCustomer.size
     });
   }
-
+  
   //页面生命周期结束时调用
-  componentWillUnmount(){
-    const {dispatch} = this.props;
+  componentWillUnmount() {
+    const { dispatch } = this.props;
     dispatch({
       type: 'serviceCustomer/clearAllProps'
     })
-
+    
   }
-
-
-  onTableChange = (pageNumber) =>{
-    const {searchParams} = this.state;
+  
+  
+  onTableChange = (pageNumber) => {
+    const { searchParams } = this.state;
     this.getTableData({
-      page : pageNumber,
-      size : this.props.serviceCustomer.size,
+      page: pageNumber,
+      size: this.props.serviceCustomer.size,
       ...searchParams
     });
   }
-
-  getTableData(params = {}){
-    const {dispatch} = this.props;
+  
+  getTableData(params = {}) {
+    const { dispatch } = this.props;
     dispatch({
       type: 'serviceCustomer/getCustomerPageList',
       payload: {
-        ...params,
+        ...params
       }
     });
   }
-
-
-
-
-  initSeachDiv(){
-    const {form, shipCards, packageList } = this.props;
+  
+  
+  initSeachDiv() {
+    const { form, shipCards, packageList } = this.props;
     const { getFieldDecorator } = form;
-
+    
     const options = shipCards.map((record) => {
-      return (<Option key={record.id} value={record.id+""}>{record.name}</Option>)
+      return (<Option key={record.id} value={record.id + ""}>{record.name}</Option>)
     });
-
+    
     const purchasePackageOptions = packageList.map((record) => {
-      return (<Option key={record.id} value={record.id+""}>{record.name}</Option>)
+      return (<Option key={record.id} value={record.id + ""}>{record.name}</Option>)
     });
-
+    
     const formChooseLayout = {
       labelCol: { span: 12 },
       wrapperCol: { span: 12 }
@@ -204,10 +219,10 @@ class CustomerListPage extends Component {
       labelCol: { span: 9 },
       wrapperCol: { span: 15 }
     }
-
+    
     return (
       <Form>
-        <div style={{ position: 'relative'}}>
+        <div style={{ position: 'relative' }}>
           <FormItem style={{ height: '40px' }} {...formChooseLayout}>
             {getFieldDecorator('sear', {
               rules: [{ required: false }]
@@ -217,11 +232,11 @@ class CustomerListPage extends Component {
           </FormItem>
           <div className="customer-operation">
             <Button className='button-group-2' onClick={ this.onSearch.bind(this)}>查询</Button>
-            <Button className='button-group-1' onClick={ this.reset.bind(this)} >重置</Button>
+            <Button className='button-group-1' onClick={ this.reset.bind(this)}>重置</Button>
           </div>
         </div>
         <Row gutter={16} style={{ height: 50 }}>
-          <Col span={5} >
+          <Col span={5}>
             <FormItem label="年龄" {...formChooseOneAge}>
               {getFieldDecorator('age1', {
                 rules: [{ required: false }]
@@ -238,7 +253,7 @@ class CustomerListPage extends Component {
                 <InputNumber min={1} max={100}/>
               )}
             </FormItem>
-
+          
           </Col>
           <Col span={6} className="delDisplan">
             <Row>
@@ -253,7 +268,7 @@ class CustomerListPage extends Component {
                   )}
                 </FormItem>
               </Col>
-
+              
               <Col offset={3} span={8} className="delDisplan">
                 <FormItem>
                   {getFieldDecorator('dueDate2', {
@@ -266,9 +281,9 @@ class CustomerListPage extends Component {
                 </FormItem>
               </Col>
             </Row>
-
+          
           </Col>
-
+          
           <Col span={6}>
             <FormItem label="操作者2" {...formChooseOneAge}>
               {getFieldDecorator('operator2', {
@@ -357,11 +372,11 @@ class CustomerListPage extends Component {
         </Row>
       </Form>
     );
-
+    
   }
-
+  
   textforkey(array, value, valuekey = 'name') {
-    if(array){
+    if (array) {
       for (let i = 0; i < array.length; i++) {
         let dict = array[i];
         if (dict['id'] === value) {
@@ -371,21 +386,21 @@ class CustomerListPage extends Component {
       return value;
     }
   }
-
+  
   render() {
-    const { serviceCustomer,fetusAry,packageList } = this.props;
-
+    const { serviceCustomer, fetusAry, packageList } = this.props;
+    
     const dataSource = serviceCustomer.customerPageList;
-
-   if(dataSource){
+    
+    if (dataSource) {
       for (let i = 0; i < dataSource.length; i++) {
         let dict = dataSource[i];
         dict.fetus = this.textforkey(fetusAry, dict.fetus)
         dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
       }
     }
-
-
+    
+    
     const pagination = {
       total: serviceCustomer.total,
       showQuickJumper: true,
@@ -393,12 +408,12 @@ class CustomerListPage extends Component {
       pageSize: serviceCustomer.size,
       onChange: this.onTableChange.bind(this)
     };
-
+    
     return (
       <div className="CustomerConent">
-
+        
         {this.initSeachDiv()}
-
+        
         <Table
           className='customer-table'
           bordered
@@ -407,7 +422,7 @@ class CustomerListPage extends Component {
           pagination={pagination}
           rowKey={ record => record.id}
         />
-
+        
         <Current
           page={ serviceCustomer.page}
           total={ serviceCustomer.total}
@@ -419,13 +434,13 @@ class CustomerListPage extends Component {
 }
 function mapStateToProps(state) {
   const {
-    shipCards,
-    packageList,
-    fetusAry
-  } = state.serviceCustomer;
+          shipCards,
+          packageList,
+          fetusAry
+        } = state.serviceCustomer;
   const { permissionAlias } = state.layout;
   return {
-    serviceCustomer : state.serviceCustomer,
+    serviceCustomer: state.serviceCustomer,
     shipCards,
     packageList,
     fetusAry,

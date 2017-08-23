@@ -55,12 +55,8 @@ class Detail extends Component {
     this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:1,dataId:this.props.CheckBeforeID}})
   }
 
-  editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?${location.search.substr(1)}`));
-  }
-
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){

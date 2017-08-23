@@ -16,6 +16,7 @@ let babyhead20allboy = true;
 let babyhead163 = true;
 let babyhead164 = true;
 let babyhead165 = true;
+let babyhead141 = true;
 class Detail extends Component {
 
   constructor(props) {
@@ -27,16 +28,20 @@ class Detail extends Component {
       //骨骼
       stateBabyhead163:true,
       stateBabyhead164:true,
-      stateBabyhead165:true
+      stateBabyhead165:true,
     }
   }
+
+
+
 
   onDelete(){
     this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:3,dataId:this.props.ChildCheckInID}})
   }
 
+
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.ChildCheckInID}`));
   }
 
   backClicked(){
@@ -44,7 +49,7 @@ class Detail extends Component {
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/child-check-in/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){
@@ -63,6 +68,7 @@ class Detail extends Component {
         let dict = { "assessmentInfo": assessmentInfo, "customerId": queryURL('customerid'),"type": 3};
         if(this.props.ChildCheckInID){
           dict.id = this.props.ChildCheckInID
+          dict.operatorItem = 3
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
@@ -86,7 +92,6 @@ class Detail extends Component {
   }
  //骨骼复选
   onbabyhead16Change(checkedValues) {
-    console.log("sss",checkedValues)
     if(checkedValues.indexOf('3') >= 0){
       this.setState({
         stateBabyhead163:false
@@ -96,7 +101,6 @@ class Detail extends Component {
         stateBabyhead163:true,
       })
     }
-    console.log("11111")
     if(checkedValues.indexOf('4') >= 0){
       this.setState({
         stateBabyhead164:false
@@ -106,7 +110,6 @@ class Detail extends Component {
         stateBabyhead164:true
       })
     }
-    console.log('222222')
     if(checkedValues.indexOf('5') >= 0){
       this.setState({
         stateBabyhead165:false
@@ -116,12 +119,15 @@ class Detail extends Component {
         stateBabyhead165:true
       })
     }
-    console.log("222333333333")
   }
   //男女选择
   radioMale(e) {
-    console.log("male",e.target.value)
     this.setState({babyhead20allState:e.target.value })
+  }
+
+  //交付状态选择
+  onBabyheade141(e) {
+    this.setState({stateBabyheade141:e.target.value })
   }
   render() {
     babyhead11 = true;
@@ -129,11 +135,12 @@ class Detail extends Component {
     babyhead163 = true;
     babyhead164 = true;
     babyhead165 = true;
+    babyhead141 = true;
     const {loading} = this.props;
     const { ChildCheckInData } = this.props;
     ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
       babyhead11 = elem == 3 ? false : true;
-    }):''
+    }):'';
     ChildCheckInData ? ChildCheckInData.babyhead16.map(function(elem,index){
       babyhead163 = elem == 3 ? false : true;
       babyhead164 = elem == 4 ? false : true;
@@ -142,26 +149,30 @@ class Detail extends Component {
     if(ChildCheckInData) {
         babyhead20allboy =ChildCheckInData.babyhead20all ==0 ? false:true;
     }
+    if(ChildCheckInData) {
+      babyhead141 =ChildCheckInData.babyhead14 == 0 ? false:true;
+    }
     if(this.state.babyhead20allState){
       babyhead20allboy =this.state.babyhead20allState == 1 ? true:false;
-      console.log(babyhead20allboy,this.state.babyhead20allState )
     }
-     console.log(babyhead20allboy)
+    if(this.state.stateBabyheade141) {
+      babyhead141 = this.state.stateBabyheade141 == 0 ? false:true;
+    }
     // 基本信息
     const baseInfoAry = [
-      {title:'客户姓名',span:8,component:'Input',submitStr:'name'},
-      {title:'年龄',span:8,component:'Input',submitStr:'age'},
-      {title:'宝宝性别',span:8,component:'gender',submitStr:'     '},
-      {title:'分娩日期',span:8,component:'DatePicker',submitStr:'baseInfo1'},
-      {title:'入住日期',span:8,component:'DatePicker',submitStr:'baseInfo2'},
-      {title:'房间',span:8,component:'Input',submitStr:'baseInfo3'},
+      {title:'客户姓名',span:8,component:'Input',submitStr:'name',disable:true},
+      {title:'年龄',span:8,component:'Input',submitStr:'age',disable:true},
+      {title:'宝宝性别',span:8,component:'gender',submitStr:'babySex',disable:true},
+      {title:'分娩日期',span:8,component:'DatePicker',submitStr:'baseInfo1',disable:true},
+      {title:'入住日期',span:8,component:'DatePicker',submitStr:'baseInfo2',disable:true},
+      {title:'房间',span:8,component:'Input',submitStr:'baseInfo3',disable:true},
       {title:'破水时间',span:8,component:'DatePicker',submitStr:'baseTime0'},
-      {title:'Apgar评分',span:8,component:'Input',submitStr:'select_0'},
-      {title:'孕次',span:8,component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity'},
-      {title:'产次',span:8,component:'Input',selectName:'FETUS',submitStr:'fetus'},
+      {title:'Apgar评分',span:8,component:'Input',submitStr:'select_0',disable:true},
+      {title:'孕次',span:8,component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity',disable:true},
+      {title:'产次',span:8,component:'Input',selectName:'FETUS',submitStr:'fetus',disable:true},
       {title:'生产数量',span:15,component:'RadioGroups',submitStr:'babyNum',radioAry:[{'name':'单胞胎','value':'0'},{'name':'双胞胎','value':'1'},{'name':'','value':'3'}]},
       {title:'周数',span:8,component:'Input',submitStr:'weekNum'},
-      {title:'生产方式',component:'RadioGroups',span:15,submitStr:'radio_15',radioAry:[{'name':'自然生产','value':'0'},{'name':'剖腹生产','value':'1'}]},
+      {title:'生产方式',component:'RadioGroups',span:15,submitStr:'radio_15',disable:true,radioAry:[{'name':'自然生产','value':'0'},{'name':'剖腹生产','value':'1'}]},
     ]
 // 新生儿情况
     const newbornAry = [
@@ -169,25 +180,25 @@ class Detail extends Component {
       {title:'出生身长',component:'Input',unit:'cm',submitStr:'input_13'},
       {title:'出生时头围',component:'Input',unit:'cm',submitStr:'babyHead0'},
       {title:'出生时胸围',component:'Input',unit:'cm',submitStr:'babyHead1'},
-      {title:'囱门',formItems:'TwoWords',component:'RadioGroups',span:12,submitStr:'babyHead2',radioAry:[{'name':'平坦柔软','value':'0'},{'name':'紧绷鼓出','value':'1'},{'name':'凹陷','value':'2'}]},
+      {title:'囱门',formItems:'TwoWords',items:true,component:'Select',span:12,submitStr:'babyHead2',chiAry:['平坦柔软','紧绷鼓出','凹陷']},
       {title:'头皮',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead3', checkAry:[{'label':'正常','value':'0'},{'label':'破皮','value':'1'},{'label':'产瘤','value':'2'},{'label':'头血肿','value':'3'},{'label':'其他','value':'4'}]},
       {title:'眼睛',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead4',checkAry:[{'label':'正常','value':'0'},{'label':'日落眼','value':'1'},{'label':'分泌物','value':'2'},{'label':'眼睑肿胀','value':'3'},{'label':'巩膜出血','value':'4'},{'label':'其他','value':'5'}]},
-      {title:'瞳孔大小',formItems:'FourWords',component:'RadioGroups',span:12,submitStr:'babyhead5',radioAry:[{'name':'对称','value':'0'},{'name':'不对称','value':'1'}]},
+      {title:'瞳孔大小',formItems:'FourWords',items:true,component:'Select',span:12,submitStr:'babyhead5',chiAry:['对称','不对称']},
       {title:'耳朵',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead6',checkAry:[{'label':'正常','value':'0'},{'label':'红','value':'1'},{'label':'肿','value':'2'},{'label':'分泌物','value':'3'},{'label':'低下','value':'4'},{'label':'畸形','value':'5'},{'label':'耳边瘜肉','value':'6'}]},
-      {title:'口腔',formItems:'TwoWords',component:'CheckBoxGroup',span:12,submitStr:'babyhead7',checkAry:[{'label':'正常','value':'0'},{'label':'腭裂','value':'1'},{'label':'唇裂','value':'2'},{'label':'歪嘴','value':'3'},{'label':'舌苔','value':'4'},{'label':'鹅口疮','value':'5'},{'label':'溃疡','value':'6'},{'label':'舌系代短','value':'7'}]},
       {title:'鼻子',formItems:'TwoWords',component:'CheckBoxGroup',span:16,submitStr:'babyhead8',checkAry:[{'label':'正常','value':'0'},{'label':'肿胀','value':'1'},{'label':'鼻塞','value':'2'},{'label':'鼻分泌物','value':'3'},{'label':'出血','value':'4'},{'label':'鼻道畸形','value':'5'},{'label':'其他','value':'6'},]},
+      {title:'口腔',formItems:'TwoWords',component:'CheckBoxGroup',span:16,submitStr:'babyhead7',checkAry:[{'label':'正常','value':'0'},{'label':'腭裂','value':'1'},{'label':'唇裂','value':'2'},{'label':'歪嘴','value':'3'},{'label':'舌苔','value':'4'},{'label':'鹅口疮','value':'5'},{'label':'溃疡','value':'6'},{'label':'舌系代短','value':'7'}]},
       {title:'颈部',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead9',checkAry:[{'label':'正常','value':'0'},{'label':'肿胀','value':'1'},{'label':'疑斜颈','value':'2'},{'label':'僵硬','value':'3'}]},
-      {title:'胸部',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead10',checkAry:[{'label':'正常','value':'0'},{'label':'胸骨凹陷','value':'1'},{'label':'水桶胸','value':'2'}]},
+      {title:'胸部',formItems:'TwoWords',items:true,span:12,component:'Select',submitStr:'babyhead10',chiAry:['正常','胸骨凹陷','水桶胸']},
       {title:'腹部',formItems:'TwoWords',span:12,component:'CheckBoxGroup',fun:this.checkBabyHead11.bind(this),submitStr:'babyhead11',checkAry:[{'label':'正常','value':'0'},{'label':'疤痕','value':'1'},{'label':'脐膨出','value':'2'},{'label':'疝气','value':'3'}]},
-      {title:'部位',span:12,formItems:'TwoWords',component:'Input',noRequired:true,submitStr:'babyhead11-0',hide:babyhead11 && this.state.stateBabyhead11},
+      {title:'疝气部位',span:12,formItems:'TwoWords',items:true,component:'Input',noRequired:true,submitStr:'babyhead11-0',hide:babyhead11 && this.state.stateBabyhead11},
       {title:'脐带脱落',formItems:'FourWords',span:12,component:'RadioGroups',submitStr:'babyhead12',radioAry:[{'name':'是','value':'0'},{"name":'否','value':'1'}]},
       {title:'脐带状态',formItems:'FourWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead13',checkAry:[{'label':'干燥','value':'0'},{'label':'分泌物','value':'1'},{'label':'潮湿','value':'2'},{'label':'渗血','value':'3'},{'label':'红肿','value':'4'}]},
-      {title:'交付状态',formItems:'FourWords',span:12,component:'RadioGroups',submitStr:'babyhead14',radioAry:[{'name':'已交付','value':'0'},{'name':'未交付','value':'1'}]},
-      {title:'交付时间',formItems:'FourWords',span:12,component:'DatePicker',submitStr:'babyhead15'},
+      {title:'交付状态',formItems:'FourWords',span:12,component:'RadioGroups',fun:this.onBabyheade141.bind(this),submitStr:'babyhead14',radioAry:[{'name':'已交付','value':'0'},{'name':'未交付','value':'1'}]},
+      {title:'交付时间',formItems:'FourWords',items:true,noRequired:true,span:12,hide:babyhead141,component:'DatePicker',submitStr:'babyhead15'},
       {title:'骨骼',formItems:'TwoWords',span:12,component:'CheckBoxGroup',fun:this.onbabyhead16Change.bind(this),submitStr:'babyhead16',checkAry:[{'label':'正常','value':'0'},{'label':'脊髓膜膨出','value':'1'},{'label':'脊椎弯曲','value':'2'},{'label':'骨折','value':'3'},{'label':'脱臼','value':'4'},{'label':'尾骶凹','value':'5'}]},
       {title:'骨折部位',formItems:'FourWords',hide:this.state.stateBabyhead163 && babyhead163,span:12,component:'Input',noRequired:true,submitStr:'babyhead163',placeholder:'输入骨折部位'},
-      {title:'脱臼部位',formItems:'FourWords',hide:this.state.stateBabyhead164 && babyhead164,span:12,component:'Input',noRequired:true,submitStr:'babyhead164',placeholder:'输入脱臼部位'},
-      {title:'尾骶凹状态',formItems:'FourWords',hide:this.state.stateBabyhead165 && babyhead165,noRequired:true,span:12,component:'radioGroups',submitStr:'babyhead165',radioAry:[{'name':'有毛','value':'0'},{'name':'无毛','value':'1'}]},
+      {title:'脱臼部位',formItems:'FourWords',items:true,hide:this.state.stateBabyhead164 && babyhead164,span:12,component:'Input',noRequired:true,submitStr:'babyhead164',placeholder:'输入脱臼部位'},
+      {title:'尾骶凹状态',formItems:'FourWords',hide:this.state.stateBabyhead165 && babyhead165,noRequired:true,span:12,component:'RadioGroups',submitStr:'babyhead165',radioAry:[{'name':'有毛','value':'0'},{'name':'无毛','value':'1'}]},
       {title:'上肢',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead17',checkAry:[{'label':'正常','value':'0'},{'label':'无力','value':'1'},{'label':'僵直','value':'2'},{'label':'缺损','value':'3'},{'label':'畸形','value':'4'}]},
       {title:'下肢',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead18',checkAry:[{'label':'正常','value':'0'},{'label':'无力','value':'1'},{'label':'内翻','value':'2'},{'label':'外翻','value':'3'},{'label':'僵直','value':'4'},{'label':'缺损','value':'5'},{'label':'畸形','value':'6'},]},
       {title:'皮肤',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead19',checkAry:[{'label':'红润','value':'0'},{'label':'黄','value':'1'},{'label':'苍白','value':'2'},{'label':'青铜','value':'3'},{'label':'发绀','value':'4'},{'label':'红臀','value':'5'},{'label':'红疹','value':'6'},{'label':'毒性红斑','value':'7'},]},
@@ -195,14 +206,18 @@ class Detail extends Component {
       {title:'生殖器男',span:24,noRequired:true,component:'CheckBoxGroup',hide:babyhead20allboy,submitStr:'babyhead20',checkAry:[{'label':'正常','value':'0'},{'label':'睾丸已下降','value':'1'},{'label':'睾丸未下降','value':'2'},{'label':'尿道下裂','value':'3'},{'label':'红肿','value':'4'},{'label':'阴囊水肿','value':'5'},{'label':'疝气','value':'6'},{'label':'包皮过长','value':'7'},{'label':'阴茎无法外露包皮紧','value':'8'},{'label':'已行包皮环割术','value':'9'},]},
       {title:'生殖器女',noRequired:true,formItems:'FourWords',span:12,component:'CheckBoxGroup',hide:!babyhead20allboy,submitStr:'babyhead22',checkAry:[{'label':'正常','value':'0'},{'label':'阴唇肿','value':'1'}]},
       {title:'分泌物',noRequired:true,formItems:'TwoWords',span:12,component:'InputGroup',placeholder:'输入分泌物性状和颜色',hide:babyhead20allboy && !babyhead20allboy ? true:false,submitStr:'babyhead21',radioAry:[{'name':'无','value':'0'},{'name':'有','value':'1'}]},
+      {title:'大便',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead23',checkAry:[{'label':'正常',value:'0'},{'label':'腹泻',value:'1'},{'label':'未解',value:'2'},{'label':'血便',value:'3'},{'label':'无肛',value:'4'}]},
+      {title:'大便颜色',formItems:'FourWords',span:12,component:'RadioClass',submitStr:'babyhead24'},
+      {title:'小便',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead25',checkAry:[{'label':'正常',value:'0'},{'label':'血尿',value:'1'},{'label':'少尿',value:'2'},{'label':'尿结晶',value:'3'},{'label':'未解',value:'4'}]},
+
     ]
 
 // 新生儿情况
     const newbornTwoAry = [
       {title:'呼吸状态',formItems:'FourWords',span:12,component:'RadioClass',submitStr:'babyCare0',radioAry:[{'name':'正常','value':'0'},{'name':'异常','value':'1','Element':'Input',"submitStr":'babyCare00'}]},
-      {title:'呼吸速率',formItems:'FourWords',span:12,component:'RadioGroups',submitStr:'babyCare1',radioAry:[{'name':'正常','value':'0'},{'name':'呼吸急促','value':'1'},{'name':'呼吸过慢','value':'2'},{'name':'呼吸暂停','value':'3'}]},
+      {title:'呼吸速率',formItems:'FourWords',items:true,span:12,component:'Select',submitStr:'babyCare1',chiAry:['正常','呼吸急促','呼吸过慢','呼吸暂停']},
       {title:'呼吸音',formItems:'FourWords',span:12,component:'RadioClass',submitStr:'babyCare2',radioAry:[{'name':'清晰','value':'0'},{'name':'异常','value':'1','Element':'Input','submitStr':'babyCare2-0'}]},
-      {title:'心跳',formItems:'TwoWords',span:12,component:'RadioGroups',submitStr:'babyCare3',radioAry:[{'name':'正常','value':'0'},{'name':'心跳过快','value':'1'},{'name':'心跳过慢','value':'2'},{'name':'心率不整','value':'3'}]},
+      {title:'心跳',formItems:'TwoWords',items:true,span:12,component:'Select',submitStr:'babyCare3',chiAry:['正常','心跳过快','心跳过慢','心率不整']},
       {title:'心音',formItems:'TwoWords',span:12,component:'RadioGroups',submitStr:'babyCare4',radioAry:[{'name':'正常','value':'0'},{'name':'杂音','value':'1'}]},
       {title:'饮食',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyCare15',checkAry:[{'label':'母乳喂养','value':'0'},{'label':'奶瓶喂食','value':'1'}]},
       {title:'腹部',formItems:'TwoWords',span:12,component:'RadioGroups',submitStr:'babyCare5',radioAry:[{'name':'柔软','value':'0'},{'name':'腹胀','value':'1'}]},
@@ -222,7 +237,8 @@ class Detail extends Component {
     const ary = [{title:'基本信息',ary:baseInfoAry},{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.ChildCheckInData
+      value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
+      value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
 
@@ -236,8 +252,6 @@ class Detail extends Component {
         {creatButton('返回',this.backClicked.bind(this))}{creatButton('删除',this.onDelete.bind(this))}
         {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
       </div>
-
-    console.log("sss",babyhead20allboy )
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
