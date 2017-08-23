@@ -22,7 +22,9 @@ export default {
     shipCards: [],
     fetusAry: [],
     PuerperaBodyList: [],
-    babyNursingList: []//婴儿护理记录列表
+    babyNursingList: [],//婴儿护理记录列表
+    InsideBabySwimList:null,//对内婴儿游泳记录集合
+
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -82,8 +84,16 @@ export default {
           dispatch({ type: 'getBrouchurDetailById', payload: dict_ });
         }
 
+        //对内婴儿游泳记录
+        if (pathname === '/service/baby-swimming/detail' ) {
+          dispatch({type: 'getInsideBabySwimList'});
+        }else if(pathname === '/service/baby-swimming/edit'){
+          let dict_ = {dataId: query.dataId}
+          dispatch({type: 'getInsideBabySwimById', payload: dict_});
+        }
 
-        //婴儿喂养记录
+
+          //婴儿喂养记录
         if (pathname === '/service/baby-feed/detail'||pathname === '/service/baby-feed/edit') {
 
           if (pathname === '/service/baby-feed/detail') {
@@ -314,6 +324,17 @@ export default {
         console.log(err)
       }
     },
+    //保存对内婴儿游泳预约
+    *saveInsideBabySwim({ payload: values }, { call, put }){
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.saveInsideBabySwim, values);
+        message.success("保存成功");
+        yield put(routerRedux.push('/service/baby-swimming'))
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
 
 
     *saveBabyGrowthNote({ payload: values }, { call, put })
@@ -416,7 +437,36 @@ export default {
       if (code == 0) {
         message.success('保存成功');
       }
-    }
+    },
+    *getInsideBabySwimById({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
+      if (code == 0) {
+        yield put({
+          type: 'getInsideBabySwim',
+          payload: data
+        });
+      }
+    },
+    //获取对内婴儿游泳记录
+    *getInsideBabySwimList({ payload: values }, { call, put }) {
+      try {
+
+        let query = parse(location.search.substr(1))
+        let dict = { customerId:query.customerid }
+        if(query.date){
+          dict.date = query.date
+        }
+        const {data: {data,code}} = yield call(serviceAssessment.getInsideBabySwimList, dict);
+
+        yield put({
+          type: 'saveInsideBabySwimList',
+          payload: data
+        });
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
   },
   reducers: {
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
@@ -475,7 +525,14 @@ export default {
         ChildCheckInData: null,
         ChildCheckInID: null,
         PuerperaBodyList:null,
+        InsideBabySwimList:null,//对内婴儿游泳记录集合
       }
+    },
+    getInsideBabySwim(state, { payload: data }){
+      return { ...state, InsideBabySwimData: todo }
+    },
+    saveInsideBabySwimList(state, { payload: todo }){
+      return { ...state, InsideBabySwimList: todo }
     },
     savaMaternalEverydayPhysicalEvaluationList(state, { payload: todo }){
       return { ...state, PuerperaBodyList: todo }
