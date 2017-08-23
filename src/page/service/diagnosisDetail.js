@@ -145,6 +145,7 @@ class Detail
         };
 
         if (this.props.CheckBeforeID) {
+          dict.operatorItem = 4
           dict.id = this.props.CheckBeforeID
         }
         this.props.dispatch({ type: 'serviceCustomer/saveAssessment', payload: dict })

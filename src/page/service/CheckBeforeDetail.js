@@ -10,9 +10,9 @@ import { routerRedux,Link } from 'dva/router'
 const baseInfoAry = [
   {title:'客户姓名',component:'Input',submitStr:'name',disable:true},
   {title:'年龄',component:'Input',submitStr:'age',disable:true},
-  {title:'宝宝性别',component:'gender',submitStr:'babySex'},
-  {title:'分娩日期',component:'DatePicker',submitStr:'brithDate'},
-  {title:'入住日期',component:'DatePicker',submitStr:'checkDate'},
+  {title:'宝宝性别',component:'gender',submitStr:'babySex',disable:true},
+  {title:'分娩日期',component:'DatePicker',submitStr:'brithDate',disable:true},
+  {title:'入住日期',component:'DatePicker',submitStr:'checkDate',disable:true},
   {title:'房间',component:'Input',submitStr:'associatedRooms',disable:true},
   {title:'产次',component:'Input',selectName:'FETUS',submitStr:'fetus',disable:true},
   {title:'孕次',component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity',disable:true},
@@ -127,8 +127,10 @@ class Detail extends Component {
       if (!err) {
 
         Object.keys(values).map(key=>{
-          if(typeof values[key] === 'object'){
-            values[key] = values[key].format()
+          if(values[key]){
+            if(typeof values[key] === 'object'){
+              values[key] = values[key].format()
+            }
           }
         })
         const assessmentInfo =  JSON.stringify(values);
@@ -137,6 +139,7 @@ class Detail extends Component {
 
         if(this.props.CheckBeforeID){
           dict.id = this.props.CheckBeforeID
+          dict.operatorItem = 1
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }

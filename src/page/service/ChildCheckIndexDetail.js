@@ -67,6 +67,7 @@ class Detail extends Component {
         let dict = { "assessmentInfo": assessmentInfo, "customerId": queryURL('customerid'),"type": 3};
         if(this.props.ChildCheckInID){
           dict.id = this.props.ChildCheckInID
+          dict.operatorItem = 3
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }

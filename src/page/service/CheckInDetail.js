@@ -111,6 +111,7 @@ class Detail extends Component {
         let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": type};
         if(this.props.CheckInID){
           dict.id = this.props.CheckInID
+          dict.operatorItem = 2
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
