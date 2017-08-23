@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {chiDetailComponent,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Row,Form,Col,Spin,Table} from 'antd';
+import {Card ,Row,Form,Col,Spin,DatePicker} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -87,16 +87,20 @@ class Detail extends Component {
             extra = {creatButton('编辑',()=>{this.editBtnClick(dict)})}
             bodyStyle={{ padding:'0 15px 0 15px'}} style={{marginTop:'5px', width: '100%' }}>
         {chiDetailComponent(ary)}
-        {/*<Row>*/}
-          {/*<Col span={12}/>*/}
-          {/*{chiDetailComponent([ {title: '操作人',initValue: dict.operator}, {title: '操作时间',initValue: moment(dict.operatorTime).format('YYYY-MM-DD') },])}*/}
-        {/*</Row>*/}
       </Card>
     )
   }
 
-  componentWillUnmount() {
-    this.props.dispatch({type: 'serviceCustomer/removeData',})
+  onChange(date, dateString) {
+
+    let query = {customerid:parse(location.search.substr(1)).customerid}
+    if(dateString){
+      query.date = dateString
+    }
+    this.props.dispatch(routerRedux.push({
+      pathname:location.pathname,
+      query
+    }));
   }
 
   render() {
@@ -104,9 +108,9 @@ class Detail extends Component {
     const {loading,baseInfoDict,PuerperaBodyList} = this.props
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
-    let detailCard = (PuerperaBodyList).map((dict)=>{
+    let detailCard = PuerperaBodyList ? (PuerperaBodyList).map((dict)=>{
       return this.CreatDetailCard(dict)
-    })
+    }):''
 
     const bottomDiv =
       <div className='button-group-bottom-common'>
@@ -116,7 +120,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='detailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
           {detailCard}
           {bottomDiv}

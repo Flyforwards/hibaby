@@ -56,7 +56,7 @@ class Detail extends Component {
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){

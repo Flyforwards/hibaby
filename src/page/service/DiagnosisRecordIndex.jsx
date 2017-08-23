@@ -7,7 +7,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-        <CustomerListPage detailLinkUrl="/service/check-before"/>
+        <CustomerListPage detailLinkUrl="/service/checkRoomDetail" moreLink="&type=3"/>
       </div>
     )
   }
