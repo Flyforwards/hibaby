@@ -89,7 +89,7 @@ class Detail extends Component {
   }
 
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/check-in/edit?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckInID}`));
   }
 
   backClicked(){
@@ -97,7 +97,7 @@ class Detail extends Component {
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/check-in/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/check-in/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){

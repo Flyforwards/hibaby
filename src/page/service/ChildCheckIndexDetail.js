@@ -31,12 +31,16 @@ class Detail extends Component {
     }
   }
 
+
+
+
   onDelete(){
     this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:3,dataId:this.props.ChildCheckInID}})
   }
 
+
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.ChildCheckInID}`));
   }
 
   backClicked(){
@@ -44,7 +48,7 @@ class Detail extends Component {
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/child-check-in/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){

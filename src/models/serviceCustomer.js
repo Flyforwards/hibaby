@@ -33,19 +33,31 @@ export default {
         }
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
           let dictTwo = { ...query, type: 1 }
+          if( pathname === '/service/check-before/edit'){
+            dictTwo.operatorItem = 1;
+          }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
           let dictTwo = { ...query, type: 2 }
+          if( pathname === '/service/check-before/edit'){
+            dictTwo.operatorItem = 2;
+          }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
         if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
           let dict = { ...query, type: 3 }
+          if( pathname === '/service/check-before/edit'){
+            dictTwo.operatorItem = 3;
+          }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
         //中医见诊记录单详情页
         if (pathname === '/service/diagnosis/detail' || pathname === '/service/diagnosis/edit') {
           let dict = { ...query, type: 4 }
+          if( pathname === '/service/check-before/edit'){
+            dictTwo.operatorItem = 4;
+          }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
 
@@ -483,6 +495,15 @@ export default {
     //儿科、中医、产科记录单详情
     getDescribe(state, { payload: data }){
       return { ...state, describeInfo: data }
+    },
+    addMutDictData(state, { payload: todo }){
+      if(todo.abName === 'YCC'){
+        return {...state,fetusAry:todo.data};
+      }
+      else if(todo.abName === 'YC'){
+        return {...state,gravidityAry:todo.data};
+      }
+      return {...state};
     },
   }
 
