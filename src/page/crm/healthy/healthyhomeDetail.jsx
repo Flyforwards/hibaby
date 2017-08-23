@@ -675,7 +675,7 @@ function HealthyhomeDetail(props) {
           if (location.pathname !== '/crm/customer/printCustomerPage') {
             return <div className="button-group-bottom-common">
               <Button className='button-group-bottom-1' onClick={handleBack}>返回</Button>
-              <PermissionButton testKey="HEALTHINFO_EDIT" className='button-group-bottom-2'
+              <PermissionButton testKey="HEALTHINFO_EDIT" className='button-group-bottom-2 button-group-position-top'
                                 onClick={handleEdit}>编辑</PermissionButton>
               <ExcelTitleModel>
                 <PermissionButton testKey="HEALTHINFO_PRINT" className='button-group-bottom-3'>打印</PermissionButton>

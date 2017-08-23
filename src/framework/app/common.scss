@@ -305,7 +305,11 @@
     font-size: 14px;
   }
 }
-
+.button-group-position-top{
+  position: fixed;
+  top:57px;
+  right: 50px;
+}
 .uploadBtn  {
   background: #f1e8df;
   color: #b67233;
