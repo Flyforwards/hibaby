@@ -27,8 +27,6 @@ function onChange(dict) {
 
 function creatComponent(form,dict) {
 
-  dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
-
   const { getFieldDecorator } = form;
 
   let tempDiv = (<Input/>);
@@ -236,6 +234,8 @@ export function CreatCard(form,superDict) {
   for(let i = 0;i<ary.length;i++) {
     const dict = ary[i];
 
+    dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
+
     if (netData) {
       if (dict.component === 'DatePicker') {
         if (netData[dict.submitStr]) {
@@ -256,7 +256,7 @@ export function CreatCard(form,superDict) {
           dict.initValue = moment(baseInfoDict[dict.submitStr]);
         }
         else {
-          if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'){
+          if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'||dict.submitStr === 'hospital'){
             dict.initValue = baseInfoDict[dict.submitStr].toString()
           }
           else{
