@@ -163,10 +163,18 @@ function cusFromItem(form,dict) {
     }
   }
   if(dict.formItems === "TwoWords" ){
-    formItemLayout = {
-      labelCol: { span: 3 },
-      wrapperCol: { span: 21 },
+    if(dict.items){
+      formItemLayout = {
+        labelCol: { span: 3 },
+        wrapperCol: { span: 10 },
+      }
+    }else{
+      formItemLayout = {
+        labelCol: { span: 3 },
+        wrapperCol: { span: 21 },
+      }
     }
+
   }
   if(dict.span === 16 ){
     formItemLayout = {
@@ -181,9 +189,16 @@ function cusFromItem(form,dict) {
     }
   }
   if(dict.formItems === "FourWords" ){
-    formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+    if(dict.items) {
+      formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 10 },
+      }
+    }else{
+      formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
+      }
     }
   }
   if(dict.title === '手术指征'){
