@@ -22,7 +22,8 @@ export default {
     shipCards: [],
     fetusAry: [],
     PuerperaBodyList: [],
-    babyNursingList: []//婴儿护理记录列表
+    babyNursingList: [],//婴儿护理记录列表
+    describeInfo: []
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -102,12 +103,16 @@ export default {
               dispatch({type: 'getBabyGrowthNoteById', payload: dict_});
             }
           }
-
-          //儿科、中医、产科记录单详情页
-          if (pathname === '/service/checkRoomDetail') {
-            let dataId = query.customerid
-            dispatch({type: 'getDoctorNoteById', payload: {dataId}});
-          }
+  
+        //儿科、中医、产科记录单详情页
+        if (pathname === '/service/diagnosis-record/checkRoomDetail') {
+          const { customerid, type, operatoritem } = query;
+          let dict_ = { customerId: parseInt(customerid), type: parseInt(type), operatorItem: parseInt(operatoritem) }
+          dispatch({
+            type: 'getdoctornoteList',
+            payload: dict_
+          });
+        }
 
       });
     }
@@ -235,10 +240,7 @@ export default {
         console.log(err)
       }
     },
-
-    //*saveMaternalEverydayPhysicalEvaluation({ payload: values }, { call, put }) {
-
-
+    
     *getBabyFeedingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -420,6 +422,18 @@ export default {
       if (code == 0) {
         message.success('保存成功');
       }
+    },
+    //3.根据客户id和记录单类型以及筛选条件查询记录单列表
+    *getdoctornoteList({ payload: values }, { call, put }){
+      console.log(values, '传入的参数2')
+      const { data: { data, code } } = yield call(serviceAssessment.getdoctornoteList, values);
+      if (code == 0) {
+        yield put({
+          type: 'getDescribe',
+          payload: data
+        });
+      }
+      
     }
   },
   reducers: {
@@ -499,6 +513,13 @@ export default {
     //儿科、中医、产科记录单详情
     getDescribe(state, { payload: data }){
       return { ...state, describeInfo: data }
+    },
+    isEdit(state, { payload: data }){
+      const { info, key } = data;
+      let describeInfo = state.describeInfo;
+      describeInfo[key] = info;
+      return { ...state, describeInfo }
+      
     },
     addMutDictData(state, { payload: todo }){
       if(todo.abName === 'YCC'){

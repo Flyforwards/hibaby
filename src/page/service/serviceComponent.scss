@@ -61,3 +61,23 @@
     padding: 10px 5px;
   }
 }
+.checkRoomDetailCard{
+  .checkRoomDetailTimeSpan{
+    margin: 30px 15px 0 0;
+  }
+  .checkRoomDetailTime{
+    margin: 30px 20px ;
+  }
+  .checkRoomDetail{
+    padding: 40px 15px 15px;
+    border-top: 2px solid #ccc;
+    .buttonBox{
+      width: 100%;
+      height: 50px;
+    }
+    .checkRoomDetailRow{
+      margin-bottom: 40px;
+    }
+  }
+
+}
