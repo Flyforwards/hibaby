@@ -66,7 +66,7 @@ export default {
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList'});
         }
         if (pathname === '/service/puerpera-body/edit') {
-          let dict_ = { dataId: query.dataId }
+          let dict_ = { dataId: query.dataId ,operatorItem:8}
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationById', payload: dict_ });
         }
 
@@ -88,7 +88,7 @@ export default {
             dispatch({type: 'getBabyFeedingNoteList'})
           }
           else {
-              let dict_ = {dataId: query.dataId}
+              let dict_ = {dataId: query.dataId,operatorItem:13}
               dispatch({type: 'getBabyFeedingNoteById', payload: dict_});
             }
           }
@@ -98,7 +98,7 @@ export default {
               dispatch({type: 'getBabyGrowthNoteList'});
             }
             else {
-              let dict_ = {dataId: query.dataId}
+              let dict_ = {dataId: query.dataId,operatorItem:14}
               dispatch({type: 'getBabyGrowthNoteById', payload: dict_});
             }
           }
