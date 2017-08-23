@@ -27,8 +27,6 @@ function onChange(dict) {
 
 function creatComponent(form,dict) {
 
-  dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
-
   const { getFieldDecorator } = form;
 
   let tempDiv = (<Input/>);
@@ -165,10 +163,18 @@ function cusFromItem(form,dict) {
     }
   }
   if(dict.formItems === "TwoWords" ){
-    formItemLayout = {
-      labelCol: { span: 3 },
-      wrapperCol: { span: 21 },
+    if(dict.items){
+      formItemLayout = {
+        labelCol: { span: 3 },
+        wrapperCol: { span: 10 },
+      }
+    }else{
+      formItemLayout = {
+        labelCol: { span: 3 },
+        wrapperCol: { span: 21 },
+      }
     }
+
   }
   if(dict.span === 16 ){
     formItemLayout = {
@@ -183,9 +189,16 @@ function cusFromItem(form,dict) {
     }
   }
   if(dict.formItems === "FourWords" ){
-    formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+    if(dict.items) {
+      formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 10 },
+      }
+    }else{
+      formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
+      }
     }
   }
   if(dict.title === '手术指征'){
@@ -221,6 +234,8 @@ export function CreatCard(form,superDict) {
   for(let i = 0;i<ary.length;i++) {
     const dict = ary[i];
 
+    dict.disabled =  location.pathname.indexOf('detail') != -1 || dict.disable
+
     if (netData) {
       if (dict.component === 'DatePicker') {
         if (netData[dict.submitStr]) {
@@ -241,7 +256,7 @@ export function CreatCard(form,superDict) {
           dict.initValue = moment(baseInfoDict[dict.submitStr]);
         }
         else {
-          if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'){
+          if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'||dict.submitStr === 'hospital'){
             dict.initValue = baseInfoDict[dict.submitStr].toString()
           }
           else{
