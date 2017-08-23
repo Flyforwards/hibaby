@@ -29,8 +29,6 @@ const baseInfoAry = [
 ]
 
 
-let chiAry = []
-
 class Detail extends Component {
 
   constructor(props) {
@@ -58,14 +56,9 @@ class Detail extends Component {
 
   }
 
-  radioChange(e) {
-    this.setState({childbirth:e.target.value})
-  }
-
   submitClicked(){
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-
         Object.keys(values).map(key=>{
           if(values[key]){
             if(typeof values[key] === 'object'){
@@ -74,9 +67,7 @@ class Detail extends Component {
           }
         })
         const assessmentInfo =  JSON.stringify(values);
-
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 5};
-        dict.operatorItem = 5
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 5,operatorItem:5};
         if(this.props.CheckBeforeID){
           dict.id = this.props.CheckBeforeID
         }
@@ -90,31 +81,6 @@ class Detail extends Component {
   }
 
   render() {
-
-    let hide = 2
-    if(this.props.CheckBeforeData){
-      if(this.props.CheckBeforeData.radio_15 ){
-        hide = this.props.CheckBeforeData.radio_15 == 0?true:false;
-      }
-    }
-    if(this.state.childbirth){
-      hide = this.state.childbirth == 1 ? false : true;
-    }
-
-    // 分娩过程
-    const DeliveryProcessAry = [
-      {title:'分娩方式',component:'RadioGroups',submitStr:'radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
-      {title:'手术指征',component:'Input',submitStr:'input_5',span:18,hide:hide === 2 ? true : hide,noRequired:hide === 2 ? false : hide},
-      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
-      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
-      {title:'产时出血',component:'InputGroup',unit:'ml',submitStr:'input_6'},
-      {title:'胎盘早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
-      {title:'前置胎盘',component:'RadioGroup',submitStr:'radio_18'},
-      {title:'胎盘早剥',component:'RadioGroup',submitStr:'radio_19'},
-      {title:'胎盘残留',component:'RadioGroup',submitStr:'radio_20'},
-      {title:'其他',component:'TextArea',span:24,submitStr:'input_8'},
-    ]
-
     const {loading} = this.props
 
     const ary = [{title:'基本信息',ary:baseInfoAry}]
@@ -124,7 +90,6 @@ class Detail extends Component {
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{}
       return CreatCard(this.props.form,value)
     })
-
 
     const bottomDiv = location.pathname === '/service/nutrition-evaluate/edit' ?
       <div className='button-group-bottom-common'>
@@ -137,11 +102,8 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-
           {chiAry}
-
           {bottomDiv}
         </Card>
       </Spin>

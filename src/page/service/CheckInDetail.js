@@ -108,10 +108,9 @@ class Detail extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const assessmentInfo =  JSON.stringify(values);
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": type};
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": type,operatorItem :2};
         if(this.props.CheckInID){
           dict.id = this.props.CheckInID
-          dict.operatorItem = 2
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
