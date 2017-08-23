@@ -209,7 +209,7 @@ export default (app) => [
   },
   // 产妇护理记录
   {
-    path: '/service/puerpera-record',
+    path: '/service/puerpera-record ',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
