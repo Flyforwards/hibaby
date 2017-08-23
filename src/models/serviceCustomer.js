@@ -103,7 +103,7 @@ export default {
               dispatch({type: 'getBabyGrowthNoteById', payload: dict_});
             }
           }
-  
+
         //儿科、中医、产科记录单详情页
         if (pathname === '/service/diagnosis-record/checkRoomDetail') {
           const { customerid, type, operatoritem } = query;
@@ -240,7 +240,7 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getBabyFeedingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -433,7 +433,7 @@ export default {
           payload: data
         });
       }
-      
+
     }
   },
   reducers: {
@@ -519,7 +519,7 @@ export default {
       let describeInfo = state.describeInfo;
       describeInfo[key] = info;
       return { ...state, describeInfo }
-      
+
     },
     addMutDictData(state, { payload: todo }){
       if(todo.abName === 'YCC'){

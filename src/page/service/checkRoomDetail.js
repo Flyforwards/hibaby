@@ -13,27 +13,27 @@ class Detail extends Component {
     this.state = {
       isEdit: false,
       descInfo: ''
-      
+
     }
   }
-  
+
   onDelete() {
     this.props.dispatch({
       type: 'serviceCustomer/DelAssessment',
       payload: { type: 1, dataId: this.props.CheckBeforeID }
     })
   }
-  
+
   editBtnClick() {
     this.setState({
       isEdit: true
     })
   }
-  
+
   backClicked() {
     window.history.go(-1)
   }
-  
+
   editBackClicked(data) {
     const { dispatch } = this.props;
     data.info = { ...data.info, isEdit: true };
@@ -41,13 +41,13 @@ class Detail extends Component {
       type: 'serviceCustomer/isEdit',
       payload: data
     })
-    
+
   }
-  
+
   print() {
-  
+
   }
-  
+
   submitClicked() {
     const { describeInfo, dispatch } = this.props;
     let test = {
@@ -68,20 +68,20 @@ class Detail extends Component {
     })
     //}
   }
-  
+
   componentWillUnmount() {
     this.props.dispatch({ type: 'serviceCustomer/removeData' })
   }
-  
+
   onChange = (e) => {
     const { value } = e.target;
     console.log(value)
-    
+
     this.setState({
       descInfo: value
     })
   }
-  
+
   onChangeTime = (date, dateString) => {
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
@@ -93,7 +93,7 @@ class Detail extends Component {
       payload: data
     })
   }
-  
+
   render() {
     const { loading, baseInfoDict, describeInfo } = this.props;
     let baseInfoDivAry = detailComponent(baseInfoDict)
@@ -105,7 +105,7 @@ class Detail extends Component {
         {creatButton('返回', this.backClicked.bind(this))}{this.props.CheckBeforeData ? creatButton('删除', this.onDelete.bind(this)) : ''}
         {creatButton('打印', this.print.bind(this))}
       </div>
-    
+
     const test  = describeInfo.length != 0 && describeInfo.map((v, k) => {
         return (
           <div key={k} className="checkRoomDetail">
@@ -135,7 +135,7 @@ class Detail extends Component {
                 {creatButton('删除', this.submitClicked.bind(this))}
               </div>
             </div>
-      
+
           </div>
         )
       })

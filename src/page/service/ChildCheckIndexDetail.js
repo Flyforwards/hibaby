@@ -65,10 +65,9 @@ class Detail extends Component {
         //   }
         // })
         const assessmentInfo =  JSON.stringify(values);
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": queryURL('customerid'),"type": 3};
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": queryURL('customerid'),"type": 3,operatorItem:3};
         if(this.props.ChildCheckInID){
           dict.id = this.props.ChildCheckInID
-          dict.operatorItem = 3
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
