@@ -16,7 +16,7 @@ function ClubSelect({ dispatch, clubs}){
   };
 
   let buttonNodes =  clubs.map((item, index) => {
-    return (<Button key={ index }  onClick = { btnClick.bind(this, index) }  type = "primary" > { item.name } </Button>)
+    return (<Button key={ index }  onClick = { btnClick.bind(this, index) } > { item.name } </Button>)
   })
 
   return (
@@ -24,9 +24,13 @@ function ClubSelect({ dispatch, clubs}){
        <div className = "login-index">
          <div className = "select">
            <img className = "find-img" src ={ logo } />
-           {
-             buttonNodes
-           }
+           <div style={{ maxHeight: '400px', 'overflow-x': 'hidden','overflow-y' : 'auto' }}>
+             <div style={{ marginRight: '12px' }}>
+               {
+                 buttonNodes
+               }
+             </div>
+           </div>
          </div>
        </div>
       </div>
