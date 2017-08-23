@@ -81,13 +81,16 @@ class Detail extends Component {
         }
 
         let typeStr = 'serviceCustomer/saveBabyGrowthNote'
+        let operatorItem = 8
         if(this.state.urlAddress === 'baby-feed'){
           typeStr = 'serviceCustomer/saveBabyFeedingNote'
+          operatorItem = 13
         }
         if(this.state.urlAddress === 'puerpera-body'){
           typeStr = 'serviceCustomer/saveMaternalEverydayPhysicalEvaluation'
+          operatorItem = 14
         }
-
+        dict.operatorItem = operatorItem;
         this.props.dispatch({type:typeStr,payload:dict})
       }
     });

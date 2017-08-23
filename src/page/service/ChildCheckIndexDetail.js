@@ -206,6 +206,10 @@ class Detail extends Component {
       {title:'生殖器男',span:24,noRequired:true,component:'CheckBoxGroup',hide:babyhead20allboy,submitStr:'babyhead20',checkAry:[{'label':'正常','value':'0'},{'label':'睾丸已下降','value':'1'},{'label':'睾丸未下降','value':'2'},{'label':'尿道下裂','value':'3'},{'label':'红肿','value':'4'},{'label':'阴囊水肿','value':'5'},{'label':'疝气','value':'6'},{'label':'包皮过长','value':'7'},{'label':'阴茎无法外露包皮紧','value':'8'},{'label':'已行包皮环割术','value':'9'},]},
       {title:'生殖器女',noRequired:true,formItems:'FourWords',span:12,component:'CheckBoxGroup',hide:!babyhead20allboy,submitStr:'babyhead22',checkAry:[{'label':'正常','value':'0'},{'label':'阴唇肿','value':'1'}]},
       {title:'分泌物',noRequired:true,formItems:'TwoWords',span:12,component:'InputGroup',placeholder:'输入分泌物性状和颜色',hide:babyhead20allboy && !babyhead20allboy ? true:false,submitStr:'babyhead21',radioAry:[{'name':'无','value':'0'},{'name':'有','value':'1'}]},
+      {title:'大便',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead23',checkAry:[{'label':'正常',value:'0'},{'label':'腹泻',value:'1'},{'label':'未解',value:'2'},{'label':'血便',value:'3'},{'label':'无肛',value:'4'}]},
+      {title:'大便颜色',formItems:'FourWords',span:12,component:'RadioClass',submitStr:'babyhead24'},
+      {title:'小便',formItems:'TwoWords',span:12,component:'CheckBoxGroup',submitStr:'babyhead25',checkAry:[{'label':'正常',value:'0'},{'label':'血尿',value:'1'},{'label':'少尿',value:'2'},{'label':'尿结晶',value:'3'},{'label':'未解',value:'4'}]},
+
     ]
 
 // 新生儿情况

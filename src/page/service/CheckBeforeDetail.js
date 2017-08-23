@@ -135,11 +135,10 @@ class Detail extends Component {
         })
         const assessmentInfo =  JSON.stringify(values);
 
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1};
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1,operatorItem :1};
 
         if(this.props.CheckBeforeID){
           dict.id = this.props.CheckBeforeID
-          dict.operatorItem = 1
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
@@ -167,7 +166,7 @@ class Detail extends Component {
       {title:'分娩方式',component:'RadioGroups',submitStr:'radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
       {title:'手术指征',component:'Input',submitStr:'input_5',span:18,hide:hide === 2 ? true : hide,noRequired:hide === 2 ? false : hide},
       {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
-      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
+      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16'},
       {title:'产时出血',component:'InputGroup',unit:'ml',submitStr:'input_6'},
       {title:'胎盘早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
       {title:'前置胎盘',component:'RadioGroup',submitStr:'radio_18'},

@@ -24,6 +24,8 @@ export default {
     PuerperaBodyList: [],
     babyNursingList: [],//婴儿护理记录列表
     InsideBabySwimList:null,//对内婴儿游泳记录集合
+    describeInfo: []
+
 
   },
   subscriptions: {
@@ -34,29 +36,27 @@ export default {
           dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
         }
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
-          let dictTwo = { ...query, type: 1 }
-          if( pathname === '/service/check-before/edit'){
-            dictTwo.operatorItem = 1;
-          }
+          let dictTwo = { ...query, type: 1, operatorItem: 1 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
+        if (pathname === '/service/nutrition-evaluate/detail' || pathname === '/service/nutrition-evaluate/edit') {
+          let dictTwo = { ...query, type: 5, operatorItem: 5 }
+            dictTwo.operatorItem = 5;
+          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+        }
+
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
-          let dictTwo = { ...query, type: 2 }
-          if( pathname === '/service/check-before/edit'){
+          let dictTwo = { ...query, type: 2, operatorItem: 2 }
             dictTwo.operatorItem = 2;
-          }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
         if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
-          let dict = { ...query, type: 3 }
-          if( pathname === '/service/check-before/edit'){
-            dictTwo.operatorItem = 3;
-          }
+          let dict = { ...query, type: 3 ,operatorItem:3}
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
         //中医见诊记录单详情页
         if (pathname === '/service/diagnosis/detail' || pathname === '/service/diagnosis/edit') {
-          let dict = { ...query, type: 4 }
+          let dict = { ...query, type: 4 , operatorItem: 4}
           if( pathname === '/service/check-before/edit'){
             dictTwo.operatorItem = 4;
           }
@@ -70,7 +70,7 @@ export default {
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList'});
         }
         if (pathname === '/service/puerpera-body/edit') {
-          let dict_ = { dataId: query.dataId }
+          let dict_ = { dataId: query.dataId ,operatorItem:8}
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationById', payload: dict_ });
         }
 
@@ -88,7 +88,7 @@ export default {
         if (pathname === '/service/baby-swimming/detail' ) {
           dispatch({type: 'getInsideBabySwimList'});
         }else if(pathname === '/service/baby-swimming/edit'){
-          let dict_ = {dataId: query.dataId}
+          let dict_ = {dataId: query.dataId,operatorItem:15}
           dispatch({type: 'getInsideBabySwimById', payload: dict_});
         }
 
@@ -100,7 +100,7 @@ export default {
             dispatch({type: 'getBabyFeedingNoteList'})
           }
           else {
-              let dict_ = {dataId: query.dataId}
+              let dict_ = {dataId: query.dataId,operatorItem:13}
               dispatch({type: 'getBabyFeedingNoteById', payload: dict_});
             }
           }
@@ -110,16 +110,20 @@ export default {
               dispatch({type: 'getBabyGrowthNoteList'});
             }
             else {
-              let dict_ = {dataId: query.dataId}
+              let dict_ = {dataId: query.dataId,operatorItem:14}
               dispatch({type: 'getBabyGrowthNoteById', payload: dict_});
             }
           }
 
-          //儿科、中医、产科记录单详情页
-          if (pathname === '/service/checkRoomDetail') {
-            let dataId = query.customerid
-            dispatch({type: 'getDoctorNoteById', payload: {dataId}});
-          }
+        //儿科、中医、产科记录单详情页
+        if (pathname === '/service/diagnosis-record/checkRoomDetail') {
+          const { customerid, type, operatoritem } = query;
+          let dict_ = { customerId: parseInt(customerid), type: parseInt(type), operatorItem: parseInt(operatoritem) }
+          dispatch({
+            type: 'getdoctornoteList',
+            payload: dict_
+          });
+        }
 
       });
     }
@@ -188,6 +192,9 @@ export default {
         } else if (values.type == 3) {
           yield put(routerRedux.push('/service/child-check-in'))
         }
+        else if (values.type == 5) {
+          yield put(routerRedux.push('/service/nutrition-evaluate'))
+        }
       }
       catch (err) {
       }
@@ -216,6 +223,9 @@ export default {
         } else if (values.type == 3) {
           yield put(routerRedux.push('/service/child-check-in'))
         }
+       else if (values.type == 5) {
+          yield put(routerRedux.push('/nutrition-evaluate'))
+        }
       }
       catch (err) {
         console.log(err)
@@ -241,9 +251,6 @@ export default {
         console.log(err)
       }
     },
-
-    //*saveMaternalEverydayPhysicalEvaluation({ payload: values }, { call, put }) {
-
 
     *getBabyFeedingNoteList({ payload: values }, { call, put })
     {
@@ -438,6 +445,18 @@ export default {
         message.success('保存成功');
       }
     },
+    //3.根据客户id和记录单类型以及筛选条件查询记录单列表
+    *getdoctornoteList({ payload: values }, { call, put }){
+      console.log(values, '传入的参数2')
+      const { data: { data, code } } = yield call(serviceAssessment.getdoctornoteList, values);
+      if (code == 0) {
+        yield put({
+          type: 'getDescribe',
+          payload: data
+        });
+      }
+
+    },
     *getInsideBabySwimById({ payload: values }, { call, put }){
       const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
       if (code == 0) {
@@ -499,7 +518,7 @@ export default {
     savaAssessment(state, { payload: todo }){
       let dict = {}
       if (todo) {
-        if (todo.type === 1 || todo.type === 4) {
+        if (todo.type === 1 || todo.type === 4||todo.type === 5) {
           dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
           dict.CheckBeforeID = todo.id
         } else if (todo.type === 2) {
@@ -529,7 +548,7 @@ export default {
       }
     },
     getInsideBabySwim(state, { payload: data }){
-      return { ...state, InsideBabySwimData: todo }
+      return { ...state, InsideBabySwimData: data }
     },
     saveInsideBabySwimList(state, { payload: todo }){
       return { ...state, InsideBabySwimList: todo }
@@ -552,6 +571,13 @@ export default {
     //儿科、中医、产科记录单详情
     getDescribe(state, { payload: data }){
       return { ...state, describeInfo: data }
+    },
+    isEdit(state, { payload: data }){
+      const { info, key } = data;
+      let describeInfo = state.describeInfo;
+      describeInfo[key] = info;
+      return { ...state, describeInfo }
+
     },
     addMutDictData(state, { payload: todo }){
       if(todo.abName === 'YCC'){
