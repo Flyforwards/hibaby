@@ -35,7 +35,7 @@ function creatComponent(form,dict) {
   let children = []
   if(dict.chiAry){
     for(let i = 0;i<dict.chiAry.length;i++){
-      children.push(<Option key={i}>{dict.chiAry[i]}</Option>)
+        children.push(<Option key={i}>{dict.chiAry[i]}</Option>)
     }
   }
 
@@ -55,7 +55,6 @@ function creatComponent(form,dict) {
   }
 
   if (dict.selectName){
-    console.log(dict)
     tempDiv = (<DictionarySelect className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
   }
   else{
@@ -146,8 +145,8 @@ function cusFromItem(form,dict) {
   }
 
   const { getFieldDecorator } = form;
-  //
-  let rules = { rules: [{ required: dict.noRequired?false:true,  message: `请输入${dict.title || '此项'}!`}],};
+
+  let rules = { rules: [{ required: (dict.noRequired || dict.disabled)?false:true,  message: `请输入${dict.title || '此项'}!`}],};
 
   if (dict.component === 'UploadButton')
   {
@@ -247,7 +246,7 @@ export function CreatCard(form,superDict) {
         }
       }
       else {
-        dict.initValue = netData[dict.submitStr]
+          dict.initValue = netData[dict.submitStr]
       }
     }
 
@@ -255,10 +254,14 @@ export function CreatCard(form,superDict) {
       if (baseInfoDict[dict.submitStr]) {
         if (dict.component === 'DatePicker') {
           dict.initValue = moment(baseInfoDict[dict.submitStr]);
-
         }
         else {
-          dict.initValue = baseInfoDict[dict.submitStr]
+          if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'){
+            dict.initValue = baseInfoDict[dict.submitStr].toString()
+          }
+          else{
+            dict.initValue = baseInfoDict[dict.submitStr]
+          }
         }
       }
     }

@@ -103,7 +103,7 @@ class Detail extends Component {
   }
 
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/check-before/edit?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/check-before/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckBeforeID}`));
   }
 
   backClicked(){
@@ -111,7 +111,7 @@ class Detail extends Component {
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/check-before/detail?${location.search.substr(1)}`));
+    this.props.dispatch(routerRedux.push(`/service/check-before/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){
@@ -127,8 +127,10 @@ class Detail extends Component {
       if (!err) {
 
         Object.keys(values).map(key=>{
-          if(typeof values[key] === 'object'){
-            values[key] = values[key].format()
+          if(values[key]){
+            if(typeof values[key] === 'object'){
+              values[key] = values[key].format()
+            }
           }
         })
         const assessmentInfo =  JSON.stringify(values);
@@ -137,6 +139,7 @@ class Detail extends Component {
 
         if(this.props.CheckBeforeID){
           dict.id = this.props.CheckBeforeID
+          dict.operatorItem = 1
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }

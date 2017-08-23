@@ -89,7 +89,7 @@ const baseInfoAry = [
       { 'label': '月经', 'value': '4' }
     ]
   },
-  
+
   { title: '切脉', component: 'TextArea', span: 24, submitStr: 'baseInfo19' },
   { title: '脉象和脏腑情况', component: 'TextArea', span: 24, submitStr: 'baseInfo20' },
   { title: '评估者', component: 'Input', span: 8, submitStr: 'baseInfo21' },
@@ -101,29 +101,30 @@ const baseInfoAry = [
 
 class Detail
   extends Component {
-  
+
   constructor(props) {
     super(props);
   }
-  
+
   onDelete() {
-  
+
   }
-  
-  editBtnClick() {
-    this.props.dispatch(routerRedux.push(`/service/diagnosis/edit?${location.search.substr(1)}`));
+
+  editBtnClick(){
+    this.props.dispatch(routerRedux.push(`/service/diagnosis/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckInID}`));
   }
-  
-  backClicked() {
+
+  backClicked(){
     this.props.dispatch(routerRedux.push('/service/diagnosis'));
   }
-  
-  editBackClicked() {
-    this.props.dispatch(routerRedux.push(`/service/diagnosis/detail?${location.search.substr(1)}`));
+
+  editBackClicked(){
+    this.props.dispatch(routerRedux.push(`/service/diagnosis/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
-  
+
+
   print() {
-  
+
   }
   componentWillUnmount() {
     this.props.dispatch({type: 'serviceCustomer/removeData',})
@@ -142,28 +143,29 @@ class Detail
           "customerId": parse(location.search.substr(1)).customerid,
           "type": 4
         };
-        
+
         if (this.props.CheckBeforeID) {
+          dict.operatorItem = 4
           dict.id = this.props.CheckBeforeID
         }
         this.props.dispatch({ type: 'serviceCustomer/saveAssessment', payload: dict })
       }
     });
   }
-  
+
   render() {
-    
+
     const { loading } = this.props
-    
+
     const ary = [{ title: '基本信息', ary: baseInfoAry }]
-    
+
     let chiAry = ary.map(value => {
       value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{};
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{}
       return CreatCard(this.props.form, value)
     })
-    
-    
+
+
     const bottomDiv = location.pathname === '/service/diagnosis/edit' ?
       <div className='button-group-bottom-common'>
         {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
@@ -172,10 +174,10 @@ class Detail
         {creatButton('返回', this.backClicked.bind(this))}{creatButton('删除', this.onDelete.bind(this))}
         {creatButton('编辑', this.editBtnClick.bind(this))}{creatButton('打印', this.print.bind(this))}
       </div>
-    
+
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
-        
+
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
           {chiAry}
           {bottomDiv}
