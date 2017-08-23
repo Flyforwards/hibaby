@@ -23,12 +23,9 @@ class Detail extends Component {
     super(props);
   }
 
-  onDelete(){
-    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:1,dataId:this.props.CheckBeforeID}})
-  }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/detail?customerid=${parse(location.search.substr(1)).customerid}`));
+    this.props.dispatch(routerRedux.push(`/service/baby-swimming/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   print(){
@@ -47,12 +44,14 @@ class Detail extends Component {
 
         const tempDict = parse(location.search.substr(1));
 
-        let dict = { ...values, "customerId": tempDict.customerid};
+        let dict = { ...values, "customerId": tempDict.customerid,operatorItem:15};
         if(tempDict.dataId){
           dict.id = tempDict.dataId
         }
 
         let typeStr = 'serviceCustomer/saveInsideBabySwim'
+
+        console.log(dict);
 
         this.props.dispatch({type:typeStr,payload:dict})
       }
