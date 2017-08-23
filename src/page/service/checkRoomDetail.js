@@ -37,7 +37,6 @@ class Detail extends Component {
   editBackClicked(data) {
     const { dispatch } = this.props;
     data.info = { ...data.info, isEdit: true };
-    console.log(data, '改变的数据')
     dispatch({
       type: 'serviceCustomer/isEdit',
       payload: data
