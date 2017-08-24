@@ -127,4 +127,24 @@ export function saveBabyGrowthNote(values) {
     body: JSON.stringify(values),
   })
 }
+//对内婴儿游泳记录
+export function getInsideBabySwimList(values) {
+  return request('/crm/api/v1/babySwimming/getBabySwimmingList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//保存对内婴儿游泳记录
+export function saveInsideBabySwim(values) {
+  return request('/crm/api/v1/babySwimming/saveBabySwimming', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+export function getInsideBabySwimById(values) {
+  return request('/crm/api/v1/babySwimming/getBabySwimmingById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 

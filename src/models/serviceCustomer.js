@@ -23,7 +23,12 @@ export default {
     fetusAry: [],
     PuerperaBodyList: [],
     babyNursingList: [],//婴儿护理记录列表
-    describeInfo: []
+    InsideBabySwimList:null,//对内婴儿游泳记录集合
+    describeInfo: [],
+    query: {},
+   
+
+
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -81,8 +86,16 @@ export default {
           dispatch({ type: 'getBrouchurDetailById', payload: dict_ });
         }
 
+        //对内婴儿游泳记录
+        if (pathname === '/service/baby-swimming/detail' ) {
+          dispatch({type: 'getInsideBabySwimList'});
+        }else if(pathname === '/service/baby-swimming/edit'){
+          let dict_ = {dataId: query.dataId,operatorItem:15}
+          dispatch({type: 'getInsideBabySwimById', payload: dict_});
+        }
 
-        //婴儿喂养记录
+
+          //婴儿喂养记录
         if (pathname === '/service/baby-feed/detail'||pathname === '/service/baby-feed/edit') {
 
           if (pathname === '/service/baby-feed/detail') {
@@ -110,6 +123,10 @@ export default {
           let dict_ = { customerId: parseInt(customerid), type: parseInt(type), operatorItem: parseInt(operatoritem) }
           dispatch({
             type: 'getdoctornoteList',
+            payload: dict_
+          });
+          dispatch({
+            type: 'saveQuery',
             payload: dict_
           });
         }
@@ -240,7 +257,7 @@ export default {
         console.log(err)
       }
     },
-
+    
     *getBabyFeedingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -315,6 +332,17 @@ export default {
           type: 'savaSingleInformation',
           payload: data
         });
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
+    //保存对内婴儿游泳预约
+    *saveInsideBabySwim({ payload: values }, { call, put }){
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.saveInsideBabySwim, values);
+        message.success("保存成功");
+        yield put(routerRedux.push('/service/baby-swimming'))
       }
       catch (err) {
         console.log(err)
@@ -404,28 +432,48 @@ export default {
     },
     //儿科、中医、产科记录单详情
     //1.根据id查询记录详情
-    *getDoctorNoteById({ payload: values }, { call, put })
+    *getDoctorNoteById({ payload: postData }, { call, put })
     {
+      const { info, key, operatorItem } = postData;
+      const values = { dataId: info.id, operatorItem }
       const { data: { data, code } } = yield call(serviceAssessment.getDoctorNoteById, values);
       if (code == 0) {
         yield put({
-          type: 'getDescribe',
-          payload: data
+          type: 'noChangeInfo',
+          payload: { data, key }
         });
       }
     },
     //2.保存或编辑记录单
     *saveDoctorNote({ payload: values }, { call, put })
     {
-      console.log(values)
       const { data: { data, code } } = yield call(serviceAssessment.saveDoctorNote, values);
       if (code == 0) {
         message.success('保存成功');
+        const { query } = yield select(state => state.serviceCustomer);
+        yield put({
+          type: 'getdoctornoteList',
+          payload: query
+        });
+        
+      }
+    },
+    //3.根据id删除记录
+    *DelDoctornote({ payload: values }, { call, put, select })
+    {
+      const { data: { data, code } } = yield call(serviceAssessment.DelDoctornote, values);
+      if (code == 0) {
+        message.success('删除成功');
+        const { query } = yield select(state => state.serviceCustomer);
+        yield put({
+          type: 'getdoctornoteList',
+          payload: query
+        });
+        
       }
     },
     //3.根据客户id和记录单类型以及筛选条件查询记录单列表
     *getdoctornoteList({ payload: values }, { call, put }){
-      console.log(values, '传入的参数2')
       const { data: { data, code } } = yield call(serviceAssessment.getdoctornoteList, values);
       if (code == 0) {
         yield put({
@@ -434,8 +482,37 @@ export default {
         });
       }
 
-    }
-  },
+    },
+    *getInsideBabySwimById({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
+      if (code == 0) {
+        yield put({
+          type: 'getInsideBabySwim',
+          payload: data
+        });
+      }
+    },
+    //获取对内婴儿游泳记录
+    *getInsideBabySwimList({ payload: values }, { call, put }) {
+      try {
+
+        let query = parse(location.search.substr(1))
+        let dict = { customerId:query.customerid }
+        if(query.date){
+          dict.date = query.date
+        }
+        const {data: {data,code}} = yield call(serviceAssessment.getInsideBabySwimList, dict);
+
+        yield put({
+          type: 'saveInsideBabySwimList',
+          payload: data
+        });
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
+    },
   reducers: {
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
       let customerData = {
@@ -493,7 +570,14 @@ export default {
         ChildCheckInData: null,
         ChildCheckInID: null,
         PuerperaBodyList:null,
+        InsideBabySwimList:null,//对内婴儿游泳记录集合
       }
+    },
+    getInsideBabySwim(state, { payload: data }){
+      return { ...state, InsideBabySwimData: data }
+    },
+    saveInsideBabySwimList(state, { payload: todo }){
+      return { ...state, InsideBabySwimList: todo }
     },
     savaMaternalEverydayPhysicalEvaluationList(state, { payload: todo }){
       return { ...state, PuerperaBodyList: todo }
@@ -514,12 +598,19 @@ export default {
     getDescribe(state, { payload: data }){
       return { ...state, describeInfo: data }
     },
+    saveQuery(state, { payload: dict_ }){
+      return { ...state, query: dict_ }
+    },
     isEdit(state, { payload: data }){
       const { info, key } = data;
       let describeInfo = state.describeInfo;
       describeInfo[key] = info;
       return { ...state, describeInfo }
-
+    },
+    noChangeInfo(state, { payload: { data, key } }){
+      let describeInfo = [...state.describeInfo];
+      describeInfo[key] = data;
+      return { ...state, describeInfo }
     },
     addMutDictData(state, { payload: todo }){
       if(todo.abName === 'YCC'){

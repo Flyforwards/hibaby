@@ -3,14 +3,14 @@ import CustomerListPage from './CustomerListPage';
 
 
 /**
- * 婴儿护理记录单客户列表
+ * 产科查房记录单
  */
 class Index extends Component {
 
   render() {
     return (
       <div>
-        <CustomerListPage detailLinkUrl="/service/baby-nursing/detail"/>
+        <CustomerListPage detailLinkUrl="/service/diagnosis-record/checkRoomDetail" moreLink="&type=3&operatoritem=7"/>
       </div>
     )
   }

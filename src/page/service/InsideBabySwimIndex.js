@@ -1,15 +1,18 @@
+/**
+ *对内婴儿游泳预约
+ * Created by yangjingjing on 2017/8/23.
+ */
 import React, { Component } from 'react';
 import CustomerListPage from './CustomerListPage';
 
-/**
- * 中医查房记录单
- */
+
+
 class Index extends Component {
-  
+
   render() {
     return (
       <div>
-        <CustomerListPage detailLinkUrl="/service/diagnosis-record/checkRoomDetail" moreLink="&type=2&operatoritem=6"/>
+        <CustomerListPage detailLinkUrl="/service/baby-swimming/detail"/>
       </div>
     )
   }

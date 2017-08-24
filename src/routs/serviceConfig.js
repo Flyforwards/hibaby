@@ -209,7 +209,7 @@ export default (app) => [
   },
   // 产妇护理记录
   {
-    path: '/service/puerpera-record',
+    path: '/service/puerpera-record ',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
@@ -334,7 +334,27 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/InsideBabySwimIndex.js'))
+      })
+    }
+  },
+  // 对内婴儿游泳预约详情
+  {
+    path: '/service/baby-swimming/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InsideBabySwimDetail.js'))
+      })
+    }
+  },
+  // 编辑对内婴儿游泳预约
+  {
+    path: '/service/baby-swimming/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/InsideBabySwimEdit.js'))
       })
     }
   },
