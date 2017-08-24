@@ -76,6 +76,10 @@ function HealthyhomeDetailUpdate(props) {
     setImgInputRequired("imgInput_8",e.target.value);
   }
 
+  function radioChangeFMTypeFun(e) {
+    setImgInputRequired("input_5",e.target.value);
+  }
+
   //单选item
   function myRadioForm (radioName, dict) {
 
@@ -123,7 +127,7 @@ function HealthyhomeDetailUpdate(props) {
           initialValue : dict.value,
           rules: [{ required: false, message: '  ' }]
         })(
-          <RadioGroup>
+          <RadioGroup onChange={dict.radioChangeFun}>
             {radioItemDivs}
           </RadioGroup>
         )}
@@ -358,7 +362,7 @@ function HealthyhomeDetailUpdate(props) {
       >
         {getFieldDecorator(`${radioName}`, {
           initialValue : dict.value,
-          rules: [{ required: true, message: '  ' }]
+          rules: [{ required: false, message: '  ' }]
         })(
           <RadioGroup>
             {radioItemDivs}
@@ -424,6 +428,8 @@ function HealthyhomeDetailUpdate(props) {
       }
     })
   }
+
+  const hide = !props.healthInformation.input_5_required?true:false;
 
 
   return(
@@ -600,9 +606,8 @@ function HealthyhomeDetailUpdate(props) {
             <div className="itemTitle">分娩过程</div>
           </Col>
           <Col span="22">
-            {radioAllRow(radioNames[15],{title: '自然分娩（侧切）',radioItems: ['无','有'],value:healthInfo['radio_15']})}
-            {radioAllRow(radioNames[16],{title: '自然分娩（会阴撕裂）',radioItems: ['无','I度','II度','III度','IV度'],value:healthInfo['radio_16']})}
-            <Row>
+            {radioAllRow(radioNames[15],{title: '分娩方式',radioItems: ['自然分娩','剖宫产'],value:healthInfo['radio_15'],radioChangeFun:radioChangeFMTypeFun})}
+            <Row style={{display:hide?'none':''}}>
               <div className="rightItemBg">
                 <FormItem
                   labelCol={{span: 5}}
@@ -610,13 +615,14 @@ function HealthyhomeDetailUpdate(props) {
                   label={'剖宫产手术指征'}>
                   {getFieldDecorator(`${inputNames[5]}`, {
                     initialValue : healthInfo['input_5'],
-                    rules: [{ required: false, message: '  ' }]
+                    rules: [{ required: props.healthInformation.input_5_required, message: '请输入剖宫产手术指征' }]
                   })(
                     <Input />
                   )}
                 </FormItem>
               </div>
             </Row>
+            {radioAllRow(radioNames[16],{title: '自然分娩（会阴撕裂）',radioItems: ['无','I度','II度','III度','IV度'],value:healthInfo['radio_16']})}
             <Row>
               <div className="rightItemBg">
                 <FormItem
@@ -688,7 +694,7 @@ function HealthyhomeDetailUpdate(props) {
             {radioInputRow(radioNames[22], inputNames[9], {title: '产后出血',radioItems: ['无','有'],value:healthInfo['radio_22'],info:healthInfo['input_9']},'出血量',false,'毫升')}
             {radioInputRow(radioNames[23], inputNames[18], {title: '血压异常',radioItems: ['无','有'],value:healthInfo['radio_23'],info:healthInfo['input_18']},'血压',false,'mmHg')}
             {radioAllRow(radioNames[24],{title: '会阴伤口',radioItems: ['正常','水肿','血肿','裂开','感染','无'],value:healthInfo['radio_24']})}
-            {radioAllRow2(radioNames[24],{title: '腹部伤口',radioItems: ['正常','红肿','裂开','感染','无'],value:healthInfo['radio_24']})}
+            {radioAllRow2(radioNames[24],{title: '腹部伤口',radioItems: ['正常','敷料覆盖未见渗出物','红肿','裂开','感染','无'],value:healthInfo['radio_24']})}
             {radioInputRow(radioNames[26], inputNames[10], {title: '产后发热',radioItems: ['无','有'],value:healthInfo['radio_26'],info:healthInfo['input_10']},'体温',false,'℃')}
             {radioAllRow(radioNames[27],{title: '乳房肿胀',radioItems: ['无','有'],value:healthInfo['radio_27']})}
             {radioAllRow(radioNames[28],{title: '哺乳困难',radioItems: ['无','有'],value:healthInfo['radio_28']})}

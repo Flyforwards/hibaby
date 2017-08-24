@@ -44,7 +44,8 @@ export default {
     imgInput_5_required : false,
     imgInput_6_required : false,
     imgInput_7_required : false,
-    imgInput_8_required : false
+    imgInput_8_required : false,
+    input_5_required : false,
   },
   //加载页面
   subscriptions: {
@@ -138,6 +139,7 @@ export default {
           const imgInput_6_required = healthInfo.radio_7 && healthInfo.radio_7 == 1 ? true : false;
           const imgInput_7_required = healthInfo.radio_8 && healthInfo.radio_8 == 1 ? true : false;
           const imgInput_8_required = healthInfo.radio_9 && healthInfo.radio_9 == 1 ? true : false;
+          const input_5_required = healthInfo.radio_15 && healthInfo.radio_15 == 1 ? true : false;
           requiredData.imgInput_1_required = imgInput_1_required;
           requiredData.imgInput_2_required = imgInput_2_required;
           requiredData.imgInput_3_required = imgInput_3_required;
@@ -146,7 +148,7 @@ export default {
           requiredData.imgInput_6_required = imgInput_6_required;
           requiredData.imgInput_7_required = imgInput_7_required;
           requiredData.imgInput_8_required = imgInput_8_required;
-
+          requiredData.input_5_required = input_5_required;
           return {...state,editMedicalFlag : false, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
             imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
             Input_8_arr:imgInput_8_arr,...requiredData}
@@ -189,6 +191,7 @@ export default {
             const imgInput_6_required = healthInfo.radio_7 && healthInfo.radio_7 == 1 ? true : false;
             const imgInput_7_required = healthInfo.radio_8 && healthInfo.radio_8 == 1 ? true : false;
             const imgInput_8_required = healthInfo.radio_9 && healthInfo.radio_9 == 1 ? true : false;
+            const input_5_required = healthInfo.radio_15 && healthInfo.radio_15 == 1 ? true : false;
             requiredData.imgInput_1_required = imgInput_1_required;
             requiredData.imgInput_2_required = imgInput_2_required;
             requiredData.imgInput_3_required = imgInput_3_required;
@@ -197,6 +200,8 @@ export default {
             requiredData.imgInput_6_required = imgInput_6_required;
             requiredData.imgInput_7_required = imgInput_7_required;
             requiredData.imgInput_8_required = imgInput_8_required;
+            requiredData.input_5_required = input_5_required;
+
             return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
               imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
               Input_8_arr:imgInput_8_arr,...requiredData}
@@ -243,7 +248,7 @@ export default {
       return {...state,type:null,editMedicalFlag:false,editNutritionFlag:false,editSkinFlag:false,editConclusionFlag:false,saveDone:false,medicalHealthInformation:null,nutritionHealthInformation:null,skinHealthInformation:null,conclusionInformation:null,
         imgInput_1_arr:[],imgInput_2_arr:[],imgInput_3_arr:[],imgInput_4_arr:[],
         imgInput_5_arr:[],imgInput_6_arr:[],imgInput_7_arr:[],Input_8_arr:[],
-        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,imgInput_6_required:false,imgInput_7_required:false,imgInput_8_required:false,conclusionImg_arr:[]}
+        imgInput_1_required:false,imgInput_2_required:false,imgInput_3_required:false,imgInput_4_required:false,imgInput_5_required:false,imgInput_6_required:false,imgInput_7_required:false,imgInput_8_required:false,input_5_required:false,conclusionImg_arr:[]}
     },
     //设置查看附件Modal数据
     setBigImageModalProps(state, { payload: data }){
@@ -390,6 +395,8 @@ export default {
         return {...state,imgInput_7_required:value}
       }else if(imgInputName === 'imgInput_8'){
         return {...state,imgInput_8_required:value}
+      }else if(imgInputName === 'input_5'){
+        return {...state,input_5_required:value}
       }
       return {...state}
     }
