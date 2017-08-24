@@ -66,12 +66,18 @@ class Detail extends Component {
 
   constructor(props) {
     super(props);
-    this.state={}
+    this.state={
+      hide : true
+    }
 
   }
 
   radioChange(e) {
-    this.setState({childbirth:e.target.value})
+    if(e.target.value == "1"){
+      this.setState({hide:false})
+    }else{
+      this.setState({hide:true})
+    }
   }
 
   onDelete(){
@@ -108,22 +114,19 @@ class Detail extends Component {
   }
 
   componentWillUnmount() {
-
     this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
-  render() {
-
-    let hide = 2
-    if(this.props.CheckInData){
-      if(this.props.CheckInData.health_1_radio_15 ){
-        hide = this.props.CheckInData.health_1_radio_15 == 0?true:false;
-      }
-    }else if(this.state.childbirth){
-      hide = this.state.childbirth == 1 ? false : true;
+  componentDidMount() {
+    if(this.props.CheckInData && this.props.CheckInData.health_1_radio_15) {
+      const hide = this.props.CheckInData.health_1_radio_15 == '0' ?true:false;
+      this.setState({
+        hide : hide
+      });
     }
+  }
 
-
+    render() {
     // 基本信息
     const baseInfoAry = [
       {title:'客户姓名',component:'Input',submitStr:'name',disable:true,noRequired:true},
@@ -133,8 +136,8 @@ class Detail extends Component {
       {title:'入住日期',component:'DatePicker',submitStr:'checkDate',disable:true,noRequired:true},
       {title:'房间',component:'Input',submitStr:'associatedRooms',disable:true,noRequired:true},
       {title:'分娩方式',component:'RadioGroups',submitStr:'health_1_radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
-      {title:'剖宫产手术指征',component:'Input',submitStr:'health_1_input_5',span:18,hide:hide === 2 ? true : hide,noRequired:hide === 2 ? false : hide},
-      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
+      {title:'剖宫产手术指征',component:'Input',submitStr:'health_1_input_5',hide:this.state.hide},
+      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:!this.state.hide},
       {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'health_1_radio_16'},
       {title:'产程延长',component:'Input',submitStr:'baseInfo1'},
       {title:'处理措施',component:'Select',chiAry:['宫缩剂','填宫纱'],submitStr:'baseInfo2'},
