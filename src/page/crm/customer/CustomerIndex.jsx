@@ -291,8 +291,8 @@ class CustomerIndex extends React.Component {
     }
     return (
       <div className="CustomerConent">
-        <Form>
-          <div style={{ position: 'relative'}}>
+        <Form style={{minWidth:'1200px'}}>
+          <div style={{position: 'relative'}}>
             <FormItem style={{ height: '40px' }} {...formChooseLayout}>
               {getFieldDecorator('sear', {
                 rules: [{ required: false }]
@@ -330,7 +330,7 @@ class CustomerIndex extends React.Component {
             </Col>
             <Col span={6} className="delDisplan">
               <Row>
-                <Col offset={2} span={11}>
+                <Col offset={2} span={12}>
                   <FormItem label="预产期" {...dueData}>
                     {getFieldDecorator('dueDate1', {
                       rules: [{ required: false }]
@@ -342,7 +342,7 @@ class CustomerIndex extends React.Component {
                   </FormItem>
                 </Col>
 
-                <Col offset={3} span={8} className="delDisplan">
+                <Col offset={1} span={9} className="delDisplan">
                   <FormItem>
                     {getFieldDecorator('dueDate2', {
                       rules: [{ required: false }]
