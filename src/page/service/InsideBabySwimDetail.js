@@ -16,8 +16,8 @@ const assessment = [
   {title:'预约日期',component:'DatePicker',submitStr:'reservationDate'},
   {title:'预约时间',component:'Input',submitStr:'timeOfAppointment'},
   {title:'其他',component:'Input',submitStr:'other'},
-  {title:'操作人',component:'Input',submitStr:'operator'},
-  {title:'操作时间',component:'DatePicker',submitStr:'operatorTime'}
+  // {title:'操作人',component:'Input',submitStr:'operator'},
+  // {title:'操作时间',component:'DatePicker',submitStr:'operatorTime'}
 ]
 
 
