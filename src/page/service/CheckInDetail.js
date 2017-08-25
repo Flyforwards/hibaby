@@ -12,16 +12,37 @@ class Detail extends Component {
   constructor(props) {
     super(props);
     this.state={
-      hide : true
+      shoushuHide : true,//手术指征隐藏状态：true：隐藏，false：显示
+      zrfmHide : true,//自然分娩方式隐藏状态：true：隐藏，false：显示
+      wyfsReasonHide : true,//哺乳方式原因
     }
 
   }
 
   radioChange(e) {
-    if(e.target.value == "1"){
-      this.setState({hide:false})
+    if(e.target.value == "1"){//剖宫产
+      this.setState({
+        shoushuHide:false,
+        zrfmHide : true
+      })
+    }else{//自然分娩
+      this.setState({
+        shoushuHide:true,
+        zrfmHide : false
+      })
+    }
+  }
+
+
+  handleWYFSChangeFun(checkedValues){
+    if(checkedValues &&　checkedValues.length > 0){
+      this.setState({
+        wyfsReasonHide : false
+      })
     }else{
-      this.setState({hide:true})
+      this.setState({
+        wyfsReasonHide : true
+      })
     }
   }
 
@@ -63,10 +84,14 @@ class Detail extends Component {
   }
 
   componentDidMount() {
-    if(this.props.CheckInData && this.props.CheckInData.health_1_radio_15) {
+    if(this.props.CheckInData) {
       const hide = this.props.CheckInData.health_1_radio_15 == '0' ?true:false;
+
+      const health_1_radio_33 = this.props.CheckInData.health_1_radio_33
+      const wyfsReasonHide =  health_1_radio_33 && health_1_radio_33.length > 0 ? false : true;
       this.setState({
-        hide : hide
+        hide : hide,
+        wyfsReasonHide : wyfsReasonHide
       });
     }
   }
@@ -81,13 +106,16 @@ class Detail extends Component {
       {title:'入住日期',component:'DatePicker',submitStr:'checkDate',disable:true,noRequired:true},
       {title:'房间',component:'Input',submitStr:'associatedRooms',disable:true,noRequired:true},
       {title:'分娩方式',component:'RadioGroups',submitStr:'health_1_radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
-      {title:'剖宫产手术指征',component:'Input',submitStr:'health_1_input_5',hide:this.state.hide},
-      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:!this.state.hide},
+      {title:'剖宫产手术指征',component:'Input',submitStr:'health_1_input_5',hide:this.state.shoushuHide,noRequired:this.state.shoushuHide},
+      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',key:'radio_15_1_cq',hide:this.state.zrfmHide,noRequired:this.state.zrfmHide},
+      // {title:'胎头吸引',component:'RadioGroup',submitStr:'radio_15_1',key:'radio_15_1_ttxy',hide:this.state.zrfmHide,noRequired:this.state.zrfmHide},
+      // {title:'产钳',component:'RadioGroup',submitStr:'radio_15_1',key:'radio_15_1_chanqian',hide:this.state.zrfmHide,noRequired:this.state.zrfmHide},
       {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'health_1_radio_16'},
-      {title:'产程延长',component:'Input',submitStr:'baseInfo1'},
-      {title:'处理措施',component:'Select',chiAry:['宫缩剂','填宫纱'],submitStr:'baseInfo2'},
+      {title:'产程延长',component:'RadioGroups',radioAry:[{'name':'无','value':'0'},{'name':'有','value':'1'}],submitStr:'baseInfo1'},
       {title:'胎膜早破',component:'InputGroup',unit:'小时',submitStr:'health_1_input_7'},
       {title:'产后出血',component:'InputGroup',unit:'ml',submitStr:'health_1_input_9'},
+      {title:'处理措施',component:'RadioGroups',radioAry:[{'name':'宫缩剂','value':'0'},{'name':'填宫纱','value':'1'}],submitStr:'baseInfo2'},
+      {title:'时长',component:'Input',submitStr:'baseInfo3',unit:'小时'},
     ]
 
 
@@ -99,8 +127,8 @@ class Detail extends Component {
       {title:'排便困难',component:'RadioGroup',submitStr:'health_1_radio_31'},
       {title:'初次吸吮',component:'Input',unit:'分钟',submitStr:'postpartum_1'},
       {title:'添加配方奶',component:'InputGroup',submitStr:'postpartum_2'},
-      {title:'目前喂养方式',component:'CheckBoxGroup',checkAry:['纯母乳','混合','人工' ],submitStr:'radio_33'},
-      {title:'原因',component:'Input',submitStr:'postpartum_1'},
+      {title:'目前喂养方式',component:'CheckBoxGroup',checkAry:['纯母乳','混合','人工' ],submitStr:'health_1_radio_33',fun:this.handleWYFSChangeFun.bind(this)},
+      {title:'原因',component:'Input',submitStr:'postpartum_3',noRequired:this.state.wyfsReasonHide},
       {title:'哺乳问题',component:'CheckBoxGroup',checkAry:['无', '有', '乳头错觉', '疼痛', '乳房肿胀', '乳汁少', '乳汁多', '其他' ],submitStr:'postpartum_4'},
     ]
 
