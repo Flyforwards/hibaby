@@ -130,7 +130,7 @@ class Detail extends Component {
       {title:'添加配方奶',component:'InputGroup',submitStr:'postpartum_2'},
       {title:'目前喂养方式',component:'CheckBoxGroup',checkAry:['纯母乳','混合','人工' ],submitStr:'health_1_radio_33',fun:this.handleWYFSChangeFun.bind(this)},
       {title:'原因',component:'Input',submitStr:'postpartum_3',noRequired:this.state.wyfsReasonHide},
-      {title:'哺乳问题',component:'CheckBoxGroup',checkAry:['无', '有', '乳头错觉', '疼痛', '乳房肿胀', '乳汁少', '乳汁多', '其他' ],submitStr:'postpartum_4'},
+      {title:'哺乳问题',component:'CheckBoxGroup',checkAry:['无', '有', '乳头错觉', '疼痛', '乳房肿胀', '乳汁少', '乳汁多', '其他' ],submitStr:'postpartum_4',span:24},
     ]
 
     //入所查体
@@ -154,8 +154,8 @@ class Detail extends Component {
       {title:'下肢水肿',component:'RadioGroup',submitStr:'health_1_radio_29'},
       {title:'宫底高度',component:'Input',submitStr:'medical_11'},
       {title:'子宫收缩',component:'RadioGroups',radioAry:[{'name':'软','value':'0'},{'name':'硬','value':'1'}],submitStr:'medical_12'},
-      {title:'会阴伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'0'},{'name':'水肿','value':'1'},{'name':'血肿','value':'2'},{'name':'裂开','value':'3'},{'name':'感染','value':'4'},{'name':'无','value':'5'}],submitStr:'health_1_radio_24'},
-      {title:'腹部伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'6'},{'name':'敷料覆盖未见渗出物','value':'7'},{'name':'红肿','value':'8'},{'name':'裂开','value':'9'},{'name':'感染','value':'10'},{'name':'无','value':'11'}],submitStr:'health_1_radio_24',key:'radio_24_1'},
+      {title:'会阴伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'0'},{'name':'水肿','value':'1'},{'name':'血肿','value':'2'},{'name':'裂开','value':'3'},{'name':'感染','value':'4'},{'name':'无','value':'5'}],submitStr:'health_1_radio_24',span:24},
+      {title:'腹部伤口愈合',component:'RadioGroups',radioAry:[{'name':'良好','value':'6'},{'name':'敷料覆盖未见渗出物','value':'7'},{'name':'红肿','value':'8'},{'name':'裂开','value':'9'},{'name':'感染','value':'10'},{'name':'无','value':'11'}],submitStr:'health_1_radio_24',key:'radio_24_1',span:24},
       {title:'恶露性质',component:'Select',chiAry:['血性', '浆液性', '白色'],submitStr:'medical_13'},
       {title:'恶露量',component:'Select',chiAry:['多', '中', '少'],submitStr:'medical_14'},
       {title:'异味',component:'RadioGroup',submitStr:'medical_15'},
