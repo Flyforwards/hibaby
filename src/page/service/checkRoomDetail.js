@@ -12,8 +12,7 @@ class Detail extends Component {
     super(props);
     this.state = {
       isEdit: false,
-      descInfo: '',
-      postInfo: {}
+      descInfo: ''
     }
   }
 
@@ -25,10 +24,12 @@ class Detail extends Component {
     })
   }
 
+  //返回按钮
   backClicked() {
     window.history.go(-1)
   }
 
+  //编辑按钮
   editBackClicked(isEdit, data) {
     const { dispatch, describeInfo } = this.props;
     const noEditInfo = describeInfo[data.key]
@@ -53,39 +54,57 @@ class Detail extends Component {
 
   }
 
-  submitClicked() {
-    const { dispatch } = this.props;
-    let { postInfo } = this.state;
-    if (postInfo.descInfo == '') {
-      message.error('请输入内容!')
-    } else {
-      const param = parse(location.search.substr(1));
-      postInfo.operatorItem = parseInt(param.operatoritem)
+  //确定按钮
+  submitClicked(k) {
+    const { dispatch, describeInfo } = this.props;
+    const param = parse(location.search.substr(1));
+    if (this.state.postInfo == null) {
+      const postData = describeInfo[k];
+      postData.operatorItem = parseInt(param.operatoritem)
       dispatch({
         type: 'serviceCustomer/saveDoctorNote',
-        payload: { ...postInfo }
+        payload: { ...postData }
       })
+    } else {
+      let { postInfo } = this.state;
+      if (postInfo.descInfo == '') {
+        message.error('请输入内容!')
+      } else {
+        postInfo.operatorItem = parseInt(param.operatoritem)
+        dispatch({
+          type: 'serviceCustomer/saveDoctorNote',
+          payload: { ...postInfo }
+        })
+      }
     }
   }
 
   edit = (info, e) => {
-    this.setState({
-      postInfo: {}
-    })
     info.descInfo = e.target.value;
     this.setState({
       postInfo: info
     })
   }
 
+  //时间选择
   onChangeTime = (date, dateString) => {
+    console.log(dateString,'??????')
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
-    const { customerid, type,operatoritem } = param;
-    let data = { customerId: parseInt(customerid), type: parseInt(type), date: dateString,operatorItem:parseInt(operatoritem) }
+    const { customerid, type, operatoritem } = param;
+    let data = {
+      customerId: parseInt(customerid),
+      type: parseInt(type),
+      operatorItem: parseInt(operatoritem)
+    }
+    dateString != '' ? data.date = dateString : null
     dispatch({
       type: 'serviceCustomer/getdoctornoteList',
       payload: data
+    })
+    dispatch({
+      type: 'serviceCustomer/isChooseTime',
+      payload: dateString
     })
   }
 
@@ -129,14 +148,16 @@ class Detail extends Component {
                   </Row>
                   <div className="buttonBox">
                     <div className='button-group-bottom-common'>
-                      {creatButton('编辑', this.editBackClicked.bind(this, true, { info: v, key: k }))}
+                      {v.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, true, {
+                        info: v,
+                        key: k
+                      }))}
                       {creatButton('删除', this.onDelete.bind(this, v.id))}
-                      {v.isEdit && creatButton('确定', this.submitClicked.bind(this, true, { info: v, key: k }))}
+                      {v.isEdit && creatButton('确定', this.submitClicked.bind(this,k))}
                       {v.isEdit && creatButton('返回', this.backButton.bind(this, { info: v, key: k }))}
 
                     </div>
                   </div>
-
                 </div>
               )
             })
@@ -149,13 +170,24 @@ class Detail extends Component {
   }
 }
 
-const DetailForm = Form.create()(Detail);
+const
+  DetailForm = Form.create()(Detail);
 
 
-function mapStateToProps(state) {
+function
+
+mapStateToProps(state) {
   return { ...state.serviceCustomer, loading: state.loading }
 }
 
-export default connect(mapStateToProps)(DetailForm) ;
+export
+default
+
+connect(mapStateToProps)
+
+(
+  DetailForm
+)
+;
 
 
