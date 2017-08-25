@@ -7,6 +7,8 @@ import {creatSummaryCard,creatButton,detailComponent} from './ServiceComponentCr
 import {Card ,Input,Form,Button,Spin,Tabs,Col} from 'antd';
 import { connect } from 'dva';
 import CheckBeforeDetail from './CheckBeforeDetail'
+import CheckInDetail from './CheckInDetail'
+
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 const TabPane = Tabs.TabPane;
@@ -14,7 +16,9 @@ import { routerRedux,Link } from 'dva/router'
 
 
 const ary = [
-  {title:'入住前评估',chiComponent:<CheckBeforeDetail summary={true}/>}
+  {title:'入住前评估',chiComponent:<CheckBeforeDetail summary={true}/>},
+  {title:'入住评估',chiComponent:<CheckInDetail summary={true}/>}
+
 ]
 
 class Detail extends Component {

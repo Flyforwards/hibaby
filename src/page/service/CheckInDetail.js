@@ -83,6 +83,8 @@ class Detail extends Component {
     this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
+
+
   componentDidMount() {
     if(this.props.CheckInData) {
       const hide = this.props.CheckInData.health_1_radio_15 == '0' ?true:false;
@@ -97,6 +99,19 @@ class Detail extends Component {
   }
 
     render() {
+    const summaryBaseInfoAry = [
+      {title:'分娩方式',component:'RadioGroups',submitStr:'health_1_radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
+      {title:'剖宫产手术指征',component:'Input',submitStr:'health_1_input_5',hide:this.state.shoushuHide,noRequired:this.state.shoushuHide},
+      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',key:'radio_15_1_cq',hide:this.state.zrfmHide,noRequired:this.state.zrfmHide},
+      // {title:'胎头吸引',component:'RadioGroup',submitStr:'radio_15_1',key:'radio_15_1_ttxy',hide:this.state.zrfmHide,noRequired:this.state.zrfmHide},
+      // {title:'产钳',component:'RadioGroup',submitStr:'radio_15_1',key:'radio_15_1_chanqian',hide:this.state.zrfmHide,noRequired:this.state.zrfmHide},
+      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'health_1_radio_16'},
+      {title:'产程延长',component:'RadioGroups',radioAry:[{'name':'无','value':'0'},{'name':'有','value':'1'}],submitStr:'baseInfo1'},
+      {title:'胎膜早破',component:'InputGroup',unit:'小时',submitStr:'health_1_input_7'},
+      {title:'产后出血',component:'InputGroup',unit:'ml',submitStr:'health_1_input_9'},
+      {title:'处理措施',component:'RadioGroups',radioAry:[{'name':'宫缩剂','value':'0'},{'name':'填宫纱','value':'1'}],submitStr:'baseInfo2'},
+      {title:'时长',component:'Input',submitStr:'baseInfo3',unit:'小时'},
+    ]
     // 基本信息
     const baseInfoAry = [
       {title:'客户姓名',component:'Input',submitStr:'name',disable:true,noRequired:true},
@@ -172,9 +187,9 @@ class Detail extends Component {
       {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'conclusion_5'},
     ]
 
-    const {loading} = this.props
+    const {loading,summary} = this.props
 
-    const ary = [{title:'基本信息',ary:baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
+    const ary = [{title:summary?"":'基本信息',ary: summary?summaryBaseInfoAry:baseInfoAry },{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
     let chiAry = ary.map(value=>{
       value.netData = this.props.CheckInData?this.props.CheckInData:{}
@@ -211,7 +226,7 @@ class Detail extends Component {
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
 
-          {bottomDiv}
+          {summary?'':bottomDiv}
         </Card>
       </Spin>
     )
