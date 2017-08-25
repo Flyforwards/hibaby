@@ -99,9 +99,9 @@ class Detail extends Component {
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          {baseInfoDivAry}
+          {this.props.summary?'':baseInfoDivAry}
           {detailCard}
-          {bottomDiv}
+          {this.props.summary?'':bottomDiv}
         </Card>
       </Spin>
 
