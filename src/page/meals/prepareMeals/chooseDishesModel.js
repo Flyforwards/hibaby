@@ -13,14 +13,14 @@ class App extends Component {
     selectedKeys: [],
     name: ''
   }
-
+  
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false
     });
   }
-
+  
   onChange = (value) => {
     const { dispatch } = this.props;
     dispatch({
@@ -63,7 +63,7 @@ class App extends Component {
       selectedKeys: []
     })
   }
-
+  
   getInfo = (data) => {
     const { changeKey, isLow, dispatch, reset } = this.props;
     const { id, name } = data;
@@ -77,6 +77,7 @@ class App extends Component {
       dishesName: name,
       number: changeKey + 1
     }
+    console.log(1111)
     reset();
     isLow ? dispatch({
       type: 'prepareMeals/saveLowInfo',
@@ -93,9 +94,9 @@ class App extends Component {
         topVisible: false
       }
     })
-
+    
   }
-
+  
   handleTableChange = (pagination, filters, sorter) => {
     const { dispatch, prepareMeals } = this.props;
     const { name } = this.state;
@@ -116,7 +117,7 @@ class App extends Component {
       }
     })
   }
-
+  
   render() {
     const { prepareMeals } = this.props;
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
@@ -149,7 +150,7 @@ class App extends Component {
           let result = null;
           vdType.map(function (item) {
             if (text == item.id) {
-              result =  ( <span>{item.name}</span>);
+              result = ( <span>{item.name}</span>);
               return;
             }
           });
@@ -170,11 +171,11 @@ class App extends Component {
         dataIndex: 'status',
         render: (text, record) => {
           return (
-            <a href="#" onClick={() => {this.getInfo(record)}}>选择</a>
+            <a onClick={() => {this.getInfo(record)}}>选择</a>
           )
         }
       }]
-
+    
     const loop = data => data.map((item) => {
       if (item.nodes) {
         return (
@@ -228,7 +229,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-
+  
   return {
     prepareMeals: state.prepareMeals
   };

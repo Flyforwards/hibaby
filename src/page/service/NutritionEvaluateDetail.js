@@ -37,11 +37,11 @@ class Detail extends Component {
   }
 
   onDelete(){
-    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:1,dataId:this.props.CheckBeforeID}})
+    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:1,dataId:this.props.NutritionEvaluateID}})
   }
 
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/nutrition-evaluate/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckBeforeID}`));
+    this.props.dispatch(routerRedux.push(`/service/nutrition-evaluate/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.NutritionEvaluateID}`));
   }
 
   backClicked(){
@@ -68,8 +68,8 @@ class Detail extends Component {
         })
         const assessmentInfo =  JSON.stringify(values);
         let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 5,operatorItem:5};
-        if(this.props.CheckBeforeID){
-          dict.id = this.props.CheckBeforeID
+        if(this.props.NutritionEvaluateID){
+          dict.id = this.props.NutritionEvaluateID
         }
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
@@ -86,7 +86,7 @@ class Detail extends Component {
     const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry}]
 
     let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
+      value.netData = this.props.NutritionEvaluateData?this.props.NutritionEvaluateData:{}
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{}
       return CreatCard(this.props.form,value)
     })
@@ -96,7 +96,7 @@ class Detail extends Component {
         {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
       </div> :
       <div className='button-group-bottom-common'>
-        {creatButton('返回',this.backClicked.bind(this))}{this.props.CheckBeforeData?creatButton('删除',this.onDelete.bind(this)):''}
+        {creatButton('返回',this.backClicked.bind(this))}{this.props.NutritionEvaluateData?creatButton('删除',this.onDelete.bind(this)):''}
         {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
       </div>
 

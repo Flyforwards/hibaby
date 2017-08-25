@@ -11,6 +11,7 @@ import CheckInDetail from './CheckInDetail'
 import ChildCheckIndexDetail from './ChildCheckIndexDetail'
 import NutritionEvaluateDetail from './NutritionEvaluateDetail'
 import DiagnosisDetail from './diagnosisDetail'
+import InfantFeedingRecordsDetail from './InfantFeedingRecordsDetail'
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 const TabPane = Tabs.TabPane;
@@ -25,6 +26,11 @@ const ary = [
   {title:'中医见诊记录单',chiComponent:<DiagnosisDetail summary={true}/>},
 ]
 
+
+const PatientRounds = [
+  {title:'产妇每日身体评估',chiComponent:<InfantFeedingRecordsDetail urlAddress="puerpera-body" summary={true}/>},
+]
+
 class Detail extends Component {
 
   constructor(props) {
@@ -36,16 +42,22 @@ class Detail extends Component {
 
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+      type:'card/getLevelInfo',
+    })
+  }
+
   render() {
     const {loading,baseInfoDict} = this.props
     let baseInfoDivAry = detailComponent(baseInfoDict);
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card noHovering={true} className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
           <Tabs defaultActiveKey="1" type="card" onChange={this.callback.bind(this)}>
             <TabPane tab="入住汇总" key="1">{ary.map(value=>{return creatSummaryCard(value)})}</TabPane>
-            <TabPane tab="查房汇总" key="2">查房汇总</TabPane>
+            <TabPane tab="查房汇总" key="2">{PatientRounds.map(value=>{return creatSummaryCard(value)})}</TabPane>
             <TabPane tab="护理部" key="3">护理部</TabPane>
           </Tabs>
         </Card>

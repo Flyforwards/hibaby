@@ -173,7 +173,7 @@ class App extends Component {
         dataIndex: 'status',
         render: (text, record) => {
           return (
-            <a href="#" onClick={() => {this.getInfo(record)}}>选择</a>
+            <a onClick={() => {this.getInfo(record)}}>选择</a>
           )
         }
       }]
