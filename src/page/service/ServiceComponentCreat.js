@@ -416,6 +416,28 @@ export function chiDetailComponent(baseInfoAry) {
   return chiArray
 }
 
+export function creatSummaryCard(dict) {
+  const {title,chiComponent} = dict;
+
+  function rightDiv() {
+    return (
+      <div>
+        <Button className="rightBth" shape="circle" icon="search" />
+        <Button className="rightBth" icon="arrow-down" />
+        <Button className="rightBth" icon="arrow-up" />
+      </div>
+    )
+  }
+
+  return(
+    <Card className='summary' noHovering={true} title={title} bodyStyle={{ padding:0}} extra={rightDiv()}   style={{ width: '100%' }}>
+      {
+        chiComponent
+      }
+    </Card>
+  )
+}
+
 function showConfirm(fun) {
   confirm({
     title: '确定删除吗?',
