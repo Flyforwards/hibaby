@@ -55,6 +55,7 @@ class Detail extends Component {
       threeRef = true
       this.props.dispatch({type:'serviceCustomer/getBabyFeedingNoteList'})
       this.props.dispatch({type:'serviceCustomer/getBabyGrowthNoteList'})
+      this.props.dispatch({type:'serviceCustomer/getInsideBabySwimList'})
     }
   }
 
