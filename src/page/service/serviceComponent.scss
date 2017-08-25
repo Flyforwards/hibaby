@@ -79,5 +79,16 @@
       margin-bottom: 40px;
     }
   }
+}
 
+.summary {
+  .rightBth{
+    margin-left: 10px;
+  }
+  >.ant-card-head{
+    padding: 0 15px;
+  }
+  >.ant-card-extra{
+    right:15px
+  }
 }

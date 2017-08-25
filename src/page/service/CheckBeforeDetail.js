@@ -22,6 +22,15 @@ const baseInfoAry = [
   {title:'家属电话',component:'InputNumber',submitStr:'contact_1'},
 ]
 
+const summaryBaseInfoAry = [
+  {title:'产次',component:'Input',selectName:'FETUS',submitStr:'fetus',disable:true},
+  {title:'孕次',component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity',disable:true},
+  {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disable:true},
+  {title:'分娩医院',component:'Input',selectName:'Hospital',submitStr:'hospital',disable:true},
+  {title:'产妇电话',component:'InputNumber',submitStr:'contact',disable:true},
+  {title:'家属电话',component:'InputNumber',submitStr:'contact_1'},
+]
+
 // 既往史
 const PastMedicalHistoryAry = [
   {title:'既往疾病史',component:'TextAreaGroup',span:24,submitStr:'input_0'},
@@ -175,9 +184,9 @@ class Detail extends Component {
       {title:'其他',component:'TextArea',span:24,submitStr:'input_8'},
     ]
 
-    const {loading} = this.props
+    const {loading,summary} = this.props
 
-    const ary = [{title:'基本信息',ary:baseInfoAry},{title:'既往史',ary:PastMedicalHistoryAry},{title:'孕期合并症',ary:PregnancyComplicationsAry},
+    const ary = [{title:summary?"":'基本信息',ary:summary?summaryBaseInfoAry:baseInfoAry},{title:'既往史',ary:PastMedicalHistoryAry},{title:'孕期合并症',ary:PregnancyComplicationsAry},
       {title:'分娩过程',ary:DeliveryProcessAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'新生儿情况',ary:newbornAry},{title:'新生儿情况',ary:newbornTwoAry}]
 
     let chiAry = ary.map(value=>{
@@ -203,7 +212,7 @@ class Detail extends Component {
 
           {chiAry}
 
-          {bottomDiv}
+          {summary?'':bottomDiv}
         </Card>
       </Spin>
     )

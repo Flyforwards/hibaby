@@ -12,6 +12,16 @@ export default (app) => [
       })
     }
   },
+  // 客户列表
+  {
+    path: '/service/customer/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ServiceSummary.js'))
+      })
+    }
+  },
   // 产妇入住前评估
   {
     path: '/service/check-before',

@@ -16,7 +16,7 @@ class Detail extends Component {
       postInfo: {}
     }
   }
-  
+
   onDelete(id) {
     const param = parse(location.search.substr(1));
     this.props.dispatch({
@@ -24,11 +24,11 @@ class Detail extends Component {
       payload: { dataId: id, operatorItem: parseInt(param.operatoritem) }
     })
   }
-  
+
   backClicked() {
     window.history.go(-1)
   }
-  
+
   editBackClicked(isEdit, data) {
     const { dispatch, describeInfo } = this.props;
     const noEditInfo = describeInfo[data.key]
@@ -38,7 +38,7 @@ class Detail extends Component {
       payload: data
     })
   }
-  
+
   backButton = (postData) => {
     const param = parse(location.search.substr(1));
     postData.operatorItem = parseInt(param.operatoritem)
@@ -48,11 +48,11 @@ class Detail extends Component {
       payload: postData
     })
   }
-  
+
   print() {
-  
+
   }
-  
+
   submitClicked() {
     const { dispatch } = this.props;
     let { postInfo } = this.state;
@@ -67,7 +67,7 @@ class Detail extends Component {
       })
     }
   }
-  
+
   edit = (info, e) => {
     this.setState({
       postInfo: {}
@@ -77,7 +77,7 @@ class Detail extends Component {
       postInfo: info
     })
   }
-  
+
   onChangeTime = (date, dateString) => {
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
@@ -88,7 +88,7 @@ class Detail extends Component {
       payload: data
     })
   }
-  
+
   render() {
     const { loading, baseInfoDict, describeInfo } = this.props;
     let baseInfoDivAry = detailComponent(baseInfoDict)
@@ -133,13 +133,14 @@ class Detail extends Component {
                       {creatButton('删除', this.onDelete.bind(this, v.id))}
                       {v.isEdit && creatButton('确定', this.submitClicked.bind(this, true, { info: v, key: k }))}
                       {v.isEdit && creatButton('返回', this.backButton.bind(this, { info: v, key: k }))}
-                    
+
                     </div>
                   </div>
-                
+
                 </div>
               )
             })
+
           }
         </Card>
         {bottomDiv}
