@@ -965,7 +965,7 @@ export default {
     *saveMenu({ payload: values }, { call, put }){
       const customerId = queryURL('dataId');
       const value = {...values, customerId};
-      const { data: { code, data } } = yield call(prepareMealsService.saveMenu, values);
+      const { data: { code, data } } = yield call(prepareMealsService.saveMenu, value);
       if (code == 0) {
         data == '' ? message.success('保存成功!') : message.success(`${data}!保存成功!`)
         yield put({
@@ -990,7 +990,7 @@ export default {
     *saveTopMenu({ payload: values }, { call, put }){
       const customerId = queryURL('dataId');
       const value = {...values, customerId};
-      const { data: { code, data } } = yield call(prepareMealsService.saveTopMenu, values);
+      const { data: { code, data } } = yield call(prepareMealsService.saveTopMenu, value);
       if (code == 0) {
         data == '' ? message.success('保存成功!') : message.success(`${data}!保存成功!`)
         yield put({

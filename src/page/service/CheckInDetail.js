@@ -142,7 +142,7 @@ class Detail extends Component {
       {title:'分娩前体重',component:'Input',unit:'kg',submitStr:'health_2_input_18'},
       {title:'孕期增重',component:'Input',unit:'kg',submitStr:'health_2_input_19'},
       {title:'现体重',component:'Input',unit:'kg',submitStr:'health_2_input_3'},
-      {title:'精神状态',component:'CheckBoxGroup',checkAry:[ '良好', '一般', '淡漠', '疲乏', '焦虑', '烦躁', '抑郁', '其他'],submitStr:'medical_2'},
+      {title:'精神状态',component:'CheckBoxGroup',checkAry:[ '良好', '一般', '淡漠', '疲乏', '焦虑', '烦躁', '抑郁', '其他'],submitStr:'medical_2',span:24},
       {title:'皮肤黏膜',component:'Select',chiAry:['红润', '一般', '苍白' ,'皮疹'],submitStr:'medical_3'},
       {title:'左乳房',component:'CheckBoxGroup',checkAry:['软' ,'充盈', '肿胀' ,'硬结'],submitStr:'medical_4'},
       {title:'左乳头',component:'CheckBoxGroup',checkAry:['凸', '平坦' ,'凹陷', '皲裂'],submitStr:'medical_5'},
