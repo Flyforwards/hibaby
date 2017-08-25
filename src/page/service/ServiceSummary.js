@@ -33,8 +33,13 @@ const PatientRounds = [
 ]
 
 const NurseAry = [
+  {title:'婴儿成长记录单',chiComponent:<InfantFeedingRecordsDetail urlAddress="baby-grow" summary={true}/>},
+  {title:'婴儿喂养记录单',chiComponent:<InfantFeedingRecordsDetail urlAddress="baby-feed" summary={true}/>},
   {title:'对内婴儿游泳预约单',chiComponent:<InsideBabySwimDetail  summary={true}/>},
 ]
+
+let twoRef = false
+let threeRef = false
 
 class Detail extends Component {
 
@@ -43,8 +48,16 @@ class Detail extends Component {
     this.state={}
   }
 
-  callback(){
-
+  callback(key){
+    if(key == 2 && !twoRef){
+      twoRef = true
+      this.props.dispatch({type:'serviceCustomer/getMaternalEverydayPhysicalEvaluationList'})
+    }
+    if(key == 3 && !threeRef){
+      threeRef = true
+      this.props.dispatch({type:'serviceCustomer/getBabyFeedingNoteList'})
+      this.props.dispatch({type:'serviceCustomer/getBabyGrowthNoteList'})
+    }
   }
 
   componentDidMount() {
@@ -71,11 +84,9 @@ class Detail extends Component {
   }
 }
 
-const DetailForm = Form.create()(Detail);
-
 
 function mapStateToProps(state) {
   return {...state.serviceCustomer,loading:state.loading}
 }
 
-export default connect(mapStateToProps)(DetailForm) ;
+export default connect(mapStateToProps)(Detail) ;
