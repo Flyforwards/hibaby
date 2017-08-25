@@ -22,14 +22,6 @@ const baseInfoAry = [
   {title:'家属电话',component:'InputNumber',submitStr:'contact_1'},
 ]
 
-const summaryBaseInfoAry = [
-  {title:'产次',component:'Input',selectName:'FETUS',submitStr:'fetus',disable:true},
-  {title:'孕次',component:'Input',selectName:'GRAVIDITY',submitStr:'gravidity',disable:true},
-  {title:'孕周',component:'InputNumber',submitStr:'gestationalWeeks',disable:true},
-  {title:'分娩医院',component:'Input',selectName:'Hospital',submitStr:'hospital',disable:true},
-  {title:'产妇电话',component:'InputNumber',submitStr:'contact',disable:true},
-  {title:'家属电话',component:'InputNumber',submitStr:'contact_1'},
-]
 
 // 既往史
 const PastMedicalHistoryAry = [
@@ -186,7 +178,7 @@ class Detail extends Component {
 
     const {loading,summary} = this.props
 
-    const ary = [{title:summary?"":'基本信息',ary:summary?summaryBaseInfoAry:baseInfoAry},{title:'既往史',ary:PastMedicalHistoryAry},{title:'孕期合并症',ary:PregnancyComplicationsAry},
+    const ary = [{title:summary?"":'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry},{title:'既往史',ary:PastMedicalHistoryAry},{title:'孕期合并症',ary:PregnancyComplicationsAry},
       {title:'分娩过程',ary:DeliveryProcessAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'新生儿情况',ary:newbornAry},{title:'新生儿情况',ary:newbornTwoAry}]
 
     let chiAry = ary.map(value=>{

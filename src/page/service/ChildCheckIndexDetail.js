@@ -135,7 +135,7 @@ class Detail extends Component {
     babyhead164 = true;
     babyhead165 = true;
     babyhead141 = true;
-    const {loading} = this.props;
+    const {loading,summary} = this.props;
     const { ChildCheckInData } = this.props;
     ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
       babyhead11 = elem == 3 ? false : true;
@@ -173,6 +173,7 @@ class Detail extends Component {
       {title:'周数',span:8,component:'Input',submitStr:'weekNum'},
       {title:'生产方式',component:'RadioGroups',span:15,submitStr:'radio_15',disable:true,radioAry:[{'name':'自然生产','value':'0'},{'name':'剖腹生产','value':'1'}]},
     ]
+
 // 新生儿情况
     const newbornAry = [
       {title:'出生体重',component:'Input',unit:'g',submitStr:'input_12'},
@@ -233,7 +234,7 @@ class Detail extends Component {
       {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'newborn_4'},
     ]
 //,{title:'入住时婴儿评估',ary:newbornTwoAry}
-    const ary = [{title:'基本信息',ary:baseInfoAry},{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
+    const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry},{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
 
     let chiAry = ary.map(value=>{
       value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
@@ -258,7 +259,7 @@ class Detail extends Component {
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
 
-          {bottomDiv}
+          {summary?'': bottomDiv}
         </Card>
       </Spin>
     )

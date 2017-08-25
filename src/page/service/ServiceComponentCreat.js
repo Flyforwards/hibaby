@@ -430,7 +430,7 @@ export function creatSummaryCard(dict) {
   }
 
   return(
-    <Card className='summary' noHovering={true} title={title} bodyStyle={{ padding:0}} extra={rightDiv()}   style={{ width: '100%' }}>
+    <Card className='summary' noHovering={true} title={title} bodyStyle={{ padding:0}} extra={rightDiv()}   style={{marginTop:'10px', width: '100%' }}>
       {
         chiComponent
       }

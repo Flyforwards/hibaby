@@ -83,6 +83,8 @@ class Detail extends Component {
     this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
+
+
   componentDidMount() {
     if(this.props.CheckInData) {
       const hide = this.props.CheckInData.health_1_radio_15 == '0' ?true:false;
@@ -118,7 +120,6 @@ class Detail extends Component {
       {title:'时长',component:'Input',submitStr:'baseInfo3',unit:'小时'},
     ]
 
-
     // 产后情况
     const PostpartumSituationAry = [
       {title:'产后发热',component:'InputGroup',unit:'℃',submitStr:'health_1_input_10'},
@@ -141,7 +142,7 @@ class Detail extends Component {
       {title:'分娩前体重',component:'Input',unit:'kg',submitStr:'health_2_input_18'},
       {title:'孕期增重',component:'Input',unit:'kg',submitStr:'health_2_input_19'},
       {title:'现体重',component:'Input',unit:'kg',submitStr:'health_2_input_3'},
-      {title:'精神状态',component:'CheckBoxGroup',checkAry:[ '良好', '一般', '淡漠', '疲乏', '焦虑', '烦躁', '抑郁', '其他'],submitStr:'medical_2'},
+      {title:'精神状态',component:'CheckBoxGroup',checkAry:[ '良好', '一般', '淡漠', '疲乏', '焦虑', '烦躁', '抑郁', '其他'],submitStr:'medical_2',span:24},
       {title:'皮肤黏膜',component:'Select',chiAry:['红润', '一般', '苍白' ,'皮疹'],submitStr:'medical_3'},
       {title:'左乳房',component:'CheckBoxGroup',checkAry:['软' ,'充盈', '肿胀' ,'硬结'],submitStr:'medical_4'},
       {title:'左乳头',component:'CheckBoxGroup',checkAry:['凸', '平坦' ,'凹陷', '皲裂'],submitStr:'medical_5'},
@@ -172,9 +173,9 @@ class Detail extends Component {
       {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'conclusion_5'},
     ]
 
-    const {loading} = this.props
+    const {loading,summary} = this.props
 
-    const ary = [{title:'基本信息',ary:baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
+    const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
     let chiAry = ary.map(value=>{
       value.netData = this.props.CheckInData?this.props.CheckInData:{}
@@ -210,8 +211,7 @@ class Detail extends Component {
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
-
-          {bottomDiv}
+          {summary?'':bottomDiv}
         </Card>
       </Spin>
     )
