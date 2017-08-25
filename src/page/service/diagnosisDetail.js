@@ -144,9 +144,9 @@ class Detail
           "type": 4
         };
 
-        if (this.props.CheckBeforeID) {
+        if (this.props.diagnosisID) {
           dict.operatorItem = 4
-          dict.id = this.props.CheckBeforeID
+          dict.id = this.props.diagnosisID
         }
         this.props.dispatch({ type: 'serviceCustomer/saveAssessment', payload: dict })
       }
@@ -160,7 +160,7 @@ class Detail
     const ary = [{ title: summary?'':'基本信息', ary: summary? baseInfoAry.slice(6):baseInfoAry }]
 
     let chiAry = ary.map(value => {
-      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{};
+      value.netData = this.props.diagnosisData?this.props.diagnosisData:{};
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{}
       return CreatCard(this.props.form, value)
     })
@@ -178,7 +178,7 @@ class Detail
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
 
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
+        <Card className='diagnosisInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
           {chiAry}
           {summary?"": bottomDiv}
         </Card>

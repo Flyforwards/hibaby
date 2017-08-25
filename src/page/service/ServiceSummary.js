@@ -36,12 +36,18 @@ class Detail extends Component {
 
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+      type:'card/getLevelInfo',
+    })
+  }
+
   render() {
     const {loading,baseInfoDict} = this.props
     let baseInfoDivAry = detailComponent(baseInfoDict);
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card noHovering={true} className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {baseInfoDivAry}
           <Tabs defaultActiveKey="1" type="card" onChange={this.callback.bind(this)}>
             <TabPane tab="入住汇总" key="1">{ary.map(value=>{return creatSummaryCard(value)})}</TabPane>
