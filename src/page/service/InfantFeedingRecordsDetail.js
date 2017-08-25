@@ -53,7 +53,7 @@ class Detail extends Component {
   constructor(props) {
     super(props);
     this.state={
-      urlAddress:location.pathname.indexOf('baby-grow') !== -1? 'baby-grow': (location.pathname.indexOf('baby-feed') !== -1?'baby-feed':'puerpera-body')
+      urlAddress:props.urlAddress?props.urlAddress:(location.pathname.indexOf('baby-grow') !== -1? 'baby-grow': (location.pathname.indexOf('baby-feed') !== -1?'baby-feed':'puerpera-body'))
     }
   }
 
@@ -83,7 +83,7 @@ class Detail extends Component {
 
     return (
       <Card title={'操作人：'+dict.operator+'   '+'操作时间：'+moment(dict.operatorTime).format('YYYY-MM-DD') }
-            extra = {creatButton('编辑',()=>{this.editBtnClick(dict)})}
+            extra = {this.props.summary?'': creatButton('编辑',()=>{this.editBtnClick(dict)})}
             bodyStyle={{ padding:'0 15px 0 15px'}} style={{marginTop:'5px', width: '100%' }}>
         {chiDetailComponent(ary)}
       </Card>
@@ -123,9 +123,9 @@ class Detail extends Component {
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          {baseInfoDivAry}
+          {this.props.summary?'':baseInfoDivAry}
           {detailCard}
-          {bottomDiv}
+          {this.props.summary?'':bottomDiv}
         </Card>
       </Spin>
     )

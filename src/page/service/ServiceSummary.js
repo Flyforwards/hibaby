@@ -11,6 +11,7 @@ import CheckInDetail from './CheckInDetail'
 import ChildCheckIndexDetail from './ChildCheckIndexDetail'
 import NutritionEvaluateDetail from './NutritionEvaluateDetail'
 import DiagnosisDetail from './diagnosisDetail'
+import InfantFeedingRecordsDetail from './InfantFeedingRecordsDetail'
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 const TabPane = Tabs.TabPane;
@@ -23,6 +24,11 @@ const ary = [
   {title:'婴儿入住评估单',chiComponent:<ChildCheckIndexDetail summary={true}/>},
   {title:'营养部产后入住评估表',chiComponent:<NutritionEvaluateDetail summary={true}/>},
   {title:'中医见诊记录单',chiComponent:<DiagnosisDetail summary={true}/>},
+]
+
+
+const PatientRounds = [
+  {title:'产妇每日身体评估',chiComponent:<InfantFeedingRecordsDetail urlAddress="puerpera-body" summary={true}/>},
 ]
 
 class Detail extends Component {
@@ -51,7 +57,7 @@ class Detail extends Component {
           {baseInfoDivAry}
           <Tabs defaultActiveKey="1" type="card" onChange={this.callback.bind(this)}>
             <TabPane tab="入住汇总" key="1">{ary.map(value=>{return creatSummaryCard(value)})}</TabPane>
-            <TabPane tab="查房汇总" key="2">查房汇总</TabPane>
+            <TabPane tab="查房汇总" key="2">{PatientRounds.map(value=>{return creatSummaryCard(value)})}</TabPane>
             <TabPane tab="护理部" key="3">护理部</TabPane>
           </Tabs>
         </Card>

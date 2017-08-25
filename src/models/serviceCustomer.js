@@ -45,6 +45,8 @@ export default {
             let dictTwo = { ...query, type: i, operatorItem: i }
             dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
           }
+
+          dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList' });
         }
         if (pathname === '/service/nutrition-evaluate/detail' || pathname === '/service/nutrition-evaluate/edit') {
           let dictTwo = { ...query, type: 5, operatorItem: 5 }
@@ -70,9 +72,6 @@ export default {
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
 
-        if (pathname === '/service/puerpera-body/detail' || pathname === '/service/puerpera-body/edit') {
-
-        }
         if (pathname === '/service/puerpera-body/detail') {
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList' });
         }
