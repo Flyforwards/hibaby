@@ -90,7 +90,6 @@ class Detail extends Component {
       {title:'产后出血',component:'InputGroup',unit:'ml',submitStr:'health_1_input_9'},
     ]
 
-
     // 产后情况
     const PostpartumSituationAry = [
       {title:'产后发热',component:'InputGroup',unit:'℃',submitStr:'health_1_input_10'},
@@ -144,9 +143,9 @@ class Detail extends Component {
       {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'conclusion_5'},
     ]
 
-    const {loading} = this.props
+    const {loading,summary} = this.props
 
-    const ary = [{title:'基本信息',ary:baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
+    const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
     let chiAry = ary.map(value=>{
       value.netData = this.props.CheckInData?this.props.CheckInData:{}
@@ -182,8 +181,7 @@ class Detail extends Component {
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
-
-          {bottomDiv}
+          {summary?"":bottomDiv}
         </Card>
       </Spin>
     )

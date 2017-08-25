@@ -81,9 +81,9 @@ class Detail extends Component {
   }
 
   render() {
-    const {loading} = this.props
+    const {loading,summary} = this.props
 
-    const ary = [{title:'基本信息',ary:baseInfoAry}]
+    const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry}]
 
     let chiAry = ary.map(value=>{
       value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
@@ -104,7 +104,7 @@ class Detail extends Component {
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
-          {bottomDiv}
+          {summary?"":bottomDiv}
         </Card>
       </Spin>
     )
