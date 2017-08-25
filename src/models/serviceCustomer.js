@@ -255,7 +255,7 @@ export default {
 
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
-          payload: data
+          payload:{key:'MaternalEverydayPhysicalEvaluationAry',data:data}
         });
       }
       catch (err) {
@@ -275,7 +275,7 @@ export default {
 
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
-          payload: data
+          payload: {key:'BabyFeedingNoteAry',data:data}
         });
       }
       catch (err) {
@@ -294,7 +294,7 @@ export default {
 
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
-          payload: data
+          payload: {key:'BabyGrowthNoteAry',data:data}
         });
       }
       catch (err) {
@@ -595,7 +595,13 @@ export default {
       return { ...state, InsideBabySwimList: todo }
     },
     savaMaternalEverydayPhysicalEvaluationList(state, { payload: todo }){
-      return { ...state, PuerperaBodyList: todo }
+      const {key,data} = todo
+      let dict = {}
+      dict[key] = data
+
+      console.log(dict)
+
+      return { ...state, ...dict }
     },
     savaCustomerInfo(state, { payload: todo }){
       return { ...state, baseInfoDict: todo }

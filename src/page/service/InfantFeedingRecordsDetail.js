@@ -72,7 +72,6 @@ class Detail extends Component {
   CreatDetailCard(dict) {
 
     let ary = this.state.urlAddress === 'baby-feed' ? feeding : (this.state.urlAddress === 'baby-grow'?growth:assessment);
-
     ary.map((subDict)=>{
       if(subDict.chiAry){
         subDict.initValue =subDict.chiAry[dict[subDict.submitStr]]
@@ -105,10 +104,13 @@ class Detail extends Component {
 
   render() {
 
-    const {loading,baseInfoDict,PuerperaBodyList} = this.props
+    const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry} = this.props
+
+    let netAry = this.state.urlAddress === 'baby-feed' ? BabyFeedingNoteAry : (this.state.urlAddress === 'baby-grow'?BabyGrowthNoteAry:MaternalEverydayPhysicalEvaluationAry);
+
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
-    let detailCard = PuerperaBodyList ? (PuerperaBodyList).map((dict)=>{
+    let detailCard = netAry ? (netAry).map((dict)=>{
       return this.CreatDetailCard(dict)
     }):''
 
