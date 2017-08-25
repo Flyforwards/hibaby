@@ -56,7 +56,7 @@ class Detail extends Component {
 
     return (
       <Card title={'操作人：'+dict.operator+'   '+'操作时间：'+moment(dict.operatorTime).format('YYYY-MM-DD') }
-            extra = {creatButton('编辑',()=>{this.editBtnClick(dict)})}
+            extra = {this.props.summary?'':creatButton('编辑',()=>{this.editBtnClick(dict)})}
             bodyStyle={{ padding:'0 15px 0 15px'}} style={{marginTop:'5px', width: '100%' }}>
         {chiDetailComponent(assessment)}
       </Card>
