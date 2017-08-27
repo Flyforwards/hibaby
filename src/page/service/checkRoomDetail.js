@@ -15,7 +15,7 @@ class Detail extends Component {
       descInfo: ''
     }
   }
-
+  
   onDelete(id) {
     const param = parse(location.search.substr(1));
     this.props.dispatch({
@@ -23,12 +23,12 @@ class Detail extends Component {
       payload: { dataId: id, operatorItem: parseInt(param.operatoritem) }
     })
   }
-
+  
   //返回按钮
   backClicked() {
     window.history.go(-1)
   }
-
+  
   //编辑按钮
   editBackClicked(isEdit, data) {
     const { dispatch, describeInfo } = this.props;
@@ -39,7 +39,7 @@ class Detail extends Component {
       payload: data
     })
   }
-
+  
   backButton = (postData) => {
     const param = parse(location.search.substr(1));
     postData.operatorItem = parseInt(param.operatoritem)
@@ -49,11 +49,11 @@ class Detail extends Component {
       payload: postData
     })
   }
-
+  
   print() {
-
+  
   }
-
+  
   //确定按钮
   submitClicked(k) {
     const { dispatch, describeInfo } = this.props;
@@ -78,17 +78,17 @@ class Detail extends Component {
       }
     }
   }
-
+  
   edit = (info, e) => {
     info.descInfo = e.target.value;
     this.setState({
       postInfo: info
     })
   }
-
+  
   //时间选择
   onChangeTime = (date, dateString) => {
-    console.log(dateString,'??????')
+    console.log(dateString, '??????')
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
     const { customerid, type, operatoritem } = param;
@@ -107,7 +107,7 @@ class Detail extends Component {
       payload: dateString
     })
   }
-
+  
   render() {
     const { loading, baseInfoDict, describeInfo } = this.props;
     let baseInfoDivAry = detailComponent(baseInfoDict)
@@ -153,15 +153,15 @@ class Detail extends Component {
                         key: k
                       }))}
                       {creatButton('删除', this.onDelete.bind(this, v.id))}
-                      {v.isEdit && creatButton('确定', this.submitClicked.bind(this,k))}
+                      {v.isEdit && creatButton('确定', this.submitClicked.bind(this, k))}
                       {v.isEdit && creatButton('返回', this.backButton.bind(this, { info: v, key: k }))}
-
+                    
                     </div>
                   </div>
                 </div>
               )
             })
-
+            
           }
         </Card>
         {bottomDiv}
@@ -170,24 +170,13 @@ class Detail extends Component {
   }
 }
 
-const
-  DetailForm = Form.create()(Detail);
+const DetailForm = Form.create()(Detail);
 
 
-function
-
-mapStateToProps(state) {
+function mapStateToProps(state) {
   return { ...state.serviceCustomer, loading: state.loading }
 }
 
-export
-default
-
-connect(mapStateToProps)
-
-(
-  DetailForm
-)
-;
+export default connect(mapStateToProps)(DetailForm);
 
 

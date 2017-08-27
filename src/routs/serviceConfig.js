@@ -144,10 +144,21 @@ export default (app) => [
       })
     }
   },
-
+  
   // 中医查房记录单
   {
     path: '/service/diagnosis-record',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
+      })
+    }
+  },
+  
+  // 儿科查房记录单
+  {
+    path: '/service/children-record',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
@@ -168,7 +179,7 @@ export default (app) => [
 
   //儿科、中医、产科查房记录单详情页
   {
-    path: '/service/diagnosis-record/checkRoomDetail',
+    path: '/service/diagnosis-record/detail',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
