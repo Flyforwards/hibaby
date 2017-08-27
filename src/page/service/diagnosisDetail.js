@@ -178,7 +178,7 @@ class Detail
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
 
-        <Card className='diagnosisInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
+        <Card className='diagnosisInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', '20px') }}>
           {chiAry}
           {summary?"": bottomDiv}
         </Card>
