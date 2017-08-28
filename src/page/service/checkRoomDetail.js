@@ -117,8 +117,11 @@ class Detail extends Component {
               {creatButton('打印', this.print.bind(this))}
             </div>
     
-    
-    if (location.pathname.indexOf('diagnosis-record') !== -1) {
+    let diagnosis = location.pathname.indexOf('diagnosis-record');
+    let puerpera = location.pathname.indexOf('puerpera-record');
+    let butler = location.pathname.indexOf('butler-rounds');
+    let nutrition = location.pathname.indexOf('nutrition-record');
+    if (diagnosis !== -1 || puerpera !== -1 || butler !== -1 || nutrition !== -1) {
       return (
         <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
           <Card className="checkRoomDetailCard">
