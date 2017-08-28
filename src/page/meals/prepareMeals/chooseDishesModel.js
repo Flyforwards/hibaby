@@ -77,7 +77,6 @@ class App extends Component {
       dishesName: name,
       number: changeKey + 1
     }
-    console.log(1111)
     reset();
     isLow ? dispatch({
       type: 'prepareMeals/saveLowInfo',

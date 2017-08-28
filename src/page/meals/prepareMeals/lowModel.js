@@ -43,8 +43,6 @@ class DynamicFieldSet extends Component {
   add = (e) => {
     const { menuInfoByType } = this.props;
     let { dishes } = menuInfoByType;
-
-    console.log(menuInfoByType, '??????')
     switch (menuInfoByType.type) {
       case 1:
         this.pushData(7, dishes);
@@ -107,6 +105,14 @@ class DynamicFieldSet extends Component {
         chooseVisibleInfo: true
       }
     })
+    dispatch({
+      type: 'prepareMeals/getDishesPageList',
+      payload: {
+        'nodeId': 1,
+        'page': 1,
+        'size': 10
+      }
+    });
     this.setState({
       changeKey: k
     });
@@ -170,7 +176,6 @@ class DynamicFieldSet extends Component {
           </Col>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              {/*<Button className="saveBtn" htmlType="submit" size="large">保存</Button>*/}
               <PermissionButton   testKey='MENU_SAVE' className="saveBtn"  htmlType="submit" size="large">
                 保存
               </PermissionButton>
@@ -207,7 +212,7 @@ class LowMOdel extends Component {
   }
 
   render() {
-    const { prepareMeals, dispatch, loading } = this.props;
+    const { prepareMeals, dispatch } = this.props;
     const { visible, menuInfoByType } = prepareMeals;
     const { type } = menuInfoByType;
     let title = type == 1 ? '早餐' : type == 2 ? '早加' : type == 3 ? '午餐' : type == 4 ? '午加' : type == 5 ? '晚餐' : type == 6 ? '晚加' : '';
