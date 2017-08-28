@@ -120,7 +120,7 @@ export default {
         }
 
         //儿科、中医、产科记录单详情页
-        if (pathname === '/service/diagnosis-record/checkRoomDetail') {
+        if (pathname === '/service/diagnosis-record/detail') {
           const { customerid, type, operatoritem } = query;
           let dict_ = { customerId: parseInt(customerid), type: parseInt(type), operatorItem: parseInt(operatoritem) }
           dispatch({
