@@ -15,7 +15,7 @@ class Detail extends Component {
       descInfo: ''
     }
   }
-
+  
   onDelete(id) {
     const param = parse(location.search.substr(1));
     this.props.dispatch({
@@ -23,12 +23,12 @@ class Detail extends Component {
       payload: { dataId: id, operatorItem: parseInt(param.operatoritem) }
     })
   }
-
+  
   //返回按钮
   backClicked() {
     window.history.go(-1)
   }
-
+  
   //编辑按钮
   editBackClicked(isEdit, data) {
     const { dispatch, describeInfo } = this.props;
@@ -39,7 +39,7 @@ class Detail extends Component {
       payload: data
     })
   }
-
+  
   backButton = (postData) => {
     const param = parse(location.search.substr(1));
     postData.operatorItem = parseInt(param.operatoritem)
@@ -49,10 +49,11 @@ class Detail extends Component {
       payload: postData
     })
   }
-
+  
   print() {
-
+  
   }
+  
   //确定按钮
   submitClicked(k) {
     const { dispatch, describeInfo } = this.props;
@@ -77,17 +78,17 @@ class Detail extends Component {
       }
     }
   }
-
+  
   edit = (info, e) => {
     info.descInfo = e.target.value;
     this.setState({
       postInfo: info
     })
   }
-
+  
   //时间选择
   onChangeTime = (date, dateString) => {
-    console.log(dateString,'??????')
+    console.log(dateString, '??????')
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
     const { customerid, type, operatoritem } = param;
@@ -106,7 +107,7 @@ class Detail extends Component {
       payload: dateString
     })
   }
-
+  
   render() {
     const { loading, baseInfoDict, describeInfo } = this.props;
     let baseInfoDivAry = detailComponent(baseInfoDict)
@@ -115,57 +116,117 @@ class Detail extends Component {
               {creatButton('返回', this.backClicked.bind(this))}{this.props.CheckBeforeData ? creatButton('删除', this.onDelete.bind(this)) : ''}
               {creatButton('打印', this.print.bind(this))}
             </div>
-    return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
-        <Card className="checkRoomDetailCard">
-          {baseInfoDivAry}
-          <span className="checkRoomDetailTimeSpan">筛选日期：</span>
-          <DatePicker className="checkRoomDetailTime" onChange={this.onChangeTime}/>
-          {
-            describeInfo.length != 0 && describeInfo.map((v, k) => {
-              return (
-                <div key={k} className="checkRoomDetail">
-                  <Row className="checkRoomDetailRow">
-                    <Col span={1}>
-                      描述：
-                    </Col>
-                    <Col span={14}>
-                      {
-                        v.isEdit ?
-                          <TextArea defaultValue={v.descInfo} autosize onChange={this.edit.bind(this, v)}/> :
-                          <p>{v.descInfo}</p>
-                      }
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col span={6} offset={12}>
-                      <span>操作者：</span><span>{v.operator}</span>
-                    </Col>
-                    <Col span={6}>
-                      <span>时间：</span><span>{moment(v.operatorTime).format("YYYY-MM-DD")}</span>
-                    </Col>
-                  </Row>
-                  <div className="buttonBox">
-                    <div className='button-group-bottom-common'>
-                      {v.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, true, {
-                        info: v,
-                        key: k
-                      }))}
-                      {creatButton('删除', this.onDelete.bind(this, v.id))}
-                      {v.isEdit && creatButton('确定', this.submitClicked.bind(this,k))}
-                      {v.isEdit && creatButton('返回', this.backButton.bind(this, { info: v, key: k }))}
-
+    
+    
+    if (location.pathname.indexOf('diagnosis-record') !== -1) {
+      return (
+        <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
+          <Card className="checkRoomDetailCard">
+            {baseInfoDivAry}
+            <span className="checkRoomDetailTimeSpan">筛选日期：</span>
+            <DatePicker className="checkRoomDetailTime" onChange={this.onChangeTime}/>
+            {
+              describeInfo.length != 0 && describeInfo.map((v, k) => {
+                return (
+                  <div key={k} className="checkRoomDetail">
+                    <Row className="checkRoomDetailRow">
+                      <Col span={1}>
+                        描述：
+                      </Col>
+                      <Col span={14}>
+                        {
+                          v.isEdit ?
+                            <TextArea defaultValue={v.descInfo} autosize onChange={this.edit.bind(this, v)}/> :
+                            <p>{v.descInfo}</p>
+                        }
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={6} offset={12}>
+                        <span>操作者：</span><span>{v.operator}</span>
+                      </Col>
+                      <Col span={6}>
+                        <span>时间：</span><span>{moment(v.operatorTime).format("YYYY-MM-DD")}</span>
+                      </Col>
+                    </Row>
+                    <div className="buttonBox">
+                      <div className='button-group-bottom-common'>
+                        {v.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, true, {
+                          info: v,
+                          key: k
+                        }))}
+                        {creatButton('删除', this.onDelete.bind(this, v.id))}
+                        {v.isEdit && creatButton('确定', this.submitClicked.bind(this, k))}
+                        {v.isEdit && creatButton('返回', this.backButton.bind(this, { info: v, key: k }))}
+                      
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })
-
-          }
-        </Card>
-        {bottomDiv}
-      </Spin>
-    )
+                )
+              })
+            }
+          </Card>
+          {bottomDiv}
+        </Spin>
+      )
+    } else {
+      const { describeChildrenInfo, describeDiagnosisInfo, describeObstetricInfo, describePuerperaInfo, describeButlerInfo, describeNutritionInfo, type } = this.props;
+      let info = [];
+      switch (type) {
+        case (1):
+          info = describeChildrenInfo;
+          break;
+        case (2):
+          info = describeDiagnosisInfo;
+          break;
+        case (3):
+          info = describeObstetricInfo;
+          break;
+        case (4):
+          info = describePuerperaInfo;
+          break;
+        case (5):
+          info = describeButlerInfo;
+          break;
+        case (6):
+          info = describeNutritionInfo;
+          break;
+        default:
+          info = describeChildrenInfo;
+      }
+      
+      return (
+        <Spin spinning={loading.effects['serviceCustomer/getdoctornoteListSum'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
+          <Card>
+            {
+              info.length != 0 && info.map((v, k) => {
+                return (
+                  <div key={k} className="checkRoomDetail">
+                    <Row className="checkRoomDetailRow">
+                      <Col span={1}>
+                        描述：
+                      </Col>
+                      <Col span={14}>
+                        <p>{v.descInfo}</p>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={6} offset={12}>
+                        <span>操作者：</span><span>{v.operator}</span>
+                      </Col>
+                      <Col span={6}>
+                        <span>时间：</span><span>{moment(v.operatorTime).format("YYYY-MM-DD")}</span>
+                      </Col>
+                    </Row>
+                  </div>
+                )
+              })
+            }
+          </Card>
+        </Spin>
+      )
+    }
+    
   }
 }
 
