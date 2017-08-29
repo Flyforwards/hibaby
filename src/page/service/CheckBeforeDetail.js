@@ -89,8 +89,104 @@ const newbornTwoAry = [
   {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'newborn_4'},
 ]
 
+class motherDiv extends React.Component{
 
-let chiAry = []
+  constructor(props) {
+    super(props);
+    this.state={}
+  }
+
+  radioChange(e) {
+    this.setState({childbirth:e.target.value})
+  }
+
+  render() {
+    let hide = 2
+    if (this.props.CheckBeforeData) {
+      if (this.props.CheckBeforeData.radio_15) {
+        hide = this.props.CheckBeforeData.radio_15 == 0 ? true : false;
+      }
+    }
+    if (this.state.childbirth) {
+      hide = this.state.childbirth == 1 ? false : true;
+    }
+
+    // 分娩过程
+    const DeliveryProcessAry = [
+      {
+        title: '分娩方式',
+        component: 'RadioGroups',
+        submitStr: 'radio_15',
+        radioAry: [{'name': '自然分娩', 'value': '0'}, {'name': '剖宫产', 'value': '1'}],
+        fun: this.radioChange.bind(this)
+      },
+      {
+        title: '手术指征',
+        component: 'Input',
+        submitStr: 'input_5',
+        span: 18,
+        hide: hide === 2 ? true : hide,
+        noRequired: hide === 2 ? false : hide
+      },
+      {
+        title: '侧切',
+        component: 'RadioGroup',
+        submitStr: 'radio_15_1',
+        hide: hide === 2 ? true : !hide,
+        noRequired: hide === 2 ? false : !hide
+      },
+      {
+        title: '会阴撕裂',
+        component: 'Select',
+        chiAry: ['无', 'Ⅰ度', 'Ⅱ度', 'Ⅲ度', 'Ⅳ度'],
+        submitStr: 'radio_16',
+        hide: hide === 2 ? true : !hide,
+        noRequired: hide === 2 ? false : !hide
+      },
+      {title: '产时出血', component: 'InputGroup', unit: 'ml', submitStr: 'input_6'},
+      {title: '胎盘早破', component: 'InputGroup', unit: '小时', submitStr: 'input_7'},
+      {title: '前置胎盘', component: 'RadioGroup', submitStr: 'radio_18'},
+      {title: '胎盘早剥', component: 'RadioGroup', submitStr: 'radio_19'},
+      {title: '胎盘残留', component: 'RadioGroup', submitStr: 'radio_20'},
+      {title: '其他', component: 'TextArea', span: 24, submitStr: 'input_8'},
+    ]
+
+    const { summary, CheckBeforeData, baseInfoDict} = this.props
+
+    const ary = [{title: summary ? "" : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry}, {
+      title: '既往史',
+      ary: PastMedicalHistoryAry
+    }, {title: '孕期合并症', ary: PregnancyComplicationsAry},
+      {title: '分娩过程', ary: DeliveryProcessAry}, {title: '产后情况', ary: PostpartumSituationAry}]
+
+    let chiAry = ary.map(value => {
+      value.netData = CheckBeforeData ? CheckBeforeData : {}
+      value.baseInfoDict = baseInfoDict ? baseInfoDict : {}
+      return CreatCard(this.props.form, value)
+    })
+
+    return (
+      <div>{chiAry}</div>
+    )
+  }
+}
+
+function childDiv(props) {
+  const {form,CheckBeforeData,baseInfoDict} = props
+
+  const ary = [{title:'新生儿情况',ary:newbornAry},{title:'新生儿情况',ary:newbornTwoAry}]
+
+  let chiAry = ary.map(value=>{
+    value.netData = CheckBeforeData?CheckBeforeData:{}
+    value.baseInfoDict = baseInfoDict?baseInfoDict:{}
+    return CreatCard(form,value)
+  })
+
+  return(<div>{chiAry}</div>)
+}
+
+const ChildForm = Form.create()(childDiv);
+const MotherForm = Form.create()(motherDiv);
 
 class Detail extends Component {
 
@@ -119,14 +215,11 @@ class Detail extends Component {
 
   }
 
-  radioChange(e) {
-    this.setState({childbirth:e.target.value})
-  }
-
   submitClicked(){
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.refs.MotherForm.validateFieldsAndScroll((err, values) => {
       if (!err) {
-
+        console.log(values)
+        return
         Object.keys(values).map(key=>{
           if(values[key]){
             if(typeof values[key] === 'object'){
@@ -144,78 +237,64 @@ class Detail extends Component {
         this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
       }
     });
+
+    this.refs.ChildForm.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log(values)
+        return
+        Object.keys(values).map(key=>{
+          if(values[key]){
+            if(typeof values[key] === 'object'){
+              values[key] = values[key].format()
+            }
+          }
+        })
+        const assessmentInfo =  JSON.stringify(values);
+
+        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1,operatorItem :1};
+
+        if(this.props.CheckBeforeID){
+          dict.id = this.props.CheckBeforeID
+        }
+        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
+      }
+    });
+
   }
 
   componentWillUnmount() {/**/
     this.props.dispatch({type: 'serviceCustomer/removeData',})
   }
 
+
   render() {
 
-    let hide = 2
-    if(this.props.CheckBeforeData){
-      if(this.props.CheckBeforeData.radio_15 ){
-        hide = this.props.CheckBeforeData.radio_15 == 0?true:false;
-      }
-    }
-    if(this.state.childbirth){
-      hide = this.state.childbirth == 1 ? false : true;
-    }
-
-    // 分娩过程
-    const DeliveryProcessAry = [
-      {title:'分娩方式',component:'RadioGroups',submitStr:'radio_15',radioAry:[{'name':'自然分娩','value':'0'},{'name':'剖宫产','value':'1'}],fun:this.radioChange.bind(this)},
-      {title:'手术指征',component:'Input',submitStr:'input_5',span:18,hide:hide === 2 ? true : hide,noRequired:hide === 2 ? false : hide},
-      {title:'侧切',component:'RadioGroup',submitStr:'radio_15_1',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
-      {title:'会阴撕裂',component:'Select',chiAry:['无','Ⅰ度', 'Ⅱ度', 'Ⅲ度','Ⅳ度'],submitStr:'radio_16',hide:hide === 2 ? true : !hide,noRequired:hide === 2 ? false : !hide},
-      {title:'产时出血',component:'InputGroup',unit:'ml',submitStr:'input_6'},
-      {title:'胎盘早破',component:'InputGroup',unit:'小时',submitStr:'input_7'},
-      {title:'前置胎盘',component:'RadioGroup',submitStr:'radio_18'},
-      {title:'胎盘早剥',component:'RadioGroup',submitStr:'radio_19'},
-      {title:'胎盘残留',component:'RadioGroup',submitStr:'radio_20'},
-      {title:'其他',component:'TextArea',span:24,submitStr:'input_8'},
-    ]
-
-    const {loading,summary} = this.props
-
-    const ary = [{title:summary?"":'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry},{title:'既往史',ary:PastMedicalHistoryAry},{title:'孕期合并症',ary:PregnancyComplicationsAry},
-      {title:'分娩过程',ary:DeliveryProcessAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'新生儿情况',ary:newbornAry},{title:'新生儿情况',ary:newbornTwoAry}]
-
-    let chiAry = ary.map(value=>{
-      value.netData = this.props.CheckBeforeData?this.props.CheckBeforeData:{}
-      value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{}
-      return CreatCard(this.props.form,value)
-    })
-
+    const {loading, summary} = this.props
 
     const bottomDiv = location.pathname === '/service/check-before/edit' ?
       <div className='button-group-bottom-common'>
-        {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
+        {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
       </div> :
-       <div className='button-group-bottom-common'>
-        {creatButton('返回',this.backClicked.bind(this))}{this.props.CheckBeforeData?creatButton('删除',this.onDelete.bind(this)):''}
-        {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
+      <div className='button-group-bottom-common'>
+        {creatButton('返回', this.backClicked.bind(this))}{this.props.CheckBeforeData ? creatButton('删除', this.onDelete.bind(this)) : ''}
+        {creatButton('编辑', this.editBtnClick.bind(this))}{creatButton('打印', this.print.bind(this))}
       </div>
 
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-
-          {chiAry}
-
-          {summary?'':bottomDiv}
+      <Spin
+        spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
+        <Card className='CheckBeforeInput' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
+          <MotherForm ref="MotherForm" {...this.props}/>
+          <ChildForm ref="ChildForm" {...this.props}/>
+          {summary ? '' : bottomDiv}
         </Card>
       </Spin>
     )
   }
 }
 
-const DetailForm = Form.create()(Detail);
-
-
 function mapStateToProps(state) {
   return {...state.serviceCustomer,loading:state.loading}
 }
 
-export default connect(mapStateToProps)(DetailForm) ;
+export default connect(mapStateToProps)(Detail) ;

@@ -15,8 +15,8 @@ class Index extends Component {
     const children = '&type=1&operatoritem=5'
     const diagnosis = '&type=2&operatoritem=6'
     const obstetric = '&type=3&operatoritem=7'
-    
-    
+
+
     const puerpera = '&type=4&operatoritem=11'
     const butler = '&type=5&operatoritem=16'
     const nutrition = '&type=6&operatoritem=18'
@@ -26,9 +26,9 @@ class Index extends Component {
               (location.pathname.indexOf('obstetric') !== -1) ? obstetric : children;
     return (
       <div>
-        
+
         <CustomerListPage detailLinkUrl="/service/diagnosis-record/detail" moreLink={urlAddress}/>
-      
+
       </div>
     )
   }
