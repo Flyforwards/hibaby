@@ -136,6 +136,10 @@ class Detail extends Component {
       return CreatCard(this.props.form,value)
     })
   }
+  //tab转换
+  onTabChange(key){
+    console.log(key)
+  }
   render() {
     babyhead11 = true;
     babyhead20allboy = true;
@@ -144,6 +148,16 @@ class Detail extends Component {
     babyhead165 = true;
     babyhead141 = true;
     const {loading,summary} = this.props;
+    const BabyAllData = [
+      {
+        "assessmentBabyInfo": "string",
+        "babyId": 0,
+        "babyLength": 0,
+        "babyWeight": 0,
+        "customerId": 0,
+        "id": 0
+      }
+    ]
     const { ChildCheckInData ,BabyAllData} = this.props;
     ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
       babyhead11 = elem == 3 ? false : true;
@@ -275,7 +289,7 @@ class Detail extends Component {
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
-          {BabyAllData && BabyAllData.length>1 ?<Tabs type="card">
+          {BabyAllData && BabyAllData.length>1 ?<Tabs onChange={this.onTabChange.bind(this)} type="card">
               {tabs}
           </Tabs> : chiArys
           }

@@ -176,3 +176,10 @@ export function onSaveBabyData(values) {
     body: JSON.stringify(values),
   })
 }
+//根据客户信息id 得到婴儿信息
+export function getBabymsgByCustomerId(values) {
+  return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

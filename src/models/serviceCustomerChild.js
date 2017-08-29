@@ -54,6 +54,18 @@ export default {
     }
   },
   effects: {
+    //根据客户id 得到婴儿信息
+    *getBabymsgByCustomerId({paylaod:values},{call,put}){
+      const {data:{data,code}} = yield call(serviceAssessment.getBabymsgByCustomerId,values);
+      if(code == 0){
+        yield put({
+          type:'onSaveBabyMsg',
+          paylaod:{
+            data
+          }
+        })
+      }
+    },
     //根据客户id查询查询婴儿入住详情
     *getChilddataBycustomerId({ payload: values},{call, put}){
       const { data:{data,code}} = yield call(serviceAssessment.getBabydataByCustomerid,values);
@@ -111,6 +123,10 @@ export default {
 
   },
   reducers: {
+    //g根据客户id 得到婴儿信息
+    onSaveBabyMsg(state,{payload:{data:BabyMsg}}){
+      return { ...state,BabyMsg}
+    },
     //根据客户id获取婴儿评估保存
     onSaveBabyAllData(state,{payload:{data:BabyAllData}}){
       return { ...state,BabyAllData }

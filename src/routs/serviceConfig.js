@@ -98,7 +98,7 @@ export default (app) => [
     path: '/service/child-check-in/detail',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-      //  registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/serviceCustomer'));
         registerModel(app, require('models/serviceCustomerChild'));
         cb(null, require('page/service/ChildCheckIndexDetailCopy.js'))
       })
