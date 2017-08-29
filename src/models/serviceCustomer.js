@@ -43,6 +43,8 @@ export default {
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
           let dictTwo = { ...query, type: 1, operatorItem: 1 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          dispatch({ type: 'getBabyListByCustomerId', payload: {dataId: query.customerid} });
+
         }
         if (pathname === '/service/customer/detail') {
           for (let i = 1; i < 6; i++) {
@@ -55,7 +57,7 @@ export default {
           dictTwo.operatorItem = 5;
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
-        
+
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
           let dictTwo = { ...query, type: 2, operatorItem: 2 }
           dictTwo.operatorItem = 2;
@@ -73,7 +75,7 @@ export default {
           }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-        
+
         if (pathname === '/service/puerpera-body/detail') {
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList' });
         }
@@ -81,7 +83,7 @@ export default {
           let dict_ = { dataId: query.dataId, operatorItem: 8 }
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationById', payload: dict_ });
         }
-        
+
         //婴儿护理记录详情
         if (pathname === '/service/baby-nursing/detail' || pathname === '/service/baby-nursing/edit') {
           let dict_ = { customerId: query.customerid, date: moment().format('YYYY-MM-DD') }
@@ -91,7 +93,7 @@ export default {
           let dict_ = { dataId: query.customerid, date: moment().format('YYYY-MM-DD') }
           dispatch({ type: 'getBrouchurDetailById', payload: dict_ });
         }
-        
+
         //对内婴儿游泳记录
         if (pathname === '/service/baby-swimming/detail') {
           dispatch({ type: 'getInsideBabySwimList' });
@@ -99,11 +101,13 @@ export default {
           let dict_ = { dataId: query.dataId, operatorItem: 15 }
           dispatch({ type: 'getInsideBabySwimById', payload: dict_ });
         }
-        
-        
+
+
+
+
         //婴儿喂养记录
         if (pathname === '/service/baby-feed/detail' || pathname === '/service/baby-feed/edit') {
-          
+
           if (pathname === '/service/baby-feed/detail') {
             dispatch({ type: 'getBabyFeedingNoteList' })
           }
@@ -122,7 +126,7 @@ export default {
             dispatch({ type: 'getBabyGrowthNoteById', payload: dict_ });
           }
         }
-        
+
         //儿科、中医、产科记录单详情页
         if (pathname === '/service/diagnosis-record/detail') {
           const { customerid, type, operatoritem } = query;
@@ -136,7 +140,12 @@ export default {
             payload: dict_
           });
         }
-        
+
+
+        if (pathname === '/service/send-message/production') {
+          dispatch({ type: 'getCurrentEndemicDeptList' });
+        }
+
       });
     }
   },
@@ -160,6 +169,19 @@ export default {
         });
       }
     },
+
+
+
+    // 部门中心
+    *getCurrentEndemicDeptList({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(serviceAssessment.getCurrentEndemicDeptList, values);
+      if (code == 0) {
+        yield put({
+          type: 'savaEndemicDeptList',
+          payload: data
+        })
+      }
+    },
     // 获取会员身份下拉选项， 也是卡种列表
     *getMemberShipCard({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(systemService.getMemberShipCard, values);
@@ -170,7 +192,7 @@ export default {
         })
       }
     },
-    
+
     *getDataDict({ payload: value }, { call, put }){
       const parameter = {
         abName: value.abName,
@@ -187,7 +209,7 @@ export default {
         });
       }
     },
-    
+
     //保存或编辑评估
     // assessmentInfo (string, optional): 评估内容 ,
     // customerId (integer, optional): 客户id ,
@@ -211,7 +233,65 @@ export default {
       catch (err) {
       }
     },
-    
+    *saveAssessmentBabyInfo({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.saveAssessmentBabyInfo, values);
+        message.success("保存成功");
+        if (values.type == 1) {
+          yield put(routerRedux.push('/service/check-before'))
+        } else if (values.type == 2) {
+          yield put(routerRedux.push('/service/check-in'))
+        } else if (values.type == 3) {
+          yield put(routerRedux.push('/service/child-check-in'))
+        }
+        else if (values.type == 5) {
+          yield put(routerRedux.push('/service/nutrition-evaluate'))
+        }
+      }
+      catch (err) {
+      }
+    },
+
+    *sendProductionNotification({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.sendProductionNotification, values);
+        message.success("保存成功");
+      }
+      catch (err) {
+      }
+    },
+
+    *getBabyListByCustomerId({ payload: value }, { call, put }){
+
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getBabyListByCustomerId, value);
+        console.log(data)
+        console.log('呵呵')
+
+        yield put({
+          type: 'savaBabyList',
+          payload: data
+        });
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
+
+    *getCustomerInfoByCustomerName({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getCustomerInfoByCustomerName, values);
+
+        yield put({
+          type: 'savaCustomerInfoList',
+          payload: {
+            data: data
+          }
+        });
+      }
+      catch (err) {
+      }
+    },
     *getAssessmentByCustomerId({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getAssessmentByCustomerId, values);
@@ -224,6 +304,19 @@ export default {
         console.log(err)
       }
     },
+    *getAssessmentBabyInfoByCustomerId({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getAssessmentBabyInfoByCustomerId, values);
+        yield put({
+          type: 'savaBabyAssessment',
+          payload: data
+        });
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
+
     *DelAssessment({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.DelAssessment, { dataId: values.dataId });
@@ -243,17 +336,17 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getMaternalEverydayPhysicalEvaluationList({ payload: values }, { call, put }) {
       try {
-        
+
         let query = parse(location.search.substr(1))
         let dict = { customerId: query.customerid }
         if (query.date) {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getMaternalEverydayPhysicalEvaluationList, dict);
-        
+
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: { key: 'MaternalEverydayPhysicalEvaluationAry', data: data }
@@ -263,7 +356,7 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getBabyFeedingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -273,7 +366,7 @@ export default {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getBabyFeedingNoteList, dict);
-        
+
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: { key: 'BabyFeedingNoteAry', data: data }
@@ -292,7 +385,7 @@ export default {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getBabyGrowthNoteList, dict);
-        
+
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: { key: 'BabyGrowthNoteAry', data: data }
@@ -302,7 +395,7 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getBabyGrowthNoteById({ payload: values }, { call, put })
     {
       try {
@@ -329,7 +422,7 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getBabyFeedingNoteById({ payload: values }, { call, put })
     {
       try {
@@ -354,8 +447,8 @@ export default {
         console.log(err)
       }
     },
-    
-    
+
+
     *saveBabyGrowthNote({ payload: values }, { call, put })
     {
       try {
@@ -378,8 +471,8 @@ export default {
         console.log(err)
       }
     },
-    
-    
+
+
     *saveMaternalEverydayPhysicalEvaluation({ payload: values }, { call, put })
     {
       try {
@@ -391,8 +484,8 @@ export default {
         console.log(err)
       }
     },
-    
-    
+
+
     *getCustomerInfoByCustomerId({ payload: values }, { call, put })
     {
       try {
@@ -407,7 +500,7 @@ export default {
       }
     }
     ,
-    
+
     //宣教手册详情
     *getBrouchurDetailById({ payload: values }, { call, put })
     {
@@ -422,7 +515,7 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getBabyNursingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -463,7 +556,7 @@ export default {
           type: 'getdoctornoteList',
           payload: query
         });
-        
+
       }
     },
     //3.根据id删除记录
@@ -479,7 +572,7 @@ export default {
           type: 'getdoctornoteList',
           payload: query
         });
-        
+
       }
     },
     //3.根据客户id和记录单类型以及筛选条件查询记录单列表 汇总页面用到的
@@ -534,7 +627,7 @@ export default {
           payload: data
         });
       }
-      
+
     },
     //4.根据客户id和记录单类型以及筛选条件查询记录单列表页面
     *getdoctornoteList({ payload: values }, { call, put }){
@@ -545,7 +638,7 @@ export default {
           payload: data
         });
       }
-    
+
     },
     *getInsideBabySwimById({ payload: values }, { call, put }){
       const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
@@ -559,14 +652,14 @@ export default {
     //获取对内婴儿游泳记录
     *getInsideBabySwimList({ payload: values }, { call, put }) {
       try {
-        
+
         let query = parse(location.search.substr(1))
         let dict = { customerId: query.customerid }
         if (query.date) {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimList, dict);
-        
+
         yield put({
           type: 'saveInsideBabySwimList',
           payload: data
@@ -596,6 +689,12 @@ export default {
     setPackageList(state, { payload: todo }){
       return { ...state, packageList: todo.data };
     },
+    setPackageList(state, { payload: todo }){
+      return { ...state, BabyList: todo.data };
+    },
+    savaCustomerInfoList(state, { payload: todo }){
+      return { ...state, CustomerInfoList: todo.data };
+    },
     memberShipCardSave(state, { payload: { shipCards } }) {
       return { ...state, shipCards };
     },
@@ -605,6 +704,12 @@ export default {
       }
       return { ...state };
     },
+    savaEndemicDeptList(state, { payload: todo }){
+      console.log(todo)
+      return { ...state, EndemicDeptList: todo };
+    },
+
+
     savaAssessment(state, { payload: todo }){
       let dict = {}
       if (todo) {
@@ -627,6 +732,19 @@ export default {
       }
       return { ...state, ...dict }
     },
+
+
+    savaBabyAssessment(state, { payload: todo }){
+      let dict = {}
+      if (todo) {
+        if (todo.type === 1) {
+          dict.CheckBeforeBabyData = JSON.parse(todo.assessmentInfo)
+          dict.CheckBeforeBabyID = todo.id
+        }
+      }
+      return { ...state, ...dict }
+    },
+
     clearAllProps(state){
       return { ...state, page: 1 }
     },
@@ -639,6 +757,8 @@ export default {
         CheckInID: null,
         ChildCheckInData: null,
         ChildCheckInID: null,
+        CustomerInfoList:null,
+        baseInfoDict:null,
         PuerperaBodyList: null,
         InsideBabySwimList: null//对内婴儿游泳记录集合
       }
@@ -653,14 +773,15 @@ export default {
       const { key, data } = todo
       let dict = {}
       dict[key] = data
-      
+
       console.log(dict)
-      
+
       return { ...state, ...dict }
     },
     savaCustomerInfo(state, { payload: todo }){
       return { ...state, baseInfoDict: todo }
     },
+
     saveBrouchurDetailById(state, { payload: todo }) {
       return { ...state, MissionManualData: todo }
     },
@@ -716,8 +837,11 @@ export default {
     getDescribeNutrition(state, { payload: data }){
       return { ...state, describeNutritionInfo: data }
     },
-    
-    
+
+    savaBabyList(state, { payload: data }){
+      console.log(data)
+      return { ...state, BabyList: data }
+    },
     addMutDictData(state, { payload: todo }){
       if (todo.abName === 'YCC') {
         return { ...state, fetusAry: todo.data };
@@ -728,5 +852,5 @@ export default {
       return { ...state };
     }
   }
-  
+
 }

@@ -144,7 +144,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 中医查房记录单
   {
     path: '/service/diagnosis-record',
@@ -155,7 +155,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 儿科查房记录单
   {
     path: '/service/children-record',
@@ -218,7 +218,7 @@ export default (app) => [
     }
   },
 
-  
+
   // 婴儿护理记录单
   {
     path: '/service/baby-nursing',
@@ -426,10 +426,22 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/NoticeOfIndex.js'))
       })
     }
   },
+
+  // 生产通知单
+  {
+    path: '/service/send-message/production',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ProductionNotice.js'))
+      })
+    }
+  },
+
   // 营养产后入住评估
   {
     path: '/service/nutrition-evaluate',
@@ -470,9 +482,5 @@ export default (app) => [
       })
     }
   },
-
-
-
-
 
 ]

@@ -59,9 +59,9 @@ const PostpartumSituationAry = [
 
 // 新生儿情况
 const newbornAry = [
-  {title:'性别',component:'gender',submitStr:'radio_32'},
-  {title:'出生体重',component:'Input',unit:'g',submitStr:'input_12'},
-  {title:'出生身长',component:'Input',unit:'cm',submitStr:'input_13'},
+  {title:'性别',component:'gender',submitStr:'babySex'},
+  {title:'出生体重',component:'Input',unit:'g',submitStr:'babyWeight'},
+  {title:'出生身长',component:'Input',unit:'cm',submitStr:'babyLength'},
   {title:'Apgar评分',component:'Input',unit:'分',submitStr:'select_0'},
   {title:'喂养方式',component:'Select',chiAry:['纯母乳','混合', '人工'],submitStr:'radio_33'},
   {title:'产时胎心异常',component:'Select',chiAry:['无','胎心快', '胎心慢'],submitStr:'radio_34'},
@@ -219,7 +219,6 @@ class Detail extends Component {
     this.refs.MotherForm.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log(values)
-        return
         Object.keys(values).map(key=>{
           if(values[key]){
             if(typeof values[key] === 'object'){
@@ -240,8 +239,7 @@ class Detail extends Component {
 
     this.refs.ChildForm.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
-        return
+
         Object.keys(values).map(key=>{
           if(values[key]){
             if(typeof values[key] === 'object'){
@@ -249,14 +247,16 @@ class Detail extends Component {
             }
           }
         })
+
+        const {babyLength,babySex,babyWeight} = values
+
         const assessmentInfo =  JSON.stringify(values);
 
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1,operatorItem :1};
+        let dict = { "assessmentBabyInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1,
+          babyLength,babySex,babyWeight};
 
-        if(this.props.CheckBeforeID){
-          dict.id = this.props.CheckBeforeID
-        }
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
+        console.log(dict)
+        this.props.dispatch({type:'serviceCustomer/saveAssessmentBabyInfo',payload:dict})
       }
     });
 
