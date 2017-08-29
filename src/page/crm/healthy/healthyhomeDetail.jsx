@@ -451,7 +451,7 @@ function newBabyHtml(props) {
             </FormItem>
           </div>
         </Row>
-        <Row style={{display:"none"}}>
+        <Row >
           <div className="rightItemBg">
             <FormItem
               labelCol={{span: 5}}

@@ -1,6 +1,6 @@
 "use strict"
 import React, { Component } from 'react'
-import { Button, Col, Form, Input, Row, Radio, Select } from 'antd'
+import { Button, Col, Form, Input, Row, Radio, Select,message } from 'antd'
 import styles from './healthyhome.scss';
 import FileUpload from './fileUpload';
 import {radioInputRow,myRadioForm,uploadOptionsItem,radioSpaceRow,radioAllRow,apgarScoreRow,setImgInputRequired,radioAllRow2} from './CreateElement';
@@ -398,14 +398,14 @@ function newBabyHtml(props) {
             </FormItem>
           </div>
         </Row>
-        <Row style={{display:"none"}}>
+        <Row>
           <div className="rightItemBg">
             <FormItem
               labelCol={{span: 5}}
               wrapperCol={{span: 18}}
               label={'babyId'}>
               {getFieldDecorator("babyId", {
-                initialValue : newBabyValues?newBabyValues['babyId']:null,
+                initialValue : newBabyValues?newBabyValues['babyId']:(props.index+1),
                 rules: [{ required: false, message: '  ' }]
               })(
                 <Input />
@@ -553,8 +553,8 @@ class HealthyhomeDetailUpdateClass extends Component{
           })
           const babyInfo = JSON.stringify(babyValue);
           const newBaby = {
-            // "babyId": babyValue.babyId,
-            "babyId": 0,
+            "babyId": babyValue.babyId,
+            // "babyId": 0,
             "babyInfo": babyInfo,
             "babyLength": babyValue.babyLength,
             "babySex": babyValue.babySex,
@@ -624,6 +624,17 @@ class HealthyhomeDetailUpdateClass extends Component{
     });
   }
 
+  handleRemoveBaby(){
+    if(this.state.newBabyIndex > 0){
+      const newBabyIndex = this.state.newBabyIndex-1;
+      this.setState({
+        newBabyIndex:newBabyIndex,
+      });
+    }else{
+      message.warn("最少保留一组新生儿情况");
+    }
+  }
+
 
   initNewBaby(){
     const newBabyArr = [];
@@ -655,6 +666,7 @@ class HealthyhomeDetailUpdateClass extends Component{
         <div className='button-group-bottom-common'>
           <Button className='button-group-bottom-1' onClick={this.handleBack.bind(this)}>返回</Button>
           <Button className='button-group-bottom-1' onClick={this.handleCreateBaby.bind(this)}>新增新生儿情况</Button>
+          <Button className='button-group-bottom-1' onClick={this.handleRemoveBaby.bind(this)}>移除新生儿情况</Button>
           <Button className='button-group-bottom-2' onClick={this.handleSubmit.bind(this)} >保存</Button>
         </div>
       </div>
