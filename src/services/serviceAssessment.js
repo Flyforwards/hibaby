@@ -14,6 +14,20 @@ export function getAssessmentByCustomerId(values) {
   })
 }
 
+export function getAssessmentBabyInfoByCustomerId(values) {
+  return request('/crm/api/v1/assessment/getAssessmentBabyInfoByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+export function saveAssessmentBabyInfo(values) {
+  return request('/crm/api/v1/assessment/saveAssessmentBabyInfo', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
+
 export function DelAssessment(values) {
   return request('/crm/api/v1/assessment/DelAssessment', {
     method: 'POST',
@@ -147,6 +161,14 @@ export function getInsideBabySwimById(values) {
     body: JSON.stringify(values),
   })
 }
+// 发送生产通知单
+export function sendProductionNotification(values) {
+  return request('/crm/api/v1/productionNotification/sendProductionNotification', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 //根据id删除婴儿评估
 export function onDeleteBabydata(values) {
@@ -155,9 +177,22 @@ export function onDeleteBabydata(values) {
     body: JSON.stringify(values),
   })
 }
+export function getCustomerInfoByCustomerName(values) {
+  return request('/crm/api/v1/customer/getCustomerInfoByCustomerName', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 //根据客户id 查询婴儿评估
 export function getBabydataByCustomerid(values) {
   return request('/crm/api/v1/assessment/getBabyOccupancyAssessmentByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+export function getCurrentEndemicDeptList(values) {
+  return request('/crm/api/v1/department/getCurrentEndemicDeptList', {
     method: 'POST',
     body: JSON.stringify(values),
   })
@@ -178,6 +213,14 @@ export function onSaveBabyData(values) {
 }
 //根据客户信息id 得到婴儿信息
 export function getBabymsgByCustomerId(values) {
+  return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+export function getBabyListByCustomerId(values) {
   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
     method: 'POST',
     body: JSON.stringify(values),

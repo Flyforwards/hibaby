@@ -3,7 +3,7 @@ import FileUpload from '../crm/customer/fileUpload'
 import DictionarySelect from 'common/dictionary_select';
 import './serviceComponent.scss'
 import moment from 'moment';
-import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,Spin,Modal,Checkbox} from 'antd';
+import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,AutoComplete,Modal,Checkbox} from 'antd';
 const Option = Select.Option;
 const InputGroup = Input.Group;
 const confirm = Modal.confirm;
@@ -21,8 +21,12 @@ export function ServiceComponentCreat(form,dict) {
   );
 }
 
-function onChange(dict) {
-  // dict.disabled = dict
+function renderOption(item) {
+  return (
+    <Option key={item.id} text={item.name}>
+      {item.name}
+    </Option>
+  );
 }
 
 function creatComponent(form,dict) {
@@ -58,7 +62,16 @@ function creatComponent(form,dict) {
   else{
     switch (dict.component) {
       case 'Input':
-        tempDiv = <Input style={ {width:'100%'} } addonAfter={dict.unit}  placeholder={dict.placeholder} disabled={dict.disabled}/>;
+        tempDiv = <Input style={ {width:'100%'} } onChange={dict.fun} addonAfter={dict.unit}  placeholder={dict.placeholder} disabled={dict.disabled}/>;
+        break;
+      case 'AutoComplete':
+
+        tempDiv = <AutoComplete
+          dataSource={dict.dataSource.map(renderOption)}
+          onSelect={dict.onSelect}
+          onSearch={dict.onSearch}
+          style={{width:'100%'}}
+        />
         break;
       case 'TextArea':
         tempDiv = <TextArea style={{width:'100%'}} disabled={dict.disabled}/>;
@@ -162,6 +175,12 @@ function cusFromItem(form,dict) {
       wrapperCol: { span: 22 },
     }
   }
+  if(dict.span === 18){
+    formItemLayout = {
+      labelCol: { span: 3 },
+      wrapperCol: { span: 21 },
+    }
+  }
   if(dict.formItems === "TwoWords" ){
     if(dict.items){
       formItemLayout = {
@@ -227,7 +246,7 @@ function cusFromItem(form,dict) {
 
 export function CreatCard(form,superDict) {
 
-  const {title,ary,netData,baseInfoDict} = superDict
+  const {title,ary,netData,baseInfoDict,type,fun} = superDict
 
   let chiAry = []
 
@@ -251,16 +270,19 @@ export function CreatCard(form,superDict) {
     }
 
     if(baseInfoDict){
-      if (baseInfoDict[dict.submitStr]) {
+
+      let str = dict.dictInfokey || dict.submitStr
+
+      if (baseInfoDict[str]) {
         if (dict.component === 'DatePicker') {
-          dict.initValue = moment(baseInfoDict[dict.submitStr]);
+          dict.initValue = moment(baseInfoDict[str]);
         }
         else {
           if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'||dict.submitStr === 'hospital'){
             dict.initValue = baseInfoDict[dict.submitStr].toString()
           }
           else{
-            dict.initValue = baseInfoDict[dict.submitStr]
+            dict.initValue = baseInfoDict[str]
           }
         }
       }
@@ -269,9 +291,22 @@ export function CreatCard(form,superDict) {
     chiAry.push(ServiceComponentCreat(form, dict))
   }
 
+  let typeDiv = ''
+
+  if(type){
+    typeDiv =
+      <div>
+        <Col offset={1} span={3} style={{height:'56px'}}><Button onClick={fun}>{type === 'babyAdd'?'添加':'删除'} </Button></Col>
+        {/*<Col span={2} style={{height:'56px'}}><Button>{type === 'babyAdd'?'添加':'删除'} </Button></Col>*/}
+      </div>
+
+
+  }
+
   return (
     <Card noHovering={true} title={title} bodyStyle={{ padding:'15px 15px 0 15px'}} bordered={false}  style={{ width: '100%' }}>
       {chiAry}
+      {typeDiv}
     </Card>
   )
 }
@@ -397,6 +432,7 @@ export function detailComponent(baseInfoDict) {
   )
 
 }
+
 
 export function chiDetailComponent(baseInfoAry) {
   let titSpan = 9;

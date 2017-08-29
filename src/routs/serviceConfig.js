@@ -99,8 +99,8 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        registerModel(app, require('models/serviceCustomerChild'));
-        cb(null, require('page/service/ChildCheckIndexDetailCopy.js'))
+        //registerModel(app, require('models/serviceCustomerChild'));
+        cb(null, require('page/service/ChildCheckIndexDetail.js'))
       })
     }
   },
@@ -427,10 +427,22 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/NoticeOfIndex.js'))
       })
     }
   },
+
+  // 生产通知单
+  {
+    path: '/service/send-message/production',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ProductionNotice.js'))
+      })
+    }
+  },
+
   // 营养产后入住评估
   {
     path: '/service/nutrition-evaluate',
@@ -471,9 +483,5 @@ export default (app) => [
       })
     }
   },
-
-
-
-
 
 ]

@@ -43,6 +43,8 @@ export default {
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
           let dictTwo = { ...query, type: 1, operatorItem: 1 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          dispatch({ type: 'getBabyListByCustomerId', payload: {dataId: query.customerid} });
+
         }
         if (pathname === '/service/customer/detail') {
           for (let i = 1; i < 6; i++) {
@@ -99,8 +101,6 @@ export default {
           let dict_ = { dataId: query.dataId, operatorItem: 15 }
           dispatch({ type: 'getInsideBabySwimById', payload: dict_ });
         }
-
-
         //婴儿喂养记录
         if (pathname === '/service/baby-feed/detail' || pathname === '/service/baby-feed/edit') {
 
@@ -137,6 +137,9 @@ export default {
           });
         }
 
+        if (pathname === '/service/send-message/production') {
+          dispatch({ type: 'getCurrentEndemicDeptList' });
+        }
       });
     }
   },
@@ -158,6 +161,19 @@ export default {
             data: data
           }
         });
+      }
+    },
+
+
+
+    // 部门中心
+    *getCurrentEndemicDeptList({ payload: values }, { call, put }) {
+      const { data: { data, code } } = yield call(serviceAssessment.getCurrentEndemicDeptList, values);
+      if (code == 0) {
+        yield put({
+          type: 'savaEndemicDeptList',
+          payload: data
+        })
       }
     },
     // 获取会员身份下拉选项， 也是卡种列表
@@ -211,7 +227,65 @@ export default {
       catch (err) {
       }
     },
+    *saveAssessmentBabyInfo({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.saveAssessmentBabyInfo, values);
+        message.success("保存成功");
+        if (values.type == 1) {
+          yield put(routerRedux.push('/service/check-before'))
+        } else if (values.type == 2) {
+          yield put(routerRedux.push('/service/check-in'))
+        } else if (values.type == 3) {
+          yield put(routerRedux.push('/service/child-check-in'))
+        }
+        else if (values.type == 5) {
+          yield put(routerRedux.push('/service/nutrition-evaluate'))
+        }
+      }
+      catch (err) {
+      }
+    },
 
+    *sendProductionNotification({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.sendProductionNotification, values);
+        message.success("保存成功");
+      }
+      catch (err) {
+      }
+    },
+
+    *getBabyListByCustomerId({ payload: value }, { call, put }){
+
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getBabyListByCustomerId, value);
+        console.log(data)
+        console.log('呵呵')
+
+        yield put({
+          type: 'savaBabyList',
+          payload: data
+        });
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
+
+    *getCustomerInfoByCustomerName({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getCustomerInfoByCustomerName, values);
+
+        yield put({
+          type: 'savaCustomerInfoList',
+          payload: {
+            data: data
+          }
+        });
+      }
+      catch (err) {
+      }
+    },
     *getAssessmentByCustomerId({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getAssessmentByCustomerId, values);
@@ -224,6 +298,19 @@ export default {
         console.log(err)
       }
     },
+    *getAssessmentBabyInfoByCustomerId({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getAssessmentBabyInfoByCustomerId, values);
+        yield put({
+          type: 'savaBabyAssessment',
+          payload: data
+        });
+      }
+      catch (err) {
+        console.log(err)
+      }
+    },
+
     *DelAssessment({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.DelAssessment, { dataId: values.dataId });
@@ -596,6 +683,12 @@ export default {
     setPackageList(state, { payload: todo }){
       return { ...state, packageList: todo.data };
     },
+    setPackageList(state, { payload: todo }){
+      return { ...state, BabyList: todo.data };
+    },
+    savaCustomerInfoList(state, { payload: todo }){
+      return { ...state, CustomerInfoList: todo.data };
+    },
     memberShipCardSave(state, { payload: { shipCards } }) {
       return { ...state, shipCards };
     },
@@ -605,6 +698,12 @@ export default {
       }
       return { ...state };
     },
+    savaEndemicDeptList(state, { payload: todo }){
+      console.log(todo)
+      return { ...state, EndemicDeptList: todo };
+    },
+
+
     savaAssessment(state, { payload: todo }){
       let dict = {}
       if (todo) {
@@ -627,6 +726,19 @@ export default {
       }
       return { ...state, ...dict }
     },
+
+
+    savaBabyAssessment(state, { payload: todo }){
+      let dict = {}
+      if (todo) {
+        if (todo.type === 1) {
+          dict.CheckBeforeBabyData = JSON.parse(todo.assessmentInfo)
+          dict.CheckBeforeBabyID = todo.id
+        }
+      }
+      return { ...state, ...dict }
+    },
+
     clearAllProps(state){
       return { ...state, page: 1 }
     },
@@ -639,6 +751,8 @@ export default {
         CheckInID: null,
         ChildCheckInData: null,
         ChildCheckInID: null,
+        CustomerInfoList:null,
+        baseInfoDict:null,
         PuerperaBodyList: null,
         InsideBabySwimList: null//对内婴儿游泳记录集合
       }
@@ -661,6 +775,7 @@ export default {
     savaCustomerInfo(state, { payload: todo }){
       return { ...state, baseInfoDict: todo }
     },
+
     saveBrouchurDetailById(state, { payload: todo }) {
       return { ...state, MissionManualData: todo }
     },
@@ -716,8 +831,10 @@ export default {
     getDescribeNutrition(state, { payload: data }){
       return { ...state, describeNutritionInfo: data }
     },
-
-
+    savaBabyList(state, { payload: data }){
+      console.log(data)
+      return { ...state, BabyList: data }
+    },
     addMutDictData(state, { payload: todo }){
       if (todo.abName === 'YCC') {
         return { ...state, fetusAry: todo.data };

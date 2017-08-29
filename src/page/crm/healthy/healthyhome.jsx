@@ -357,7 +357,7 @@ function HealthyhomeMainComponent(props) {
 
   //提交表单
   function handleSubmit (e) {
-    //console.log("您点击了保存按钮");
+    // console.log("您点击了保存按钮");
     const {dispatch,form} = props;
     const {imgInput_1_arr,imgInput_2_arr,imgInput_3_arr,imgInput_4_arr,imgInput_5_arr,imgInput_6_arr,imgInput_7_arr,imgInput_8_arr} = props.healthInformation;
     form.setFieldsValue({imgInput_1 : (imgInput_1_arr&&imgInput_1_arr.length>0)?JSON.stringify(imgInput_1_arr):null});
