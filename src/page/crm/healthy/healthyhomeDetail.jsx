@@ -433,8 +433,22 @@ function newBabyHtml(props) {
         <div className="itemTitle">新生儿情况</div>
       </Col>
       <Col span="22">
+        <Row >
+          <div className="rightItemBg">
+            <FormItem
+              labelCol={{span: 5}}
+              wrapperCol={{span: 18}}
+              label={'宝宝'}>
+              {getFieldDecorator("babyId", {
+                initialValue : newBabyValues?newBabyValues['babyId']:null,
+                rules: [{ required: false, message: '  ' }]
+              })(
+                <Input disabled={ disabled } />
+              )}
+            </FormItem>
+          </div>
+        </Row>
         {radioAllRow("babySex",{title: '性别',radioItems: ['男','女'],value:(newBabyValues?newBabyValues['babySex']+"":null)},props)}
-
 
         <Row style={{display:"none"}}>
           <div className="rightItemBg">
@@ -451,23 +465,6 @@ function newBabyHtml(props) {
             </FormItem>
           </div>
         </Row>
-        <Row >
-          <div className="rightItemBg">
-            <FormItem
-              labelCol={{span: 5}}
-              wrapperCol={{span: 18}}
-              label={'babyId'}>
-              {getFieldDecorator("babyId", {
-                initialValue : newBabyValues?newBabyValues['babyId']:null,
-                rules: [{ required: false, message: '  ' }]
-              })(
-                <Input disabled={ disabled } />
-              )}
-            </FormItem>
-          </div>
-        </Row>
-
-
         <Row>
           <div className="rightItemBg">
             <FormItem
