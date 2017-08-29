@@ -172,7 +172,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
       })
     }
   },
@@ -187,7 +187,38 @@ export default (app) => [
       })
     }
   },
+  //产妇护理记录单详情页
+  {
+    path: '/service/puerpera-record/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkRoomDetail.js'))
+      })
+    }
+  },
+  //管家查房记录单详情页
+  {
+    path: '/service/butler-rounds/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkRoomDetail.js'))
+      })
+    }
+  },
+  //营养查房记录单详情页
+  {
+    path: '/service/nutrition-record/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkRoomDetail.js'))
+      })
+    }
+  },
 
+  
   // 婴儿护理记录单
   {
     path: '/service/baby-nursing',
@@ -230,11 +261,11 @@ export default (app) => [
   },
   // 产妇护理记录
   {
-    path: '/service/puerpera-record ',
+    path: '/service/puerpera-record',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
       })
     }
   },
@@ -385,7 +416,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
       })
     }
   },
@@ -435,7 +466,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
       })
     }
   },

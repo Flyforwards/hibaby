@@ -78,7 +78,14 @@ class DynamicFieldSet extends Component {
     this.setState({
       changeKey: k
     })
-
+    dispatch({
+      type: 'prepareMeals/getDishesPageList',
+      payload: {
+        'nodeId': 1,
+        'page': 1,
+        'size': 10
+      }
+    });
     dispatch({
       type: 'prepareMeals/chooseVisible',
       payload: {

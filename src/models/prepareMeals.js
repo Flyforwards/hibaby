@@ -889,8 +889,6 @@ export default {
           }
         });
         if (data.length != 0) {
-          console.log(data, '获取到的数据')
-          
           data[0].week == 0 ?
             yield put({
               type: 'getTopMenuByDay',
