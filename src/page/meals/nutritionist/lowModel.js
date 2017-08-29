@@ -106,6 +106,14 @@ class DynamicFieldSet extends Component {
         chooseVisibleInfo: true
       }
     })
+    dispatch({
+      type: 'prepareMealsDinner/getDishesPageList',
+      payload: {
+        'nodeId': 1,
+        'page': 1,
+        'size': 10
+      }
+    });
     this.setState({
       changeKey: k
     });
@@ -206,7 +214,7 @@ class LowMOdel extends Component {
   }
 
   render() {
-    const { prepareMeals, dispatch, loading } = this.props;
+    const { prepareMeals, dispatch } = this.props;
     const { visible, menuInfoByType } = prepareMeals;
     const { type } = menuInfoByType;
     let title = type == 1 ? '早餐' : type == 2 ? '早加' : type == 3 ? '午餐' : type == 4 ? '午加' : type == 5 ? '晚餐' : type == 6 ? '晚加' : '';
