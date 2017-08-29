@@ -148,3 +148,31 @@ export function getInsideBabySwimById(values) {
   })
 }
 
+//根据id删除婴儿评估
+export function onDeleteBabydata(values) {
+  return request('/crm/api/v1/assessment/DelBabyOccupancyAssessment', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//根据客户id 查询婴儿评估
+export function getBabydataByCustomerid(values) {
+  return request('/crm/api/v1/assessment/getBabyOccupancyAssessmentByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//根据id查询婴儿入住评估详情
+export function getBabyDataById(values) {
+  return request('/crm/api/v1/assessment/getBabyOccupancyAssessmentById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//保存或编辑婴儿入住评估
+export function onSaveBabyData(values) {
+  return request('/crm/api/v1/assessment/saveBabyOccupancyAssessment', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
