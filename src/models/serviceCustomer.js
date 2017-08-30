@@ -43,6 +43,7 @@ export default {
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
           let dictTwo = { ...query, type: 1, operatorItem: 1 }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
           dispatch({ type: 'getBabyListByCustomerId', payload: {dataId: query.customerid} });
 
         }
@@ -256,6 +257,7 @@ export default {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.sendProductionNotification, values);
         message.success("保存成功");
+        yield put(routerRedux.push('/service/send-message'))
       }
       catch (err) {
       }
@@ -265,9 +267,6 @@ export default {
 
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getBabyListByCustomerId, value);
-        console.log(data)
-        console.log('呵呵')
-
         yield put({
           type: 'savaBabyList',
           payload: data
@@ -736,12 +735,7 @@ export default {
 
     savaBabyAssessment(state, { payload: todo }){
       let dict = {}
-      if (todo) {
-        if (todo.type === 1) {
-          dict.CheckBeforeBabyData = JSON.parse(todo.assessmentInfo)
-          dict.CheckBeforeBabyID = todo.id
-        }
-      }
+      dict.CheckBeforeBabyData = todo
       return { ...state, ...dict }
     },
 

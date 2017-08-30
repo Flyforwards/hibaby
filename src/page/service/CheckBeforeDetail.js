@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import {CreatCard,creatButton} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin} from 'antd';
+import {CreatCard,creatButton,letter} from './ServiceComponentCreat'
+import {Card ,Input,Form,message,Spin,Tabs} from 'antd';
+const TabPane = Tabs.TabPane;
+
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -85,9 +87,10 @@ const newbornTwoAry = [
   {title:'特殊注意事项',component:'TextArea',span:24,submitStr:'newborn_0'},
   {title:'评估结论',component:'TextArea',span:24,submitStr:'newborn_1'},
   {title:'特殊提示',component:'TextArea',span:24,submitStr:'newborn_2'},
-  {title:'评估者',component:'Input',span:6,submitStr:'newborn_3'},
-  {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'newborn_4'},
+  // {title:'评估者',component:'Input',span:6,submitStr:'newborn_3'},
+  // {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'newborn_4'},
 ]
+
 
 class motherDiv extends React.Component{
 
@@ -172,12 +175,16 @@ class motherDiv extends React.Component{
 }
 
 function childDiv(props) {
-  const {form,CheckBeforeData,baseInfoDict} = props
+  const {form,netData,baseInfoDict,index} = props
 
-  const ary = [{title:'新生儿情况',ary:newbornAry},{title:'新生儿情况',ary:newbornTwoAry}]
+  console.log(netData)
+  console.log(baseInfoDict)
+
+  let title = `新生儿情况(宝${letter[index]})`
+  const ary = [{title:title,ary:newbornAry},{title:title,ary:newbornTwoAry}]
 
   let chiAry = ary.map(value=>{
-    value.netData = CheckBeforeData?CheckBeforeData:{}
+    value.netData = netData?netData:{}
     value.baseInfoDict = baseInfoDict?baseInfoDict:{}
     return CreatCard(form,value)
   })
@@ -237,28 +244,37 @@ class Detail extends Component {
       }
     });
 
-    this.refs.ChildForm.validateFieldsAndScroll((err, values) => {
-      if (!err) {
 
-        Object.keys(values).map(key=>{
-          if(values[key]){
-            if(typeof values[key] === 'object'){
-              values[key] = values[key].format()
+
+    for(let i = 0;i<this.props.BabyList.length;i++){
+      const info = this.props.BabyList[i]
+      const str =  'ChildForm'+i
+
+      this.refs[str].validateFieldsAndScroll((err, values) => {
+        if (!err) {
+
+          Object.keys(values).map(key=>{
+            if(values[key]){
+              if(typeof values[key] === 'object'){
+                values[key] = values[key].format()
+              }
             }
-          }
-        })
+          })
 
-        const {babyLength,babySex,babyWeight} = values
+          const {babyLength,babySex,babyWeight} = values
 
-        const assessmentInfo =  JSON.stringify(values);
+          const assessmentInfo =  JSON.stringify(values);
 
-        let dict = { "assessmentBabyInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1,
-          babyLength,babySex,babyWeight};
+          let dict = { assessmentId:this.props.CheckBeforeID, "assessmentBabyInfo": assessmentInfo, "customerId": parse(location.search.substr(1)).customerid,"type": 1,
+            babyLength,babySex,babyWeight,babyId:info.babyId};
 
-        console.log(dict)
-        this.props.dispatch({type:'serviceCustomer/saveAssessmentBabyInfo',payload:dict})
-      }
-    });
+          this.props.dispatch({type:'serviceCustomer/saveAssessmentBabyInfo',payload:dict})
+        }
+        else{
+          message.error('您有信息未填写完整')
+        }
+      });
+    }
 
   }
 
@@ -266,10 +282,13 @@ class Detail extends Component {
     this.props.dispatch({type: 'serviceCustomer/removeData',})
   }
 
+  callback(){
+
+  }
 
   render() {
 
-    const {loading, summary} = this.props
+    const {loading, summary,BabyList,CheckBeforeBabyData} = this.props
 
     const bottomDiv = location.pathname === '/service/check-before/edit' ?
       <div className='button-group-bottom-common'>
@@ -280,12 +299,26 @@ class Detail extends Component {
         {creatButton('编辑', this.editBtnClick.bind(this))}{creatButton('打印', this.print.bind(this))}
       </div>
 
+
+    let babyListDiv = BabyList ? BabyList.map((value,index)=>{
+      const str =  'ChildForm'+index
+      let dict = {baseInfoDict:value}
+      if(CheckBeforeBabyData){
+        CheckBeforeBabyData.map(subValue=>{
+          if(subValue.babyId == value.babyId){
+            dict.netData = JSON.parse(subValue.assessmentBabyInfo)
+          }
+        })
+      }
+      return <ChildForm index={index} ref={str} {...this.props} {...dict}/>
+    }) : []
+
     return (
       <Spin
         spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
         <Card className='CheckBeforeInput' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
           <MotherForm ref="MotherForm" {...this.props}/>
-          <ChildForm ref="ChildForm" {...this.props}/>
+          {babyListDiv}
           {summary ? '' : bottomDiv}
         </Card>
       </Spin>
