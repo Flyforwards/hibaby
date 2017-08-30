@@ -261,18 +261,18 @@ export function getBabyListByCustomerId(values) {
   })
 }
 
-// /crm/api/v1/journal/getJournal
-// export function getBabyListByCustomerId(values) {
-//   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
-//     method: 'POST',
-//     body: JSON.stringify(values),
-//   })
-// }
-//
-// /crm/api/v1/journal/updateJournal
-// export function getBabyListByCustomerId(values) {
-//   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
-//     method: 'POST',
-//     body: JSON.stringify(values),
-//   })
-// }
+
+export function getJournal(values) {
+  return request('/crm/api/v1/journal/getJournal', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+export function updateJournal(values) {
+  return request('/crm/api/v1/journal/updateJournal', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

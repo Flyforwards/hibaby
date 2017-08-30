@@ -241,7 +241,7 @@ class Detail extends Component {
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
-    console.log("ssssss",this.props.dict)
+
     let chiArys = arys.map(value=>{
       value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};

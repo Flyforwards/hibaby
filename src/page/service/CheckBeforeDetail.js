@@ -190,7 +190,7 @@ function childDiv(props) {
     return CreatCard(form,value)
   })
 
-  return(<div>{chiAry}</div>)
+  return(<div >{chiAry}</div>)
 }
 
 const ChildForm = Form.create()(childDiv);
@@ -278,7 +278,8 @@ class Detail extends Component {
 
   }
 
-  componentWillUnmount() {/**/
+  componentWillUnmount() {
+    console.log('离开')
     this.props.dispatch({type: 'serviceCustomer/removeData',})
   }
 
@@ -310,7 +311,7 @@ class Detail extends Component {
           }
         })
       }
-      return <ChildForm index={index} ref={str} {...this.props} {...dict}/>
+      return <ChildForm key={str} index={index} ref={str} {...this.props} {...dict}/>
     }) : []
 
     return (
