@@ -51,9 +51,6 @@ class Detail extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
   }
 
   getJournal(type){
@@ -75,7 +72,12 @@ class Detail extends Component {
         { customerId: parseInt(customerid), type: 5, operatorItem: 16 },//管家查房
         { customerId: parseInt(customerid), type: 6, operatorItem: 18 },//营养查房
       ];
-
+      postInfo.map((v, k) => {
+        this.props.dispatch({
+          type: 'serviceCustomer/getdoctornoteListSum',
+          payload: v
+        })
+      })
       this.getJournal(key)
 
     }
@@ -129,7 +131,7 @@ class Detail extends Component {
   }
 
   clickDetail( index, str) {
-    const ary = [...this.state[str]]
+    const ary = [...divAry[str]]
     const dict = ary[index]
     const param = parse(location.search.substr(1));
     const { customerid } = param;
@@ -137,7 +139,7 @@ class Detail extends Component {
   }
 
   creatSummaryCard(dict, superAry, str) {
-    const { title, chiComponent } = dict;
+    const { title, chiComponent ,operatorItem} = dict;
 
     const self = this
 
