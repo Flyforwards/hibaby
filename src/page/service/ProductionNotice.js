@@ -129,7 +129,7 @@ class Detail extends Component {
                     }
                   })
                   dict = values
-                  dict.babyId = index
+                  dict.babyId = index+1
                   dict.customerId = 16                }
               });
               return dict
