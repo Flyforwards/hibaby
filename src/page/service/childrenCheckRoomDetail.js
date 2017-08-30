@@ -125,6 +125,7 @@ class Detail extends Component {
   
   render() {
     const { loading, baseInfoDict, describeChildrenInfo } = this.props;
+    console.log(describeChildrenInfo,'////////')
     let baseInfoDivAry = detailComponent(baseInfoDict)
     let children = location.pathname.indexOf('children-record');
     const bottomDiv =
@@ -140,9 +141,68 @@ class Detail extends Component {
             {baseInfoDivAry}
             <span className="checkRoomDetailTimeSpan">筛选日期：</span>
             <DatePicker className="checkRoomDetailTime" onChange={this.onChangeTime}/>
-            <Tabs type="card" onChange={this.changeTab} defaultActiveKey={this.props.activeKey ? this.props.activeKey : '0'}>
+            {
+              describeChildrenInfo.length != 0 &&
+              <Tabs type="card" onChange={this.changeTab} defaultActiveKey={this.props.activeKey ? this.props.activeKey : '0'}>
+                {
+                  describeChildrenInfo.map((v, k) => {
+                    return (
+                      <TabPane key={k} tab={`baby${k + 1}`}>
+                        {
+                          v.notelist.map((vv, kk) => {
+                            return (
+                              <div key={kk} className="checkRoomDetail">
+                                <Row className="checkRoomDetailRow">
+                                  <Col span={1}>描述：</Col>
+                                  <Col span={14}>
+                                    {
+                                      vv.isEdit ?
+                                        <TextArea defaultValue={vv.descInfo} autosize onChange={this.edit.bind(this, vv)}/> :
+                                        <p>{vv.descInfo}</p>
+                                    }
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col span={6} offset={12}><span>操作者：</span><span>{vv.operator}</span></Col>
+                                  <Col span={6}><span>时间：</span><span>{moment(vv.operatorTime).format("YYYY-MM-DD")}</span></Col>
+                                </Row>
+                                <div className="buttonBox">
+                                  <div className='button-group-bottom-common'>
+                                    {vv.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, {
+                                      k,
+                                      kk,
+                                      isEdit: true
+                                    }))}
+                                    {vv.isEdit != true && creatButton('删除', this.onDelete.bind(this, {
+                                      id: vv.id,
+                                      babyId: v.babyId
+                                    }))}
+                                    {vv.isEdit && creatButton('确定', this.submitClicked.bind(this, { k, kk }))}
+                                    {vv.isEdit && creatButton('返回', this.backButton.bind(this, k))}
+                                  </div>
+                                </div>
+                              </div>
+                            
+                            )
+                          })
+                        }
+                      </TabPane>
+                    )
+                  })
+                }
+              </Tabs>
+            }
+          </ Card >
+          { bottomDiv }
+        </Spin>
+      )
+    } else {
+      return (
+        <Card className="checkRoomDetailCard">
+          {
+            describeChildrenInfo.length != 0 && <Tabs type="card" defaultActiveKey='0'>
               {
-                describeChildrenInfo.length != 0 && describeChildrenInfo.map((v, k) => {
+                describeChildrenInfo.map((v, k) => {
                   return (
                     <TabPane key={k} tab={`baby${k + 1}`}>
                       {
@@ -151,35 +211,13 @@ class Detail extends Component {
                             <div key={kk} className="checkRoomDetail">
                               <Row className="checkRoomDetailRow">
                                 <Col span={1}>描述：</Col>
-                                <Col span={14}>
-                                  {
-                                    vv.isEdit ?
-                                      <TextArea defaultValue={vv.descInfo} autosize onChange={this.edit.bind(this, vv)}/> :
-                                      <p>{vv.descInfo}</p>
-                                  }
-                                </Col>
+                                <Col span={14}><p>{vv.descInfo}</p></Col>
                               </Row>
                               <Row>
                                 <Col span={6} offset={12}><span>操作者：</span><span>{vv.operator}</span></Col>
                                 <Col span={6}><span>时间：</span><span>{moment(vv.operatorTime).format("YYYY-MM-DD")}</span></Col>
                               </Row>
-                              <div className="buttonBox">
-                                <div className='button-group-bottom-common'>
-                                  {vv.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, {
-                                    k,
-                                    kk,
-                                    isEdit: true
-                                  }))}
-                                  {vv.isEdit != true && creatButton('删除', this.onDelete.bind(this, {
-                                    id: vv.id,
-                                    babyId: v.babyId
-                                  }))}
-                                  {vv.isEdit && creatButton('确定', this.submitClicked.bind(this, { k, kk }))}
-                                  {vv.isEdit && creatButton('返回', this.backButton.bind(this, k))}
-                                </div>
-                              </div>
                             </div>
-                          
                           )
                         })
                       }
@@ -188,39 +226,7 @@ class Detail extends Component {
                 })
               }
             </Tabs>
-          </Card>
-          { bottomDiv}
-        </Spin>
-      )
-    } else {
-      return (
-        <Card className="checkRoomDetailCard">
-          <Tabs type="card">
-            {
-              describeChildrenInfo.length != 0 && describeChildrenInfo.map((v, k) => {
-                return (
-                  <TabPane key={k} tab={`baby${k + 1}`}>
-                    {
-                      v.notelist.map((vv, kk) => {
-                        return (
-                          <div key={kk} className="checkRoomDetail">
-                            <Row className="checkRoomDetailRow">
-                              <Col span={1}>描述：</Col>
-                              <Col span={14}><p>{vv.descInfo}</p></Col>
-                            </Row>
-                            <Row>
-                              <Col span={6} offset={12}><span>操作者：</span><span>{vv.operator}</span></Col>
-                              <Col span={6}><span>时间：</span><span>{moment(vv.operatorTime).format("YYYY-MM-DD")}</span></Col>
-                            </Row>
-                          </div>
-                        )
-                      })
-                    }
-                  </TabPane>
-                )
-              })
-            }
-          </Tabs>
+          }
         </Card>
       )
     }
