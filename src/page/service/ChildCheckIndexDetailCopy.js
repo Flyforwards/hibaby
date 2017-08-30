@@ -17,6 +17,10 @@ let babyhead163 = true;
 let babyhead164 = true;
 let babyhead165 = true;
 let babyhead141 = true;
+
+
+
+
 class Detail extends Component {
 
   constructor(props) {
@@ -129,13 +133,13 @@ class Detail extends Component {
     this.setState({stateBabyheade141:e.target.value })
   }
 
-  getChiAry(elem,arys) {
-    arys.map(value=>{
-      value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
-    //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-      return CreatCard(this.props.form,value)
-    })
-  }
+  //  getChiAry(elem,arys) {
+  //   arys.map(value=>{
+  //     value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
+  //   //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+  //     return CreatCard(this.props.form,value)
+  //   })
+  // }
   //tab转换
   onTabChange(key){
     console.log(key)
@@ -150,15 +154,23 @@ class Detail extends Component {
     const {loading,summary} = this.props;
     const BabyAllData = [
       {
-        "assessmentBabyInfo": "string",
-        "babyId": 0,
-        "babyLength": 0,
-        "babyWeight": 0,
-        "customerId": 0,
-        "id": 0
+        "assessmentBabyInfo": "{\"babySex\":\"0\",\"babyWeight\":1,\"babyLength\":1,\"select_0\":\"11\",\"radio_33\":\"1\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"2\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"0\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"1\",\"radio_44\":\"0\",\"input_17\":\"宝A\",\"newborn_0\":\"宝A\",\"newborn_1\":\"宝A\",\"newborn_2\":\"宝A\"}",
+        "babyId": 1,
+        "babyLength": 2,
+        "babyWeight": 7,
+        "customerId": 12,
+        "id": 1
+      },
+      {
+        "assessmentBabyInfo": "{\"babySex\":\"0\",\"babyWeight\":2,\"babyLength\":2,\"select_0\":\"111\",\"radio_33\":\"2\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"1\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"1\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"0\",\"radio_44\":\"1\",\"input_17\":\"宝B\",\"newborn_0\":\"宝B\",\"newborn_1\":\"宝B\",\"newborn_2\":\"宝B\"}",
+        "babyId": 2,
+        "babyLength": 2,
+        "babyWeight": 7,
+        "customerId": 12,
+        "id": 2
       }
     ]
-    const { ChildCheckInData ,BabyAllData} = this.props;
+    const { ChildCheckInData } = this.props;
     ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
       babyhead11 = elem == 3 ? false : true;
     }):'';
@@ -198,8 +210,9 @@ class Detail extends Component {
 
 // 新生儿情况
     const newbornAry = [
-      {title:'出生体重',component:'Input',unit:'g',submitStr:'input_12'},
-      {title:'出生身长',component:'Input',unit:'cm',submitStr:'input_13'},
+      {title:'宝宝性别',span:8,component:'gender',submitStr:'babySex'},
+      {title:'出生体重',component:'Input',unit:'g',submitStr:'babyWeight'},
+      {title:'出生身长',component:'Input',unit:'cm',submitStr:'babyLength'},
       {title:'出生时头围',component:'Input',unit:'cm',submitStr:'babyHead0'},
       {title:'出生时胸围',component:'Input',unit:'cm',submitStr:'babyHead1'},
       {title:'囱门',formItems:'TwoWords',items:true,component:'Select',span:12,submitStr:'babyHead2',chiAry:['平坦柔软','紧绷鼓出','凹陷']},
@@ -266,8 +279,15 @@ class Detail extends Component {
 
     let  tabs = [];
     let chiArys ;
+    let _this =this;
     BabyAllData && BabyAllData.length>1 ?BabyAllData.map(function(elem,index){
-      tabs.push(<TabPane tab={`baby-${babyId+1}`} key={elem.babyId}> {this.getChiAry(elem,arys)}</TabPane>)
+      tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+        {arys.map(value=>{
+        value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
+        //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+        return CreatCard(_this.props.form,value)
+      })}
+      </TabPane>)
     }): chiArys = arys.map(value=>{
       value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
       //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
