@@ -99,6 +99,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
+        //registerModel(app, require('models/serviceCustomerChild'));
         cb(null, require('page/service/ChildCheckIndexDetail.js'))
       })
     }

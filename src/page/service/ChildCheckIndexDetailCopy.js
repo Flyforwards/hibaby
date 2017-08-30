@@ -89,7 +89,7 @@ class Detail extends Component {
       })
     }
   }
- //骨骼复选
+  //骨骼复选
   onbabyhead16Change(checkedValues) {
     if(checkedValues.indexOf('3') >= 0){
       this.setState({
@@ -128,6 +128,18 @@ class Detail extends Component {
   onBabyheade141(e) {
     this.setState({stateBabyheade141:e.target.value })
   }
+
+  getChiAry(elem,arys) {
+    arys.map(value=>{
+      value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
+    //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+      return CreatCard(this.props.form,value)
+    })
+  }
+  //tab转换
+  onTabChange(key){
+    console.log(key)
+  }
   render() {
     babyhead11 = true;
     babyhead20allboy = true;
@@ -136,7 +148,17 @@ class Detail extends Component {
     babyhead165 = true;
     babyhead141 = true;
     const {loading,summary} = this.props;
-    const { ChildCheckInData } = this.props;
+    const BabyAllData = [
+      {
+        "assessmentBabyInfo": "string",
+        "babyId": 0,
+        "babyLength": 0,
+        "babyWeight": 0,
+        "customerId": 0,
+        "id": 0
+      }
+    ]
+    const { ChildCheckInData ,BabyAllData} = this.props;
     ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
       babyhead11 = elem == 3 ? false : true;
     }):'';
@@ -146,7 +168,7 @@ class Detail extends Component {
       babyhead165 = elem == 5 ? false : true;
     }):''
     if(ChildCheckInData) {
-        babyhead20allboy =ChildCheckInData.babyhead20all ==0 ? false:true;
+      babyhead20allboy =ChildCheckInData.babyhead20all ==0 ? false:true;
     }
     if(ChildCheckInData) {
       babyhead141 =ChildCheckInData.babyhead14 == 0 ? false:true;
@@ -237,16 +259,20 @@ class Detail extends Component {
     const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry}]
     const arys =[{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
     let chiAry = ary.map(value=>{
-      value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
+     // value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
-    console.log("ssssss",this.props.dict)
-    let chiArys = arys.map(value=>{
+
+    let  tabs = [];
+    let chiArys ;
+    BabyAllData && BabyAllData.length>1 ?BabyAllData.map(function(elem,index){
+      tabs.push(<TabPane tab={`baby-${babyId+1}`} key={elem.babyId}> {this.getChiAry(elem,arys)}</TabPane>)
+    }): chiArys = arys.map(value=>{
       value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
-      value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+      //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
-    })
+    });
 
 
     const bottomDiv = location.pathname === '/service/child-check-in/edit' ?
@@ -263,12 +289,10 @@ class Detail extends Component {
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
-          {/*<Tabs type="card">*/}
-            {/*<TabPane tab="Tab 1" key="1">Content of Tab Pane 1</TabPane>*/}
-            {/*<TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>*/}
-            {/*<TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>*/}
-          {/*</Tabs>*/}
-          {chiArys}
+          {BabyAllData && BabyAllData.length>1 ?<Tabs onChange={this.onTabChange.bind(this)} type="card">
+              {tabs}
+          </Tabs> : chiArys
+          }
           {summary?'': bottomDiv}
         </Card>
       </Spin>
@@ -280,7 +304,7 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const {ChildCheckInData,baseInfoDict } = state.serviceCustomer;
+  const {ChildCheckInData,baseInfoDict,BabyAllData } = state.serviceCustomer;
   return {
     ChildCheckInData,
     baseInfoDict,

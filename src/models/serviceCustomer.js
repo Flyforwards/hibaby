@@ -102,10 +102,6 @@ export default {
           let dict_ = { dataId: query.dataId, operatorItem: 15 }
           dispatch({ type: 'getInsideBabySwimById', payload: dict_ });
         }
-
-
-
-
         //婴儿喂养记录
         if (pathname === '/service/baby-feed/detail' || pathname === '/service/baby-feed/edit') {
 
@@ -142,11 +138,9 @@ export default {
           });
         }
 
-
         if (pathname === '/service/send-message/production') {
           dispatch({ type: 'getCurrentEndemicDeptList' });
         }
-
       });
     }
   },
@@ -831,7 +825,6 @@ export default {
     getDescribeNutrition(state, { payload: data }){
       return { ...state, describeNutritionInfo: data }
     },
-
     savaBabyList(state, { payload: data }){
       console.log(data)
       return { ...state, BabyList: data }

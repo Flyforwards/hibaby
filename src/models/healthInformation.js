@@ -46,6 +46,7 @@ export default {
     imgInput_7_required : false,
     imgInput_8_required : false,
     input_5_required : false,
+    newBabyList:[],//新生儿情况集合
   },
   //加载页面
   subscriptions: {
@@ -87,25 +88,60 @@ export default {
     },
     *saveHealthInformation({payload: values}, { call, put }) {
       const {data: { data, code,err} } = yield call(healthInformationService.saveHealthInformation, values);
+      const baseData = data;
       if (code == 0) {
-        message.success("创建健康档案成功");
-        yield put({type:'setSaveDone',payload:{data}} );
+        let babyData = null;
+        if(values.type === 1){
+          const {data: { data, code,err} } = yield call(healthInformationService.saveBabyInfo, {customerBabyList:values.customerBabyList});
+          if(code == 0) {
+            babyData = values.customerBabyList;
+            message.success("创建健康档案成功");
+            yield put({type:'setSaveDone',payload:{baseData,babyData}} );
+          }
+        }else{
+          message.success("创建健康档案成功");
+          yield put({type:'setSaveDone',payload:{baseData,babyData}} );
+        }
+
       }
     },
     *updateHealthInformation({payload: values}, { call, put }) {
       const {data: { data, code,err} } = yield call(healthInformationService.updateCustomerHealth, values);
+      const baseData = data;
       if (code == 0) {
-        message.success("修改健康档案成功");
-        yield put({type:'setSaveDone',payload:{data}} );
+        let babyData = null;
+        if(values.type === 1){
+          const {data: { data, code,err} } = yield call(healthInformationService.updateBabyInfo, {customerBabyList:values.customerBabyList});
+          if(code == 0){
+            babyData = values.customerBabyList;
+            message.success("修改健康档案成功");
+            yield put({type:'setSaveDone',payload:{baseData,babyData}} );
+          }
+        }else{
+          message.success("修改健康档案成功");
+          yield put({type:'setSaveDone',payload:{baseData,babyData}} );
+        }
       }
     },
     *getHealthInformationListByCustomerId({payload: values}, { call, put }){
       const {data: { data, code,err} } = yield call(healthInformationService.getHealthInformationListByCustomerId, values);
+      const baseData = data;
       if (code == 0) {
         // message.info("根据用户编号查询健康档案成功");
         //console.log("根据用户编号查询健康档案成功==>",data);
-        //更新state
-        yield put({type:'setHealthInformation',payload:{data,type:values.type}} );
+        if(values.type === 1){
+          const {data: { data, code,err} } = yield call(healthInformationService.getCustomerBabyInfoById, {dataId:values.customerId});
+          if(code == 0){
+            const babyData = data;
+            //更新state
+            yield put({type:'setHealthInformation',payload:{baseData,type:values.type,babyData}} );
+          }
+        }else{
+          yield put({type:'setHealthInformation',payload:{baseData,type:values.type,babyData:null}} );
+        }
+
+
+
       }
     },
   },
@@ -118,10 +154,10 @@ export default {
     choiceExcelValue(state, {payload: {checkedValues}}) {
       return {...state, checkedValues}
     },
-    setHealthInformation(state, { payload: { data,type }}){
+    setHealthInformation(state, { payload: { baseData,type,babyData }}){
       if(type === 1){
-        if(data && data.healthInfo){
-          const healthInfo = JSON.parse(data.healthInfo);
+        if(baseData && baseData.healthInfo){
+          const healthInfo = JSON.parse(baseData.healthInfo);
           const imgInput_1_arr = healthInfo.imgInput_1?JSON.parse(healthInfo.imgInput_1):[];
           const imgInput_2_arr = healthInfo.imgInput_2?JSON.parse(healthInfo.imgInput_2):[];
           const imgInput_3_arr = healthInfo.imgInput_3?JSON.parse(healthInfo.imgInput_3):[];
@@ -149,31 +185,31 @@ export default {
           requiredData.imgInput_7_required = imgInput_7_required;
           requiredData.imgInput_8_required = imgInput_8_required;
           requiredData.input_5_required = input_5_required;
-          return {...state,editMedicalFlag : false, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
+          return {...state,editMedicalFlag : false, medicalHealthInformation : baseData,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
             imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
-            Input_8_arr:imgInput_8_arr,...requiredData}
+            Input_8_arr:imgInput_8_arr,...requiredData,newBabyList:babyData}
         }
-        return { ...state,editMedicalFlag : false, medicalHealthInformation : data };
+        return { ...state,editMedicalFlag : false, medicalHealthInformation : baseData };
       }else if(type === 2){
-        return { ...state,editNutritionFlag : false, nutritionHealthInformation : data };
+        return { ...state,editNutritionFlag : false, nutritionHealthInformation : baseData };
       }else if(type === 3){
-        return { ...state,editSkinFlag : false, skinHealthInformation : data };
+        return { ...state,editSkinFlag : false, skinHealthInformation : baseData };
       }else if(type === 4){
-        if(data && data.healthInfo) {
-          const conclusionImg_arr = JSON.parse(data.healthInfo);
-          return {...state,editConclusionFlag:false, conclusionInformation : data,conclusionImg_arr:conclusionImg_arr}
+        if(baseData && baseData.healthInfo) {
+          const conclusionImg_arr = JSON.parse(baseData.healthInfo);
+          return {...state,editConclusionFlag:false, conclusionInformation : baseData,conclusionImg_arr:conclusionImg_arr}
         }
-        return { ...state,editConclusionFlag:false, conclusionInformation : data };
+        return { ...state,editConclusionFlag:false, conclusionInformation : baseData };
       }
       return {...state};
     },
-    setSaveDone(state, { payload: { data }}){
-      if(data){
+    setSaveDone(state, { payload: { baseData,babyData }}){
+      if(baseData){
         let saveDone = true;
-        let type = data.type;
-        if(data.type === 1){
-          if(data.healthInfo){
-            const healthInfo = JSON.parse(data.healthInfo);
+        let type = baseData.type;
+        if(baseData.type === 1){
+          if(baseData.healthInfo){
+            const healthInfo = JSON.parse(baseData.healthInfo);
             const imgInput_1_arr = healthInfo.imgInput_1?JSON.parse(healthInfo.imgInput_1):[];
             const imgInput_2_arr = healthInfo.imgInput_2?JSON.parse(healthInfo.imgInput_2):[];
             const imgInput_3_arr = healthInfo.imgInput_3?JSON.parse(healthInfo.imgInput_3):[];
@@ -202,21 +238,21 @@ export default {
             requiredData.imgInput_8_required = imgInput_8_required;
             requiredData.input_5_required = input_5_required;
 
-            return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
+            return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : baseData,imgInput_1_arr:imgInput_1_arr,imgInput_2_arr:imgInput_2_arr,imgInput_3_arr:imgInput_3_arr,imgInput_4_arr:imgInput_4_arr,
               imgInput_5_arr:imgInput_5_arr,imgInput_6_arr:imgInput_6_arr,imgInput_7_arr:imgInput_7_arr,
-              Input_8_arr:imgInput_8_arr,...requiredData}
+              Input_8_arr:imgInput_8_arr,...requiredData,newBabyList:babyData}
           }
-          return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : data}
+          return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : baseData}
         }else if(data.type === 2){
-          return {...state,saveDone:saveDone,editNutritionFlag : false,type:type, nutritionHealthInformation : data}
+          return {...state,saveDone:saveDone,editNutritionFlag : false,type:type, nutritionHealthInformation : baseData}
         }else if(data.type === 3){
-          return {...state,saveDone:saveDone,editSkinFlag : false,type:type, skinHealthInformation : data}
+          return {...state,saveDone:saveDone,editSkinFlag : false,type:type, skinHealthInformation : baseData}
         }else if(data.type === 4){
           if(data && data.healthInfo) {
-            const conclusionImg_arr = JSON.parse(data.healthInfo);
-            return {...state,saveDone:saveDone,type:type,editConclusionFlag:false, conclusionInformation : data,conclusionImg_arr:conclusionImg_arr}
+            const conclusionImg_arr = JSON.parse(baseData.healthInfo);
+            return {...state,saveDone:saveDone,type:type,editConclusionFlag:false, conclusionInformation : baseData,conclusionImg_arr:conclusionImg_arr}
           }
-          return {...state,saveDone:saveDone,type:type,editConclusionFlag:false, conclusionInformation : data}
+          return {...state,saveDone:saveDone,type:type,editConclusionFlag:false, conclusionInformation : baseData}
         }
         return {...state};
       }
