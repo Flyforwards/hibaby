@@ -56,7 +56,7 @@ class CustomerListPage extends Component {
       title: '怀孕周期',
       dataIndex: 'gestationalWeeks',
       key: 'gestationalWeeks'
-      
+
     }, {
       title: '第几胎',
       dataIndex: 'fetus',
@@ -97,14 +97,14 @@ class CustomerListPage extends Component {
         );
       }
     }];
-    
-    
+
+
     this.state = {
       searchParams: {}
     }
   }
-  
-  
+
+
   onLook = (record) => {
     const { dispatch, detailLinkUrl } = this.props;
     dispatch(routerRedux.push(
@@ -113,8 +113,8 @@ class CustomerListPage extends Component {
         `${detailLinkUrl + "?customerid=" + record.id}`
     ))
   }
-  
-  
+
+
   onSearch() {
     const this_ = this;
     this.props.form.validateFields((err, values) => {
@@ -123,23 +123,23 @@ class CustomerListPage extends Component {
           values.year = values.time.get('year');
           values.month = values.time.get('month') + 1;
         }
-        
+
         if (values.productionDate != undefined) {
           values.productionDate = values.productionDate.format("YYYY-MM-DD")
         }
-        
+
         this_.setState({
           searchParams: values
         })
-        
+
         values.page = 1;
         values.size = this.props.serviceCustomer.size;
         this.getTableData(values);
       }
     })
   }
-  
-  
+
+
   reset() {
     this.props.form.resetFields();
     this.setState({
@@ -150,7 +150,7 @@ class CustomerListPage extends Component {
       size: this.props.serviceCustomer.size
     });
   }
-  
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -158,23 +158,23 @@ class CustomerListPage extends Component {
     });
     dispatch({ type: 'serviceCustomer/getMemberShipCard' });
     dispatch({ type: 'serviceCustomer/getDataDict', payload: { "abName": 'YCC' } });
-    
+
     this.getTableData({
       page: this.props.serviceCustomer.page,
       size: this.props.serviceCustomer.size
     });
   }
-  
+
   //页面生命周期结束时调用
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'serviceCustomer/clearAllProps'
     })
-    
+
   }
-  
-  
+
+
   onTableChange = (pageNumber) => {
     const { searchParams } = this.state;
     this.getTableData({
@@ -183,7 +183,7 @@ class CustomerListPage extends Component {
       ...searchParams
     });
   }
-  
+
   getTableData(params = {}) {
     const { dispatch } = this.props;
     dispatch({
@@ -193,20 +193,20 @@ class CustomerListPage extends Component {
       }
     });
   }
-  
-  
+
+
   initSeachDiv() {
     const { form, shipCards, packageList } = this.props;
     const { getFieldDecorator } = form;
-    
+
     const options = shipCards.map((record) => {
       return (<Option key={record.id} value={record.id + ""}>{record.name}</Option>)
     });
-    
+
     const purchasePackageOptions = packageList.map((record) => {
       return (<Option key={record.id} value={record.id + ""}>{record.name}</Option>)
     });
-    
+
     const formChooseLayout = {
       labelCol: { span: 12 },
       wrapperCol: { span: 12 }
@@ -219,9 +219,9 @@ class CustomerListPage extends Component {
       labelCol: { span: 9 },
       wrapperCol: { span: 15 }
     }
-    
+
     return (
-      <Form>
+      <Form style={{minWidth:'1200px'}}>
         <div style={{ position: 'relative' }}>
           <FormItem style={{ height: '40px' }} {...formChooseLayout}>
             {getFieldDecorator('sear', {
@@ -253,7 +253,7 @@ class CustomerListPage extends Component {
                 <InputNumber min={1} max={100}/>
               )}
             </FormItem>
-          
+
           </Col>
           <Col span={6} className="delDisplan">
             <Row>
@@ -268,7 +268,7 @@ class CustomerListPage extends Component {
                   )}
                 </FormItem>
               </Col>
-              
+
               <Col offset={3} span={8} className="delDisplan">
                 <FormItem>
                   {getFieldDecorator('dueDate2', {
@@ -281,9 +281,9 @@ class CustomerListPage extends Component {
                 </FormItem>
               </Col>
             </Row>
-          
+
           </Col>
-          
+
           <Col span={6}>
             <FormItem label="操作者2" {...formChooseOneAge}>
               {getFieldDecorator('operator2', {
@@ -372,9 +372,9 @@ class CustomerListPage extends Component {
         </Row>
       </Form>
     );
-    
+
   }
-  
+
   textforkey(array, value, valuekey = 'name') {
     if (array) {
       for (let i = 0; i < array.length; i++) {
@@ -386,12 +386,12 @@ class CustomerListPage extends Component {
       return value;
     }
   }
-  
+
   render() {
     const { serviceCustomer, fetusAry, packageList } = this.props;
-    
+
     const dataSource = serviceCustomer.customerPageList;
-    
+
     if (dataSource) {
       for (let i = 0; i < dataSource.length; i++) {
         let dict = dataSource[i];
@@ -399,8 +399,8 @@ class CustomerListPage extends Component {
         dict.purchasePackage = this.textforkey(packageList, dict.purchasePackage)
       }
     }
-    
-    
+
+
     const pagination = {
       total: serviceCustomer.total,
       showQuickJumper: true,
@@ -408,12 +408,12 @@ class CustomerListPage extends Component {
       pageSize: serviceCustomer.size,
       onChange: this.onTableChange.bind(this)
     };
-    
+
     return (
       <div className="CustomerConent">
-        
+
         {this.initSeachDiv()}
-        
+
         <Table
           className='customer-table'
           bordered
@@ -422,7 +422,7 @@ class CustomerListPage extends Component {
           pagination={pagination}
           rowKey={ record => record.id}
         />
-        
+
         <Current
           page={ serviceCustomer.page}
           total={ serviceCustomer.total}

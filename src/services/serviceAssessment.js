@@ -226,3 +226,19 @@ export function getBabyListByCustomerId(values) {
     body: JSON.stringify(values),
   })
 }
+
+// /crm/api/v1/journal/getJournal
+// export function getBabyListByCustomerId(values) {
+//   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
+//     method: 'POST',
+//     body: JSON.stringify(values),
+//   })
+// }
+//
+// /crm/api/v1/journal/updateJournal
+// export function getBabyListByCustomerId(values) {
+//   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
+//     method: 'POST',
+//     body: JSON.stringify(values),
+//   })
+// }

@@ -273,16 +273,23 @@ export function CreatCard(form,superDict) {
 
       let str = dict.dictInfokey || dict.submitStr
 
-      if (baseInfoDict[str]) {
+      if (baseInfoDict[str] !== undefined) {
         if (dict.component === 'DatePicker') {
-          dict.initValue = moment(baseInfoDict[str]);
+          if(baseInfoDict[str]){
+            dict.initValue = moment(baseInfoDict[str]);
+          }
         }
         else {
           if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'||dict.submitStr === 'hospital'){
             dict.initValue = baseInfoDict[dict.submitStr].toString()
           }
           else{
-            dict.initValue = baseInfoDict[str]
+            if(dict.component === 'gender'){
+              dict.initValue = baseInfoDict[str].toString()
+            }
+            else {
+              dict.initValue = baseInfoDict[str]
+            }
           }
         }
       }
@@ -403,7 +410,6 @@ export function creatButton(title,onclick) {
   return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
 }
 
-
 export function detailComponent(baseInfoDict) {
 
   // 基本信息
@@ -445,7 +451,6 @@ export function detailComponent(baseInfoDict) {
 
 }
 
-
 export function chiDetailComponent(baseInfoAry) {
   let titSpan = 9;
   let contentSpan = 15;
@@ -463,7 +468,6 @@ export function chiDetailComponent(baseInfoAry) {
 
   return chiArray
 }
-
 
 function showConfirm(fun) {
   confirm({

@@ -68,7 +68,7 @@ class Detail extends Component {
     let baseInfoDivAry = detailComponent(baseInfoDict);
 
     return (
-      <Card className='bigDetailDiv' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
+      <Card noHovering={true}  className='bigDetailDiv' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
         {baseInfoDivAry}
         <Table className="CustomerTable" {...tableProps}/>
       </Card>

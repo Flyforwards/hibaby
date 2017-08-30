@@ -52,6 +52,9 @@ export default {
             let dictTwo = { ...query, type: i, operatorItem: i }
             dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
           }
+          let dictTwo = { ...query, type: 1, operatorItem: 1 }
+          dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
+          dispatch({ type: 'getBabyListByCustomerId', payload: {dataId: query.customerid} });
         }
         if (pathname === '/service/nutrition-evaluate/detail' || pathname === '/service/nutrition-evaluate/edit') {
           let dictTwo = { ...query, type: 5, operatorItem: 5 }
