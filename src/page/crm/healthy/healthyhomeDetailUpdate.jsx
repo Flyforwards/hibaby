@@ -559,6 +559,7 @@ class HealthyhomeDetailUpdateClass extends Component{
       newBabyArr : [],
       newBabyIndex : 0,
     }
+    this.formRef = {};
   }
 
 
@@ -661,7 +662,13 @@ class HealthyhomeDetailUpdateClass extends Component{
   }
 
   handleRemoveBaby(){
+    const id = this.formRef[this.state.newBabyIndex].props.form.getFieldValue('id')// => The instance of Form
+    if(id){
+      message.warn("已保存的新生儿情况不可删除");
+      return;
+    }
     if(this.state.newBabyIndex > 0){
+      delete this.formRef[this.state.newBabyIndex];
       const newBabyIndex = this.state.newBabyIndex-1;
       this.setState({
         newBabyIndex:newBabyIndex,
@@ -676,7 +683,7 @@ class HealthyhomeDetailUpdateClass extends Component{
     const newBabyArr = [];
     const newBabyIndex = this.state.newBabyIndex;
     for(let i = 0;i<= newBabyIndex; i++){
-      newBabyArr.push(<NewBabyFrom ref={"babyForm"+i} index={i}  {...this.props}/>);
+      newBabyArr.push(<NewBabyFrom wrappedComponentRef={(inst) => this.formRef[i] = inst} ref={"babyForm"+i} index={i}  {...this.props}/>);
     }
     return newBabyArr;
   }
