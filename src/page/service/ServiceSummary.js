@@ -51,9 +51,6 @@ class Detail extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
   }
 
   getJournal(type){
@@ -134,7 +131,7 @@ class Detail extends Component {
   }
 
   clickDetail( index, str) {
-    const ary = [...this.state[str]]
+    const ary = [...divAry[str]]
     const dict = ary[index]
     const param = parse(location.search.substr(1));
     const { customerid } = param;
@@ -142,7 +139,7 @@ class Detail extends Component {
   }
 
   creatSummaryCard(dict, superAry, str) {
-    const { title, chiComponent } = dict;
+    const { title, chiComponent ,operatorItem} = dict;
 
     const self = this
 
