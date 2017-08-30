@@ -32,24 +32,12 @@ class Detail extends Component {
     }
   }
 
-
-
-
-  onDelete(){
-    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:3,dataId:this.props.ChildCheckInID}})
-  }
-
-
-  editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.ChildCheckInID}`));
-  }
-
-  backClicked(){
-    this.props.dispatch(routerRedux.push('/service/child-check-in'));
-  }
-
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/detail?customerid=${parse(location.search.substr(1)).customerid}`));
+    this.props.dispatch(routerRedux.push({
+      path:'/service/child-check-in/detail',
+      query:{
+        customerid:queryURL("customerid")
+      }}))
   }
 
   print(){
@@ -65,16 +53,13 @@ class Detail extends Component {
         //   }
         // })
         const assessmentInfo =  JSON.stringify(values);
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": queryURL('customerid'),"type": 3,operatorItem:3};
-        if(this.props.ChildCheckInID){
-          dict.id = this.props.ChildCheckInID
-        }
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
+        let dict = { "assessmentBabyInfo": assessmentInfo,"babyId":queryURL("babyId"), "id":queryURL('id'),"customerId": queryURL('customerid'),"type": 3,operatorItem:3};
+        this.props.dispatch({type:'serviceCustomerChild/onSaveBabyData',payload:dict})
       }
     });
   }
   componentWillUnmount() {
-    this.props.dispatch({type: 'serviceCustomer/removeData'})
+    this.props.dispatch({type: 'serviceCustomerChild/removeData'})
   }
 
   //复选框选择事件
@@ -135,21 +120,20 @@ class Detail extends Component {
     babyhead164 = true;
     babyhead165 = true;
     babyhead141 = true;
-    const {loading,summary} = this.props;
-    const { ChildCheckInData } = this.props;
-    ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
+    const {loading,summary,BabyOneData} = this.props;
+    BabyOneData ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead11.map(function(elem,index){
       babyhead11 = elem == 3 ? false : true;
     }):'';
-    ChildCheckInData ? ChildCheckInData.babyhead16.map(function(elem,index){
+    BabyOneData ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead16.map(function(elem,index){
       babyhead163 = elem == 3 ? false : true;
       babyhead164 = elem == 4 ? false : true;
       babyhead165 = elem == 5 ? false : true;
-    }):''
-    if(ChildCheckInData) {
-        babyhead20allboy =ChildCheckInData.babyhead20all ==0 ? false:true;
+    }):'';
+    if(BabyOneData){
+      babyhead20allboy = JSON.parse(BabyOneData.assessmentBabyInfo).babyhead20all ==0 ? false:true;
     }
-    if(ChildCheckInData) {
-      babyhead141 =ChildCheckInData.babyhead14 == 0 ? false:true;
+    if(BabyOneData) {
+      babyhead141 = JSON.parse(BabyOneData.assessmentBabyInfo).babyhead14 == 0 ? false:true;
     }
     if(this.state.babyhead20allState){
       babyhead20allboy =this.state.babyhead20allState == 1 ? true:false;
@@ -176,8 +160,9 @@ class Detail extends Component {
 
 // 新生儿情况
     const newbornAry = [
-      {title:'出生体重',component:'Input',unit:'g',submitStr:'input_12'},
-      {title:'出生身长',component:'Input',unit:'cm',submitStr:'input_13'},
+      {title:'宝宝性别',component:'gender',submitStr:'babySex'},
+      {title:'出生体重',component:'Input',unit:'g',submitStr:'babyWeight'},
+      {title:'出生身长',component:'Input',unit:'cm',submitStr:'babyLength'},
       {title:'出生时头围',component:'Input',unit:'cm',submitStr:'babyHead0'},
       {title:'出生时胸围',component:'Input',unit:'cm',submitStr:'babyHead1'},
       {title:'囱门',formItems:'TwoWords',items:true,component:'Select',span:12,submitStr:'babyHead2',chiAry:['平坦柔软','紧绷鼓出','凹陷']},
@@ -234,29 +219,15 @@ class Detail extends Component {
       {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'newborn_4'},
     ]
 //,{title:'入住时婴儿评估',ary:newbornTwoAry}
-    const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry}]
-    const arys =[{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
+    const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry},{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
     let chiAry = ary.map(value=>{
-      value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
+      value.netData = this.props.BabyOneData ? JSON.parse(this.props.BabyOneData.assessmentBabyInfo):{};
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
-    console.log("ssssss",this.props.dict)
-    let chiArys = arys.map(value=>{
-      value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
-      value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-      return CreatCard(this.props.form,value)
-    })
-
-
-    const bottomDiv = location.pathname === '/service/child-check-in/edit' ?
-      <div className='button-group-bottom-common'>
+    const bottomDiv = <div className='button-group-bottom-common'>
         {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
-      </div> :
-      <div className='button-group-bottom-common'>
-        {creatButton('返回',this.backClicked.bind(this))}{creatButton('删除',this.onDelete.bind(this))}
-        {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
-      </div>
+      </div> ;
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
@@ -268,7 +239,6 @@ class Detail extends Component {
             {/*<TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>*/}
             {/*<TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>*/}
           {/*</Tabs>*/}
-          {chiArys}
           {summary?'': bottomDiv}
         </Card>
       </Spin>
@@ -280,10 +250,11 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const {ChildCheckInData,baseInfoDict } = state.serviceCustomer;
+  const {ChildCheckInData,baseInfoDict,BabyOneData } = state.serviceCustomer;
   return {
     ChildCheckInData,
     baseInfoDict,
+    BabyOneData,
     loading:state.loading,
   };
 }

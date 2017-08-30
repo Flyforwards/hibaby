@@ -11,6 +11,8 @@ import { message } from 'antd'
 import { local, session } from 'common/util/storage.js';
 import { PAGE_SIZE } from 'common/constants.js'
 import { parse } from 'qs'
+import { format,queryURL } from '../utils/index.js';
+
 export default {
   namespace: 'serviceCustomerChild',
   state: {
@@ -46,9 +48,18 @@ export default {
             dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
           }
         }
-        if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
-          let dict = { ...query, type: 3, operatorItem: 3 }
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
+        if (pathname === '/service/child-check-in/detail') {
+          let dict = { dataId: query.customerid, type: 3, operatorItem: 3 }
+          dispatch({ type: 'getChilddataBycustomerId', payload: dict });
+        }
+        if(pathname === '/service/child-check-in/edit') {
+          dispatch({
+            type:'getBabyDataById',
+            payload:{
+              "dataId":queryURL('id'),
+              "operatorItem":3
+            }
+          })
         }
       });
     }
@@ -120,6 +131,22 @@ export default {
         console.log(err)
       }
     },
+    *getDataDict({ payload: value }, { call, put }){
+      const parameter = {
+        abName: value.abName,
+        softDelete: 0
+      };
+      const { data: { code, data } } = yield call(addCustomerInformation.getDataDict, parameter);
+      if (code == 0) {
+        yield put({
+          type: 'addMutDictData',
+          payload: {
+            abName: value.abName,
+            data: data
+          }
+        });
+      }
+    },
 
   },
   reducers: {
@@ -129,18 +156,28 @@ export default {
     },
     //根据客户id获取婴儿评估保存
     onSaveBabyAllData(state,{payload:{data:BabyAllData}}){
-      return { ...state,BabyAllData }
+      if(BabyAllData.length>1){
+        let BabyId =BabyAllData[0].babyId;
+        let hostId = BabyAllData[0].id;
+        return { ...state,BabyAllData ,BabyId,hostId}
+      }else{
+        return { ...state,BabyAllData ,BabayId:BabyAllData.babyId,hostId:BabyAllData.id}
+      }
     },
     //根据id查询婴儿入住评估详情
-    onSaveBabyDataById(state,{payload:{data:BabyOneData}}){
+    onSaveBabyDataById(state,{payload:{data:BabyOneDatas}}){
       return { ...state, BabyOneData }
     },
-    removeData(state, { payload: todo }){
+    removeData(state, { payload: data }){
       return {
         ...state,
-        ChildCheckInData: null,
-        ChildCheckInID: null,
+        BabyAllData: null,
+        BabyId: null,
+        hostId:null,
       }
+    },
+    savaCustomerInfoList(state, { payload: todo }){
+      return { ...state, CustomerInfoList: todo.data };
     },
     addMutDictData(state, { payload: todo }){
       if (todo.abName === 'YCC') {

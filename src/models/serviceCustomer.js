@@ -64,10 +64,10 @@ export default {
           dictTwo.operatorItem = 2;
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
-        if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
-          let dict = { ...query, type: 3, operatorItem: 3 }
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
-        }
+        // if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
+        //   let dict = { ...query, type: 3, operatorItem: 3 }
+        //   dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
+        // }
         //中医见诊记录单详情页
         if (pathname === '/service/diagnosis/detail' || pathname === '/service/diagnosis/edit') {
           let dict = { ...query, type: 4, operatorItem: 4 }
