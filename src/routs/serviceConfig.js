@@ -18,6 +18,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/serviceCustomerChild'));
         cb(null, require('page/service/ServiceSummary.js'))
       })
     }
@@ -146,7 +147,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 中医查房记录单
   {
     path: '/service/diagnosis-record',
@@ -157,7 +158,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 儿科查房记录单
   {
     path: '/service/children-record',
@@ -178,7 +179,7 @@ export default (app) => [
       })
     }
   },
-  
+
   //儿科查房记录单详情页
   {
     path: '/service/children-record/detail',
@@ -230,7 +231,7 @@ export default (app) => [
     }
   },
 
-  
+
   // 婴儿护理记录单
   {
     path: '/service/baby-nursing',

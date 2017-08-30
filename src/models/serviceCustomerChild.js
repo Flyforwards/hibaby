@@ -43,10 +43,8 @@ export default {
           dispatch({ type: 'getCustomerInfoByCustomerId', payload: dict });
         }
         if (pathname === '/service/customer/detail') {
-          for (let i = 1; i < 6; i++) {
-            let dictTwo = { ...query, type: i, operatorItem: i }
-            dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
-          }
+            let dictTwo = {dataId:query.customerid, type: 3, operatorItem: 3 }
+            dispatch({ type: 'getChilddataBycustomerId', payload: dictTwo });
         }
         if (pathname === '/service/child-check-in/detail') {
           let dict = { dataId: query.customerid, type: 3, operatorItem: 3 }
