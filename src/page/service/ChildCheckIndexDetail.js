@@ -34,7 +34,7 @@ class Detail extends Component {
 
   editBackClicked(){
     this.props.dispatch(routerRedux.push({
-      path:'/service/child-check-in/detail',
+      pathname:'/service/child-check-in/detail',
       query:{
         customerid:queryURL("customerid")
       }}))
