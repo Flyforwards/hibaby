@@ -433,7 +433,7 @@ function newBabyHtml(props) {
             </FormItem>
           </div>
         </Row>
-        {radioAllRow("babySex",{title: '性别',radioItems: ['男','女'],value:(newBabyValues?newBabyValues['babySex']+"":null)},props)}
+        {radioAllRow("babySex",{title: '性别',radioItems: ['男','女'],value:(newBabyValues?newBabyValues['babySex']+"":null),required:true,message:"请选择宝宝性别"},props)}
 
 
         <Row style={{display:"none"}}>
@@ -459,7 +459,7 @@ function newBabyHtml(props) {
               label={'出生体重'}>
               {getFieldDecorator("babyWeight", {
                 initialValue : newBabyValues?newBabyValues['babyWeight']:null,
-                rules: [{ required: false, message: '  ' }]
+                rules: [{ required: true, message: '请输入出生体重' }]
               })(
                 <Input
                   suffix="g"
@@ -476,7 +476,7 @@ function newBabyHtml(props) {
               label={'出生身长'}>
               {getFieldDecorator("babyLength", {
                 initialValue : newBabyValues?newBabyValues['babyLength']:null,
-                rules: [{ required: false, message: '  ' }]
+                rules: [{ required: true, message: '请输入出生身长' }]
               })(
                 <Input
                   suffix="cm"
