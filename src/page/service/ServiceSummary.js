@@ -75,7 +75,12 @@ class Detail extends Component {
         { customerId: parseInt(customerid), type: 5, operatorItem: 16 },//管家查房
         { customerId: parseInt(customerid), type: 6, operatorItem: 18 },//营养查房
       ];
-
+      postInfo.map((v, k) => {
+        this.props.dispatch({
+          type: 'serviceCustomer/getdoctornoteListSum',
+          payload: v
+        })
+      })
       this.getJournal(key)
 
     }
