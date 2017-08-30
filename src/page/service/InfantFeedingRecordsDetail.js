@@ -107,8 +107,9 @@ class Detail extends Component {
 
     const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry} = this.props
 
-    let netAry = this.state.urlAddress === 'baby-feed' ? BabyFeedingNoteAry : (this.state.urlAddress === 'baby-grow'?BabyGrowthNoteAry:MaternalEverydayPhysicalEvaluationAry);
+    let url = this.state.urlAddress === 'baby-feed' ? 'getBabyFeedingNoteList' : (this.state.urlAddress === 'baby-grow'?'getBabyGrowthNoteList':'getMaternalEverydayPhysicalEvaluationList');
 
+    let netAry = this.state.urlAddress === 'baby-feed' ? BabyFeedingNoteAry : (this.state.urlAddress === 'baby-grow'?BabyGrowthNoteAry:MaternalEverydayPhysicalEvaluationAry);
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
 
@@ -125,7 +126,7 @@ class Detail extends Component {
               }):''
             }</TabPane>
           })
-          detailCard = <Tabs>{tempCard}</Tabs>
+          detailCard = <Tabs defaultActiveKey="0" type="card">{tempCard}</Tabs>
         }
         else if(netAry.length == 1){
           detailCard = netAry[0].notelist.length > 0 ? (netAry[0].notelist).map((dict)=>{
@@ -140,8 +141,6 @@ class Detail extends Component {
       }):''
     }
 
-
-
     const bottomDiv =
       <div className='button-group-bottom-common'>
         {creatButton('返回',this.backClicked.bind(this))}
@@ -149,8 +148,8 @@ class Detail extends Component {
       </div>
 
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+      <Spin spinning={loading.effects[`serviceCustomer/${url}`] !== undefined ? loading.effects[`serviceCustomer/${url}`]:false}>
+        <Card  extra = {this.props.summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {this.props.summary?'':baseInfoDivAry}
           {detailCard}
           {this.props.summary?'':bottomDiv}
