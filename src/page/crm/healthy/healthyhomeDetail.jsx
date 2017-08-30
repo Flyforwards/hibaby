@@ -627,11 +627,8 @@ class HealthyhomeDetailDetailClass extends Component{
   handleBack=()=>{
     const {dispatch} = this.props;
     dispatch({
-      type: 'healthInformation/getHealthInformationListByCustomerId',
-      payload: {
-        type : type,
-        customerId : this.props.customerId
-      }
+      type: 'addCustomer/changeTabs',
+      payload: { activityKey: "1" }
     })
   }
 

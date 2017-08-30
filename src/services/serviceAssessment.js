@@ -56,7 +56,7 @@ export function saveMaternalEverydayPhysicalEvaluation(values) {
   })
 }
 
-//儿科、中医、产科记录单详情
+//中医、产科查房记录单详情
 //1.根据id查询记录详情
 export function getDoctorNoteById(values) {
   return request('/crm/api/v1/doctornote/getDoctorNoteById', {
@@ -85,6 +85,40 @@ export function DelDoctornote(values) {
     body: JSON.stringify(values)
   })
 }
+
+//儿科查房记录详情单
+//1.根据id查询记录详情
+export function getPediatricNoteById(values) {
+  return request('/crm/api/v1/pediatricnote/getPediatricNoteById', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+//2.根据客户id和记录单类型以及筛选条件查询记录单列表
+export function getPediatricNoteList(values) {
+  return request('/crm/api/v1/pediatricnote/getPediatricNoteList', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+//3.保存或编辑记录单
+export function savePediatricNote(values) {
+  return request('/crm/api/v1/pediatricnote/savePediatricNote', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+//4.根据id删除记录
+export function DelPediatricNote(values) {
+  return request('/crm/api/v1/pediatricnote/DelPediatricNote', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
+
+
+
 
 
 export function getBrouchurDetailById(values) {
@@ -226,3 +260,19 @@ export function getBabyListByCustomerId(values) {
     body: JSON.stringify(values),
   })
 }
+
+// /crm/api/v1/journal/getJournal
+// export function getBabyListByCustomerId(values) {
+//   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
+//     method: 'POST',
+//     body: JSON.stringify(values),
+//   })
+// }
+//
+// /crm/api/v1/journal/updateJournal
+// export function getBabyListByCustomerId(values) {
+//   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
+//     method: 'POST',
+//     body: JSON.stringify(values),
+//   })
+// }

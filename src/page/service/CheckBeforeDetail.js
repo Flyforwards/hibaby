@@ -175,12 +175,13 @@ class motherDiv extends React.Component{
 }
 
 function childDiv(props) {
-  const {form,netData,baseInfoDict,index} = props
-
-  console.log(netData)
-  console.log(baseInfoDict)
-
-  let title = `新生儿情况(宝${letter[index]})`
+  const {form,netData,baseInfoDict,index,BabyList} = props
+  let title = '新生儿情况'
+  if(BabyList){
+    if(BabyList.length > 1){
+      title = `新生儿情况(宝${letter[index]})`
+    }
+  }
   const ary = [{title:title,ary:newbornAry},{title:title,ary:newbornTwoAry}]
 
   let chiAry = ary.map(value=>{
@@ -225,7 +226,6 @@ class Detail extends Component {
   submitClicked(){
     this.refs.MotherForm.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
         Object.keys(values).map(key=>{
           if(values[key]){
             if(typeof values[key] === 'object'){

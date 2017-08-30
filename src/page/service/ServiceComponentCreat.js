@@ -273,16 +273,23 @@ export function CreatCard(form,superDict) {
 
       let str = dict.dictInfokey || dict.submitStr
 
-      if (baseInfoDict[str]) {
+      if (baseInfoDict[str] !== undefined) {
         if (dict.component === 'DatePicker') {
-          dict.initValue = moment(baseInfoDict[str]);
+          if(baseInfoDict[str]){
+            dict.initValue = moment(baseInfoDict[str]);
+          }
         }
         else {
           if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'||dict.submitStr === 'hospital'){
             dict.initValue = baseInfoDict[dict.submitStr].toString()
           }
           else{
-            dict.initValue = baseInfoDict[str]
+            if(dict.component === 'gender'){
+              dict.initValue = baseInfoDict[str].toString()
+            }
+            else {
+              dict.initValue = baseInfoDict[str]
+            }
           }
         }
       }
@@ -296,7 +303,7 @@ export function CreatCard(form,superDict) {
   if(type){
     typeDiv =
       <div>
-        <Col offset={1} span={3} style={{height:'56px'}}><Button onClick={fun}>{type === 'babyAdd'?'添加':'删除'} </Button></Col>
+        <Col offset={1} span={3} style={{height:'56px'}}><Button className='button-group-1' onClick={fun}>{type === 'babyAdd'?'添加':'删除'} </Button></Col>
         {/*<Col span={2} style={{height:'56px'}}><Button>{type === 'babyAdd'?'添加':'删除'} </Button></Col>*/}
       </div>
 
@@ -388,7 +395,7 @@ export function creatButton(title,onclick) {
 
   let className = 'bottomButton button-group-bottom-1'
 
-  if(title === '确定'){
+  if(title === '确定' || title === '发送'){
     className = 'bottomButton button-group-bottom-2'
   }
   if(title === '编辑'){
@@ -402,7 +409,6 @@ export function creatButton(title,onclick) {
   }
   return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
 }
-
 
 export function detailComponent(baseInfoDict) {
 
@@ -420,7 +426,17 @@ export function detailComponent(baseInfoDict) {
 
   if(baseInfoDict){
     baseInfoAry.map((value)=>{
-      value.initValue = baseInfoDict[value.submitStr]
+      if(value.submitStr === 'brithDate'){
+        if(baseInfoDict[value.submitStr]){
+          value.initValue = moment(baseInfoDict[value.submitStr]).format("YYYY-MM-DD")
+        }
+        else {
+          value.initValue = ''
+        }
+      }
+      else {
+        value.initValue = baseInfoDict[value.submitStr]
+      }
     })
   }
 
@@ -434,7 +450,6 @@ export function detailComponent(baseInfoDict) {
   )
 
 }
-
 
 export function chiDetailComponent(baseInfoAry) {
   let titSpan = 9;
@@ -453,7 +468,6 @@ export function chiDetailComponent(baseInfoAry) {
 
   return chiArray
 }
-
 
 function showConfirm(fun) {
   confirm({

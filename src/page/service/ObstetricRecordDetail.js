@@ -4,26 +4,11 @@
  */
 import React, { Component } from 'react';
 import {CreatCard,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin,Row,Col} from 'antd';
+import {Card ,Input,Form,Table,Spin,Row,Col} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
-
-const assessment = [
-  {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
-  {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
-  {title:'呼吸',component:'Input',submitStr:'breathing',unit:'次/分'},
-  {title:'体重',component:'Input',submitStr:'weight',unit:'g'},
-  {title:'身长',component:'Input',submitStr:'length',unit:'cm'},
-  {title:'脐带',component:'Input',submitStr:'umbilicalCord'},
-  {title:'黄疸',component:'Input',unit:'mg/dl',submitStr:'jaundice'},
-  {title:'托管状态',component:'Select',chiAry:['托管','未托管'],submitStr:'towState'},
-  {title:'托管起始',component:'Input',submitStr:'towStart'},
-  {title:'操作人',component:'Input',submitStr:'operator'},
-  {title:'操作时间',component:'DatePicker',submitStr:'operatorTime'}
-]
-
 
 
 class Detail extends Component {
@@ -34,54 +19,59 @@ class Detail extends Component {
   }
 
 
-
-
   componentWillUnmount() {
     this.props.dispatch({type: 'serviceCustomer/removeData'})
   }
 
+  onEdit(){
+
+  }
+
+  onDelete(){
+
+  }
+
   render() {
     const {loading,baseInfoDict} = this.props
-    let baseInfoDivAry = detailComponent(baseInfoDict);
-    const colSpan = {
-      span: 6
+
+    const columns = [
+      {title:'体温',dataIndex:'temperature',unit:'℃'},
+      {title:'心跳',dataIndex:'pulse',unit:'次/分'},
+      {title:'呼吸',dataIndex:'breathing',unit:'次/分'},
+      {title:'体重',dataIndex:'weight',unit:'g'},
+      {title:'身长',dataIndex:'length',unit:'cm'},
+      {title:'脐带',dataIndex:'umbilicalCord'},
+      {title:'黄疸',dataIndex:'jaundice',unit:'mg/dl'},
+      {title:'托管状态',dataIndex:'towState'},
+      {title:'托管时长',dataIndex:'towStart'},
+      {title:'操作人',dataIndex:'operator'},
+      {title:'操作时间',dataIndex:'operatorTime'},
+      {
+        title: '操作',
+        dataIndex: 'operating',
+        render: (text, record, index) => {
+          return (
+            <div className="operation-list">
+              <Link className="one-link link-style" onClick={ this.onEdit.bind(this, record)}> 查看 </Link>
+              <Link className="two-link link-style" onClick={ this.onDelete.bind(this, record)}> 删除 </Link>
+            </div>
+          );
+        }
+      }
+    ];
+
+    let tableProps = {
+      dataSource: [],
+      columns,
     }
+
+    let baseInfoDivAry = detailComponent(baseInfoDict);
+
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          {baseInfoDivAry}
-        </Card>
-        <Card style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          <Row>
-            <Col span={2} >体温</Col>
-            <Col span={2}>心跳</Col>
-            <Col span={2}>呼吸</Col>
-            <Col span={2}>体重</Col>
-            <Col span={2}>身长</Col>
-            <Col span={2}>脐带</Col>
-            <Col span={2}>黄疸</Col>
-            <Col span={2}>托管状态</Col>
-            <Col span={2}>托管时长</Col>
-            <Col span={2}>操作者</Col>
-            <Col span={2}>修改时间</Col>
-            <Col span={2}>操作</Col>
-          </Row>
-          <Row>
-            <Col span={2} >体温</Col>
-            <Col span={2}>心跳</Col>
-            <Col span={2}>呼吸</Col>
-            <Col span={2}>体重</Col>
-            <Col span={2}>身长</Col>
-            <Col span={2}>脐带</Col>
-            <Col span={2}>黄疸</Col>
-            <Col span={2}>托管状态</Col>
-            <Col span={2}>托管时长</Col>
-            <Col span={2}>操作者</Col>
-            <Col span={2}>修改时间</Col>
-            <Col span={2}><Link >返回</Link><Link >编辑</Link><Link >删除</Link></Col>
-          </Row>
-        </Card>
-      </Spin>
+      <Card noHovering={true}  className='bigDetailDiv' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
+        {baseInfoDivAry}
+        <Table className="CustomerTable" {...tableProps}/>
+      </Card>
     )
   }
 }

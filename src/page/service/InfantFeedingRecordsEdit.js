@@ -29,7 +29,7 @@ const growth = [
 
 const assessment = [
   {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
-  {title:'脉搏',component:'Input',unit:'ml',submitStr:'pulse',unit:'次/分'},
+  {title:'脉搏',component:'Input',submitStr:'pulse',unit:'次/分'},
   {title:'体重',component:'Input',submitStr:'weight',unit:'Kg'},
   {title:'血压',component:'Input',submitStr:'bloodPressure',unit:'mmHg'},
   {title:'大便',component:'Input',submitStr:'shit',unit:'次数/天'},
@@ -40,6 +40,18 @@ const assessment = [
   {title:'乳头',component:'Select',chiAry:['正常','破皮', '结痂'],submitStr:'papilla'},
   {title:'食欲',component:'Select',chiAry:['差','佳'],submitStr:'appetite'},
   {title:'情绪评分',component:'InputNumber',submitStr:'emotionScore'},
+]
+
+const nursing = [
+  {title:'体温',component:'Input',submitStr:'temperature',unit:'℃'},
+  {title:'脉搏',component:'Input',submitStr:'pulse',unit:'次/分'},
+  {title:'呼吸',component:'Input',submitStr:'breathing',unit:'次/分'},
+  {title:'体重',component:'Input',submitStr:'weight',unit:'g'},
+  {title:'身长',component:'Input',submitStr:'length',unit:'cm'},
+  {title:'脐带',component:'Input',submitStr:'umbilicalCord',unit:'次数/天'},
+  {title:'黄疸',component:'Input',submitStr:'jaundice'},
+  {title:'托管状态',component:'Select',chiAry:['软','硬'],submitStr:'towState'},
+  {title:'托管起始',component:'DatePicker',submitStr:'towStart'},
 ]
 
 class Detail extends Component {
@@ -91,7 +103,7 @@ class Detail extends Component {
           operatorItem = 14
         }
         dict.operatorItem = operatorItem;
-        dict.babyId = 0
+        dict.babyId = this.props.SingleInformationDict.babyId;
         this.props.dispatch({type:typeStr,payload:dict})
       }
     });

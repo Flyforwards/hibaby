@@ -16,47 +16,63 @@ import InsideBabySwimDetail from './InsideBabySwimDetail'
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 const TabPane = Tabs.TabPane;
-
 import { routerRedux, Link } from 'dva/router'
 import CheckRoomDetail from './checkRoomDetail'
+import ChildrenCheckRoomDetail from './childrenCheckRoomDetail'
 
 let twoRef = false
 let threeRef = false
 
 class Detail extends Component {
-
+  
   constructor(props) {
     super(props);
     this.state = {
       ary: [
-        { title: '入住前评估', chiComponent: <CheckBeforeDetail summary={true}/> },
-        { title: '产妇入住评估', chiComponent: <CheckInDetail summary={true}/> },
-        { title: '婴儿入住评估单', chiComponent: <ChildCheckIndexDetail summary={true}/> },
-        { title: '营养部产后入住评估表', chiComponent: <NutritionEvaluateDetail summary={true}/> },
-        { title: '中医见诊记录单', chiComponent: <DiagnosisDetail summary={true}/> }
+        { title: '入住前评估', chiComponent: <CheckBeforeDetail summary={true}/> ,pathName:'check-before'},
+        { title: '产妇入住评估', chiComponent: <CheckInDetail summary={true}/>,pathName:'check-in' },
+        { title: '婴儿入住评估单', chiComponent: <ChildCheckIndexDetail summary={true}/>,pathName:'child-check-in' },
+        { title: '营养部产后入住评估表', chiComponent: <NutritionEvaluateDetail summary={true}/> ,pathName:'nutrition-evaluate'},
+        { title: '中医见诊记录单', chiComponent: <DiagnosisDetail summary={true}/>,pathName:'diagnosis' }
       ],
       PatientRounds: [
-        { title: '儿科查房记录单', chiComponent: <CheckRoomDetail type={1}/> },
+        { title: '儿科查房记录单', chiComponent: <ChildrenCheckRoomDetail/> },
         { title: '中医查房记录单', chiComponent: <CheckRoomDetail type={2}/> },
         { title: '产科医师查房记录单', chiComponent: <CheckRoomDetail type={3}/> },
         { title: '管家查房记录表', chiComponent: <CheckRoomDetail type={5}/> },
         { title: '营养师查房记录单', chiComponent: <CheckRoomDetail type={6}/> },
-
+        
         { title: '产妇每日身体评估', chiComponent: <InfantFeedingRecordsDetail urlAddress="puerpera-body" summary={true}/> }
       ],
 
       NurseAry: [
-        { title: '婴儿成长记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-grow" summary={true}/> },
-        { title: '婴儿喂养记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-feed" summary={true}/> },
-        { title: '对内婴儿游泳预约单', chiComponent: <InsideBabySwimDetail summary={true}/> }
+        { title: '婴儿成长记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-grow" summary={true}/>,pathName:'baby-grow'},
+        { title: '婴儿喂养记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-feed" summary={true}/>,pathName:'baby-feed'},
+        { title: '对内婴儿游泳预约单', chiComponent: <InsideBabySwimDetail summary={true}/>,pathName:'baby-swimming' }
       ]
     }
   }
-
+  
   callback(key) {
     if (key == 2 && !twoRef) {
       twoRef = true
       this.props.dispatch({ type: 'serviceCustomer/getMaternalEverydayPhysicalEvaluationList' })
+      //查房汇总
+      const param = parse(location.search.substr(1));
+      const { customerid } = param;
+      const postInfo = [
+        { customerId: parseInt(customerid), type: 2, operatorItem: 6 },//中医查房
+        { customerId: parseInt(customerid), type: 3, operatorItem: 7 },//产科查房
+        { customerId: parseInt(customerid), type: 5, operatorItem: 16 },//管家查房
+        { customerId: parseInt(customerid), type: 6, operatorItem: 18 },//营养查房
+      ];
+      postInfo.map((v, k) => {
+        this.props.dispatch({
+          type: 'serviceCustomer/getdoctornoteListSum',
+          payload: v
+        })
+      })
+    
     }
     if (key == 3 && !threeRef) {
       threeRef = true
@@ -64,62 +80,51 @@ class Detail extends Component {
       this.props.dispatch({ type: 'serviceCustomer/getBabyGrowthNoteList' })
       this.props.dispatch({ type: 'serviceCustomer/getInsideBabySwimList' })
     }
-
-    //查房汇总
-    const param = parse(location.search.substr(1));
-    const { customerid } = param;
-    const postInfo = [
-      { customerId: customerid, type: 1, operatorItem: 5, summary: true },
-      { customerId: customerid, type: 2, operatorItem: 6, summary: true },
-      { customerId: customerid, type: 3, operatorItem: 7, summary: true },
-      { customerId: customerid, type: 4, operatorItem: 11, summary: true },
-      { customerId: customerid, type: 5, operatorItem: 16, summary: true },
-      { customerId: customerid, type: 6, operatorItem: 18, summary: true }
-    ];
-    postInfo.map((v, k) => {
-      this.props.dispatch({
-        type: 'serviceCustomer/getdoctornoteListSum',
-        payload: v
-      })
-    })
-
   }
-
+  
   componentDidMount() {
     this.props.dispatch({
       type: 'card/getLevelInfo'
     })
   }
-
+  
   clickUP(ary, index, str) {
     let arr = [...ary]
     arr[index - 1] = arr.splice(index, 1, arr[index - 1])[0]
     let dict = {}
     dict[str] = arr
     this.setState({ ...dict })
-
+    
   }
-
+  
   clickDown(ary, index, str) {
     let arr = [...ary]
     arr[index + 1] = arr.splice(index, 1, arr[index + 1])[0]
     let dict = {}
     dict[str] = arr
-
+    
     this.setState({ ...dict })
+  }
+
+  clickDetail( index, str) {
+    const ary = [...this.state[str]]
+    const dict = ary[index]
+    const param = parse(location.search.substr(1));
+    const { customerid } = param;
+    this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}`));
   }
 
   creatSummaryCard(dict, superAry, str) {
     const { title, chiComponent } = dict;
-
+    
     const self = this
-
+    
     let index = superAry.indexOf(dict)
-
+    
     function rightDiv() {
       return (
         <div>
-          <Button className="rightBth" shape="circle" icon="search"/>
+          <Button onClick={() => self.clickDetail( index, str)} className="rightBth" shape="circle" icon="search"/>
           {index == superAry.length - 1 ? '' :
             <Button onClick={() => self.clickDown(superAry, index, str)} className="rightBth" icon="arrow-down"/>}
           {index == 0 ? '' :
@@ -127,8 +132,8 @@ class Detail extends Component {
         </div>
       )
     }
-
-
+    
+    
     return (
       <Card className='summary' noHovering={true} title={title} bodyStyle={{ padding: 0 }} extra={rightDiv()} style={{
         marginTop: '10px',
@@ -138,11 +143,11 @@ class Detail extends Component {
       </Card>
     )
   }
-
+  
   render() {
-
+    
     const { ary, PatientRounds, NurseAry } = this.state
-
+    
     const { loading, baseInfoDict } = this.props
     let baseInfoDivAry = detailComponent(baseInfoDict);
     return (
