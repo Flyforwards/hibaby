@@ -66,22 +66,16 @@ class Detail extends Component {
     if (key == 2 && !twoRef) {
       twoRef = true
       this.props.dispatch({ type: 'serviceCustomer/getMaternalEverydayPhysicalEvaluationList' })
-
       //查房汇总
       const param = parse(location.search.substr(1));
       const { customerid } = param;
       const postInfo = [
-        { customerId: customerid, type: 2, operatorItem: 6 },//中医查房
-        { customerId: customerid, type: 3, operatorItem: 7 },//产科查房
-        { customerId: customerid, type: 5, operatorItem: 16 },//管家查房
-        { customerId: customerid, type: 6, operatorItem: 18 },//营养查房
+        { customerId: parseInt(customerid), type: 2, operatorItem: 6 },//中医查房
+        { customerId: parseInt(customerid), type: 3, operatorItem: 7 },//产科查房
+        { customerId: parseInt(customerid), type: 5, operatorItem: 16 },//管家查房
+        { customerId: parseInt(customerid), type: 6, operatorItem: 18 },//营养查房
       ];
-      postInfo.map((v, k) => {
-        this.props.dispatch({
-          type: 'serviceCustomer/getdoctornoteListSum',
-          payload: v
-        })
-      })
+
       this.getJournal(key)
 
     }
@@ -92,9 +86,6 @@ class Detail extends Component {
       this.props.dispatch({ type: 'serviceCustomer/getInsideBabySwimList' })
       this.getJournal(key)
     }
-
-
-
   }
 
   componentDidMount() {

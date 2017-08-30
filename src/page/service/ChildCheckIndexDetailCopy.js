@@ -17,6 +17,10 @@ let babyhead163 = true;
 let babyhead164 = true;
 let babyhead165 = true;
 let babyhead141 = true;
+
+
+
+
 class Detail extends Component {
 
   constructor(props) {
@@ -29,6 +33,9 @@ class Detail extends Component {
       stateBabyhead163:true,
       stateBabyhead164:true,
       stateBabyhead165:true,
+      //tabs值
+      tabKey:0,
+      tabClick:false,
     }
   }
 
@@ -36,12 +43,20 @@ class Detail extends Component {
 
 
   onDelete(){
-    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:3,dataId:this.props.ChildCheckInID}})
+    this.props.dispatch({type:'serviceCustomerChild/onDeleteBabydata',payload:{type:3,dataId:queryURL("customerId"),operatorItem:3}})
   }
 
 
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.ChildCheckInID}`));
+    if(this.props.BabyAllData && this.props.BabyAllData.length>1){
+      if(this.state.tabClick){
+        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.state.hostId}&babyId=${this.state.tabKey}`));
+      }else{
+        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.babyId}`));
+      }
+    }else{
+      this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.babyId}`));
+    }
   }
 
   backClicked(){
@@ -49,32 +64,37 @@ class Detail extends Component {
   }
 
   editBackClicked(){
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/detail?customerid=${parse(location.search.substr(1)).customerid}`));
+    this.props.dispatch(routerRedux.push({
+      path:'/service/child-check-in/detail',
+      query:{
+        customerid:queryURL("customerid")
+    }}))
   }
 
   print(){
 
   }
 
-  submitClicked(){
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        // Object.keys(values).map(key=>{
-        //   if(typeof values[key] === 'object'){
-        //     values[key] = values[key].format()
-        //   }
-        // })
-        const assessmentInfo =  JSON.stringify(values);
-        let dict = { "assessmentInfo": assessmentInfo, "customerId": queryURL('customerid'),"type": 3,operatorItem:3};
-        if(this.props.ChildCheckInID){
-          dict.id = this.props.ChildCheckInID
-        }
-        this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
-      }
-    });
-  }
+  // submitClicked(){
+  //   this.props.form.validateFieldsAndScroll((err, values) => {
+  //     if (!err) {
+  //       // Object.keys(values).map(key=>{
+  //       //   if(typeof values[key] === 'object'){
+  //       //     values[key] = values[key].format()
+  //       //   }
+  //       // })
+  //       const assessmentInfo =  JSON.stringify(values);
+  //       let dict = { "assessmentInfo": assessmentInfo, "customerId": queryURL('customerid'),"type": 3,operatorItem:3};
+  //       if(this.props.ChildCheckInID){
+  //         dict.id = this.props.ChildCheckInID
+  //       }
+  //       this.props.dispatch({type:'serviceCustomer/saveAssessment',payload:dict})
+  //     }
+  //   });
+  // }
   componentWillUnmount() {
-    this.props.dispatch({type: 'serviceCustomer/removeData'})
+    //this.props.dispatch({type: 'serviceCustomer/removeData'})
+    this.props.dispatch({type:'serviceCustomerChild/removeData'})
   }
 
   //复选框选择事件
@@ -129,16 +149,26 @@ class Detail extends Component {
     this.setState({stateBabyheade141:e.target.value })
   }
 
-  getChiAry(elem,arys) {
-    arys.map(value=>{
-      value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
-    //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-      return CreatCard(this.props.form,value)
-    })
-  }
+  //  getChiAry(elem,arys) {
+  //   arys.map(value=>{
+  //     value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
+  //   //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+  //     return CreatCard(this.props.form,value)
+  //   })
+  // }
   //tab转换
   onTabChange(key){
-    console.log(key)
+    this.setState({
+      tabKey:key,
+      tabClick:true,
+    })
+    this.props.BabyAllData.map(function(elem,index){
+      if(this.state.tabKey === elem.babyId){
+        this.setState({
+          hostId:elem.id,
+        })
+      }
+    })
   }
   render() {
     babyhead11 = true;
@@ -147,32 +177,63 @@ class Detail extends Component {
     babyhead164 = true;
     babyhead165 = true;
     babyhead141 = true;
-    const {loading,summary} = this.props;
-    const BabyAllData = [
-      {
-        "assessmentBabyInfo": "string",
-        "babyId": 0,
-        "babyLength": 0,
-        "babyWeight": 0,
-        "customerId": 0,
-        "id": 0
-      }
-    ]
-    const { ChildCheckInData ,BabyAllData} = this.props;
-    ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
-      babyhead11 = elem == 3 ? false : true;
+    const {loading,summary,BabyAllData} = this.props;
+    // const BabyAllData = [
+    //   {
+    //     "assessmentBabyInfo": "{\"babySex\":\"0\",\"babyWeight\":1,\"babyLength\":1,\"select_0\":\"11\",\"radio_33\":\"1\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"2\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"0\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"1\",\"radio_44\":\"0\",\"input_17\":\"宝A\",\"newborn_0\":\"宝A\",\"newborn_1\":\"宝A\",\"newborn_2\":\"宝A\"}",
+    //     "babyId": 1,
+    //     "babyLength": 2,
+    //     "babyWeight": 7,
+    //     "customerId": 12,
+    //     "id": 1
+    //   },
+    //   {
+    //     "assessmentBabyInfo": "{\"babySex\":\"1\",\"babyWeight\":2,\"babyLength\":2,\"select_0\":\"111\",\"radio_33\":\"2\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"1\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"1\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"0\",\"radio_44\":\"1\",\"input_17\":\"宝B\",\"newborn_0\":\"宝B\",\"newborn_1\":\"宝B\",\"newborn_2\":\"宝B\"}",
+    //     "babyId": 2,
+    //     "babyLength": 2,
+    //     "babyWeight": 7,
+    //     "customerId": 12,
+    //     "id": 2
+    //   }
+    // ]
+
+    BabyAllData ? BabyAllData.map(function(elem,index){
+      JSON.parse(elem.assessmentBabyInfo).babyhead11.map(function(elem,index){
+        babyhead11 = elem == 3 ? false : true;
+      });
     }):'';
-    ChildCheckInData ? ChildCheckInData.babyhead16.map(function(elem,index){
-      babyhead163 = elem == 3 ? false : true;
-      babyhead164 = elem == 4 ? false : true;
-      babyhead165 = elem == 5 ? false : true;
-    }):''
-    if(ChildCheckInData) {
-      babyhead20allboy =ChildCheckInData.babyhead20all ==0 ? false:true;
-    }
-    if(ChildCheckInData) {
-      babyhead141 =ChildCheckInData.babyhead14 == 0 ? false:true;
-    }
+
+    BabyAllData ? BabyAllData.map(function(elem,index){
+      JSON.parse(elem.assessmentBabyInfo).babyhead16.map(function(elem,index){
+        babyhead163 = elem == 3 ? false : true;
+        babyhead164 = elem == 4 ? false : true;
+        babyhead165 = elem == 5 ? false : true;
+      })
+    }):'';
+
+
+    BabyAllData ? BabyAllData.map(function(elem,index){
+      babyhead20allboy = JSON.parse(elem.assessmentBabyInfo).babyhead20all ==0 ? false:true;
+    }):'';
+
+    BabyAllData ? BabyAllData.map(function(elem,index){
+      babyhead141 = JSON.parse(elem.assessmentBabyInfo).babyhead14 == 0 ? false:true;
+    }):'';
+
+    // ChildCheckInData ? ChildCheckInData.babyhead11.map(function(elem,index){
+    //   babyhead11 = elem == 3 ? false : true;
+    // }):'';
+    // ChildCheckInData ? ChildCheckInData.babyhead16.map(function(elem,index){
+    //   babyhead163 = elem == 3 ? false : true;
+    //   babyhead164 = elem == 4 ? false : true;
+    //   babyhead165 = elem == 5 ? false : true;
+    // }):''
+    // if(BabyAllData) {
+    //   babyhead20allboy =ChildCheckInData.babyhead20all ==0 ? false:true;
+    // }
+    // if(ChildCheckInData) {
+    //   babyhead141 =ChildCheckInData.babyhead14 == 0 ? false:true;
+    // }
     if(this.state.babyhead20allState){
       babyhead20allboy =this.state.babyhead20allState == 1 ? true:false;
     }
@@ -198,8 +259,9 @@ class Detail extends Component {
 
 // 新生儿情况
     const newbornAry = [
-      {title:'出生体重',component:'Input',unit:'g',submitStr:'input_12'},
-      {title:'出生身长',component:'Input',unit:'cm',submitStr:'input_13'},
+      {title:'宝宝性别',component:'gender',submitStr:'babySex'},
+      {title:'出生体重',component:'Input',unit:'g',submitStr:'babyWeight'},
+      {title:'出生身长',component:'Input',unit:'cm',submitStr:'babyLength'},
       {title:'出生时头围',component:'Input',unit:'cm',submitStr:'babyHead0'},
       {title:'出生时胸围',component:'Input',unit:'cm',submitStr:'babyHead1'},
       {title:'囱门',formItems:'TwoWords',items:true,component:'Select',span:12,submitStr:'babyHead2',chiAry:['平坦柔软','紧绷鼓出','凹陷']},
@@ -260,14 +322,22 @@ class Detail extends Component {
     const arys =[{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
     let chiAry = ary.map(value=>{
      // value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
+      //value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
 
     let  tabs = [];
     let chiArys ;
+    let _this =this;
     BabyAllData && BabyAllData.length>1 ?BabyAllData.map(function(elem,index){
-      tabs.push(<TabPane tab={`baby-${babyId+1}`} key={elem.babyId}> {this.getChiAry(elem,arys)}</TabPane>)
+      tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+        {arys.map(value=>{
+        value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
+        //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+        return CreatCard(_this.props.form,value)
+      })}
+      </TabPane>)
     }): chiArys = arys.map(value=>{
       value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
       //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
@@ -275,14 +345,10 @@ class Detail extends Component {
     });
 
 
-    const bottomDiv = location.pathname === '/service/child-check-in/edit' ?
-      <div className='button-group-bottom-common'>
-        {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
-      </div> :
-      <div className='button-group-bottom-common'>
+    const bottomDiv = <div className='button-group-bottom-common'>
         {creatButton('返回',this.backClicked.bind(this))}{creatButton('删除',this.onDelete.bind(this))}
         {creatButton('编辑',this.editBtnClick.bind(this))}{creatButton('打印',this.print.bind(this))}
-      </div>
+      </div>;
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
@@ -304,8 +370,10 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const {ChildCheckInData,baseInfoDict,BabyAllData } = state.serviceCustomer;
+  const {ChildCheckInData,baseInfoDict,BabyAllData,BabyId ,hostId} = state.serviceCustomerChild;
   return {
+    BabyId,
+    hostId,
     ChildCheckInData,
     baseInfoDict,
     loading:state.loading,

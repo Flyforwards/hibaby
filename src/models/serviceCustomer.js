@@ -56,6 +56,7 @@ export default {
           let dictTwo = { ...query, type: 1, operatorItem: 1 }
           dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
           dispatch({ type: 'getBabyListByCustomerId', payload: {dataId: query.customerid} });
+          dispatch({ type: 'serviceCustomer/getPediatricNoteList', payload: {customerId:parseInt(query.customerid)}});
         }
         if (pathname === '/service/nutrition-evaluate/detail' || pathname === '/service/nutrition-evaluate/edit') {
           let dictTwo = { ...query, type: 5, operatorItem: 5 }
@@ -68,10 +69,10 @@ export default {
           dictTwo.operatorItem = 2;
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
         }
-        if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
-          let dict = { ...query, type: 3, operatorItem: 3 }
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
-        }
+        // if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
+        //   let dict = { ...query, type: 3, operatorItem: 3 }
+        //   dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
+        // }
         //中医见诊记录单详情页
         if (pathname === '/service/diagnosis/detail' || pathname === '/service/diagnosis/edit') {
           let dict = { ...query, type: 4, operatorItem: 4 }
@@ -615,12 +616,6 @@ export default {
       const { data: { data, code } } = yield call(serviceAssessment.getdoctornoteList, values);
       if (code == 0) {
         switch (values.type) {
-          case (1):
-            yield put({
-              type: 'getDescribeChildren',
-              payload: data
-            });
-            break;
           case (2):
             yield put({
               type: 'getDescribeDiagnosis',
@@ -658,7 +653,7 @@ export default {
             });
         }
         yield put({
-          type: 'getDescribeChildren',
+          type: 'getDescribeDiagnosis',
           payload: data
         });
       }
@@ -911,6 +906,7 @@ export default {
     //儿科查房记录单详情页
     //1.获取列表
     getDescribeChildren(state, { payload: data }){
+      console.log(data,'???datadatadtada')
       return { ...state, describeChildrenInfo: data }
     },
     //2.是否编辑
