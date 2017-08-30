@@ -29,26 +29,25 @@ class Detail extends Component {
     super(props);
     this.state = {
       ary: [
-        { title: '入住前评估', chiComponent: <CheckBeforeDetail summary={true}/> },
-        { title: '产妇入住评估', chiComponent: <CheckInDetail summary={true}/> },
-        { title: '婴儿入住评估单', chiComponent: <ChildCheckIndexDetail summary={true}/> },
-        { title: '营养部产后入住评估表', chiComponent: <NutritionEvaluateDetail summary={true}/> },
-        { title: '中医见诊记录单', chiComponent: <DiagnosisDetail summary={true}/> }
+        { title: '入住前评估', chiComponent: <CheckBeforeDetail summary={true}/> ,pathName:'check-before'},
+        { title: '产妇入住评估', chiComponent: <CheckInDetail summary={true}/>,pathName:'check-in' },
+        { title: '婴儿入住评估单', chiComponent: <ChildCheckIndexDetail summary={true}/>,pathName:'child-check-in' },
+        { title: '营养部产后入住评估表', chiComponent: <NutritionEvaluateDetail summary={true}/> ,pathName:'nutrition-evaluate'},
+        { title: '中医见诊记录单', chiComponent: <DiagnosisDetail summary={true}/>,pathName:'diagnosis' }
       ],
       PatientRounds: [
-        { title: '儿科查房记录单', chiComponent: <CheckRoomDetail type={1}/> },
-        { title: '中医查房记录单', chiComponent: <CheckRoomDetail type={2}/> },
-        { title: '产科医师查房记录单', chiComponent: <CheckRoomDetail type={3}/> },
-        { title: '管家查房记录表', chiComponent: <CheckRoomDetail type={5}/> },
-        { title: '营养师查房记录单', chiComponent: <CheckRoomDetail type={6}/> },
-
-        { title: '产妇每日身体评估', chiComponent: <InfantFeedingRecordsDetail urlAddress="puerpera-body" summary={true}/> }
+        { title: '儿科查房记录单', chiComponent: <CheckRoomDetail type={1}/> ,pathName:'obstetric-record'},
+        { title: '中医查房记录单', chiComponent: <CheckRoomDetail type={2}/>,pathName:'check-before' },
+        { title: '产科医师查房记录单', chiComponent: <CheckRoomDetail type={3}/> ,pathName:'check-before'},
+        { title: '管家查房记录表', chiComponent: <CheckRoomDetail type={5}/> ,pathName:'check-before'},
+        { title: '营养师查房记录单', chiComponent: <CheckRoomDetail type={6}/> ,pathName:'check-before'},
+        { title: '产妇每日身体评估', chiComponent: <InfantFeedingRecordsDetail urlAddress="puerpera-body" summary={true}/>,pathName:'puerpera-body' }
       ],
 
       NurseAry: [
-        { title: '婴儿成长记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-grow" summary={true}/> },
-        { title: '婴儿喂养记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-feed" summary={true}/> },
-        { title: '对内婴儿游泳预约单', chiComponent: <InsideBabySwimDetail summary={true}/> }
+        { title: '婴儿成长记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-grow" summary={true}/>,pathName:'baby-grow'},
+        { title: '婴儿喂养记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-feed" summary={true}/>,pathName:'baby-feed'},
+        { title: '对内婴儿游泳预约单', chiComponent: <InsideBabySwimDetail summary={true}/>,pathName:'baby-swimming' }
       ]
     }
   }
@@ -109,6 +108,14 @@ class Detail extends Component {
     this.setState({ ...dict })
   }
 
+  clickDetail( index, str) {
+    const ary = [...this.state[str]]
+    const dict = ary[index]
+    const param = parse(location.search.substr(1));
+    const { customerid } = param;
+    this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}`));
+  }
+
   creatSummaryCard(dict, superAry, str) {
     const { title, chiComponent } = dict;
 
@@ -119,7 +126,7 @@ class Detail extends Component {
     function rightDiv() {
       return (
         <div>
-          <Button className="rightBth" shape="circle" icon="search"/>
+          <Button onClick={() => self.clickDetail( index, str)} className="rightBth" shape="circle" icon="search"/>
           {index == superAry.length - 1 ? '' :
             <Button onClick={() => self.clickDown(superAry, index, str)} className="rightBth" icon="arrow-down"/>}
           {index == 0 ? '' :
