@@ -176,8 +176,8 @@ export default {
         hostId:null,
       }
     },
-    savaCustomerInfoList(state, { payload: todo }){
-      return { ...state, CustomerInfoList: todo.data };
+    savaCustomerInfo(state, { payload: todo }){
+      return { ...state, baseInfoDict: todo }
     },
     addMutDictData(state, { payload: todo }){
       if (todo.abName === 'YCC') {

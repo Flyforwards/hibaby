@@ -322,6 +322,7 @@ class Detail extends Component {
     const arys =[{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
     let chiAry = ary.map(value=>{
      // value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
+      //value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
