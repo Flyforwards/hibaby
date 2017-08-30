@@ -113,7 +113,6 @@ function HealthyhomeDetailUpdate(props) {
 
   const { getFieldDecorator } = props.form;
 
-  let disabled = false;
   const type = 1;
   const medicalHealthInformation = props.healthInformation.medicalHealthInformation;
   const healthInfo = medicalHealthInformation ? JSON.parse(medicalHealthInformation.healthInfo):{};
@@ -123,11 +122,6 @@ function HealthyhomeDetailUpdate(props) {
 
   return(
     <Form>
-      <BigImageModal
-        images={props.healthInformation.bigImageData}
-        isOpen={props.healthInformation.bigImageHidden}
-        onClose={handleImgDivCancel}
-      />
       <Row className="firstItem" key="1">
         <Col span="2" style={{height: '110px',display: 'table'}}>
           <div className="itemTitle">既往史</div>
@@ -410,6 +404,11 @@ function HealthyhomeDetailUpdate(props) {
           </Row>
         </Col>
       </Row>
+      <BigImageModal
+        images={props.healthInformation.bigImageData}
+        isOpen={props.healthInformation.bigImageHidden}
+        onClose={handleImgDivCancel}
+      />
     </Form>
 
   );
@@ -420,8 +419,6 @@ function HealthyhomeDetailUpdate(props) {
 
 function newBabyHtml(props) {
   const { getFieldDecorator } = props.form;
-
-  let disabled = false;
   const type = 1;
   const newBabyList = props.healthInformation.newBabyList;
   const newBabyValues = newBabyList&&newBabyList.length>0?newBabyList[props.index]:null;
