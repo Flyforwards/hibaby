@@ -558,6 +558,7 @@ class HealthyhomeDetailUpdateClass extends Component{
     this.state = {
       newBabyArr : [],
       newBabyIndex : 0,
+      removeBabyBtnDisabled : false
     }
     this.formRef = {};
   }
@@ -578,6 +579,7 @@ class HealthyhomeDetailUpdateClass extends Component{
 
     const newBabyIndex = this.state.newBabyIndex;
     const newBabyInfoArr = [];
+    let flag = true;
     for(let i = 0;i<= newBabyIndex; i++){
       let babyForm = 'babyForm'+i;
       this.refs[`${babyForm}`].validateFieldsAndScroll((err, values) => {
@@ -600,8 +602,14 @@ class HealthyhomeDetailUpdateClass extends Component{
             "id": babyValue.id
           }
           newBabyInfoArr.push(newBaby);
+        }else{
+          flag = false;
+          return false;
         }
       });
+    }
+    if(!flag){
+      return;
     }
 
 
@@ -655,10 +663,21 @@ class HealthyhomeDetailUpdateClass extends Component{
   }
 
   handleCreateBaby(){
-    const newBabyIndex = this.state.newBabyIndex+1;
-    this.setState({
-      newBabyIndex:newBabyIndex,
-    });
+    if(this.state.newBabyIndex < 10){
+      const newBabyIndex = this.state.newBabyIndex+1;
+      let removeBabyBtnDisabled = false;
+      if(newBabyIndex >= 10){
+          removeBabyBtnDisabled = true
+      }
+      this.setState({
+        newBabyIndex:newBabyIndex,
+        removeBabyBtnDisabled:removeBabyBtnDisabled
+      });
+
+    }else{
+      message.warn("新生儿情况已达上限");
+    }
+
   }
 
   handleRemoveBaby(){
@@ -668,11 +687,21 @@ class HealthyhomeDetailUpdateClass extends Component{
       return;
     }
     if(this.state.newBabyIndex > 0){
-      delete this.formRef[this.state.newBabyIndex];
-      const newBabyIndex = this.state.newBabyIndex-1;
+      let {newBabyIndex} = this.state;
+      const {newBabyList} = this.props.healthInformation;
+      const size= newBabyList?newBabyList.length:0;
+      delete this.formRef[newBabyIndex];
+      if(newBabyIndex == size){
+        this.setState({
+          removeBabyBtnDisabled:true,
+        });
+      }
+      newBabyIndex = newBabyIndex-1
       this.setState({
         newBabyIndex:newBabyIndex,
       });
+
+
     }else{
       message.warn("最少保留一组新生儿情况");
     }
@@ -695,8 +724,9 @@ class HealthyhomeDetailUpdateClass extends Component{
   componentWillMount() {
     const {newBabyList} = this.props.healthInformation;
     this.setState({
-      newBabyIndex : newBabyList&&newBabyList.length>0 ? (newBabyList.length-1) : 0
-    });
+      newBabyIndex : newBabyList&&newBabyList.length>0 ? (newBabyList.length-1) : 0,
+      removeBabyBtnDisabled:true
+    })
   }
 
 
@@ -709,7 +739,7 @@ class HealthyhomeDetailUpdateClass extends Component{
         <div className='button-group-bottom-common'>
           <Button className='button-group-bottom-1' onClick={this.handleBack.bind(this)}>返回</Button>
           <Button className='button-group-bottom-1' onClick={this.handleCreateBaby.bind(this)}>新增新生儿情况</Button>
-          <Button className='button-group-bottom-1' onClick={this.handleRemoveBaby.bind(this)}>移除新生儿情况</Button>
+          <Button className='button-group-bottom-1' disabled={this.state.removeBabyBtnDisabled} onClick={this.handleRemoveBaby.bind(this)}>移除新生儿情况</Button>
           <Button className='button-group-bottom-2' onClick={this.handleSubmit.bind(this)} >保存</Button>
         </div>
       </div>
