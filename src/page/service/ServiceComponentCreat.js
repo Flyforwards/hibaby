@@ -296,7 +296,7 @@ export function CreatCard(form,superDict) {
   if(type){
     typeDiv =
       <div>
-        <Col offset={1} span={3} style={{height:'56px'}}><Button onClick={fun}>{type === 'babyAdd'?'添加':'删除'} </Button></Col>
+        <Col offset={1} span={3} style={{height:'56px'}}><Button className='button-group-1' onClick={fun}>{type === 'babyAdd'?'添加':'删除'} </Button></Col>
         {/*<Col span={2} style={{height:'56px'}}><Button>{type === 'babyAdd'?'添加':'删除'} </Button></Col>*/}
       </div>
 
@@ -388,7 +388,7 @@ export function creatButton(title,onclick) {
 
   let className = 'bottomButton button-group-bottom-1'
 
-  if(title === '确定'){
+  if(title === '确定' || title === '发送'){
     className = 'bottomButton button-group-bottom-2'
   }
   if(title === '编辑'){
@@ -420,7 +420,17 @@ export function detailComponent(baseInfoDict) {
 
   if(baseInfoDict){
     baseInfoAry.map((value)=>{
-      value.initValue = baseInfoDict[value.submitStr]
+      if(value.submitStr === 'brithDate'){
+        if(baseInfoDict[value.submitStr]){
+          value.initValue = moment(baseInfoDict[value.submitStr]).format("YYYY-MM-DD")
+        }
+        else {
+          value.initValue = ''
+        }
+      }
+      else {
+        value.initValue = baseInfoDict[value.submitStr]
+      }
     })
   }
 

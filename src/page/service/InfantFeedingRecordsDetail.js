@@ -59,7 +59,7 @@ class Detail extends Component {
   }
 
   editBtnClick(dict){
-    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}`));
+    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&dataId=${dict.id}`));
   }
 
   backClicked(){
@@ -145,7 +145,6 @@ class Detail extends Component {
     const bottomDiv =
       <div className='button-group-bottom-common'>
         {creatButton('返回',this.backClicked.bind(this))}
-        {creatButton('编辑',this.editBtnClick.bind(this))}
         {creatButton('打印',this.print.bind(this))}
       </div>
 

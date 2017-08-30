@@ -4,8 +4,7 @@ import { Link} from 'react-router'
 import { connect } from 'dva';
 import {Button,Spin,Card,Form,Col} from 'antd';
 import {CreatCard,creatButton} from './ServiceComponentCreat'
-
-
+import { routerRedux } from 'dva/router'
 
 const babyAry = [
   {title:'宝宝性别',component:'gender',submitStr:'babySex'},
@@ -102,6 +101,8 @@ class Detail extends Component {
   }
 
   editBackClicked(){
+    this.props.dispatch(routerRedux.push('/service/send-message'));
+
 
   }
 
@@ -167,7 +168,7 @@ class Detail extends Component {
     const bottomDiv =
       <div className='button-group-bottom-common'>
         {creatButton('返回',this.editBackClicked.bind(this))}
-        {creatButton('确定',this.submitClicked.bind(this))}
+        {creatButton('发送',this.submitClicked.bind(this))}
       </div>
 
     let departments = this.props.EndemicDeptList? this.props.EndemicDeptList.map((value)=>{

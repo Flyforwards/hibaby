@@ -91,7 +91,7 @@ class Detail extends Component {
           operatorItem = 14
         }
         dict.operatorItem = operatorItem;
-        dict.babyId = 0
+        dict.babyId = this.props.SingleInformationDict.babyId;
         this.props.dispatch({type:typeStr,payload:dict})
       }
     });
