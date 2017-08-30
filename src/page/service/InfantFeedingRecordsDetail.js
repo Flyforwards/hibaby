@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {chiDetailComponent,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Row,Form,Col,Spin,DatePicker} from 'antd';
+import {chiDetailComponent,creatButton,detailComponent,letter} from './ServiceComponentCreat'
+import {Card ,Row,Form,Tabs,Spin,DatePicker} from 'antd';
+const TabPane = Tabs.TabPane;
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -106,13 +107,39 @@ class Detail extends Component {
 
     const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry} = this.props
 
+    let url = this.state.urlAddress === 'baby-feed' ? 'getBabyFeedingNoteList' : (this.state.urlAddress === 'baby-grow'?'getBabyGrowthNoteList':'getMaternalEverydayPhysicalEvaluationList');
+
     let netAry = this.state.urlAddress === 'baby-feed' ? BabyFeedingNoteAry : (this.state.urlAddress === 'baby-grow'?BabyGrowthNoteAry:MaternalEverydayPhysicalEvaluationAry);
 
-
     let baseInfoDivAry = detailComponent(baseInfoDict)
-    let detailCard = netAry ? (netAry).map((dict)=>{
-      return this.CreatDetailCard(dict)
-    }):''
+
+    let detailCard = ''
+
+    if(this.state.urlAddress === 'baby-feed'||this.state.urlAddress === 'baby-grow'){
+      if(netAry){
+        if(netAry.length > 1){
+          let tempCard = (netAry).map((value,index)=>{
+            let str = '宝'+letter[index]
+            return <TabPane tab={str} key={index}>{
+              value.notelist.length > 0 ? (value.notelist).map((dict)=>{
+                return this.CreatDetailCard(dict)
+              }):''
+            }</TabPane>
+          })
+          detailCard = <Tabs defaultActiveKey="0" type="card">{tempCard}</Tabs>
+        }
+        else if(netAry.length == 1){
+          detailCard = netAry[0].notelist.length > 0 ? (netAry[0].notelist).map((dict)=>{
+            return this.CreatDetailCard(dict)
+          }):''
+        }
+      }
+    }
+    else {
+      detailCard = netAry ? (netAry).map((dict)=>{
+        return this.CreatDetailCard(dict)
+      }):''
+    }
 
     const bottomDiv =
       <div className='button-group-bottom-common'>
@@ -121,8 +148,8 @@ class Detail extends Component {
       </div>
 
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card  extra = {<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+      <Spin spinning={loading.effects[`serviceCustomer/${url}`] !== undefined ? loading.effects[`serviceCustomer/${url}`]:false}>
+        <Card  extra = {this.props.summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {this.props.summary?'':baseInfoDivAry}
           {detailCard}
           {this.props.summary?'':bottomDiv}
