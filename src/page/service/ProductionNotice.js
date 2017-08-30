@@ -129,14 +129,14 @@ class Detail extends Component {
                     }
                   })
                   dict = values
-                  dict.babyId = index
-                  dict.customerId = 16                }
+                  dict.babyId = index+1
+                  dict.customerId = this.props.baseInfoDict.customerId                }
               });
               return dict
             })
 
             values.babyList = babyList
-            values.customerId = 16
+            values.customerId = this.props.baseInfoDict.customerId
             values.name = this.props.baseInfoDict.name
 
           }

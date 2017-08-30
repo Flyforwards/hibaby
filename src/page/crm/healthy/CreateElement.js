@@ -80,7 +80,7 @@ export function secondRadioForm (radioName ,dict,props) {
     >
       {getFieldDecorator(`${radioName}`, {
         initialValue : dict.value,
-        rules: [{ required: false, message: '  ' }]
+        rules: [{ required: dict.required?dict.required:false, message: dict.required?dict.message:' ' }]
       })(
         <RadioGroup onChange={dict.radioChangeFun}>
           {radioItemDivs}

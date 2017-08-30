@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {chiDetailComponent,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Row,Form,Col,Spin,DatePicker} from 'antd';
+import {chiDetailComponent,creatButton,detailComponent,letter} from './ServiceComponentCreat'
+import {Card ,Row,Form,Tabs,Spin,DatePicker} from 'antd';
+const TabPane = Tabs.TabPane;
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -58,7 +59,7 @@ class Detail extends Component {
   }
 
   editBtnClick(dict){
-    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&dataId=${dict.id}`));
+    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   backClicked(){
@@ -110,13 +111,41 @@ class Detail extends Component {
 
 
     let baseInfoDivAry = detailComponent(baseInfoDict)
-    let detailCard = netAry ? (netAry).map((dict)=>{
-      return this.CreatDetailCard(dict)
-    }):''
+
+    let detailCard = ''
+
+    if(this.state.urlAddress === 'baby-feed'||this.state.urlAddress === 'baby-grow'){
+      if(netAry){
+        if(netAry.length > 1){
+          let tempCard = (netAry).map((value,index)=>{
+            let str = '宝'+letter[index]
+            return <TabPane tab={str} key={index}>{
+              value.notelist.length > 0 ? (value.notelist).map((dict)=>{
+                return this.CreatDetailCard(dict)
+              }):''
+            }</TabPane>
+          })
+          detailCard = <Tabs>{tempCard}</Tabs>
+        }
+        else if(netAry.length == 1){
+          detailCard = netAry[0].notelist.length > 0 ? (netAry[0].notelist).map((dict)=>{
+            return this.CreatDetailCard(dict)
+          }):''
+        }
+      }
+    }
+    else {
+      detailCard = netAry ? (netAry).map((dict)=>{
+        return this.CreatDetailCard(dict)
+      }):''
+    }
+
+
 
     const bottomDiv =
       <div className='button-group-bottom-common'>
         {creatButton('返回',this.backClicked.bind(this))}
+        {creatButton('编辑',this.editBtnClick.bind(this))}
         {creatButton('打印',this.print.bind(this))}
       </div>
 

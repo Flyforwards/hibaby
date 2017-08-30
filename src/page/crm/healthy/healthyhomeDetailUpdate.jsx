@@ -373,14 +373,52 @@ function newBabyHtml(props) {
   const newBabyList = props.healthInformation.newBabyList;
   const newBabyValues = newBabyList&&newBabyList.length>0?newBabyList[props.index]:null;
   const healthInfo = newBabyValues ? JSON.parse(newBabyValues.babyInfo):{};
-
+  let title = "新生儿情况";
+  switch(props.index){
+    case 0:
+      title = title+"(宝宝A)";
+          break;
+    case 1:
+      title = title+"(宝宝B)";
+      break;
+    case 2:
+      title = title+"(宝宝C)";
+      break;
+    case 3:
+      title = title+"(宝宝D)";
+      break;
+    case 4:
+      title = title+"(宝宝E)";
+      break;
+    case 5:
+      title = title+"(宝宝F)";
+      break;
+    case 6:
+      title = title+"(宝宝G)";
+      break;
+    case 7:
+      title = title+"(宝宝H)";
+      break;
+    case 8:
+      title = title+"(宝宝I)";
+      break;
+    case 9:
+      title = title+"(宝宝J)";
+      break;
+    case 10:
+      title = title+"(宝宝K)";
+      break;
+    case 11:
+      title = title+"(宝宝L)";
+      break;
+  }
   return (
     <Row className="firstItem">
       <Col span="2" style={{height: '1045px',display: 'table'}}>
-        <div className="itemTitle">新生儿情况</div>
+        <div className="itemTitle">{title}</div>
       </Col>
       <Col span="22">
-        <Row>
+        <Row style={{display:"none"}}>
           <div className="rightItemBg">
             <FormItem
               labelCol={{span: 5}}
@@ -395,7 +433,7 @@ function newBabyHtml(props) {
             </FormItem>
           </div>
         </Row>
-        {radioAllRow("babySex",{title: '性别',radioItems: ['男','女'],value:(newBabyValues?newBabyValues['babySex']+"":null)},props)}
+        {radioAllRow("babySex",{title: '性别',radioItems: ['男','女'],value:(newBabyValues?newBabyValues['babySex']+"":null),required:true,message:"请选择宝宝性别"},props)}
 
 
         <Row style={{display:"none"}}>
@@ -421,7 +459,7 @@ function newBabyHtml(props) {
               label={'出生体重'}>
               {getFieldDecorator("babyWeight", {
                 initialValue : newBabyValues?newBabyValues['babyWeight']:null,
-                rules: [{ required: false, message: '  ' }]
+                rules: [{ required: true, message: '请输入出生体重' }]
               })(
                 <Input
                   suffix="g"
@@ -438,7 +476,7 @@ function newBabyHtml(props) {
               label={'出生身长'}>
               {getFieldDecorator("babyLength", {
                 initialValue : newBabyValues?newBabyValues['babyLength']:null,
-                rules: [{ required: false, message: '  ' }]
+                rules: [{ required: true, message: '请输入出生身长' }]
               })(
                 <Input
                   suffix="cm"

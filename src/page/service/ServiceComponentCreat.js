@@ -311,6 +311,8 @@ export function CreatCard(form,superDict) {
   )
 }
 
+export const letter = ['A','B','C','D','E','F','G','H','I']
+
 
 export class InputClass extends React.Component{
 
