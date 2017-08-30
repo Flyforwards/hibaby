@@ -88,7 +88,6 @@ class Detail extends Component {
   
   //时间选择
   onChangeTime = (date, dateString) => {
-    console.log(dateString, '??????')
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
     const { customerid, type, operatoritem } = param;
@@ -117,10 +116,10 @@ class Detail extends Component {
               {creatButton('打印', this.print.bind(this))}
             </div>
     
-    let diagnosis = location.pathname.indexOf('diagnosis-record');
-    let puerpera = location.pathname.indexOf('puerpera-record');
-    let butler = location.pathname.indexOf('butler-rounds');
-    let nutrition = location.pathname.indexOf('nutrition-record');
+    let diagnosis = location.pathname.indexOf('diagnosis-record');//中医查房
+    let puerpera = location.pathname.indexOf('puerpera-record');//产科查房
+    let butler = location.pathname.indexOf('butler-rounds');//管家查房
+    let nutrition = location.pathname.indexOf('nutrition-record');//营养查房
     if (diagnosis !== -1 || puerpera !== -1 || butler !== -1 || nutrition !== -1) {
       return (
         <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
@@ -173,20 +172,14 @@ class Detail extends Component {
         </Spin>
       )
     } else {
-      const { describeChildrenInfo, describeDiagnosisInfo, describeObstetricInfo, describePuerperaInfo, describeButlerInfo, describeNutritionInfo, type } = this.props;
+      const { describeDiagnosisInfo, describeObstetricInfo, describePuerperaInfo, describeButlerInfo, describeNutritionInfo, type } = this.props;
       let info = [];
       switch (type) {
-        case (1):
-          info = describeChildrenInfo;
-          break;
         case (2):
           info = describeDiagnosisInfo;
           break;
         case (3):
           info = describeObstetricInfo;
-          break;
-        case (4):
-          info = describePuerperaInfo;
           break;
         case (5):
           info = describeButlerInfo;
@@ -195,7 +188,7 @@ class Detail extends Component {
           info = describeNutritionInfo;
           break;
         default:
-          info = describeChildrenInfo;
+          info = describeDiagnosisInfo;
       }
       
       return (
