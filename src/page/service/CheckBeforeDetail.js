@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {CreatCard,creatButton,letter} from './ServiceComponentCreat'
-import {Card ,Input,Form,message,Spin,Tabs} from 'antd';
+import {CreatCard,creatButton,letter,chiDetailComponent} from './ServiceComponentCreat'
+import {Card ,Input,Form,message,Spin,Tabs,Row,Col} from 'antd';
 const TabPane = Tabs.TabPane;
 
 import { connect } from 'dva';
@@ -12,7 +12,7 @@ import { routerRedux,Link } from 'dva/router'
 const baseInfoAry = [
   {title:'客户姓名',component:'Input',submitStr:'name',disable:true},
   {title:'年龄',component:'Input',submitStr:'age',disable:true},
-  {title:'宝宝性别',component:'gender',submitStr:'babySex',disable:true},
+  {title:'宝宝性别',component:'babysex',submitStr:'babySex',disable:true},
   {title:'分娩日期',component:'DatePicker',submitStr:'brithDate',disable:true},
   {title:'入住日期',component:'DatePicker',submitStr:'checkDate',disable:true},
   {title:'房间',component:'Input',submitStr:'associatedRooms',disable:true},
@@ -87,8 +87,6 @@ const newbornTwoAry = [
   {title:'特殊注意事项',component:'TextArea',span:24,submitStr:'newborn_0'},
   {title:'评估结论',component:'TextArea',span:24,submitStr:'newborn_1'},
   {title:'特殊提示',component:'TextArea',span:24,submitStr:'newborn_2'},
-  // {title:'评估者',component:'Input',span:6,submitStr:'newborn_3'},
-  // {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'newborn_4'},
 ]
 
 
@@ -289,7 +287,7 @@ class Detail extends Component {
 
   render() {
 
-    const {loading, summary,BabyList,CheckBeforeBabyData} = this.props
+    const {loading, summary,BabyList,CheckBeforeBabyData,CheckBeforeData} = this.props
 
     const bottomDiv = location.pathname === '/service/check-before/edit' ?
       <div className='button-group-bottom-common'>
@@ -320,6 +318,11 @@ class Detail extends Component {
         <Card className='CheckBeforeInput' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
           <MotherForm ref="MotherForm" {...this.props}/>
           {babyListDiv}
+          { CheckBeforeData?
+            <Row>
+                {chiDetailComponent([{title:'评估者',initValue:CheckBeforeData.operator},{title:"评估时间",initValue:CheckBeforeData.operatorTime}])}
+            </Row>:""
+          }
           {summary ? '' : bottomDiv}
         </Card>
       </Spin>
