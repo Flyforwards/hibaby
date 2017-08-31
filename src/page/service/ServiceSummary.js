@@ -113,9 +113,7 @@ class Detail extends Component {
 
   }
 
-  clickDetail( index, str) {
-    const ary = [...divAry[str]]
-    const dict = ary[index]
+  clickDetail( dict) {
     const param = parse(location.search.substr(1));
     const { customerid } = param;
     this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}`));
@@ -123,15 +121,13 @@ class Detail extends Component {
 
   creatSummaryCard(dict, superAry,Journal) {
     const { title, chiComponent ,index} = dict;
-
-    console.log(index)
-
+    
     const self = this
 
     function rightDiv() {
       return (
         <div>
-          <Button onClick={() => self.clickDetail( index, str)} className="rightBth" shape="circle" icon="search"/>
+          <Button onClick={() => self.clickDetail( dict)} className="rightBth" shape="circle" icon="search"/>
           {index == superAry.length-1  ? '' :
             <Button onClick={() => self.changeCard(dict,superAry,Journal,{act:'down'})} className="rightBth" icon="arrow-down"/>}
           {index == 0 ? '' :
