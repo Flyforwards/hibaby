@@ -32,7 +32,7 @@ class Detail extends Component {
   }
 
   render() {
-    const {loading,baseInfoDict} = this.props
+    const {loading,baseInfoDict,summary} = this.props
 
     const columns = [
       {title:'体温',dataIndex:'temperature',unit:'℃'},
@@ -69,7 +69,7 @@ class Detail extends Component {
 
     return (
       <Card noHovering={true}  className='bigDetailDiv' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
-        {baseInfoDivAry}
+        {summary?"":baseInfoDivAry}
         <Table className="CustomerTable" {...tableProps}/>
       </Card>
     )

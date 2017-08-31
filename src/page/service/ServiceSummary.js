@@ -13,6 +13,8 @@ import NutritionEvaluateDetail from './NutritionEvaluateDetail'
 import DiagnosisDetail from './diagnosisDetail'
 import InfantFeedingRecordsDetail from './InfantFeedingRecordsDetail'
 import InsideBabySwimDetail from './InsideBabySwimDetail'
+import ObstetricRecordDetail from './ObstetricRecordDetail'
+import MissionManualDetail from './MissionManualDetail'
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 const TabPane = Tabs.TabPane;
@@ -33,6 +35,7 @@ const divAry = {
   ],
   PatientRounds: [
     { title: '儿科查房记录单', chiComponent: <ChildrenCheckRoomDetail/> ,operatorItem:5},
+    { title: '婴儿护理记录单', chiComponent: <ObstetricRecordDetail summary={true}/> ,operatorItem:9},
     { title: '中医查房记录单', chiComponent: <CheckRoomDetail type={2}/> ,operatorItem:6},
     { title: '产科医师查房记录单', chiComponent: <CheckRoomDetail type={3}/> ,operatorItem:7},
     { title: '管家查房记录表', chiComponent: <CheckRoomDetail type={5}/>,operatorItem:16 },
@@ -41,7 +44,9 @@ const divAry = {
   ],
 
   NurseAry: [
+    { title: '爱丁堡忧郁单', chiComponent: <CheckRoomDetail type={2}/> ,operatorItem:12},
     { title: '婴儿成长记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-grow" summary={true}/>,pathName:'baby-grow',operatorItem:14},
+    { title: '宣教手册', chiComponent: <MissionManualDetail summary={true}/>,pathName:'baby-manual',operatorItem:10},
     { title: '婴儿喂养记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-feed" summary={true}/>,pathName:'baby-feed',operatorItem:13},
     { title: '对内婴儿游泳预约单', chiComponent: <InsideBabySwimDetail summary={true}/>,pathName:'baby-swimming' ,operatorItem:15}
   ]
@@ -121,7 +126,7 @@ class Detail extends Component {
 
   creatSummaryCard(dict, superAry,Journal) {
     const { title, chiComponent ,index} = dict;
-    
+
     const self = this
 
     function rightDiv() {

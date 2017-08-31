@@ -46,7 +46,6 @@ export default {
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
           dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
           dispatch({ type: 'getBabyListByCustomerId', payload: {dataId: query.customerid} });
-
         }
         if (pathname === '/service/customer/detail') {
           for (let i = 1; i < 6; i++) {

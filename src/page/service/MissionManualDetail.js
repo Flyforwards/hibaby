@@ -37,8 +37,6 @@ const baseKey = [
 
 
 
-
-
 class Detail extends Component {
 
   constructor(props) {
@@ -81,7 +79,7 @@ class Detail extends Component {
   // }
 
   render() {
-    const {loading,baseInfoDict} = this.props
+    const {loading,baseInfoDict,summary} = this.props
     const MissionManualData = {
       "washHandsMethod":'是',
       "lochiaObservation":'是',
@@ -119,13 +117,13 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
-        <Card title="宣教手册详情" extra={ <DatePicker onChange={this.handleChange.bind(this)} />} className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
-          <div style={{margin:'15px', width:'90%',margin:'0 auto',padding:'20px'}}>
+        <Card title={summary?'':"宣教手册详情"} extra={summary?'': <DatePicker onChange={this.handleChange.bind(this)} />} className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+          {summary?"":<div style={{margin:'15px', width:'90%',margin:'0 auto',padding:'20px'}}>
             <h3>基本信息</h3>
             <Row>
               {baseInfoDivAry}
             </Row>
-          </div>
+          </div>}
 
           <Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>
             {baseMsgRow}
