@@ -50,7 +50,6 @@ class Detail extends Component {
   
   //时间选择
   onChangeTime = (date, dateString) => {
-    console.log(dateString, '??????')
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
     const { customerid } = param;
@@ -59,7 +58,7 @@ class Detail extends Component {
     }
     dateString != '' ? data.date = dateString : null
     dispatch({
-      type: 'serviceCustomer/getPediatricNoteList',
+      type: 'serviceCustomer/getEdinburghMelancholyGaugeList',
       payload: data
     })
   }
@@ -137,7 +136,7 @@ class Detail extends Component {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 }
     }
-    if (edinburgh !== -1) {
+    if (edinburgh == -1) {
       return (
         <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
           <Card className="checkRoomDetailCard edinburghCard">
@@ -225,7 +224,7 @@ class Detail extends Component {
       )
     } else {
       return (
-        <Card className="checkRoomDetailCard">
+        <Card className="checkRoomDetailCard edinburghCard">
           {
             edinburghListInfo.length != 0 &&
             edinburghListInfo.map((v, k) => {
