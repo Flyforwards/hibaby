@@ -227,6 +227,11 @@ function cusFromItem(form,dict) {
     }
   }
 
+  if(dict.component === 'babysex'){
+    dict.colSpan = 24
+    return chiDetailComponent([dict])
+  }
+
   if(dict.component === 'TextAreaGroup'||dict.component === 'InputGroup'){
     return(
       <FormItem  {...formItemLayout} label={dict.title}>
@@ -455,12 +460,29 @@ export function chiDetailComponent(baseInfoAry) {
   let titSpan = 9;
   let contentSpan = 15;
 
+
+
   let chiArray = baseInfoAry.map((dict)=>{
+
     return (
-      <Col span={6}>
+      <Col span={dict.colSpan?dict.colSpan: 6}>
         <Row >
           <Col style={{textAlign:'right'}} span={titSpan}><span className="detailTitle">{`${dict.title}：`}</span></Col>
-          <Col style={{textAlign:'left'}} span={contentSpan}><span className="detailTitle">{dict.initValue?dict.initValue+(dict.unit?dict.unit:''):''}</span></Col>
+          {dict.submitStr === 'babySex'?
+            <Col style={{textAlign:'left'}} span={contentSpan}>
+              {dict.initValue?
+                dict.initValue.split(',').map(value=>{
+                  if(value == 0){
+                    return <Icon className="detailTitle" style={{marginLeft:'5px'}} type="woman" />
+                  }
+                  return <Icon className="detailTitle" style={{marginLeft:'5px'}}  type="man" />
+                })
+
+                :''}
+            </Col>
+            :
+            <Col style={{textAlign:'left'}} span={contentSpan}><span className="detailTitle">{dict.initValue?dict.initValue+(dict.unit?dict.unit:''):''}</span></Col>
+          }
         </Row>
       </Col>
     )

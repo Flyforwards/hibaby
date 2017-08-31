@@ -10,7 +10,7 @@ import { routerRedux,Link } from 'dva/router'
 const baseInfoAry = [
   {title:'客户姓名',component:'Input',submitStr:'name',disable:true},
   {title:'年龄',component:'Input',submitStr:'age',disable:true},
-  {title:'宝宝性别',component:'gender',submitStr:'babySex',disable:true},
+  {title:'宝宝性别',component:'babysex',submitStr:'babySex',disable:true},
   {title:'分娩日期',component:'DatePicker',submitStr:'brithDate',disable:true},
   {title:'入住日期',component:'DatePicker',submitStr:'checkDate',disable:true},
   {title:'房间',component:'Input',submitStr:'associatedRooms',disable:true},
