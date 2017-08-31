@@ -276,3 +276,62 @@ export function updateJournal(values) {
     body: JSON.stringify(values),
   })
 }
+
+
+//爱丁堡忧郁单详情页
+//1.保存或编辑爱丁堡忧郁单
+export function saveEdinburghMelancholyGauge(values) {
+  return request('/crm/api/v1/edinburghMelancholyGauge/saveEdinburghMelancholyGauge', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//2.根据客户id以及筛选条件查询爱丁堡忧郁单列表
+export function getEdinburghMelancholyGaugeList(values) {
+  return request('/crm/api/v1/edinburghMelancholyGauge/getEdinburghMelancholyGaugeList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//3.根据id删除爱丁堡忧郁单
+export function delEdinburghMelancholyGauge(values) {
+  return request('/crm/api/v1/edinburghMelancholyGauge/delEdinburghMelancholyGauge', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//4.根据id查询爱丁堡忧郁单详情
+export function getEdinburghMelancholyGaugeById(values) {
+  return request('/crm/api/v1/edinburghMelancholyGauge/getEdinburghMelancholyGaugeById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

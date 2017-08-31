@@ -21,6 +21,7 @@ const TabPane = Tabs.TabPane;
 import { routerRedux, Link } from 'dva/router'
 import CheckRoomDetail from './checkRoomDetail'
 import ChildrenCheckRoomDetail from './childrenCheckRoomDetail'
+import EdinburghBirthDetail from './edinburghBirthDetail'
 
 let twoRef = false
 let threeRef = false
@@ -44,7 +45,7 @@ const divAry = {
   ],
 
   NurseAry: [
-    { title: '爱丁堡忧郁单', chiComponent: <CheckRoomDetail type={2}/> ,operatorItem:12},
+    { title: '爱丁堡忧郁单', chiComponent: <EdinburghBirthDetail /> ,pathName:'edinburgh-birth',operatorItem:12},
     { title: '婴儿成长记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-grow" summary={true}/>,pathName:'baby-grow',operatorItem:14},
     { title: '宣教手册', chiComponent: <MissionManualDetail summary={true}/>,pathName:'baby-manual',operatorItem:10},
     { title: '婴儿喂养记录单', chiComponent: <InfantFeedingRecordsDetail urlAddress="baby-feed" summary={true}/>,pathName:'baby-feed',operatorItem:13},
