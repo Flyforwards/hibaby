@@ -321,8 +321,11 @@ class Detail extends Component {
     const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry}]
     const arys =[{title:'入住时婴儿评估',ary:newbornAry},{title:'入住时婴儿评估',ary:newbornTwoAry}]
     let chiAry = ary.map(value=>{
-     // value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData:{};
-      //value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo):{};
+      if( BabyAllData && BabyAllData.length>1){
+        value.netData = JSON.parse(BabyAllData[0].assessmentBabyInfo);
+      }else{
+        value.netData = BabyAllData ? JSOn.parse(BabyAllData.assessmentBabyInfo):{}
+      }
       value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form,value)
     })
