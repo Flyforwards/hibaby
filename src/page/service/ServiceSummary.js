@@ -95,38 +95,21 @@ class Detail extends Component {
     this.getJournal(1)
   }
 
-  changeCard(ary, index, str,act) {
+  changeCard(dict, superAry,Journal,act) {
 
-    const operatorItem = ary[index].operatorItem
 
-    const {Journal1,Journal2,Journal3} = this.props
+    let tempIndex = dict.index
 
-    const arr1 = Journal1?Journal1.turn.split(","):[]
-    const arr2 = Journal2?Journal2.turn.split(","):[]
-    const arr3 = Journal3?Journal3.turn.split(","):[]
+    let tempary = [...superAry]
 
-    let tempary = [...(str === 'ary' ? arr1 :(str === 'PatientRounds'?arr2:arr3))]
-    let Journal = {...(str === 'ary' ? Journal1 :(str === 'PatientRounds'?Journal2:Journal3))}
-    let type = (str === 'ary' ? 1 :(str === 'PatientRounds'?2:3))
-
-    let tempIndex = ''
-
-    tempary.map((value,index)=>{
-      if(value == operatorItem){
-        tempIndex = index
-      }
-    })
-
-    if(act === 'up'){
+    if(act.act === 'up'){
       tempary[tempIndex - 1] = tempary.splice(tempIndex, 1, tempary[tempIndex - 1])[0]
     }
     else {
       tempary[tempIndex + 1] = tempary.splice(tempIndex, 1, tempary[tempIndex + 1])[0]
     }
 
-    console.log({id:Journal.id,userId:Journal.userId,type:type,turn:tempary.join(',')})
-
-    this.props.dispatch({type:'serviceCustomer/updateJournal',payload:{id:Journal.id,userId:Journal.userId,type:type,turn:tempary.join(',')}})
+    this.props.dispatch({type:'serviceCustomer/updateJournal',payload:{id:Journal.id,userId:Journal.userId,type:Journal.type,turn:tempary.join(',')}})
 
   }
 
@@ -138,21 +121,21 @@ class Detail extends Component {
     this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}`));
   }
 
-  creatSummaryCard(dict, superAry, str) {
-    const { title, chiComponent ,operatorItem} = dict;
+  creatSummaryCard(dict, superAry,Journal) {
+    const { title, chiComponent ,index} = dict;
+
+    console.log(index)
 
     const self = this
-
-    let index = superAry.indexOf(dict)
 
     function rightDiv() {
       return (
         <div>
           <Button onClick={() => self.clickDetail( index, str)} className="rightBth" shape="circle" icon="search"/>
-          {index == superAry.length - 1 ? '' :
-            <Button onClick={() => self.changeCard(superAry, index, str,'down')} className="rightBth" icon="arrow-down"/>}
+          {index == superAry.length-1  ? '' :
+            <Button onClick={() => self.changeCard(dict,superAry,Journal,{act:'down'})} className="rightBth" icon="arrow-down"/>}
           {index == 0 ? '' :
-            <Button onClick={() => self.changeCard(superAry, index, str,'up')} className="rightBth" icon="arrow-up"/>}
+            <Button onClick={() => self.changeCard(dict,superAry,Journal,{act:'up'})} className="rightBth" icon="arrow-up"/>}
         </div>
       )
     }
@@ -186,36 +169,41 @@ class Detail extends Component {
           {baseInfoDivAry}
           <Tabs defaultActiveKey="1" type="card" onChange={this.callback.bind(this)}>
             <TabPane tab="入住汇总" key="1">
-              {arr1.map(num=>{
+              {arr1.map((num,index)=>{
                 let div = ''
                 ary.map(value => {
                   if(value.operatorItem == num) {
-                    div = this.creatSummaryCard(value, ary, 'ary')
+                    div = this.creatSummaryCard(value, arr1,Journal1)
+                    value.index = index
                   }})
                 return div
               })}
             </TabPane>
 
             <TabPane tab="查房汇总" key="2">
-              {arr2.map(num=>{
+              {arr2.map((num,index)=>{
                 let div = ''
                 PatientRounds.map(value => {
                   if(value.operatorItem == num) {
-                    div = this.creatSummaryCard(value, PatientRounds, 'PatientRounds')
+                    div = this.creatSummaryCard(value, arr2,Journal2)
+                    value.index = index
                   }})
                 return div
               })}
             </TabPane>
 
             <TabPane tab="护理部" key="3">
-              {arr3.map(num=>{
+              {arr3.map((num,index)=>{
                 let div = ''
                 NurseAry.map(value => {
                   if(value.operatorItem == num) {
-                    div = this.creatSummaryCard(value, NurseAry, 'NurseAry')
+                    div = this.creatSummaryCard(value, arr3,Journal3)
+                    value.index = index
                   }})
+
                 return div
               })}
+
             </TabPane>
           </Tabs>
         </Card>
