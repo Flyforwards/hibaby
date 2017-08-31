@@ -77,6 +77,7 @@ class Detail extends Component {
   
   //编辑按钮
   editBackClicked(data) {
+    this.props.form.resetFields();
     const { dispatch } = this.props;
     dispatch({
       type: 'serviceCustomer/isEditEdinburgh',
@@ -124,7 +125,6 @@ class Detail extends Component {
   
   render() {
     const { loading, baseInfoDict, edinburghListInfo, form } = this.props;
-    console.log(edinburghListInfo, '??????????????????')
     const { getFieldDecorator } = form;
     let baseInfoDivAry = detailComponent(baseInfoDict)
     let edinburgh = location.pathname.indexOf('edinburgh-birth');
@@ -137,7 +137,6 @@ class Detail extends Component {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 }
     }
-    const { num } = this.state;
     if (edinburgh !== -1) {
       return (
         <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
@@ -164,7 +163,7 @@ class Detail extends Component {
                                 { required: true, message: '请输入数值!' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <InputNumber  min={0} disabled={v.isEdit ? false : true}/>
                             )}
                           </FormItem>
                         </Col>
