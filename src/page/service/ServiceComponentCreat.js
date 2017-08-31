@@ -15,7 +15,7 @@ const FormItem = Form.Item;
 
 export function ServiceComponentCreat(form,dict) {
   return (
-    <Col style={{height:'56px',display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
+    <Col style={{height:dict.span == 24 ? '70px' : '56px',display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
       {cusFromItem(form,dict)}
     </Col>
   );
@@ -225,6 +225,11 @@ function cusFromItem(form,dict) {
       labelCol: { span: 3 },
       wrapperCol: { span: 21 },
     }
+  }
+
+  if(dict.component === 'babysex'){
+    dict.colSpan = 24
+    return chiDetailComponent([dict])
   }
 
   if(dict.component === 'TextAreaGroup'||dict.component === 'InputGroup'){
@@ -455,12 +460,29 @@ export function chiDetailComponent(baseInfoAry) {
   let titSpan = 9;
   let contentSpan = 15;
 
+
+
   let chiArray = baseInfoAry.map((dict)=>{
+
     return (
-      <Col span={6}>
+      <Col span={dict.colSpan?dict.colSpan: 6}>
         <Row >
           <Col style={{textAlign:'right'}} span={titSpan}><span className="detailTitle">{`${dict.title}：`}</span></Col>
-          <Col style={{textAlign:'left'}} span={contentSpan}><span className="detailTitle">{dict.initValue?dict.initValue+(dict.unit?dict.unit:''):''}</span></Col>
+          {dict.submitStr === 'babySex'?
+            <Col style={{textAlign:'left'}} span={contentSpan}>
+              {dict.initValue?
+                dict.initValue.split(',').map(value=>{
+                  if(value == 0){
+                    return <Icon className="detailTitle" style={{marginLeft:'5px'}} type="woman" />
+                  }
+                  return <Icon className="detailTitle" style={{marginLeft:'5px'}}  type="man" />
+                })
+
+                :''}
+            </Col>
+            :
+            <Col style={{textAlign:'left'}} span={contentSpan}><span className="detailTitle">{dict.initValue?dict.initValue+(dict.unit?dict.unit:''):''}</span></Col>
+          }
         </Row>
       </Col>
     )

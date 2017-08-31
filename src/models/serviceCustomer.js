@@ -46,7 +46,6 @@ export default {
           dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
           dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
           dispatch({ type: 'getBabyListByCustomerId', payload: {dataId: query.customerid} });
-
         }
         if (pathname === '/service/customer/detail') {
           for (let i = 1; i < 6; i++) {
@@ -810,6 +809,8 @@ export default {
       if (todo) {
         if (todo.type === 1) {
           dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
+          dict.CheckBeforeData.operator = todo.operator
+          dict.CheckBeforeData.operatorTime = moment(todo.operatorTime).format('YYYY-MM-DD')
           dict.CheckBeforeID = todo.id
         } else if (todo.type === 5) {
           dict.NutritionEvaluateData = JSON.parse(todo.assessmentInfo)
