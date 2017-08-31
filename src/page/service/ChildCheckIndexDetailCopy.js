@@ -351,7 +351,7 @@ class Detail extends Component {
       </div>;
 
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
+      <Spin spinning={loading.effects['serviceCustomerChild/getChilddataBycustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getChilddataBycustomerId']:false}>
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
