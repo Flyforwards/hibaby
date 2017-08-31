@@ -15,7 +15,7 @@ const FormItem = Form.Item;
 
 export function ServiceComponentCreat(form,dict) {
   return (
-    <Col style={{height:'56px',display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
+    <Col style={{height:dict.span == 24 ? '70px' : '56px',display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
       {cusFromItem(form,dict)}
     </Col>
   );
