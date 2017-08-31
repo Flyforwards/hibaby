@@ -666,9 +666,6 @@ class HealthyhomeDetailUpdateClass extends Component{
     if(this.state.newBabyIndex < 10){
       const newBabyIndex = this.state.newBabyIndex+1;
       let removeBabyBtnDisabled = false;
-      if(newBabyIndex >= 10){
-          removeBabyBtnDisabled = true
-      }
       this.setState({
         newBabyIndex:newBabyIndex,
         removeBabyBtnDisabled:removeBabyBtnDisabled
