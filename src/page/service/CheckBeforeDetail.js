@@ -48,7 +48,7 @@ const PregnancyComplicationsAry = [
 const PostpartumSituationAry = [
   {title:'产后清宫',component:'RadioGroup',submitStr:'radio_21'},
   {title:'产后出血',component:'InputGroup',unit:'ml',submitStr:'input_9'},
-  {title:'血压异常',component:'Select',chiAry:['无','160/100mmHg', '85/45mmHg'],submitStr:'input_18'},
+  {title:'血压异常',component:'Input',submitStr:'input_18',unit:'mmHg'},
   {title:'会阴伤口',component:'Select',chiAry:['正常','水肿', '血肿', '裂开','感染'],submitStr:'radio_24'},
   {title:'腹部伤口',component:'Select',chiAry:['正常','红肿', '裂开','感染'],submitStr:'radio_24_1'},
   {title:'产后发热',component:'InputGroup',unit:'℃',submitStr:'input_10'},
