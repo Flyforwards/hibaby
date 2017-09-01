@@ -66,7 +66,7 @@ class EditMenu extends React.Component {
             float:'right',
             backgroundColor: 'rgba(255, 102, 0, 1)'
           }} onClick={this.onExport.bind(this)}>
-            导出
+            导出餐单
           </PermissionButton>
 
           {/*<Button  style={{*/}

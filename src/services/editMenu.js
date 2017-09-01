@@ -90,3 +90,10 @@ export function getDictionary(values) {
     body: JSON.stringify(values),
   })
 };
+//得到顾客入驻信息
+export function getLoopByCustomerId(values) {
+  return request('/crm/api/v1/adjustableMeal/getLoopByCustomerId', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};

@@ -1,7 +1,7 @@
 import React from 'react';
 import './export.scss';
 import { connect } from 'dva';
-import {Select, Button, Table, Input, Form, Col, Row, InputNumber, Modal, Card, Tabs} from 'antd';
+import {Select, Button, Table, Input, Form, Col, Row, InputNumber, Modal, Card, Tabs,message} from 'antd';
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
 import { Link } from 'react-router';
@@ -22,6 +22,8 @@ class ExportMenu extends React.Component {
       exportValue: 1,
       initValue:"0",
       choiceValue:0,
+      disabled:true,
+      mainDisabled:false,
     }
   }
   // componentDidMount() {
@@ -50,11 +52,34 @@ class ExportMenu extends React.Component {
   handleChange(value) {
     const { dispatch } = this.props;
     const dataId = queryURL("dataId");
+    if(value == ''){
+      message.error("请选择要打印的餐单时间段");
+      this.setState({
+        mainDisabled:false,
+        disabled:false,
+      })
+      return ;
+    }else{
+      let _this = this;
+      value.map(function(elem,index){
+        if(elem == '0') {
+          _this.setState({
+            disabled:true,
+            mainDisabled:false,
+          })
+        }else{
+          _this.setState({
+            disabled:false,
+            mainDisabled:true,
+          })
+        }
+      })
+    }
     dispatch({
       type:'dinner/getPrintMsg',
       payload:{
         "customerId":dataId,
-        "type":value,
+        "type":value.join(','),
       }
     })
     //更新出单时间
@@ -68,7 +93,7 @@ class ExportMenu extends React.Component {
        })
     }else{
       this.setState({
-        choiceValue:value,
+        choiceValue:value.join(','),
       })
     }
   }
@@ -77,14 +102,14 @@ class ExportMenu extends React.Component {
     const { getFieldDecorator } =form;
     const tabKeys =
       <formItem>
-        <Select defaultValue={this.state.initValue}  style={{ width: 200 ,textAlign:'center',fontSzie:'16px',color:'#333333'}} placeholder="请选择导出的餐单" onChange={this.handleChange.bind(this)} >
-          <Option value="0">当日餐单</Option>
-          <Option value="1">早餐</Option>
-          <Option value="2">早加</Option>
-          <Option value="3">午餐</Option>
-          <Option value="4">午加</Option>
-          <Option value="5">晚餐</Option>
-          <Option value="6">晚加</Option>
+        <Select mode="multiple" defaultValue={this.state.initValue}  style={{ width: 200 ,textAlign:'center',fontSzie:'16px',color:'#333333'}} placeholder="请选择导出的餐单" onChange={this.handleChange.bind(this)} >
+          <Option value="0" disabled={this.state.mainDisabled}>当日餐单</Option>
+          <Option value="1" disabled={this.state.disabled}>早餐</Option>
+          <Option value="2" disabled={this.state.disabled}>早加</Option>
+          <Option value="3" disabled={this.state.disabled}>午餐</Option>
+          <Option value="4" disabled={this.state.disabled}>午加</Option>
+          <Option value="5" disabled={this.state.disabled}>晚餐</Option>
+          <Option value="6" disabled={this.state.disabled}>晚加</Option>
         </Select>
       </formItem>
     return (
