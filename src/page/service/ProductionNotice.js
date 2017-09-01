@@ -102,8 +102,6 @@ class Detail extends Component {
 
   editBackClicked(){
     this.props.dispatch(routerRedux.push('/service/send-message'));
-
-
   }
 
   submitClicked(){

@@ -105,7 +105,7 @@ class Detail extends Component {
 
   render() {
 
-    const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry} = this.props
+    const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry,summary} = this.props
 
     let url = this.state.urlAddress === 'baby-feed' ? 'getBabyFeedingNoteList' : (this.state.urlAddress === 'baby-grow'?'getBabyGrowthNoteList':'getMaternalEverydayPhysicalEvaluationList');
 
@@ -121,7 +121,7 @@ class Detail extends Component {
           let tempCard = (netAry).map((value,index)=>{
             let str = '宝'+letter[index]
             return <TabPane tab={str} key={index}>{
-              value.notelist.length > 0 ? (value.notelist).map((dict)=>{
+              value.notelist.length > 0 ? ( summary?value.notelist.slice(0,5): value.notelist).map((dict)=>{
                 return this.CreatDetailCard(dict)
               }):''
             }</TabPane>
@@ -129,7 +129,7 @@ class Detail extends Component {
           detailCard = <Tabs defaultActiveKey="0" type="card">{tempCard}</Tabs>
         }
         else if(netAry.length == 1){
-          detailCard = netAry[0].notelist.length > 0 ? (netAry[0].notelist).map((dict)=>{
+          detailCard = netAry[0].notelist.length > 0 ? (summary?netAry[0].notelist.slice(0,5): netAry[0].notelist).map((dict)=>{
             return this.CreatDetailCard(dict)
           }):''
         }
@@ -149,7 +149,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects[`serviceCustomer/${url}`] !== undefined ? loading.effects[`serviceCustomer/${url}`]:false}>
-        <Card  extra = {this.props.summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card  extra = {summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {this.props.summary?'':baseInfoDivAry}
           {detailCard}
           {this.props.summary?'':bottomDiv}
