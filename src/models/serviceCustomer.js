@@ -486,6 +486,44 @@ export default {
         message.error(err.message);
       }
     },
+
+
+
+    *delBabyFeedingNote({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delBabyFeedingNote, values);
+        message.success('删除成功')
+        yield put({type: 'getBabyFeedingNoteList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+
+    *delBabyGrowthNote({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delBabyGrowthNote, values);
+        message.success('删除成功')
+        yield put({type: 'getBabyGrowthNoteList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+    *delMaternalEverydayPhysicalEvaluation({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delMaternalEverydayPhysicalEvaluation, values);
+        message.success('删除成功')
+        yield put({type: 'getMaternalEverydayPhysicalEvaluationList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+
     //保存对内婴儿游泳预约
     *saveInsideBabySwim({ payload: values }, { call, put }){
       try {

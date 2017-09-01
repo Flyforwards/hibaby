@@ -62,6 +62,24 @@ class Detail extends Component {
     this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&dataId=${dict.id}`));
   }
 
+  deleteClick(dict){
+
+    let typeStr = 'serviceCustomer/delBabyGrowthNote'
+    let operatorItem = 8
+    if(this.state.urlAddress === 'baby-feed'){
+      typeStr = 'serviceCustomer/delBabyFeedingNote'
+      operatorItem = 13
+    }
+    if(this.state.urlAddress === 'puerpera-body'){
+      typeStr = 'serviceCustomer/delMaternalEverydayPhysicalEvaluation'
+      operatorItem = 14
+    }
+    dict.operatorItem = operatorItem;
+    dict.dataId = dict.id
+
+    this.props.dispatch({type:typeStr,payload:dict})
+  }
+
   backClicked(){
     this.props.dispatch(routerRedux.push('/service/'+this.state.urlAddress));
   }
@@ -84,7 +102,12 @@ class Detail extends Component {
 
     return (
       <Card title={'操作人：'+dict.operator+'   '+'操作时间：'+moment(dict.operatorTime).format('YYYY-MM-DD') }
-            extra = {this.props.summary?'': creatButton('编辑',()=>{this.editBtnClick(dict)})}
+            extra = {this.props.summary?'': (
+              <div>
+                {creatButton('编辑',()=>{this.editBtnClick(dict)})}
+                {creatButton('删除',()=>{this.deleteClick(dict)})}
+              </div>
+            )}
             bodyStyle={{ padding:'0 15px 0 15px'}} style={{marginTop:'5px', width: '100%' }}>
         {chiDetailComponent(ary)}
       </Card>
