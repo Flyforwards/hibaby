@@ -506,6 +506,15 @@
     box-shadow: 0 0 0 2px rgba(255, 191, 0, 0.2);
   }
 }
+
+.ant-select-auto-complete.ant-select {
+  .ant-input:hover{
+    &:hover,&:visited,&:focus,&:active{
+      border-color:#f89d2d;
+    }
+  }
+}
+
 .ant-pagination-options-quick-jumper {
   input {
     &:hover,&:visited,&:focus,&:active {

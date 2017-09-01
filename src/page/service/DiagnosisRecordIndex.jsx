@@ -21,15 +21,18 @@ class Index extends Component {
     return (
       <div>
         {
-          (location.pathname.indexOf('children-record') !== -1) ?
-            <CustomerListPage detailLinkUrl="/service/children-record/detail" moreLink={urlAddress}/> :
-          (location.pathname.indexOf('puerpera-record') !== -1) ?
-            <CustomerListPage detailLinkUrl="/service/puerpera-record/detail" moreLink={urlAddress}/> :
-            (location.pathname.indexOf('butler-rounds') !== -1) ?
-              <CustomerListPage detailLinkUrl="/service/butler-rounds/detail" moreLink={urlAddress}/> :
-              (location.pathname.indexOf('nutrition-record') !== -1) ?
-                <CustomerListPage detailLinkUrl="/service/nutrition-record/detail" moreLink={urlAddress}/> :
-                <CustomerListPage detailLinkUrl="/service/diagnosis-record/detail" moreLink={urlAddress}/>
+          //edinburgh-birth
+          (location.pathname.indexOf('edinburgh-birth') !== -1) ?
+            <CustomerListPage detailLinkUrl="/service/edinburgh-birth/detail"/> :
+            (location.pathname.indexOf('children-record') !== -1) ?
+              <CustomerListPage detailLinkUrl="/service/children-record/detail" moreLink={urlAddress}/> :
+              (location.pathname.indexOf('puerpera-record') !== -1) ?
+                <CustomerListPage detailLinkUrl="/service/puerpera-record/detail" moreLink={urlAddress}/> :
+                (location.pathname.indexOf('butler-rounds') !== -1) ?
+                  <CustomerListPage detailLinkUrl="/service/butler-rounds/detail" moreLink={urlAddress}/> :
+                  (location.pathname.indexOf('nutrition-record') !== -1) ?
+                    <CustomerListPage detailLinkUrl="/service/nutrition-record/detail" moreLink={urlAddress}/> :
+                    <CustomerListPage detailLinkUrl="/service/diagnosis-record/detail" moreLink={urlAddress}/>
         }
       </div>
     )

@@ -288,10 +288,21 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ObstetricRecordIndex.jsx'))
+        cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
       })
     }
   },
+  // 爱丁堡优育单详情页
+  {
+    path: 'service/edinburgh-birth/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/edinburghBirthDetail.js'))
+      })
+    }
+  },
+  
   // 婴儿喂养记录单
   {
 
@@ -451,6 +462,16 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/ProductionNotice.js'))
+      })
+    }
+  },
+  // 入住通知单
+  {
+    path: '/service/stay-message/production',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ProductionStay.js'))
       })
     }
   },

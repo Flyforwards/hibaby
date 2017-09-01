@@ -87,7 +87,24 @@
     }
   }
 }
+.edinburghCard{
+  .rowBox{
+    .ant-col-6{
+      margin-bottom: 15px;
+      .number{
+        margin: 0 15px 15px 0;
+      }
+    }
+  }
 
+  .formBox{
+    .ant-form-item-control-wrapper{
+      .ant-input-number{
+        width: 100%;
+      }
+    }
+  }
+}
 .summary {
   .rightBth{
     margin-left: 10px;
@@ -98,4 +115,9 @@
   >.ant-card-extra{
     right:15px
   }
+}
+.detailTitle{
+  font-size:12px ;
+  line-height:32px;
+  height: 32px;
 }
