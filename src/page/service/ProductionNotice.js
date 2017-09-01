@@ -33,7 +33,7 @@ function baseInfoDiv(props) {
     {title:'客户电话',component:'Input',submitStr:'maternityTel',disable:true,dictInfokey:'contact'},
     {title:'紧急联系人',component:'Input',submitStr:'emergencyTel',disable:true,dictInfokey:'emergency'},
     {title:'紧急电话',component:'Input',submitStr:'familyTel',disable:true},
-    {title:'分娩医院',component:'Input',submitStr:'hospital',disable:true},
+    {title:'分娩医院',component:'Input',selectName:'Hospital',submitStr:'hospital',disable:true},
     {title: '分娩方式',
     component: 'RadioGroups',
     submitStr: 'radio_15',
