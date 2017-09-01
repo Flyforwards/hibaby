@@ -10,21 +10,26 @@ const RadioGroup = Radio.Group;
 const Search = Input.Search;
 import $ from 'jquery'
 
-
+//let initRadioValue = {};
 class PrepareMeals extends Component {
   constructor(props) {
     super(props)
-    this.state = {};
+    this.state = {
+      initRadioValues : this.props.defaultValueRadio ?  this.props.defaultValueRadio:{}
+    };
   }
 
   componentWillMount() {
-    this.props.dispatch({
-      type: 'prepareMealsDinner/getMenuByDay',
-      payload: {
-        'day': '1',
-        'week': '1'
-      }
-    });
+    // this.props.dispatch({
+    //   type: 'prepareMealsDinner/getMenuByDay',
+    //   payload: {
+    //     'day': '1',
+    //     'week': '1'
+    //   }
+    // });
+   // this.props.dispatch({
+   //    type:'prepareMealsDinner/getLoopByCustomerId',
+   //  });
   }
 
   onChange = (e) => {
@@ -101,11 +106,15 @@ class PrepareMeals extends Component {
   };
 
   render() {
-
-
-    const { prepareMeals, loading } = this.props;
-    const { dayInfo, defaultValueRadio, menuInfo, findMenuInfo, leftDish } = prepareMeals;
+    const { prepareMeals, loading,defaultValueRadio } = this.props;
+    console.log("xxx",JSON.stringify(defaultValueRadio))
+    const { dayInfo ,menuInfo,findMenuInfo, leftDish,customerLoop } = prepareMeals;
     let colorType = '#dddddd';
+    let weeks = {
+      week: 5,
+      day: 6,
+      colorType: '#fff'
+    };
     const { infoZero, infoOne, infoTwo, infoThr, infoFor, infoFiv, infoSix } = leftDish;
     return (
       <div className="prepareMeals">
@@ -118,21 +127,20 @@ class PrepareMeals extends Component {
               marginBottom: 20
             }} onSearch={this.onSearch}/>
             <RadioGroup onChange={this.onChange} key={defaultValueRadio} defaultValue={JSON.stringify(defaultValueRadio)}>
-              {
-                dayInfo.map((v, k) => {
+              {customerLoop && JSON.stringify(customerLoop) != '{}' ? dayInfo.map((v, k) => {
                   return (
                     <div key={k} className="timeInfo">
                       <span className="weekName">{v.weekName}</span>
                       {
                         v.info.map((vv, kk) => {
                           return (
-                            <RadioButton className="borderCol" key={kk} value={JSON.stringify(vv)} style={{ borderColor: vv.colorType }}>{vv.day}</RadioButton>
+                            <RadioButton className="borderCol" checked={true} defaultChecked={true} key={kk} value={JSON.stringify(vv)} style={{ borderColor: vv.colorType }}>{vv.day}</RadioButton>
                           )
                         })
                       }
                     </div>
                   )
-                })
+                }):''
               }
             </RadioGroup>
           </Col>
@@ -202,8 +210,9 @@ class PrepareMeals extends Component {
   }
 }
 function mapStateToProps(state) {
-
+const { defaultValueRadio } = state.prepareMealsDinner;
   return {
+    defaultValueRadio,
     prepareMeals: state.prepareMealsDinner,
     loading: state.loading
 

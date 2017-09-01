@@ -9,7 +9,8 @@ export default {
   state: {
     vdType: [],
     mvType: [],
-    defaultValueRadio: { week: 1, day: 1, colorType: "#fff" },
+    //week: 1, day: 1, colorType: "#fff"
+    defaultValueRadio: { },
     heightFoodInfo: {},
     visible: false,
     topVisible: false,
@@ -414,7 +415,8 @@ export default {
     },
     getMenuInfo(state, { payload: { data ,values} }){
       let { menuInfoLow, lowTime, defaultValueRadio } = state;
-      defaultValueRadio = { ...values, colorType: "red" };
+      //console.log("sss",...values)
+      //defaultValueRadio = { ...values, colorType: "red" };
       if (data.length != 0) {
         let info = [];
         let nu;
@@ -444,7 +446,7 @@ export default {
         })
 
       }
-      return { ...state, menuInfo: menuInfoLow,defaultValueRadio }
+      return { ...state, menuInfo: menuInfoLow }
 
     },
     getMenuInfoHigh(state, { payload: { data } }){
@@ -818,10 +820,40 @@ export default {
     },
     dishesLibraryNodes(state, { payload: nodesInfo }){
       return { ...state, ...nodesInfo }
+    },
+    //顾客入驻周期
+    getLoopMsg(state, { payload:{data:customerLoop}}){
+      let { defaultValueRadio } = state;
+      defaultValueRadio = {
+        week: customerLoop.week,
+        day: customerLoop.day,
+        colorType: '#fff'
+      };
+      return { ...state,customerLoop,defaultValueRadio }
     }
-
   },
   effects: {
+    //查询客户所在周期
+    *getLoopByCustomerId({payload:values},{call,put}) {
+      const dataId = queryURL('dataId');
+      const value = {...values, dataId};
+      const { data: {data, code}} = yield call(prepareMealsService.getLoopByCustomerId,value);
+      console.log("ssosososososo",data)
+      if(code == 0) {
+        yield put({
+          type:'getLoopMsg',
+          payload:{
+            data
+          }
+        })
+        yield put({
+          type:'getMenuByDay',
+          payload:{
+            ...data
+          }
+        })
+      }
+    },
     //查询某一天基础食材餐单
     *getMenuByDay({ payload: values }, { call, put }) {
       const customerId = queryURL('dataId');
@@ -1037,6 +1069,9 @@ export default {
       return history.listen(({ pathname, query }) => {
 
         if (pathname === '/meals/nutritionist/editmenu') {
+         dispatch({
+            type:'getLoopByCustomerId',
+          });
           dispatch({
             type: 'getCardLevel',
             payload: {}
