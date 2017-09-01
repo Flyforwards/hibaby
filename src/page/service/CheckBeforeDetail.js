@@ -319,8 +319,11 @@ class Detail extends Component {
           <MotherForm ref="MotherForm" {...this.props}/>
           {babyListDiv}
           { CheckBeforeData?
-            <Row>
-                {chiDetailComponent([{title:'评估者',initValue:CheckBeforeData.operator},{title:"评估时间",initValue:CheckBeforeData.operatorTime}])}
+            <Row style={{height:'40px'}}>
+              <Col offset={12} span={12}>
+                {chiDetailComponent([{title:'评估者',initValue:CheckBeforeData.operator,colSpan:12},{title:"评估时间",initValue:CheckBeforeData.operatorTime,colSpan:12}])}
+              </Col>
+
             </Row>:""
           }
           {summary ? '' : bottomDiv}

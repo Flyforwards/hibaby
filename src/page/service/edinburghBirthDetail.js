@@ -21,13 +21,12 @@ class Detail extends Component {
     }
   }
   
-  onDelete(postInfo) {
+  onDelete(values) {
     const param = parse(location.search.substr(1));
-    postInfo.operatorItem = 0;
-    postInfo.customerId = param.customerid
+    const customerId = param.customerid
     this.props.dispatch({
-      type: 'serviceCustomer/DelPediatricNote',
-      payload: postInfo
+      type: 'serviceCustomer/delEdinburghMelancholyGauge',
+      payload: { values, customerId }
     })
   }
   
@@ -40,13 +39,6 @@ class Detail extends Component {
   
   }
   
-  
-  edit = (info, e) => {
-    info.descInfo = e.target.value;
-    this.setState({
-      postInfo: info
-    })
-  }
   
   //时间选择
   onChangeTime = (date, dateString) => {
@@ -63,18 +55,7 @@ class Detail extends Component {
     })
   }
   
-  //编辑中的返回按钮
-  backButton = (data) => {
-    const { k, dataId } = data;
-    const values = { dataId, operatorItem: 12 }
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'serviceCustomer/getEdinburghMelancholyGaugeById',
-      payload: { k, values }
-    })
-  }
-  
-  //编辑按钮
+  //编辑按钮和编辑中的返回按钮
   editBackClicked(data) {
     this.props.form.resetFields();
     const { dispatch } = this.props;
@@ -115,13 +96,6 @@ class Detail extends Component {
   }
   
   
-  saveInfo() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'serviceCustomer/saveEdinburghMelancholyGauge'
-    })
-  }
-  
   render() {
     const { loading, baseInfoDict, edinburghListInfo, form } = this.props;
     const { getFieldDecorator } = form;
@@ -136,14 +110,13 @@ class Detail extends Component {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 }
     }
-    if (edinburgh == -1) {
+    if (edinburgh !== -1) {
       return (
         <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
           <Card className="checkRoomDetailCard edinburghCard">
             {baseInfoDivAry}
             <span className="checkRoomDetailTimeSpan">筛选日期：</span>
             <DatePicker className="checkRoomDetailTime" onChange={this.onChangeTime}/>
-            <Button onClick={() => {this.saveInfo()}}>测试按钮</Button>
             {
               edinburghListInfo.length != 0 &&
               edinburghListInfo.map((v, k) => {
@@ -162,7 +135,7 @@ class Detail extends Component {
                                 { required: true, message: '请输入数值!' }
                               ]
                             })(
-                              <InputNumber  min={0} disabled={v.isEdit ? false : true}/>
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
                             )}
                           </FormItem>
                         </Col>
@@ -204,7 +177,10 @@ class Detail extends Component {
                               k,
                               isEdit: true
                             }))}
-                            {v.isEdit != true && creatButton('删除', this.onDelete.bind(this, v.id))}
+                            {v.isEdit != true && creatButton('删除', this.onDelete.bind(this, {
+                              operatorItem: 12,
+                              dataId: v.id
+                            }))}
                             {v.isEdit && creatButton('确定', this.handleSubmit.bind(this, { info: v, k }))}
                             {v.isEdit && creatButton('返回', this.editBackClicked.bind(this, { k, isEdit: false }))}
                           

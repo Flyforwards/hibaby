@@ -465,6 +465,16 @@ export default (app) => [
       })
     }
   },
+  // 入住通知单
+  {
+    path: '/service/stay-message/production',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/ProductionStay.js'))
+      })
+    }
+  },
 
   // 营养产后入住评估
   {
