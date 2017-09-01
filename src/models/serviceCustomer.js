@@ -801,6 +801,18 @@ export default {
           payload: { k, data }
         });
       }
+    },
+    //3.根据id查询删除
+    *delEdinburghMelancholyGauge({ payload: postInfo }, { call, put }){
+      const { values, customerId } = postInfo;
+      const { data: { data, code } } = yield call(serviceAssessment.delEdinburghMelancholyGauge, values);
+      if (code == 0) {
+        message.success('删除成功')
+        yield put({
+          type: 'getEdinburghMelancholyGaugeList',
+          payload: { customerId: customerId }
+        });
+      }
     }
     
     
@@ -954,7 +966,6 @@ export default {
     //儿科查房记录单详情页
     //1.获取列表
     getDescribeChildren(state, { payload: data }){
-      console.log(data, '???datadatadtada')
       return { ...state, describeChildrenInfo: data }
     },
     //2.是否编辑
@@ -1022,7 +1033,6 @@ export default {
       let edinburghListInfo = [...state.edinburghListInfo];
       const { k, isEdit } = data;
       edinburghListInfo[k].isEdit = isEdit;
-      console.log(edinburghListInfo,'//////')
       return { ...state, edinburghListInfo }
     },
     //返回按钮
