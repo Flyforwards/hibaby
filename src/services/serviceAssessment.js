@@ -323,7 +323,12 @@ export function getEdinburghMelancholyGaugeById(values) {
   })
 }
 
-
+export function getAssessmentById(values) {
+  return request('/crm/api/v1/assessment/getAssessmentById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
 

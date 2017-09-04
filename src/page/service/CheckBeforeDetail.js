@@ -202,7 +202,7 @@ class Detail extends Component {
   }
 
   onDelete(){
-    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{type:1,dataId:this.props.CheckBeforeID}})
+    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{operatorItem:1,dataId:this.props.CheckBeforeID}})
   }
 
   editBtnClick(){

@@ -44,7 +44,12 @@ export default {
         }
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
           let dictTwo = { ...query, type: 1, operatorItem: 1 }
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          if(pathname === '/service/check-before/edit'){
+            dispatch({ type: 'getAssessmentById', payload:{dataId:query.id,operatorItem:1}});
+          }
+          else {
+            dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          }
           dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
           dispatch({ type: 'getBabyListByCustomerId', payload: { dataId: query.customerid } });
         }
@@ -65,7 +70,12 @@ export default {
         if (pathname === '/service/nutrition-evaluate/detail' || pathname === '/service/nutrition-evaluate/edit') {
           let dictTwo = { ...query, type: 5, operatorItem: 5 }
           dictTwo.operatorItem = 5;
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          if(pathname === '/service/nutrition-evaluate/edit'){
+            dispatch({ type: 'getAssessmentById', payload: {dataId:query.id,operatorItem:5} });
+          }
+          else{
+            dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          }
         }
 
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
@@ -349,6 +359,36 @@ export default {
         console.log(err)
       }
     },
+
+    *getAssessmentById({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getAssessmentById, values);
+        yield put({
+          type: 'savaAssessment',
+          payload: data
+        });
+      }
+      catch (err) {
+        message.error(err.message);
+
+        let str = ''
+
+        if(values.operatorItem == 1){
+          str = 'check-before'
+        }
+        else if(values.operatorItem == 5){
+          str = 'nutrition-evaluate'
+        }
+
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/${str}/detail?customerid=${query.customerid}`))
+
+      }
+    },
+
+
+
+
     *getAssessmentBabyInfoByCustomerId({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getAssessmentBabyInfoByCustomerId, values);
@@ -364,7 +404,7 @@ export default {
 
     *DelAssessment({ payload: values }, { call, put }) {
       try {
-        const { data: { data, code } } = yield call(serviceAssessment.DelAssessment, { dataId: values.dataId });
+        const { data: { data, code } } = yield call(serviceAssessment.DelAssessment, values);
         message.success("删除成功");
         if (values.type == 1) {
           yield put(routerRedux.push('/service/check-before'))
@@ -378,7 +418,7 @@ export default {
         }
       }
       catch (err) {
-        console.log(err)
+        message.error(err.message);
       }
     },
 
