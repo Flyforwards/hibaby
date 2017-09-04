@@ -62,6 +62,24 @@ class Detail extends Component {
     this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&dataId=${dict.id}`));
   }
 
+  deleteClick(dict){
+
+    let typeStr = 'serviceCustomer/delBabyGrowthNote'
+    let operatorItem = 8
+    if(this.state.urlAddress === 'baby-feed'){
+      typeStr = 'serviceCustomer/delBabyFeedingNote'
+      operatorItem = 13
+    }
+    if(this.state.urlAddress === 'puerpera-body'){
+      typeStr = 'serviceCustomer/delMaternalEverydayPhysicalEvaluation'
+      operatorItem = 14
+    }
+    dict.operatorItem = operatorItem;
+    dict.dataId = dict.id
+
+    this.props.dispatch({type:typeStr,payload:dict})
+  }
+
   backClicked(){
     this.props.dispatch(routerRedux.push('/service/'+this.state.urlAddress));
   }
@@ -84,7 +102,12 @@ class Detail extends Component {
 
     return (
       <Card title={'操作人：'+dict.operator+'   '+'操作时间：'+moment(dict.operatorTime).format('YYYY-MM-DD') }
-            extra = {this.props.summary?'': creatButton('编辑',()=>{this.editBtnClick(dict)})}
+            extra = {this.props.summary?'': (
+              <div>
+                {creatButton('编辑',()=>{this.editBtnClick(dict)})}
+                {creatButton('删除',()=>{this.deleteClick(dict)})}
+              </div>
+            )}
             bodyStyle={{ padding:'0 15px 0 15px'}} style={{marginTop:'5px', width: '100%' }}>
         {chiDetailComponent(ary)}
       </Card>
@@ -105,7 +128,7 @@ class Detail extends Component {
 
   render() {
 
-    const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry} = this.props
+    const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry,summary} = this.props
 
     let url = this.state.urlAddress === 'baby-feed' ? 'getBabyFeedingNoteList' : (this.state.urlAddress === 'baby-grow'?'getBabyGrowthNoteList':'getMaternalEverydayPhysicalEvaluationList');
 
@@ -121,7 +144,7 @@ class Detail extends Component {
           let tempCard = (netAry).map((value,index)=>{
             let str = '宝'+letter[index]
             return <TabPane tab={str} key={index}>{
-              value.notelist.length > 0 ? (value.notelist).map((dict)=>{
+              value.notelist.length > 0 ? ( summary?value.notelist.slice(0,5): value.notelist).map((dict)=>{
                 return this.CreatDetailCard(dict)
               }):''
             }</TabPane>
@@ -129,7 +152,7 @@ class Detail extends Component {
           detailCard = <Tabs defaultActiveKey="0" type="card">{tempCard}</Tabs>
         }
         else if(netAry.length == 1){
-          detailCard = netAry[0].notelist.length > 0 ? (netAry[0].notelist).map((dict)=>{
+          detailCard = netAry[0].notelist.length > 0 ? (summary?netAry[0].notelist.slice(0,5): netAry[0].notelist).map((dict)=>{
             return this.CreatDetailCard(dict)
           }):''
         }
@@ -149,7 +172,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects[`serviceCustomer/${url}`] !== undefined ? loading.effects[`serviceCustomer/${url}`]:false}>
-        <Card  extra = {this.props.summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card  extra = {summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {this.props.summary?'':baseInfoDivAry}
           {detailCard}
           {this.props.summary?'':bottomDiv}

@@ -33,7 +33,7 @@ export default {
     describeNutritionInfo: [],
     describeChildrenInfo: [],
     edinburghListInfo: []//爱丁堡忧郁单列表
-    
+
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -44,7 +44,12 @@ export default {
         }
         if (pathname === '/service/check-before/detail' || pathname === '/service/check-before/edit') {
           let dictTwo = { ...query, type: 1, operatorItem: 1 }
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          if(pathname === '/service/check-before/edit'){
+            dispatch({ type: 'getAssessmentById', payload:{dataId:query.id,operatorItem:1}});
+          }
+          else {
+            dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          }
           dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
           dispatch({ type: 'getBabyListByCustomerId', payload: { dataId: query.customerid } });
         }
@@ -65,13 +70,23 @@ export default {
         if (pathname === '/service/nutrition-evaluate/detail' || pathname === '/service/nutrition-evaluate/edit') {
           let dictTwo = { ...query, type: 5, operatorItem: 5 }
           dictTwo.operatorItem = 5;
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          if(pathname === '/service/nutrition-evaluate/edit'){
+            dispatch({ type: 'getAssessmentById', payload: {dataId:query.id,operatorItem:5} });
+          }
+          else{
+            dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          }
         }
-        
+
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
           let dictTwo = { ...query, type: 2, operatorItem: 2 }
           dictTwo.operatorItem = 2;
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          if(pathname === '/service/check-in/edit'){
+            dispatch({ type: 'getAssessmentById', payload:{dataId:query.id,operatorItem:2}});
+          }
+          else {
+            dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          }
         }
         // if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
         //   let dict = { ...query, type: 3, operatorItem: 3 }
@@ -85,7 +100,7 @@ export default {
           }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-        
+
         if (pathname === '/service/puerpera-body/detail') {
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList' });
         }
@@ -93,7 +108,7 @@ export default {
           let dict_ = { dataId: query.dataId, operatorItem: 8 }
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationById', payload: dict_ });
         }
-        
+
         //婴儿护理记录详情
         if (pathname === '/service/baby-nursing/detail' || pathname === '/service/baby-nursing/edit') {
           let dict_ = { customerId: query.customerid, date: moment().format('YYYY-MM-DD') }
@@ -103,7 +118,7 @@ export default {
           let dict_ = { dataId: query.customerid, date: moment().format('YYYY-MM-DD') }
           dispatch({ type: 'getBrouchurDetailById', payload: dict_ });
         }
-        
+
         //对内婴儿游泳记录
         if (pathname === '/service/baby-swimming/detail') {
           dispatch({ type: 'getInsideBabySwimList' });
@@ -111,11 +126,11 @@ export default {
           let dict_ = { dataId: query.dataId, operatorItem: 15 }
           dispatch({ type: 'getInsideBabySwimById', payload: dict_ });
         }
-        
-        
+
+
         //婴儿喂养记录
         if (pathname === '/service/baby-feed/detail' || pathname === '/service/baby-feed/edit') {
-          
+
           if (pathname === '/service/baby-feed/detail') {
             dispatch({ type: 'getBabyFeedingNoteList' })
           }
@@ -134,7 +149,7 @@ export default {
             dispatch({ type: 'getBabyGrowthNoteById', payload: dict_ });
           }
         }
-        
+
         //中医、产科记录单详情页
         if (pathname === '/service/diagnosis-record/detail') {
           const { customerid, type, operatoritem } = query;
@@ -157,11 +172,11 @@ export default {
             payload: dict_
           });
         }
-        
+
         if (pathname === '/service/send-message/production') {
           dispatch({ type: 'getCurrentEndemicDeptList' });
         }
-        
+
         //爱丁堡忧郁单详情页
         if (pathname === '/service/edinburgh-birth/detail') {
           const { customerid } = query;
@@ -191,8 +206,8 @@ export default {
         });
       }
     },
-    
-    
+
+
     // 部门中心
     *getCurrentEndemicDeptList({ payload: values }, { call, put }) {
       const { data: { data, code } } = yield call(serviceAssessment.getCurrentEndemicDeptList, values);
@@ -213,7 +228,7 @@ export default {
         })
       }
     },
-    
+
     *getDataDict({ payload: value }, { call, put }){
       const parameter = {
         abName: value.abName,
@@ -230,7 +245,7 @@ export default {
         });
       }
     },
-    
+
     //保存或编辑评估
     // assessmentInfo (string, optional): 评估内容 ,
     // customerId (integer, optional): 客户id ,
@@ -272,7 +287,7 @@ export default {
       catch (err) {
       }
     },
-    
+
     *sendProductionNotification({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.sendProductionNotification, values);
@@ -282,7 +297,7 @@ export default {
       catch (err) {
       }
     },
-    
+
     *getJournal({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getJournal, values);
@@ -294,7 +309,7 @@ export default {
       catch (err) {
       }
     },
-    
+
     *updateJournal({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.updateJournal, values);
@@ -307,10 +322,10 @@ export default {
       catch (err) {
       }
     },
-    
-    
+
+
     *getBabyListByCustomerId({ payload: value }, { call, put }){
-      
+
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getBabyListByCustomerId, value);
         yield put({
@@ -322,11 +337,11 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getCustomerInfoByCustomerName({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getCustomerInfoByCustomerName, values);
-        
+
         yield put({
           type: 'savaCustomerInfoList',
           payload: {
@@ -349,6 +364,39 @@ export default {
         console.log(err)
       }
     },
+
+    *getAssessmentById({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getAssessmentById, values);
+        yield put({
+          type: 'savaAssessment',
+          payload: data
+        });
+      }
+      catch (err) {
+        message.error(err.message);
+
+        let str = ''
+
+        if(values.operatorItem == 1){
+          str = 'check-before'
+        }
+        else if(values.operatorItem == 5){
+          str = 'nutrition-evaluate'
+        }
+        else if(values.operatorItem == 2){
+          str = 'check-in'
+        }
+
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/${str}/detail?customerid=${query.customerid}`))
+
+      }
+    },
+
+
+
+
     *getAssessmentBabyInfoByCustomerId({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getAssessmentBabyInfoByCustomerId, values);
@@ -361,10 +409,10 @@ export default {
         console.log(err)
       }
     },
-    
+
     *DelAssessment({ payload: values }, { call, put }) {
       try {
-        const { data: { data, code } } = yield call(serviceAssessment.DelAssessment, { dataId: values.dataId });
+        const { data: { data, code } } = yield call(serviceAssessment.DelAssessment, values);
         message.success("删除成功");
         if (values.type == 1) {
           yield put(routerRedux.push('/service/check-before'))
@@ -378,30 +426,30 @@ export default {
         }
       }
       catch (err) {
-        console.log(err)
+        message.error(err.message);
       }
     },
-    
+
     *getMaternalEverydayPhysicalEvaluationList({ payload: values }, { call, put }) {
       try {
-        
+
         let query = parse(location.search.substr(1))
         let dict = { customerId: query.customerid }
         if (query.date) {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getMaternalEverydayPhysicalEvaluationList, dict);
-        
+
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: { key: 'MaternalEverydayPhysicalEvaluationAry', data: data }
         });
       }
       catch (err) {
-        console.log(err)
+
       }
     },
-    
+
     *getBabyFeedingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -411,14 +459,14 @@ export default {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getBabyFeedingNoteList, dict);
-        
+
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: { key: 'BabyFeedingNoteAry', data: data }
         });
       }
       catch (err) {
-        console.log(err)
+
       }
     },
     *getBabyGrowthNoteList({ payload: values }, { call, put })
@@ -430,17 +478,16 @@ export default {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getBabyGrowthNoteList, dict);
-        
+
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: { key: 'BabyGrowthNoteAry', data: data }
         });
       }
       catch (err) {
-        console.log(err)
       }
     },
-    
+
     *getBabyGrowthNoteById({ payload: values }, { call, put })
     {
       try {
@@ -451,7 +498,9 @@ export default {
         });
       }
       catch (err) {
-        console.log(err)
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/baby-grow/detail?customerid=${query.customerid}`))
+        message.error(err.message);
       }
     },
     *getMaternalEverydayPhysicalEvaluationById({ payload: values }, { call, put })
@@ -464,10 +513,12 @@ export default {
         });
       }
       catch (err) {
-        console.log(err)
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/puerpera-body/detail?customerid=${query.customerid}`))
+        message.error(err.message);
       }
     },
-    
+
     *getBabyFeedingNoteById({ payload: values }, { call, put })
     {
       try {
@@ -478,9 +529,61 @@ export default {
         });
       }
       catch (err) {
-        console.log(err)
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/baby-feed/detail?customerid=${query.customerid}`))
+        message.error(err.message);
       }
     },
+
+
+
+    *delBabyFeedingNote({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delBabyFeedingNote, values);
+        message.success('删除成功')
+        yield put({type: 'getBabyFeedingNoteList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+
+    *delBabyGrowthNote({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delBabyGrowthNote, values);
+        message.success('删除成功')
+        yield put({type: 'getBabyGrowthNoteList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+    *delMaternalEverydayPhysicalEvaluation({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delMaternalEverydayPhysicalEvaluation, values);
+        message.success('删除成功')
+        yield put({type: 'getMaternalEverydayPhysicalEvaluationList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+    *delBabySwimming({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delBabySwimming, values);
+        message.success('删除成功')
+        yield put({type: 'getInsideBabySwimList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+
+
     //保存对内婴儿游泳预约
     *saveInsideBabySwim({ payload: values }, { call, put }){
       try {
@@ -492,8 +595,8 @@ export default {
         console.log(err)
       }
     },
-    
-    
+
+
     *saveBabyGrowthNote({ payload: values }, { call, put })
     {
       try {
@@ -511,13 +614,14 @@ export default {
         const { data: { data, code } } = yield call(serviceAssessment.saveBabyFeedingNote, values);
         message.success("保存成功");
         yield put(routerRedux.push('/service/baby-feed'))
+
       }
       catch (err) {
         console.log(err)
       }
     },
-    
-    
+
+
     *saveMaternalEverydayPhysicalEvaluation({ payload: values }, { call, put })
     {
       try {
@@ -529,8 +633,8 @@ export default {
         console.log(err)
       }
     },
-    
-    
+
+
     *getCustomerInfoByCustomerId({ payload: values }, { call, put })
     {
       try {
@@ -545,7 +649,7 @@ export default {
       }
     }
     ,
-    
+
     //宣教手册详情
     *getBrouchurDetailById({ payload: values }, { call, put })
     {
@@ -560,7 +664,7 @@ export default {
         console.log(err)
       }
     },
-    
+
     *getBabyNursingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -601,7 +705,7 @@ export default {
           type: 'getdoctornoteList',
           payload: query
         });
-        
+
       }
     },
     //3.根据id删除记录
@@ -617,7 +721,7 @@ export default {
           type: 'getdoctornoteList',
           payload: query
         });
-        
+
       }
     },
     //3.根据客户id和记录单类型以及筛选条件查询记录单列表 汇总页面用到的
@@ -666,7 +770,7 @@ export default {
           payload: data
         });
       }
-      
+
     },
     //4.根据客户id和记录单类型以及筛选条件查询记录单列表页面
     *getdoctornoteList({ payload: values }, { call, put }){
@@ -677,10 +781,10 @@ export default {
           payload: data
         });
       }
-      
+
     },
-    
-    
+
+
     //儿科查房记录单详情页
     //1.保存或编辑记录单
     *savePediatricNote({ payload: info }, { call, put, select })
@@ -715,7 +819,7 @@ export default {
             payload: data
           });
         }
-        
+
       }
     },
     //3.根据id删除记录
@@ -733,31 +837,36 @@ export default {
             babyId: babyId
           }
         });
-        
+
       }
     },
-    
-    
+
+
     *getInsideBabySwimById({ payload: values }, { call, put }){
-      const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
-      if (code == 0) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
         yield put({
           type: 'getInsideBabySwim',
           payload: data
         });
       }
+      catch (err) {
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/baby-swimming/detail?customerid=${query.customerid}`))
+        message.error(err.message);
+      }
     },
     //获取对内婴儿游泳记录
     *getInsideBabySwimList({ payload: values }, { call, put }) {
       try {
-        
+
         let query = parse(location.search.substr(1))
         let dict = { customerId: query.customerid }
         if (query.date) {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimList, dict);
-        
+
         yield put({
           type: 'saveInsideBabySwimList',
           payload: data
@@ -767,7 +876,7 @@ export default {
         console.log(err)
       }
     },
-    
+
     //爱丁堡忧郁单详情页
     //1.保存或编辑爱丁堡忧郁单 saveEdinburghMelancholyGauge
     *saveEdinburghMelancholyGauge({ payload: values }, { call, put }){
@@ -814,8 +923,8 @@ export default {
         });
       }
     }
-    
-    
+
+
   },
   reducers: {
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
@@ -854,47 +963,54 @@ export default {
     savaEndemicDeptList(state, { payload: todo }){
       return { ...state, EndemicDeptList: todo };
     },
-    
+
     savaJournal(state, { payload: { type, value } }){
-      
+
       let dict = {}
       let str = 'Journal' + type
       dict[str] = value
-      
+
       return { ...state, ...dict };
     },
     savaAssessment(state, { payload: todo }){
       let dict = {}
+
+      let tempDict = {}
+      if(todo){
+        tempDict = JSON.parse(todo.assessmentInfo)
+        tempDict.operator = todo.operator
+        tempDict.operatorTime = moment(todo.operatorTime).format('YYYY-MM-DD')
+      }
+
+
       if (todo) {
         if (todo.type === 1) {
-          dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
-          dict.CheckBeforeData.operator = todo.operator
-          dict.CheckBeforeData.operatorTime = moment(todo.operatorTime).format('YYYY-MM-DD')
+          dict.CheckBeforeData = tempDict
           dict.CheckBeforeID = todo.id
         } else if (todo.type === 5) {
-          dict.NutritionEvaluateData = JSON.parse(todo.assessmentInfo)
+          dict.NutritionEvaluateData = tempDict
           dict.NutritionEvaluateID = todo.id
         } else if (todo.type === 4) {
-          dict.diagnosisData = JSON.parse(todo.assessmentInfo)
+          dict.diagnosisData = tempDict
           dict.diagnosisID = todo.id
         } else if (todo.type === 2) {
-          dict.CheckInData = JSON.parse(todo.assessmentInfo)
+          dict.CheckInData = tempDict
           dict.CheckInID = todo.id
         } else if (todo.type === 3) {
-          dict.ChildCheckInData = JSON.parse(todo.assessmentInfo)
+          dict.ChildCheckInData = tempDict
           dict.ChildCheckInID = todo.id
         }
       }
       return { ...state, ...dict }
     },
-    
-    
+
+
     savaBabyAssessment(state, { payload: todo }){
       let dict = {}
       dict.CheckBeforeBabyData = todo
       return { ...state, ...dict }
     },
-    
+
     clearAllProps(state){
       return { ...state, page: 1 }
     },
@@ -923,15 +1039,15 @@ export default {
       const { key, data } = todo
       let dict = {}
       dict[key] = data
-      
+
       console.log(dict)
-      
+
       return { ...state, ...dict }
     },
     savaCustomerInfo(state, { payload: todo }){
       return { ...state, baseInfoDict: todo }
     },
-    
+
     saveBrouchurDetailById(state, { payload: todo }) {
       return { ...state, MissionManualData: todo }
     },
@@ -962,7 +1078,7 @@ export default {
     isChooseTime(state, { payload: dateString }){
       return { ...state, dateString }
     },
-    
+
     //儿科查房记录单详情页
     //1.获取列表
     getDescribeChildren(state, { payload: data }){
@@ -986,8 +1102,8 @@ export default {
       describeChildrenInfo[key] = info[0];
       return { ...state, describeChildrenInfo }
     },
-    
-    
+
+
     //汇总用的记录单详情页
     //2,中医查房记录单详情
     getDescribeDiagnosis(state, { payload: data }){
@@ -1022,7 +1138,7 @@ export default {
       }
       return { ...state };
     },
-    
+
     //爱丁堡忧郁单详情页
     //1.获取列表
     getEdinburghListInfo(state, { payload: data }){
@@ -1042,7 +1158,7 @@ export default {
       edinburghListInfo[k] = data;
       return { ...state, edinburghListInfo }
     }
-    
+
   }
 }
 

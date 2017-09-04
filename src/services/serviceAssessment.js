@@ -116,11 +116,6 @@ export function DelPediatricNote(values) {
   })
 }
 
-
-
-
-
-
 export function getBrouchurDetailById(values) {
   return request('/crm/api/v1/brochure/getBrochureById', {
   method: 'POST',
@@ -162,6 +157,26 @@ export function getMaternalEverydayPhysicalEvaluationById(values) {
     body: JSON.stringify(values),
   })
 }
+export function delBabyFeedingNote(values) {
+  return request('/crm/api/v1/babyFeedingNote/delBabyFeedingNote', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+export function delBabyGrowthNote(values) {
+  return request('/crm/api/v1/babyGrowthNote/delBabyGrowthNote', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+export function delMaternalEverydayPhysicalEvaluation(values) {
+  return request('/crm/api/v1/maternalEverydayPhysicalEvaluation/delMaternalEverydayPhysicalEvaluation', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
 
 export function getBabyGrowthNoteList(values) {
   return request('/crm/api/v1/babyGrowthNote/getBabyGrowthNoteList', {
@@ -308,9 +323,20 @@ export function getEdinburghMelancholyGaugeById(values) {
   })
 }
 
+export function getAssessmentById(values) {
+  return request('/crm/api/v1/assessment/getAssessmentById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
-
+export function delBabySwimming(values) {
+  return request('/crm/api/v1/babySwimming/delBabySwimming', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
 
