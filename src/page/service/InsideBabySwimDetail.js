@@ -16,8 +16,6 @@ const assessment = [
   {title:'预约日期',component:'DatePicker',submitStr:'reservationDate'},
   {title:'预约时间',component:'Input',submitStr:'timeOfAppointment'},
   {title:'其他',component:'Input',submitStr:'other'},
-  // {title:'操作人',component:'Input',submitStr:'operator'},
-  // {title:'操作时间',component:'DatePicker',submitStr:'operatorTime'}
 ]
 
 
@@ -36,6 +34,10 @@ class Detail extends Component {
     this.props.dispatch(routerRedux.push('/service/baby-swimming'));
   }
 
+  deleteClick(dict){
+    this.props.dispatch({type:'serviceCustomer/delBabySwimming',payload:{operatorItem:15,dataId:dict.id}})
+  }
+
   print(){
 
   }
@@ -46,8 +48,9 @@ class Detail extends Component {
 
 
     assessment.map((subDict)=>{
-      if(subDict.chiAry){
-        subDict.initValue =subDict.chiAry[dict[subDict.submitStr]]
+      if(subDict.submitStr === 'reservationDate')
+      {
+        subDict.initValue = moment(dict[subDict.submitStr]).format("YYYY-MM-DD")
       }
       else {
         subDict.initValue = dict[subDict.submitStr]
@@ -56,7 +59,12 @@ class Detail extends Component {
 
     return (
       <Card title={'操作人：'+dict.operator+'   '+'操作时间：'+moment(dict.operatorTime).format('YYYY-MM-DD') }
-            extra = {this.props.summary?'': creatButton('编辑',()=>{this.editBtnClick(dict)})}
+            extra = {this.props.summary?'': (
+              <div>
+                {creatButton('编辑',()=>{this.editBtnClick(dict)})}
+                {creatButton('删除',()=>{this.deleteClick(dict)})}
+              </div>
+            )}
             bodyStyle={{ padding:'0 15px 0 15px'}} style={{marginTop:'5px', width: '100%' }}>
         {chiDetailComponent(assessment)}
       </Card>

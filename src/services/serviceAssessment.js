@@ -331,6 +331,12 @@ export function getAssessmentById(values) {
 }
 
 
+export function delBabySwimming(values) {
+  return request('/crm/api/v1/babySwimming/delBabySwimming', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
 

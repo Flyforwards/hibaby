@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {CreatCard,creatButton} from './ServiceComponentCreat'
+import {CreatCard,creatButton,chiDetailComponent} from './ServiceComponentCreat'
 import {Card ,Input,Form,Button,Spin} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
@@ -169,11 +169,9 @@ class Detail extends Component {
       {title:'产妇关注问题',component:'TextArea',span:24,submitStr:'conclusion_1'},
       {title:'医院带药',component:'TextArea',span:24,submitStr:'conclusion_2'},
       {title:'重点注意事项',component:'TextArea',span:24,submitStr:'conclusion_3'},
-      {title:'评估者',component:'Input',span:6,submitStr:'conclusion_4'},
-      {title:'评估时间',component:'DatePicker',offset:12,span:6,submitStr:'conclusion_5'},
     ]
 
-    const {loading,summary} = this.props
+    const {loading,summary,CheckInData} = this.props
 
     const ary = [{title:summary?'':'基本信息',ary:summary? baseInfoAry.slice(6):baseInfoAry},{title:'产后情况',ary:PostpartumSituationAry},{title:'入所查体',ary:checkInMedical}, {title:'评估结论',ary:conclusionAry}]
 
@@ -188,21 +186,13 @@ class Detail extends Component {
       bottomDiv = (<div className='button-group-bottom-common'>
                     {creatButton('返回',this.editBackClicked.bind(this))}{creatButton('确定',this.submitClicked.bind(this))}
                   </div>);
-    }else if(this.props.CheckInID){
-      bottomDiv = (
-        <div className='button-group-bottom-common'>
-          {creatButton('返回',this.backClicked.bind(this))}
-          {creatButton('删除',this.onDelete.bind(this))}
-          {creatButton('编辑',this.editBtnClick.bind(this))}
-          {creatButton('打印',this.print.bind(this))}
-        </div>
-      );
     }else{
       bottomDiv = (
         <div className='button-group-bottom-common'>
-          {creatButton('返回',this.backClicked.bind(this))}
-          {creatButton('编辑',this.editBtnClick.bind(this))}
-          {creatButton('打印',this.print.bind(this))}
+          {creatButton('返回', this.backClicked.bind(this))}
+          {this.props.CheckInID ? creatButton('删除', this.onDelete.bind(this)) : ''}
+          {this.props.CheckInID ? creatButton('编辑', this.editBtnClick.bind(this)) : ''}
+          {this.props.CheckInID ? creatButton('打印', this.print.bind(this)) : ''}
         </div>
       );
     }
@@ -211,6 +201,14 @@ class Detail extends Component {
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {chiAry}
+          { CheckInData?
+            <Row style={{height:'40px'}}>
+              <Col offset={12} span={12}>
+                {chiDetailComponent([{title:'评估者',initValue:CheckInData.operator,colSpan:12},{title:"评估时间",initValue:CheckInData.operatorTime,colSpan:12}])}
+              </Col>
+
+            </Row>:""
+          }
           {summary?'':bottomDiv}
         </Card>
       </Spin>

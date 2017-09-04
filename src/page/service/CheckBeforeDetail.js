@@ -277,7 +277,6 @@ class Detail extends Component {
   }
 
   componentWillUnmount() {
-    console.log('离开')
     this.props.dispatch({type: 'serviceCustomer/removeData',})
   }
 
@@ -294,8 +293,10 @@ class Detail extends Component {
         {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
       </div> :
       <div className='button-group-bottom-common'>
-        {creatButton('返回', this.backClicked.bind(this))}{this.props.CheckBeforeData ? creatButton('删除', this.onDelete.bind(this)) : ''}
-        {creatButton('编辑', this.editBtnClick.bind(this))}{creatButton('打印', this.print.bind(this))}
+        {creatButton('返回', this.backClicked.bind(this))}
+        {this.props.CheckBeforeData ? creatButton('删除', this.onDelete.bind(this)) : ''}
+        {this.props.CheckBeforeData ? creatButton('编辑', this.editBtnClick.bind(this)) : ''}
+        {this.props.CheckBeforeData ? creatButton('打印', this.print.bind(this)) : ''}
       </div>
 
 

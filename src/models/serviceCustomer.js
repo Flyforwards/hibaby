@@ -81,7 +81,12 @@ export default {
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
           let dictTwo = { ...query, type: 2, operatorItem: 2 }
           dictTwo.operatorItem = 2;
-          dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          if(pathname === '/service/check-in/edit'){
+            dispatch({ type: 'getAssessmentById', payload:{dataId:query.id,operatorItem:2}});
+          }
+          else {
+            dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
+          }
         }
         // if (pathname === '/service/child-check-in/detail' || pathname === '/service/child-check-in/edit') {
         //   let dict = { ...query, type: 3, operatorItem: 3 }
@@ -379,6 +384,9 @@ export default {
         else if(values.operatorItem == 5){
           str = 'nutrition-evaluate'
         }
+        else if(values.operatorItem == 2){
+          str = 'check-in'
+        }
 
         let query = parse(location.search.substr(1))
         yield put(routerRedux.push(`/service/${str}/detail?customerid=${query.customerid}`))
@@ -563,6 +571,18 @@ export default {
         message.error(err.message);
       }
     },
+    *delBabySwimming({ payload: values }, { call, put })
+    {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.delBabySwimming, values);
+        message.success('删除成功')
+        yield put({type: 'getInsideBabySwimList',});
+      }
+      catch (err) {
+        message.error(err.message);
+      }
+    },
+
 
     //保存对内婴儿游泳预约
     *saveInsideBabySwim({ payload: values }, { call, put }){
@@ -823,12 +843,17 @@ export default {
 
 
     *getInsideBabySwimById({ payload: values }, { call, put }){
-      const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
-      if (code == 0) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
         yield put({
           type: 'getInsideBabySwim',
           payload: data
         });
+      }
+      catch (err) {
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/baby-swimming/detail?customerid=${query.customerid}`))
+        message.error(err.message);
       }
     },
     //获取对内婴儿游泳记录
@@ -949,23 +974,30 @@ export default {
     },
     savaAssessment(state, { payload: todo }){
       let dict = {}
+
+      let tempDict = {}
+      if(todo){
+        tempDict = JSON.parse(todo.assessmentInfo)
+        tempDict.operator = todo.operator
+        tempDict.operatorTime = moment(todo.operatorTime).format('YYYY-MM-DD')
+      }
+
+
       if (todo) {
         if (todo.type === 1) {
-          dict.CheckBeforeData = JSON.parse(todo.assessmentInfo)
-          dict.CheckBeforeData.operator = todo.operator
-          dict.CheckBeforeData.operatorTime = moment(todo.operatorTime).format('YYYY-MM-DD')
+          dict.CheckBeforeData = tempDict
           dict.CheckBeforeID = todo.id
         } else if (todo.type === 5) {
-          dict.NutritionEvaluateData = JSON.parse(todo.assessmentInfo)
+          dict.NutritionEvaluateData = tempDict
           dict.NutritionEvaluateID = todo.id
         } else if (todo.type === 4) {
-          dict.diagnosisData = JSON.parse(todo.assessmentInfo)
+          dict.diagnosisData = tempDict
           dict.diagnosisID = todo.id
         } else if (todo.type === 2) {
-          dict.CheckInData = JSON.parse(todo.assessmentInfo)
+          dict.CheckInData = tempDict
           dict.CheckInID = todo.id
         } else if (todo.type === 3) {
-          dict.ChildCheckInData = JSON.parse(todo.assessmentInfo)
+          dict.ChildCheckInData = tempDict
           dict.ChildCheckInID = todo.id
         }
       }
