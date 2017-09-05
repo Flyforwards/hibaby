@@ -485,6 +485,8 @@ export default (app) => [
       })
     }
   },
+
+
   // 退房通知单
   {
     path: '/service/send-message/check-out',
@@ -495,7 +497,6 @@ export default (app) => [
       })
     }
   },
-  // 自由通知单
   {
     path: '/service/send-message/free',
     getComponent: (location, cb) => {
@@ -546,7 +547,16 @@ export default (app) => [
       })
     }
   },
-
+  //门诊
+  {
+    path: '/service/order-outpatient',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/outpatient'));
+        cb(null, require('page/service/orderOutpatient.js'))
+      })
+    }
+  },
   // 预约游泳
   {
     path: '/service/order-swimming',
@@ -557,4 +567,6 @@ export default (app) => [
       })
     }
   },
+
+
 ]
