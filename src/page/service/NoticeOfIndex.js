@@ -16,7 +16,9 @@ class Index extends Component {
         <Link to='/service/send-message/stay'>
           <Button>入住通知单</Button>
         </Link >
-        
+        <Link to='/service/send-message/out'>
+          <Button>外出通知单</Button>
+        </Link >
       </div>
     )
   }

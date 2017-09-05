@@ -223,7 +223,13 @@ export function sendOccupancyNotice(values) {
     body: JSON.stringify(values)
   })
 }
-
+// 发送外出通知单
+export function senddepartureNotice(values) {
+  return request('/crm/api/v1/departureNotice/senddepartureNotice', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
 
 //根据id删除婴儿评估
 export function onDeleteBabydata(values) {

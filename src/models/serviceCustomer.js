@@ -308,7 +308,17 @@ export default {
       catch (err) {
       }
     },
-    
+    //发送外出通知单
+    *senddepartureNotice({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.senddepartureNotice, values);
+        message.success("发送成功");
+        yield put(routerRedux.push('/service/send-message'))
+      }
+      catch (err) {
+      }
+    },
+  
     *getJournal({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getJournal, values);

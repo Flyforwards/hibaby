@@ -471,11 +471,22 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ProductionStay.js'))
+        cb(null, require('page/service/stayNotice.js'))
       })
     }
   },
-
+  // 外出通知单
+  {
+    path: '/service/send-message/out',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/outNotice.js'))
+      })
+    }
+  },
+  
+  
   // 营养产后入住评估
   {
     path: '/service/nutrition-evaluate',
