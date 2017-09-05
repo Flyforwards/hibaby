@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import {Card} from 'antd';
 import { connect } from 'dva';
-class SwimmingIndex extends Component{
+class OutpatientIndex extends Component{
 
   constructor(props){
     super(props);
@@ -13,11 +13,8 @@ class SwimmingIndex extends Component{
 
   render(){
     return (
-      <div>
-        <Card>1111111111111</Card>
-        <Card>222222222222</Card>
-        <Card>333333333333</Card>
-      </div>
+      <Card></Card>
+
     );
   }
 
@@ -25,4 +22,4 @@ class SwimmingIndex extends Component{
 function mapStateToProps(state) {
   return {...state.outpatient,loading:state.loading}
 }
-export default connect(mapStateToProps)(SwimmingIndex);
+export default connect(mapStateToProps)(OutpatientIndex);
