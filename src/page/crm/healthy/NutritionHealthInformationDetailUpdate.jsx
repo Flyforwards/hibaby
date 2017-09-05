@@ -350,7 +350,7 @@ function NutritionHealthInformationDetailUpdate(props) {
             <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('宗教信仰',inputNames[4],'',false,'请输入宗教信仰',false)}
             </Col>
-            <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
+            <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('孕前体重',inputNames[2],'kg',false,'请输入孕前体重',false)}
             </Col>
             <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
@@ -359,7 +359,7 @@ function NutritionHealthInformationDetailUpdate(props) {
             <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('孕期增重',inputNames[19],'kg',false,'请输入孕期增重',false)}
             </Col>
-            <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
+            <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('现体重',inputNames[3],'kg',false,'请输入现体重',false)}
             </Col>
 
