@@ -62,7 +62,32 @@ class SwimmingIndex extends Component{
                     <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
                   </p>
                   <p>小红</p>
-                  <Select className="swimming-select" labelInValue={true} placeholder="请选择">
+                  <Select className="swimming-select" defaultValue="1" placeholder="请选择">
+                    <Option value="1">开工</Option>
+                    <Option value="0">离开</Option>
+                  </Select>
+                </div>
+              </Col>
+              <Col span={12}>
+                <div className="ItemRight">
+                  <p>9:00-9:30</p>
+                  <p>9:00-9:30</p>
+                  <p>9:00-9:30</p>
+                  <p>9:00-9:30</p>
+                  <p>9:00-9:30</p>
+                </div>
+              </Col>
+            </Row>
+          </Col>
+          <Col span={8}>
+            <Row>
+              <Col span={8}>
+                <div className="ItemLeft">
+                  <p>
+                    <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
+                  </p>
+                  <p>小红</p>
+                  <Select className="swimming-select" defaultValue="1" placeholder="请选择">
                     <Option key={1}>开工</Option>
                     <Option key={0}>离开</Option>
                   </Select>
@@ -87,32 +112,7 @@ class SwimmingIndex extends Component{
                     <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
                   </p>
                   <p>小红</p>
-                  <Select className="swimming-select" labelInValue={true} placeholder="请选择">
-                    <Option key={1}>开工</Option>
-                    <Option key={0}>离开</Option>
-                  </Select>
-                </div>
-              </Col>
-              <Col span={12}>
-                <div className="ItemRight">
-                  <p>9:00-9:30</p>
-                  <p>9:00-9:30</p>
-                  <p>9:00-9:30</p>
-                  <p>9:00-9:30</p>
-                  <p>9:00-9:30</p>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col span={8}>
-            <Row>
-              <Col span={8}>
-                <div className="ItemLeft">
-                  <p>
-                    <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
-                  </p>
-                  <p>小红</p>
-                  <Select className="swimming-select" labelInValue={true} placeholder="请选择">
+                  <Select className="swimming-select" defaultValue="1" placeholder="请选择">
                     <Option key={1}>开工</Option>
                     <Option key={0}>离开</Option>
                   </Select>
