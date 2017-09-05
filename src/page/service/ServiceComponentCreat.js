@@ -403,7 +403,7 @@ export function creatButton(title,onclick) {
   if(title === '确定' || title === '发送'){
     className = 'bottomButton button-group-bottom-2'
   }
-  if(title === '编辑'){
+  if(title === '编辑'|| title ==='历史'){
     className = 'bottomButton button-group-bottom-2'
   }
   if(title === '打印'){

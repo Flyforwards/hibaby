@@ -557,6 +557,16 @@ export default (app) => [
       })
     }
   },
+  //门诊
+  {
+    path: '/service/order-outpatient/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/outpatient'));
+        cb(null, require('page/service/order/OutpatientDetail.js'))
+      })
+    }
+  },
   // 预约游泳
   {
     path: '/service/order-swimming',
