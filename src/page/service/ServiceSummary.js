@@ -35,12 +35,12 @@ const divAry = {
     { title: '中医见诊记录单', chiComponent: <DiagnosisDetail summary={true}/>,pathName:'diagnosis',operatorItem:4 }
   ],
   PatientRounds: [
-    { title: '儿科查房记录单', chiComponent: <ChildrenCheckRoomDetail/> ,operatorItem:5},
+    { title: '儿科查房记录单', chiComponent: <ChildrenCheckRoomDetail/> ,operatorItem:5,pathName:'children-record'},
     { title: '婴儿护理记录单', chiComponent: <ObstetricRecordDetail summary={true}/> ,operatorItem:9},
-    { title: '中医查房记录单', chiComponent: <CheckRoomDetail type={2}/> ,operatorItem:6},
-    { title: '产科医师查房记录单', chiComponent: <CheckRoomDetail type={3}/> ,operatorItem:7},
-    { title: '管家查房记录表', chiComponent: <CheckRoomDetail type={5}/>,operatorItem:16 },
-    { title: '营养师查房记录单', chiComponent: <CheckRoomDetail type={6}/> ,operatorItem:18},
+    { title: '中医查房记录单', chiComponent: <CheckRoomDetail type={2}/> ,operatorItem:6,moreLink:'&type=2&operatoritem=6',pathName:'diagnosis-record'},
+    { title: '产科医师查房记录单', chiComponent: <CheckRoomDetail type={3}/> ,operatorItem:7,moreLink:'&type=3&operatoritem=7',pathName:'diagnosis-record'},
+    { title: '管家查房记录表', chiComponent: <CheckRoomDetail type={5}/>,operatorItem:16,moreLink:'&type=5&operatoritem=16' ,pathName:'butler-rounds'},
+    { title: '营养师查房记录单', chiComponent: <CheckRoomDetail type={6}/> ,operatorItem:18,moreLink:'&type=6&operatoritem=18',pathName:'nutrition-record'},
     { title: '产妇每日身体评估', chiComponent: <InfantFeedingRecordsDetail urlAddress="puerpera-body" summary={true}/> ,operatorItem:8}
   ],
 
@@ -122,6 +122,9 @@ class Detail extends Component {
   clickDetail( dict) {
     const param = parse(location.search.substr(1));
     const { customerid } = param;
+    console.log(dict,'///////')
+    dict.moreLink?
+      this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}${dict.moreLink}`)):
     this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}`));
   }
 
