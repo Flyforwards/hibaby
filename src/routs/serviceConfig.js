@@ -302,7 +302,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 婴儿喂养记录单
   {
 
@@ -505,7 +505,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 营养产后入住评估
   {
     path: '/service/nutrition-evaluate',
@@ -543,6 +543,17 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
         cb(null, require('page/service/DiagnosisRecordIndex.jsx'))
+      })
+    }
+  },
+
+  // 预约游泳
+  {
+    path: '/service/order-swimming',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SwimmingIndex.js'))
       })
     }
   },
