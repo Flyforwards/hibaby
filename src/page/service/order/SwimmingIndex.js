@@ -3,7 +3,7 @@
  * Created by yangjingjing on 2017/9/5.
  */
 import React, { Component } from 'react';
-import {Row,Col,Select,Input} from 'antd';
+import {Card,Row,Col,Select,Input} from 'antd';
 import { connect } from 'dva';
 import SwimmingIndexCss from  './SwimmingIndex.scss';
 const Option = Select.Option;
@@ -47,7 +47,7 @@ class SwimmingIndex extends Component{
 
   render(){
     return (
-      <div className="order-swimming">
+      <Card className="order-swimming">
         <Row>
           <Col span={24} className="date-title">
           <div><h1>2017年09月05号</h1></div>
@@ -130,7 +130,7 @@ class SwimmingIndex extends Component{
             </Row>
           </Col>
         </Row>
-      </div>
+      </Card>
     );
   }
 
