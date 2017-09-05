@@ -553,7 +553,7 @@ export default (app) => [
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/outpatient'));
-        cb(null, require('page/service/orderOutpatient.js'))
+        cb(null, require('page/service/order/OutpatientIndex.js'))
       })
     }
   },
