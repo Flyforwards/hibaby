@@ -19,6 +19,12 @@ class Index extends Component {
         <Link to='/service/send-message/out'>
           <Button>外出通知单</Button>
         </Link >
+        <Link to='/service/send-message/check-out'>
+          <Button>退房通知单</Button>
+        </Link >
+        <Link to='/service/send-message/free'>
+          <Button>自由通知单</Button>
+        </Link >
       </div>
     )
   }

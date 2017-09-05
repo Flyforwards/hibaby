@@ -230,6 +230,20 @@ export function senddepartureNotice(values) {
     body: JSON.stringify(values)
   })
 }
+// 发送退房通知单
+export function sendCheckOutNotice(values) {
+  return request('/crm/api/v1/checkOutNotice/sendCheckOutNotice', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+// 发送自由通知单
+export function sendFreeNotice(values) {
+  return request('/crm/api/v1/freeNotice/sendFreeNotice', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
 
 //根据id删除婴儿评估
 export function onDeleteBabydata(values) {
