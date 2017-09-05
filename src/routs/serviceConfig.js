@@ -302,7 +302,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 婴儿喂养记录单
   {
 
@@ -485,8 +485,8 @@ export default (app) => [
       })
     }
   },
-  
-  
+
+
   // 营养产后入住评估
   {
     path: '/service/nutrition-evaluate',
@@ -527,4 +527,17 @@ export default (app) => [
       })
     }
   },
+  //门诊
+  {
+    path: '/service/order-outpatient',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/outpatient'));
+        cb(null, require('page/service/orderOutpatient.js'))
+      })
+    }
+  },
+
+
+
 ]
