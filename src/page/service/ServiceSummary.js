@@ -122,7 +122,6 @@ class Detail extends Component {
   clickDetail( dict) {
     const param = parse(location.search.substr(1));
     const { customerid } = param;
-    console.log(dict,'///////')
     dict.moreLink?
       this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}${dict.moreLink}`)):
     this.props.dispatch(routerRedux.push(`/service/${dict.pathName}/detail?customerid=${customerid}`));
