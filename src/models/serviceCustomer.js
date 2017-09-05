@@ -174,7 +174,7 @@ export default {
         }
         
         //通知单
-        if (pathname === '/service/send-message/production' || pathname === '/service/send-message/stay' || pathname === '/service/send-message/out'|| pathname === '/service/send-message/check-out') {
+        if (pathname === '/service/send-message/production' || pathname === '/service/send-message/stay' || pathname === '/service/send-message/out'|| pathname === '/service/send-message/check-out'|| pathname === '/service/send-message/free') {
           dispatch({ type: 'getCurrentEndemicDeptList' });
         }
         

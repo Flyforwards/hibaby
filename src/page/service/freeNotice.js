@@ -1,29 +1,19 @@
 /**
- * 退房通知单
+ * 自由通知单
  */
 
 import React, { Component } from 'react';
-import { Link} from 'react-router'
 import { connect } from 'dva';
-import {Button,Spin,Card,Form,Col} from 'antd';
+import {Spin,Card,Form,} from 'antd';
 import {CreatCard,creatButton} from './ServiceComponentCreat'
 import { routerRedux } from 'dva/router'
 
 function baseInfoDiv(props) {
-  const {dispatch,baseInfoDict,CustomerInfoList} = props
+  const {baseInfoDict} = props
   const PastMedicalHistoryAry = [
-    {title:'通知内容',component:'Input',submitStr:'noticeInfo'},
+    {title:'通知内容',component:'TextArea',submitStr:'noticeInfo',span:24},
 
   ]
-  
-  function onchange(e){
-    dispatch({type:'serviceCustomer/getCustomerInfoByCustomerName',payload:{str:e}})
-  }
-  
-  function onSelect(e){
-    dispatch({type:'serviceCustomer/getCustomerInfoByCustomerId',payload:{dataId:e}})
-  }
-  
   let value = {ary:PastMedicalHistoryAry}
   value.baseInfoDict = baseInfoDict ? baseInfoDict : {}
   
@@ -35,9 +25,6 @@ function baseInfoDiv(props) {
 
 const BaseInfoDivForm = Form.create()(baseInfoDiv);
 
-/**
- * 通知单
- */
 class Detail extends Component {
   
   constructor(props) {
@@ -63,10 +50,6 @@ class Detail extends Component {
             if(typeof values[key] === 'object'){
               values[key] = values[key].format()
             }
-          
-            values.customerId = this.props.baseInfoDict.customerId
-            values.name = this.props.baseInfoDict.name
-            
           }
         })
         dict = values
@@ -76,7 +59,7 @@ class Detail extends Component {
         
         dict.departments = departments.join(",");
         
-        this.props.dispatch({type:'serviceCustomer/sendCheckOutNotice',payload:dict})
+        this.props.dispatch({type:'serviceCustomer/sendFreeNotice',payload:dict})
       }
     });
     
