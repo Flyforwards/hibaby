@@ -13,10 +13,10 @@ class Index extends Component {
         <Link to='/service/send-message/production'>
           <Button>生产通知单</Button>
         </Link >
-        <Link to='/service/stay-message/production'>
+        <Link to='/service/send-message/stay'>
           <Button>入住通知单</Button>
         </Link >
-      
+        
       </div>
     )
   }

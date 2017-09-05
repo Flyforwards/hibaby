@@ -77,7 +77,7 @@ export default {
             dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
           }
         }
-
+        
         if (pathname === '/service/check-in/detail' || pathname === '/service/check-in/edit') {
           let dictTwo = { ...query, type: 2, operatorItem: 2 }
           dictTwo.operatorItem = 2;
@@ -100,7 +100,7 @@ export default {
           }
           dispatch({ type: 'getAssessmentByCustomerId', payload: dict });
         }
-
+        
         if (pathname === '/service/puerpera-body/detail') {
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList' });
         }
@@ -108,7 +108,7 @@ export default {
           let dict_ = { dataId: query.dataId, operatorItem: 8 }
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationById', payload: dict_ });
         }
-
+        
         //婴儿护理记录详情
         if (pathname === '/service/baby-nursing/detail' || pathname === '/service/baby-nursing/edit') {
           let dict_ = { customerId: query.customerid, date: moment().format('YYYY-MM-DD') }
@@ -172,8 +172,8 @@ export default {
             payload: dict_
           });
         }
-
-        if (pathname === '/service/send-message/production') {
+        
+        if (pathname === '/service/send-message/production' || pathname === '/service/send-message/stay') {
           dispatch({ type: 'getCurrentEndemicDeptList' });
         }
 
@@ -288,6 +288,7 @@ export default {
       }
     },
 
+    //发送生产通知单
     *sendProductionNotification({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.sendProductionNotification, values);
@@ -297,7 +298,17 @@ export default {
       catch (err) {
       }
     },
-
+    //发送入住通知单
+    *sendOccupancyNotice({ payload: values }, { call, put }) {
+      try {
+        const { data: { data, code } } = yield call(serviceAssessment.sendOccupancyNotice, values);
+        message.success("发送成功");
+        yield put(routerRedux.push('/service/send-message'))
+      }
+      catch (err) {
+      }
+    },
+    
     *getJournal({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getJournal, values);
@@ -478,7 +489,7 @@ export default {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getBabyGrowthNoteList, dict);
-
+        
         yield put({
           type: 'savaMaternalEverydayPhysicalEvaluationList',
           payload: { key: 'BabyGrowthNoteAry', data: data }
@@ -487,7 +498,7 @@ export default {
       catch (err) {
       }
     },
-
+    
     *getBabyGrowthNoteById({ payload: values }, { call, put })
     {
       try {
@@ -633,8 +644,8 @@ export default {
         console.log(err)
       }
     },
-
-
+    
+    
     *getCustomerInfoByCustomerId({ payload: values }, { call, put })
     {
       try {
@@ -649,7 +660,7 @@ export default {
       }
     }
     ,
-
+    
     //宣教手册详情
     *getBrouchurDetailById({ payload: values }, { call, put })
     {
@@ -664,7 +675,7 @@ export default {
         console.log(err)
       }
     },
-
+    
     *getBabyNursingNoteList({ payload: values }, { call, put })
     {
       try {
@@ -705,7 +716,7 @@ export default {
           type: 'getdoctornoteList',
           payload: query
         });
-
+        
       }
     },
     //3.根据id删除记录
@@ -721,7 +732,7 @@ export default {
           type: 'getdoctornoteList',
           payload: query
         });
-
+        
       }
     },
     //3.根据客户id和记录单类型以及筛选条件查询记录单列表 汇总页面用到的
@@ -770,7 +781,7 @@ export default {
           payload: data
         });
       }
-
+      
     },
     //4.根据客户id和记录单类型以及筛选条件查询记录单列表页面
     *getdoctornoteList({ payload: values }, { call, put }){
@@ -781,10 +792,10 @@ export default {
           payload: data
         });
       }
-
+      
     },
-
-
+    
+    
     //儿科查房记录单详情页
     //1.保存或编辑记录单
     *savePediatricNote({ payload: info }, { call, put, select })
@@ -819,7 +830,7 @@ export default {
             payload: data
           });
         }
-
+        
       }
     },
     //3.根据id删除记录
@@ -837,11 +848,11 @@ export default {
             babyId: babyId
           }
         });
-
+        
       }
     },
-
-
+    
+    
     *getInsideBabySwimById({ payload: values }, { call, put }){
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimById, values);
@@ -859,24 +870,23 @@ export default {
     //获取对内婴儿游泳记录
     *getInsideBabySwimList({ payload: values }, { call, put }) {
       try {
-
+        
         let query = parse(location.search.substr(1))
         let dict = { customerId: query.customerid }
         if (query.date) {
           dict.date = query.date
         }
         const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimList, dict);
-
+        
         yield put({
           type: 'saveInsideBabySwimList',
-          payload: data
         });
       }
       catch (err) {
         console.log(err)
       }
     },
-
+    
     //爱丁堡忧郁单详情页
     //1.保存或编辑爱丁堡忧郁单 saveEdinburghMelancholyGauge
     *saveEdinburghMelancholyGauge({ payload: values }, { call, put }){
@@ -891,7 +901,11 @@ export default {
       }
     },
     //2.根据客户id以及筛选条件查询爱丁堡忧郁单列表
-    *getEdinburghMelancholyGaugeList({ payload: values }, { call, put }){
+    *getEdinburghMelancholyGaugeList({ payload: values }, { call, put, select }){
+      const info = yield select(state => state.serviceCustomer);
+      console.log(info,'///////////')
+      info.edinburghTime == "" || info.edinburghTime == undefined ? null : values.date = info.edinburghTime;
+      console.log(values)
       const { data: { data, code } } = yield call(serviceAssessment.getEdinburghMelancholyGaugeList, values);
       if (code == 0) {
         yield put({
@@ -923,8 +937,8 @@ export default {
         });
       }
     }
-
-
+    
+    
   },
   reducers: {
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
@@ -963,13 +977,13 @@ export default {
     savaEndemicDeptList(state, { payload: todo }){
       return { ...state, EndemicDeptList: todo };
     },
-
+    
     savaJournal(state, { payload: { type, value } }){
-
+      
       let dict = {}
       let str = 'Journal' + type
       dict[str] = value
-
+      
       return { ...state, ...dict };
     },
     savaAssessment(state, { payload: todo }){
@@ -1003,14 +1017,14 @@ export default {
       }
       return { ...state, ...dict }
     },
-
-
+    
+    
     savaBabyAssessment(state, { payload: todo }){
       let dict = {}
       dict.CheckBeforeBabyData = todo
       return { ...state, ...dict }
     },
-
+    
     clearAllProps(state){
       return { ...state, page: 1 }
     },
@@ -1039,15 +1053,15 @@ export default {
       const { key, data } = todo
       let dict = {}
       dict[key] = data
-
+      
       console.log(dict)
-
+      
       return { ...state, ...dict }
     },
     savaCustomerInfo(state, { payload: todo }){
       return { ...state, baseInfoDict: todo }
     },
-
+    
     saveBrouchurDetailById(state, { payload: todo }) {
       return { ...state, MissionManualData: todo }
     },
@@ -1078,7 +1092,7 @@ export default {
     isChooseTime(state, { payload: dateString }){
       return { ...state, dateString }
     },
-
+    
     //儿科查房记录单详情页
     //1.获取列表
     getDescribeChildren(state, { payload: data }){
@@ -1102,8 +1116,8 @@ export default {
       describeChildrenInfo[key] = info[0];
       return { ...state, describeChildrenInfo }
     },
-
-
+    
+    
     //汇总用的记录单详情页
     //2,中医查房记录单详情
     getDescribeDiagnosis(state, { payload: data }){
@@ -1138,27 +1152,32 @@ export default {
       }
       return { ...state };
     },
-
+    
     //爱丁堡忧郁单详情页
     //1.获取列表
     getEdinburghListInfo(state, { payload: data }){
       return { ...state, edinburghListInfo: data }
     },
-    //是否可编辑
+    //2.是否可编辑
     isEditEdinburgh(state, { payload: data }){
       let edinburghListInfo = [...state.edinburghListInfo];
       const { k, isEdit } = data;
       edinburghListInfo[k].isEdit = isEdit;
       return { ...state, edinburghListInfo }
     },
-    //返回按钮
+    //3.返回按钮
     noChangeEdinburghListInfo(state, { payload: info }){
       const { k, data } = info;
       let edinburghListInfo = [...state.edinburghListInfo];
       edinburghListInfo[k] = data;
       return { ...state, edinburghListInfo }
+    },
+    //4.保存筛选的时间状态
+    edinburghChangeTime(state, { payload: data }){
+      console.log(data,'////')
+      return { ...state, edinburghTime: data }
     }
-
+    
   }
 }
 

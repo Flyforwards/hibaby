@@ -43,6 +43,11 @@ class Detail extends Component {
   //时间选择
   onChangeTime = (date, dateString) => {
     const { dispatch } = this.props;
+    dispatch({
+      type: 'serviceCustomer/edinburghChangeTime',
+      payload: dateString
+    })
+    
     const param = parse(location.search.substr(1));
     const { customerid } = param;
     let data = {
@@ -53,6 +58,7 @@ class Detail extends Component {
       type: 'serviceCustomer/getEdinburghMelancholyGaugeList',
       payload: data
     })
+   
   }
   
   //编辑按钮和编辑中的返回按钮
