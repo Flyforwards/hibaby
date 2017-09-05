@@ -175,6 +175,127 @@ class Detail extends Component {
                             )}
                           </FormItem>
                         </Col>
+                        <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="4"
+                          >
+                            {getFieldDecorator(`four-${k}`, {
+                              initialValue: v.four,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="5"
+                          >
+                            {getFieldDecorator(`five-${k}`, {
+                              initialValue: v.five,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="6"
+                          >
+                            {getFieldDecorator(`six-${k}`, {
+                              initialValue: v.six,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="7"
+                          >
+                            {getFieldDecorator(`seven-${k}`, {
+                              initialValue: v.seven,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                         <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="8"
+                          >
+                            {getFieldDecorator(`eight-${k}`, {
+                              initialValue: v.eight,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="9"
+                          >
+                            {getFieldDecorator(`nine-${k}`, {
+                              initialValue: v.nine,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                         <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="10"
+                          >
+                            {getFieldDecorator(`ten-${k}`, {
+                              initialValue: v.ten,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                          <Col span={6}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="总分"
+                          >
+                            {getFieldDecorator(`totalScore`, {
+                              initialValue: v.totalScore,
+                              rules: [
+                                { required: true, message: '请输入数值!' }
+                              ]
+                            })(
+                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        
                         <Col span={4} offset={14}><span>操作者:</span> {v.operator}</Col>
                         <Col span={4}><span>操作时间:</span> {moment(v.operatorTime).format("YYYY-MM-DD HH:mm:ss")}</Col>
                         <div className="buttonBox">

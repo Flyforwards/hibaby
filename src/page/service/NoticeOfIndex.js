@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import { Button } from 'antd';
-
+import { Button ,Card} from 'antd';
+import './serviceComponent.scss'
 /**
  * 通知单
  */
@@ -9,7 +9,7 @@ class Index extends Component {
   
   render() {
     return (
-      <div>
+      <Card title="通知" className="noticeCard">
         <Link to='/service/send-message/production'>
           <Button>生产通知单</Button>
         </Link >
@@ -25,7 +25,7 @@ class Index extends Component {
         <Link to='/service/send-message/free'>
           <Button>自由通知单</Button>
         </Link >
-      </div>
+      </Card>
     )
   }
 }

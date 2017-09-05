@@ -865,7 +865,7 @@ export default {
     *DelPediatricNote({ payload: postInfo }, { call, put, select })
     {
       const { id, operatorItem, babyId, customerId } = postInfo;
-      const values = { dataId: id, operatorItem }
+      const values = { dataId: id, operatorItem ,babyId:babyId}
       const { data: { data, code } } = yield call(serviceAssessment.DelPediatricNote, values);
       if (code == 0) {
         message.success('删除成功');
@@ -876,7 +876,7 @@ export default {
             babyId: babyId
           }
         });
-        
+
       }
     },
     
