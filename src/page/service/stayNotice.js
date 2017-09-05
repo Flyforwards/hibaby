@@ -124,7 +124,7 @@ class Detail extends Component {
     return (
       <Spin
         spinning={loading.effects['serviceCustomer/getCustomerInfoByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getCustomerInfoByCustomerId'] : false}>
-        <Card  className='CheckBeforeInput' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
+        <Card  title="入住通知单" className='CheckBeforeInput' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
           <BaseInfoDivForm {...this.props} ref="BaseInfoDivForm"/>
           <div style={{textAlign:'center'}}>{name}</div>
           

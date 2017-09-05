@@ -487,6 +487,26 @@ export default (app) => [
   },
 
 
+  // 退房通知单
+  {
+    path: '/service/send-message/check-out',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkOutNotice.js'))
+      })
+    }
+  },
+  {
+    path: '/service/send-message/free',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/freeNotice.js'))
+      })
+    }
+  },
+
   // 营养产后入住评估
   {
     path: '/service/nutrition-evaluate',
