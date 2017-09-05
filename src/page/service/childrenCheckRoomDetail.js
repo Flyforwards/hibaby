@@ -50,7 +50,6 @@ class Detail extends Component {
   
   //时间选择
   onChangeTime = (date, dateString) => {
-    console.log(dateString, '??????')
     const { dispatch } = this.props;
     const param = parse(location.search.substr(1));
     const { customerid } = param;
@@ -125,7 +124,6 @@ class Detail extends Component {
   
   render() {
     const { loading, baseInfoDict, describeChildrenInfo } = this.props;
-    console.log(describeChildrenInfo,'////////')
     let baseInfoDivAry = detailComponent(baseInfoDict)
     let children = location.pathname.indexOf('children-record');
     const bottomDiv =
@@ -133,7 +131,7 @@ class Detail extends Component {
               {creatButton('返回', this.backClicked.bind(this))}
               {creatButton('打印', this.print.bind(this))}
             </div>
-    
+    const letter = ['A','B','C','D','E','F','G','H','I']
     if (children !== -1) {
       return (
         <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
@@ -147,7 +145,7 @@ class Detail extends Component {
                 {
                   describeChildrenInfo.map((v, k) => {
                     return (
-                      <TabPane key={k} tab={`baby${k + 1}`}>
+                      <TabPane key={k} tab={`宝${letter[k]}`}>
                         {
                           v.notelist.map((vv, kk) => {
                             return (
@@ -204,7 +202,7 @@ class Detail extends Component {
               {
                 describeChildrenInfo.map((v, k) => {
                   return (
-                    <TabPane key={k} tab={`baby${k + 1}`}>
+                    <TabPane key={k} tab={`宝${letter[k]}`}>
                       {
                         v.notelist.map((vv, kk) => {
                           return (
