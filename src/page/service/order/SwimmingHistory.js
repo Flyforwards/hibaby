@@ -4,7 +4,7 @@
  */
 import React,{Component} from 'react';
 import {connect} from 'dva';
-import {Card,Row,Col,Tabs,Button,DatePicker,Select} from 'antd';
+import {Card,Row,Col,Tabs,Button,DatePicker,Select,Table} from 'antd';
 import {Link} from 'react-router';
 import SwimmingIndexCss from  './SwimmingIndex.scss';
 
@@ -15,6 +15,18 @@ const { RangePicker } = DatePicker;
 class SwimmingHistory extends Component{
   constructor(props){
     super(props);
+    this.columns = [
+      {
+        title: '预约时间',
+        dataIndex: 'orderTime',
+        key: 'orderTime'
+      },{
+        title: '客户姓名',
+        dataIndex: 'name',
+        key: 'name'
+      }
+    ]
+
   }
 
   onChange=(date, dateString)=> {
@@ -45,35 +57,8 @@ class SwimmingHistory extends Component{
                 </div>
               </div>
             </Col>
-            <Col span={20} className="DetailRight">
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
+            <Col span={20}>
+              <Table columns={this.columns} />
             </Col>
           </Row>
         </div>
