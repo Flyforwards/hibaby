@@ -40,6 +40,9 @@ class SwimmingHistory extends Component{
                   <Option value="1">开工</Option>
                   <Option value="0">离开</Option>
                 </Select>
+                <div className="useRateDiv">
+                  使用率：13%
+                </div>
               </div>
             </Col>
             <Col span={20} className="DetailRight">
