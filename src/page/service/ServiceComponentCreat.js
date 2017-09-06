@@ -2,6 +2,7 @@ import React from 'react';
 import FileUpload from '../crm/customer/fileUpload'
 import DictionarySelect from 'common/dictionary_select';
 import './serviceComponent.scss'
+import './order/order.scss'
 import moment from 'moment';
 import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,AutoComplete,Modal,Checkbox} from 'antd';
 const Option = Select.Option;
@@ -490,6 +491,19 @@ export function chiDetailComponent(baseInfoAry) {
 
   return chiArray
 }
+
+export function creatTitle(title) {
+  return(
+    <div className="detailTitle">{title}</div>
+  )
+}
+
+export function creatCoarseTitle(title) {
+  return(
+    <div className="blackTitle">{title}</div>
+  )
+}
+
 
 function showConfirm(fun) {
   confirm({
