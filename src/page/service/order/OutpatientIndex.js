@@ -5,6 +5,7 @@
 import React, { Component } from 'react';
 import {Card,Row,Col,Select,DatePicker} from 'antd';
 const Option = Select.Option;
+import {creatTitle,creatCoarseTitle} from '.././ServiceComponentCreat'
 import { routerRedux } from 'dva/router'
 import { connect } from 'dva';
 import './order.scss'
@@ -15,11 +16,6 @@ function handleChange() {
 }
 
 
-function creatTitle(title) {
-  return(
-    <div className="detailTitle">{title}</div>
-  )
-}
 
 
 class OutpatientIndex extends Component{
@@ -53,9 +49,9 @@ class OutpatientIndex extends Component{
               {creatTitle('韩么么-1002')}
             </Col>
           </Row>
-          {creatTitle('目前预约：22号')}
-          {creatTitle('目前看诊：7号 - 王淑梅')}
-          {creatTitle('本日还可约3位')}
+          {creatCoarseTitle('目前预约：22号')}
+          {creatCoarseTitle('目前看诊：7号 - 王淑梅')}
+          {creatCoarseTitle('本日还可约3位')}
         </Card>
       </Col>
 

@@ -6,20 +6,16 @@ import React, { Component } from 'react';
 import {Tabs,Row,Col,DatePicker,Card,Select} from 'antd';
 const TabPane = Tabs.TabPane
 import { connect } from 'dva';
-import {creatButton} from '../ServiceComponentCreat'
 import './order.scss'
 import moment from 'moment'
+import { routerRedux } from 'dva/router'
 import outpatientImg from '../../../../src/assets/outpatient.png'
+import {creatTitle,creatCoarseTitle,creatButton} from '../ServiceComponentCreat'
 
 function handleChange() {
 
 }
 
-function creatTitle(title) {
-  return(
-    <div className="detailTitle">{title}</div>
-  )
-}
 
 function creatRow() {
   return(
@@ -45,9 +41,9 @@ function creatTabPane(dict) {
             <Option value="close">离开</Option>
           </Select>
           <div style={{ marginTop: '100px' }}>
-            {creatTitle('目前预约：22号')}
-            {creatTitle('目前看诊：7号 - 王淑梅')}
-            {creatTitle('本日还可约3位')}
+            {creatCoarseTitle('目前预约：22号')}
+            {creatCoarseTitle('目前看诊：7号 - 王淑梅')}
+            {creatCoarseTitle('本日还可约3位')}
           </div>
 
         </Col>
@@ -70,7 +66,7 @@ class OutpatientDetail extends Component{
   }
 
   editBackClicked(){
-
+    this.props.dispatch(routerRedux.push('/service/order-outpatient'));
   }
 
   history(){
