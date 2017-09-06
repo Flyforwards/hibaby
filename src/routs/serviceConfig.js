@@ -577,7 +577,8 @@ export default (app) => [
       })
     }
   },
-  // 预约游泳
+
+// 预约游泳详情
   {
     path: '/service/order-swimming/detail',
     getComponent: (location, cb) => {
@@ -587,7 +588,7 @@ export default (app) => [
       })
     }
   },
-  // 预约游泳
+  // 预约游泳历史
   {
     path: '/service/order-swimming/history',
     getComponent: (location, cb) => {
@@ -597,4 +598,38 @@ export default (app) => [
       })
     }
   },
+
+  // 预约课程
+  {
+    path: '/service/order-course',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CourseIndex.jsx'))
+      })
+    }
+  },
+
+  // 预约课程 添加
+  {
+    path: '/service/order-course/add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CourseAddIndex.jsx'))
+      })
+    }
+  },
+
+  // 预约课程 详情
+  {
+    path: '/service/order-course/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CourseDetailIndex.jsx'))
+      })
+    }
+  },
+
 ]
