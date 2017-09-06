@@ -10,7 +10,6 @@ import SwimmingIndexCss from  './SwimmingIndex.scss';
 
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
-const { RangePicker } = DatePicker;
 
 class SwimmingHistory extends Component{
   constructor(props){
@@ -31,6 +30,10 @@ class SwimmingHistory extends Component{
 
   onChange=(date, dateString)=> {
     console.log(date, dateString);
+  }
+
+  handleSearch=()=>{
+    
   }
 
   handleBack=()=>{
@@ -68,8 +71,14 @@ class SwimmingHistory extends Component{
     return (
       <Card className="HistoryCard">
         <Row className="date-title">
-          <Col span={24} >
-            <RangePicker onChange={this.onChange.bind(this)} />
+          <Col offset={4} span={2} >
+            <DatePicker />
+          </Col>
+          <Col offset={1} span={2} >
+            <DatePicker />
+          </Col>
+          <Col span={4} >
+            <Button className="button-group-2" onClick={this.handleSearch.bind(this)}>搜索</Button>
           </Col>
         </Row>
         {this.initBox()}
