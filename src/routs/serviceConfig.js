@@ -577,6 +577,24 @@ export default (app) => [
       })
     }
   },
-
-
+  // 预约游泳
+  {
+    path: '/service/order-swimming/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SwimmingDetail.js'))
+      })
+    }
+  },
+  // 预约游泳
+  {
+    path: '/service/order-swimming/history',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SwimmingHistory.js'))
+      })
+    }
+  },
 ]

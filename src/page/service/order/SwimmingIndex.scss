@@ -1,9 +1,9 @@
 .order-swimming{
+  padding:20px;
   min-height: 800px;
   .date-title{
     text-align : center;
     height: 100px;
-    padding-top: 10px;
   }
   .ItemLeft{
     text-align : center;
@@ -21,4 +21,90 @@
     }
   }
 
+}
+
+.DetailCard{
+  min-height: 800px;
+  .date-title{
+    text-align : center;
+    height: 50px;
+  }
+
+  .DetailLeft{
+    min-height: 600px;
+    border-right: 1px solid #d9d9d9;
+    .ItemLeft{
+      text-align : center;
+      .swimming-icon{
+        width: 80px;
+        height: 80px;
+      }
+      .swimming-select{
+        width: 70px;
+      }
+    }
+  }
+  .DetailValue{
+    height: 50px;
+    border-bottom: 1px solid #d9d9d9;
+    .TimeValue{
+      height: 100%;
+      text-align: center;
+      padding-top: 10px;
+    }
+  }
+  .Detail-Bottom{
+    border-top: 1px solid #d9d9d9;
+    padding-top: 10px;
+    text-align : right;
+    .historyBtn{
+      margin-right:20px;
+    }
+
+  }
+}
+
+
+
+.HistoryCard{
+  min-height: 800px;
+  .date-title{
+    text-align : center;
+    height: 50px;
+    border-bottom: 1px solid #d9d9d9;
+  }
+
+  .DetailLeft{
+    padding-top:10px;
+    min-height: 600px;
+    border-right: 1px solid #d9d9d9;
+    .ItemLeft{
+      text-align : center;
+      .swimming-icon{
+        width: 80px;
+        height: 80px;
+      }
+      .swimming-select{
+        width: 70px;
+      }
+    }
+  }
+  .DetailValue{
+    height: 50px;
+    border-bottom: 1px solid #d9d9d9;
+    .TimeValue{
+      height: 100%;
+      text-align: center;
+      padding-top: 10px;
+    }
+  }
+  .Detail-Bottom{
+    border-top: 1px solid #d9d9d9;
+    padding-top: 10px;
+    text-align : right;
+    .historyBtn{
+      margin-right:20px;
+    }
+
+  }
 }
