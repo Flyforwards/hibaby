@@ -86,7 +86,7 @@ class SwimmingHistory extends Component{
         </Row>
         {this.initBox()}
         <div className="Detail-Bottom">
-          <Button className="" onClick={this.handleBack.bind(this)}>返回</Button>
+          <Button className="button-group-bottom-1" onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </Card>
     );

@@ -98,8 +98,8 @@ class SwimmingDetail extends Component{
           {tabPanelArr}
         </Tabs>
         <div className="Detail-Bottom">
-          <Button className="historyBtn" onClick={this.handleHistory.bind(this)}>历史</Button>
-          <Button className="" onClick={this.handleBack.bind(this)}>返回</Button>
+          <Button className="historyBtn button-group-bottom-2" onClick={this.handleHistory.bind(this)}>历史</Button>
+          <Button className="button-group-bottom-1" onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </Card>
     );
