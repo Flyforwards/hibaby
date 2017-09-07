@@ -30,13 +30,13 @@ class Detail extends Component {
   }
   
   //编辑按钮
-  editBackClicked(isEdit, data) {
-    const { dispatch, describeInfo } = this.props;
-    const noEditInfo = describeInfo[data.key]
-    isEdit ? data.info = { ...data.info, isEdit } : data.info = { ...noEditInfo, isEdit }
+  editBackClicked(postInfo) {
+    const { dispatch } = this.props;
+    const param = parse(location.search.substr(1));
+    postInfo.operatorItem = parseInt(param.operatoritem)
     dispatch({
-      type: 'serviceCustomer/isEdit',
-      payload: data
+      type: 'serviceCustomer/isEditGetDoctorNoteById',
+      payload: postInfo
     })
   }
   
@@ -106,6 +106,7 @@ class Detail extends Component {
       payload: dateString
     })
   }
+ 
   
   render() {
     const { loading, baseInfoDict, describeInfo } = this.props;
@@ -153,7 +154,8 @@ class Detail extends Component {
                     </Row>
                     <div className="buttonBox">
                       <div className='button-group-bottom-common'>
-                        {v.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, true, {
+                        {v.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, {
+                          isEdit: true,
                           info: v,
                           key: k
                         }))}
@@ -172,7 +174,7 @@ class Detail extends Component {
         </Spin>
       )
     } else {
-      const { describeDiagnosisInfo, describeObstetricInfo, describePuerperaInfo, describeButlerInfo, describeNutritionInfo, type } = this.props;
+      const { describeDiagnosisInfo, describeObstetricInfo, describeButlerInfo, describeNutritionInfo, type } = this.props;
       let info = [];
       switch (type) {
         case (2):

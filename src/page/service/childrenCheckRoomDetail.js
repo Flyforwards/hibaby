@@ -80,8 +80,12 @@ class Detail extends Component {
   //编辑按钮
   editBackClicked(data) {
     const { dispatch } = this.props;
+    //dispatch({
+    //  type: 'serviceCustomer/isEditChildren',
+    //  payload: data
+    //})
     dispatch({
-      type: 'serviceCustomer/isEditChildren',
+      type: 'serviceCustomer/getPediatricNoteById',
       payload: data
     })
   }
@@ -169,7 +173,8 @@ class Detail extends Component {
                                     {vv.isEdit != true && creatButton('编辑', this.editBackClicked.bind(this, {
                                       k,
                                       kk,
-                                      isEdit: true
+                                      isEdit: true,
+                                      dataId:vv.id
                                     }))}
                                     {vv.isEdit != true && creatButton('删除', this.onDelete.bind(this, {
                                       id: vv.id,

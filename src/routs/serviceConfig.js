@@ -631,5 +631,15 @@ export default (app) => [
       })
     }
   },
+  // 预约技师
+  {
+    path: '/service/order-technician',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/technicianIndex.js'))
+      })
+    }
+  },
 
 ]

@@ -1,22 +1,23 @@
 .order-swimming{
   padding:20px;
+
   min-height: 800px;
-  .date-title{
-    text-align : center;
+  .date-title {
+    text-align: center;
     height: 100px;
   }
-  .ItemLeft{
-    text-align : center;
-    .swimming-icon{
+  .ItemLeft {
+    text-align: center;
+    .swimming-icon {
       width: 80px;
       height: 80px;
     }
-    .swimming-select{
+    .swimming-select {
       width: 70px;
     }
   }
-  .ItemRight{
-    p{
+  .ItemRight {
+    p {
       font-size: 18px;
     }
   }
@@ -115,5 +116,12 @@
       margin-right:20px;
     }
 
+  }
+}
+
+.order-technician {
+  .choose_time {
+    text-align: center;
+    margin-bottom: 20px;
   }
 }
