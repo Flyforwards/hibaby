@@ -44,15 +44,21 @@
       }
     }
   }
-  .DetailValue{
-    height: 50px;
-    border-bottom: 1px solid #d9d9d9;
-    .TimeValue{
-      height: 100%;
-      text-align: center;
-      padding-top: 10px;
+
+  .DetailRight{
+    overflow-y: auto;
+    height: 600px;
+    .DetailValue{
+      height: 50px;
+      border-bottom: 1px solid #d9d9d9;
+      .TimeValue{
+        height: 100%;
+        text-align: center;
+        padding-top: 10px;
+      }
     }
   }
+
   .Detail-Bottom{
     border-top: 1px solid #d9d9d9;
     padding-top: 10px;

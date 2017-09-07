@@ -47,7 +47,7 @@ class SwimmingDetail extends Component{
                 </Select>
               </div>
             </Col>
-            <Col span={20}>
+            <Col span={20} className="DetailRight">
               <div className="DetailValue">
                 <Row className="TimeValue">
                   <Col span={8}>9:00 - 9:30</Col>
