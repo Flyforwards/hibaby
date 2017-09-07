@@ -26,6 +26,7 @@ import '../crm/customer/CustomerIndex.scss'
 import DictionarySelect from 'common/dictionary_select';
 import { routerRedux } from 'dva/router'
 import Current from '../Current';
+import PermissionLink from 'common/PermissionLink';
 
 
 const Option = Select.Option
@@ -85,14 +86,29 @@ class CustomerListPage extends Component {
         } else {
           return record.operator;
         }
+
       }
     }, {
       title: '操作',
       dataIndex: 'operating',
       render: (text, record, index) => {
+        let pathname = location.pathname;
+
+        let testKey = ''
+        if(pathname.indexOf('check-before')!==-1||pathname.indexOf('check-in')!==-1||pathname.indexOf('child-check-in')!==-1||
+          pathname.indexOf('diagnosis')!==-1||pathname.indexOf('diagnosis-record')!==-1||pathname.indexOf('obstetric-record')!==-1||
+          pathname.indexOf('children-record')!==-1){
+          testKey = 'DOCTOR_CKXQ'
+        }
+        else if(pathname.indexOf('baby-swimming')!==-1||pathname.indexOf('baby-grow')!==-1||pathname.indexOf('baby-feed')!==-1||
+          pathname.indexOf('edinburgh-birth')!==-1||pathname.indexOf('puerpera-record')!==-1||pathname.indexOf('baby-manual')!==-1||
+          pathname.indexOf('baby-nursing')!==-1|| pathname.indexOf('puerpera-body')!==-1){
+          testKey = 'NURSING_DETAIL'
+        }
+
         return (
           <div className="operation-list">
-            <Link className="one-link link-style" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
+            <PermissionLink testKey={testKey} className="one-link link-style" onClick={ this.onLook.bind(this, record)}> 查看 </PermissionLink>
           </div>
         );
       }

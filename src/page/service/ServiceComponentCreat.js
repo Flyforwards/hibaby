@@ -4,6 +4,7 @@ import DictionarySelect from 'common/dictionary_select';
 import './serviceComponent.scss'
 import './order/order.scss'
 import moment from 'moment';
+import PermissionButton from 'common/PermissionButton';
 import {Icon,Card ,Switch,Input,Form,Select,InputNumber,DatePicker,Row, Col,Button,Radio,AutoComplete,Modal,Checkbox} from 'antd';
 const Option = Select.Option;
 const InputGroup = Input.Group;
@@ -397,7 +398,26 @@ export class RadioClass extends React.Component{
     )
   }
 }
+
 export function creatButton(title,onclick) {
+
+  let pathname = location.pathname;
+
+  let testKey = ''
+
+  let type = ''
+
+  if(pathname.indexOf('check-before')!==-1||pathname.indexOf('check-in')!==-1||pathname.indexOf('child-check-in')!==-1||
+    pathname.indexOf('diagnosis')!==-1||pathname.indexOf('diagnosis-record')!==-1||pathname.indexOf('obstetric-record')!==-1||
+    pathname.indexOf('children-record')!==-1){
+    type = 1
+  }
+  else if(pathname.indexOf('baby-swimming')!==-1||pathname.indexOf('baby-grow')!==-1||pathname.indexOf('baby-feed')!==-1||
+    pathname.indexOf('edinburgh-birth')!==-1||pathname.indexOf('puerpera-record')!==-1||pathname.indexOf('baby-manual')!==-1||
+    pathname.indexOf('baby-nursing')!==-1|| pathname.indexOf('puerpera-body')!==-1){
+    type = 2
+  }
+
 
   let className = 'bottomButton button-group-bottom-1'
 
@@ -406,14 +426,37 @@ export function creatButton(title,onclick) {
   }
   if(title === '编辑'|| title ==='历史'){
     className = 'bottomButton button-group-bottom-2'
+    if(title === '编辑'){
+      if(type === 1){
+        testKey = 'DOCTOR_XQBJ'
+      }
+      else if(type === 2){
+        testKey = 'NURSING_EDIT'
+      }
+    }
   }
   if(title === '打印'){
     className = 'bottomButton button-group-bottom-3'
+    if(type === 1){
+      testKey = 'DOCTOR_PRINT'
+    }
+    else if(type === 2){
+      testKey = 'NURSING_PRINT'
+    }
   }
   if(title === '删除'){
     className = 'bottomButton button-group-2'
+    if(type === 1){
+      testKey = 'DOCTOR_XQSC'
+    }
+    else if(type === 2){
+      testKey = 'NURSING_DELETE'
+    }
   }
-  return (<Button className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}>{title}</Button>)
+
+  return(
+    <PermissionButton testKey={testKey} className={className} onClick={title === '删除' ?()=>{showConfirm(onclick)} :onclick}> {title} </PermissionButton>
+  )
 }
 
 export function detailComponent(baseInfoDict) {
