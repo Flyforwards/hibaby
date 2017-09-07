@@ -24,7 +24,7 @@ function ClubSelect({ dispatch, clubs}){
        <div className = "login-index">
          <div className = "select">
            <img className = "find-img" src ={ logo } />
-           <div style={{ maxHeight: '400px', 'overflow-x': 'hidden','overflow-y' : 'auto' }}>
+           <div style={{ maxHeight: '400px', 'overflow': 'hidden','overflowY' : 'auto' }}>
              <div style={{ marginRight: '12px' }}>
                {
                  buttonNodes
