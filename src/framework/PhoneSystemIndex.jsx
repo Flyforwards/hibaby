@@ -309,7 +309,7 @@ class PhoneSystemIndex extends React.Component {
         showData.queueEntry.map((item)=>{
           item.key = item.uniqueId.replace(".",'');
         })
-        if(status != '离线' && 2000 == cno) {
+        if(window.threeInfo &&  status != '离线' && window.threeInfo.cno == cno) {
           this.time = setInterval(
             () => {
               loginTime++;
@@ -582,7 +582,7 @@ class PhoneSystemIndex extends React.Component {
 
       }
 
-      if(token.cno == 2000){
+      if(window.threeInfo && token.cno == window.threeInfo.cno){
         //callType：
         //1：呼入，2：网上400,3：点击外呼，4：预览外呼，5：IVR外呼，6：分机直接外呼
         if(token.eventName == "comeRinging"&&token.name == "ringing"){	//呼入响铃
@@ -857,11 +857,11 @@ class PhoneSystemIndex extends React.Component {
 function mapStateToProps(state) {
   const {
     customerInfo,
-    callRecords
+    callRecords,
   } = state.layout;
   return {
     customerInfo,
-    callRecords
+    callRecords,
   };
 }
 
