@@ -10,12 +10,10 @@ const RadioGroup = Radio.Group;
 const Search = Input.Search;
 import $ from 'jquery'
 
-//let initRadioValue = {};
 class PrepareMeals extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      initRadioValues : this.props.defaultValueRadio ?  this.props.defaultValueRadio:{}
     };
   }
 
@@ -107,27 +105,21 @@ class PrepareMeals extends Component {
 
   render() {
     const { prepareMeals, loading,defaultValueRadio } = this.props;
-    console.log("xxx",JSON.stringify(defaultValueRadio))
     const { dayInfo ,menuInfo,findMenuInfo, leftDish,customerLoop } = prepareMeals;
     let colorType = '#dddddd';
-    let weeks = {
-      week: 5,
-      day: 6,
-      colorType: '#fff'
-    };
     const { infoZero, infoOne, infoTwo, infoThr, infoFor, infoFiv, infoSix } = leftDish;
     return (
-      <div className="prepareMeals">
+     <div className="prepareMeals">
         <LowModal/>
         <HighModal/>
-        <Row className="Row">
+       {customerLoop && JSON.stringify(customerLoop) != '{}'? <Row className="Row">
           <Col span={12} className="colLeft">
             <Search placeholder="请输入菜名" style={{
               width: 400,
               marginBottom: 20
             }} onSearch={this.onSearch}/>
             <RadioGroup onChange={this.onChange} key={defaultValueRadio} defaultValue={JSON.stringify(defaultValueRadio)}>
-              {customerLoop && JSON.stringify(customerLoop) != '{}' ? dayInfo.map((v, k) => {
+              { dayInfo.map((v, k) => {
                   return (
                     <div key={k} className="timeInfo">
                       <span className="weekName">{v.weekName}</span>
@@ -140,7 +132,7 @@ class PrepareMeals extends Component {
                       }
                     </div>
                   )
-                }):''
+                })
               }
             </RadioGroup>
           </Col>
@@ -204,7 +196,7 @@ class PrepareMeals extends Component {
               })
             }
           </Col>
-        </Row>
+        </Row>:''}
       </div>
     );
   }

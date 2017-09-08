@@ -415,7 +415,6 @@ export default {
     },
     getMenuInfo(state, { payload: { data ,values} }){
       let { menuInfoLow, lowTime, defaultValueRadio } = state;
-      //console.log("sss",...values)
       //defaultValueRadio = { ...values, colorType: "red" };
       if (data.length != 0) {
         let info = [];
@@ -838,7 +837,6 @@ export default {
       const dataId = queryURL('dataId');
       const value = {...values, dataId};
       const { data: {data, code}} = yield call(prepareMealsService.getLoopByCustomerId,value);
-      console.log("ssosososososo",data)
       if(code == 0) {
         yield put({
           type:'getLoopMsg',
