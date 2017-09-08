@@ -4,6 +4,7 @@ import {Card ,Row,Form,Tabs,Spin,DatePicker} from 'antd';
 const TabPane = Tabs.TabPane;
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
+import { do_print } from 'common/util/printRoute.js';
 import { parse } from 'qs'
 import moment from 'moment'
 import { routerRedux,Link } from 'dva/router'
@@ -85,7 +86,7 @@ class Detail extends Component {
   }
 
   print(){
-
+    do_print('bigDetailDiv');
   }
 
   CreatDetailCard(dict) {
@@ -172,7 +173,7 @@ class Detail extends Component {
 
     return (
       <Spin spinning={loading.effects[`serviceCustomer/${url}`] !== undefined ? loading.effects[`serviceCustomer/${url}`]:false}>
-        <Card  extra = {summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
+        <Card  extra = {summary?'':<DatePicker onChange={this.onChange.bind(this)}/>} id="bigDetailDiv" className='bigDetailDiv' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
           {this.props.summary?'':baseInfoDivAry}
           {detailCard}
           {this.props.summary?'':bottomDiv}
