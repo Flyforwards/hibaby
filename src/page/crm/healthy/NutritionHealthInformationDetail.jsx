@@ -31,7 +31,7 @@ function NutritionHealthInformationDetail(props) {
 
   //输入框的名字
   const inputNames=[];
-  for(let i = 0; i < 20; i++) {
+  for(let i = 0; i < 23; i++) {
     inputNames.push('input_'+i);
   }
 
@@ -357,7 +357,7 @@ function NutritionHealthInformationDetail(props) {
             <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('宗教信仰',inputNames[4],'',true,'请输入宗教信仰',false)}
             </Col>
-            <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
+            <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('孕前体重',inputNames[2],'kg',true,'请输入孕前体重',false)}
             </Col>
             <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
@@ -366,7 +366,7 @@ function NutritionHealthInformationDetail(props) {
             <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('孕期增重',inputNames[19],'kg',false,'请输入孕期增重',false)}
             </Col>
-            <Col className="ItemLeft" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
+            <Col className="ItemRight" span="10" style={{height: '55px',display: 'table',width:'50%'}}>
               {myInput('现体重',inputNames[3],'kg',true,'请输入现体重',false)}
             </Col>
           </Row>
@@ -406,7 +406,7 @@ function NutritionHealthInformationDetail(props) {
             </Col>
           </Row>
           <Row  className="dateDiet" key="14">
-            <Col className="dateDietTitle" span="3" style={{height: '496px',display: 'table',width:'14.6%'}}>
+            <Col className="dateDietTitle" span="3" style={{height: '665px',display: 'table',width:'14.6%'}}>
               <div className="itemTitle">经常食用的食品</div>
             </Col>
             <Col span="20" style={{height: '496px',display: 'table',width:'85.4%'}}>
@@ -449,21 +449,42 @@ function NutritionHealthInformationDetail(props) {
               </Row>
               {/*{radioAllRow(radioNames[19], {title: '腌制类',radioItems: [ '咸鱼', '腊肉', '泡菜']},'',false,'',19)}*/}
               {/*{radioAllRow(radioNames[20], {title: '加工食品',radioItems: ['肉丸', '肉罐头','肉松','方便面','巧克力','话梅蜜饯','糖果','甜汤品', '面包', '蛋糕']},20)}*/}
+              <Row className="dietTaboo">
+                <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
+                  <div className="dietTitle">腌制类:</div>
+                </Col>
+                <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
+                  {checkboxAllRow(radioNames[19],{radioItems: ['咸鱼', '腊肉', '泡菜']},19)}
+                  {checkWhiteRow(radioNames[19], inputNames[20], {radioItems: ['其他']},'',false,'',20)}
+                </Col>
+              </Row>
+              <Row className="dietTaboo">
+                <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
+                  <div className="dietTitle">加工食品:</div>
+                </Col>
+                <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
+                  {checkboxAllRow(radioNames[20],{radioItems: ['肉丸', '肉罐头','肉松','方便面','巧克力','话梅蜜饯','糖果','甜汤品', '面包', '蛋糕']},21)}
+                  {checkWhiteRow(radioNames[20], inputNames[21], {radioItems: ['其他']},'',false,'',22)}
+                </Col>
+              </Row>
 
-              {checkboxAllRow(radioNames[19],{title: '腌制类',radioItems: ['咸鱼', '腊肉', '泡菜']},19)}
-              {checkboxAllRow(radioNames[20],{title: '加工食品',radioItems: ['肉丸', '肉罐头','肉松','方便面','巧克力','话梅蜜饯','糖果','甜汤品', '面包', '蛋糕']},20)}
-
-              <Row className="lastDiet">
+              <Row className="dietTaboo">
+                <Col className="itemTitle" span='4' style={{height: '110px',display: 'table',width:'12%'}}>
+                  <div className="dietTitle">刺激食品:</div>
+                </Col>
+                <Col span='20' style={{height: '110px',display: 'table',width:'88%'}}>
                 {/*{radioAllRow(radioNames[21], {title: '刺激食品',radioItems: [ '茶','咖啡', '辣椒','烟', '酒', '油炸食物' ]},21)}*/}
-                {checkboxAllRow(radioNames[21],{title: '刺激食品',radioItems: ['茶','咖啡', '辣椒','烟', '酒', '油炸食物' ]},21)}
+                {checkboxAllRow(radioNames[21],{radioItems: ['茶','咖啡', '辣椒','烟', '酒', '油炸食物' ]},23)}
+                {checkWhiteRow(radioNames[21], inputNames[22], {radioItems: ['其他']},'',false,'',24)}
+                </Col>
               </Row>
             </Col>
           </Row>
           {/*{radioWhiteRow(radioNames[22], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',22)}*/}
-          {checkWhiteRow(radioNames[22], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',22)}
+          {checkWhiteRow(radioNames[22], inputNames[17], {title: '运动种类',radioItems: [ '孕妇瑜伽', '水中瑜伽', '散步','爬楼梯','其他']},'',false,'',25)}
 
           <Row className="lastRow">
-            {radioAllRow(radioNames[24],{title: '睡眠',radioItems: ['低于4小时','4-8小时','超过八小时']},23)}
+            {radioAllRow(radioNames[24],{title: '睡眠',radioItems: ['低于4小时','4-8小时','超过八小时']},26)}
           </Row>
         </Row>
       </Form>

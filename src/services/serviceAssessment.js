@@ -73,6 +73,7 @@ export function getdoctornoteList(values) {
 }
 //3.保存或编辑记录单
 export function saveDoctorNote(values) {
+  console.log(values,'我传的参数呢')
   return request('/crm/api/v1/doctornote/saveDoctorNote', {
     method: 'POST',
     body: JSON.stringify(values)
@@ -116,140 +117,181 @@ export function DelPediatricNote(values) {
   })
 }
 
-
-
-
-
-
 export function getBrouchurDetailById(values) {
   return request('/crm/api/v1/brochure/getBrochureById', {
-  method: 'POST',
-  body: JSON.stringify(values),
-   })
-  }
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
 
 export function getBabyFeedingNoteList(values) {
   return request('/crm/api/v1/babyFeedingNote/getBabyFeedingNoteList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
 export function saveBabyFeedingNote(values) {
   return request('/crm/api/v1/babyFeedingNote/saveBabyFeedingNote', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
 export function getBabyGrowthNoteById(values) {
   return request('/crm/api/v1/babyGrowthNote/getBabyGrowthNoteById', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
 export function getBabyFeedingNoteById(values) {
   return request('/crm/api/v1/babyFeedingNote/getBabyFeedingNoteById', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
 export function getMaternalEverydayPhysicalEvaluationById(values) {
   return request('/crm/api/v1/maternalEverydayPhysicalEvaluation/getMaternalEverydayPhysicalEvaluationById', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
+export function delBabyFeedingNote(values) {
+  return request('/crm/api/v1/babyFeedingNote/delBabyFeedingNote', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+export function delBabyGrowthNote(values) {
+  return request('/crm/api/v1/babyGrowthNote/delBabyGrowthNote', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+export function delMaternalEverydayPhysicalEvaluation(values) {
+  return request('/crm/api/v1/maternalEverydayPhysicalEvaluation/delMaternalEverydayPhysicalEvaluation', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
 
 export function getBabyGrowthNoteList(values) {
   return request('/crm/api/v1/babyGrowthNote/getBabyGrowthNoteList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 export function saveBabyGrowthNote(values) {
   return request('/crm/api/v1/babyGrowthNote/saveBabyGrowthNote', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //对内婴儿游泳记录
 export function getInsideBabySwimList(values) {
   return request('/crm/api/v1/babySwimming/getBabySwimmingList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //保存对内婴儿游泳记录
 export function saveInsideBabySwim(values) {
   return request('/crm/api/v1/babySwimming/saveBabySwimming', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 export function getInsideBabySwimById(values) {
   return request('/crm/api/v1/babySwimming/getBabySwimmingById', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 // 发送生产通知单
 export function sendProductionNotification(values) {
   return request('/crm/api/v1/productionNotification/sendProductionNotification', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
-
+// 发送入住通知单
+export function sendOccupancyNotice(values) {
+  return request('/crm/api/v1/occupancyNotice/sendOccupancyNotice', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+// 发送外出通知单
+export function senddepartureNotice(values) {
+  return request('/crm/api/v1/departureNotice/senddepartureNotice', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+// 发送退房通知单
+export function sendCheckOutNotice(values) {
+  return request('/crm/api/v1/checkOutNotice/sendCheckOutNotice', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+// 发送自由通知单
+export function sendFreeNotice(values) {
+  return request('/crm/api/v1/freeNotice/sendFreeNotice', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
 
 //根据id删除婴儿评估
 export function onDeleteBabydata(values) {
   return request('/crm/api/v1/assessment/DelBabyOccupancyAssessment', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 export function getCustomerInfoByCustomerName(values) {
   return request('/crm/api/v1/customer/getCustomerInfoByCustomerName', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //根据客户id 查询婴儿评估
 export function getBabydataByCustomerid(values) {
   return request('/crm/api/v1/assessment/getBabyOccupancyAssessmentByCustomerId', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
 export function getCurrentEndemicDeptList(values) {
   return request('/crm/api/v1/department/getCurrentEndemicDeptList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //根据id查询婴儿入住评估详情
 export function getBabyDataById(values) {
   return request('/crm/api/v1/assessment/getBabyOccupancyAssessmentById', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //保存或编辑婴儿入住评估
 export function onSaveBabyData(values) {
   return request('/crm/api/v1/assessment/saveBabyOccupancyAssessment', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
-//根据客户信息id 得到婴儿信息
+//根据客户信息id得到婴儿信息
 export function getBabymsgByCustomerId(values) {
   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -257,7 +299,7 @@ export function getBabymsgByCustomerId(values) {
 export function getBabyListByCustomerId(values) {
   return request('/crm/api/v1/productionNotification/getBabyListByCustomerId', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -265,7 +307,7 @@ export function getBabyListByCustomerId(values) {
 export function getJournal(values) {
   return request('/crm/api/v1/journal/getJournal', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -273,7 +315,7 @@ export function getJournal(values) {
 export function updateJournal(values) {
   return request('/crm/api/v1/journal/updateJournal', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -283,54 +325,45 @@ export function updateJournal(values) {
 export function saveEdinburghMelancholyGauge(values) {
   return request('/crm/api/v1/edinburghMelancholyGauge/saveEdinburghMelancholyGauge', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //2.根据客户id以及筛选条件查询爱丁堡忧郁单列表
 export function getEdinburghMelancholyGaugeList(values) {
   return request('/crm/api/v1/edinburghMelancholyGauge/getEdinburghMelancholyGaugeList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //3.根据id删除爱丁堡忧郁单
 export function delEdinburghMelancholyGauge(values) {
   return request('/crm/api/v1/edinburghMelancholyGauge/delEdinburghMelancholyGauge', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 //4.根据id查询爱丁堡忧郁单详情
 export function getEdinburghMelancholyGaugeById(values) {
   return request('/crm/api/v1/edinburghMelancholyGauge/getEdinburghMelancholyGaugeById', {
     method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
+export function getAssessmentById(values) {
+  return request('/crm/api/v1/assessment/getAssessmentById', {
+    method: 'POST',
     body: JSON.stringify(values),
   })
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export function delBabySwimming(values) {
+  return request('/crm/api/v1/babySwimming/delBabySwimming', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
 

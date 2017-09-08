@@ -101,28 +101,6 @@ class PhoneSystemIndex extends React.Component {
       dataIndex: 'position',
       key: 'position',
     },];
-    this.nodes = [
-      <Button key="pause" className='system-button2' onClick={ this.actionType.bind(this,1) }>置忙</Button>, // 1
-      <Button key="online" className='system-button2' onClick={ this.actionType.bind(this,2) }>置闲</Button>, // 2
-      <Button key="answer" className='system-button2' onClick={ this.actionType.bind(this,3) }>接听</Button>, // 3
-      <Button key="unLink" className='system-button2' onClick={ this.actionType.bind(this,4) }>挂断</Button>, // 4
-      <Button key="refused"  className='system-button2' onClick={ this.actionType.bind(this,5) }>拒接</Button>, // 5
-      <Button key="hold" className='system-button2' onClick={ this.actionType.bind(this,6) }>保持</Button>, // 6
-      <Button key="unHold"  className="system-button3" onClick={ this.actionType.bind(this,7) }>保持接回</Button>, // 7
-      <Button key="consult" className='system-button2' onClick={ this.actionType.bind(this,8) }>咨询</Button>, // 8
-      <Button key="consultBack"  className="system-button3" onClick={ this.actionType.bind(this,9) }>咨询接回</Button>, // 9
-      <Button key="consultTransfer"  className="system-button3" onClick={ this.actionType.bind(this,10) }>咨询转接</Button>, // 10
-      <Button key="consultThreeway"  className="system-button3" onClick={ this.actionType.bind(this,11) }>咨询三方</Button>, // 11
-      <Button key="transfer"  className='system-button2' onClick={ this.actionType.bind(this,12) }>转移</Button>, // 12
-      <InputGroup className="phone-button-input" style={{ width: '170px' }} key="phoneText" compact>
-        <Select disabled defaultValue='0' style={{ width: '78px' }} key="consultInput">
-          <Option key='0' value="0">普通电话</Option>
-        </Select>
-        <Input ref="phone" style={{ width:'88px',height: '33px' }} />
-      </InputGroup>, //13
-      <Button key="phoneCallout"  className="system-button3" onClick={ this.actionType.bind(this,14) }>呼叫</Button>, // 14
-      <Button key="phoneCallCancel" className="system-button3" onClick={ this.actionType.bind(this,15) }>呼叫取消</Button>, // 15
-      ];
     // this.getCustomerInfo('15623578269');
   }
   // 切换呼叫类型
@@ -136,7 +114,7 @@ class PhoneSystemIndex extends React.Component {
 
 
   actionType(id) {
-
+    console.log(id);
     switch(id) {
       case 1 :
         window.executeAction('doPause', { description: "置忙"})
@@ -213,7 +191,6 @@ class PhoneSystemIndex extends React.Component {
 
         break;
       case 14 :
-        return
           const phone = this.refs.phone.refs.input.value;
           if (phone && phone.length>0 && phone.length<12) {
             const params = { callType: '3', tel: phone };
@@ -309,7 +286,7 @@ class PhoneSystemIndex extends React.Component {
         showData.queueEntry.map((item)=>{
           item.key = item.uniqueId.replace(".",'');
         })
-        if(status != '离线' && 2000 == cno) {
+        if(window.threeInfo &&  status != '离线' && window.threeInfo.cno == cno) {
           this.time = setInterval(
             () => {
               loginTime++;
@@ -582,7 +559,7 @@ class PhoneSystemIndex extends React.Component {
 
       }
 
-      if(token.cno == 2000){
+      if(window.threeInfo && token.cno == window.threeInfo.cno){
         //callType：
         //1：呼入，2：网上400,3：点击外呼，4：预览外呼，5：IVR外呼，6：分机直接外呼
         if(token.eventName == "comeRinging"&&token.name == "ringing"){	//呼入响铃
@@ -670,6 +647,28 @@ class PhoneSystemIndex extends React.Component {
   }
 
   render() {
+    let nodes = [
+      <Button key="pause" className='system-button2' onClick={ this.actionType.bind(this,1) }>置忙</Button>, // 1
+      <Button key="online" className='system-button2' onClick={ this.actionType.bind(this,2) }>置闲</Button>, // 2
+      <Button key="answer" className='system-button2' onClick={ this.actionType.bind(this,3) }>接听</Button>, // 3
+      <Button key="unLink" className='system-button2' onClick={ this.actionType.bind(this,4) }>挂断</Button>, // 4
+      <Button key="refused"  className='system-button2' onClick={ this.actionType.bind(this,5) }>拒接</Button>, // 5
+      <Button key="hold" className='system-button2' onClick={ this.actionType.bind(this,6) }>保持</Button>, // 6
+      <Button key="unHold"  className="system-button3" onClick={ this.actionType.bind(this,7) }>保持接回</Button>, // 7
+      <Button key="consult" className='system-button2' onClick={ this.actionType.bind(this,8) }>咨询</Button>, // 8
+      <Button key="consultBack"  className="system-button3" onClick={ this.actionType.bind(this,9) }>咨询接回</Button>, // 9
+      <Button key="consultTransfer"  className="system-button3" onClick={ this.actionType.bind(this,10) }>咨询转接</Button>, // 10
+      <Button key="consultThreeway"  className="system-button3" onClick={ this.actionType.bind(this,11) }>咨询三方</Button>, // 11
+      <Button key="transfer"  className='system-button2' onClick={ this.actionType.bind(this,12) }>转移</Button>, // 12
+      <InputGroup className="phone-button-input" style={{ width: '170px' }} key="phoneText" compact>
+        <Select disabled defaultValue='0' style={{ width: '78px' }} key="consultInput">
+          <Option key='0' value="0">普通电话</Option>
+        </Select>
+        <Input ref="phone" style={{ width:'88px',height: '33px' }} />
+      </InputGroup>,
+      <Button key="phoneCallout"  className="system-button3" onClick={ this.actionType.bind(this,14) }>呼叫</Button>, // 14
+      <Button key="phoneCallCancel" className="system-button3" onClick={ this.actionType.bind(this,15) }>呼叫取消</Button>, // 15
+    ];
     let bottom = null;
     const { style, info, status, call_time, loginStatus  } = this.state;
     const { form } = this.props;
@@ -677,7 +676,12 @@ class PhoneSystemIndex extends React.Component {
     if (style == 'large') {
       const { loginTime, dataSource, nodeId, memberStatus } = this.state
       const { callRecords, customerInfo } = this.props;
-
+      const input_13 = <InputGroup className="phone-button-input" style={{ width: '170px' }} key="phoneText" compact>
+          <Select disabled defaultValue='0' style={{ width: '78px' }} key="consultInput">
+            <Option key='0' value="0">普通电话</Option>
+          </Select>
+          <Input ref="phone" style={{ width:'88px',height: '33px' }} />
+        </InputGroup> //13
       let input_bottom_16 = null;
       if  (this.state.type == '0') {
         input_bottom_16 = <Input ref="number" style={{ width: '113px',height: '33px' }} />
@@ -708,11 +712,15 @@ class PhoneSystemIndex extends React.Component {
       const buttons = []
       if (nodeId) {
         nodeId.map(item=>{
-          if (item != 16) {
-            buttons.push(this.nodes[item-1])
-          } else {
-            buttons.push(input_16)
-          }
+          // if (item == 13) {
+          //   buttons.push(input_13)
+          // } else {
+            if (item != 16) {
+              buttons.push(nodes[item-1])
+            } else {
+              buttons.push(input_16)
+            }
+          // }
         })
       }
       const callContent =  status!=2&&status!=3 ? null:(
@@ -846,7 +854,7 @@ class PhoneSystemIndex extends React.Component {
 
     return (
       <div>
-        <Button onClick={ this.onClick.bind(this)}  id="bridging-btn" style={{position: 'absolute', left: 0, top: 0,width:'40px',height:'30px', display: 'none'}} >桥接中介</Button>
+        <Button onClick={ this.onClick.bind(this)}  id="bridging-btn" style={{position: 'absolute', left: 0, top: 0,width:'10px',height:'10px', display: 'none'}} ></Button>
         { bottom }
       </div>
     )
@@ -857,11 +865,11 @@ class PhoneSystemIndex extends React.Component {
 function mapStateToProps(state) {
   const {
     customerInfo,
-    callRecords
+    callRecords,
   } = state.layout;
   return {
     customerInfo,
-    callRecords
+    callRecords,
   };
 }
 

@@ -302,7 +302,7 @@ export default (app) => [
       })
     }
   },
-  
+
   // 婴儿喂养记录单
   {
 
@@ -467,11 +467,42 @@ export default (app) => [
   },
   // 入住通知单
   {
-    path: '/service/stay-message/production',
+    path: '/service/send-message/stay',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/serviceCustomer'));
-        cb(null, require('page/service/ProductionStay.js'))
+        cb(null, require('page/service/stayNotice.js'))
+      })
+    }
+  },
+  // 外出通知单
+  {
+    path: '/service/send-message/out',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/outNotice.js'))
+      })
+    }
+  },
+
+
+  // 退房通知单
+  {
+    path: '/service/send-message/check-out',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkOutNotice.js'))
+      })
+    }
+  },
+  {
+    path: '/service/send-message/free',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/freeNotice.js'))
       })
     }
   },
@@ -516,4 +547,99 @@ export default (app) => [
       })
     }
   },
+  //门诊
+  {
+    path: '/service/order-outpatient',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/outpatient'));
+        cb(null, require('page/service/order/OutpatientIndex.js'))
+      })
+    }
+  },
+  //门诊
+  {
+    path: '/service/order-outpatient/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/outpatient'));
+        cb(null, require('page/service/order/OutpatientDetail.js'))
+      })
+    }
+  },
+  // 预约游泳
+  {
+    path: '/service/order-swimming',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SwimmingIndex.js'))
+      })
+    }
+  },
+
+// 预约游泳详情
+  {
+    path: '/service/order-swimming/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SwimmingDetail.js'))
+      })
+    }
+  },
+  // 预约游泳历史
+  {
+    path: '/service/order-swimming/history',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SwimmingHistory.js'))
+      })
+    }
+  },
+
+  // 预约课程
+  {
+    path: '/service/order-course',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CourseIndex.jsx'))
+      })
+    }
+  },
+
+  // 预约课程 添加
+  {
+    path: '/service/order-course/add',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CourseAddIndex.jsx'))
+      })
+    }
+  },
+
+  // 预约课程 详情
+  {
+    path: '/service/order-course/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/CourseDetailIndex.jsx'))
+      })
+    }
+  },
+  // 预约技师
+  {
+    path: '/service/order-technician',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/technicianIndex.js'))
+      })
+    }
+  },
+
 ]

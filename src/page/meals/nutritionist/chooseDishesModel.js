@@ -1,9 +1,12 @@
 import { connect } from 'dva';
 import React, { Component }from 'react';
 import { Modal, Button } from 'antd';
-import { Tree, Input, Row, Col, Table,message } from 'antd';
+import { Tree, Input, Row, Col, Table,Form,Select } from 'antd';
+import { Link } from 'react-router';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
+const FormItem = Form.Item;
+const Option = Select.Option
 import './prepareMeals.scss'
 
 class App extends Component {
@@ -12,7 +15,10 @@ class App extends Component {
     autoExpandParent: true,
     data: [],
     selectedKeys: [],
-    name: ''
+    name: '',
+    mvType : null,
+    vdType : null,
+    status : null
   }
 
   onExpand = (expandedKeys) => {
@@ -36,6 +42,54 @@ class App extends Component {
       name: value
     })
   }
+
+
+
+  handleNameChange=(e)=>{
+    this.setState({
+      name: e.target.value
+    });
+  }
+  handleMvTypeChange=(value)=>{
+    this.setState({
+      mvType: value
+    });
+  }
+  handleVdTypeChange=(value)=>{
+    this.setState({
+      vdType: value
+    });
+  }
+  handleStatus=(value)=>{
+    this.setState({
+      status: value
+    });
+  }
+
+  handleSearch  = () =>{
+    this.getTableData({
+      nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
+      page : 1,
+    });
+  }
+
+
+  getTableData(params = {}){
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'prepareMealsDinner/getDishesPageList',
+      payload: {
+        ...params,
+        name : this.state.name,
+        mvType : this.state.mvType,
+        vdType : this.state.vdType,
+        status : this.state.status
+      }
+    });
+  }
+
+
+
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -50,7 +104,10 @@ class App extends Component {
     this.setState({
       selectedKeys: selectedKeys,
       postNodeId: selectedKeys[0],
-      name: ''
+      // name: '',
+      // mvType : null,
+      // vdType:null,
+      // status:null
     }, function () {
       dispatch({
         type: 'prepareMealsDinner/getDishesPageList',
@@ -125,6 +182,14 @@ class App extends Component {
 
     const { nodes } = nodesInfo;
     const { expandedKeys, autoExpandParent } = this.state;
+    const mvTypeOptions = [];
+    mvType.map(function (item,index) {
+      mvTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    });
+    const vdTypeOptions = [];
+    vdType.map(function (item,index) {
+      vdTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    });
     const columns = [
       {
         title: '菜品名',
@@ -213,7 +278,44 @@ class App extends Component {
               </Tree>
             </Col>
             <Col span={18}>
-              <Search className="search" placeholder="请输入菜品名" onSearch={this.onChange}/>
+              {/*<Search className="search" placeholder="请输入菜品名" onSearch={this.onChange}/>*/}
+              <Form layout="inline">
+                <Row  justify="space-between">
+                  <Col span={8}>
+                    <FormItem>
+                      <Input style={{ width: 180 }} placeholder="请输入菜品名" onChange={this.handleNameChange.bind(this)} />
+                    </FormItem>
+                  </Col>
+                  <Col span={8}>
+                    <FormItem>
+                      <Select placeholder="荤素类型" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
+                        {mvTypeOptions}
+                      </Select>
+
+                    </FormItem>
+                  </Col>
+                  <Col span={8}>
+                    <FormItem>
+                      <Select placeholder="菜品类型" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
+                        {vdTypeOptions}
+                      </Select>
+                    </FormItem>
+                  </Col>
+                  {/*<Col span={8}>
+                   <FormItem
+                   label="使用状态"
+                   >
+                   <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)} >
+                   <Option value="0">未使用</Option>
+                   <Option value="1">已使用</Option>
+                   </Select>
+                   </FormItem>
+                   </Col>*/}
+                </Row>
+              </Form>
+              <div className="btn">
+                <Button className="button-group-2" onClick={this.handleSearch.bind(this)}>查询</Button>
+              </div>
               <Table rowKey="id"
                      columns={columns}
                      dataSource={dishesPageInfo}

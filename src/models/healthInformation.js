@@ -243,12 +243,12 @@ export default {
               Input_8_arr:imgInput_8_arr,...requiredData,newBabyList:babyData}
           }
           return {...state,saveDone:saveDone,editMedicalFlag : false,type:type, medicalHealthInformation : baseData}
-        }else if(data.type === 2){
+        }else if(baseData.type === 2){
           return {...state,saveDone:saveDone,editNutritionFlag : false,type:type, nutritionHealthInformation : baseData}
-        }else if(data.type === 3){
+        }else if(baseData.type === 3){
           return {...state,saveDone:saveDone,editSkinFlag : false,type:type, skinHealthInformation : baseData}
-        }else if(data.type === 4){
-          if(data && data.healthInfo) {
+        }else if(baseData.type === 4){
+          if(baseData && baseData.healthInfo) {
             const conclusionImg_arr = JSON.parse(baseData.healthInfo);
             return {...state,saveDone:saveDone,type:type,editConclusionFlag:false, conclusionInformation : baseData,conclusionImg_arr:conclusionImg_arr}
           }
