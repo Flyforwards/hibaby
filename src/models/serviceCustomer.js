@@ -174,7 +174,7 @@ export default {
         }
         
         //通知单
-        if (pathname === '/service/send-message/production' || pathname === '/service/send-message/stay' || pathname === '/service/send-message/out'|| pathname === '/service/send-message/check-out'|| pathname === '/service/send-message/free') {
+        if (pathname === '/service/send-message/production' || pathname === '/service/send-message/stay' || pathname === '/service/send-message/out' || pathname === '/service/send-message/check-out' || pathname === '/service/send-message/free') {
           dispatch({ type: 'getCurrentEndemicDeptList' });
         }
         
@@ -731,6 +731,29 @@ export default {
         });
       }
     },
+    //根据id查询记录详情判断是否编辑权限
+    *isEditGetDoctorNoteById({ payload: postData }, { call, put, select })
+    {
+      const { isEdit, info, key, operatorItem } = postData;
+      const reducerInfo = yield select(state => state.serviceCustomer);
+      const { describeInfo } = reducerInfo;
+      const values = { dataId: info.id, operatorItem }
+      
+      const isEditInfo = { info, key }
+      const { data: { data, code } } = yield call(serviceAssessment.getDoctorNoteById, values);
+      if (code == 0) {
+        const noEditInfo = describeInfo[key]
+        isEdit ? isEditInfo.info = { ...isEditInfo.info, isEdit } : isEditInfo.info = { ...noEditInfo, isEdit }
+        yield put({
+          type: 'isEdit',
+          payload: isEditInfo
+        })
+      } else {
+        message.error('超过24小时无法编辑！')
+      }
+      
+    },
+    
     //2.保存或编辑记录单
     *saveDoctorNote({ payload: values }, { call, put, select })
     {
@@ -865,7 +888,7 @@ export default {
     *DelPediatricNote({ payload: postInfo }, { call, put, select })
     {
       const { id, operatorItem, babyId, customerId } = postInfo;
-      const values = { dataId: id, operatorItem ,babyId:babyId}
+      const values = { dataId: id, operatorItem, babyId: babyId }
       const { data: { data, code } } = yield call(serviceAssessment.DelPediatricNote, values);
       if (code == 0) {
         message.success('删除成功');
@@ -876,7 +899,26 @@ export default {
             babyId: babyId
           }
         });
-
+        
+      }
+    },
+    //4.根据id查询记录详情判断编辑权限
+    *getPediatricNoteById({ payload: postInfo }, { call, put })
+    {
+      const { k, dataId } = postInfo
+      const values = {
+        dataId,
+        babyId:k,
+        operatorItem:5
+      }
+      const { data: { data, code } } = yield call(serviceAssessment.getPediatricNoteById, values);
+      if (code == 0) {
+        yield put({
+          type: 'isEditChildren',
+          payload: postInfo
+        })
+      } else {
+        message.error('超过24小时无法编辑！')
       }
     },
     
@@ -928,6 +970,8 @@ export default {
         });
       }
     },
+    
+    
     //2.根据客户id以及筛选条件查询爱丁堡忧郁单列表
     *getEdinburghMelancholyGaugeList({ payload: values }, { call, put, select }){
       const info = yield select(state => state.serviceCustomer);

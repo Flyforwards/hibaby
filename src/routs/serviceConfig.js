@@ -631,5 +631,35 @@ export default (app) => [
       })
     }
   },
+  // 预约技师
+  {
+    path: '/service/order-technician',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/technicianIndex.js'))
+      })
+    }
+  },
+  // 满月汗
+  {
+    path: '/service/order-sweat',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SweatIndex.js'))
+      })
+    }
+  },
+  //满月汗详情
+  {
+    path: '/service/order-sweat/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/SweatDetail.js'))
+      })
+    }
+  },
 
 ]
