@@ -63,3 +63,10 @@ export function openSweating(values) {
   })
 }
 
+//获取服务器时间
+export function getSystemTime(values) {
+  return request('/crm/api/v1/getSystemTime', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};

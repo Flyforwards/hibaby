@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import {Card,Row,Col,Select,DatePicker} from 'antd';
 import { connect } from 'dva';
 import { Link } from 'react-router';
+import moment from  'moment';
 import SwimmingIndexCss from  './SwimmingIndex.scss';
 const Option = Select.Option;
 
@@ -13,22 +14,32 @@ class SweatIndex extends Component{
   constructor(props){
     super(props);
   }
+  onChangeState(id,value){
+    console.log("state",value,id)
+    this.props.dispatch({
+      type:'orderSweat/changeSweatingState',
+      payload:{
+        "appointmentId": id,
+        "state": value
+      }
+    })
+  }
 
   initBox(list){
-    console.log(list)
     let arrList = [];
+    let _this =this;
     list ? list.map(function(elem,index){
-      arrList.push(<Col span={6}>
+      arrList.push(<Col span={6} style={{marginBottom:'20px'}}>
         <Row>
           <Col span={8}>
             <div className="ItemLeft">
-              <Link to={`/service/order-sweat/detail?id=${elem.id}`}>
+              <Link to={`/service/order-sweat/detail?date=${_this.props.currentDate}&appointmentId=${elem.appointmentId}`}>
                 <p>
                   <img className="swimming-icon" src={elem.img} alt="" />
                 </p>
-                <p>{elem.name}</p>
+                <p>{elem.describe}</p>
               </Link>
-              <Select className="swimming-select" defaultValue={elem.operatetion} placeholder="请选择">
+              <Select className="swimming-select" onChange={_this.onChangeState.bind(_this,elem.appointmentId)} defaultValue={elem.state+''} placeholder="请选择">
                 <Option value="1">开工</Option>
                 <Option value="0">离开</Option>
               </Select>
@@ -36,7 +47,7 @@ class SweatIndex extends Component{
           </Col>
           <Col span={14}>
             <div className="ItemRight">
-              {elem.time.map(function(v,i){
+              {elem.dates.map(function(v,i){
                 return <p>{v}</p>
              })}
             </div>
@@ -47,41 +58,32 @@ class SweatIndex extends Component{
 
     return arrList;
   }
-
+  onChange(value, dateString) {
+    this.props.dispatch({
+      type:'orderSweat/getSweatingRooms',
+      payload:{
+        "date":moment(dateString).format("YYYY-MM-DD")
+      }
+    })
+  }
 
   render(){
-    const arr = [
-      {
-        img:'http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D',
-        name:'小李',
-        operatetion:'0',
-        time:["9:00-10:00","10:00-12:00","13:00-15:00"],
-        id:1
-      },
-      {
-        img:'http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D',
-        name:'小红',
-        operatetion:'1',
-        time:["8:00-9:00","10:00-12:00","13:00-15:00"],
-        id:2,
-      },
-      {
-        img:'http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D',
-        name:'小酒',
-        operatetion:'1',
-        time:["8:00-9:00","10:00-12:00","13:00-15:00"],
-        id:3
-      },
-    ];
+    const { systemTime,roomsList,currentDate } = this.props;
+    let systemTimes = moment(systemTime).format("YYYY-MM-DD");
     return (
       <Card className="order-swimming">
+       <Row>
+            <Col span={24} className="date-title">
+              <div>
+                <DatePicker
+                defaultValue={moment(systemTimes,"YYYY-MM-DD")}
+                onChange={this.onChange.bind(this)}
+                />
+              </div>
+            </Col>
+          </Row>
         <Row>
-          <Col span={24} className="date-title">
-            <div><DatePicker/></div>
-          </Col>
-        </Row>
-        <Row>
-          {this.initBox(arr)}
+          {roomsList ? this.initBox(roomsList.list):''}
         </Row>
       </Card>
     );
@@ -89,7 +91,11 @@ class SweatIndex extends Component{
 
 }
 function mapStateToProps(state) {
+  const { systemTime,roomsList,currentDate } = state.orderSweat;
   return{
+    currentDate,
+    systemTime,
+    roomsList,
     loading:state.loading,
   };
 }
