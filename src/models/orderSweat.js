@@ -77,7 +77,7 @@ export default {
       }
     },
     //关闭预约
-    *closeSweating({payload:value},{call,put}) {
+    *closeSweating({payload:value},{call,put,select}) {
       const { data:{code, data}} = yield call(orderSweat.closeSweating,value);
       const state = yield select(state => state.orderSweat)
       if(code == 0) {
