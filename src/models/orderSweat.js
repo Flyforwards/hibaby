@@ -44,11 +44,52 @@ export default {
     }
   },
   effects: {
+    //取消预约
+    *cancelSweating({paylaod: value},{call, put,select}){
+      const { data:{ code,data}} = yield call(orderSweat.cancelSweating,value);
+      const state = yield select(state => state.orderSweat)
+      if(code == 0 ) {
+        message.success("取消预约成功");
+        yield put({
+          type:'getSweatingRoomsInfo',
+          payload:{
+            "appointmentId":queryURL("appointmentId"),
+            "date":state.detailCurrentDate,
+            "type":1,
+          }
+        })
+      }
+    },
+    //开启预约
+    *openSweating({payload:value},{call,put,select}) {
+      const { data:{ code, data}} = yield call(orderSweat.openSweating,value);
+      const state = yield select(state => state.orderSweat)
+      if(code == 0) {
+        message.success("预约开启成功")
+        yield put({
+          type:'getSweatingRoomsInfo',
+          payload:{
+            "appointmentId":queryURL("appointmentId"),
+            "date":state.detailCurrentDate,
+            "type":1,
+          }
+        })
+      }
+    },
     //关闭预约
     *closeSweating({payload:value},{call,put}) {
       const { data:{code, data}} = yield call(orderSweat.closeSweating,value);
+      const state = yield select(state => state.orderSweat)
       if(code == 0) {
         message.success("预约关闭成功")
+        yield put({
+          type:'getSweatingRoomsInfo',
+          payload:{
+            "appointmentId":queryURL("appointmentId"),
+            "date":state.detailCurrentDate,
+            "type":1,
+          }
+        })
       }
     },
     //根据日期查询房间详情

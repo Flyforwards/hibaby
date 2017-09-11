@@ -9,7 +9,7 @@ import SwimmingIndexCss from  './SwimmingIndex.scss';
 import { routerRedux } from 'dva/router'
 import { parse } from 'qs'
 import moment from 'moment'
-import { queryURL } from '../../../utils/index.js';
+import { queryURL,format } from '../../../utils/index.js';
 
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -23,7 +23,6 @@ class SweatDetail extends Component{
   }
 
   onTabChange(k){
-    console.log("lkkk",k)
     this.setState({
       tabKey:moment(k).format("YYYY-MM-DD"),
     })
@@ -55,32 +54,63 @@ class SweatDetail extends Component{
   //关闭预约
   onClose(v1,v2){
     console.log("guanbi ",v1,v2)
-    // this.props.dispatch({
-    //   type:'orderSweat/closeSweating',
-    //   payload:{
-    //
-    //   }
-    // })
+    this.props.dispatch({
+      type:'orderState/saveDetailDate',
+      payload:{
+        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
+      }
+    })
+    this.props.dispatch({
+      type:'orderSweat/closeSweating',
+      payload:{
+        "appointmentId":queryURL("appointmentId"),
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
+        "time":v1,
+        "timeId":v2,
+      }
+    })
   }
   //开启预约
-  onOpen(){
-
+  onOpen(id){
+    this.props.dispatch({
+      type:'orderState/saveDetailDate',
+      payload:{
+        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
+      }
+    })
+    this.props.dispatch({
+      type:'orderSweat/openSweating',
+      payload:{
+       "dataId":id
+      }
+    })
   }
   //取消预约
-  onCancel(){
-
+  onCancel(id){
+    this.props.dispatch({
+      type:'orderState/saveDetailDate',
+      payload:{
+        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
+      }
+    })
+    this.props.dispatch({
+      type:'orderSweat/cancelSweating',
+      payload:{
+        "dataId":id
+      }
+    })
   }
   handleHistory=()=>{
     this.props.dispatch(routerRedux.push(`/service/order-swimming/history`));
   }
   initBtn(data){
     if(data.sweatingState == 3){
-      return  <Col span={8} style={{textAlign:"right"}}><Button className="historyBtn" onClick={this.onCancel.bind(this,data.id)}>取消预约</Button></Col>
+      return  <Col span={8} style={{textAlign:"right"}}><Button className="historyBtn" onClick={this.onCancel.bind(this,data.sweatingId)}>取消预约</Button></Col>
     }
     if(data.sweatingState == 2) {
       return <Col span={8} style={{textAlign:"right"}}>
         <Link style={{marginRight:'20px',color:'#009900'}}>不可约</Link>
-        <Button className="historyBtn" onClick={this.onOpen.bind(this,data.id)}>开启预约</Button>
+        <Button className="historyBtn" onClick={this.onOpen.bind(this,data.sweatingId)}>开启预约</Button>
       </Col>
     }
     if(data.sweatingState == 1){
@@ -91,10 +121,11 @@ class SweatDetail extends Component{
     }
   }
 
-  initTabPane(data,roomsInfo){
+  initTabPane(data,roomsInfo,i){
+    console.log("data",data)
     let _this = this;
     return (
-      <TabPane tab={data} key={data} className="detailPane">
+      <TabPane tab={data}  key={data} className="detailPane">
         <div>
           <Row className="DetailRow">
             <Col span={4} className="DetailLeft">
@@ -177,6 +208,9 @@ class SweatDetail extends Component{
         'detailCurrentDates':moment(dateString).format("YYYY-MM-DD"),
       }
     })
+    this.setState({
+      tabKey:'',
+    })
   }
   componentWillUnmount() {
     this.props.dispatch({
@@ -192,12 +226,12 @@ class SweatDetail extends Component{
     const tabPanelArr = [];
     let dateTime = detailCurrentDate;
     for(let i=0;i<5;i++){
-      roomsInfo ? tabPanelArr.push(this.initTabPane(moment(dateTime).add(i,'days').format("YYYY-MM-DD"),roomsInfo)):'';
+      roomsInfo ? tabPanelArr.push(this.initTabPane(moment(dateTime).add(i,'days').format("YYYY-MM-DD"),roomsInfo,i)):'';
     }
     let btns = this.state.lookState == 1 ? <Button onClick={this.onLook.bind(this)} className="button-group-1">查看可约</Button>:<Button onClick={this.onLookAll.bind(this)} className="button-group-1">查看全部</Button>;
     return (
       <Card className="DetailCard">
-        <Row className="date-title">
+       <Row className="date-title">
           <Col span={24}>
             {
               detailCurrentDate ? <DatePicker
@@ -207,11 +241,9 @@ class SweatDetail extends Component{
             }
           </Col>
         </Row>
-        {
-          roomsInfo ?   <Tabs onChange={this.onTabChange.bind(this)} type="card" tabBarExtraContent={btns}>
+         <Tabs onChange={this.onTabChange.bind(this)} defaultActiveKey={detailCurrentDate ? moment(dateTime).format("YYYY-MM-DD"):moment().format("YYYY-MM-DD")}  type="card" tabBarExtraContent={btns}>
             {tabPanelArr}
-          </Tabs>:''
-        }
+          </Tabs>
         <div className="Detail-Bottom">
           <Button className="historyBtn button-group-bottom-2" onClick={this.handleHistory.bind(this)}>历史</Button>
           <Button className="button-group-bottom-1" onClick={this.handleBack.bind(this)}>返回</Button>
@@ -224,6 +256,7 @@ class SweatDetail extends Component{
 }
 function mapStateToProps(state) {
   const { roomsInfo,currentDate ,detailCurrentDate} = state.orderSweat;
+  console.log("chushi",roomsInfo);
   return {
     roomsInfo,
     currentDate,
