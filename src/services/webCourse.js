@@ -31,9 +31,46 @@ export function deleteCourse(values){
     body: JSON.stringify(values),
   })
 }
+
 //修改课程信息
 export function updateCourse(values){
   return request('/crm/api/v1/web/webCourse/update',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+
+// 服务/课程/添加
+export function saveSerCourse(values){
+  return request('/crm/api/v1/course/saveCourse',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+// 服务/课程/列表
+export function getCourseListByPage(values){
+  return request('/crm/api/v1/course/getCourseListByPage',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+
+// 服务/课程/详情
+export function getSerCourseById(values){
+  return request('/crm/api/v1/course/getCourseById',{
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
+
+
+
+// 服务/课程/查询课程下预约人员列表
+export function getCourseCustomerListByPage(values){
+  return request('/crm/api/v1/course/getCourseCustomerListByPage',{
     method: 'POST',
     body: JSON.stringify(values),
   })

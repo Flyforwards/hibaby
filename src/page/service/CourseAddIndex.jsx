@@ -18,10 +18,10 @@ class CourseAddIndex extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // this.props.dispatch({
-        //   type: 'activity/saveActivity',
-        //   payload: values
-        // })
+        this.props.dispatch({
+          type: 'course/saveSerCourse',
+          payload: values
+        })
       }
     })
   }
@@ -45,13 +45,13 @@ class CourseAddIndex extends React.Component {
         <Card title = "课程信息:">
           <Form >
             <FormItem {...formItemLayout} label="课程名称" >
-              {getFieldDecorator('name', {rules: [{ required: true, message: '请填写课程名称' }],
+              {getFieldDecorator('courseName', {rules: [{ required: true, message: '请填写课程名称' }],
               })(
                 <Input />
               )}
             </FormItem>
             <FormItem {...formItemLayout} label="时间" >
-              {getFieldDecorator('activityTime', {rules: [{ type: 'object', required: true, message: '请选择课程时间!' }],
+              {getFieldDecorator('courseDate', {rules: [{ type: 'object', required: true, message: '请选择课程时间!' }],
               })(
                 <DatePicker showTime format="YYYY-MM-DD HH:mm" />
               )}
@@ -62,12 +62,12 @@ class CourseAddIndex extends React.Component {
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={ "参与人数"}>
-              {getFieldDecorator('number', {rules: [{ required: true, message: '请填写参与人数！' }],
+              {getFieldDecorator('num', {rules: [{ required: true, message: '请填写参与人数！' }],
               })(<InputNumber min={1}/>
               )}
             </FormItem>
             <FormItem {...formItemLayout} label={ "针对人群"}>
-              {getFieldDecorator('from', {rules: [{ required: true, message: '请填写针对人群！' }],
+              {getFieldDecorator('crowd', {rules: [{ required: true, message: '请填写针对人群！' }],
               })(<Input/>
               )}
             </FormItem>

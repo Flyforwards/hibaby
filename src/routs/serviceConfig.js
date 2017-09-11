@@ -604,7 +604,7 @@ export default (app) => [
     path: '/service/order-course',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/course'));
         cb(null, require('page/service/CourseIndex.jsx'))
       })
     }
@@ -615,7 +615,7 @@ export default (app) => [
     path: '/service/order-course/add',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/course'));
         cb(null, require('page/service/CourseAddIndex.jsx'))
       })
     }
@@ -626,7 +626,7 @@ export default (app) => [
     path: '/service/order-course/detail',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/course'));
         cb(null, require('page/service/CourseDetailIndex.jsx'))
       })
     }
