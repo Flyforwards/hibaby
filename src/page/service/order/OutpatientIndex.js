@@ -51,6 +51,11 @@ class OutpatientIndex extends Component{
     }))
   }
 
+  chiOnclick(e){
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  }
+
   creatChiCard(dict) {
     return(
       <Col span={8} >
@@ -59,10 +64,13 @@ class OutpatientIndex extends Component{
             <Col span={10}>
               <img  style={{ width: '60px' }} src={outpatientImg} />
               {creatTitle(dict.describe)}
-              <Select className="SelectPick" defaultValue={dict.clinicState} style={{ width: 120 }} onSelect={this.onSelect.bind(this)} onChange={()=>{this.handleChange(dict.appointmentId)}}>
-                <Option value={1}>开工</Option>
-                <Option value={0}>离开</Option>
-              </Select>
+              <div  onClick={this.chiOnclick.bind(this)}>
+                <Select className="SelectPick" defaultValue={dict.clinicState} style={{ width: 120 }} onSelect={this.onSelect.bind(this)} onChange={()=>{this.handleChange(dict.appointmentId)}}>
+                  <Option value={1}>开工</Option>
+                  <Option value={0}>离开</Option>
+                </Select>
+              </div>
+
             </Col>
             <Col offset={1} span={13}>
               {
