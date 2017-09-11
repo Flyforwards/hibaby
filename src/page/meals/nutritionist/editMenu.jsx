@@ -64,7 +64,9 @@ class EditMenu extends React.Component {
             lineHeight: '40px',
             marginLeft:'40px',
             float:'right',
-            backgroundColor: 'rgba(255, 102, 0, 1)'
+            color:'#fff',
+            borderRadius:'5px',
+            backgroundColor: 'rgba(255, 102, 0,1)'
           }} onClick={this.onExport.bind(this)}>
             导出餐单
           </PermissionButton>
@@ -84,7 +86,9 @@ class EditMenu extends React.Component {
             marginLeft:'40px',
             float:'right',
             marginButtom:'20px',
-            backgroundColor: 'rgba(255, 102, 0, 1)'
+            color:'#fff',
+            borderRadius:'5px',
+            backgroundColor: 'rgba(255, 102, 0,1)'
           }}>返回</Button>
         </div>
         <div className="editmeuntMeals">

@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import {CreatCard,creatButton,letter,chiDetailComponent} from './ServiceComponentCreat'
 import {Card ,Input,Form,message,Spin,Tabs,Row,Col} from 'antd';
 const TabPane = Tabs.TabPane;
-
+import { do_print } from 'common/util/printRoute.js';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux,Link } from 'dva/router'
-
 // 基本信息
 const baseInfoAry = [
   {title:'客户姓名',component:'Input',submitStr:'name',disable:true},
@@ -218,7 +217,6 @@ class Detail extends Component {
   }
 
   print(){
-
   }
 
   submitClicked(){
@@ -316,7 +314,7 @@ class Detail extends Component {
     return (
       <Spin
         spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
-        <Card className='CheckBeforeInput' style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
+        <Card className='CheckBeforeInput' id="CheckBeforeInput" style={{width: '100%'}} bodyStyle={{padding: (0, 0, '20px', 0)}}>
           <MotherForm ref="MotherForm" {...this.props}/>
           {babyListDiv}
           { CheckBeforeData?

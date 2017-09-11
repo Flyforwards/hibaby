@@ -43,7 +43,15 @@ class Detail extends Component {
 
 
   onDelete(){
-    this.props.dispatch({type:'serviceCustomerChild/onDeleteBabydata',payload:{type:3,dataId:queryURL("customerId"),operatorItem:3}})
+    if(this.props.BabyAllData && this.props.BabyAllData.length>1){
+      if(this.state.tabClick){
+        this.props.dispatch({type:'serviceCustomerChild/onDeleteBabydata',payload:{type:3,dataId:queryURL("customerId"),operatorItem:3,babyId:this.state.tabKey}})
+      }else{
+        this.props.dispatch({type:'serviceCustomerChild/onDeleteBabydata',payload:{type:3,dataId:queryURL("customerId"),operatorItem:3,babyId:this.props.babyId}})
+      }
+    }else{
+      this.props.dispatch({type:'serviceCustomerChild/onDeleteBabydata',payload:{type:3,dataId:queryURL("customerId"),operatorItem:3,babyId:this.props.babyId}})
+    }
   }
 
 
