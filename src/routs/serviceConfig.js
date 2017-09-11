@@ -646,7 +646,7 @@ export default (app) => [
     path: '/service/order-sweat',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/orderSweat'));
         cb(null, require('page/service/order/SweatIndex.js'))
       })
     }
@@ -656,7 +656,7 @@ export default (app) => [
     path: '/service/order-sweat/detail',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/orderSweat'));
         cb(null, require('page/service/order/SweatDetail.js'))
       })
     }
