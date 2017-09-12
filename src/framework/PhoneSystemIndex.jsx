@@ -21,13 +21,12 @@ class PhoneSystemIndex extends React.Component {
     super(props)
     this.bigExtra=(
       <div>
-        <Button onClick={ this.toHidden.bind(this) } className='system-button-option'>隐藏</Button>
-        <Button onClick={ this.toMin.bind(this) } className='system-button-option'>最小化</Button>
+        <Button onClick={ this.toMin.bind(this) } style={{ marginRight: '4px' }}>最小化</Button>
+        <Button onClick={ this.toHidden.bind(this) } >隐藏</Button>
       </div>)
     this.minExtra=(
       <div>
-        <Button onClick={ this.toHidden.bind(this) } className='system-button-option'>隐藏</Button>
-        <Button onClick={ this.toLarge.bind(this) } className='system-button-option'>最大化</Button>
+        <Button onClick={ this.toLarge.bind(this) } >最大化</Button>
       </div>)
     this.state = {
       style: 'none',
