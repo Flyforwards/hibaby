@@ -53,7 +53,6 @@ class OutpatientIndex extends Component{
 
   chiOnclick(e){
     e.stopPropagation();
-    e.nativeEvent.stopImmediatePropagation();
   }
 
   creatChiCard(dict) {
