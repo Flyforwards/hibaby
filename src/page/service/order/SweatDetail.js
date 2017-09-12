@@ -18,7 +18,8 @@ class SweatDetail extends Component{
     super(props);
     this.state={
       lookState:1,
-      tabKey:''
+      tabKey:'',
+      changeDate:''
     }
   }
 
@@ -53,7 +54,6 @@ class SweatDetail extends Component{
   }
   //关闭预约
   onClose(v1,v2){
-    console.log("guanbi ",v1,v2)
     this.props.dispatch({
       type:'orderState/saveDetailDate',
       payload:{
@@ -101,7 +101,7 @@ class SweatDetail extends Component{
     })
   }
   handleHistory=()=>{
-    this.props.dispatch(routerRedux.push(`/service/order-swimming/history`));
+    this.props.dispatch(routerRedux.push(`/service/order-sweat/history?appointmentId=${queryURL("appointmentId")}`));
   }
   initBtn(data){
     if(data.sweatingState == 3){
@@ -122,7 +122,6 @@ class SweatDetail extends Component{
   }
 
   initTabPane(data,roomsInfo,i){
-    console.log("data",data)
     let _this = this;
     return (
       <TabPane tab={data}  key={data} className="detailPane">
@@ -143,7 +142,7 @@ class SweatDetail extends Component{
             <Col span={20} className="DetailRight">
               {
                 roomsInfo.list.map(function(elem,index){
-                 return   <div className="DetailValue" key={elem.timeId} style={{lineHeight:'50px'}}>
+                 return   <div className="DetailValue" key={`${data}-${elem.timeId}`} style={{lineHeight:'50px'}}>
                    <Row className="TimeValue">
                      <Col span={8}>{elem.time}</Col>
                      <Col span={8}>
@@ -194,6 +193,9 @@ class SweatDetail extends Component{
   }
   //点击改变日期
   onChangeDetailDate(value, dateString) {
+    this.setState({
+      changeDate:'',
+    })
     this.props.dispatch({
       type:'orderSweat/getSweatingRoomsInfo',
       payload:{
@@ -220,11 +222,23 @@ class SweatDetail extends Component{
       }
     })
   }
+  //tab点击
+  onTabClick(key){
+   this.setState({
+    changeDate:key,
+  })
+}
   render(){
     const { loading ,detailCurrentDate,roomsInfo} = this.props;
-    console.log("sss",detailCurrentDate)
     const tabPanelArr = [];
     let dateTime = detailCurrentDate;
+    let defaultKeys = '';
+    if(this.state.changeDate != ''){
+      defaultKeys = this.state.changeDate;
+    }else{
+      defaultKeys = detailCurrentDate && detailCurrentDate != '' ? moment(dateTime).format("YYYY-MM-DD"):moment().format("YYYY-MM-DD");
+    }
+    console.log("default",detailCurrentDate)
     for(let i=0;i<5;i++){
       roomsInfo ? tabPanelArr.push(this.initTabPane(moment(dateTime).add(i,'days').format("YYYY-MM-DD"),roomsInfo,i)):'';
     }
@@ -241,7 +255,7 @@ class SweatDetail extends Component{
             }
           </Col>
         </Row>
-         <Tabs onChange={this.onTabChange.bind(this)} defaultActiveKey={detailCurrentDate ? moment(dateTime).format("YYYY-MM-DD"):moment().format("YYYY-MM-DD")}  type="card" tabBarExtraContent={btns}>
+         <Tabs onChange={this.onTabChange.bind(this)} activeKey={defaultKeys} onTabClick={this.onTabClick.bind(this)} type="card" tabBarExtraContent={btns}>
             {tabPanelArr}
           </Tabs>
         <div className="Detail-Bottom">
@@ -256,7 +270,6 @@ class SweatDetail extends Component{
 }
 function mapStateToProps(state) {
   const { roomsInfo,currentDate ,detailCurrentDate} = state.orderSweat;
-  console.log("chushi",roomsInfo);
   return {
     roomsInfo,
     currentDate,

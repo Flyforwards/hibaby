@@ -15,7 +15,6 @@ class SweatIndex extends Component{
     super(props);
   }
   onChangeState(id,value){
-    console.log("state",value,id)
     this.props.dispatch({
       type:'orderSweat/changeSweatingState',
       payload:{

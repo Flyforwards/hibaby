@@ -22,6 +22,13 @@ export default {
     size: 10,
     currentDate:'',
     detailCurrentDate:'',
+    pagination: {
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      pageSize:10,
+      total: null,
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -29,6 +36,17 @@ export default {
         if(pathname === '/service/order-sweat') {
           dispatch({
             type:'getSystemTime'
+          })
+        }
+        if(pathname === '/service/order-sweat/history') {
+          dispatch({
+            type:'getSystemTime'
+          });
+          dispatch({
+            type:'getAppointmentByType',
+            payload:{
+              "type":1
+            }
           })
         }
         if(pathname === '/service/order-sweat/detail') {
@@ -44,6 +62,53 @@ export default {
     }
   },
   effects: {
+    //获取房间列表
+    *getAppointmentByType({payload:value},{call,put}){
+      const { data:{code,data}} = yield call(orderSweat.getAppointmentByType,value);
+      if(code == 0) {
+        yield put({
+          type:'saveRoomsAllList',
+          payload:{
+            data
+          }
+        })
+      }
+    },
+    //查询使用率
+    *getSweatingUtilization({payload:value},{call,put}){
+      const { data:{code, data}} = yield call(orderSweat.getSweatingUtilization,value);
+      if(code == 0) {
+        yield put({
+          type:'saveSweatingUtilization',
+          payload:{
+            data
+          }
+        })
+      }
+    },
+    //查询历史记录
+    *getSweatingHistory({payload:value},{call,put}){
+      const { data:{code,data,page,size,total}} = yield call(orderSweat.getSweatingHistory,value);
+      if(code == 0) {
+        yield put({
+          type:'saveHistoryList',
+          payload:{
+            data
+          }
+        })
+        yield put({
+          type: 'getHistoryPageSave',
+          payload: {
+            list: data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
+      }
+    },
     //取消预约
     *cancelSweating({paylaod: value},{call, put,select}){
       const { data:{ code,data}} = yield call(orderSweat.cancelSweating,value);
@@ -151,24 +216,52 @@ export default {
     *getSystemTime({payload:value},{call,put}){
       const { data: { code,data}} = yield  call(orderSweat.getSystemTime,value);
       if(code == 0) {
-        yield put({
-          type:'saveSystemTime',
-          payload:{
-            data
-          }
-        });
-        yield put({
-          type:'getSweatingRooms',
-          payload:{
-            "date": moment(data).format("YYYY-MM-DD")
-          }
-        });
-        yield put({
-          type:'saveDate',
-          payload:{
-            currentDates:moment(data).format("YYYY-MM-DD")
-          }
-        })
+        if(location.pathname === '/service/order-sweat/history'){
+          yield put({
+            type:'getSweatingHistory',
+            payload:{
+              "appointmentId":queryURL("appointmentId"),
+              "page":1,
+              "size":10,
+              "sortField": "time",
+              "sortOrder": "AESC",
+              "startDate":moment(data).format("YYYY-MM-DD"),
+              "endDate":moment(data).format("YYYY-MM-DD"),
+            }
+          });
+          yield put({
+            type:'getSweatingUtilization',
+            payload:{
+              "appointmentId":queryURL("appointmentId"),
+              "page":1,
+              "size":10,
+              "sortField": "time",
+              "sortOrder": "AESC",
+              "startDate":moment(data).format("YYYY-MM-DD"),
+              "endDate":moment(data).format("YYYY-MM-DD"),
+            }
+          })
+        }else{
+          yield put({
+            type:'saveSystemTime',
+            payload:{
+              data
+            }
+          });
+          yield put({
+            type:'getSweatingRooms',
+            payload:{
+              "date": moment(data).format("YYYY-MM-DD")
+            }
+          });
+          yield put({
+            type:'saveDate',
+            payload:{
+              currentDates:moment(data).format("YYYY-MM-DD")
+            }
+          })
+        }
+
       }
     },
   },
@@ -201,6 +294,22 @@ export default {
     //根据日期查询房间详情
     saveSweatRoomsInfo(state,{payload:{data:roomsInfo}}) {
       return { ...state,roomsInfo}
+    },
+    //保存历史记录
+    saveHistoryList(state,{payload:{data:historyList}}) {
+      return { ...state,historyList}
+    },
+    //分页
+    getHistoryPageSave(state, { payload: { list, pagination }}) {
+      return {...state, list, pagination: {  ...state.pagination,...pagination }};
+    },
+    //使用率
+    saveSweatingUtilization(state,{payload:{data:usePersent}}) {
+      return { ...state,usePersent}
+    },
+    //房间总数
+    saveRoomsAllList(state,{payload:{data:roomsAllList}}) {
+      return { ...state,roomsAllList}
     }
   }
 

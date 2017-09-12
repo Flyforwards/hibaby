@@ -70,3 +70,11 @@ export function getSystemTime(values) {
     body: JSON.stringify(values),
   })
 };
+
+//获取房间列表
+export function getAppointmentByType(values) {
+  return request('/crm/api/v1/appointment/getAppointmentByType', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};

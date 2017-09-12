@@ -661,5 +661,14 @@ export default (app) => [
       })
     }
   },
-
+  //满月汗历史
+  {
+    path: '/service/order-sweat/history',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/orderSweat'));
+        cb(null, require('page/service/order/SweatHistory.js'))
+      })
+    }
+  },
 ]
