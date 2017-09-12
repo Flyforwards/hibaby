@@ -6,6 +6,7 @@ import React,{Component} from 'react';
 import {connect} from 'dva';
 import {Card,Row,Col,Tabs,Button,DatePicker,Select,Table} from 'antd';
 import {Link} from 'react-router';
+import {routerRedux} from 'dva/router'
 import SwimmingIndexCss from  './SwimmingIndex.scss';
 
 const TabPane = Tabs.TabPane;
@@ -33,11 +34,11 @@ class SwimmingHistory extends Component{
   }
 
   handleSearch=()=>{
-    
+
   }
 
   handleBack=()=>{
-
+    this.props.dispatch(routerRedux.push(`/service/order-swimming/detail`));
   }
 
 
@@ -91,4 +92,9 @@ class SwimmingHistory extends Component{
   }
 
 }
-export default connect()(SwimmingHistory);
+function mapStateToProps(state) {
+  return {
+    loading:state.loading
+  }
+}
+export default connect(mapStateToProps)(SwimmingHistory);

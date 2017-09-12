@@ -50,7 +50,7 @@ class OutpatientDetail extends Component{
           <Col span={6}>
             <img  style={{ width: '60px' }} src={outpatientImg} />
             {creatTitle(info.describe)}
-            <Select className="SelectPick" defaultValue={info.clinicState} style={{ width: 120 }} onChange={handleChange}>
+            <Select className="SelectPick" defaultValue={info.state} style={{ width: 120 }} onChange={handleChange}>
               <Option value={1}>开工</Option>
               <Option value={0}>离开</Option>
             </Select>

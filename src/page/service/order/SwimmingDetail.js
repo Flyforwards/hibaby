@@ -15,6 +15,9 @@ const Option = Select.Option;
 class SwimmingDetail extends Component{
   constructor(props){
     super(props);
+    this.state = {
+      params : null
+    }
   }
 
   callback=()=>{
@@ -26,67 +29,100 @@ class SwimmingDetail extends Component{
   }
 
   handleHistory=()=>{
-    this.props.dispatch(routerRedux.push(`/service/order-swimming/history`));
+    this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${params?params.appointmentId:null}`));
   }
 
+  componentDidMount() {
+    const params = parse(location.search.substr(1));
+    console.log(params);
+    this.setState({
+      params : params
+    });
+    this.props.dispatch({
+      type: 'swimming/getSwimmingRoomsInfo',
+      payload:{
+        ...params
+      }
+    })
+  }
+  handleChangeState=(value)=>{
+    this.props.dispatch({
+      type: 'swimming/changeSwimmingState',
+      payload:{
+        appointmentId : value.split(":")[0],
+        state : value.split(":")[1]
+      }
+    })
+  }
 
-  initTabPane(data){
-    return (
-      <TabPane tab={"Tab "+data} key={data} className="detailPane">
-        <div>
-          <Row className="DetailRow">
-            <Col span={4} className="DetailLeft">
-              <div className="ItemLeft">
-                <p>
-                  <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
-                </p>
-                <p>小红</p>
-                <Select className="swimming-select" defaultValue="1" placeholder="请选择">
-                  <Option value="1">开工</Option>
-                  <Option value="0">离开</Option>
-                </Select>
-              </div>
-            </Col>
-            <Col span={20} className="DetailRight">
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
-              <div className="DetailValue">
-                <Row className="TimeValue">
-                  <Col span={8}>9:00 - 9:30</Col>
-                  <Col span={8}>月红梅 - 1001</Col>
-                  <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                </Row>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </TabPane>
-    );
+  handleUpdateOrderState=()=>{
+
+  }
+
+  initTabPane(item,key){
+
+      return (
+        <TabPane tab={this.state.params?this.state.params.date:null} key={key} className="detailPane">
+          <div>
+            <Row className="DetailRow">
+              <Col span={4} className="DetailLeft">
+                <div className="ItemLeft">
+                  <p>
+                    <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
+                  </p>
+                  <p>{item.describe}</p>
+                  <Select className="swimming-select" defaultValue={item.appointmentId+":"+item.state} placeholder="请选择" onChange={this.handleChangeState.bind(item.appointmentId)}>
+                    <Option value={item.appointmentId+":"+1}>开工</Option>
+                    <Option value={item.appointmentId+":"+0}>离开</Option>
+                  </Select>
+                </div>
+              </Col>
+              <Col span={20} className="DetailRight">
+                <div className="DetailValue">
+                  <Row className="TimeValue">
+                    <Col span={8}>9:00 - 9:30</Col>
+                    <Col span={8}>月红梅 - 1001</Col>
+                    <Col span={8}><Button className="historyBtn" onClick={this.handleUpdateOrderState.bind(this)}>取消预约</Button></Col>
+                  </Row>
+                </div>
+                <div className="DetailValue">
+                  <Row className="TimeValue">
+                    <Col span={8}>9:00 - 9:30</Col>
+                    <Col span={8}>月红梅 - 1001</Col>
+                    <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
+                  </Row>
+                </div>
+                <div className="DetailValue">
+                  <Row className="TimeValue">
+                    <Col span={8}>9:00 - 9:30</Col>
+                    <Col span={8}>月红梅 - 1001</Col>
+                    <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
+                  </Row>
+                </div>
+                <div className="DetailValue">
+                  <Row className="TimeValue">
+                    <Col span={8}>9:00 - 9:30</Col>
+                    <Col span={8}>月红梅 - 1001</Col>
+                    <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </TabPane>
+      );
+
+
   }
   render(){
+    const {detailData} = this.props;
+    console.log("detailData",detailData);
     const tabPanelArr = [];
-    for(let i=0;i<5;i++){
-      tabPanelArr.push(this.initTabPane(i));
-    }
+    const key = "0";
+    const panel = detailData?this.initTabPane(detailData,key):null;
+    tabPanelArr.push(panel);
+    debugger;
+
     return (
       <Card className="DetailCard">
         <Row className="date-title">
@@ -94,7 +130,7 @@ class SwimmingDetail extends Component{
             <DatePicker/>
           </Col>
         </Row>
-        <Tabs onChange={this.callback.bind(this)} type="card">
+        <Tabs onChange={this.callback.bind(this)} type="card" defaultActiveKey={key}>
           {tabPanelArr}
         </Tabs>
         <div className="Detail-Bottom">
@@ -109,6 +145,7 @@ class SwimmingDetail extends Component{
 }
 function mapStateToProps(state) {
   return {
+    ...state.swimming,
     loading:state.loading
   }
 }

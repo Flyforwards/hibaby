@@ -572,7 +572,7 @@ export default (app) => [
     path: '/service/order-swimming',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/swimming'));
         cb(null, require('page/service/order/SwimmingIndex.js'))
       })
     }
@@ -583,7 +583,7 @@ export default (app) => [
     path: '/service/order-swimming/detail',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/swimming'));
         cb(null, require('page/service/order/SwimmingDetail.js'))
       })
     }
@@ -593,7 +593,7 @@ export default (app) => [
     path: '/service/order-swimming/history',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/serviceCustomer'));
+        registerModel(app, require('models/swimming'));
         cb(null, require('page/service/order/SwimmingHistory.js'))
       })
     }
