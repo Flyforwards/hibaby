@@ -77,6 +77,7 @@ class SweatIndex extends Component{
                 <DatePicker
                 defaultValue={moment(systemTimes,"YYYY-MM-DD")}
                 onChange={this.onChange.bind(this)}
+                allowClear={false}
                 />
               </div>
             </Col>

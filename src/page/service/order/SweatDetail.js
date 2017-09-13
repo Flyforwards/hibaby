@@ -251,6 +251,7 @@ class SweatDetail extends Component{
               detailCurrentDate ? <DatePicker
                 defaultValue={moment(dateTime,"YYYY-MM-DD")}
                 onChange={this.onChangeDetailDate.bind(this)}
+                allowClear={false}
               />:''
             }
           </Col>
