@@ -163,8 +163,10 @@ class SwimmingDetail extends Component{
     this.props.dispatch({
       type:'swimming/getSwimmingRoomsInfo',
       payload:{
-        "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
+        // "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
         "appointmentId":queryURL("appointmentId"),
+        "tabs":true,
         "type":2,
       }
     })
@@ -177,8 +179,10 @@ class SwimmingDetail extends Component{
     this.props.dispatch({
       type:'swimming/getSwimmingRoomsInfo',
       payload:{
-        "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
+        // "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
         "appointmentId":queryURL("appointmentId"),
+        "tabs":true,
         "type":1,
       }
     })
