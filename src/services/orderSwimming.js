@@ -20,6 +20,13 @@ export function changeSwimmingState(values) {
   })
 }
 
+//开启预约
+export function openSwimming(values) {
+  return request('/crm/api/v1/swimming/openSwimming', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
 
 // 关闭预约
 export function closeSwimming(values) {
