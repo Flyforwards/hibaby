@@ -28,7 +28,7 @@ class SweatIndex extends Component{
     let arrList = [];
     let _this =this;
     list ? list.map(function(elem,index){
-      arrList.push(<Col span={6} style={{marginBottom:'20px'}}>
+      arrList.push(<Col span={6} style={{marginBottom:'50px'}}>
         <Row>
           <Col span={8} style={{marginRight:'16px'}}>
             <div className="ItemLeft">
