@@ -366,5 +366,88 @@ export function delBabySwimming(values) {
 }
 
 
+//预约技师
+//1.根据日期查询技师列表
+export function getTechnicians(values) {
+  return request('/crm/api/v1/technician/getTechnicians', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//2.根据日期查询技师预约详情
+export function getTechniciansInfo(values) {
+  return request('/crm/api/v1/technician/getTechniciansInfo', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//3.查询使用率
+export function getTechnicianUtilization(values) {
+  return request('/crm/api/v1/technician/getTechnicianUtilization', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//4.查询技师预约历史记录分页列表
+export function getTechnicianHistory(values) {
+  return request('/crm/api/v1/technician/getTechnicianHistory', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//5.开启预约
+export function openTechnician(values) {
+  return request('/crm/api/v1/technician/openTechnician', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//6.关闭预约
+export function closeTechnician(values) {
+  return request('/crm/api/v1/technician/closeTechnician', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+//7.切换技师预约上线离线状态
+export function changeTechnicianState(values) {
+  return request('/crm/api/v1/technician/changeTechnicianState', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//8.取消预约
+export function cancelTechnician(values) {
+  return request('/crm/api/v1/technician/cancelTechnician', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
