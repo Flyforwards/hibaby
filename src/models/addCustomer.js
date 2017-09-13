@@ -568,13 +568,16 @@ export default {
         "nation": values.nation.key,
         "operator": state.operator,
         "placeOrigin": values.placeOrigin,
-        "productionDate": values.productionDate? values.productionDate.format('YYYY-MM-DD'):'',
         "purchasePackage": state.purchasePackageValue?state.purchasePackageValue.data.packageId:'',
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
       if (state.editCustomer ){
         dict.id = state.expandData.id;
+      }
+
+      if(values.productionDate){
+        dict.productionDate = values.productionDate
       }
 
       try {

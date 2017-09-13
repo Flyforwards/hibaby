@@ -240,6 +240,18 @@ class CustomerIndex extends React.Component {
 
   }
 
+  rowClassName(record, index){
+
+    if(!record.purchasePackage &&  record.productionDate){
+      if( moment().diff(this.props.users.expandData.productionDate,"days") > 3){
+        return "selectRow"
+      }
+    }
+    else{
+      return ""
+    }
+  }
+
   render() {
     const columns = this.columns;
     const { list, loading, pagination, dispatch, form, shipCards, fetusAry, packageList } = this.props;
@@ -257,6 +269,7 @@ class CustomerIndex extends React.Component {
       dataSource: list,
       pagination,
       columns,
+      rowClassName:this.rowClassName,
       onChange (page) {
         const { pathname } = location
         dispatch(routerRedux.push({

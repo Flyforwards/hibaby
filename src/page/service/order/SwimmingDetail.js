@@ -9,6 +9,10 @@ import {Link} from 'react-router';
 import SwimmingIndexCss from  './SwimmingIndex.scss';
 import { routerRedux } from 'dva/router'
 import { parse } from 'qs'
+import moment from  'moment'
+import { queryURL,format } from '../../../utils/index.js';
+
+
 
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -16,28 +20,15 @@ class SwimmingDetail extends Component{
   constructor(props){
     super(props);
     this.state = {
-      params : null
+      lookState:1,
+      tabKey:'',
+      changeDate:''
     }
   }
 
-  callback=()=>{
+  callback=(key)=>{
+    console.log("key",key);
 
-  }
-
-  handleBack=()=>{
-    this.props.dispatch(routerRedux.push(`/service/order-swimming`));
-  }
-
-  handleHistory=()=>{
-    this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${params?params.appointmentId:null}`));
-  }
-
-  componentDidMount() {
-    const params = parse(location.search.substr(1));
-    console.log(params);
-    this.setState({
-      params : params
-    });
     this.props.dispatch({
       type: 'swimming/getSwimmingRoomsInfo',
       payload:{
@@ -45,92 +36,240 @@ class SwimmingDetail extends Component{
       }
     })
   }
-  handleChangeState=(value)=>{
+
+  handleBack=()=>{
+    this.props.dispatch(routerRedux.push(`/service/order-swimming`));
+  }
+
+  handleHistory=()=>{
+    this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${this.state.params?this.state.params.appointmentId:null}`));
+  }
+
+
+  handleChangeState=(appointmentId,value)=>{
     this.props.dispatch({
       type: 'swimming/changeSwimmingState',
       payload:{
-        appointmentId : value.split(":")[0],
-        state : value.split(":")[1]
+        appointmentId : appointmentId,
+        state : value
       }
     })
   }
 
-  handleUpdateOrderState=()=>{
+
+  //关闭预约
+  onClose(v1,v2){
+    this.props.dispatch({
+      type:'swimming/closeSwimming',
+      payload:{
+        "appointmentId":queryURL("appointmentId"),
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
+        "time":v1,
+        "timeId":v2,
+      }
+    })
+  }
+  //开启预约
+  onOpen(id){
+    this.props.dispatch({
+      type:'swimming/openSwimming',
+      payload:{
+        "dataId":id,
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
+      }
+    })
+  }
+  //取消预约
+  onCancel(id){
+    this.props.dispatch({
+      type:'swimming/cancelSwimming',
+      payload:{
+        "dataId":id,
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
+      }
+    })
+  }
+
+
+  initBtn(data){
+    if(data.swimmingState == 3){
+      return  <Col span={8} style={{textAlign:"right"}}><Button className="historyBtn" onClick={this.onCancel.bind(this,data.swimmingId)}>取消预约</Button></Col>
+    }
+    if(data.swimmingState == 2) {
+      return <Col span={8} style={{textAlign:"right"}}>
+        <Link style={{marginRight:'20px',color:'#009900'}}>不可约</Link>
+        <Button className="historyBtn" onClick={this.onOpen.bind(this,data.swimmingId)}>开启预约</Button>
+      </Col>
+    }
+    if(data.swimmingState == 1){
+      return <Col span={8} style={{textAlign:"right"}}>
+        <Link style={{marginRight:'20px',color:'#009900'}}>可约</Link>
+        <Button className="historyBtn" onClick={this.onClose.bind(this,data.time,data.timeId)}>关闭预约</Button>
+      </Col>
+    }
+  }
+
+  initTabPane(data,roomsInfo,i){
+    let _this = this;
+    return (
+      <TabPane tab={data}  key={data} className="detailPane">
+        <div>
+          <Row className="DetailRow">
+            <Col span={4} className="DetailLeft">
+              <div className="ItemLeft">
+                <p>
+                  <img className="swimming-icon" src="" alt="" />
+                </p>
+                <p>{roomsInfo.describe}</p>
+                <Select className="swimming-select" onChange={this.handleChangeState.bind(this)} defaultValue={roomsInfo.state+''} placeholder="请选择">
+                  <Option value="1">上线</Option>
+                  <Option value="0">离线</Option>
+                </Select>
+              </div>
+            </Col>
+            <Col span={20} className="DetailRight">
+              {
+                roomsInfo.list.map(function(elem,index){
+                  return   <div className="DetailValue" key={`${data}-${elem.timeId}`} style={{lineHeight:'50px'}}>
+                    <Row className="TimeValue">
+                      <Col span={8}>{elem.time}</Col>
+                      <Col span={8}>
+                        {
+                          elem.swimmingState == 3 ? `${elem.customerName}-${elem.customerRoom}`:''
+                        }
+                      </Col>
+                      {
+                        _this.initBtn(elem)
+                      }
+                    </Row>
+                  </div>
+                })
+              }
+            </Col>
+          </Row>
+        </div>
+      </TabPane>
+    );
+  }
+
+
+
+
+  //点击只看可约
+  onLook() {
+    this.setState({
+      lookState:2,
+    });
+    this.props.dispatch({
+      type:'swimming/getSwimmingRoomsInfo',
+      payload:{
+        // "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
+        "appointmentId":queryURL("appointmentId"),
+        "tabs":true,
+        "type":2,
+      }
+    })
+  }
+  //点击查看全部
+  onLookAll() {
+    this.setState({
+      lookState:1
+    })
+    this.props.dispatch({
+      type:'swimming/getSwimmingRoomsInfo',
+      payload:{
+        // "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
+        "appointmentId":queryURL("appointmentId"),
+        "tabs":true,
+        "type":1,
+      }
+    })
+  }
+  //点击改变日期
+  onChangeDetailDate(value, dateString) {
+    this.setState({
+      changeDate:'',
+    })
+    this.props.dispatch({
+      type:'swimming/getSwimmingRoomsInfo',
+      payload:{
+        "date":moment(dateString).format("YYYY-MM-DD"),
+        "appointmentId":queryURL("appointmentId"),
+        "type":this.state.lookState,
+      }
+    })
+    this.props.dispatch({
+      type:'swimming/saveDetailDate',
+      payload:{
+        'detailCurrentDates':moment(dateString).format("YYYY-MM-DD"),
+      }
+    })
+    this.setState({
+      tabKey:'',
+    })
+  }
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'swimming/saveDetailDate',
+      payload:{
+        "detailCurrentDates":''
+      }
+    })
+  }
+  //tab点击
+  onTabClick(key) {
+    this.setState({
+      changeDate: key,
+    })
+  }
+
+
+  onTabChange(k){
+    this.setState({
+      tabKey:moment(k).format("YYYY-MM-DD"),
+    })
+    this.props.dispatch({
+      type:'swimming/getSwimmingRoomsInfo',
+      payload:{
+        "date":moment(k).format("YYYY-MM-DD"),
+        "appointmentId":queryURL("appointmentId"),
+        "type":this.state.lookState,
+        "tabs":true,
+      }
+    })
 
   }
 
-  initTabPane(item,key){
-
-      return (
-        <TabPane tab={this.state.params?this.state.params.date:null} key={key} className="detailPane">
-          <div>
-            <Row className="DetailRow">
-              <Col span={4} className="DetailLeft">
-                <div className="ItemLeft">
-                  <p>
-                    <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
-                  </p>
-                  <p>{item.describe}</p>
-                  <Select className="swimming-select" defaultValue={item.appointmentId+":"+item.state} placeholder="请选择" onChange={this.handleChangeState.bind(item.appointmentId)}>
-                    <Option value={item.appointmentId+":"+1}>开工</Option>
-                    <Option value={item.appointmentId+":"+0}>离开</Option>
-                  </Select>
-                </div>
-              </Col>
-              <Col span={20} className="DetailRight">
-                <div className="DetailValue">
-                  <Row className="TimeValue">
-                    <Col span={8}>9:00 - 9:30</Col>
-                    <Col span={8}>月红梅 - 1001</Col>
-                    <Col span={8}><Button className="historyBtn" onClick={this.handleUpdateOrderState.bind(this)}>取消预约</Button></Col>
-                  </Row>
-                </div>
-                <div className="DetailValue">
-                  <Row className="TimeValue">
-                    <Col span={8}>9:00 - 9:30</Col>
-                    <Col span={8}>月红梅 - 1001</Col>
-                    <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                  </Row>
-                </div>
-                <div className="DetailValue">
-                  <Row className="TimeValue">
-                    <Col span={8}>9:00 - 9:30</Col>
-                    <Col span={8}>月红梅 - 1001</Col>
-                    <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                  </Row>
-                </div>
-                <div className="DetailValue">
-                  <Row className="TimeValue">
-                    <Col span={8}>9:00 - 9:30</Col>
-                    <Col span={8}>月红梅 - 1001</Col>
-                    <Col span={8}><Button className="historyBtn">取消预约</Button></Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </TabPane>
-      );
-
-
-  }
   render(){
-    const {detailData} = this.props;
-    console.log("detailData",detailData);
+    const { loading ,detailCurrentDate,detailData} = this.props;
     const tabPanelArr = [];
-    const key = "0";
-    const panel = detailData?this.initTabPane(detailData,key):null;
-    tabPanelArr.push(panel);
-    debugger;
-
+    let dateTime = detailCurrentDate;
+    let defaultKeys = '';
+    if(this.state.changeDate != ''){
+      defaultKeys = this.state.changeDate;
+    }else{
+      defaultKeys = detailCurrentDate && detailCurrentDate != '' ? moment(dateTime).format("YYYY-MM-DD"):moment().format("YYYY-MM-DD");
+    }
+    console.log("default",detailCurrentDate)
+    for(let i=0;i<5;i++){
+      detailData ? tabPanelArr.push(this.initTabPane(moment(dateTime).add(i,'days').format("YYYY-MM-DD"),detailData,i)):'';
+    }
+    let btns = this.state.lookState == 1 ? <Button onClick={this.onLook.bind(this)} className="button-group-1">查看可约</Button>:<Button onClick={this.onLookAll.bind(this)} className="button-group-1">查看全部</Button>;
     return (
       <Card className="DetailCard">
         <Row className="date-title">
           <Col span={24}>
-            <DatePicker/>
+            {
+              detailCurrentDate ? <DatePicker
+                defaultValue={moment(dateTime,"YYYY-MM-DD")}
+                onChange={this.onChangeDetailDate.bind(this)}
+              />:''
+            }
           </Col>
         </Row>
-        <Tabs onChange={this.callback.bind(this)} type="card" defaultActiveKey={key}>
+        <Tabs onChange={this.onTabChange.bind(this)} activeKey={defaultKeys} onTabClick={this.onTabClick.bind(this)} type="card" tabBarExtraContent={btns}>
           {tabPanelArr}
         </Tabs>
         <div className="Detail-Bottom">
@@ -139,7 +278,6 @@ class SwimmingDetail extends Component{
         </div>
       </Card>
     );
-
   }
 
 }

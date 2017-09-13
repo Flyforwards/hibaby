@@ -73,7 +73,7 @@ function cusComponent(dict) {
         tempDiv = (<Select labelInValue={true} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{dict.children}</Select>);
       break;
     case 'DatePicker':
-        tempDiv = (<DatePicker style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
+        tempDiv = (<DatePicker disabled={dict.disabled} style={{width: '100%' }} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{dict.children}</DatePicker>);
 
       break;
     case 'InputNumber':
@@ -568,7 +568,7 @@ function ExtensionInfo(props) {
     {title:'联系人电话',component:'Input',submitStr:'contact'},
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,disabled:props.users.expandData},
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
-    {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate'},
+    {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate',disabled:true,noRequired:"1"},
     {title:'合同编号',component:'Input',submitStr:'contractNumber'},
     {title:'关联客房',component:'InputNumber',submitStr:'associatedRooms',disabled:true,noRequired:"1"},
     {title:'身份证扫描',component:'UploadButton',submitStr:'idcardScan',fun:uploadIdcardFileProps, deleteFun:deleteIdcardFileProps,initValue:lookCardIDDLC},
@@ -781,6 +781,8 @@ class customerInformation extends React.Component{
 
   render() {
 
+
+
     if(this.props.users.validationStr){
       let ary = this.props.users.validationStr.split(',')
 
@@ -807,7 +809,6 @@ class customerInformation extends React.Component{
         payload:''
       });
     }
-
 
 
     return (

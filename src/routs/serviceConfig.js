@@ -641,6 +641,16 @@ export default (app) => [
       })
     }
   },
+  // 预约技师详情
+  {
+    path: '/service/order-technician/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/TechnicianDetail.js'))
+      })
+    }
+  },
   // 满月汗
   {
     path: '/service/order-sweat',

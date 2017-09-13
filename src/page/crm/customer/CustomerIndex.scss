@@ -39,14 +39,20 @@
       font: 14px "微软雅黑";
       color: rgba(255, 255, 255, 0.85);
     }
+    .ant-table-tbody > tr{
+      background-color: white;
+    }
     .ant-table-tbody > tr > td {
       text-align: center;
-      background-color: #fff;
+      background-color: transparent;
       font-family: '微软雅黑 Regular', '微软雅黑';
       font-weight: 400;
       font-style: normal;
       font-size: 14px;
     }
+  }
+  .selectRow{
+    background-color: rgb(254,240,239) !important;
   }
 
   .ant-modal-body {
