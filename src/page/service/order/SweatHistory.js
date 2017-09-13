@@ -152,7 +152,7 @@ class SweatHistory extends Component{
           <Col offset={4} span={10} >
             <RangePicker
               showTime={{ format: 'HH:mm' }}
-              format="YYYY-MM-DD HH:mm"
+              format="YYYY-MM-DD"
               placeholder={['开始时间', '结束时间']}
               onChange={this.onDateChange.bind(this)}
             />
@@ -168,7 +168,7 @@ class SweatHistory extends Component{
                 <p>
                   <img className="swimming-icon" src="http://test.file.hbbcare.com/image-60040ee0-fe12-40cb-b5dc-0fa08d57936d?Expires=1819960890&OSSAccessKeyId=LTAIhcIOePZxurct&Signature=Onu6PS0%2BMFx7cfMm3oF3%2FF0C8F8%3D" alt="" />
                 </p>
-                <p>
+                <p style={{margin:'10px auto'}}>
                   {roomsAllList && roomsAllList!=null ? roomsAllList.map(function(elem,index){
                       if(elem.id == homeId){
                         return elem.describes;
