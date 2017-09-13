@@ -6,7 +6,7 @@ import moment from 'moment'
 import BigImageModal from './BigImageModal';
 import PermissionButton from 'common/PermissionButton';
 
-import {Icon,Table, Modal,Row, Col,Button,Spin} from 'antd';
+import {Alert,Table, Modal,Row, Col,Button,Spin} from 'antd';
 
 const confirm = Modal.confirm;
 
@@ -266,19 +266,29 @@ class customerDetails extends React.Component{
 
   render(){
     const ary = [];
-    if ( this.props.users.expandData){
 
+    if ( this.props.users.expandData){
       ary.push(<ExtensionInfo key="ExtensionInfo"  {...this.props}/>)
     }
     if (this.props.users.remarkData.length > 0){
       ary.push(<Remark key="Remark"  {...this.props}/>)
     }
 
-    const {loading} = this.props;
+    let outTime = false;
+    if(!this.props.users.expandData.purchasePackage &&  this.props.users.expandData.productionDate) {
+      if(moment().diff(this.props.users.expandData.productionDate,"days") > 3){
+        outTime = true
+      }
+    }
+
+      const {loading} = this.props;
 
     return (
       <div className="customerContent">
         <Spin spinning={loading.effects['addCustomer/getCustomerById'] !== undefined ? loading.effects['addCustomer/getCustomerById']:false}>
+          {
+            outTime?<Alert message="此客户还未绑定套餐哦" type="error" />:""
+          }
           <BaseInfo  {...this.props}/>
           {ary}
           <BigImageModal
