@@ -30,13 +30,13 @@ class SweatIndex extends Component{
     list ? list.map(function(elem,index){
       arrList.push(<Col span={6} style={{marginBottom:'20px'}}>
         <Row>
-          <Col span={8}>
+          <Col span={8} style={{marginRight:'16px'}}>
             <div className="ItemLeft">
               <Link to={`/service/order-sweat/detail?date=${_this.props.currentDate}&appointmentId=${elem.appointmentId}`}>
                 <p>
                   <img className="swimming-icon" src={elem.img} alt="" />
                 </p>
-                <p>{elem.describe}</p>
+                <p style={{margin:'10px auto'}}>{elem.describe}</p>
               </Link>
               <Select className="swimming-select" onChange={_this.onChangeState.bind(_this,elem.appointmentId)} defaultValue={elem.state+''} placeholder="请选择">
                 <Option value="1">开工</Option>

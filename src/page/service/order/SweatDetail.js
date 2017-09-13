@@ -132,7 +132,7 @@ class SweatDetail extends Component{
                 <p>
                   <img className="swimming-icon" src="" alt="" />
                 </p>
-                <p>{roomsInfo.describe}</p>
+                <p style={{margin:'10px auto'}}>{roomsInfo.describe}</p>
                 <Select className="swimming-select" onChange={this.onChangeState.bind(this)} defaultValue={roomsInfo.state+''} placeholder="请选择">
                   <Option value="1">上线</Option>
                   <Option value="0">离线</Option>
