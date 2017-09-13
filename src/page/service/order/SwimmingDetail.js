@@ -56,36 +56,9 @@ class SwimmingDetail extends Component{
     })
   }
 
-  /*handleCancelSwimming=(dataId)=>{
-      this.props.dispatch({
-        type: 'swimming/cancelSwimming',
-        payload:{
-          dataId : dataId
-        }
-      })
-  }
-
-  handleCloseSwimming=(dataId)=>{
-    this.props.dispatch({
-      type: 'swimming/closeSwimming',
-      payload:{
-        dataId : dataId
-      }
-    })
-  }*/
-
-
-
-
 
   //关闭预约
   onClose(v1,v2){
-    this.props.dispatch({
-      type:'swimming/saveDetailDate',
-      payload:{
-        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
-      }
-    })
     this.props.dispatch({
       type:'swimming/closeSwimming',
       payload:{
@@ -99,30 +72,20 @@ class SwimmingDetail extends Component{
   //开启预约
   onOpen(id){
     this.props.dispatch({
-      type:'swimming/saveDetailDate',
-      payload:{
-        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
-      }
-    })
-    this.props.dispatch({
       type:'swimming/openSwimming',
       payload:{
-        "dataId":id
+        "dataId":id,
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
       }
     })
   }
   //取消预约
   onCancel(id){
     this.props.dispatch({
-      type:'swimming/saveDetailDate',
-      payload:{
-        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
-      }
-    })
-    this.props.dispatch({
       type:'swimming/cancelSwimming',
       payload:{
-        "dataId":id
+        "dataId":id,
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
       }
     })
   }
@@ -276,7 +239,6 @@ class SwimmingDetail extends Component{
   }
 
   render(){
-
     const { loading ,detailCurrentDate,detailData} = this.props;
     const tabPanelArr = [];
     let dateTime = detailCurrentDate;

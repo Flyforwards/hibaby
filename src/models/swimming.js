@@ -131,8 +131,9 @@ export default {
           type:'getSwimmingRoomsInfo',
           payload:{
             "appointmentId":queryURL("appointmentId"),
-            "date":state.detailCurrentDate,
+            "date":value.date,
             "type":1,
+            "tabs":true,
           }
         })
       }
@@ -147,8 +148,10 @@ export default {
           type:'getSwimmingRoomsInfo',
           payload:{
             "appointmentId":queryURL("appointmentId"),
-            "date":state.detailCurrentDate,
+            "date":value.date,
             "type":1,
+            "tabs":true,
+
           }
         })
       }
@@ -163,8 +166,10 @@ export default {
           type:'getSwimmingRoomsInfo',
           payload:{
             "appointmentId":queryURL("appointmentId"),
-            "date":state.detailCurrentDate,
+            "date":value.date,
             "type":1,
+            "tabs":true,
+
           }
         })
       }
