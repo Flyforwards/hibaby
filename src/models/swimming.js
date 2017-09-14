@@ -49,6 +49,17 @@ export default {
             }
           })
         }
+        if(pathname === '/service/order-swimming/history') {
+          dispatch({
+            type:'getSystemTime'
+          });
+          dispatch({
+            type:'getAppointmentByType',
+            payload:{
+              "type":2
+            }
+          })
+        }
       });
     }
   },
@@ -74,6 +85,31 @@ export default {
             type:'saveDate',
             payload:{
               currentDates:moment(data).format("YYYY-MM-DD")
+            }
+          })
+        }else{
+          yield put({
+            type:'getSwimmingHistory',
+            payload:{
+              "appointmentId":queryURL("appointmentId"),
+              "page":1,
+              "size":10,
+              "sortField": "time",
+              "sortOrder": "AESC",
+              "startDate":moment(data).format("YYYY-MM-DD"),
+              "endDate":moment(data).format("YYYY-MM-DD"),
+            }
+          });
+          yield put({
+            type:'getSwimmingUtilization',
+            payload:{
+              "appointmentId":queryURL("appointmentId"),
+              "page":1,
+              "size":10,
+              "sortField": "time",
+              "sortOrder": "AESC",
+              "startDate":moment(data).format("YYYY-MM-DD"),
+              "endDate":moment(data).format("YYYY-MM-DD"),
             }
           })
         }
@@ -174,8 +210,53 @@ export default {
         })
       }
     },
-
-
+    //获取房间列表
+    *getAppointmentByType({payload:value},{call,put}){
+      const { data:{code,data}} = yield call(orderSweat.getAppointmentByType,value);
+      if(code == 0) {
+        yield put({
+          type:'saveRoomsAllList',
+          payload:{
+            data
+          }
+        })
+      }
+    },
+    //查询使用率
+    *getSwimmingUtilization({payload:value},{call,put}){
+      const { data:{code, data}} = yield call(orderSwimming.getSwimmingUtilization,value);
+      if(code == 0) {
+        yield put({
+          type:'saveSwimmingUtilization',
+          payload:{
+            data
+          }
+        })
+      }
+    },
+    //查询历史记录
+    *getSwimmingHistory({payload:value},{call,put}){
+      const { data:{code,data,page,size,total}} = yield call(orderSwimming.getSwimmingHistory,value);
+      if(code == 0) {
+        yield put({
+          type:'saveHistoryList',
+          payload:{
+            data
+          }
+        })
+        yield put({
+          type: 'getHistoryPageSave',
+          payload: {
+            list: data,
+            pagination: {
+              current: Number(page) || 1,
+              pageSize: Number(size) || 10,
+              total: total,
+            },
+          },
+        })
+      }
+    },
 
 
   },
@@ -197,6 +278,22 @@ export default {
     //保存详情页日期
     saveDetailDate(state,{payload:{detailCurrentDates}}){
       return { ...state,detailCurrentDate:detailCurrentDates}
+    },
+    //房间总数
+    saveRoomsAllList(state,{payload:{data:roomsAllList}}) {
+      return { ...state,roomsAllList}
+    },
+    //使用率
+    saveSwimmingUtilization(state,{payload:{data:usePersent}}) {
+      return { ...state,usePersent}
+    },
+    //保存历史记录
+    saveHistoryList(state,{payload:{data:historyList}}) {
+      return { ...state,historyList}
+    },
+    //分页
+    getHistoryPageSave(state, { payload: { list, pagination }}) {
+      return {...state, list, pagination: {  ...state.pagination,...pagination }};
     },
   }
 }

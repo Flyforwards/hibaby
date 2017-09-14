@@ -42,7 +42,7 @@ class SwimmingDetail extends Component{
   }
 
   handleHistory=()=>{
-    this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${this.state.params?this.state.params.appointmentId:null}`));
+    this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${queryURL("appointmentId")}`));
   }
 
 
