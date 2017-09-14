@@ -39,9 +39,36 @@ export default {
           })
         }
         if(pathname === '/service/order-sweat/history') {
-          dispatch({
-            type:'getSystemTime'
-          });
+          if(queryURL("startDate") && queryURL("endDate")){
+            dispatch({
+              type:'getSweatingHistory',
+              payload:{
+                "appointmentId":queryURL("appointmentId"),
+                "page":1,
+                "size":10,
+                "sortField": "time",
+                "sortOrder": "AESC",
+                "startDate":moment(queryURL("startDate")).format("YYYY-MM-DD"),
+                "endDate":moment(queryURL("endDate")).format("YYYY-MM-DD"),
+              }
+            });
+            dispatch({
+              type:'getSweatingUtilization',
+              payload:{
+                "appointmentId":queryURL("appointmentId"),
+                "page":1,
+                "size":10,
+                "sortField": "time",
+                "sortOrder": "AESC",
+                "startDate":moment(queryURL("startDate")).format("YYYY-MM-DD"),
+                "endDate":moment(queryURL("endDate")).format("YYYY-MM-DD"),
+              }
+            })
+          }else{
+            dispatch({
+              type:'getSystemTime'
+            });
+          }
           dispatch({
             type:'getAppointmentByType',
             payload:{
@@ -90,6 +117,13 @@ export default {
     *getSweatingHistory({payload:value},{call,put}){
       const { data:{code,data,page,size,total}} = yield call(orderSweat.getSweatingHistory,value);
       if(code == 0) {
+        yield put({
+          type:'saveHistoryDate',
+          payload:{
+            "startDate":value.startDate,
+            "endDate":value.endDate,
+          }
+        })
         yield put({
           type:'saveHistoryList',
           payload:{
@@ -310,6 +344,10 @@ export default {
     //房间总数
     saveRoomsAllList(state,{payload:{data:roomsAllList}}) {
       return { ...state,roomsAllList}
+    },
+    //查询历史记录时间
+    saveHistoryDate(state,{payload:{data:historyDate}}) {
+      return { ...state,historyDate}
     }
   }
 

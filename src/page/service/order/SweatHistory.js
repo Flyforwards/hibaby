@@ -108,7 +108,12 @@ class SweatHistory extends Component{
       this.setState({
         visible:false,
       })
-      this.props.dispatch(routerRedux.push(`/service/order-sweat/history?appointmentId=${this.state.idValue}`))
+      if(this.state.startDate && this.state.endDate){
+        this.props.dispatch(routerRedux.push(`/service/order-sweat/history?appointmentId=${this.state.idValue}&startDate=${this.state.startDate}&endDate=${this.state.endDate}`))
+      }else{
+        this.props.dispatch(routerRedux.push(`/service/order-sweat/history?appointmentId=${this.state.idValue}`))
+      }
+     // this.props.dispatch(routerRedux.push(`/service/order-sweat/history?appointmentId=${this.state.idValue}`))
     }else{
       message.error("请选择一个房间")
     }
@@ -128,7 +133,7 @@ class SweatHistory extends Component{
     })
   }
   render(){
-    const {pagination,historyList,loading,usePersent,roomsAllList} =this.props;
+    const {pagination,historyList,loading,usePersent,roomsAllList,historyDate} =this.props;
     let homeId = queryURL("appointmentId");
     const tableProps = {
       loading:loading,
@@ -141,7 +146,9 @@ class SweatHistory extends Component{
             'page': page.current,
             'size': page.pageSize,
             'sortField': "time",
-            'sortOrder': "AESC"
+            'sortOrder': "AESC",
+            'startDate':this.state.startDate ? moment(this.state.startDate).format("YYYY-MM-DD"):moment(historyDate.startDate).format("YYYY-MM-DD"),
+            'endDate':this.state.endDate ? moment(this.state.endDate).format("YYYY-MM-DD"):moment(historyDate.endDate).format("YYYY-MM-DD"),
           }
         })
       }
@@ -217,8 +224,10 @@ class SweatHistory extends Component{
 
 }
 function mapStateToProps(state) {
-  const { historyList ,pagination,usePersent,roomsAllList} = state.orderSweat;
+  const { historyList ,pagination,historyDate,usePersent,roomsAllList,systemTime} = state.orderSweat;
   return {
+    historyDate,
+    systemTime,
     roomsAllList,
     historyList,
     pagination,
