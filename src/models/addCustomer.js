@@ -3,8 +3,11 @@ import { message } from 'antd'
 import { local, session } from 'common/util/storage.js'
 import { routerRedux } from 'dva/router';
 import moment from 'moment'
+import { parse } from 'qs'
 
-export default {
+let editCustomer = false
+
+  export default {
   namespace: 'addCustomer',
   state: {
     dataDetailId:0,
@@ -31,8 +34,6 @@ export default {
     headIconUrl:'',
     activityKey: '',
     operator:'',
-
-    editCustomer:false,
 
     headIconSpin:false,
 
@@ -98,9 +99,6 @@ export default {
       return {...state,remarkList:todo};
     },
 
-    editCustomerAct(state, { payload: todo }){
-      return {...state,editCustomer:todo.data};
-    },
     lookDlc(state, { payload: todo }){
       let temp = '';
 
@@ -171,8 +169,6 @@ export default {
         headIconUrl:'',
 
         operator:'',
-
-        editCustomer:false,
 
         purchasePackageValue:'',
 
@@ -338,10 +334,6 @@ export default {
       const { data: { code, data } } = yield call(addCustomerInformation.getCityData, values);
       if (code == 0) {
         yield put({type: 'addProvinceData',payload:{data}});
-        if (state.editCustomer){
-          yield put({type: 'getCityData',payload:{isHouseholdRegistration:false,dataId:state.baseData.province}});
-        };
-
       }
     },
 
@@ -437,7 +429,7 @@ export default {
         dict.contractNumber = exDict.contractNumber;
       }
 
-      if(state.editCustomer){
+      if(editCustomer){
         if(state.baseData){
           dict.customerId = state.baseData.id;
         }
@@ -503,23 +495,23 @@ export default {
 
       delete dict.gestationalWeeks;
 
-      if (state.editCustomer ){
+      if (editCustomer ){
         dict.id = state.baseData.id;
       }
 
-      const { data: { code, data,err } } = yield call((state.editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
+      const { data: { code, data,err } } = yield call((editCustomer ? addCustomerInformation.updateCustomer :addCustomerInformation.saveCustomer ) ,dict);
       if (code == 0) {
         if (exDict){
           yield put({
             type:'savaExtensionInfo',
             payload:{
-              ...exDict,id:state.editCustomer ? state.baseData.id : data
+              ...exDict,id:editCustomer ? state.baseData.id : data
             }
           });
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${data||dict.id}`))
+          yield put(routerRedux.push(`/crm/customer/detail?dataId=${data||dict.id}`))
 
         }
       }
@@ -572,7 +564,7 @@ export default {
         "specialIdentity": (typeof values.specialIdentity === 'object')  ? values.specialIdentity.key : ''
       };
 
-      if (state.editCustomer ){
+      if (editCustomer ){
         dict.id = state.expandData.id;
       }
 
@@ -581,7 +573,7 @@ export default {
       }
 
       try {
-        const { data: { code, data ,err} } = yield call( (state.editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
+        const { data: { code, data ,err} } = yield call( (editCustomer ? addCustomerInformation.updateCustomerExtend:addCustomerInformation.savaExtensionInfo),dict);
         if (remarkList.length > 0) {
           yield put({
             type: 'savaRemark',
@@ -592,7 +584,7 @@ export default {
         }
         else {
           message.success('信息保存成功');
-          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+          yield put(routerRedux.push(`/crm/customer/detail?dataId=${values.id}`))
         }
       }
       catch (err){
@@ -604,7 +596,7 @@ export default {
             }
           });
         }else{
-          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+          yield put(routerRedux.push(`/crm/customer/detail?dataId=${values.id}`))
         }
 
         throw err;
@@ -630,25 +622,22 @@ export default {
         const { data: { code, data ,err} } = yield call(addCustomerInformation.savaRemark,{inputs:inputs});
         try {
           message.success('信息保存成功');
-          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+          yield put(routerRedux.push(`/crm/customer/detail?dataId=${values.id}`))
         }catch (err){
           message.error('备注信息保存失败');
-          yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+          yield put(routerRedux.push(`/crm/customer/detail?dataId=${values.id}`))
         }
       }
       else {
         message.success('信息保存成功');
-        yield put(routerRedux.push(`/crm/customer/customerDetails?dataId=${values.id}`))
+        yield put(routerRedux.push(`/crm/customer/detail?dataId=${values.id}`))
       }
     },
     *getCustomerById({ payload: values },{ call, put ,select}) {
 
-      const state = yield select(state => state.addCustomer);
+      const query = parse(location.search.substr(1))
 
-      const dataDetailId = state.dataDetailId;
-
-      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerById,{dataId:dataDetailId});
-
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerById,{...query});
 
       if (code == 0) {
         yield put({type:'setBaseData',payload:{data}} );
@@ -658,11 +647,10 @@ export default {
     },
 
     *getCustomerExtendById({ payload: values },{ call, put ,select}) {
-      const state = yield select(state => state.addCustomer);
 
-      const dataDetailId = state.dataDetailId;
+      const query = parse(location.search.substr(1))
 
-      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{dataId:dataDetailId});
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerExtendById,{...query});
       if (code == 0) {
         if (data){
           yield put({type:'setExpandData',payload:{ data }} );
@@ -671,7 +659,7 @@ export default {
           if(data.purchasePackage){
 
             yield put({type:'getCustomerPackageById',payload:{
-              dataId:dataDetailId
+              dataId:query.dataId
             }} );
           }
 
@@ -680,11 +668,8 @@ export default {
     },
 
     *getCustomerRemarkById({ payload: values },{ call, put ,select}) {
-      const state = yield select(state => state.addCustomer);
-
-      const dataDetailId =state.dataDetailId;
-
-      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{dataId:dataDetailId});
+      const query = parse(location.search.substr(1))
+      const { data: { code, data ,err} } = yield call(addCustomerInformation.getCustomerRemarkById,{...query});
       if (code == 0) {
         if (data){
 
@@ -755,12 +740,26 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname,query }) => {
-        if (pathname === '/crm/customer/AddCustomerInformation') {
+        editCustomer = false
+        if (pathname === '/crm/customer/add' || pathname === '/crm/customer/edit') {
+
+          if(pathname === '/crm/customer/edit'){
+            editCustomer = true
+            if(query.dataId){
+              dispatch({
+                type: 'setDataDetailId',
+                payload:{dataId:query.dataId}
+              })
+            }
+            dispatch({type: 'getCustomerById'});
+            dispatch({type: 'getCustomerExtendById'});
+            dispatch({type: 'getCustomerRemarkById'});
+          }
           isDetail(dispatch)
           defDis(dispatch)
         };
 
-        if (pathname === '/crm/customer/customerDetails'){
+        if (pathname === '/crm/customer/detail'){
           defDis(dispatch)
           if(query.dataId){
             dispatch({
@@ -768,12 +767,10 @@ export default {
               payload:{dataId:query.dataId}
             })
           }
-
           dispatch({
             type: 'pageStatus',
             payload:{data:true}
           });
-
         }
       })
     }
@@ -786,6 +783,8 @@ function isDetail(dispatch) {
     payload:{data:false}
   });
 }
+
+let reqAry = ["YCC",'KZLY','YC','ZJLX','FMYY','GZD','WLSSC','TCLX']
 
 function defDis(dispatch) {
   dispatch({
@@ -800,54 +799,17 @@ function defDis(dispatch) {
   dispatch({
     type:'getOperator'
   });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'YCC',
-    }
-  });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'KZLY',
-    }
-  });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'YC',
-    }
-  });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'ZJLX',
-    }
-  });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'FMYY',
-    }
-  });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'GZD',
-    }
-  });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'WLSSC',
-    }
-  });
-  dispatch({
-    type: 'getDataDict',
-    payload:{
-      "abName": 'TCLX',
-    }
-  });
+
+
+  reqAry.map(value=>{
+    dispatch({
+      type: 'getDataDict',
+      payload:{
+        "abName": value,
+      }
+    });
+  })
+
   dispatch({
     type: 'getMembershipcardByType',
     payload:{

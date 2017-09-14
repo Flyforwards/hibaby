@@ -104,7 +104,10 @@ class CustomerIndex extends React.Component {
     }, {
       title: '购买套餐',
       dataIndex: 'purchasePackage',
-      key: 'purchasePackage'
+      key: 'purchasePackage',
+      render: (record) => {
+        return record ? record : "无"
+      }
     }, {
       title: '合同编号',
       dataIndex: 'contractNumber',
@@ -143,7 +146,7 @@ class CustomerIndex extends React.Component {
 
   onLook(record) {
     const dispatch = this.props.dispatch;
-    dispatch(routerRedux.push(`/crm/customer/customerDetails?dataId=${record.id}`))
+    dispatch(routerRedux.push(`/crm/customer/detail?dataId=${record.id}`))
   }
 
   onDelete(record) {
@@ -316,7 +319,7 @@ class CustomerIndex extends React.Component {
             <div className="customer-operation">
               <Button className='button-group-2' onClick={ this.onSearch.bind(this)}>查询</Button>
               <Button className='button-group-1' onClick={ this.reset.bind(this)} >重置</Button>
-              <Link to="/crm/customer/AddCustomerInformation">
+              <Link to="/crm/customer/add">
                 <PermissionButton className='button-group-3' testKey='CUSTOMER_ADD' >新增客户</PermissionButton>
               </Link>
             </div>

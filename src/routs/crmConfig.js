@@ -14,7 +14,7 @@ export default (app) => [
     },
   // 添加客户
   {
-    path: '/crm/customer/AddCustomerInformation',
+    path: '/crm/customer/add',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
          registerModel(app, require('models/addCourse'));
@@ -28,12 +28,14 @@ export default (app) => [
   },
   //编辑客户信息
   {
-    path: '/crm/customer/Edit',
+    path: '/crm/customer/edit',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
-        registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/addCourse'));
+        registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/healthInformation'));
+        registerModel(app, require('models/membershipcard'));
+        registerModel(app, require('models/printCustomer'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
       })
     }
@@ -50,7 +52,7 @@ export default (app) => [
   },
 //客户详情
   {
-    path: '/crm/customer/customerDetails',
+    path: '/crm/customer/detail',
     getComponent: (location, cb) => {
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));

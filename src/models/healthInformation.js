@@ -52,7 +52,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname,query }) => {
-        if (pathname === '/crm/customer/customerDetails'){
+        if (pathname === '/crm/customer/detail'){
           if(query.dataId){
             for(let i=1 ;i<5; i++){
               dispatch({

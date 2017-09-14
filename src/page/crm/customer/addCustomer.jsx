@@ -37,7 +37,7 @@ class addCustomer extends React.Component{
 
 
   render(){
-    const {editCustomer,isDetail}= this.props.users;
+    const {isDetail}= this.props.users;
     const {addSuccess}= this.props.course;
     const { getSuccess } =this.props.membershipcard;
     const { healthPrint } = this.props.printCustomer;
@@ -54,7 +54,7 @@ class addCustomer extends React.Component{
         <AddCourse />
       </TabPane>];
 
-    if(((editCustomer || isDetail)&&this.props.users.expandData)||addSuccess || getSuccess||healthPrint){
+    if(((location.pathname === '/crm/customer/edit' || isDetail)&&this.props.users.expandData)||addSuccess || getSuccess||healthPrint){
       TabPaneAry.push(<TabPane tab="会员卡" key="4">
         <MembershipCard/>
       </TabPane>)
@@ -63,7 +63,7 @@ class addCustomer extends React.Component{
     if (addSuccess){
       defaultActiveKey = '3';
     }
-    if(healthPrint){  
+    if(healthPrint){
       defaultActiveKey='2';
     }
     if(getSuccess){

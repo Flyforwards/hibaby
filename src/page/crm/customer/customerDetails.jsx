@@ -5,14 +5,15 @@ import { routerRedux } from 'dva/router';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
 import PermissionButton from 'common/PermissionButton';
+import { parse } from 'qs'
 
 import {Alert,Table, Modal,Row, Col,Button,Spin} from 'antd';
 
 const confirm = Modal.confirm;
 
 function rowDiv(dict) {
-  let titSpan = 8;
-  let contentSpan = 16;
+  let titSpan = 9;
+  let contentSpan = 15;
   if ( dict.title === '户籍地址'){
     titSpan = 2;
     contentSpan = 22
@@ -133,9 +134,9 @@ function ExtensionInfo(props) {
     {title:'证件号码',value:netData.idcard},
     {title:'籍贯', value:netData.placeOrigin},
     {title:'民族',value: textforkey(nationalData, netData.nation,'nation')},
-    {title:'购买套餐',value:netData.purchasePackage},
-    {title:'联系人姓名',value:netData.contactName},
-    {title:'联系人电话',value:netData.contact},
+    {title:'购买套餐',value:netData.purchasePackage?netData.purchasePackage:"无"},
+    {title:'紧急联系人姓名',value:netData.contactName},
+    {title:'紧急联系人电话',value:netData.contact},
     {title:'会员身份',value:textforkey(memberAry, netData.member,'name')},
     {title:'特殊身份',value:textforkey(specialIdentityAry, netData.specialIdentity,'name')},
     {title:'宝宝生产日期',value:netData.productionDate? moment(netData.productionDate).format('YYYY-MM-DD'):''},
@@ -219,7 +220,6 @@ class customerDetails extends React.Component{
     super(props);
     this.dispatch = props.dispatch;
     this.netData = props.users.baseData;
-    this.editCustomer = false;
   }
 
 
@@ -250,12 +250,11 @@ class customerDetails extends React.Component{
   }
 
   editBtnClick() {
-    this.editCustomer = true;
-    this.dispatch({
-      type: 'addCustomer/editCustomerAct',
-      payload: { data:true}
-    })
-    this.dispatch(routerRedux.push('/crm/customer/AddCustomerInformation'))
+    const query = parse(location.search.substr(1))
+    this.props.dispatch(routerRedux.push({
+      pathname:'/crm/customer/edit',
+      query
+    }))
   }
 
   componentDidMount(){

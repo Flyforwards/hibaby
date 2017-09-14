@@ -349,7 +349,7 @@ function BaseInfo(props) {
     {title:'操作者1',component:'Input',submitStr:'operator',disabled:true,initValue:operator,span:6},
   ];
 
-  if (props.users.editCustomer){
+  if (location.pathname === '/crm/customer/edit'){
     if (props.users.baseData){
       const selectArray = { gravidity:gravidityAry,fetus:fetusAry,hospital:hospitalAry,intentionPackage:intentionPackageAry,resourceCustomer:guestInformationSourceAry,
         focus:concernsAry,webSearchTerm:networkSearchWordsAry,province:provinceData,city:cityData};
@@ -475,7 +475,6 @@ function ExtensionInfo(props) {
     }
   }
 
-
   function specialIdentityOnChange(value) {
     props.form.resetFields(['member']);
     if (props.users.expandData) {
@@ -564,8 +563,8 @@ function ExtensionInfo(props) {
     {title:'籍贯',component:'Input',submitStr:'placeOrigin'},
     {title:'民族',component:'Select',submitStr:'nation',children:nationalDataChis},
     {title:'购买套餐',component:'Input',submitStr:'purchasePackage',disabled:true,noRequired:"1"},
-    {title:'联系人姓名',component:'Input',submitStr:'contactName'},
-    {title:'联系人电话',component:'Input',submitStr:'contact'},
+    {title:'紧急联系人姓名',component:'Input',submitStr:'contactName'},
+    {title:'紧急联系人电话',component:'Input',submitStr:'contact'},
     {title:'会员身份',component:'Select',submitStr:'member',children:memberChis,fun:memberOnChange,disabled:props.users.expandData},
     {title:'特殊身份',component:'Select',submitStr:'specialIdentity',children:specialIdentityChis,fun:specialIdentityOnChange,disabled:props.users.expandData},
     {title:'宝宝生产日期',component:'DatePicker',submitStr:'productionDate',disabled:true,noRequired:"1"},
@@ -577,7 +576,7 @@ function ExtensionInfo(props) {
     {title:'客户照片',component:'headUpload',submitStr:'imgURL',children:provinceDataChis,span:6,fun:uploadHeadelImg,initValue:headIconUrl,loadProgress:loadProgress,spin:headIconSpin},
   ];
 
-  if (props.users.editCustomer){
+  if (location.pathname === '/crm/customer/edit'){
     if (props.users.expandData){
       const selectArray =  {idType:idTypeAry,nation:nationalData,provincePermanent:provinceData,cityPermanent:permanentCityData,member:memberAry,specialIdentity:specialIdentityAry}
       datacompare(expandInfo,props.users.expandData,selectArray);
@@ -658,7 +657,7 @@ function Remark(props) {
   const {dispatch} = props;
 
   const { getFieldDecorator } = props.form;
-  if (props.users.editCustomer){
+  if (location.pathname === '/crm/customer/edit'){
     if (props.users.remarkData.length > 0){
       if(remarkList.length == 0) {
         dispatch({type:'addCustomer/addRemarkAry',payload:props.users.remarkData})
@@ -782,7 +781,6 @@ class customerInformation extends React.Component{
   render() {
 
 
-
     if(this.props.users.validationStr){
       let ary = this.props.users.validationStr.split(',')
 
@@ -812,15 +810,18 @@ class customerInformation extends React.Component{
 
 
     return (
-      <div className="customerContent">
-        <BaseForm ref="baseForm" {...this.props}/>
-        <ExtensionForm ref="extensionForm" {...this.props}/>
-        <RemarkForm  {...this.props}/>
-        <div className='button-group-bottom-common'>
-          <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
-          <Button className='button-group-bottom-2' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
+      <Spin spinning={this.props.loading.effects['addCustomer/getCustomerById']
+      || (this.props.loading.effects['addCustomer/savaBaseInfo']?this.props.loading.effects['addCustomer/savaBaseInfo']:false)}>
+        <div className="customerContent">
+          <BaseForm ref="baseForm" {...this.props}/>
+          <ExtensionForm ref="extensionForm" {...this.props}/>
+          <RemarkForm  {...this.props}/>
+          <div className='button-group-bottom-common'>
+            <Button className='button-group-bottom-1' onClick={this.backBtnClick.bind(this)}>返回</Button>
+            <Button className='button-group-bottom-2' onClick={this.handleSubmitBase.bind(this)}>保存</Button>
+          </div>
         </div>
-      </div>
+      </Spin>
     )
   }
 
@@ -831,6 +832,7 @@ class customerInformation extends React.Component{
 function mapStateToProps(state) {
   return {
     users: state.addCustomer,
+    loading:state.loading,
   };
 }
 
