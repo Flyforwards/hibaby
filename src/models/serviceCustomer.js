@@ -32,8 +32,16 @@ export default {
     describeButlerInfo: [],
     describeNutritionInfo: [],
     describeChildrenInfo: [],
-    edinburghListInfo: []//爱丁堡忧郁单列表
-    
+    edinburghListInfo: [],//爱丁堡忧郁单列表
+    techniciansListDetail: {
+      describe: '管理员',
+      list: [],
+      state: 1,
+      userId: 1
+    },
+    todayTime: new Date().getTime(),
+    techniciansList: [],
+    isAllTechnicians: 1,
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -184,6 +192,20 @@ export default {
           let dict_ = { customerId: parseInt(customerid) }
           dispatch({ type: 'getEdinburghMelancholyGaugeList', payload: dict_ });
         }
+        
+        //技师预约
+        if (pathname === '/service/order-technician') {
+          dispatch({ type: 'getTechnicians', payload: { date: '' } })
+        }
+        //技师预约详情
+        if (pathname === '/service/order-technician/detail') {
+          const { userid } = query;
+          dispatch({
+            type: 'getTechniciansInfo',
+            payload: { type: 1, userId: userid, date: moment().format('YYYY-MM-DD') }
+          })
+        }
+        
       });
     }
   },
@@ -908,8 +930,8 @@ export default {
       const { k, dataId } = postInfo
       const values = {
         dataId,
-        babyId:k,
-        operatorItem:5
+        babyId: k,
+        operatorItem: 5
       }
       const { data: { data, code } } = yield call(serviceAssessment.getPediatricNoteById, values);
       if (code == 0) {
@@ -996,7 +1018,7 @@ export default {
         });
       }
     },
-    //3.根据id查询删除
+    //4.根据id查询删除
     *delEdinburghMelancholyGauge({ payload: postInfo }, { call, put }){
       const { values, customerId } = postInfo;
       const { data: { data, code } } = yield call(serviceAssessment.delEdinburghMelancholyGauge, values);
@@ -1007,11 +1029,103 @@ export default {
           payload: { customerId: customerId }
         });
       }
+    },
+    
+    
+    //预约技师
+    //1.根据日期查询技师列表
+    *getTechnicians({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(serviceAssessment.getTechnicians, values);
+      if (code == 0) {
+        yield put({
+          type: 'getTechniciansList',
+          payload: data
+        });
+      }
+    },
+    //2.切换技师预约上线离线状态
+    *changeTechnicianState({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(serviceAssessment.changeTechnicianState, values);
+      if (code == 0) {
+        message.success('修改成功！')
+      }
+    },
+    //3.根据日期查询技师预约详情
+    *getTechniciansInfo({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(serviceAssessment.getTechniciansInfo, values);
+      if (code == 0) {
+        yield put({
+          type: 'getTechniciansListDetail',
+          payload: data
+        });
+      }
+    },
+    //4.关闭预约closeTechnician
+    *closeTechnician({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(serviceAssessment.closeTechnician, values);
+      if (code == 0) {
+        yield put({
+          type: 'getTechniciansInfo',
+          payload: {
+            date: values.date,
+            type: 1,
+            userId: values.userId
+          }
+        });
+      }
+    },
+    //5.开启预约openTechnician
+    *openTechnician({ payload: values }, { call, put ,select}){
+      const { dataId, userId, date } = values;
+      const info = yield select(state => state.serviceCustomer);
+      const { isAllTechnicians } = info;
+      const { data: { data, code } } = yield call(serviceAssessment.openTechnician, { dataId });
+      if (code == 0) {
+        yield put({
+          type: 'getTechniciansInfo',
+          payload: {
+            date,
+            type: isAllTechnicians,
+            userId
+          }
+        });
+      }
+    },
+    //5.取消预约openTechnician
+    *cancelTechnician({ payload: values }, { call, put,select }){
+      const { dataId, userId, date } = values;
+      const info = yield select(state => state.serviceCustomer);
+      const { isAllTechnicians } = info;
+      const { data: { data, code } } = yield call(serviceAssessment.cancelTechnician, { dataId });
+      if (code == 0) {
+        yield put({
+          type: 'getTechniciansInfo',
+          payload: {
+            date,
+            type: isAllTechnicians,
+            userId
+          }
+        });
+      }
     }
     
     
   },
   reducers: {
+    //预约技师
+    getTechniciansList(state, { payload: data }){
+      return { ...state, techniciansList: data.list }
+    },
+    getTechniciansListDetail(state, { payload: data }){
+      return { ...state, techniciansListDetail: data }
+    },
+    changeTechniciansTime(state, { payload: data }){
+      return { ...state, todayTime: data }
+    },
+    changeIsAllTechnicians(state, { payload: data }){
+      return { ...state, isAllTechnicians: data }
+    },
+    
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
       let customerData = {
         ...state,

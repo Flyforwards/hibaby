@@ -155,6 +155,7 @@ class SweatHistory extends Component{
               format="YYYY-MM-DD"
               placeholder={['开始时间', '结束时间']}
               onChange={this.onDateChange.bind(this)}
+              allowClear={false}
             />
           </Col>
           <Col span={2} >
