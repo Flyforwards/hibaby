@@ -19,13 +19,15 @@ class SweatDetail extends Component{
     this.state={
       lookState:1,
       tabKey:'',
-      changeDate:''
+      changeDate:'',
+      tabs:false
     }
   }
 
   onTabChange(k){
     this.setState({
       tabKey:moment(k).format("YYYY-MM-DD"),
+      tabs:true,
     })
     this.props.dispatch({
       type:'orderSweat/getSweatingRoomsInfo',
@@ -54,12 +56,12 @@ class SweatDetail extends Component{
   }
   //关闭预约
   onClose(v1,v2){
-    this.props.dispatch({
-      type:'orderState/saveDetailDate',
-      payload:{
-        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
-      }
-    })
+    // this.props.dispatch({
+    //   type:'orderSweat/saveDetailDate',
+    //   payload:{
+    //     "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
+    //   }
+    // })
     this.props.dispatch({
       type:'orderSweat/closeSweating',
       payload:{
@@ -67,36 +69,41 @@ class SweatDetail extends Component{
         "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
         "time":v1,
         "timeId":v2,
+        "tabs":this.state.tabs,
       }
     })
   }
   //开启预约
   onOpen(id){
-    this.props.dispatch({
-      type:'orderState/saveDetailDate',
-      payload:{
-        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
-      }
-    })
+    // this.props.dispatch({
+    //   type:'orderSweat/saveDetailDate',
+    //   payload:{
+    //     "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
+    //   }
+    // })
     this.props.dispatch({
       type:'orderSweat/openSweating',
       payload:{
-       "dataId":id
+       "dataId":id,
+        "tabs":this.state.tabs,
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate,
       }
     })
   }
   //取消预约
   onCancel(id){
-    this.props.dispatch({
-      type:'orderState/saveDetailDate',
-      payload:{
-        "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
-      }
-    })
+    // this.props.dispatch({
+    //   type:'orderSweat/saveDetailDate',
+    //   payload:{
+    //     "detailCurrentDates":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
+    //   }
+    // })
     this.props.dispatch({
       type:'orderSweat/cancelSweating',
       payload:{
-        "dataId":id
+        "dataId":id,
+        "tabs":this.state.tabs,
+        "date":this.state.tabKey != ''?this.state.tabKey:this.props.detailCurrentDate
       }
     })
   }
@@ -174,6 +181,7 @@ class SweatDetail extends Component{
         "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
         "appointmentId":queryURL("appointmentId"),
         "type":2,
+        "tabs":this.state.tabs,
       }
     })
   }
@@ -188,6 +196,7 @@ class SweatDetail extends Component{
         "date":moment(this.props.detailCurrentDate).format("YYYY-MM-DD"),
         "appointmentId":queryURL("appointmentId"),
         "type":1,
+        "tabs":this.state.tabs
       }
     })
   }
@@ -195,7 +204,13 @@ class SweatDetail extends Component{
   onChangeDetailDate(value, dateString) {
     this.setState({
       changeDate:'',
+      tabs:false
     })
+
+    // this.props.dispatch(routerRedux.push({
+    //   path: `/service/order-sweat/detail?date=${moment(dateString).format("YYYY-MM-DD")}&appointmentId=${queryURL("appointmentId")}&type=${this.state.lookState}`,
+    // }))
+
     this.props.dispatch({
       type:'orderSweat/getSweatingRoomsInfo',
       payload:{

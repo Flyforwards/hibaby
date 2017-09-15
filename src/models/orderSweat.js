@@ -153,8 +153,9 @@ export default {
           type:'getSweatingRoomsInfo',
           payload:{
             "appointmentId":queryURL("appointmentId"),
-            "date":state.detailCurrentDate,
+            "date":value.date,
             "type":1,
+            "tabs":value.tabs,
           }
         })
       }
@@ -169,8 +170,9 @@ export default {
           type:'getSweatingRoomsInfo',
           payload:{
             "appointmentId":queryURL("appointmentId"),
-            "date":state.detailCurrentDate,
+            "date":value.date,
             "type":1,
+            "tabs":value.tabs,
           }
         })
       }
@@ -185,8 +187,9 @@ export default {
           type:'getSweatingRoomsInfo',
           payload:{
             "appointmentId":queryURL("appointmentId"),
-            "date":state.detailCurrentDate,
+            "date":value.date,
             "type":1,
+            "tabs":value.tabs,
           }
         })
       }
