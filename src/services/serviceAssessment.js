@@ -425,7 +425,13 @@ export function cancelTechnician(values) {
   })
 }
 
-
+//9,查询技师列表
+export function getTechnicianList(values) {
+  return request('/crm/api/v1/technician/getTechnicianList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
 

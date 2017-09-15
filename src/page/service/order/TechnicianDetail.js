@@ -25,8 +25,8 @@ class SwimmingDetail extends Component {
     this.props.dispatch(routerRedux.push(`/service/order-technician`));
   }
   
-  handleHistory = () => {
-    this.props.dispatch(routerRedux.push(`/service/order-technician/history`));
+  handleHistory = (userId) => {
+    this.props.dispatch(routerRedux.push(`/service/order-technician/history?userid=${userId}`));
   }
   
   handleChange = (userId, value) => {
@@ -126,11 +126,14 @@ class SwimmingDetail extends Component {
     for (var i = 0; i < +5; i++) {
       timeArr.push(moment(todayTime).add(i, 'days').format("YYYY-MM-DD"))
     }
+    const param = parse(location.search.substr(1));
+    console.log(param.date)
+    
     return (
       <Card className="DetailCard">
         <Row className="date-title">
           <Col span={24}>
-            <DatePicker onChange={this.changeTime.bind(this, userId)}/>
+            <DatePicker defaultValue={moment(param.date)} format="YYYY-MM-DD" onChange={this.changeTime.bind(this, userId)}/>
           </Col>
         </Row>
         {
@@ -185,7 +188,7 @@ class SwimmingDetail extends Component {
         
         
         <div className="Detail-Bottom">
-          <Button className="historyBtn button-group-bottom-2" onClick={this.handleHistory.bind(this)}>历史</Button>
+          <Button className="historyBtn button-group-bottom-2" onClick={this.handleHistory.bind(this, userId)}>历史</Button>
           <Button className="button-group-bottom-1" onClick={this.handleBack.bind(this)}>返回</Button>
         </div>
       </Card>

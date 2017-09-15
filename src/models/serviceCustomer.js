@@ -42,9 +42,24 @@ export default {
     todayTime: new Date().getTime(),
     techniciansList: [],
     isAllTechnicians: 1,
+    technicianHistoryList: [],
+    technicianHistoryPageInfo: {
+      page: 1,
+      size: 10,
+      total: 100
+    },
+    technicianUtilization: '0%',
+    technicianNameList: [],
+    technicianNamePageInfo:{
+      page:1,
+      size:10,
+      total:100
+    }
+    
+    
   },
   subscriptions: {
-    setup({ dispatch, history }) {  // eslint-disable-line
+    setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
         if (query.customerid) {
           let dict = { dataId: query.customerid }
@@ -195,14 +210,56 @@ export default {
         
         //技师预约
         if (pathname === '/service/order-technician') {
-          dispatch({ type: 'getTechnicians', payload: { date: '' } })
+          dispatch({ type: 'getTechnicians', payload: { date: moment().format('YYYY-MM-DD') } })
         }
         //技师预约详情
         if (pathname === '/service/order-technician/detail') {
-          const { userid } = query;
+          const { userid,date } = query;
           dispatch({
             type: 'getTechniciansInfo',
-            payload: { type: 1, userId: userid, date: moment().format('YYYY-MM-DD') }
+            payload: { type: 1, userId: userid, date }
+          })
+          dispatch({
+            type: 'serviceCustomer/changeTechniciansTime',
+            payload: date
+          })
+        }
+      
+        //技师预约历史
+        if (pathname === '/service/order-technician/history') {
+          const { userid } = query;
+          let endDate = query.enddate?query.enddate: moment().format('YYYY-MM-DD')
+          let startDate = query.startdate?query.startdate: moment().format('YYYY-MM-DD')
+            dispatch({
+              type: 'getTechnicianHistory',
+              payload: {
+                userId: userid,
+                endDate,
+                page: 1,
+                size: 10,
+                startDate,
+                sortField: "time",
+                sortOrder: "AESC"
+              }
+            })
+          dispatch({
+            type: 'getTechnicianUtilization',
+            payload: {
+              userId: userid,
+              endDate,
+              page: 1,
+              size: 10,
+              startDate,
+              sortField: "time",
+              sortOrder: "AESC"
+            }
+          })
+          dispatch({
+            type:'getTechnicianList',
+            payload:{
+              page:1,
+              size:10,
+            }
           })
         }
         
@@ -1075,7 +1132,7 @@ export default {
       }
     },
     //5.开启预约openTechnician
-    *openTechnician({ payload: values }, { call, put ,select}){
+    *openTechnician({ payload: values }, { call, put, select }){
       const { dataId, userId, date } = values;
       const info = yield select(state => state.serviceCustomer);
       const { isAllTechnicians } = info;
@@ -1091,8 +1148,8 @@ export default {
         });
       }
     },
-    //5.取消预约openTechnician
-    *cancelTechnician({ payload: values }, { call, put,select }){
+    //6.取消预约openTechnician
+    *cancelTechnician({ payload: values }, { call, put, select }){
       const { dataId, userId, date } = values;
       const info = yield select(state => state.serviceCustomer);
       const { isAllTechnicians } = info;
@@ -1105,6 +1162,36 @@ export default {
             type: isAllTechnicians,
             userId
           }
+        });
+      }
+    },
+    //7. 查询技师预约历史记录分页列表
+    *getTechnicianHistory({ payload: values }, { call, put }){
+      const { data: { data, code, page, size, total } } = yield call(serviceAssessment.getTechnicianHistory, values);
+      if (code == 0) {
+        yield put({
+          type: 'getTechnicianHistoryList',
+          payload: { data, page, size, total }
+        });
+      }
+    },
+    //8,查询使用率
+    *getTechnicianUtilization({ payload: values }, { call, put }){
+      const { data: { data, code } } = yield call(serviceAssessment.getTechnicianUtilization, values);
+      if (code == 0) {
+        yield put({
+          type: 'getTechnicianUtilizationInfo',
+          payload: data
+        });
+      }
+    },
+    //9,查询技师列表
+    *getTechnicianList({ payload: values }, { call, put }){
+      const { data: { data, code, page, size, total } } = yield call(serviceAssessment.getTechnicianList, values);
+      if (code == 0) {
+        yield put({
+          type: 'getTechnicianNameList',
+          payload: { data, page, size, total }
         });
       }
     }
@@ -1125,6 +1212,27 @@ export default {
     changeIsAllTechnicians(state, { payload: data }){
       return { ...state, isAllTechnicians: data }
     },
+    getTechnicianHistoryList(state, { payload: info }){
+      const { data, page, size, total } = info;
+      const technicianHistoryPageInfo = { page, size, total }
+      return { ...state, technicianHistoryList: data, technicianHistoryPageInfo }
+    },
+    getTechnicianUtilizationInfo(state, { payload: data }){
+      return { ...state, technicianUtilization: data }
+    },
+    
+    getTechnicianNameList(state, { payload: info }){
+      const { data, page, size, total } = info;
+      const technicianNamePageInfo = { page, size, total }
+      return { ...state, technicianNameList: data, technicianNamePageInfo }
+    },
+    saveChooseTechnicianTime(state,{payload:data}){
+      console.log(data,'/////////')
+      return{...state,startDate:data[0],endDate:data[1]}
+    },
+    
+    
+    
     
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
       let customerData = {

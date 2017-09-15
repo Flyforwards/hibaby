@@ -651,6 +651,19 @@ export default (app) => [
       })
     }
   },
+  // 预约技师历史
+  {
+    path: '/service/order-technician/history',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/order/TechnicianHistory.js'))
+      })
+    }
+  },
+  
+  
+  
   // 满月汗
   {
     path: '/service/order-sweat',
