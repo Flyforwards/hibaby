@@ -7,7 +7,7 @@ import { connect } from 'dva';
 import   './SwimmingIndex.scss';
 const Option = Select.Option;
 import { Link } from 'react-router';
-
+import moment from 'moment'
 class TechnicianIndex extends Component {
   
   constructor(props) {
@@ -46,11 +46,19 @@ class TechnicianIndex extends Component {
   }
   
   changeTime = (date, dateString) => {
-    const {dispatch} = this.props;
+    dateString == '' ? dateString = moment().format("YYYY-MM-DD") : dateString;
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'serviceCustomer/changeTechniciansTime',
+      payload: dateString
+    })
+  
+  
     dispatch({
       type:"serviceCustomer/getTechnicians",
       payload:{date:dateString}
     })
+   
   }
   
   handleChange = (userId, value) => {
@@ -67,10 +75,10 @@ class TechnicianIndex extends Component {
 
   
   render() {
-    const { techniciansList } = this.props;
+    const { techniciansList,todayTime } = this.props;
     return (
       <Card className="order-swimming order-technician">
-        <div className="choose_time"><DatePicker onChange={this.changeTime}/></div>
+        <div className="choose_time"><DatePicker defaultValue={moment()} format="YYYY-MM-DD" onChange={this.changeTime}/></div>
         <Row >
           {
             techniciansList.map((v, k) => {
@@ -79,7 +87,7 @@ class TechnicianIndex extends Component {
                   <Row>
                     <Col span={8}>
                       <div className="ItemLeft">
-                        <Link to= {`/service/order-technician/detail?userid=${v.userId}`} >
+                        <Link to= {`/service/order-technician/detail?userid=${v.userId}&date=${moment(todayTime).format('YYYY-MM-DD')}`} >
                           <img className="swimming-icon" src="http://test.jubaopen365.com/upload/20170911/82e6eeb570da901a4700aa9071f43ab2.png" alt="技师信息"/>
                         </Link>
                         <p className="describe">{v.describe}</p>
