@@ -121,9 +121,9 @@ class SwimmingDetail extends Component{
                   <img className="swimming-icon" src="" alt="" />
                 </p>
                 <p>{roomsInfo.describe}</p>
-                <Select className="swimming-select" onChange={this.handleChangeState.bind(this)} defaultValue={roomsInfo.state+''} placeholder="请选择">
-                  <Option value="1">上线</Option>
-                  <Option value="0">离线</Option>
+                <Select className="swimming-select" onChange={this.handleChangeState.bind(this,roomsInfo.appointmentId)} defaultValue={roomsInfo.state+''} placeholder="请选择">
+                  <Option value="1">开工</Option>
+                  <Option value="0">离开</Option>
                 </Select>
               </div>
             </Col>
