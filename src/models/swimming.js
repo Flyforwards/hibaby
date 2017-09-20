@@ -239,6 +239,13 @@ export default {
       const { data:{code,data,page,size,total}} = yield call(orderSwimming.getSwimmingHistory,value);
       if(code == 0) {
         yield put({
+          type:'saveHistoryDate',
+          payload:{
+            "startDate":value.startDate,
+            "endDate":value.endDate,
+          }
+        })
+        yield put({
           type:'saveHistoryList',
           payload:{
             data
@@ -295,5 +302,9 @@ export default {
     getHistoryPageSave(state, { payload: { list, pagination }}) {
       return {...state, list, pagination: {  ...state.pagination,...pagination }};
     },
+    //查询历史记录时间
+    saveHistoryDate(state,{payload:{data:historyDate}}) {
+      return { ...state,historyDate}
+    }
   }
 }

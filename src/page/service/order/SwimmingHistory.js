@@ -93,7 +93,11 @@ class SwimmingHistory extends Component{
       this.setState({
         visible:false,
       })
-      this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${this.state.idValue}`))
+      if(this.state.startDate && this.state.endDate){
+        this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${this.state.idValue}&startDate=${this.state.startDate}&endDate=${this.state.endDate}`))
+      }else{
+        this.props.dispatch(routerRedux.push(`/service/order-swimming/history?appointmentId=${this.state.idValue}`))
+      }
     }else{
       message.error("请选择一个泳池")
     }
@@ -130,7 +134,7 @@ class SwimmingHistory extends Component{
   }
 
   render(){
-    const {pagination,historyList,loading,usePersent,roomsAllList} =this.props;
+    const {pagination,historyList,loading,usePersent,roomsAllList,historyDate} =this.props;
     let homeId = queryURL("appointmentId");
     const tableProps = {
       loading:loading,
@@ -143,7 +147,9 @@ class SwimmingHistory extends Component{
             'page': page.current,
             'size': page.pageSize,
             'sortField': "time",
-            'sortOrder': "AESC"
+            'sortOrder': "AESC",
+            'startDate':this.state.startDate ? moment(this.state.startDate).format("YYYY-MM-DD"):moment(historyDate.startDate).format("YYYY-MM-DD"),
+            'endDate':this.state.endDate ? moment(this.state.endDate).format("YYYY-MM-DD"):moment(historyDate.endDate).format("YYYY-MM-DD"),
           }
         })
       }
