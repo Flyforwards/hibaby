@@ -7,6 +7,8 @@ const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const FormItem = Form.Item;
 const Option = Select.Option
+import './prepareMeals.scss'
+
 
 class App extends Component {
   state = {
