@@ -7,6 +7,8 @@ const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const FormItem = Form.Item;
 const Option = Select.Option
+import './prepareMeals.scss'
+
 
 class App extends Component {
   state = {
@@ -277,12 +279,12 @@ class App extends Component {
               {/*<Search className="search" placeholder="请输入菜品名" onSearch={this.onChange}/>*/}
               <Form layout="inline">
               <Row  justify="space-between">
-                <Col span={8}>
+                <Col span={6}>
                  <FormItem>
                  <Input style={{ width: 180 }} placeholder="请输入菜品名" onChange={this.handleNameChange.bind(this)} />
                  </FormItem>
                  </Col>
-                <Col span={8}>
+                <Col span={6}>
                   <FormItem>
                     <Select placeholder="荤素类型" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
                       {mvTypeOptions}
@@ -290,23 +292,21 @@ class App extends Component {
 
                   </FormItem>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
                   <FormItem>
                     <Select placeholder="菜品类型" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
                       {vdTypeOptions}
                     </Select>
                   </FormItem>
                 </Col>
-                {/*<Col span={8}>
-                  <FormItem
-                    label="使用状态"
-                  >
-                    <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)} >
+                <Col span={6}>
+                  <FormItem>
+                    <Select placeholder="使用状态" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)} >
                       <Option value="0">未使用</Option>
                       <Option value="1">已使用</Option>
                     </Select>
                   </FormItem>
-                </Col>*/}
+                </Col>
               </Row>
               </Form>
               <div className="btn">
