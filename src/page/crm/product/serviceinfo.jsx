@@ -16,6 +16,7 @@ class ServiceInfo extends Component {
           title: '套餐名称',
           dataIndex: 'name',
           key:'name',
+          width:'10%'
         }, {
           title: '服务项',
           dataIndex: 'serviceInfoNameList',
@@ -32,7 +33,8 @@ class ServiceInfo extends Component {
             return (
               serviceInfoNameList
             )
-          }
+          },
+          width:'60%'
         }, {
           title: '套房',
           dataIndex: 'suiteId',
@@ -49,7 +51,8 @@ class ServiceInfo extends Component {
             return (
              suiteId
             )
-          }
+          },
+          width:'10%'
         }, {
           title: '套餐价格',
           dataIndex: 'price',
@@ -59,7 +62,8 @@ class ServiceInfo extends Component {
             return (
               price
             )
-          }
+          },
+          width:'10%'
         },{
           title: '操作',
           dataIndex: 'operating',
@@ -75,6 +79,7 @@ class ServiceInfo extends Component {
             </div>
             );
           },
+          
         }];
         this.state = {
           DeleteVisible:false,
