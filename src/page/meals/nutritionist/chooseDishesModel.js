@@ -8,7 +8,9 @@ const Search = Input.Search;
 const FormItem = Form.Item;
 const Option = Select.Option
 import './prepareMeals.scss'
+const createForm = Form.create
 
+@createForm()
 class App extends Component {
   state = {
     expandedKeys: [],
@@ -63,6 +65,24 @@ class App extends Component {
   handleStatus=(value)=>{
     this.setState({
       status: value
+    });
+  }
+
+  handleReset = () =>{
+    this.props.form.resetFields();
+    this.setState({
+      name : '',
+      mvType : null,
+      vdType : null,
+      status : ''
+    });
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'prepareMealsDinner/getDishesPageList',
+      payload: {
+        nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
+        page : 1,
+      }
     });
   }
 
@@ -177,7 +197,8 @@ class App extends Component {
 
 
   render() {
-    const { prepareMeals } = this.props;
+    const { prepareMeals,form } = this.props;
+    const { getFieldDecorator } = form;
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
 
     const { nodes } = nodesInfo;
@@ -283,35 +304,43 @@ class App extends Component {
                 <Row  justify="space-between">
                   <Col span={6}>
                     <FormItem>
-                      <Input style={{ width: 180 }} placeholder="请输入菜品名" onChange={this.handleNameChange.bind(this)} />
+                      {getFieldDecorator('name')(
+                        <Input style={{ width: 180 }} placeholder="请输入菜品名" onChange={this.handleNameChange.bind(this)} />
+                      )}
                     </FormItem>
                   </Col>
                   <Col span={6}>
                     <FormItem>
-                      <Select placeholder="荤素类型" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
-                        {mvTypeOptions}
-                      </Select>
-
+                      {getFieldDecorator('mvType')(
+                        <Select placeholder="荤素类型" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
+                          {mvTypeOptions}
+                        </Select>
+                      )}
                     </FormItem>
                   </Col>
                   <Col span={6}>
                     <FormItem>
-                      <Select placeholder="菜品类型" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
-                        {vdTypeOptions}
-                      </Select>
+                      {getFieldDecorator('vdType')(
+                        <Select placeholder="菜品类型" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
+                          {vdTypeOptions}
+                        </Select>
+                      )}
                     </FormItem>
                   </Col>
                   <Col span={6}>
-                   <FormItem>
-                   <Select placeholder="使用状态" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)} >
-                   <Option value="0">未使用</Option>
-                   <Option value="1">已使用</Option>
-                   </Select>
-                   </FormItem>
-                   </Col>
+                    <FormItem>
+                      {getFieldDecorator('status')(
+                        <Select placeholder="使用状态" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)} >
+                          <Option value="0">未使用</Option>
+                          <Option value="1">已使用</Option>
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
                 </Row>
               </Form>
-              <div className="btn">
+              <div className="btns">
+                <Button className="button-group-1" onClick={this.handleReset.bind(this)}>重置</Button>
                 <Button className="button-group-2" onClick={this.handleSearch.bind(this)}>查询</Button>
               </div>
               <Table rowKey="id"

@@ -140,7 +140,10 @@
   .ant-input-affix-wrapper{
     width: 50%;
   }
-  .btn{
+  .btns{
+    button{
+      margin-right: 10px;
+    }
     text-align: right;
     padding-top: 10px;
   }
