@@ -152,7 +152,7 @@ const monthStateView = (props) => {
       payload: checked
     });
   };
-
+//t头部初始化
   const renderMonthSelectView = () => {
     const renderYearSelectView = (index) => {
       const yearSelectChangeHandler = (value) => {
@@ -176,7 +176,7 @@ const monthStateView = (props) => {
         </Col>
       )
     };
-
+//月份初始化
     const renderChiMonthSelectView = (index) => {
       const checkboxChangeHandler = (value) => {
 
@@ -230,7 +230,7 @@ const monthStateView = (props) => {
         }
       });
     }
-
+  //点击添加
     const addBtnClickHandler = () => {
 
        const index = ++selectViewIndex;
@@ -716,7 +716,7 @@ const monthStateView = (props) => {
             }
           }
         };
-
+    //在列表中拖拽
         const dragStart = (event, user) => {
 
           dragOffsetX = event.nativeEvent.offsetX;
@@ -990,7 +990,7 @@ const monthStateView = (props) => {
   const monthSidebarView = () => {
 
     const customers = props.users.monthStateCustomers;
-
+//自动排房拖拽
     const dragStart = (dragUser, event) => {
 
       dragOffsetX = event.nativeEvent.offsetX;
