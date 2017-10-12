@@ -1039,51 +1039,52 @@ export default {
     },
     
     
-    subscriptions: {
-      setup({ dispatch, history })
-      {
-        return history.listen(({ pathname, query }) => {
-          if (pathname === '/chamber/roomstatusindex') {
-            dispatch({ type: "dayStatus" });
-            if (Object.keys(query).length == 0) {
-              dispatch({ type: "getMemberShipCard" });
-              dispatch({ type: "listByMain" });
-              dispatch({
-                type: 'getDataDict',
-                payload: {
-                  "abName": 'LC'
-                }
-              });
-              dispatch({
-                type: 'getDataDict',
-                payload: {
-                  "abName": 'ZFL'
-                }
-              });
-              dispatch({
-                type: 'getDataDict',
-                payload: {
-                  "abName": 'QY'
-                }
-              });
-              dispatch({
-                type: 'getDataDict',
-                payload: {
-                  "abName": 'CX'
-                }
-              });
-              dispatch({
-                type: 'getDataDict',
-                payload: {
-                  "abName": 'YCC'
-                }
-              });
-            }
+    
+  },
+  subscriptions: {
+    setup({ dispatch, history })
+    {
+      return history.listen(({ pathname, query }) => {
+        if (pathname === '/chamber/roomstatusindex') {
+  
+          dispatch({ type: "dayStatus" });
+          if (Object.keys(query).length == 0) {
+            dispatch({ type: "getMemberShipCard" });
+            dispatch({ type: "listByMain" });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'LC'
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'ZFL'
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'QY'
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'CX'
+              }
+            });
+            dispatch({
+              type: 'getDataDict',
+              payload: {
+                "abName": 'YCC'
+              }
+            });
           }
-          
-        })
-      }
+        }
+        
+      })
     }
   }
-  
 }

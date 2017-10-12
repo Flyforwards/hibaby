@@ -218,7 +218,6 @@ function CustomerSearch(props) {
 
 function CustomerTable({ props, loading, selectCustomerFun, dispatch, selectItem, permissionAlias }) {
   const { allCusList, pagination, monthStateCustomers, fetusAry, packageAry } = props
-  
   const columns = [{ title: '客户姓名', dataIndex: 'name', key: 'name' },
     { title: '年龄', dataIndex: 'age', key: 'age' },
     {
@@ -462,7 +461,7 @@ class createCustomer extends React.Component {
   }
   
   render() {
-    const { createCustomerVisible,intentionPackageAry ,gravidityAry} = this.props.users;
+    const { createCustomerVisible, intentionPackageAry, gravidityAry } = this.props.users;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -527,7 +526,7 @@ class createCustomer extends React.Component {
                 )}
               </FormItem>
             </Col>
-           
+            
             <Col span={12}>
               <FormItem label="联系方式" {...formItemLayout}>
                 {getFieldDecorator('contact', {
@@ -537,7 +536,7 @@ class createCustomer extends React.Component {
                 )}
               </FormItem>
             </Col>
-           
+            
             <Col span={12}>
               <FormItem label="合同编号" {...formItemLayout}>
                 {getFieldDecorator('contractNumber', {
@@ -567,7 +566,7 @@ class createCustomer extends React.Component {
             </Col>
           </Row>
           <Row>
-          <Col offset={11}>
+            <Col offset={11}>
               <FormItem>
                 <Button type="primary" htmlType="submit" className='button-group-1'>确定</Button>
               </FormItem>
