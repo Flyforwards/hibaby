@@ -127,6 +127,13 @@ export function getCustomerPackageById(values) {
   })
 };
 
+//客户快速入口（日房态里面的创建客户）
+export function fastEntry(values) {
+  return request('/crm/api/v1/customer/fastEntry', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+};
 
 
 

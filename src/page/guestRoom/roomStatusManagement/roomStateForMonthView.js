@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal, RowHousesModal, RowHousesWayModal} from './roomStateForMonthModal';
+import {AddCustomerModal, RowHousesModal, RowHousesWayModal,CreateCustomer} from './roomStateForMonthModal';
 import DictionarySelect from 'common/dictionary_select';
 import moment from 'moment';
 import {
@@ -990,6 +990,7 @@ const monthStateView = (props) => {
   const monthSidebarView = () => {
 
     const customers = props.users.monthStateCustomers;
+    console.log(customers,'//////')
 //自动排房拖拽
     const dragStart = (dragUser, event) => {
 
@@ -1018,6 +1019,15 @@ const monthStateView = (props) => {
         payload: true
       });
     };
+    
+    const createCustomer = () => {
+      dispatch({
+        type: 'roomStatusManagement/createCustomerVisible',
+        payload: true
+      });
+    };
+    
+    
 
     function onClicked(e) {
       SELECT_CUSTOMER = e;
@@ -1047,6 +1057,7 @@ const monthStateView = (props) => {
 
         <div style={{textAlign: 'center'}}>
           <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
+          <Button className="button-group-1" onClick={createCustomer} style={{'marginTop':'20px'}}>+ 创建客户</Button>
         </div>
       </div>
     )
@@ -1058,12 +1069,13 @@ const monthStateView = (props) => {
         /** 主视图 **/
         monthMainView()
       }
-
+  
       {
         /** 侧边栏 **/
         monthSidebarView()
       }
       <AddCustomerModal key={addCustomerKey}/>
+      <CreateCustomer/>
       <RowHousesModal/>
       <RowHousesWayModal selectCuntomer={SELECT_CUSTOMER}/>
     </div>
