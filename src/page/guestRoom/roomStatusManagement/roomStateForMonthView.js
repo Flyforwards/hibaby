@@ -1019,15 +1019,15 @@ const monthStateView = (props) => {
         payload: true
       });
     };
-    
+
     const createCustomer = () => {
       dispatch({
         type: 'roomStatusManagement/createCustomerVisible',
         payload: true
       });
     };
-    
-    
+
+
 
     function onClicked(e) {
       SELECT_CUSTOMER = e;
@@ -1069,7 +1069,7 @@ const monthStateView = (props) => {
         /** 主视图 **/
         monthMainView()
       }
-  
+
       {
         /** 侧边栏 **/
         monthSidebarView()
