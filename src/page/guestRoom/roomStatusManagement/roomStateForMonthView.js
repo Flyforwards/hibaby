@@ -990,7 +990,6 @@ const monthStateView = (props) => {
   const monthSidebarView = () => {
 
     const customers = props.users.monthStateCustomers;
-    console.log(customers,'//////')
 //自动排房拖拽
     const dragStart = (dragUser, event) => {
 
