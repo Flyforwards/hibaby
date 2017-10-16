@@ -277,6 +277,19 @@ const monthStateView = (props) => {
     )
   };
 
+  const addRedBoder = (e) => {
+    let userBoxes = document.querySelectorAll(".userBox");
+
+    for (let i = 0; i < userBoxes.length; i++) {
+      userBoxes[i].classList.remove("active");
+      let btns = userBoxes[i].querySelectorAll(".userBoxConfirm");
+      for (let j = 0; j < btns.length; j++) {
+        userBoxes[i].removeChild(btns[j]);
+      }
+    }
+
+    e.target.classList.add("active");
+  }
 
   const renderQueryView = () => {
 
@@ -447,17 +460,7 @@ const monthStateView = (props) => {
 
 
         const userBoxClickHandler = (e) => {
-          let userBoxes = document.querySelectorAll(".userBox");
-
-          for (let i = 0; i < userBoxes.length; i++) {
-            userBoxes[i].classList.remove("active");
-            let btns = userBoxes[i].querySelectorAll(".userBoxConfirm");
-            for (let j = 0; j < btns.length; j++) {
-              userBoxes[i].removeChild(btns[j]);
-            }
-          }
-
-          e.target.classList.add("active");
+          addRedBoder(e)
           e.target.style.zIndex = ++zIndexCount;
         };
 
@@ -728,8 +731,8 @@ const monthStateView = (props) => {
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
 
-          event.target.classList.add("active");
-          console.log(user)
+         addRedBoder(event)
+
           dispatch({
             type: 'roomStatusManagement/userDragStart',
             payload: {
