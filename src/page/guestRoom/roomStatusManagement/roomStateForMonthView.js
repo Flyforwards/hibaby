@@ -17,11 +17,11 @@ import {
 } from 'antd'
 import PermissionButton from '../../../common/PermissionButton';
 
-
 const Option = Select.Option;
 
 const UNIT_WIDTH = 9;
 let SELECT_CUSTOMER = '';
+let nowDict = ''
 let zIndexCount = 100;
 let selectViewIndex = 0;
 // 保留所拖动元素中鼠标的位置
@@ -95,7 +95,6 @@ const monthStateView = (props) => {
     let dayIndex = null;
     let date = 0;
     let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
-
 
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
@@ -181,9 +180,6 @@ const monthStateView = (props) => {
       const checkboxChangeHandler = (value) => {
 
         value.sort((a, b) => a - b);
-
-        console.log('操作了')
-        console.log(value)
 
         dispatch({
           type: 'roomStatusManagement/selectedMonthChange',
@@ -366,6 +362,12 @@ const monthStateView = (props) => {
         let isRepair = false;
 
         let result = dayList.map((day, dayindex) => {
+
+
+          if(moment().isSame(day.date, 'day')){
+            nowDict = {date:day.date,index:dayindex}
+          }
+
           isRepair = false
 
           // 一天中的用户列表
@@ -702,7 +704,6 @@ const monthStateView = (props) => {
               endIndex = oldEndIndex;
               reserveDays = startIndex - oldStartIndex + 1;
             }
-
             dispatch({
               type: 'roomStatusManagement/updateReserveDays',
               payload: {
@@ -728,7 +729,7 @@ const monthStateView = (props) => {
           dragOffsetY = event.nativeEvent.offsetY;
 
           event.target.classList.add("active");
-
+          console.log(user)
           dispatch({
             type: 'roomStatusManagement/userDragStart',
             payload: {
@@ -749,14 +750,18 @@ const monthStateView = (props) => {
         };
 
         for (let i = 0; i < users.length; i++) {
+          const tempUser = users[i]
+          // if(tempUser.startIndex < nowDict.index  && )lastIndex
 
           let width = users[i].dayCount * UNIT_WIDTH + 'px';
+
           const content = <div style={{zIndex:99999}}>{(users[i].customerName?users[i].customerName:(users[i].isRepair == 1 ? '维修中' :'' )) + '('
           + users[i].dayCount + '天, '
           + timeToDate(users[i].startDate)
           + '-'
           + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
           + ')'}</div>
+
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
               <div className="userBox"
@@ -781,11 +786,8 @@ const monthStateView = (props) => {
               >
                 <span>{users[i].customerName}</span>
 
-                <a href="javascript:void(0)"
-                   className="resizeBar"
-                   title={users[i].dayCount + '天'}
-                   onMouseDown={resizeBarMouseDownHandler}/>
               </div>
+
             </Popover>
 
           )
