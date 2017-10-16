@@ -781,11 +781,10 @@ const monthStateView = (props) => {
 
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
-              <div>
+              <div  className="userBoxSup" style={{width: (width+rightWidth) + 'px',left:users[i].startIndex * UNIT_WIDTH}}>
                 <div className="userBox"
                      style={{
                        width: width + 'px',
-                       left: users[i].startIndex * UNIT_WIDTH,
                      }}
                      draggable= {draggable}
                      onDragStart={(event) => dragStart(event, tempUser)}
@@ -802,7 +801,10 @@ const monthStateView = (props) => {
                      onDoubleClick={userBoxDbClickHandler}
                      onContextMenu={userBoxRightClickHandler}
                 >
-                  <span>{users[i].customerName}</span>
+                  {rightWidth?"":<a href="javascript:void(0)"
+                                    className="resizeBar"
+                                    title={users[i].dayCount + '天'}
+                                    onMouseDown={resizeBarMouseDownHandler}/>}
 
                 </div>
 
@@ -811,7 +813,7 @@ const monthStateView = (props) => {
                   <div className="userBox"
                        style={{
                          width: rightWidth + 'px',
-                         left: users[i].startIndex * UNIT_WIDTH + width,
+                         left: width,
                        }}
                        draggable="true"
                        onDragStart={(event) => dragStart(event, rightUser)}
@@ -828,9 +830,15 @@ const monthStateView = (props) => {
                        onDoubleClick={userBoxDbClickHandler}
                        onContextMenu={userBoxRightClickHandler}
                   >
-
+                    <a href="javascript:void(0)"
+                       className="resizeBar"
+                       title={users[i].dayCount + '天'}
+                       onMouseDown={resizeBarMouseDownHandler}/>
                   </div>
                   : ''}
+                <span>{users[i].customerName}</span>
+
+
               </div>
 
 
