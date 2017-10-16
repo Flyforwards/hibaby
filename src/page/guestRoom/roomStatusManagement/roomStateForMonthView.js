@@ -755,11 +755,16 @@ const monthStateView = (props) => {
 
           let width = tempUser.dayCount * UNIT_WIDTH;
           let rightWidth = 0
+          let rightUser = {...tempUser}
           let draggable = "true"
           if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index ){
-            width = (nowDict.index - tempUser.startIndex + 1)* UNIT_WIDTH
-            rightWidth = (tempUser.lastIndex - nowDict.index)* UNIT_WIDTH
+            width = (nowDict.index - tempUser.startIndex )* UNIT_WIDTH
+            rightWidth = (tempUser.lastIndex - nowDict.index + 1)* UNIT_WIDTH
             draggable = 'false'
+
+            rightUser.dayCount = tempUser.lastIndex - nowDict.index + 1
+            rightUser.startDate = nowDict.date
+            rightUser.startIndex = nowDict.index
           }
 
           if (tempUser.lastIndex < nowDict.index){
@@ -767,11 +772,11 @@ const monthStateView = (props) => {
 
           }
 
-          const content = <div style={{zIndex:99999}}>{(users[i].customerName?users[i].customerName:(users[i].isRepair == 1 ? '维修中' :'' )) + '('
-          + users[i].dayCount + '天, '
-          + timeToDate(users[i].startDate)
+          const content = <div style={{zIndex:99999}}>{(users[i].customerName?tempUser.customerName:(tempUser.isRepair == 1 ? '维修中' :'' )) + '('
+          + tempUser.dayCount + '天, '
+          + timeToDate(tempUser.startDate)
           + '-'
-          + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
+          + timeToDate(tempUser.startDate + (tempUser.dayCount - 1) * 86400000)
           + ')'}</div>
 
           result.push(
@@ -783,16 +788,16 @@ const monthStateView = (props) => {
                        left: users[i].startIndex * UNIT_WIDTH,
                      }}
                      draggable= {draggable}
-                     onDragStart={(event) => dragStart(event, users[i])}
+                     onDragStart={(event) => dragStart(event, tempUser)}
                      data-room-index={roomIndex}
-                     data-customer-id={users[i].customerId}
-                     data-customer-name={users[i].customerName}
-                     data-start-index={users[i].startIndex}
-                     data-end-index={users[i].startIndex + users[i].dayCount - 1}
-                     data-user-dayCount={users[i].dayCount}
-                     data-start-date={users[i].startDate}
-                     data-status={users[i].status}
-                     data-isrepair={users[i].isRepair}
+                     data-customer-id={tempUser.customerId}
+                     data-customer-name={tempUser.customerName}
+                     data-start-index={tempUser.startIndex}
+                     data-end-index={rightWidth?nowDict.index: tempUser.startIndex + tempUser.dayCount - 1}
+                     data-user-dayCount={rightWidth?nowDict.index - tempUser.startIndex: tempUser.dayCount}
+                     data-start-date={tempUser.startDate}
+                     data-status={tempUser.status}
+                     data-isrepair={tempUser.isRepair}
                      onClick={userBoxClickHandler}
                      onDoubleClick={userBoxDbClickHandler}
                      onContextMenu={userBoxRightClickHandler}
@@ -809,16 +814,16 @@ const monthStateView = (props) => {
                          left: users[i].startIndex * UNIT_WIDTH + width,
                        }}
                        draggable="true"
-                       onDragStart={(event) => dragStart(event, users[i])}
+                       onDragStart={(event) => dragStart(event, rightUser)}
                        data-room-index={roomIndex}
-                       data-customer-id={users[i].customerId}
-                       data-customer-name={users[i].customerName}
-                       data-start-index={users[i].startIndex}
-                       data-end-index={users[i].startIndex + users[i].dayCount - 1}
-                       data-user-dayCount={users[i].dayCount}
-                       data-start-date={users[i].startDate}
-                       data-status={users[i].status}
-                       data-isrepair={users[i].isRepair}
+                       data-customer-id={tempUser.customerId}
+                       data-customer-name={tempUser.customerName}
+                       data-start-index={nowDict.index}
+                       data-end-index={tempUser.startIndex + tempUser.dayCount - 1}
+                       data-user-dayCount={tempUser.lastIndex - nowDict.index}
+                       data-start-date={nowDict.date}
+                       data-status={tempUser.status}
+                       data-isrepair={tempUser.isRepair}
                        onClick={userBoxClickHandler}
                        onDoubleClick={userBoxDbClickHandler}
                        onContextMenu={userBoxRightClickHandler}
