@@ -116,7 +116,7 @@ const monthStateView = (props) => {
 
     if(dragUser.status !== 4){
       if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
-        message.error("无法移动到过去");
+        // message.error("无法移动到过去");
         return;
       }
     }
@@ -751,9 +751,21 @@ const monthStateView = (props) => {
 
         for (let i = 0; i < users.length; i++) {
           const tempUser = users[i]
-          // if(tempUser.startIndex < nowDict.index  && )lastIndex
 
-          let width = users[i].dayCount * UNIT_WIDTH + 'px';
+
+          let width = tempUser.dayCount * UNIT_WIDTH;
+          let rightWidth = 0
+          let draggable = "true"
+          if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index ){
+            width = (nowDict.index - tempUser.startIndex + 1)* UNIT_WIDTH
+            rightWidth = (tempUser.lastIndex - nowDict.index)* UNIT_WIDTH
+            draggable = 'false'
+          }
+
+          if (tempUser.lastIndex < nowDict.index){
+            draggable = 'false'
+
+          }
 
           const content = <div style={{zIndex:99999}}>{(users[i].customerName?users[i].customerName:(users[i].isRepair == 1 ? '维修中' :'' )) + '('
           + users[i].dayCount + '天, '
@@ -764,29 +776,58 @@ const monthStateView = (props) => {
 
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
-              <div className="userBox"
-                   style={{
-                     width: width,
-                     left: users[i].startIndex * UNIT_WIDTH,
-                   }}
-                   draggable="true"
-                   onDragStart={(event) => dragStart(event, users[i])}
-                   data-room-index={roomIndex}
-                   data-customer-id={users[i].customerId}
-                   data-customer-name={users[i].customerName}
-                   data-start-index={users[i].startIndex}
-                   data-end-index={users[i].startIndex + users[i].dayCount - 1}
-                   data-user-dayCount={users[i].dayCount}
-                   data-start-date={users[i].startDate}
-                   data-status={users[i].status}
-                   data-isrepair={users[i].isRepair}
-                   onClick={userBoxClickHandler}
-                   onDoubleClick={userBoxDbClickHandler}
-                   onContextMenu={userBoxRightClickHandler}
-              >
-                <span>{users[i].customerName}</span>
+              <div>
+                <div className="userBox"
+                     style={{
+                       width: width + 'px',
+                       left: users[i].startIndex * UNIT_WIDTH,
+                     }}
+                     draggable= {draggable}
+                     onDragStart={(event) => dragStart(event, users[i])}
+                     data-room-index={roomIndex}
+                     data-customer-id={users[i].customerId}
+                     data-customer-name={users[i].customerName}
+                     data-start-index={users[i].startIndex}
+                     data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                     data-user-dayCount={users[i].dayCount}
+                     data-start-date={users[i].startDate}
+                     data-status={users[i].status}
+                     data-isrepair={users[i].isRepair}
+                     onClick={userBoxClickHandler}
+                     onDoubleClick={userBoxDbClickHandler}
+                     onContextMenu={userBoxRightClickHandler}
+                >
+                  <span>{users[i].customerName}</span>
 
+                </div>
+
+
+                {rightWidth ?
+                  <div className="userBox"
+                       style={{
+                         width: rightWidth + 'px',
+                         left: users[i].startIndex * UNIT_WIDTH + width,
+                       }}
+                       draggable="true"
+                       onDragStart={(event) => dragStart(event, users[i])}
+                       data-room-index={roomIndex}
+                       data-customer-id={users[i].customerId}
+                       data-customer-name={users[i].customerName}
+                       data-start-index={users[i].startIndex}
+                       data-end-index={users[i].startIndex + users[i].dayCount - 1}
+                       data-user-dayCount={users[i].dayCount}
+                       data-start-date={users[i].startDate}
+                       data-status={users[i].status}
+                       data-isrepair={users[i].isRepair}
+                       onClick={userBoxClickHandler}
+                       onDoubleClick={userBoxDbClickHandler}
+                       onContextMenu={userBoxRightClickHandler}
+                  >
+
+                  </div>
+                  : ''}
               </div>
+
 
             </Popover>
 
