@@ -41,6 +41,7 @@ const getDays = (year, month) => {
 };
 
 let resideOperation = '';
+let eq = false;
 
 export default {
   namespace: 'roomStatusManagement',
@@ -341,8 +342,7 @@ export default {
         monthRoomList: monthRoomList
       }
     },
-
-    updateReserveDays(state, { payload: data }){
+    updateReserveDays(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
 
       //用来增减入住用户的
@@ -503,25 +503,25 @@ export default {
   },
 
   effects: {
-    *listByMain({ payload: values }, { call, put }) {
-      const { data: { code, data } } = yield call(roomManagement.listByMain);
+    *listByMain({payload: values}, {call, put}) {
+      const {data: {code, data}} = yield call(roomManagement.listByMain);
       if (code == 0) {
-        yield put({ type: 'setPackageAry', payload: { data } });
+        yield put({type: 'setPackageAry', payload: {data}});
       }
     },
-    *dayStatus({ payload: values }, { call, put, select }) {
+    *dayStatus({payload: values}, {call, put, select}) {
       const state = yield select(state => state.roomStatusManagement);
       const param = parse(location.search.substr(1));
-      const defData = { useDate: moment().format() }
-      const { data: { code, data, err } } = yield call(roomManagement.dayStatus, { ...defData, ...param });
+      const defData = {useDate: moment().format()}
+      const {data: {code, data, err}} = yield call(roomManagement.dayStatus, {...defData, ...param});
       if (code == 0) {
-        yield put({ type: 'setDayStatusData', payload: { data } });
-        yield put({ type: 'setSelectValue', payload: { data: state.selectValue } });
+        yield put({type: 'setDayStatusData', payload: {data}});
+        yield put({type: 'setSelectValue', payload: {data: state.selectValue}});
       }
     },
-    *dayStatusUpdate({ payload: values }, { call, put }) {
-      const defData = { useDate: moment().format() };
-      const { data: { code, data } } = yield call(roomManagement.dayStatusUpdate, { ...defData, ...values });
+    *dayStatusUpdate({payload: values}, {call, put}) {
+      const defData = {useDate: moment().format()};
+      const {data: {code, data}} = yield call(roomManagement.dayStatusUpdate, {...defData, ...values});
       if (code == 0) {
         const param = parse(location.search.substr(1));
 
@@ -534,12 +534,12 @@ export default {
       }
     },
 
-    *getDataDict({ payload: value }, { call, put }){
+    *getDataDict({payload: value}, {call, put}){
       const parameter = {
         abName: value.abName,
         softDelete: 0
       };
-      const { data: { code, data } } = yield call(addCustomerInformation.getDataDict, parameter);
+      const {data: {code, data}} = yield call(addCustomerInformation.getDataDict, parameter);
       if (code == 0) {
         yield put({
           type: 'addMutDictData',
@@ -551,10 +551,10 @@ export default {
       }
     },
 
-    *arrangeRoom({ payload: value }, { call, put }){
-      const defData = { "customerId": -1, "customerName": '' }
+    *arrangeRoom({payload: value}, {call, put}){
+      const defData = {"customerId": -1, "customerName": ''}
 
-      const { data: { code, data } } = yield call(roomManagement.arrangeRoom, { ...defData, ...value });
+      const {data: {code, data}} = yield call(roomManagement.arrangeRoom, {...defData, ...value});
       if (code == 0) {
         yield put({
           type: 'setResultsRowHouses',
@@ -566,14 +566,14 @@ export default {
     },
 
     // 获取用户列表
-    *getCustomerPage({ payload: values }, { call, put }) {
+    *getCustomerPage({payload: values}, {call, put}) {
 
-      const defParam = { page: 1, size: 5 }
+      const defParam = {page: 1, size: 5}
 
-      const { data: { data, total, page, size, code } } = yield call(customerService.getCustomerPage, { ...defParam, ...values });
+      const {data: {data, total, page, size, code}} = yield call(customerService.getCustomerPage, {...defParam, ...values});
       if (code == 0) {
         if (data.length == 0 && page > 1) {
-          yield put({ type: 'getCustomerPage', payload: { page: page - 1, size: 5 } })
+          yield put({type: 'getCustomerPage', payload: {page: page - 1, size: 5}})
 
         } else {
           yield put({
@@ -592,9 +592,9 @@ export default {
       }
     },
 
-    *netroomViewStateChange({ payload: value }, { call, put, select }){
+    *netroomViewStateChange({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
-      const { dateSelectList, floorSelect } = state;
+      const {dateSelectList, floorSelect} = state;
 
       // 去重
       let years = {};
@@ -629,13 +629,13 @@ export default {
       }
 
 
-      let dict = { yearList: param }
+      let dict = {yearList: param}
 
       if (floorSelect) {
         dict.floor = floorSelect;
       }
 
-      const { data: { code, data } } = yield call(roomManagement.getMonthStatusCustomers, dict);
+      const {data: {code, data}} = yield call(roomManagement.getMonthStatusCustomers, dict);
 
       yield put({
         type: 'setMonthStatusCustomers',
@@ -650,9 +650,9 @@ export default {
       });
     },
 
-    *monthRoomList({ payload: value }, { call, put, select }){
+    *monthRoomList({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
-      const { dateSelectList, floorSelect } = state;
+      const {dateSelectList, floorSelect} = state;
 
 
       // 去重
@@ -688,12 +688,12 @@ export default {
       }
 
 
-      let dict = { yearList: param }
+      let dict = {yearList: param}
 
       if (floorSelect) {
         dict.floor = floorSelect;
       }
-      const { data: { data } } = yield call(roomManagement.getMonthRoomList, dict);
+      const {data: {data}} = yield call(roomManagement.getMonthRoomList, dict);
 
       yield put({
         type: 'updateDateRulerList',
@@ -710,7 +710,7 @@ export default {
       });
     },
 
-    *userDrop({ payload: value }, { call, put, select }){
+    *userDrop({payload: value}, {call, put, select}){
       const state = yield select(state => state.roomStatusManagement);
 
       // 如果已入住, 开始的时间保持不变
@@ -727,7 +727,7 @@ export default {
           toRoomName: state.monthRoomList[value.roomIndex].roomNo
         };
 
-        const { data: { code, data } } = yield call(roomManagement.resideMove, param);
+        const {data: {code, data}} = yield call(roomManagement.resideMove, param);
 
         // 平移不成功, 返回
         if (code != 0) {
@@ -736,13 +736,13 @@ export default {
       }
 
       if (state.dragUser.roomIndex == -1) {
-        const { data: { code, data } } = yield call(roomManagement.extendRoomUse, {
+        const {data: {code, data}} = yield call(roomManagement.extendRoomUse, {
           roomId: state.monthRoomList[value.roomIndex].roomId,
           customerId: state.dragUser.customerId
         });
         if (code == 0) {
           if (data.status == 1) {
-            yield put({ type: 'monthRoomUpdate', payload: 'load' });
+            yield put({type: 'monthRoomUpdate', payload: 'load'});
           }
           else {
             let payload = {
@@ -763,7 +763,7 @@ export default {
             });
 
             if (state.dragUser.status !== 7) {
-              yield put({ type: 'monthRoomUpdate', payload: 'load' });
+              yield put({type: 'monthRoomUpdate', payload: 'load'});
             }
           }
         }
@@ -804,26 +804,26 @@ export default {
         });
 
         if (state.dragUser.status !== 7) {
-          yield put({ type: 'monthRoomUpdate', payload: 'load' });
+          yield put({type: 'monthRoomUpdate', payload: 'load'});
         }
       }
     },
 
-    *confirmCheckIn({ payload: value }, { call, put, select }){
+    *confirmCheckIn({payload: value}, {call, put, select}){
 
       let param = {
         customerId: value.customerId,
         date: timeToDate(value.startDate)
       };
 
-      const { data: { code, data } } = yield call(roomManagement.confirmReside, param);
+      const {data: {code, data}} = yield call(roomManagement.confirmReside, param);
       if (code == 0) {
         message.success('入住成功')
-        yield put({ type: 'monthRoomList' })
+        yield put({type: 'monthRoomList'})
       }
     },
 
-    *monthRoomUpdate({ payload: value }, { call, put, select }){
+    *monthRoomUpdate({payload: value}, {call, put, select}){
 
       const state = yield select(state => state.roomStatusManagement);
 
@@ -921,7 +921,7 @@ export default {
       }
 
       try {
-        const { data: { code, data } } = yield call(roomManagement.monthRoomUpdate, param);
+        const {data: {code, data}} = yield call(roomManagement.monthRoomUpdate, param);
         if (param === value) {
           yield put({
             type: 'monthRoomList'
@@ -941,13 +941,13 @@ export default {
             })
           }
           else {
-            yield put({ type: 'monthRoomList' });
+            yield put({type: 'monthRoomList'});
           }
         }
 
 
         if (state.modalH) {
-          yield put({ type: 'changeModalH', payload: false });
+          yield put({type: 'changeModalH', payload: false});
           if (data) {
             if (typeof data === 'object') {
               let str = ''
@@ -970,28 +970,28 @@ export default {
 
       }
     },
-    *resideAddOrCut({ payload: value }, { call, put }){
+    *resideAddOrCut({payload: value}, {call, put}){
 
       if (resideOperation) {
         try {
-          const { data: { code, data } } = yield call(roomManagement.resideAddOrCut, resideOperation);
+          const {data: {code, data}} = yield call(roomManagement.resideAddOrCut, resideOperation);
           message.success('入住信息更新成功')
 
         }
         catch (err) {
-          yield put({ type: 'monthRoomList' });
+          yield put({type: 'monthRoomList'});
           throw err
         }
       }
     },
-    *deleteUser({ payload: value }, { call, put }){
+    *deleteUser({payload: value}, {call, put}){
 
       let param = {
         customerId: value.customerId,
         date: timeToDate(value.startDate)
       }
 
-      const { data: { code, data } } = yield call(roomManagement.cancelBooking, param);
+      const {data: {code, data}} = yield call(roomManagement.cancelBooking, param);
 
       // 调用接口失败
       if (code != 0) {
@@ -1000,25 +1000,25 @@ export default {
       message.success('删除成功')
       // 删除视图中的用户
 
-      yield put({ type: 'monthRoomList' });
-      yield put({ type: 'netroomViewStateChange' });
+      yield put({type: 'monthRoomList'});
+      yield put({type: 'netroomViewStateChange'});
     },
     // 获取会员身份下拉选项， 也是卡种列表
-    *getMemberShipCard({ payload: values }, { call, put }) {
-      const { data: { data, code } } = yield call(systemService.getMemberShipCard, values);
+    *getMemberShipCard({payload: values}, {call, put}) {
+      const {data: {data, code}} = yield call(systemService.getMemberShipCard, values);
       if (code == 0) {
         yield put({
           type: 'memberShipCardSave',
-          payload: { shipCards: data }
+          payload: {shipCards: data}
         })
       }
     },
 
 
     //客户快速入口（日房态里面的创建客户）
-    *fastEntry({ payload: values }, { call, put, select }) {
+    *fastEntry({payload: values}, {call, put, select}) {
 
-      const { data: { data, code } } = yield call(addCustomerInformation.fastEntry, values);
+      const {data: {data, code}} = yield call(addCustomerInformation.fastEntry, values);
       if (code == 0) {
         message.success('创建成功')
         yield put({
@@ -1035,28 +1035,23 @@ export default {
 
         yield put({
           type: 'setMonthStatusCustomers',
-          payload: { data: state.monthStateCustomers }
+          payload: {data: state.monthStateCustomers}
         })
-
-
       }
 
     },
     //获取服务器时间
-    *getSystemTime({payload:value},{call,put}){
-      const { data: { code,data}} = yield  call(roomManagement.getSystemTime,value);
-      if(code == 0) {
+    *getSystemTime({payload: value}, {call, put}){
+      const {data: {code, data}} = yield  call(roomManagement.getSystemTime, value);
+      if (code == 0) {
         yield put({
-          type:'saveSystemTime',
-          payload:{
+          type: 'saveSystemTime',
+          payload: {
             data
           }
         });
       }
-    },
-
-
-
+    }
   },
   subscriptions: {
     setup({ dispatch, history })
