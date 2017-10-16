@@ -926,7 +926,7 @@ const monthStateView = (props) => {
                     position:'relative',
                     overflow:'initial'
                   }}>
-                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:timeObj.date*UNIT_WIDTH-1+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
+                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:timeObj.date*UNIT_WIDTH-8+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
                     <div className="itemRulerBoxTop" style={{clear:'both'}}>
                       <div className="itemRulerBoxTitle">
                         {item.date}
