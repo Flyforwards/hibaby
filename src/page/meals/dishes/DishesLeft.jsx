@@ -313,7 +313,8 @@ class DishesLeft extends React.Component {
           {treeNodes}
         </Tree>
         <ul className="nameList" style={{ top: this.state.ulTop, display: this.state.upblock }}>
-          <li disabled={add} className="li" onClick={this.handlerCreate.bind(this)} style={{ display: this.addDisplay }}>添加子节点</li>
+          {/*style={{ display: this.addDisplay }}删除*/}
+          <li disabled={add} className="li" onClick={this.handlerCreate.bind(this)} >添加子节点</li>
           <li disabled={detail} className="li" onClick={this.handlerDetail.bind(this)}>查看详情</li>
           <li disabled={del} className="li" onClick={this.handlerRemove.bind(this)} style={{ display: this.deleteDisplay }}>删除</li>
           <li className="fourLi">ID {this.state.ID}</li>

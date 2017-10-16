@@ -457,7 +457,7 @@ export default {
     },
 
     //获取商品信息
-    *getGoodsList({ payload: values },{ call, put }){
+    *getGoodsList({ payload: values },{ call, put,select }){
       const state = yield select(state => state.addCustomer);
       const customerId = state.dataDetailId
       const value = {...values, customerId}
@@ -472,7 +472,7 @@ export default {
       }
     },
     //获取打印基础信息
-    *getPrintBaseMsg({payload:values},{call,put}){
+    *getPrintBaseMsg({payload:values},{call,put,select}){
       const state = yield select(state => state.addCustomer);
       const customerId = state.dataDetailId
       const value = {...values, customerId}
@@ -527,7 +527,7 @@ export default {
     },
 
     //获取账单打印信息
-    *getPrintAccount({payload:values},{call,put}){
+    *getPrintAccount({payload:values},{call,put,select}){
       const state = yield select(state => state.addCustomer);
       const customerId = state.dataDetailId
       const value = {...values, customerId}

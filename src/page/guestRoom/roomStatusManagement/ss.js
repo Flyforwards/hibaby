@@ -1,6 +1,9 @@
+/**
+ * Created by Administrator on 2017/9/26.
+ */
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal, RowHousesModal, RowHousesWayModal,CreateCustomer} from './roomStateForMonthModal';
+import {AddCustomerModal, RowHousesModal, RowHousesWayModal} from './roomStateForMonthModal';
 import DictionarySelect from 'common/dictionary_select';
 import moment from 'moment';
 import {
@@ -113,7 +116,7 @@ const monthStateView = (props) => {
       return;
     }
 
-     dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
+    dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
 
     if(dragUser.status !== 4){
       if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
@@ -152,7 +155,7 @@ const monthStateView = (props) => {
       payload: checked
     });
   };
-//t头部初始化
+
   const renderMonthSelectView = () => {
     const renderYearSelectView = (index) => {
       const yearSelectChangeHandler = (value) => {
@@ -176,7 +179,7 @@ const monthStateView = (props) => {
         </Col>
       )
     };
-//月份初始化
+
     const renderChiMonthSelectView = (index) => {
       const checkboxChangeHandler = (value) => {
 
@@ -230,10 +233,10 @@ const monthStateView = (props) => {
         }
       });
     }
-  //点击添加
+
     const addBtnClickHandler = () => {
 
-       const index = ++selectViewIndex;
+      const index = ++selectViewIndex;
 
       let dateSelectView = (
         <Row type="flex" justify="center" align="middle" className="timeSelectBox">
@@ -585,9 +588,6 @@ const monthStateView = (props) => {
           let pageX = e.pageX;
           let target = e.target.parentNode;
 
-          dispatch({type: 'roomStatusManagement/startReserveDays',payload:target.dataset}) ;
-
-
           let targetWidth =target? target.offsetWidth:0;
           let unit = 0;
           let oldStartIndex = parseInt(target.dataset.startIndex);
@@ -612,7 +612,7 @@ const monthStateView = (props) => {
           }
 
 
-            // 左端在入住状态下不可操作
+          // 左端在入住状态下不可操作
           // if (status == 4) {
           // 我的断点
           //   return;
@@ -660,19 +660,17 @@ const monthStateView = (props) => {
             else if (tempUnit < 0) {
               if(status == 4){
                 let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
-                  if(moment().isAfter(moment.unix(roomDate/1000),'day')){
-                    if(messageShow === true){
-                      messageShow = false
-                      message.error("无法将出所日期移动到今天以前",3,messageOnClose)
-                    }
+                if(moment().isAfter(moment.unix(roomDate/1000),'day')){
+                  if(messageShow === true){
+                    messageShow = false
+                    message.error("无法将出所日期移动到今天以前",3,messageOnClose)
+                  }
                   return;
                 }
               }
             }
 
             unit = tempUnit;
-
-            dispatch({type: 'roomStatusManagement/moveReserveDays',payload:unit}) ;
 
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
@@ -721,7 +719,7 @@ const monthStateView = (props) => {
             }
           }
         };
-    //在列表中拖拽
+
         const dragStart = (event, user) => {
 
           dragOffsetX = event.nativeEvent.offsetX;
@@ -850,7 +848,7 @@ const monthStateView = (props) => {
 
         return result;
       };
-      //日期框
+
       return (
         <div className="daysRulerBox" style={{width: boxWidth + 2 + "px"}}>
           {
@@ -951,41 +949,41 @@ const monthStateView = (props) => {
 
     return (
 
-        <div className="main">
-          <div className="headDiv">
-            <Switch className='switch'
-                    disabled={dayRoomStatusDisabled}
-                    onChange={roomViewStateChange}
-                    checkedChildren={'日房态'}
-                    unCheckedChildren={'月房态'}
-                    defaultChecked={true}/>
-          </div>
-
-          {
-            renderMonthSelectView()
-          }
-
-          {
-            renderQueryView()
-          }
-
-          {
-            renderStatusExplainView()
-          }
-
-          <Spin
-            spinning={loading.effects['roomStatusManagement/monthRoomList'] !== undefined ? loading.effects['roomStatusManagement/monthRoomList'] : false}>
-            {
-              /* 月房态列表 */
-              renderMonthRoomListView()
-            }
-          </Spin>
-
-
-          {
-            renderBottomBar()
-          }
+      <div className="main">
+        <div className="headDiv">
+          <Switch className='switch'
+                  disabled={dayRoomStatusDisabled}
+                  onChange={roomViewStateChange}
+                  checkedChildren={'日房态'}
+                  unCheckedChildren={'月房态'}
+                  defaultChecked={true}/>
         </div>
+
+        {
+          renderMonthSelectView()
+        }
+
+        {
+          renderQueryView()
+        }
+
+        {
+          renderStatusExplainView()
+        }
+
+        <Spin
+          spinning={loading.effects['roomStatusManagement/monthRoomList'] !== undefined ? loading.effects['roomStatusManagement/monthRoomList'] : false}>
+          {
+            /* 月房态列表 */
+            renderMonthRoomListView()
+          }
+        </Spin>
+
+
+        {
+          renderBottomBar()
+        }
+      </div>
 
 
     )
@@ -995,7 +993,7 @@ const monthStateView = (props) => {
   const monthSidebarView = () => {
 
     const customers = props.users.monthStateCustomers;
-//自动排房拖拽
+
     const dragStart = (dragUser, event) => {
 
       dragOffsetX = event.nativeEvent.offsetX;
@@ -1003,7 +1001,7 @@ const monthStateView = (props) => {
       dispatch({
         type: 'roomStatusManagement/userDragStart',
 
-      payload: {
+        payload: {
           dragUser: {
             ...dragUser,
             reserveDays : 28,
@@ -1023,15 +1021,6 @@ const monthStateView = (props) => {
         payload: true
       });
     };
-
-    const createCustomer = () => {
-      dispatch({
-        type: 'roomStatusManagement/createCustomerVisible',
-        payload: true
-      });
-    };
-
-
 
     function onClicked(e) {
       SELECT_CUSTOMER = e;
@@ -1061,7 +1050,6 @@ const monthStateView = (props) => {
 
         <div style={{textAlign: 'center'}}>
           <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
-          <Button className="button-group-1" onClick={createCustomer} style={{'marginTop':'20px'}}>+ 创建客户</Button>
         </div>
       </div>
     )
@@ -1079,7 +1067,6 @@ const monthStateView = (props) => {
         monthSidebarView()
       }
       <AddCustomerModal key={addCustomerKey}/>
-      <CreateCustomer/>
       <RowHousesModal/>
       <RowHousesWayModal selectCuntomer={SELECT_CUSTOMER}/>
     </div>
