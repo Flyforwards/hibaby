@@ -298,13 +298,12 @@ class App extends Component {
               </Tree>
             </Col>
             <Col span={18}>
-              {/*<Search className="search" placeholder="请输入菜品名" onSearch={this.onChange}/>*/}
               <Form layout="inline">
               <Row  justify="space-between">
                 <Col span={6}>
                  <FormItem>
                    {getFieldDecorator('name')(
-                     <Input style={{ width: 180 }} placeholder="请输入菜品名" onChange={this.handleNameChange.bind(this)} />
+                     <Input style={{ width: 180 }} placeholder="请输入菜品名或主副食材" onChange={this.handleNameChange.bind(this)} />
                    )}
                  </FormItem>
                  </Col>
