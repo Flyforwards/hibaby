@@ -1,9 +1,6 @@
-/**
- * Created by Administrator on 2017/9/26.
- */
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal, RowHousesModal, RowHousesWayModal} from './roomStateForMonthModal';
+import {AddCustomerModal, RowHousesModal, RowHousesWayModal,CreateCustomer} from './roomStateForMonthModal';
 import DictionarySelect from 'common/dictionary_select';
 import moment from 'moment';
 import {
@@ -20,11 +17,11 @@ import {
 } from 'antd'
 import PermissionButton from '../../../common/PermissionButton';
 
-
 const Option = Select.Option;
 
 const UNIT_WIDTH = 9;
 let SELECT_CUSTOMER = '';
+let nowDict = ''
 let zIndexCount = 100;
 let selectViewIndex = 0;
 // 保留所拖动元素中鼠标的位置
@@ -63,7 +60,7 @@ const timeToDate = (time) => {
 let messageShow = true
 
 const monthStateView = (props) => {
-  const {dispatch,loading} = props;
+  const {dispatch,loading,systemTime} = props;
   const {occupancy,dateSelectList,floorSelect,dragUser} = props.users;
   const customers = props.users.monthStateCustomers;
   const monthRoomList = props.users.monthRoomList;
@@ -99,7 +96,6 @@ const monthStateView = (props) => {
     let date = 0;
     let offsetUnit = Math.round(dragOffsetX / UNIT_WIDTH);
 
-
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = event.target.dataset.dayIndex;
@@ -120,7 +116,7 @@ const monthStateView = (props) => {
 
     if(dragUser.status !== 4){
       if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
-        message.error("无法移动到过去");
+        // message.error("无法移动到过去");
         return;
       }
     }
@@ -155,7 +151,7 @@ const monthStateView = (props) => {
       payload: checked
     });
   };
-
+//t头部初始化
   const renderMonthSelectView = () => {
     const renderYearSelectView = (index) => {
       const yearSelectChangeHandler = (value) => {
@@ -179,14 +175,11 @@ const monthStateView = (props) => {
         </Col>
       )
     };
-
+//月份初始化
     const renderChiMonthSelectView = (index) => {
       const checkboxChangeHandler = (value) => {
 
         value.sort((a, b) => a - b);
-
-        console.log('操作了')
-        console.log(value)
 
         dispatch({
           type: 'roomStatusManagement/selectedMonthChange',
@@ -233,7 +226,7 @@ const monthStateView = (props) => {
         }
       });
     }
-
+    //点击添加
     const addBtnClickHandler = () => {
 
       const index = ++selectViewIndex;
@@ -369,6 +362,12 @@ const monthStateView = (props) => {
         let isRepair = false;
 
         let result = dayList.map((day, dayindex) => {
+
+
+          if(moment().isSame(day.date, 'day')){
+            nowDict = {date:day.date,index:dayindex}
+          }
+
           isRepair = false
 
           // 一天中的用户列表
@@ -588,6 +587,9 @@ const monthStateView = (props) => {
           let pageX = e.pageX;
           let target = e.target.parentNode;
 
+          dispatch({type: 'roomStatusManagement/startReserveDays',payload:target.dataset}) ;
+
+
           let targetWidth =target? target.offsetWidth:0;
           let unit = 0;
           let oldStartIndex = parseInt(target.dataset.startIndex);
@@ -672,6 +674,8 @@ const monthStateView = (props) => {
 
             unit = tempUnit;
 
+            dispatch({type: 'roomStatusManagement/moveReserveDays',payload:unit}) ;
+
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
             }
@@ -700,7 +704,6 @@ const monthStateView = (props) => {
               endIndex = oldEndIndex;
               reserveDays = startIndex - oldStartIndex + 1;
             }
-
             dispatch({
               type: 'roomStatusManagement/updateReserveDays',
               payload: {
@@ -719,14 +722,14 @@ const monthStateView = (props) => {
             }
           }
         };
-
+        //在列表中拖拽
         const dragStart = (event, user) => {
 
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
 
           event.target.classList.add("active");
-
+          console.log(user)
           dispatch({
             type: 'roomStatusManagement/userDragStart',
             payload: {
@@ -747,43 +750,98 @@ const monthStateView = (props) => {
         };
 
         for (let i = 0; i < users.length; i++) {
+          const tempUser = users[i]
 
-          let width = users[i].dayCount * UNIT_WIDTH + 'px';
-          const content = <div style={{zIndex:99999}}>{(users[i].customerName?users[i].customerName:(users[i].isRepair == 1 ? '维修中' :'' )) + '('
-          + users[i].dayCount + '天, '
-          + timeToDate(users[i].startDate)
+
+          let width = tempUser.dayCount * UNIT_WIDTH;
+          let rightWidth = 0
+          let rightUser = {...tempUser}
+          let draggable = "true"
+          if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index ){
+            width = (nowDict.index - tempUser.startIndex )* UNIT_WIDTH
+            rightWidth = (tempUser.lastIndex - nowDict.index + 1)* UNIT_WIDTH
+            draggable = 'false'
+
+            rightUser.dayCount = tempUser.lastIndex - nowDict.index + 1
+            rightUser.startDate = nowDict.date
+            rightUser.startIndex = nowDict.index
+          }
+
+          if (tempUser.lastIndex < nowDict.index){
+            draggable = 'false'
+
+          }
+
+          const content = <div style={{zIndex:99999}}>{(users[i].customerName?tempUser.customerName:(tempUser.isRepair == 1 ? '维修中' :'' )) + '('
+          + tempUser.dayCount + '天, '
+          + timeToDate(tempUser.startDate)
           + '-'
-          + timeToDate(users[i].startDate + (users[i].dayCount - 1) * 86400000)
+          + timeToDate(tempUser.startDate + (tempUser.dayCount - 1) * 86400000)
           + ')'}</div>
+
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
-              <div className="userBox"
-                   style={{
-                     width: width,
-                     left: users[i].startIndex * UNIT_WIDTH,
-                   }}
-                   draggable="true"
-                   onDragStart={(event) => dragStart(event, users[i])}
-                   data-room-index={roomIndex}
-                   data-customer-id={users[i].customerId}
-                   data-customer-name={users[i].customerName}
-                   data-start-index={users[i].startIndex}
-                   data-end-index={users[i].startIndex + users[i].dayCount - 1}
-                   data-user-dayCount={users[i].dayCount}
-                   data-start-date={users[i].startDate}
-                   data-status={users[i].status}
-                   data-isrepair={users[i].isRepair}
-                   onClick={userBoxClickHandler}
-                   onDoubleClick={userBoxDbClickHandler}
-                   onContextMenu={userBoxRightClickHandler}
-              >
+              <div  className="userBoxSup" style={{width: (width+rightWidth) + 'px',left:users[i].startIndex * UNIT_WIDTH}}>
+                <div className="userBox"
+                     style={{
+                       width: width + 'px',
+                     }}
+                     draggable= {draggable}
+                     onDragStart={(event) => dragStart(event, tempUser)}
+                     data-room-index={roomIndex}
+                     data-customer-id={tempUser.customerId}
+                     data-customer-name={tempUser.customerName}
+                     data-start-index={tempUser.startIndex}
+                     data-end-index={rightWidth?nowDict.index: tempUser.startIndex + tempUser.dayCount - 1}
+                     data-user-dayCount={rightWidth?nowDict.index - tempUser.startIndex: tempUser.dayCount}
+                     data-start-date={tempUser.startDate}
+                     data-status={tempUser.status}
+                     data-isrepair={tempUser.isRepair}
+                     onClick={userBoxClickHandler}
+                     onDoubleClick={userBoxDbClickHandler}
+                     onContextMenu={userBoxRightClickHandler}
+                >
+                  {rightWidth?"":<a href="javascript:void(0)"
+                                    className="resizeBar"
+                                    title={users[i].dayCount + '天'}
+                                    onMouseDown={resizeBarMouseDownHandler}/>}
+
+                </div>
+
+
+                {rightWidth ?
+                  <div className="userBox"
+                       style={{
+                         width: rightWidth + 'px',
+                         left: width,
+                       }}
+                       draggable="true"
+                       onDragStart={(event) => dragStart(event, rightUser)}
+                       data-room-index={roomIndex}
+                       data-customer-id={tempUser.customerId}
+                       data-customer-name={tempUser.customerName}
+                       data-start-index={nowDict.index}
+                       data-end-index={tempUser.startIndex + tempUser.dayCount - 1}
+                       data-user-dayCount={tempUser.lastIndex - nowDict.index}
+                       data-start-date={nowDict.date}
+                       data-status={tempUser.status}
+                       data-isrepair={tempUser.isRepair}
+                       onClick={userBoxClickHandler}
+                       onDoubleClick={userBoxDbClickHandler}
+                       onContextMenu={userBoxRightClickHandler}
+                  >
+                    <a href="javascript:void(0)"
+                       className="resizeBar"
+                       title={users[i].dayCount + '天'}
+                       onMouseDown={resizeBarMouseDownHandler}/>
+                  </div>
+                  : ''}
                 <span>{users[i].customerName}</span>
 
-                <a href="javascript:void(0)"
-                   className="resizeBar"
-                   title={users[i].dayCount + '天'}
-                   onMouseDown={resizeBarMouseDownHandler}/>
+
               </div>
+
+
             </Popover>
 
           )
@@ -815,12 +873,17 @@ const monthStateView = (props) => {
     const renderDaysRuler = () => {
 
       let dateRulerList = props.users.dateRulerList;
+      let sysTime = props.users.systemTime;
+      let timeObj = moment(sysTime).toObject();
       let boxWidth = 0;
-
+      //是否渲染的变量
+      //let s_ = false;
       for (let item of dateRulerList) {
         boxWidth += item.days * UNIT_WIDTH;
+        // if(item.date == `${timeObj.years}-${timeObj.months+1}`) {
+        //   s_ = true;
+        // }
       }
-
       const renderFiveDays = (days) => {
         let result = [];
 
@@ -848,27 +911,50 @@ const monthStateView = (props) => {
 
         return result;
       };
-
+      //日期框
       return (
         <div className="daysRulerBox" style={{width: boxWidth + 2 + "px"}}>
           {
-            dateRulerList.map(item => {
-              return (
-                <div className="itemRulerBox" style={{
-                  width: item.days * UNIT_WIDTH,
-                }}>
-                  <div className="itemRulerBoxTop">
-                    <div className="itemRulerBoxTitle">
-                      {item.date}
+            dateRulerList.map((item,i) => {
+              if(item.date == `${timeObj.years}-${timeObj.months+1}`){
+                return (
+                  <div className="itemRulerBox" style={{
+                    width: item.days * UNIT_WIDTH,
+                    position:'relative',
+                    overflow:'initial'
+                  }}>
+                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:timeObj.date*UNIT_WIDTH-8+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
+                    <div className="itemRulerBoxTop" style={{clear:'both'}}>
+                      <div className="itemRulerBoxTitle">
+                        {item.date}
+                      </div>
+                    </div>
+                    <div className="itemRulerBoxBottom" style={{clear:'both'}}>
+                      {
+                        renderFiveDays(item.days)
+                      }
                     </div>
                   </div>
-                  <div className="itemRulerBoxBottom">
-                    {
-                      renderFiveDays(item.days)
-                    }
+                )
+              }else{
+                return (
+                  <div className="itemRulerBox" style={{
+                    width: item.days * UNIT_WIDTH,
+                  }}>
+                    <div className="itemRulerBoxTop">
+                      <div className="itemRulerBoxTitle">
+                        {item.date}
+                      </div>
+                    </div>
+                    <div className="itemRulerBoxBottom">
+                      {
+                        renderFiveDays(item.days)
+                      }
+                    </div>
                   </div>
-                </div>
-              )
+                )
+              }
+
             })
           }
         </div>
@@ -897,7 +983,7 @@ const monthStateView = (props) => {
             })
           }
         </div>
-        <div className="monthRoomRightBox">
+        <div className="monthRoomRightBox" style={{overflowY:'hidden'}}>
           {
             renderDaysRuler()
           }
@@ -993,7 +1079,7 @@ const monthStateView = (props) => {
   const monthSidebarView = () => {
 
     const customers = props.users.monthStateCustomers;
-
+//自动排房拖拽
     const dragStart = (dragUser, event) => {
 
       dragOffsetX = event.nativeEvent.offsetX;
@@ -1021,6 +1107,15 @@ const monthStateView = (props) => {
         payload: true
       });
     };
+
+    const createCustomer = () => {
+      dispatch({
+        type: 'roomStatusManagement/createCustomerVisible',
+        payload: true
+      });
+    };
+
+
 
     function onClicked(e) {
       SELECT_CUSTOMER = e;
@@ -1050,6 +1145,7 @@ const monthStateView = (props) => {
 
         <div style={{textAlign: 'center'}}>
           <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
+          <Button className="button-group-1" onClick={createCustomer} style={{'marginTop':'20px'}}>+ 创建客户</Button>
         </div>
       </div>
     )
@@ -1067,6 +1163,7 @@ const monthStateView = (props) => {
         monthSidebarView()
       }
       <AddCustomerModal key={addCustomerKey}/>
+      <CreateCustomer/>
       <RowHousesModal/>
       <RowHousesWayModal selectCuntomer={SELECT_CUSTOMER}/>
     </div>
