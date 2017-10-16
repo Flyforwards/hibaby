@@ -60,7 +60,7 @@ const timeToDate = (time) => {
 let messageShow = true
 
 const monthStateView = (props) => {
-  const {dispatch,loading} = props;
+  const {dispatch,loading,systemTime} = props;
   const {occupancy,dateSelectList,floorSelect,dragUser} = props.users;
   const customers = props.users.monthStateCustomers;
   const monthRoomList = props.users.monthRoomList;
@@ -819,12 +819,17 @@ const monthStateView = (props) => {
     const renderDaysRuler = () => {
 
       let dateRulerList = props.users.dateRulerList;
+      let sysTime = props.users.systemTime;
+      let timeObj = moment(sysTime).toObject();
       let boxWidth = 0;
-
+      //是否渲染的变量
+      //let s_ = false;
       for (let item of dateRulerList) {
         boxWidth += item.days * UNIT_WIDTH;
+        // if(item.date == `${timeObj.years}-${timeObj.months+1}`) {
+        //   s_ = true;
+        // }
       }
-
       const renderFiveDays = (days) => {
         let result = [];
 
@@ -856,23 +861,46 @@ const monthStateView = (props) => {
       return (
         <div className="daysRulerBox" style={{width: boxWidth + 2 + "px"}}>
           {
-            dateRulerList.map(item => {
-              return (
-                <div className="itemRulerBox" style={{
-                  width: item.days * UNIT_WIDTH,
-                }}>
-                  <div className="itemRulerBoxTop">
-                    <div className="itemRulerBoxTitle">
-                      {item.date}
+            dateRulerList.map((item,i) => {
+              if(item.date == `${timeObj.years}-${timeObj.months+1}`){
+                return (
+                  <div className="itemRulerBox" style={{
+                    width: item.days * UNIT_WIDTH,
+                    position:'relative',
+                    overflow:'initial'
+                  }}>
+                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:timeObj.date*UNIT_WIDTH-1+"px",borderLeft:'1px dashed #999999'}}></div>
+                    <div className="itemRulerBoxTop" style={{clear:'both'}}>
+                      <div className="itemRulerBoxTitle">
+                        {item.date}
+                      </div>
+                    </div>
+                    <div className="itemRulerBoxBottom" style={{clear:'both'}}>
+                      {
+                        renderFiveDays(item.days)
+                      }
                     </div>
                   </div>
-                  <div className="itemRulerBoxBottom">
-                    {
-                      renderFiveDays(item.days)
-                    }
+                )
+              }else{
+                return (
+                  <div className="itemRulerBox" style={{
+                    width: item.days * UNIT_WIDTH,
+                  }}>
+                    <div className="itemRulerBoxTop">
+                      <div className="itemRulerBoxTitle">
+                        {item.date}
+                      </div>
+                    </div>
+                    <div className="itemRulerBoxBottom">
+                      {
+                        renderFiveDays(item.days)
+                      }
+                    </div>
                   </div>
-                </div>
-              )
+                )
+              }
+
             })
           }
         </div>
