@@ -569,3 +569,11 @@
   background: #f89d2d;
   color: #fff;
 }
+
+//所以的输入框输入文字black
+input{
+  color: #000000 !important;
+}
+.ant-select-selection-selected-value{
+  color: #000000 !important;
+}
