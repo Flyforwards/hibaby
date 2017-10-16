@@ -198,7 +198,7 @@
         display: flex;
 
         .popover-manual-top {
-          top: -15px !important;
+          top: -30px !important;
           width: 200px;
         }
 
@@ -304,45 +304,58 @@
           margin: 0 0 10px 1px;
           align-items: center;
 
-          .userBox {
-            height: 100%;
+          .userBoxSup{
             position: absolute;
             text-align: center;
+            height: 100%;
+            //background-color: black;
             box-sizing: border-box;
-            padding-top: 10px;
-
+            top:0;
             span{
-              min-width: 30px;
+              width: 100%;
               //width: 100px;
               display: block;
+              top: 10px;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-            }
-
-            .userBoxConfirm {
               position: absolute;
-              bottom: -30px;
-              width: 108px;
-              right: 0;
-              cursor:pointer;
-              z-index: 99999;
             }
 
-            .resizeBar {
-              display: block;
+
+            .userBox {
               height: 100%;
-              width: 6px;
               position: absolute;
-              right: -3px;
-              top: 0;
-              background: transparent;
-            }
+              text-align: center;
+              box-sizing: border-box;
+              padding-top: 10px;
 
-            .resizeBar:hover {
-              cursor: w-resize;
+
+              .userBoxConfirm {
+                position: absolute;
+                bottom: -30px;
+                width: 108px;
+                right: 0;
+                cursor:pointer;
+                z-index: 99999;
+              }
+
+              .resizeBar {
+                display: block;
+                height: 100%;
+                width: 6px;
+                position: absolute;
+                right: -3px;
+                top: 0;
+                background: transparent;
+              }
+
+              .resizeBar:hover {
+                cursor: w-resize;
+              }
             }
           }
+
           .userBox.active {
             border: 1px solid #F57777;
             border-radius: 3px;
