@@ -585,6 +585,9 @@ const monthStateView = (props) => {
           let pageX = e.pageX;
           let target = e.target.parentNode;
 
+          dispatch({type: 'roomStatusManagement/startReserveDays',payload:target.dataset}) ;
+
+
           let targetWidth =target? target.offsetWidth:0;
           let unit = 0;
           let oldStartIndex = parseInt(target.dataset.startIndex);
@@ -668,6 +671,8 @@ const monthStateView = (props) => {
             }
 
             unit = tempUnit;
+
+            dispatch({type: 'roomStatusManagement/moveReserveDays',payload:unit}) ;
 
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";

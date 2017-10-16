@@ -41,6 +41,7 @@ const getDays = (year, month) => {
 };
 
 let resideOperation = '';
+let eq = false;
 
 export default {
   namespace: 'roomStatusManagement',
@@ -325,7 +326,9 @@ export default {
       }
     },
 
-    updateReserveDays(state, {payload: data}){
+
+
+      updateReserveDays(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
 
       //用来增减入住用户的
