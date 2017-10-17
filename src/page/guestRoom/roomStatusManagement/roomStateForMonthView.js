@@ -97,6 +97,8 @@ const monthStateView = (props) => {
       return;
     }
 
+    event.target.style.zIndex = ++zIndexCount;
+
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
@@ -292,8 +294,10 @@ const monthStateView = (props) => {
         userBoxes[i].removeChild(btns[j]);
       }
     }
+    if(e){
+      e.target.classList.add("active");
 
-    e.target.classList.add("active");
+    }
   }
 
   const renderQueryView = () => {
@@ -356,6 +360,11 @@ const monthStateView = (props) => {
       </Row>
     );
   };
+
+  const ClickBlank = (e) => {
+    addRedBoder()
+    console.log(111)
+  }
 
   /* 月房态列表 */
   const renderMonthRoomListView = () => {
@@ -452,6 +461,7 @@ const monthStateView = (props) => {
                  data-room-index={roomIndex}
                  data-day-index={dayindex}
                  data-date={day.date}
+                 onClick={ClickBlank}
                  id={`day-${roomIndex}-${dayindex}` }
                  style={{width:dateRulerList_count <= UNIT ? unit_line + "px" : 9 + "px"}}
             >

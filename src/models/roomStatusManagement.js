@@ -430,7 +430,7 @@ export default {
         }
       } else {
 
-        for (let j = startIndex;j<endIndex;j++){
+        for (let j = startIndex+1;j<=endIndex;j++){
           resideOperation.push({
             "customerId": customerId,
             "customerName": customerName,
