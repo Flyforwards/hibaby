@@ -69,7 +69,7 @@ const monthStateView = (props) => {
   let month_length = dateSelectList[0].monthList.length;
   const roomLists = [...props.users.monthRoomList];
   let day_length = roomLists && roomLists != '' ? roomLists[0].useAndBookingList.length:'';
-  let _unit_u = parseInt($(".monthRoomRightBox").width()/day_length);
+  let _unit_u = $(".monthRoomRightBox").width()/day_length;
 
   let years = [];
   let defaultYear = props.users.defaultYear;
