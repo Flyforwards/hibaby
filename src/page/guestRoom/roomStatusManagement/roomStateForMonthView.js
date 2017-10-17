@@ -20,6 +20,7 @@ import PermissionButton from '../../../common/PermissionButton';
 const Option = Select.Option;
 
 const UNIT_WIDTH = 9;
+const UNIT = 3;
 let SELECT_CUSTOMER = '';
 let nowDict = ''
 let zIndexCount = 100;
@@ -99,7 +100,7 @@ const monthStateView = (props) => {
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
-    let offsetUnit = Math.round(month_length <= 3 ? dragOffsetX/_unit_u : dragOffsetX / UNIT_WIDTH);
+    let offsetUnit = Math.round(month_length <= UNIT ? dragOffsetX/_unit_u : dragOffsetX / UNIT_WIDTH);
 
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
@@ -110,7 +111,7 @@ const monthStateView = (props) => {
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
       // 偏移天数
-      let offsetDays = parseInt(month_length <= 3 ? event.layerX/_unit_u : event.layerX / UNIT_WIDTH);
+      let offsetDays = parseInt(month_length <= UNIT ? event.layerX/_unit_u : event.layerX / UNIT_WIDTH);
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
@@ -452,9 +453,9 @@ const monthStateView = (props) => {
                  data-day-index={dayindex}
                  data-date={day.date}
                  id={`day-${roomIndex}-${dayindex}` }
-                 style={{width:dateRulerList_count <= 3 ? unit_line + "px" : 9 + "px"}}
+                 style={{width:dateRulerList_count <= UNIT ? unit_line + "px" : 9 + "px"}}
             >
-              <div className={stateBox} style={{width:dateRulerList_count <= 3 ? unit_line-2 + "px" : 7 + "px"}}/>
+              <div className={stateBox} style={{width:dateRulerList_count <= UNIT ? unit_line-2 + "px" : 7 + "px"}}/>
             </div>
           )
         });
@@ -651,11 +652,11 @@ const monthStateView = (props) => {
             let offsetX = ee.pageX - pageX;
 
             // 用户入住时间最短为1天
-            if (offsetX + targetWidth < (month_length <= 3 ? _unit_u : UNIT_WIDTH)) {
+            if (offsetX + targetWidth < (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) {
               return;
             }
 
-            let tempUnit = parseInt(month_length <= 3 ? offsetX/_unit_u : offsetX / UNIT_WIDTH);
+            let tempUnit = parseInt(month_length <= UNIT ? offsetX/_unit_u : offsetX / UNIT_WIDTH);
 
             if (tempUnit > 0) {
               try {
@@ -685,8 +686,8 @@ const monthStateView = (props) => {
 
             dispatch({type: 'roomStatusManagement/moveReserveDays',payload:unit}) ;
 
-            if (targetWidth + (unit * (month_length <= 3 ? _unit_u : UNIT_WIDTH)) >= (month_length <= 3 ? _unit_u : UNIT_WIDTH)) {
-              target.style.width = targetWidth + (unit * (month_length <= 3 ? _unit_u : UNIT_WIDTH)) + "px";
+            if (targetWidth + (unit * (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) >= (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) {
+              target.style.width = targetWidth + (unit * (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) + "px";
             }
           };
 
@@ -760,13 +761,13 @@ const monthStateView = (props) => {
 
         for (let i = 0; i < users.length; i++) {
           const tempUser = users[i]
-          let width = dateRulerList_count <= 3 ? tempUser.dayCount * unit_line : tempUser.dayCount * UNIT_WIDTH;
+          let width = dateRulerList_count <= UNIT ? tempUser.dayCount * unit_line : tempUser.dayCount * UNIT_WIDTH;
           let rightWidth = 0
           let rightUser = {...tempUser}
           let draggable = "true"
           if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index ){
-            width = dateRulerList_count <= 3 ? (nowDict.index - tempUser.startIndex )  * unit_line : (nowDict.index - tempUser.startIndex )* UNIT_WIDTH
-            rightWidth =dateRulerList_count <= 3 ? (tempUser.lastIndex - nowDict.index + 1) * unit_line : (tempUser.lastIndex - nowDict.index + 1)* UNIT_WIDTH
+            width = dateRulerList_count <= UNIT ? (nowDict.index - tempUser.startIndex )  * unit_line : (nowDict.index - tempUser.startIndex )* UNIT_WIDTH
+            rightWidth =dateRulerList_count <= UNIT ? (tempUser.lastIndex - nowDict.index + 1) * unit_line : (tempUser.lastIndex - nowDict.index + 1)* UNIT_WIDTH
             draggable = 'false'
 
             rightUser.dayCount = tempUser.lastIndex - nowDict.index + 1
@@ -788,7 +789,7 @@ const monthStateView = (props) => {
 
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
-              <div  className="userBoxSup" style={{width: (width+rightWidth) + 'px',left:dateRulerList_count <= 3 ? users[i].startIndex * unit_line : users[i].startIndex * UNIT_WIDTH}}>
+              <div  className="userBoxSup" style={{width: (width+rightWidth) + 'px',left:dateRulerList_count <= UNIT ? users[i].startIndex * unit_line : users[i].startIndex * UNIT_WIDTH}}>
                 <div className="userBox"
                      style={{
                        width: width + 'px',
@@ -866,7 +867,7 @@ const monthStateView = (props) => {
             height: "100%",
             position: "relative",
             paddingRight: "20px",
-            minWidth: dateRulerList_count <= 3 ? room.useAndBookingList.length * unit_line + 20 + "px" : room.useAndBookingList.length * UNIT_WIDTH + 20 + 'px'
+            minWidth: dateRulerList_count <= UNIT ? room.useAndBookingList.length * unit_line + 20 + "px" : room.useAndBookingList.length * UNIT_WIDTH + 20 + 'px'
           }}>
             {
               renderDayRoom(room.useAndBookingList)
@@ -890,7 +891,7 @@ const monthStateView = (props) => {
       //let s_ = false;
       for (let item of dateRulerList) {
         days_all += item.days;
-        if(dateRulerList.length <= 3){
+        if(dateRulerList.length <= UNIT){
           boxWidth = $(".monthRoomRightBox").width();
         }else{
           boxWidth += item.days * UNIT_WIDTH;
@@ -906,7 +907,7 @@ const monthStateView = (props) => {
         for (let i = 1; i <= fiveDays; i++) {
           result.push(
             <div key={'fiveDayRuler'+i} className="fiveDayRuler" style={{
-              width:length_ <=3 ?unit_u*5+'px' : 5 * UNIT_WIDTH + "px",
+              width:length_ <=UNIT ?unit_u*5+'px' : 5 * UNIT_WIDTH + "px",
             }}>
               {i * 5}天
             </div>
@@ -916,7 +917,7 @@ const monthStateView = (props) => {
         if (remainder) {
           result.push(
             <div key={'remainder'+i} className="fiveDayRuler" style={{
-              width: length_ <=3 ?remainder*unit_u + 'px' : remainder * UNIT_WIDTH + "px",
+              width: length_ <=UNIT ?remainder*unit_u + 'px' : remainder * UNIT_WIDTH + "px",
             }}>
             </div>
           )
@@ -932,17 +933,17 @@ const monthStateView = (props) => {
               if(item.date == `${timeObj.years}-${timeObj.months+1}`){
                 return (
                   <div  key={i} className="itemRulerBox" style={{
-                    width: length_ <=3 ? item.days*unit_u : item.days * UNIT_WIDTH,
+                    width: length_ <=UNIT ? item.days*unit_u : item.days * UNIT_WIDTH,
                     position:'relative',
                     overflow:'initial'
                   }}>
-                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:length_ <= 3 ? timeObj.date * unit_u - unit_u-3+"px" : timeObj.date*UNIT_WIDTH-8+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
+                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:length_ <= UNIT ? timeObj.date * unit_u - unit_u-3+"px" : timeObj.date*UNIT_WIDTH-8+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
                     <div className="itemRulerBoxTop" style={{clear:'both'}}>
                       <div className="itemRulerBoxTitle">
                         {item.date}
                       </div>
                     </div>
-                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= 3 ? item.days*unit_u : 300}}>
+                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= UNIT ? item.days*unit_u : 300}}>
                       {
                         renderFiveDays(item.days)
                       }
@@ -952,14 +953,14 @@ const monthStateView = (props) => {
               }else{
                 return (
                   <div key = {i} className="itemRulerBox" style={{
-                    width:length_ <=3 ? item.days*unit_u : item.days * UNIT_WIDTH,
+                    width:length_ <=UNIT ? item.days*unit_u : item.days * UNIT_WIDTH,
                   }}>
                     <div className="itemRulerBoxTop">
                       <div className="itemRulerBoxTitle">
                         {item.date}
                       </div>
                     </div>
-                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= 3 ? item.days*unit_u : 300}}>
+                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= UNIT ? item.days*unit_u : 300}}>
                       {
                         renderFiveDays(item.days)
                       }
