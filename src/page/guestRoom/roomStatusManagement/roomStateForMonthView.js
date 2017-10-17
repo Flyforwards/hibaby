@@ -367,7 +367,7 @@ const monthStateView = (props) => {
 
     const renderMonthRoom = (room, roomIndex) => {
       let dateRulerList_count = props.users.dateRulerList.length;
-      let unit_line =parseInt($(".monthRoomRightBox").width()/room.useAndBookingList.length);
+      let unit_line =$(".monthRoomRightBox").width()/room.useAndBookingList.length;
       let users = [];
       const renderDayRoom = (dayList) => {
         if (!dayList || dayList.length === 0) {
@@ -937,7 +937,7 @@ const monthStateView = (props) => {
                     position:'relative',
                     overflow:'initial'
                   }}>
-                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:length_ <= UNIT ? timeObj.date * unit_u - unit_u-3+"px" : timeObj.date*UNIT_WIDTH-8+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
+                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:length_ <= UNIT ? timeObj.date * unit_u - unit_u +"px" : timeObj.date*UNIT_WIDTH-8+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
                     <div className="itemRulerBoxTop" style={{clear:'both'}}>
                       <div className="itemRulerBoxTitle">
                         {item.date}
