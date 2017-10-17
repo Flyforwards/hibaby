@@ -135,7 +135,7 @@ const monthStateView = (props) => {
       type: 'roomStatusManagement/userDrop',
       payload: {
         roomIndex,
-        dayIndex: dayIndex,
+        dayIndex,
       }
     });
   };
@@ -578,6 +578,7 @@ const monthStateView = (props) => {
          * @param e
          */
         const resizeBarMouseDownHandler = (e) => {
+          console.log("开始了")
           //入住调整权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
           const flag = props.permissionAlias.contains("MONTH_RZTZ");
           if(!flag){
@@ -677,7 +678,17 @@ const monthStateView = (props) => {
 
             unit = tempUnit;
 
-            dispatch({type: 'roomStatusManagement/moveReserveDays',payload:unit}) ;
+
+            dispatch({type: 'roomStatusManagement/moveReserveDays',payload:{
+              oldStartIndex,
+              unit,
+              oldEndIndex,
+              roomIndex,
+              customerId,
+              customerName,
+              reserveDays:oldEndIndex + tempUnit - oldStartIndex + 1,
+              status
+            }}) ;
 
             if (targetWidth + (unit * UNIT_WIDTH) >= UNIT_WIDTH) {
               target.style.width = targetWidth + (unit * UNIT_WIDTH) + "px";
@@ -691,6 +702,8 @@ const monthStateView = (props) => {
             if (!unit) {
               return;
             }
+
+            console.log(unit)
 
             let type = "";
             let startIndex, endIndex;
@@ -707,6 +720,8 @@ const monthStateView = (props) => {
               endIndex = oldEndIndex;
               reserveDays = startIndex - oldStartIndex + 1;
             }
+            console.log(endIndex)
+            console.log(oldEndIndex)
             dispatch({
               type: 'roomStatusManagement/updateReserveDays',
               payload: {

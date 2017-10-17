@@ -342,6 +342,42 @@ export default {
         monthRoomList: monthRoomList
       }
     },
+
+    moveReserveDays(state, {payload: data}){
+      let monthRoomList = state.monthRoomList.concat();
+      let {oldStartIndex, unit, oldEndIndex, roomIndex, customerId, customerName, reserveDays, status} = data
+      let room = monthRoomList[roomIndex].useAndBookingList;
+      let roomId = monthRoomList[roomIndex].roomId;
+
+      if(reserveDays < 1){
+        reserveDays = 1
+      }
+
+      for (let i = oldStartIndex;i<room.length;i++){
+        let roomX = room[i]
+
+        for (let j = 0;j<roomX.customerList.length;j++){
+          let customer = roomX.customerList[j]
+          if (customer.customerId === customerId){
+            roomX.customerList.splice(j,1)
+            continue
+          }
+
+        }
+      }
+
+      for (let i = oldStartIndex;i<oldStartIndex+reserveDays;i++){
+        let roomX = room[i]
+        roomX.customerList.push({customerId,customerName,isRepair:"0",status})
+      }
+
+
+      return {
+        ...state,
+        monthRoomList: monthRoomList
+      }
+    },
+
     updateReserveDays(state, {payload: data}){
       let monthRoomList = state.monthRoomList.concat();
 
@@ -393,35 +429,16 @@ export default {
 
         }
       } else {
-        for (let j = startIndex + 1; j <= endIndex; j++) {
-          let customerList = room[j].customerList;
-          for (let k = 0; k < customerList.length; k++) {
-            if (customerList[k].customerId == customerId) {
-              customerList.splice(k--, 1);
-              resideOperation.push({
-                "customerId": customerId,
-                "customerName": customerName,
-                "date": moment(room[j].date).format(),
-                "roomId": roomId,
-                "status": 0
-              })
-              break;
-            }
-          }
+
+        for (let j = startIndex;j<endIndex;j++){
+          resideOperation.push({
+            "customerId": customerId,
+            "customerName": customerName,
+            "date": moment(room[j].date).format(),
+            "roomId": roomId,
+            "status": 0
+          })
         }
-      }
-
-
-      // 更新入住天数
-      let customersList = state.monthStateCustomers;
-      for (let i = 0; i < customersList.length; i++) {
-        let customer = customersList[i];
-        if (customer.customerId == customerId) {
-          customer.reserveDays = data.reserveDays;
-        }
-      }
-
-      if (status == 4) {
 
       }
 
