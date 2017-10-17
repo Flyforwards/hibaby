@@ -7,6 +7,8 @@ import { routerRedux } from 'dva/router';
 import moment from 'moment';
 import { parse } from 'qs'
 
+let zIndexCount = 100;
+
 // 时间毫秒数转日期: YYYY-MM-DD
 const timeToDate = (time) => {
   if (!time) {

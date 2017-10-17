@@ -23,7 +23,6 @@ const UNIT_WIDTH = 9;
 const UNIT = 3;
 let SELECT_CUSTOMER = '';
 let nowDict = ''
-let zIndexCount = 100;
 let selectViewIndex = 0;
 // 保留所拖动元素中鼠标的位置
 let dragOffsetX = 0;
@@ -97,7 +96,7 @@ const monthStateView = (props) => {
       return;
     }
 
-    event.target.style.zIndex = ++zIndexCount;
+
 
     let roomIndex = null;
     let dayIndex = null;
@@ -124,8 +123,7 @@ const monthStateView = (props) => {
 
     if(dragUser.status !== 4){
       if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
-        // message.error("无法移动到过去");
-        return;
+        dayIndex = nowDict.index
       }
     }
 
@@ -363,7 +361,6 @@ const monthStateView = (props) => {
 
   const ClickBlank = (e) => {
     addRedBoder()
-    console.log(111)
   }
 
   /* 月房态列表 */
@@ -442,6 +439,7 @@ const monthStateView = (props) => {
                 lastIndex: dayindex,
                 dayCount: 1,
               })
+
             }
           }
 
@@ -478,7 +476,6 @@ const monthStateView = (props) => {
 
         const userBoxClickHandler = (e) => {
           addRedBoder(e)
-          e.target.style.zIndex = ++zIndexCount;
         };
 
         const userBoxDbClickHandler = (e) => {
@@ -595,7 +592,6 @@ const monthStateView = (props) => {
          * @param e
          */
         const resizeBarMouseDownHandler = (e) => {
-          console.log("开始了")
           //入住调整权限，true：有权限，false：无权限 add by yangjj 2017-07-27 13:00
           const flag = props.permissionAlias.contains("MONTH_RZTZ");
           if(!flag){
@@ -720,8 +716,6 @@ const monthStateView = (props) => {
               return;
             }
 
-            console.log(unit)
-
             let type = "";
             let startIndex, endIndex;
             let reserveDays = 0;
@@ -737,8 +731,7 @@ const monthStateView = (props) => {
               endIndex = oldEndIndex;
               reserveDays = startIndex - oldStartIndex + 1;
             }
-            console.log(endIndex)
-            console.log(oldEndIndex)
+
             dispatch({
               type: 'roomStatusManagement/updateReserveDays',
               payload: {
