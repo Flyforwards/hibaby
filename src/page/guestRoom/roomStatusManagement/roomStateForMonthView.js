@@ -783,7 +783,8 @@ const monthStateView = (props) => {
           let rightWidth = 0
           let rightUser = {...tempUser}
           let draggable = "true"
-          if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index ){
+
+          if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index && tempUser.status !== 7){
             width = dateRulerList_count <= UNIT ? (nowDict.index - tempUser.startIndex )  * unit_line : (nowDict.index - tempUser.startIndex )* UNIT_WIDTH
             rightWidth =dateRulerList_count <= UNIT ? (tempUser.lastIndex - nowDict.index + 1) * unit_line : (tempUser.lastIndex - nowDict.index + 1)* UNIT_WIDTH
             draggable = 'false'
