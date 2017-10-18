@@ -808,7 +808,7 @@ const monthStateView = (props) => {
 
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
-              <div  className="userBoxSup" style={{width: (width+rightWidth) + 'px',left:dateRulerList_count <= UNIT ? users[i].startIndex * unit_line : users[i].startIndex * UNIT_WIDTH}}>
+              <div  className="userBoxSup" style={{width: (width+rightWidth+20) + 'px',left:dateRulerList_count <= UNIT ? users[i].startIndex * unit_line : users[i].startIndex * UNIT_WIDTH}}>
                 <div className="userBox"
                      style={{
                        width: width + 'px',
