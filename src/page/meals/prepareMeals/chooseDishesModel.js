@@ -337,7 +337,7 @@ class App extends Component {
                 </Col>
               </Row>
               </Form>
-              <div className="btns">
+              <div className="btns btnsSearch">
                 <Button className="button-group-1" onClick={this.handleReset.bind(this)}>重置</Button>
                 <Button className="button-group-2" onClick={this.handleSearch.bind(this)}>查询</Button>
               </div>

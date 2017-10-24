@@ -227,7 +227,7 @@ class DishesIndex extends React.Component {
     let addBtn = null;
     if (this.props.dishes.nodeId != 1) {//根节点无法创建菜品
       addBtn =
-        <span className="Dishes-add"><PermissionLink testKey='DISHES_ADD' to="/meals/dishes/addDishes"><Button className="SaveBtn">创建菜品</Button></PermissionLink></span>;
+        <span className="Dishes-add"><PermissionLink testKey='DISHES_ADD' to="/meals/dishes/addDishes"><Button className="button-group-1">创建菜品</Button></PermissionLink></span>;
     }
     const { mvTypeData, vdTypeData } = this.props.dishes;
     const mvTypeOptions = [];

@@ -140,7 +140,7 @@
     width: 50%;
   }
   .dishesTab {
-    margin-top: 20px;
+    margin-top: 10px;
     .ant-table-thead {
       tr {
         th {
@@ -169,12 +169,17 @@
       }
     }
   }
-  .btn{
-    width: 100%;
-    height : 30px;
-    .button-group-2{
-      margin-top:10px;
-      float: right;
-    }
+
+}
+.btnsSearch{
+  width: 100%;
+  height : 30px;
+  margin-top:10px;
+  .button-group-1{
+    float: right;
+    margin-left: 30px;
+  }
+  .button-group-2{
+    float: right;
   }
 }

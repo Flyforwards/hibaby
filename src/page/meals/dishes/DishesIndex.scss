@@ -46,6 +46,10 @@
         height: 30px;
         background: inherit;
         background-color: #ff4a4a;
+        &:hover {
+          background-color: #ff9900;
+
+        }
       }
       .Dishes-add {
         float: right;
@@ -62,12 +66,24 @@
         height: 30px;
         background: inherit;
         background-color: #b57332;
+        a {
+          display: inline-block;
+          width: 100%;
+          .button-group-1 {
+            width: 100%;
+            border-radius: 3px;
+            &:hover {
+              background-color: #ff9900;
+            }
+          }
+        }
+
       }
     }
     .DishesTopfixed {
       position: fixed;
       top: 0;
-      z-index: 2000000;
+      z-index: 200;
       background-color: #f7f6f2;
     }
 
