@@ -1,7 +1,7 @@
 import { connect } from 'dva';
 import React, { Component }from 'react';
 import { Modal, Button } from 'antd';
-import { Tree, Input, Row, Col, Table,Form,Select } from 'antd';
+import { Tree, Input, Row, Col, Table, Form, Select } from 'antd';
 import { Link } from 'react-router';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -19,18 +19,18 @@ class App extends Component {
     data: [],
     selectedKeys: [],
     name: '',
-    mvType : null,
-    vdType : null,
-    status : null
+    mvType: null,
+    vdType: null,
+    status: null
   }
-
+  
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false
     });
   }
-
+  
   onChange = (value) => {
     const { dispatch } = this.props;
     dispatch({
@@ -45,71 +45,70 @@ class App extends Component {
       name: value
     })
   }
-
-
-
-  handleNameChange=(e)=>{
+  
+  
+  handleNameChange = (e) => {
     this.setState({
       name: e.target.value
     });
   }
-  handleMvTypeChange=(value)=>{
+  handleMvTypeChange = (value) => {
     this.setState({
       mvType: value
     });
   }
-  handleVdTypeChange=(value)=>{
+  handleVdTypeChange = (value) => {
     this.setState({
       vdType: value
     });
   }
-  handleStatus=(value)=>{
+  handleStatus = (value) => {
     this.setState({
       status: value
     });
   }
-
-  handleReset = () =>{
+  
+  handleReset = () => {
     this.props.form.resetFields();
     this.setState({
-      name : '',
-      mvType : null,
-      vdType : null,
-      status : ''
+      name: '',
+      mvType: null,
+      vdType: null,
+      status: ''
     });
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'prepareMeals/getDishesPageList',
       payload: {
         nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
-        page : 1,
+        page: 1
       }
     });
   }
-
-  handleSearch  = () =>{
+  
+  handleSearch = () => {
     this.getTableData({
       nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
-      page : 1,
+      page: 1
     });
   }
-
-
-  getTableData(params = {}){
-    const {dispatch} = this.props;
+  
+  
+  getTableData(params = {}) {
+    const { dispatch } = this.props;
     dispatch({
       type: 'prepareMeals/getDishesPageList',
       payload: {
         ...params,
-        name : this.state.name,
-        mvType : this.state.mvType,
-        vdType : this.state.vdType,
-        status : this.state.status
+        name: this.state.name,
+        mvType: this.state.mvType,
+        vdType: this.state.vdType,
+        status: this.state.status
       }
     });
   }
-
-
+  
+  
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -119,11 +118,29 @@ class App extends Component {
       }
     })
   }
+  
+  
+  handleCancelModel = (e) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'prepareMeals/changeVisible',
+      payload: {
+        visible: false
+      }
+    })
+    dispatch({
+      type: 'prepareMeals/chooseVisible',
+      payload: {
+        topVisible: false
+      }
+    })
+  }
+  
   onSelect = (selectedKeys, info) => {
     const { dispatch } = this.props;
     this.setState({
       selectedKeys: selectedKeys,
-      postNodeId: selectedKeys[0],
+      postNodeId: selectedKeys[0]
       // name: '',
       // mvType : null,
       // vdType:null,
@@ -141,7 +158,7 @@ class App extends Component {
       selectedKeys: []
     })
   }
-
+  
   getInfo = (data) => {
     const { changeKey, isLow, dispatch, reset } = this.props;
     const { id, name } = data;
@@ -171,9 +188,9 @@ class App extends Component {
         topVisible: false
       }
     })
-
+    
   }
-
+  
   handleTableChange = (pagination, filters, sorter) => {
     const { dispatch, prepareMeals } = this.props;
     const { name } = this.state;
@@ -194,27 +211,35 @@ class App extends Component {
       }
     })
   }
-
+  
   render() {
-    const { prepareMeals,form } = this.props;
+    const { prepareMeals, form } = this.props;
     const { getFieldDecorator } = form;
-
+    
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
     const { nodes } = nodesInfo;
     const { expandedKeys, autoExpandParent } = this.state;
     const mvTypeOptions = [];
-    mvType.map(function (item,index) {
-      mvTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    mvType.map(function (item, index) {
+      mvTypeOptions.push(<Option key={item.id + ""} value={item.id + ""}>{item.name}</Option>);
     });
     const vdTypeOptions = [];
-    vdType.map(function (item,index) {
-      vdTypeOptions.push(<Option key={item.id+""} value={item.id+""}>{item.name}</Option>);
+    vdType.map(function (item, index) {
+      vdTypeOptions.push(<Option key={item.id + ""} value={item.id + ""}>{item.name}</Option>);
     });
     const columns = [
       {
         title: '菜品名',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
+        render: (text, record) => {
+          return (
+            <Link onClick={() => {
+              this.handleCancel();
+              this.handleCancelModel()
+            }} to={`/meals/dishes/dishesDetail?dataId=${record.id}`}>{text}</Link>
+          )
+        }
       }, {
         title: '荤素类型',
         dataIndex: 'mvType',
@@ -262,7 +287,7 @@ class App extends Component {
           )
         }
       }]
-
+    
     const loop = data => data.map((item) => {
       if (item.nodes) {
         return (
@@ -299,43 +324,43 @@ class App extends Component {
             </Col>
             <Col span={18}>
               <Form layout="inline">
-              <Row  justify="space-between">
-                <Col span={6}>
-                 <FormItem>
-                   {getFieldDecorator('name')(
-                     <Input style={{ width: 180 }} placeholder="请输入菜品名或主副食材" onChange={this.handleNameChange.bind(this)} />
-                   )}
-                 </FormItem>
-                 </Col>
-                <Col span={6}>
-                  <FormItem>
-                    {getFieldDecorator('mvType')(
-                      <Select placeholder="荤素类型" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
-                      {mvTypeOptions}
-                    </Select>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={6}>
-                  <FormItem>
-                    {getFieldDecorator('vdType')(
-                      <Select placeholder="菜品类型" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
-                      {vdTypeOptions}
-                    </Select>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={6}>
-                  <FormItem>
-                    {getFieldDecorator('status')(
-                      <Select placeholder="使用状态" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)} >
-                        <Option value="0">未使用</Option>
-                        <Option value="1">已使用</Option>
-                      </Select>
-                    )}
-                  </FormItem>
-                </Col>
-              </Row>
+                <Row justify="space-between">
+                  <Col span={6}>
+                    <FormItem>
+                      {getFieldDecorator('name')(
+                        <Input style={{ width: 180 }} placeholder="请输入菜品名或主副食材" onChange={this.handleNameChange.bind(this)}/>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem>
+                      {getFieldDecorator('mvType')(
+                        <Select placeholder="荤素类型" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
+                          {mvTypeOptions}
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem>
+                      {getFieldDecorator('vdType')(
+                        <Select placeholder="菜品类型" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
+                          {vdTypeOptions}
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem>
+                      {getFieldDecorator('status')(
+                        <Select placeholder="使用状态" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)}>
+                          <Option value="0">未使用</Option>
+                          <Option value="1">已使用</Option>
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
               </Form>
               <div className="btns btnsSearch">
                 <Button className="button-group-1" onClick={this.handleReset.bind(this)}>重置</Button>
@@ -346,12 +371,12 @@ class App extends Component {
                      dataSource={dishesPageInfo}
                      onChange={this.handleTableChange}
                      pagination={paginationInfo}
-                     className="dishesTab"
+                     className="info-card-center"
                      bordered
               />
             </Col>
           </Row>
-
+        
         </Modal>
       </div>
     );
@@ -359,7 +384,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-
+  
   return {
     prepareMeals: state.prepareMeals
   };

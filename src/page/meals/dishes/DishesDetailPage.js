@@ -120,7 +120,7 @@ class DishesDetailPage extends React.Component{
                   }
                 ],
               })(
-                <Input addonAfter="g" disabled={this.state.disabled}/>
+                <Input addonAfter="g/ml" disabled={this.state.disabled}/>
               )}
             </FormItem>
           </Col>
@@ -244,7 +244,7 @@ class DishesDetailPage extends React.Component{
                       }
                     ],
                   })(
-                    <Input addonAfter="g" disabled={this.state.disabled} />
+                    <Input addonAfter="g/ml" disabled={this.state.disabled} />
                   )}
                 </FormItem>
               </Col>

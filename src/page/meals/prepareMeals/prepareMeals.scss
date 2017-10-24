@@ -139,37 +139,39 @@
   .ant-input-affix-wrapper{
     width: 50%;
   }
-  .dishesTab {
+  .info-card-center {
+    width:100%;
     margin-top: 10px;
-    .ant-table-thead {
-      tr {
-        th {
-          background: #666666;
-          text-align: center;
-          span {
-            color: #fff;
-            font-size: 14px;
-          }
-        }
+    .ant-table-thead > tr > th {
+      background-color: rgba(102, 102, 102, 1);
+      font-weight: 500;
+      transition: background .3s ease;
+      text-align: center;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+      color: #FFFFFF;
+      span {
+        color: #fff;
+        font-size: 14px;
       }
     }
-    .ant-table-tbody {
-      .ant-table-row {
-        td {
-          text-align: center;
-          a {
-            font-size: 14px;
-            color: #b67231;
-            &:hover {
-              color: #108ee9;
-            }
-          }
-
+    .ant-table-tbody > tr > td {
+      text-align:center;
+      background-color: #fff;
+      font-family: '微软雅黑 Regular', '微软雅黑';
+      font-weight: 400;
+      font-size: 14px;
+      a {
+        font-size: 14px;
+        color: #b67231;
+        &:hover {
+          color: #108ee9;
         }
       }
     }
   }
-
 }
 .btnsSearch{
   width: 100%;
