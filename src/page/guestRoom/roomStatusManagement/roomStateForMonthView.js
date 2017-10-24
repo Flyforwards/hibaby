@@ -1178,7 +1178,7 @@ const monthStateView = (props) => {
 
         <div style={{textAlign: 'center'}}>
           <Button className="button-group-1" onClick={addCustomer}>+ 添加客户</Button>
-          <Button className="button-group-1" onClick={createCustomer} style={{'marginTop':'20px'}}>+ 创建客户</Button>
+          {/*<Button className="button-group-1" onClick={createCustomer} style={{'marginTop':'20px'}}>+ 创建客户</Button>*/}
         </div>
       </div>
     )
