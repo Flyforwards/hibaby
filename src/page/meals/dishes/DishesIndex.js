@@ -16,6 +16,8 @@ import PermissionLink from '../../../common/PermissionLink';
 window.location.pathname == '/meals/dishes' &&window.addEventListener('scroll', function () {
   $(window).scroll(function () {
     if ($(this).scrollTop() > 100) {
+      var widthNum =  $('#Dishes-right').width();
+      $('#Dishes-nav').width(widthNum);
       $('#Dishes-nav').addClass('DishesTopfixed');
       $('#Dishes-right').addClass('Dishes-right-Top');
       
@@ -239,8 +241,8 @@ class DishesIndex extends React.Component {
     
     
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 10 }
+      labelCol: { span: 10 },
+      wrapperCol: { span: 14 }
     }
     
     
@@ -253,7 +255,7 @@ class DishesIndex extends React.Component {
                 label="菜品名"
                 {...formItemLayout}
               >
-                <Input placeholder="菜品名或主副食材" style={{ width: 180 }} onChange={this.handleNameChange.bind(this)}/>
+                <Input placeholder="菜品名或主副食材" style={{ minWidth: 140 }} onChange={this.handleNameChange.bind(this)}/>
               </FormItem>
             </Col>
             <Col span={6}>
@@ -261,7 +263,7 @@ class DishesIndex extends React.Component {
                 label="荤素类型"
                 {...formItemLayout}
               >
-                <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
+                <Select placeholder="请选择" style={{ minWidth: 140 }} allowClear={true} onChange={this.handleMvTypeChange.bind(this)}>
                   {mvTypeOptions}
                 </Select>
               
@@ -272,7 +274,7 @@ class DishesIndex extends React.Component {
                 label="菜品类型"
                 {...formItemLayout}
               >
-                <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
+                <Select placeholder="请选择" style={{ minWidth: 140 }} allowClear={true} onChange={this.handleVdTypeChange.bind(this)}>
                   {vdTypeOptions}
                 </Select>
               </FormItem>
@@ -282,7 +284,7 @@ class DishesIndex extends React.Component {
                 label="使用状态"
                 {...formItemLayout}
               >
-                <Select placeholder="请选择" style={{ width: 180 }} allowClear={true} onChange={this.handleStatus.bind(this)}>
+                <Select placeholder="请选择" style={{ minWidth: 140 }} allowClear={true} onChange={this.handleStatus.bind(this)}>
                   <Option value="0">未使用</Option>
                   <Option value="1">已使用</Option>
                 </Select>
