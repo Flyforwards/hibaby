@@ -288,11 +288,11 @@ export function CreatCard(form,superDict) {
         }
         else {
           if(dict.submitStr === 'fetus'||dict.submitStr === 'gravidity'||dict.submitStr === 'hospital'){
-            dict.initValue = baseInfoDict[dict.submitStr].toString()
+            dict.initValue =  baseInfoDict[dict.submitStr]!=null&&baseInfoDict[dict.submitStr].toString()
           }
           else{
             if(dict.component === 'gender'){
-              dict.initValue = baseInfoDict[str].toString()
+              dict.initValue = baseInfoDict[str]!=null&&baseInfoDict[str].toString()
             }
             else {
               dict.initValue = baseInfoDict[str]
