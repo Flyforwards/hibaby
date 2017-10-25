@@ -694,4 +694,34 @@ export default (app) => [
       })
     }
   },
+  
+  
+  //
+  //产妇入住前评估单创建页面
+  {
+    path: '/service/check-before/create',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/create/CheckBeforeCreate.js'))
+      })
+    }
+  },
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

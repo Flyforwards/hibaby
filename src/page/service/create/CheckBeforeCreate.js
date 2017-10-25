@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { CreatCard, creatButton, letter, chiDetailComponent } from './ServiceComponentCreat'
+import { CreatCard, creatButton, letter, chiDetailComponent } from '../ServiceComponentCreat'
 import { Card, Input, Form, message, Spin, Tabs, Row, Col } from 'antd';
 const TabPane = Tabs.TabPane;
 import { do_print } from 'common/util/printRoute.js';
 import { connect } from 'dva';
-import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux, Link } from 'dva/router'
 // 基本信息
@@ -219,10 +218,6 @@ class Detail extends Component {
     this.props.dispatch(routerRedux.push(`/service/check-before/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
   
-  createClicked() {
-    this.props.dispatch(routerRedux.push(`/service/check-before/create?customerid=${parse(location.search.substr(1)).customerid}`));
-  }
-  
   print() {
   }
   
@@ -245,51 +240,51 @@ class Detail extends Component {
           operatorItem: 1
         };
         
-        if (this.props.CheckBeforeID) {
-          dict.id = this.props.CheckBeforeID
-        }
         this.props.dispatch({ type: 'serviceCustomer/saveAssessment', payload: dict })
       }
     });
     
     
-    for (let i = 0; i < this.props.BabyList.length; i++) {
-      const info = this.props.BabyList[i]
-      const str = 'ChildForm' + i
-      
-      this.refs[str].validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          
-          Object.keys(values).map(key => {
-            if (values[key]) {
-              if (typeof values[key] === 'object') {
-                values[key] = values[key].format()
+    if (this.props.BabyList != null) {
+      for (let i = 0; i < this.props.BabyList.length; i++) {
+        const info = this.props.BabyList[i]
+        const str = 'ChildForm' + i
+        
+        this.refs[str].validateFieldsAndScroll((err, values) => {
+          if (!err) {
+            
+            Object.keys(values).map(key => {
+              if (values[key]) {
+                if (typeof values[key] === 'object') {
+                  values[key] = values[key].format()
+                }
               }
-            }
-          })
-          
-          const { babyLength, babySex, babyWeight } = values
-          
-          const assessmentInfo = JSON.stringify(values);
-          
-          let dict = {
-            assessmentId: this.props.CheckBeforeID,
-            "assessmentBabyInfo": assessmentInfo,
-            "customerId": parse(location.search.substr(1)).customerid,
-            "type": 1,
-            babyLength,
-            babySex,
-            babyWeight,
-            babyId: info.babyId
-          };
-          
-          this.props.dispatch({ type: 'serviceCustomer/saveAssessmentBabyInfo', payload: dict })
-        }
-        else {
-          message.error('您有信息未填写完整')
-        }
-      });
+            })
+            
+            const { babyLength, babySex, babyWeight } = values
+            
+            const assessmentInfo = JSON.stringify(values);
+            
+            let dict = {
+              assessmentId: this.props.CheckBeforeID,
+              "assessmentBabyInfo": assessmentInfo,
+              "customerId": parse(location.search.substr(1)).customerid,
+              "type": 1,
+              babyLength,
+              babySex,
+              babyWeight,
+              babyId: info.babyId
+            };
+            
+            this.props.dispatch({ type: 'serviceCustomer/saveAssessmentBabyInfo', payload: dict })
+          }
+          else {
+            message.error('您有信息未填写完整')
+          }
+        });
+      }
     }
+    
     
   }
   
@@ -303,19 +298,13 @@ class Detail extends Component {
   
   render() {
     
-    const { loading, summary, BabyList, CheckBeforeBabyData, CheckBeforeData } = this.props
+    const { BabyList, CheckBeforeBabyData, CheckBeforeData } = this.props
     
-    const bottomDiv = location.pathname === '/service/check-before/edit' ?
-      <div className='button-group-bottom-common'>
-        {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
-      </div> :
-      <div className='button-group-bottom-common'>
-        {this.props.CheckBeforeData ? '' : creatButton('创建', this.createClicked.bind(this))}
-        {creatButton('返回', this.backClicked.bind(this))}
-        {this.props.CheckBeforeData ? creatButton('删除', this.onDelete.bind(this)) : ''}
-        {this.props.CheckBeforeData ? creatButton('编辑', this.editBtnClick.bind(this)) : ''}
-        {this.props.CheckBeforeData ? creatButton('打印', this.print.bind(this)) : ''}
-      </div>
+    const bottomDiv =
+            <div className='button-group-bottom-common'>
+              {creatButton('确定', this.submitClicked.bind(this))}
+              {creatButton('返回', this.editBackClicked.bind(this))}
+            </div>
     
     
     let babyListDiv = BabyList ? BabyList.map((value, index) => {
@@ -332,26 +321,24 @@ class Detail extends Component {
     }) : []
     
     return (
-      <Spin
-        spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
-        <Card className='CheckBeforeInput' id="CheckBeforeInput" style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
-          <MotherForm ref="MotherForm" {...this.props}/>
-          {babyListDiv}
-          { CheckBeforeData ?
-            <Row style={{ height: '40px' }}>
-              <Col offset={12} span={12}>
-                {chiDetailComponent([{
-                  title: '评估者',
-                  initValue: CheckBeforeData.operator,
-                  colSpan: 12
-                }, { title: "评估时间", initValue: CheckBeforeData.operatorTime, colSpan: 12 }])}
-              </Col>
-            
-            </Row> : ""
-          }
-          {summary ? '' : bottomDiv}
-        </Card>
-      </Spin>
+      <Card className='CheckBeforeInput' id="CheckBeforeInput" style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
+        <MotherForm ref="MotherForm" {...this.props}/>
+        {babyListDiv}
+        { CheckBeforeData ?
+          <Row style={{ height: '40px' }}>
+            <Col offset={12} span={12}>
+              {chiDetailComponent([{ title: '评估者', initValue: CheckBeforeData.operator, colSpan: 12 }, {
+                title: "评估时间",
+                initValue: CheckBeforeData.operatorTime,
+                colSpan: 12
+              }])}
+            </Col>
+          
+          </Row> : ""
+        }
+        {bottomDiv}
+      
+      </Card>
     )
   }
 }
