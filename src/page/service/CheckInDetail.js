@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {CreatCard,creatButton,chiDetailComponent} from './ServiceComponentCreat'
-import {Card ,Input,Form,Button,Spin} from 'antd';
+import {Card ,Input,Form,Button,Spin,Row,Col} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -61,6 +61,10 @@ class Detail extends Component {
   editBackClicked(){
     this.props.dispatch(routerRedux.push(`/service/check-in/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
+  createBtnClick(){
+    this.props.dispatch(routerRedux.push(`/service/check-in/create?customerid=${parse(location.search.substr(1)).customerid}`));
+  }
+  
 
   print(){
 
@@ -189,6 +193,7 @@ class Detail extends Component {
     }else{
       bottomDiv = (
         <div className='button-group-bottom-common'>
+          {this.props.CheckInID ? '':creatButton('创建', this.createBtnClick.bind(this)) }
           {creatButton('返回', this.backClicked.bind(this))}
           {this.props.CheckInID ? creatButton('删除', this.onDelete.bind(this)) : ''}
           {this.props.CheckInID ? creatButton('编辑', this.editBtnClick.bind(this)) : ''}
