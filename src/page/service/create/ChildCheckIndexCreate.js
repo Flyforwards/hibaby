@@ -3,13 +3,13 @@
  */
 
 import React, { Component } from 'react';
-import { CreatCard, creatButton } from './ServiceComponentCreat'
+import { CreatCard, creatButton } from '../ServiceComponentCreat'
 import { Card, Input, Form, Button, Spin, Tabs } from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux } from 'dva/router'
-import { queryURL } from '../../utils/index.js';
+import { queryURL } from '../../../utils/index.js';
 const TabPane = Tabs.TabPane;
 let babyhead11 = true;
 let babyhead20allboy = true;
@@ -48,20 +48,15 @@ class Detail extends Component {
   submitClicked() {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // Object.keys(values).map(key=>{
-        //   if(typeof values[key] === 'object'){
-        //     values[key] = values[key].format()
-        //   }
-        // })
         const assessmentInfo = JSON.stringify(values);
         let dict = {
+          babyLength: values.babyLength,
+          babyWeight: values.babyWeight,
           "assessmentBabyInfo": assessmentInfo,
           "babyId": queryURL("babyId"),
-          "id": queryURL('id'), "customerId": queryURL('customerid'),
+          "customerId": queryURL('customerid'),
           "type": 3,
-          operatorItem: 3,
-          babyLength: values.babyLength,
-          babyWeight: values.babyWeight
+          operatorItem: 3
         };
         this.props.dispatch({ type: 'serviceCustomerChild/onSaveBabyData', payload: dict })
       }
@@ -666,7 +661,6 @@ class Detail extends Component {
       { title: '评估者', component: 'Input', span: 6, submitStr: 'newborn_3' },
       { title: '评估时间', component: 'DatePicker', offset: 12, span: 6, submitStr: 'newborn_4' }
     ]
-    //,{title:'入住时婴儿评估',ary:newbornTwoAry}
     const ary = [{
       title: summary ? '' : '基本信息',
       ary: summary ? baseInfoAry.slice(6) : baseInfoAry
@@ -682,18 +676,11 @@ class Detail extends Component {
     </div>;
     
     return (
-      <Spin spinning={loading.effects['serviceCustomerChild/getChilddataBycustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getChilddataBycustomerId'] : false}>
-        
-        <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
-          {chiAry}
-          {/*<Tabs type="card">*/}
-          {/*<TabPane tab="Tab 1" key="1">Content of Tab Pane 1</TabPane>*/}
-          {/*<TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>*/}
-          {/*<TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>*/}
-          {/*</Tabs>*/}
-          {summary ? '' : bottomDiv}
-        </Card>
-      </Spin>
+      
+      <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
+        {chiAry}
+        {bottomDiv}
+      </Card>
     )
   }
 }

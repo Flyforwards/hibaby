@@ -717,6 +717,16 @@ export default (app) => [
       })
     }
   },
+  //婴儿入住评估单创建页面
+  {
+    path: '/service/child-check-in/create',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomerChild'));
+        cb(null, require('page/service/create/ChildCheckIndexCreate.js'))
+      })
+    }
+  },
 ]
 
 
