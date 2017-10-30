@@ -835,7 +835,6 @@ const DetailForm = Form.create()(Detail);
 
 function mapStateToProps(state) {
   const { ChildCheckInData, baseInfoDict, BabyAllData, BabyId, hostId } = state.serviceCustomerChild;
-  console.log("sdsss",BabyAllData)
   return {
     BabyAllData,
     BabyId,
