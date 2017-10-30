@@ -782,7 +782,7 @@ class Detail extends Component {
       if (BabyAllData && BabyAllData.length > 1) {
         value.netData = JSON.parse(BabyAllData[0].assessmentBabyInfo);
       } else {
-        value.netData = BabyAllData ? JSON.parse(BabyAllData[0].assessmentBabyInfo) : {}
+        value.netData = BabyAllData && BabyAllData.length != 0 ? JSON.parse(BabyAllData[0].assessmentBabyInfo) : {}
       }
       value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
       return CreatCard(this.props.form, value)
@@ -835,6 +835,7 @@ const DetailForm = Form.create()(Detail);
 
 function mapStateToProps(state) {
   const { ChildCheckInData, baseInfoDict, BabyAllData, BabyId, hostId } = state.serviceCustomerChild;
+  console.log("sdsss",BabyAllData)
   return {
     BabyAllData,
     BabyId,
