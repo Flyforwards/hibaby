@@ -747,6 +747,16 @@ export default (app) => [
       })
     }
   },
+  //中医见诊记录单创建页面
+  {
+    path: '/service/diagnosis/create',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/create/diagnosisCreate.js'))
+      })
+    }
+  },
 ]
 
 
