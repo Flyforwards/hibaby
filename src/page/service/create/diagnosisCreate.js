@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CreatCard, creatButton } from './ServiceComponentCreat'
+import { CreatCard, creatButton } from '../ServiceComponentCreat'
 import { Card, Input, Form, Button, Spin } from 'antd';
 import { connect } from 'dva';
 import { parse } from 'qs'
@@ -111,7 +111,7 @@ class Detail
   }
   
   editBtnClick() {
-    this.props.dispatch(routerRedux.push(`/service/diagnosis/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckInID}`));
+    this.props.dispatch(routerRedux.push(`/service/diagnosis/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${parse(location.search.substr(1)).customerid}`));
   }
   
   backClicked() {
@@ -121,11 +121,10 @@ class Detail
   editBackClicked() {
     this.props.dispatch(routerRedux.push(`/service/diagnosis/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
-  
   createBtnClick(){
     this.props.dispatch(routerRedux.push(`/service/diagnosis/create?customerid=${parse(location.search.substr(1)).customerid}`));
-  
   }
+  
   print() {
   
   }
@@ -138,7 +137,7 @@ class Detail
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         Object.keys(values).map(key => {
-          if (values[key]&&typeof values[key] === 'object' && typeof values[key].length !== 'number') {
+          if (values[key] != null && typeof values[key] === 'object' && typeof values[key].length !== 'number') {
             values[key] = values[key].format()
           }
         })
@@ -151,8 +150,8 @@ class Detail
         
         if (this.props.diagnosisID) {
           dict.operatorItem = 4
-          dict.id = this.props.diagnosisID
         }
+        
         this.props.dispatch({ type: 'serviceCustomer/saveAssessment', payload: dict })
       }
     });
@@ -160,8 +159,7 @@ class Detail
   
   render() {
     
-    const { loading, summary } = this.props
-    
+    const { summary } = this.props
     const ary = [{ title: summary ? '' : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry }]
     
     let chiAry = ary.map(value => {
@@ -171,26 +169,16 @@ class Detail
     })
     
     
-    const bottomDiv = location.pathname === '/service/diagnosis/edit' ?
+    const bottomDiv =
       <div className='button-group-bottom-common'>
         {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
-      </div> :
-      <div className='button-group-bottom-common'>
-        {this.props.diagnosisData ? null : creatButton('创建', this.createBtnClick.bind(this)) }
-        {creatButton('返回', this.backClicked.bind(this))}
-        {this.props.diagnosisData ? creatButton('删除', this.onDelete.bind(this)) : null}
-        {this.props.diagnosisData ? creatButton('编辑', this.editBtnClick.bind(this)) : null}
-        {this.props.diagnosisData ? creatButton('打印', this.print.bind(this)) : null}
       </div>
-    
     return (
-      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
         
         <Card className='diagnosisInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', '20px') }}>
           {chiAry}
           {summary ? "" : bottomDiv}
         </Card>
-      </Spin>
     )
   }
 }

@@ -50,10 +50,10 @@ export default {
     },
     technicianUtilization: '0%',
     technicianNameList: [],
-    technicianNamePageInfo:{
-      page:1,
-      size:10,
-      total:100
+    technicianNamePageInfo: {
+      page: 1,
+      size: 10,
+      total: 100
     }
     
     
@@ -214,7 +214,7 @@ export default {
         }
         //技师预约详情
         if (pathname === '/service/order-technician/detail') {
-          const { userid,date } = query;
+          const { userid, date } = query;
           dispatch({
             type: 'getTechniciansInfo',
             payload: { type: 1, userId: userid, date }
@@ -224,24 +224,24 @@ export default {
             payload: date
           })
         }
-      
+        
         //技师预约历史
         if (pathname === '/service/order-technician/history') {
           const { userid } = query;
-          let endDate = query.enddate?query.enddate: moment().format('YYYY-MM-DD')
-          let startDate = query.startdate?query.startdate: moment().format('YYYY-MM-DD')
-            dispatch({
-              type: 'getTechnicianHistory',
-              payload: {
-                userId: userid,
-                endDate,
-                page: 1,
-                size: 10,
-                startDate,
-                sortField: "time",
-                sortOrder: "AESC"
-              }
-            })
+          let endDate = query.enddate ? query.enddate : moment().format('YYYY-MM-DD')
+          let startDate = query.startdate ? query.startdate : moment().format('YYYY-MM-DD')
+          dispatch({
+            type: 'getTechnicianHistory',
+            payload: {
+              userId: userid,
+              endDate,
+              page: 1,
+              size: 10,
+              startDate,
+              sortField: "time",
+              sortOrder: "AESC"
+            }
+          })
           dispatch({
             type: 'getTechnicianUtilization',
             payload: {
@@ -255,10 +255,10 @@ export default {
             }
           })
           dispatch({
-            type:'getTechnicianList',
-            payload:{
-              page:1,
-              size:10,
+            type: 'getTechnicianList',
+            payload: {
+              page: 1,
+              size: 10
             }
           })
         }
@@ -341,6 +341,8 @@ export default {
           yield put(routerRedux.push('/service/check-in'))
         } else if (values.type == 3) {
           yield put(routerRedux.push('/service/child-check-in'))
+        }else if (values.type == 4) {
+          yield put(routerRedux.push('/service/diagnosis'))
         }
         else if (values.type == 5) {
           yield put(routerRedux.push('/service/nutrition-evaluate'))
@@ -506,6 +508,9 @@ export default {
         }
         else if (values.operatorItem == 2) {
           str = 'check-in'
+        }
+        else if (values.operatorItem == 4) {
+          str = 'diagnosis'
         }
         
         let query = parse(location.search.substr(1))
@@ -1055,7 +1060,6 @@ export default {
     *getEdinburghMelancholyGaugeList({ payload: values }, { call, put, select }){
       const info = yield select(state => state.serviceCustomer);
       info.edinburghTime == "" || info.edinburghTime == undefined ? null : values.date = info.edinburghTime;
-      console.log(values)
       const { data: { data, code } } = yield call(serviceAssessment.getEdinburghMelancholyGaugeList, values);
       if (code == 0) {
         yield put({
@@ -1226,12 +1230,9 @@ export default {
       const technicianNamePageInfo = { page, size, total }
       return { ...state, technicianNameList: data, technicianNamePageInfo }
     },
-    saveChooseTechnicianTime(state,{payload:data}){
-      console.log(data,'/////////')
-      return{...state,startDate:data[0],endDate:data[1]}
+    saveChooseTechnicianTime(state, { payload: data }){
+      return { ...state, startDate: data[0], endDate: data[1] }
     },
-    
-    
     
     
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
@@ -1333,7 +1334,8 @@ export default {
         CustomerInfoList: null,
         baseInfoDict: null,
         PuerperaBodyList: null,
-        InsideBabySwimList: null//对内婴儿游泳记录集合
+        InsideBabySwimList: null,//对内婴儿游泳记录集合
+        diagnosisData:null
       }
     },
     getInsideBabySwim(state, { payload: data }){
@@ -1346,8 +1348,6 @@ export default {
       const { key, data } = todo
       let dict = {}
       dict[key] = data
-      
-      console.log(dict)
       
       return { ...state, ...dict }
     },
