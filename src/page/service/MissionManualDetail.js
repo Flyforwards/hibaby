@@ -98,7 +98,6 @@ class Detail extends Component {
 
   render() {
     const {loading,baseInfoDict,summary,MissionManualDetailList} = this.props;
-    console.log("list",MissionManualDetailList)
     const MissionManualData = {
       "washHandsMethod":'是',
       "lochiaObservation":'是',
