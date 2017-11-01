@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import {chiDetailComponent,creatButton,detailComponent,letter} from './ServiceComponentCreat'
 import {Card ,Row,Form,Tabs,Spin,DatePicker} from 'antd';
 const TabPane = Tabs.TabPane;
@@ -61,6 +61,9 @@ class Detail extends Component {
 
   editBtnClick(dict){
     this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&dataId=${dict.id}`));
+  }
+  onCreate(){
+    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}`));
   }
 
   deleteClick(dict){
@@ -167,6 +170,7 @@ class Detail extends Component {
 
     const bottomDiv =
       <div className='button-group-bottom-common'>
+        {creatButton('新建',this.onCreate.bind(this))}
         {creatButton('返回',this.backClicked.bind(this))}
         {creatButton('打印',this.print.bind(this))}
       </div>

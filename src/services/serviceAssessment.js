@@ -116,9 +116,32 @@ export function DelPediatricNote(values) {
     body: JSON.stringify(values)
   })
 }
-
+//宣教手册id详情
 export function getBrouchurDetailById(values) {
   return request('/crm/api/v1/brochure/getBrochureById', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+//宣教手册客户id 查询列表
+export function getBrouchurDetailList(values) {
+  return request('/crm/api/v1/brochure/getBrochureList', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
+//删除宣教手册客户Byid
+export function deleteBrouchurById(values) {
+  return request('/crm/api/v1/brochure/delBrochure', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
+//宣教手册创建及保存
+export function saveBrouchurs(values) {
+  return request('/crm/api/v1/brochure/saveBrochure', {
     method: 'POST',
     body: JSON.stringify(values)
   })

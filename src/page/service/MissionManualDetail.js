@@ -7,6 +7,7 @@ import {Card ,Input,Form,Button,Spin,Row,Col,DatePicker } from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
+import moment from 'moment'
 import { routerRedux,Link } from 'dva/router'
 import { queryURL ,format} from '../../utils/index.js';
 
@@ -59,7 +60,23 @@ class Detail extends Component {
   editBackClicked(){
     this.props.dispatch(routerRedux.push('/service/baby-manual'));
   }
+  deleteClick(elem) {
+    this.props.dispatch({
+      type:'serviceCustomer/deleteBrouchurById',
+      payload:{
+        'dataId':elem.id,
+        'operatorItem':10
+      }
+    })
+  }
 
+  onEdit(elem) {
+    this.props.dispatch(routerRedux.push(`/service/baby-manual/edit?customerid=${elem.customerId}&dataId=${elem.id}`));
+  }
+
+  onCreate(){
+    this.props.dispatch(routerRedux.push(`/service/baby-manual/create?customerid=${parse(location.search.substr(1)).customerid}`));
+  }
   print(){
 
   }
@@ -67,19 +84,21 @@ class Detail extends Component {
 //日期选择框
   handleChange(value, dateString) {
    this.props.dispatch({
-     type:'serviceCustomer/getBrouchurDetailById',
+     type:'serviceCustomer/getBrouchurDetailList',
      payload:{
-       dataId:queryURL('customerid'),
-       date: dateString
+       customerId:queryURL('customerid'),
+       date: dateString,
+       operatorItem:10
      }
    })
   }
-  // componentWillUnmount() {
-  //   this.props.dispatch({type: 'serviceCustomer/removeData',})
-  // }
+  componentWillUnmount() {
+    this.props.dispatch({type: 'serviceCustomer/removeData',})
+  }
 
   render() {
-    const {loading,baseInfoDict,summary} = this.props
+    const {loading,baseInfoDict,summary,MissionManualDetailList} = this.props;
+    console.log("list",MissionManualDetailList)
     const MissionManualData = {
       "washHandsMethod":'是',
       "lochiaObservation":'是',
@@ -95,9 +114,9 @@ class Detail extends Component {
 
   //  let baseInfoDivAry = detailComponent(baseInfoDict)
     const baseMsgRow = manualKey.map(function(elem,index){
-      if(MissionManualData && MissionManualData[elem.submitStr] != '' ) {
+      if(MissionManualDetailList && MissionManualDetailList[elem.submitStr] != '' ) {
         return <Col span={8} style={{marginTop:'20px'}}>
-            <span> {elem.title} : {MissionManualData[elem.submitStr]} </span>
+            <span> {elem.title} : {MissionManualDetailList[elem.submitStr]} </span>
           </Col>
 
       }else{
@@ -112,9 +131,10 @@ class Detail extends Component {
       }
     });
     const bottomDiv = <div className='button-group-bottom-common'>
-        {creatButton('返回',this.editBackClicked.bind(this))}
+      {creatButton('返回',this.editBackClicked.bind(this))}
+      {creatButton('创建',this.onCreate.bind(this))}
       </div>
-
+    const _this = this;
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
         <Card title={summary?'':"宣教手册详情"} extra={summary?'': <DatePicker onChange={this.handleChange.bind(this)} />} className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding:(0,0,'20px',0)}}>
@@ -124,33 +144,68 @@ class Detail extends Component {
               {baseInfoDivAry}
             </Row>
           </div>}
+          {
+            MissionManualDetailList ? MissionManualDetailList.map(function(elem,index){
+              return(
+                <Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>
+                  { manualKey.map(function(v,index){
+                    if(elem && elem[v.submitStr] != '' ) {
+                      return <Col span={8} style={{marginTop:'20px'}}>
+                        <span> {v.title} : {elem[v.submitStr] == 1 ? '是': '否'} </span>
+                      </Col>
 
-          <Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>
-            {baseMsgRow}
-            <Col span={24} style={{textAlign:'right',marginTop:'40px'}}>
-              <Row>
-                <Col span = {12}>
-                  操作者: {MissionManualData.operation}
-                </Col>
-                <Col span ={12}>
-                   {MissionManualData.time}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>
-            {baseMsgRow}
-            <Col span={24} style={{textAlign:'right',marginTop:'40px'}}>
-              <Row>
-                <Col span = {12}>
-                  操作者: {MissionManualData.operation}
-                </Col>
-                <Col span ={12}>
-                  {MissionManualData.time}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+                    }else{
+                      return '';
+                    }
+                  })}
+                  <Col span={24} style={{marginTop:'40px'}}>
+                    <Row>
+                      <Col span = {8}>
+                        操作者: {elem.operator}
+                      </Col>
+                      <Col span ={8}>
+                        {moment(elem.operatorTime).format('YYYY-MM-DD HH:mm')}
+                      </Col>
+                      <Col span={8}>
+                        {creatButton('删除',()=>{_this.deleteClick(elem)})}
+                        {creatButton('编辑',()=>{_this.onEdit(elem)})}
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              )
+            }):''
+          }
+          {/*<Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>*/}
+            {/*{baseMsgRow}*/}
+            {/*<Col span={24} style={{textAlign:'right',marginTop:'40px'}}>*/}
+              {/*<Row>*/}
+                {/*<Col span = {12}>*/}
+                  {/*操作者: {MissionManualDetailList ? MissionManualDetailList.operation : ''}*/}
+                {/*</Col>*/}
+                {/*<Col span ={12}>*/}
+                   {/*{MissionManualDetailList ? MissionManualDetailList.time : ''}*/}
+                {/*</Col>*/}
+              {/*</Row>*/}
+            {/*</Col>*/}
+          {/*</Row>*/}
+
+
+          {/*<Row style ={{width:'90%',margin:'0 auto',borderTop:'2px solid #e9e9e9',borderBottom:'2px solid #e9e9e9',padding:'20px'}}>*/}
+            {/*{baseMsgRow}*/}
+            {/*<Col span={24} style={{textAlign:'right',marginTop:'40px'}}>*/}
+              {/*<Row>*/}
+                {/*<Col span = {12}>*/}
+                  {/*操作者: {MissionManualDetailList ? MissionManualDetailList.operation :''}*/}
+                {/*</Col>*/}
+                {/*<Col span ={12}>*/}
+                  {/*{MissionManualDetailList ? MissionManualDetailList.time:''}*/}
+                {/*</Col>*/}
+              {/*</Row>*/}
+            {/*</Col>*/}
+          {/*</Row>*/}
+
+
           {bottomDiv}
         </Card>
       </Spin>

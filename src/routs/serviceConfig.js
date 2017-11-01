@@ -324,6 +324,26 @@ export default (app) => [
       })
     }
   },
+  //宣教手册edit
+  {
+    path: '/service/baby-manual/edit',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/MissionManualEdit.js'))
+      })
+    }
+  },
+  //宣教手册Create
+  {
+    path: '/service/baby-manual/create',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/create/MissionManualCreate.js'))
+      })
+    }
+  },
   // 婴儿喂养记录单编辑
   {
     path: '/service/baby-feed/edit',
@@ -661,9 +681,9 @@ export default (app) => [
       })
     }
   },
-  
-  
-  
+
+
+
   // 满月汗
   {
     path: '/service/order-sweat',
@@ -694,8 +714,8 @@ export default (app) => [
       })
     }
   },
-  
-  
+
+
   //
   //产妇入住前评估单创建页面
   {

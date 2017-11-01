@@ -89,7 +89,7 @@ function creatComponent(form,dict) {
         tempDiv = (<InputNumber style={{width: '100%' }} disabled={dict.disabled} min={1} max={dict.max}/>);
         break;
       case 'Switch':
-        tempDiv = (<Switch checkedChildren="是" unCheckedChildren="否" disabled={dict.disabled}/>);
+        tempDiv = (<Switch checkedChildren="是"  unCheckedChildren="否" onChange={dict.fun} disabled={dict.disabled} defaultChecked={dict.initValue === "1"}/>);
         break;
       case 'gender':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
@@ -207,6 +207,12 @@ function cusFromItem(form,dict) {
     formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
+    }
+  }
+  if(dict.span === 9) {
+    formItemLayout = {
+      labelCol: { span: 15 },
+      wrapperCol: { span: 9 },
     }
   }
   if(dict.formItems === "FourWords" ){
