@@ -221,7 +221,7 @@ export default {
             payload: dict_
           });
         }
-        //儿科记录单详情页
+        //儿科查房记录单详情页
         if (pathname === '/service/children-record/detail') {
           const { customerid } = query;
           let dict_ = { customerId: parseInt(customerid) }
@@ -259,6 +259,7 @@ export default {
             payload: date
           })
         }
+
         //技师预约历史
         if (pathname === '/service/order-technician/history') {
           const { userid } = query;
@@ -375,7 +376,7 @@ export default {
           yield put(routerRedux.push('/service/check-in'))
         } else if (values.type == 3) {
           yield put(routerRedux.push('/service/child-check-in'))
-        }else if (values.type == 4) {
+        } else if (values.type == 4) {
           yield put(routerRedux.push('/service/diagnosis'))
         }
         else if (values.type == 5) {
@@ -1309,6 +1310,8 @@ export default {
     saveChooseTechnicianTime(state, { payload: data }){
       return { ...state, startDate: data[0], endDate: data[1] }
     },
+
+
     setCustomerPageList(state, { payload: { data: customerPageList, total, page, size } }){
       let customerData = {
         ...state,
@@ -1414,6 +1417,7 @@ export default {
         diagnosisData:null,
         BabyList:'',
         SingleInformationDict:null,
+        diagnosisData: null
       }
     },
     getInsideBabySwim(state, { payload: data }){
@@ -1547,6 +1551,17 @@ export default {
     //4.保存筛选的时间状态
     edinburghChangeTime(state, { payload: data }){
       return { ...state, edinburghTime: data }
+    },
+    //增加创建功能
+    CreateDescribeInfo(state, { payload: data }){
+      let describeInfo = [...state.describeInfo];
+      describeInfo.unshift(data)
+      return { ...state, describeInfo }
+    },
+    noCreateDescribeInfo(state, { payload: k }){
+      let describeInfo = [...state.describeInfo];
+      describeInfo.splice(k,1)
+      return { ...state, describeInfo }
     }
 
   }
