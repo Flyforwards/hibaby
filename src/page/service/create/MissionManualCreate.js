@@ -58,6 +58,9 @@ class Detail extends Component {
           if(values[key] == undefined) {
             values[key] = "0"
           }
+          if(values[key] == false) {
+            values[key] = "0"
+          }
         })
         if(this.props.MissionManualData){
           values.id = this.props.MissionManualData.id;
