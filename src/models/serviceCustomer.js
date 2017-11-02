@@ -162,9 +162,15 @@ export default {
         //对内婴儿游泳记录
         if (pathname === '/service/baby-swimming/detail') {
           dispatch({ type: 'getInsideBabySwimList' });
+          dispatch({ type: 'getBabyListByCustomerId', payload: { dataId: query.customerid } });
         } else if (pathname === '/service/baby-swimming/edit') {
-          let dict_ = { dataId: query.dataId, operatorItem: 15 }
-          dispatch({ type: 'getInsideBabySwimById', payload: dict_ });
+          if(query.dataId){
+            let dict_ = { dataId: query.dataId, operatorItem: 15 }
+            dispatch({ type: 'getInsideBabySwimById', payload: dict_ });
+          }else{
+
+          }
+
         }
 
 
@@ -173,20 +179,32 @@ export default {
 
           if (pathname === '/service/baby-feed/detail') {
             dispatch({ type: 'getBabyFeedingNoteList' })
+            dispatch({ type: 'getBabyListByCustomerId', payload: { dataId: query.customerid } });
           }
           else {
-            let dict_ = { dataId: query.dataId, operatorItem: 13 }
-            dispatch({ type: 'getBabyFeedingNoteById', payload: dict_ });
+            if(query.dataId){
+              let dict_ = { dataId: query.dataId, operatorItem: 13 }
+              dispatch({ type: 'getBabyFeedingNoteById', payload: dict_ });
+            }else{
+
+            }
+
           }
         }
         //婴儿成长记录
         if (pathname === '/service/baby-grow/detail' || pathname === '/service/baby-grow/edit') {
           if (pathname === '/service/baby-grow/detail') {
             dispatch({ type: 'getBabyGrowthNoteList' });
+            dispatch({ type: 'getBabyListByCustomerId', payload: { dataId: query.customerid } });
           }
           else {
-            let dict_ = { dataId: query.dataId, operatorItem: 14 }
-            dispatch({ type: 'getBabyGrowthNoteById', payload: dict_ });
+            if(query.dataId){
+              let dict_ = { dataId: query.dataId, operatorItem: 14 }
+              dispatch({ type: 'getBabyGrowthNoteById', payload: dict_ });
+            }else{
+
+            }
+
           }
         }
 
@@ -1090,7 +1108,8 @@ export default {
         const { data: { data, code } } = yield call(serviceAssessment.getInsideBabySwimList, dict);
 
         yield put({
-          type: 'saveInsideBabySwimList'
+          type: 'saveInsideBabySwimList',
+          payload: data
         });
       }
       catch (err) {
@@ -1392,7 +1411,9 @@ export default {
         MissionManualDetailList:null,
         MissionManualData:null,
         InsideBabySwimList: null,//对内婴儿游泳记录集合
-        diagnosisData:null
+        diagnosisData:null,
+        BabyList:'',
+        SingleInformationDict:null,
       }
     },
     getInsideBabySwim(state, { payload: data }){

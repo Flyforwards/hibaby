@@ -4,7 +4,7 @@
  */
 import React, { Component } from 'react';
 import {chiDetailComponent,creatButton,detailComponent} from './ServiceComponentCreat'
-import {Card ,Row,Form,Col,Spin,DatePicker} from 'antd';
+import {Card ,Row,Form,Col,Spin,DatePicker,message} from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
@@ -38,6 +38,13 @@ class Detail extends Component {
     this.props.dispatch({type:'serviceCustomer/delBabySwimming',payload:{operatorItem:15,dataId:dict.id}})
   }
 
+  onCreate() {
+    if(this.props.BabyList.length <= 0){
+      message.warn("没有婴儿信息")
+    } else{
+      this.props.dispatch(routerRedux.push(`/service/baby-swimming/edit?customerid=${parse(location.search.substr(1)).customerid}`));
+    }
+  }
   print(){
 
   }
@@ -45,8 +52,6 @@ class Detail extends Component {
 
 
   CreatDetailCard(dict) {
-
-
     assessment.map((subDict)=>{
       if(subDict.submitStr === 'reservationDate')
       {
@@ -91,15 +96,16 @@ class Detail extends Component {
 
   render() {
     const {loading,baseInfoDict,InsideBabySwimList} = this.props;
-
     let baseInfoDivAry = detailComponent(baseInfoDict);
 
-    let detailCard = InsideBabySwimList ? (InsideBabySwimList).map((dict)=>{
+    let detailCard = InsideBabySwimList && InsideBabySwimList != null ? InsideBabySwimList.map((dict)=>{
+
       return this.CreatDetailCard(dict)
     }):''
 
     const bottomDiv =
       <div className='button-group-bottom-common'>
+        {creatButton('创建',this.onCreate.bind(this))}
         {creatButton('返回',this.backClicked.bind(this))}
         {creatButton('打印',this.print.bind(this))}
       </div>

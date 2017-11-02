@@ -1,6 +1,6 @@
  import React, { Component } from 'react';
 import {chiDetailComponent,creatButton,detailComponent,letter} from './ServiceComponentCreat'
-import {Card ,Row,Form,Tabs,Spin,DatePicker} from 'antd';
+import {Card ,Row,Form,Tabs,Spin,DatePicker,message} from 'antd';
 const TabPane = Tabs.TabPane;
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
@@ -49,7 +49,6 @@ const assessment = [
 ]
 
 
-
 class Detail extends Component {
 
   constructor(props) {
@@ -57,15 +56,23 @@ class Detail extends Component {
     this.state={
       urlAddress:props.urlAddress?props.urlAddress:(location.pathname.indexOf('baby-grow') !== -1? 'baby-grow': (location.pathname.indexOf('baby-feed') !== -1?'baby-feed':'puerpera-body'))
     }
+    this.tabKey = '';
   }
 
   editBtnClick(dict){
     this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&dataId=${dict.id}`));
   }
   onCreate(){
-    this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}`));
+    if(this.props.BabyList.length <= 0){
+      message.warn("没有婴儿信息")
+    } else{
+      this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&babyId=${this.tabKey}`));
+    }
   }
 
+   componentWillUnmount(){
+     this.props.dispatch({type: 'serviceCustomer/removeData',})
+   }
   deleteClick(dict){
 
     let typeStr = 'serviceCustomer/delBabyGrowthNote'
@@ -91,7 +98,6 @@ class Detail extends Component {
   print(){
     do_print('bigDetailDiv');
   }
-
   CreatDetailCard(dict) {
 
     let ary = this.state.urlAddress === 'baby-feed' ? feeding : (this.state.urlAddress === 'baby-grow'?growth:assessment);
@@ -129,7 +135,9 @@ class Detail extends Component {
       query
     }));
   }
-
+  tabChange(key) {
+    this.tabKey = key;
+  }
   render() {
 
     const {loading,baseInfoDict,MaternalEverydayPhysicalEvaluationAry,BabyFeedingNoteAry,BabyGrowthNoteAry,summary} = this.props
@@ -141,21 +149,23 @@ class Detail extends Component {
     let baseInfoDivAry = detailComponent(baseInfoDict)
 
     let detailCard = ''
-
+    const _this = this;
     if(this.state.urlAddress === 'baby-feed'||this.state.urlAddress === 'baby-grow'){
       if(netAry){
         if(netAry.length > 1){
+          this.tabKey = netAry[0].babyId;
           let tempCard = (netAry).map((value,index)=>{
             let str = '宝'+letter[index]
-            return <TabPane tab={str} key={index}>{
+            return <TabPane tab={str} key={value.babyId} >{
               value.notelist.length > 0 ? ( summary?value.notelist.slice(0,5): value.notelist).map((dict)=>{
                 return this.CreatDetailCard(dict)
               }):''
             }</TabPane>
           })
-          detailCard = <Tabs defaultActiveKey="0" type="card">{tempCard}</Tabs>
+          detailCard = <Tabs defaultActiveKey="0" onChange={_this.tabChange.bind(this)} type="card">{tempCard}</Tabs>
         }
         else if(netAry.length == 1){
+          this.tabKey = netAry[0].babyId;
           detailCard = netAry[0].notelist.length > 0 ? (summary?netAry[0].notelist.slice(0,5): netAry[0].notelist).map((dict)=>{
             return this.CreatDetailCard(dict)
           }):''
@@ -163,6 +173,7 @@ class Detail extends Component {
       }
     }
     else {
+      netAry ? this.tabKey = netAry[0].babyId :''
       detailCard = netAry ? (netAry).map((dict)=>{
         return this.CreatDetailCard(dict)
       }):''

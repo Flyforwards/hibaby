@@ -105,7 +105,10 @@ class Detail extends Component {
         dict.operatorItem = operatorItem;
         if(this.props.SingleInformationDict){
           dict.babyId = this.props.SingleInformationDict.babyId;
+        }else{
+          dict.babyId = parse(location.search.substr(1)).babyId;
         }
+
       //  dict.babyId = this.props.SingleInformationDict.babyId;
         this.props.dispatch({type:typeStr,payload:dict})
       }
