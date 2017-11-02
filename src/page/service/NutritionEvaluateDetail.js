@@ -37,11 +37,15 @@ class Detail extends Component {
   }
 
   onDelete(){
-    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{operatorItem:5,dataId:this.props.NutritionEvaluateID}})
+    this.props.dispatch({type:'serviceCustomer/DelAssessment',payload:{operatorItem:5,type:5,dataId:this.props.NutritionEvaluateID}})
   }
 
   editBtnClick(){
-    this.props.dispatch(routerRedux.push(`/service/nutrition-evaluate/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.NutritionEvaluateID}`));
+    if(this.props.NutritionEvaluateID){
+      this.props.dispatch(routerRedux.push(`/service/nutrition-evaluate/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.NutritionEvaluateID}`));
+    }else{
+      this.props.dispatch(routerRedux.push(`/service/nutrition-evaluate/edit?customerid=${parse(location.search.substr(1)).customerid}`));
+    }
   }
 
   backClicked(){
@@ -75,7 +79,16 @@ class Detail extends Component {
       }
     });
   }
-
+  // componentWillMount() {
+  //   this.props.dispatch({
+  //     type:'serviceCustomer/getAssessmentByCustomerId',
+  //     payload:{
+  //       'customerId':parse(location.search.substr(1)).customerid,
+  //       'type':5,
+  //       'operatorItem':5
+  //     }
+  //   })
+  // }
   componentWillUnmount() {/**/
     this.props.dispatch({type: 'serviceCustomer/removeData',})
   }

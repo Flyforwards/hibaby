@@ -95,7 +95,11 @@ export default {
           let dictTwo = { ...query, type: 5, operatorItem: 5 }
           dictTwo.operatorItem = 5;
           if (pathname === '/service/nutrition-evaluate/edit') {
-            dispatch({ type: 'getAssessmentById', payload: { dataId: query.id, operatorItem: 5 } });
+            if(query.id){
+              dispatch({ type: 'getAssessmentById', payload: { dataId: query.id, operatorItem: 5 } });
+            }else{
+
+            }
           }
           else {
             dispatch({ type: 'getAssessmentByCustomerId', payload: dictTwo });
@@ -512,6 +516,11 @@ export default {
     *getAssessmentByCustomerId({ payload: values }, { call, put }) {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getAssessmentByCustomerId, values);
+        if(values.type == 5){
+          if(data == null){
+            yield put(routerRedux.push(`/service/nutrition-evaluate/edit?customerid=${values.customerid}`))
+          }
+        }
         yield put({
           type: 'savaAssessment',
           payload: data
@@ -579,7 +588,7 @@ export default {
           yield put(routerRedux.push('/service/child-check-in'))
         }
         else if (values.type == 5) {
-          yield put(routerRedux.push('/nutrition-evaluate'))
+          yield put(routerRedux.push('/service/nutrition-evaluate'))
         }
       }
       catch (err) {
@@ -1417,7 +1426,9 @@ export default {
         diagnosisData:null,
         BabyList:'',
         SingleInformationDict:null,
-        diagnosisData: null
+        diagnosisData: null,
+        NutritionEvaluateData:null,
+        NutritionEvaluateID:'',
       }
     },
     getInsideBabySwim(state, { payload: data }){
