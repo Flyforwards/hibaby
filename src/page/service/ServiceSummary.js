@@ -177,9 +177,10 @@ class Detail extends Component {
                 let div = ''
                 ary.map(value => {
                   if(value.operatorItem == num) {
-                    div = this.creatSummaryCard(value, arr1,Journal1)
                     value.index = index
-                  }})
+                    div = this.creatSummaryCard(value, arr1,Journal1)
+                  }
+                })
                 return div
               })}
             </TabPane>
