@@ -154,7 +154,6 @@ export default {
     },
     //根据客户id获取婴儿评估保存
     onSaveBabyAllData(state,{payload:{data:BabyAllData}}){
-      console.log(BabyAllData,'111111')
       if(BabyAllData.length>1){
         let BabyId =BabyAllData[0].babyId;
         let hostId = BabyAllData[0].id;

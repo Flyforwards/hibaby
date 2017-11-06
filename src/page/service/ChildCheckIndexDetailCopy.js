@@ -221,17 +221,21 @@ class Detail extends Component {
     // ]
 
     BabyAllData ? BabyAllData.map(function (elem, index) {
-      JSON.parse(elem.assessmentBabyInfo).babyhead11.map(function (elem, index) {
-        babyhead11 = elem == 3 ? false : true;
-      });
+      if(JSON.parse(elem.assessmentBabyInfo).babyhead11) {
+        JSON.parse(elem.assessmentBabyInfo).babyhead11.map(function (elem, index) {
+          babyhead11 = elem == 3 ? false : true;
+        });
+      }
     }) : '';
 
     BabyAllData ? BabyAllData.map(function (elem, index) {
-      JSON.parse(elem.assessmentBabyInfo).babyhead16.map(function (elem, index) {
-        babyhead163 = elem == 3 ? false : true;
-        babyhead164 = elem == 4 ? false : true;
-        babyhead165 = elem == 5 ? false : true;
-      })
+      if(JSON.parse(elem.assessmentBabyInfo).babyhead16) {
+        JSON.parse(elem.assessmentBabyInfo).babyhead16.map(function (elem, index) {
+          babyhead163 = elem == 3 ? false : true;
+          babyhead164 = elem == 4 ? false : true;
+          babyhead165 = elem == 5 ? false : true;
+        })
+      }
     }) : '';
 
 
