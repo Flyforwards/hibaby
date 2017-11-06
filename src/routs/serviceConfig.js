@@ -757,6 +757,16 @@ export default (app) => [
       })
     }
   },
+  //爱丁堡忧郁单创建页面
+  {
+    path: '/service/edinburgh-birth/create',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/create/edinburghBirthCreate.js'))
+      })
+    }
+  },
   
 ]
 

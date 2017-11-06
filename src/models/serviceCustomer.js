@@ -1137,6 +1137,7 @@ export default {
           type: 'getEdinburghMelancholyGaugeList',
           payload: { customerId: customerId }
         });
+        if( values.isBack) yield put(routerRedux.push(`/service/edinburgh-birth/detail?customerid=${customerId}`))
       }
     },
     
