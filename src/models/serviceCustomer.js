@@ -86,7 +86,7 @@ export default {
           dispatch({ type: 'getAssessmentBabyInfoByCustomerId', payload: dictTwo });
           dispatch({ type: 'getBabyListByCustomerId', payload: { dataId: query.customerid } });
           dispatch({
-            type: 'serviceCustomer/getPediatricNoteList',
+            type: 'getPediatricNoteList',
             payload: { customerId: parseInt(query.customerid) }
           });
           dispatch({ type: 'getEdinburghMelancholyGaugeList', payload: { customerId: parseInt(query.customerid) } });
@@ -519,7 +519,7 @@ export default {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.getAssessmentByCustomerId, values);
         if (values.type == 5) {
-          if (data == null) {
+          if (data == null && location.pathname != '/service/customer/detail') {
             yield put(routerRedux.push(`/service/nutrition-evaluate/edit?customerid=${values.customerid}`))
           }
         }
