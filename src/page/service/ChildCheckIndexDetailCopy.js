@@ -48,13 +48,13 @@ class Detail extends Component {
       } else {
         this.props.dispatch({
           type: 'serviceCustomerChild/onDeleteBabydata',
-          payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.babyId }
+          payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.BabyId }
         })
       }
     } else {
       this.props.dispatch({
         type: 'serviceCustomerChild/onDeleteBabydata',
-        payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.babyId }
+        payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.BabyId }
       })
     }
   }
@@ -65,10 +65,10 @@ class Detail extends Component {
       if (this.state.tabClick) {
         this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.state.hostId}&babyId=${this.state.tabKey}`));
       } else {
-        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.babyId}`));
+        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
       }
     } else {
-      this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.babyId}`));
+      this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
     }
   }
 
@@ -85,8 +85,6 @@ class Detail extends Component {
     }))
   }
   createBtnClick() {
-    console.log(1111)
-
     this.props.dispatch(routerRedux.push(`/service/child-check-in/create?customerid=${parse(location.search.substr(1)).customerid}&babyId=${this.state.tabKey}`));
 
   }
@@ -808,8 +806,6 @@ class Detail extends Component {
       //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
       return CreatCard(this.props.form, value)
     });
-
-
     const bottomDiv = <div className='button-group-bottom-common'>
       {this.props.BabyAllData ? '' : creatButton('创建', this.createBtnClick.bind(this))}
       {creatButton('返回', this.backClicked.bind(this))}

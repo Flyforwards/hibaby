@@ -159,19 +159,21 @@ export default {
         let hostId = BabyAllData[0].id;
         return { ...state,BabyAllData ,BabyId,hostId}
       }else{
-        return { ...state,BabyAllData ,BabayId:BabyAllData.babyId,hostId:BabyAllData.id}
+        return { ...state,BabyAllData ,BabyId:BabyAllData[0].babyId,hostId:BabyAllData[0].id}
       }
     },
     //根据id查询婴儿入住评估详情
-    onSaveBabyDataById(state,{payload:{data:BabyOneDatas}}){
+    onSaveBabyDataById(state,{payload:{data:BabyOneData}}){
       return { ...state, BabyOneData }
     },
     removeData(state, { payload: data }){
       return {
         ...state,
-        //BabyAllData: null,
+        BabyAllData: null,
         BabyId: null,
         hostId:null,
+        BabyOneData:null,
+        baseInfoDict: null,
       }
     },
     savaCustomerInfo(state, { payload: todo }){
