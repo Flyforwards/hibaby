@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { creatButton, detailComponent } from './ServiceComponentCreat'
-import { Card,  Form, Spin, Row, Col, DatePicker,  InputNumber, Select } from 'antd';
+import { Card, Form, Spin, Row, Col, DatePicker, InputNumber, Select } from 'antd';
 import { connect } from 'dva';
 import { parse } from 'qs'
 import moment from 'moment'
@@ -36,7 +36,7 @@ class Detail extends Component {
   }
   
   //创建按钮
-  createClicked(){
+  createClicked() {
     this.props.dispatch(routerRedux.push(`/service/edinburgh-birth/create?customerid=${parse(location.search.substr(1)).customerid}`));
   }
   
@@ -90,6 +90,7 @@ class Detail extends Component {
       if (!err) {
         const { k, info } = data;
         const keysArray = Object.keys(values);
+        console.log(values, 'values')
         keysArray.map((v, kk) => {
           const arrTxt = v.split('-');
           const name = arrTxt[0];
@@ -99,6 +100,7 @@ class Detail extends Component {
           }
         })
         info.operatorItem = 12;
+        console.log(info, 'postINfo ')
         dispatch({
           type: 'serviceCustomer/saveEdinburghMelancholyGauge',
           payload: { info, customerId }
@@ -110,6 +112,7 @@ class Detail extends Component {
   
   render() {
     const { loading, baseInfoDict, edinburghListInfo, form } = this.props;
+    console.log(edinburghListInfo,'渲染')
     const { getFieldDecorator } = form;
     let baseInfoDivAry = detailComponent(baseInfoDict)
     let edinburgh = location.pathname.indexOf('edinburgh-birth');
@@ -136,7 +139,7 @@ class Detail extends Component {
                 return (
                   <Card key={k}>
                     <Form className="formBox">
-                      <Row gutter={40}>
+                      <Row gutter={40} key={v}>
                         <Col span={8}>
                           <FormItem
                             {...formItemLayout}
@@ -149,13 +152,12 @@ class Detail extends Component {
                               ]
                             })(
                               <Select disabled={v.isEdit ? false : true}>
-                              <Option value='0'>同以前一样</Option>
-                              <Option value='1'>没有以前那么多</Option>
-                              <Option value='2'>肯定比以前少</Option>
-                              <Option value='3'>完全不能</Option>
+                                <Option value='0'>同以前一样</Option>
+                                <Option value='1'>没有以前那么多</Option>
+                                <Option value='2'>肯定比以前少</Option>
+                                <Option value='3'>完全不能</Option>
                               </Select>
-                              
-                              )}
+                            )}
                           </FormItem>
                         </Col>
                         <Col span={8}>
@@ -169,8 +171,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择!' }
                               ]
                             })(
-  
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>同以前一样</Option>
                                 <Option value='1'>没有以前那么多</Option>
                                 <Option value='2'>肯定比以前少</Option>
@@ -190,7 +191,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择！' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>大部分时候这样</Option>
                                 <Option value='1'>有时候这样</Option>
                                 <Option value='2'>不经常这样</Option>
@@ -210,7 +211,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择！' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>一点也没有</Option>
                                 <Option value='1'>极少有</Option>
                                 <Option value='2'>有时候这样</Option>
@@ -230,7 +231,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择！' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>相当多时候这样</Option>
                                 <Option value='1'>有时候这样</Option>
                                 <Option value='2'>不经常这样</Option>
@@ -250,7 +251,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择！' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>大多数时候您都不能应付</Option>
                                 <Option value='1'>有时候您不能像平时那样应付得好</Option>
                                 <Option value='2'>大部分时候您都能像平时那样应付得好</Option>
@@ -270,7 +271,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择！' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>大部分时候这样</Option>
                                 <Option value='1'>有时候这样</Option>
                                 <Option value='2'>不经常这样</Option>
@@ -290,7 +291,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择！' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>大部分时候这样</Option>
                                 <Option value='1'>相当时候这样</Option>
                                 <Option value='2'>不经常这样</Option>
@@ -302,7 +303,7 @@ class Detail extends Component {
                         <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="您不开心到哭泣"
+                            label="您不开心到哭泣。"
                           >
                             {getFieldDecorator(`nine-${k}`, {
                               initialValue: v.nine.toString(),
@@ -310,7 +311,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择！' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>大部分时候这样</Option>
                                 <Option value='1'>有时候这样</Option>
                                 <Option value='2'>只是偶而这样</Option>
@@ -330,7 +331,7 @@ class Detail extends Component {
                                 { required: true, message: '请选择!' }
                               ]
                             })(
-                              <Select  disabled={v.isEdit ? false : true}>
+                              <Select disabled={v.isEdit ? false : true}>
                                 <Option value='0'>相当多时候这样</Option>
                                 <Option value='1'>有时候这样</Option>
                                 <Option value='2'>很少这样</Option>
@@ -344,7 +345,7 @@ class Detail extends Component {
                             {...formItemLayout}
                             label="总分"
                           >
-                            {getFieldDecorator(`totalScore`, {
+                            {getFieldDecorator(`totalScore-${k}`, {
                               initialValue: v.totalScore,
                               rules: [
                                 { required: true, message: '请输入数值!' }
