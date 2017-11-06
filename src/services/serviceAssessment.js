@@ -457,6 +457,55 @@ export function getTechnicianList(values) {
 }
 
 
+//根据客户id 查询婴儿护理记录单
+export function getBabyNursingNoteList(values) {
+  return request('/crm/api/v1/babyNursingNote/getBabyNursingNoteList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+//根据ID查询婴儿护理记录
+
+export function getBabyNursingById(values) {
+  return request('/crm/api/v1/babyNursingNote/getBabyNursingNoteById', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+//根据id删除婴儿护理记录
+export function delBabyNursing(values) {
+  return request('/crm/api/v1/babyNursingNote/delBabyNursingNote', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+//查询宝宝托管状态
+export function getBabySwitchState(values) {
+  return request('/crm/api/v1/babyNursingNote/getBabySwitchState', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+//保存编辑婴儿护理记录单
+export function saveBabyNursing(values) {
+  return request('/crm/api/v1/babyNursingNote/saveBabyNursingNote', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+//修改宝宝托管开关状态
+export function updateBabySwitchState(values) {
+  return request('/crm/api/v1/babyNursingNote/updateBabySwitchState', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
+
 
 
 
