@@ -61,15 +61,24 @@ class Detail extends Component {
 
 
   editBtnClick() {
-    if (this.props.BabyAllData && this.props.BabyAllData.length > 1) {
-      if (this.state.tabClick) {
-        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.state.hostId}&babyId=${this.state.tabKey}`));
-      } else {
-        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
-      }
-    } else {
-      this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
-    }
+    let _data = {"operatorItem":3 }
+    _data.dataId = this.state.tabClick ? this.state.hostId : this.props.hostId;
+    _data.babyId = this.state.tabClick ? this.state.tabKey : this.props.BabyId;
+    this.props.dispatch({
+        type:'serviceCustomerChild/getBabyDataById',
+        payload:_data
+    })
+
+
+    // if (this.props.BabyAllData && this.props.BabyAllData.length > 1) {
+    //   if (this.state.tabClick) {
+    //     this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.state.hostId}&babyId=${this.state.tabKey}`));
+    //   } else {
+    //     this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
+    //   }
+    // } else {
+    //   this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
+    // }
   }
 
   backClicked() {

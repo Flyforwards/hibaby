@@ -120,12 +120,11 @@ export default {
               data
             }
           })
+          yield put(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${values.dataId}&babyId=${values.babyId}`))
         }
       }
       catch (err){
         message.error(err.message)
-        let query = parse(location.search.substr(1))
-        yield put(routerRedux.push(`/service/child-check-in/detail?customerid=${query.customerid}`))
       }
 
     },
