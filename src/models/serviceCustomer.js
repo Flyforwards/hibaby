@@ -131,6 +131,7 @@ export default {
 
         if (pathname === '/service/puerpera-body/detail') {
           dispatch({ type: 'getMaternalEverydayPhysicalEvaluationList' });
+          dispatch({ type: 'getBabyListByCustomerId', payload: { dataId: query.customerid } });
         }
         if (pathname === '/service/puerpera-body/edit') {
           if (query.dataId) {
@@ -1339,9 +1340,9 @@ export default {
     setPackageList(state, { payload: todo }){
       return { ...state, packageList: todo.data };
     },
-    setPackageList(state, { payload: todo }){
-      return { ...state, BabyList: todo.data };
-    },
+    // setPackageList(state, { payload: todo }){
+    //   return { ...state, BabyList: todo.data };
+    // },
     savaCustomerInfoList(state, { payload: todo }){
       return { ...state, CustomerInfoList: todo.data };
     },

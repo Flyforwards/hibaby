@@ -18,7 +18,7 @@ let babyhead164 = true;
 let babyhead165 = true;
 let babyhead141 = true;
 class Detail extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +31,7 @@ class Detail extends Component {
       stateBabyhead165: true
     }
   }
-  
+
   editBackClicked() {
     this.props.dispatch(routerRedux.push({
       pathname: '/service/child-check-in/detail',
@@ -40,11 +40,11 @@ class Detail extends Component {
       }
     }))
   }
-  
+
   print() {
-  
+
   }
-  
+
   submitClicked() {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -62,11 +62,11 @@ class Detail extends Component {
       }
     });
   }
-  
+
   componentWillUnmount() {
     this.props.dispatch({ type: 'serviceCustomerChild/removeData' })
   }
-  
+
   //复选框选择事件
   checkBabyHead11(checkedValues) {
     if (checkedValues.indexOf('3') >= 0) {
@@ -79,7 +79,7 @@ class Detail extends Component {
       })
     }
   }
-  
+
   //骨骼复选
   onbabyhead16Change(checkedValues) {
     if (checkedValues.indexOf('3') >= 0) {
@@ -110,17 +110,17 @@ class Detail extends Component {
       })
     }
   }
-  
+
   //男女选择
   radioMale(e) {
     this.setState({ babyhead20allState: e.target.value })
   }
-  
+
   //交付状态选择
   onBabyheade141(e) {
     this.setState({ stateBabyheade141: e.target.value })
   }
-  
+
   render() {
     babyhead11 = true;
     babyhead20allboy = true;
@@ -178,7 +178,7 @@ class Detail extends Component {
         radioAry: [{ 'name': '自然生产', 'value': '0' }, { 'name': '剖腹生产', 'value': '1' }]
       }
     ]
-    
+
     // 新生儿情况
     const newbornAry = [
       { title: '宝宝性别', component: 'gender', submitStr: 'babySex' },
@@ -501,9 +501,9 @@ class Detail extends Component {
           value: '2'
         }, { 'label': '尿结晶', value: '3' }, { 'label': '未解', value: '4' }]
       }
-    
+
     ]
-    
+
     // 新生儿情况
     const newbornTwoAry = [
       {
@@ -670,13 +670,13 @@ class Detail extends Component {
       value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
       return CreatCard(this.props.form, value)
     })
-    
+
     const bottomDiv = <div className='button-group-bottom-common'>
       {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
     </div>;
-    
+
     return (
-      
+
       <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
         {chiAry}
         {bottomDiv}
@@ -689,9 +689,8 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const { ChildCheckInData, baseInfoDict, BabyOneData } = state.serviceCustomer;
+  const { baseInfoDict, BabyOneData } = state.serviceCustomer;
   return {
-    ChildCheckInData,
     baseInfoDict,
     BabyOneData,
     loading: state.loading

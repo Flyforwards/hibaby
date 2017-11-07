@@ -8,6 +8,7 @@ import { Card, Input, Form, Button, Spin, Tabs } from 'antd';
 import { connect } from 'dva';
 import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
+import moment from 'moment'
 import { routerRedux } from 'dva/router'
 import { queryURL } from '../../utils/index.js';
 const TabPane = Tabs.TabPane;
@@ -18,7 +19,7 @@ let babyhead164 = true;
 let babyhead165 = true;
 let babyhead141 = true;
 class Detail extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +32,7 @@ class Detail extends Component {
       stateBabyhead165: true
     }
   }
-  
+
   editBackClicked() {
     this.props.dispatch(routerRedux.push({
       pathname: '/service/child-check-in/detail',
@@ -40,11 +41,11 @@ class Detail extends Component {
       }
     }))
   }
-  
+
   print() {
-  
+
   }
-  
+
   submitClicked() {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -56,22 +57,27 @@ class Detail extends Component {
         const assessmentInfo = JSON.stringify(values);
         let dict = {
           "assessmentBabyInfo": assessmentInfo,
-          "babyId": queryURL("babyId"),
-          "id": queryURL('id'), "customerId": queryURL('customerid'),
+          // "babyId": queryURL("babyId") ? queryURL("babyId"):'',
+          // "id": queryURL('id') ? queryURL('id'):'',
+          "customerId": queryURL('customerid'),
           "type": 3,
-          operatorItem: 3,
-          babyLength: values.babyLength,
-          babyWeight: values.babyWeight
+          "operatorItem": 3,
+          "babyLength": values.babyLength,
+          "babyWeight": values.babyWeight,
+          "operator":values.newborn_3,
+          "operatorTime":moment(values.newborn_4).format("YYYY-MM-DD HH:mm:ss"),
         };
-        this.props.dispatch({ type: 'serviceCustomerChild/onSaveBabyData', payload: dict })
+        queryURL("babyId") ? dict.babyId = queryURL("babyId") :'';
+        queryURL('id') ? dict.id = queryURL('id') :'';
+          this.props.dispatch({ type: 'serviceCustomerChild/onSaveBabyData', payload: dict })
       }
     });
   }
-  
+
   componentWillUnmount() {
     this.props.dispatch({ type: 'serviceCustomerChild/removeData' })
   }
-  
+
   //复选框选择事件
   checkBabyHead11(checkedValues) {
     if (checkedValues.indexOf('3') >= 0) {
@@ -84,7 +90,7 @@ class Detail extends Component {
       })
     }
   }
-  
+
   //骨骼复选
   onbabyhead16Change(checkedValues) {
     if (checkedValues.indexOf('3') >= 0) {
@@ -115,17 +121,17 @@ class Detail extends Component {
       })
     }
   }
-  
+
   //男女选择
   radioMale(e) {
     this.setState({ babyhead20allState: e.target.value })
   }
-  
+
   //交付状态选择
   onBabyheade141(e) {
     this.setState({ stateBabyheade141: e.target.value })
   }
-  
+
   render() {
     babyhead11 = true;
     babyhead20allboy = true;
@@ -134,14 +140,25 @@ class Detail extends Component {
     babyhead165 = true;
     babyhead141 = true;
     const { loading, summary, BabyOneData } = this.props;
-    BabyOneData ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead11.map(function (elem, index) {
-      babyhead11 = elem == 3 ? false : true;
-    }) : '';
-    BabyOneData ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead16.map(function (elem, index) {
-      babyhead163 = elem == 3 ? false : true;
-      babyhead164 = elem == 4 ? false : true;
-      babyhead165 = elem == 5 ? false : true;
-    }) : '';
+    if(BabyOneData){
+      JSON.parse(BabyOneData.assessmentBabyInfo).babyhead11 ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead11.map(function (elem, index) {
+        babyhead11 = elem == 3 ? false : true;
+      }) : '';
+      JSON.parse(BabyOneData.assessmentBabyInfo).babyhead16 ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead16.map(function (elem, index) {
+        babyhead163 = elem == 3 ? false : true;
+        babyhead164 = elem == 4 ? false : true;
+        babyhead165 = elem == 5 ? false : true;
+      }) : '';
+    }
+    // BabyOneData ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead11.map(function (elem, index) {
+    //   babyhead11 = elem == 3 ? false : true;
+    // }) : '';
+
+    // BabyOneData ? JSON.parse(BabyOneData.assessmentBabyInfo).babyhead16.map(function (elem, index) {
+    //   babyhead163 = elem == 3 ? false : true;
+    //   babyhead164 = elem == 4 ? false : true;
+    //   babyhead165 = elem == 5 ? false : true;
+    // }) : '';
     if (BabyOneData) {
       babyhead20allboy = JSON.parse(BabyOneData.assessmentBabyInfo).babyhead20all == 0 ? false : true;
     }
@@ -183,7 +200,7 @@ class Detail extends Component {
         radioAry: [{ 'name': '自然生产', 'value': '0' }, { 'name': '剖腹生产', 'value': '1' }]
       }
     ]
-    
+
     // 新生儿情况
     const newbornAry = [
       { title: '宝宝性别', component: 'gender', submitStr: 'babySex' },
@@ -506,9 +523,9 @@ class Detail extends Component {
           value: '2'
         }, { 'label': '尿结晶', value: '3' }, { 'label': '未解', value: '4' }]
       }
-    
+
     ]
-    
+
     // 新生儿情况
     const newbornTwoAry = [
       {
@@ -674,16 +691,16 @@ class Detail extends Component {
     let chiAry = ary.map(value => {
       value.netData = this.props.BabyOneData ? JSON.parse(this.props.BabyOneData.assessmentBabyInfo) : {};
       value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
-      return CreatCard(this.props.form, value)
+      return BabyOneData ? CreatCard(this.props.form, value):''
     })
-    
+
     const bottomDiv = <div className='button-group-bottom-common'>
       {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
     </div>;
-    
+
     return (
-      <Spin spinning={loading.effects['serviceCustomerChild/getChilddataBycustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getChilddataBycustomerId'] : false}>
-        
+      <Spin spinning={loading.effects['serviceCustomerChild/getBabyDataById'] !== undefined ? loading.effects['serviceCustomerChild/getBabyDataById'] : false}>
+
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
           {chiAry}
           {/*<Tabs type="card">*/}
@@ -702,9 +719,8 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const { ChildCheckInData, baseInfoDict, BabyOneData } = state.serviceCustomer;
+  const {  baseInfoDict, BabyOneData } = state.serviceCustomerChild;
   return {
-    ChildCheckInData,
     baseInfoDict,
     BabyOneData,
     loading: state.loading

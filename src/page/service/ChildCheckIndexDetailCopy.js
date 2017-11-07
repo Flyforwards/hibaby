@@ -84,10 +84,10 @@ class Detail extends Component {
       }
     }))
   }
-  createBtnClick() {
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/create?customerid=${parse(location.search.substr(1)).customerid}&babyId=${this.state.tabKey}`));
-
-  }
+  // createBtnClick() {
+  //   this.props.dispatch(routerRedux.push(`/service/child-check-in/create?customerid=${parse(location.search.substr(1)).customerid}`));
+  //
+  // }
 
   print() {
 
@@ -199,25 +199,6 @@ class Detail extends Component {
     babyhead165 = true;
     babyhead141 = true;
     const { loading, summary, BabyAllData } = this.props;
-    // const BabyAllData = [
-    //   {
-    //     "assessmentBabyInfo": "{\"babySex\":\"0\",\"babyWeight\":1,\"babyLength\":1,\"select_0\":\"11\",\"radio_33\":\"1\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"2\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"0\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"1\",\"radio_44\":\"0\",\"input_17\":\"宝A\",\"newborn_0\":\"宝A\",\"newborn_1\":\"宝A\",\"newborn_2\":\"宝A\"}",
-    //     "babyId": 1,
-    //     "babyLength": 2,
-    //     "babyWeight": 7,
-    //     "customerId": 12,
-    //     "id": 1
-    //   },
-    //   {
-    //     "assessmentBabyInfo": "{\"babySex\":\"1\",\"babyWeight\":2,\"babyLength\":2,\"select_0\":\"111\",\"radio_33\":\"2\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"1\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"1\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"0\",\"radio_44\":\"1\",\"input_17\":\"宝B\",\"newborn_0\":\"宝B\",\"newborn_1\":\"宝B\",\"newborn_2\":\"宝B\"}",
-    //     "babyId": 2,
-    //     "babyLength": 2,
-    //     "babyWeight": 7,
-    //     "customerId": 12,
-    //     "id": 2
-    //   }
-    // ]
-
     BabyAllData ? BabyAllData.map(function (elem, index) {
       if(JSON.parse(elem.assessmentBabyInfo).babyhead11) {
         JSON.parse(elem.assessmentBabyInfo).babyhead11.map(function (elem, index) {
@@ -780,34 +761,53 @@ class Detail extends Component {
     //,{title:'入住时婴儿评估',ary:newbornTwoAry}
     const ary = [{ title: summary ? '' : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry }]
     const arys = [{ title: '入住时婴儿评估', ary: newbornAry }, { title: '入住时婴儿评估', ary: newbornTwoAry }]
-    let chiAry = ary.map(value => {
-      if (BabyAllData && BabyAllData.length > 1) {
-        value.netData = JSON.parse(BabyAllData[0].assessmentBabyInfo);
-      } else {
-        value.netData = BabyAllData && BabyAllData.length != 0 ? JSON.parse(BabyAllData[0].assessmentBabyInfo) : {}
-      }
-      value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
-      return CreatCard(this.props.form, value)
-    })
+    let chiAry;
+    if(BabyAllData){
+      chiAry = ary.map(value => {
+        if (BabyAllData && BabyAllData.length > 1) {
+          value.netData = JSON.parse(BabyAllData[0].assessmentBabyInfo);
+        } else {
+          value.netData = BabyAllData && BabyAllData.length != 0 ? JSON.parse(BabyAllData[0].assessmentBabyInfo) : {}
+        }
+        value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
+        return CreatCard(this.props.form, value)
+      })
+
+    }
 
     let tabs = [];
     let chiArys;
     let _this = this;
-    BabyAllData && BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
-      tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
-        {arys.map(value => {
-          value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
-          //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-          return CreatCard(_this.props.form, value)
-        })}
-      </TabPane>)
-    }) : chiArys = arys.map(value => {
-      value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData : {};
-      //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-      return CreatCard(this.props.form, value)
-    });
+    if(BabyAllData && BabyAllData.length != 0){
+      BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
+        tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+          {arys.map(value => {
+            value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
+            //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+            return CreatCard(_this.props.form, value)
+          })}
+        </TabPane>)
+      }) : chiArys = arys.map(value => {
+        value.netData = this.props.BabyAllData ? JSON.parse(this.props.BabyAllData[0].assessmentBabyInfo) : {};
+        //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+        return CreatCard(this.props.form, value)
+      });
+    }
+    // BabyAllData && BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
+    //   tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+    //     {arys.map(value => {
+    //       value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
+    //       //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //       return CreatCard(_this.props.form, value)
+    //     })}
+    //   </TabPane>)
+    // }) : chiArys = arys.map(value => {
+    //   value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData : {};
+    //   //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //   return CreatCard(this.props.form, value)
+    // });
     const bottomDiv = <div className='button-group-bottom-common'>
-      {this.props.BabyAllData ? '' : creatButton('创建', this.createBtnClick.bind(this))}
+      {/*{this.props.BabyAllData ? '' : creatButton('创建', this.createBtnClick.bind(this))}*/}
       {creatButton('返回', this.backClicked.bind(this))}
       {this.props.BabyAllData ? creatButton('删除', this.onDelete.bind(this)) : ''}
       {this.props.BabyAllData ? creatButton('编辑', this.editBtnClick.bind(this)) : ''}
@@ -815,7 +815,7 @@ class Detail extends Component {
     </div>;
 
     return (
-      <Spin spinning={loading.effects['serviceCustomerChild/getChilddataBycustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getChilddataBycustomerId'] : false}>
+      <Spin spinning={loading.effects['serviceCustomerChild/getBabymsgByCustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getBabymsgByCustomerId'] : false}>
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
           {chiAry}
@@ -834,12 +834,11 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const { ChildCheckInData, baseInfoDict, BabyAllData, BabyId, hostId } = state.serviceCustomerChild;
+  const { baseInfoDict, BabyAllData, BabyId, hostId } = state.serviceCustomerChild;
   return {
     BabyAllData,
     BabyId,
     hostId,
-    ChildCheckInData,
     baseInfoDict,
     loading: state.loading
   };
