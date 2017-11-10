@@ -552,9 +552,9 @@ export default {
       topMenuInfoByType.dishes[infoKey].eatTime = eatTimeValue;
       return { ...state, topMenuInfoByType }
     },
-    changeFrequency(state, { payload: { frequencyValue, infoKey } }){
+    changeCycle(state, { payload: { cycleValue, infoKey } }){
       const { topMenuInfoByType } = state;
-      topMenuInfoByType.dishes[infoKey].frequency = frequencyValue;
+      topMenuInfoByType.dishes[infoKey].cycle = cycleValue;
       return { ...state, topMenuInfoByType }
     },
     getTopMenuInfoByType(state, { payload: { data } }){

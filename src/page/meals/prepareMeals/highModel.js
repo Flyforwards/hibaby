@@ -130,14 +130,14 @@ class DynamicFieldSet extends Component {
     })
 
   }
-  changeFrequency = (value) => {
+  changeCycle = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
-    const frequencyValue = parseInt(value);
+    const cycleValue = parseInt(value);
     dispatch({
-      type: 'prepareMeals/changeFrequency',
+      type: 'prepareMeals/changeCycle',
       payload: {
-        frequencyValue, infoKey
+        cycleValue, infoKey
       }
     })
   }
@@ -205,6 +205,33 @@ class DynamicFieldSet extends Component {
                   </FormItem>
                 </Col>
                 <Col span={6}>
+                  <FormItem label="第几周" {...selectItemLayout}>
+                    {getFieldDecorator(`cycle-${k + 1}`, {
+                      initialValue: v.cycle && v.cycle.toString(),
+                      rules: [{
+                        required: true,
+                        message: "请选择第几周"
+                      }]
+                    })(
+                      <Select onSelect={(value) => {
+                        this.infoKey = k;
+                        this.changeCycle(value);
+                      }}>
+                        <Option value="1">第一周</Option>
+                        <Option value="2">第二周</Option>
+                        <Option value="3">第三周</Option>
+                        <Option value="4">第四周</Option>
+                        <Option value="5">第五周</Option>
+                        <Option value="6">第六周</Option>
+                        <Option value="7">第七周</Option>
+                        <Option value="8">第八周</Option>
+                        <Option value="9">第九周</Option>
+                        <Option value="10">第十周</Option>
+                      </Select>
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={6}>
                   <FormItem label='食用日' {...selectItemLayout}>
                     {getFieldDecorator(`eatDay-${k + 1}`, {
                       initialValue: v.eatDay && v.eatDay.toString(),
@@ -251,26 +278,7 @@ class DynamicFieldSet extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col span={5}>
-                  <FormItem label="频次" {...selectItemLayout}>
-                    {getFieldDecorator(`frequency-${k + 1}`, {
-                      initialValue: v.frequency && v.frequency.toString(),
-                      rules: [{
-                        required: true,
-                        message: "请选择频次"
-                      }]
-                    })(
-                      <Select onSelect={(value) => {
-                        this.infoKey = k;
-                        this.changeFrequency(value);
-                      }}>
-                        <Option value="1">每周都吃</Option>
-                        <Option value="2">两周吃一次</Option>
-                        <Option value="3">四周吃一次</Option>
-                      </Select>
-                    )}
-                  </FormItem>
-                </Col>
+                
                 {
                   v.isDel ? <Col span={2} style={{ textAlign: 'center' }}>
                     {/*<Button className="btnDelIcon" onClick={() => this.remove(k)}>*/}
