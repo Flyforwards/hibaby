@@ -547,14 +547,34 @@ export default {
       topMenuInfoByType.dishes[infoKey].eatDay = eatDayValue;
       return { ...state, topMenuInfoByType }
     },
+    changeEmEatDay(state, { payload: { emEatDayValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].em_eatDay = emEatDayValue;
+      return { ...state, topMenuInfoByType }
+    },
     changeEatTime(state, { payload: { eatTimeValue, infoKey } }){
       const { topMenuInfoByType } = state;
       topMenuInfoByType.dishes[infoKey].eatTime = eatTimeValue;
       return { ...state, topMenuInfoByType }
     },
+    changeEmEatTime(state, { payload: { emEatTimeValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].em_eatTime = emEatTimeValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeEmEatTime(state, { payload: { emEatTimeValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].em_eatTime = emEatTimeValue;
+      return { ...state, topMenuInfoByType }
+    },
     changeCycle(state, { payload: { cycleValue, infoKey } }){
       const { topMenuInfoByType } = state;
       topMenuInfoByType.dishes[infoKey].cycle = cycleValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeEmCycle(state, { payload: { emCycleValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].em_cycle = emCycleValue;
       return { ...state, topMenuInfoByType }
     },
     getTopMenuInfoByType(state, { payload: { data } }){
@@ -808,7 +828,11 @@ export default {
     },
     saveHighInfo(state, { payload: { postDataHigh } }){
       const { topMenuInfoByType } = state;
+      console.log(postDataHigh,'222222')
+      console.log(topMenuInfoByType,'0000000')
+      console.log(topMenuInfoByType.dishes,'0000000')
       const info = topMenuInfoByType.dishes[postDataHigh.number - 1];
+      console.log(info,'?????33333333')
       $.extend(info, postDataHigh)
       return { ...state, topMenuInfoByType }
     },
