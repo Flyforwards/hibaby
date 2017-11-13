@@ -562,11 +562,6 @@ export default {
       topMenuInfoByType.dishes[infoKey].em_eatTime = emEatTimeValue;
       return { ...state, topMenuInfoByType }
     },
-    changeEmEatTime(state, { payload: { emEatTimeValue, infoKey } }){
-      const { topMenuInfoByType } = state;
-      topMenuInfoByType.dishes[infoKey].em_eatTime = emEatTimeValue;
-      return { ...state, topMenuInfoByType }
-    },
     changeCycle(state, { payload: { cycleValue, infoKey } }){
       const { topMenuInfoByType } = state;
       topMenuInfoByType.dishes[infoKey].cycle = cycleValue;

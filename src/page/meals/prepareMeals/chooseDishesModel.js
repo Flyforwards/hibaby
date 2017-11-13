@@ -167,7 +167,6 @@ class App extends Component {
       dishesName: name,
       number: changeKey + 1
     }
-    console.log(1)
     const postDataHigh =
             isEm ? {
               em_dishesId: id,
