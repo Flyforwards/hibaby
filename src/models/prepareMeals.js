@@ -562,11 +562,6 @@ export default {
       topMenuInfoByType.dishes[infoKey].em_eatTime = emEatTimeValue;
       return { ...state, topMenuInfoByType }
     },
-    changeEmEatTime(state, { payload: { emEatTimeValue, infoKey } }){
-      const { topMenuInfoByType } = state;
-      topMenuInfoByType.dishes[infoKey].em_eatTime = emEatTimeValue;
-      return { ...state, topMenuInfoByType }
-    },
     changeCycle(state, { payload: { cycleValue, infoKey } }){
       const { topMenuInfoByType } = state;
       topMenuInfoByType.dishes[infoKey].cycle = cycleValue;
@@ -828,11 +823,7 @@ export default {
     },
     saveHighInfo(state, { payload: { postDataHigh } }){
       const { topMenuInfoByType } = state;
-      console.log(postDataHigh,'222222')
-      console.log(topMenuInfoByType,'0000000')
-      console.log(topMenuInfoByType.dishes,'0000000')
       const info = topMenuInfoByType.dishes[postDataHigh.number - 1];
-      console.log(info,'?????33333333')
       $.extend(info, postDataHigh)
       return { ...state, topMenuInfoByType }
     },

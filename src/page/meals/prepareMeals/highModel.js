@@ -34,7 +34,6 @@ class DynamicFieldSet extends Component {
     const { topMenuInfoByType, dispatch } = this.props;
     const { dishes } = topMenuInfoByType;
     dishes.push({ isDel: true })
-    console.log(dishes, '??????///////')
     dispatch({
       type: "prepareMeals/changeTopMenuInfoByType",
       payload: { dishes }
@@ -63,10 +62,8 @@ class DynamicFieldSet extends Component {
   }
   reset = (changeKey) => {
     const { form } = this.props;
-    console.log(1111)
     form.resetFields([`dishesName-${changeKey + 1}`]);
     form.resetFields([`em_dishesName-${changeKey + 1}`]);
-    console.log(2222)
   }
 
   changeTopVisible = () => {
@@ -243,7 +240,7 @@ class DynamicFieldSet extends Component {
                         }]
                       })(
                         <Input
-                          onClick={() => {this.chooseVisible(k)}}
+                          onClick={() => {this.chooseVisible(k,false)}}
                           suffix={<Icon type="folder"/>}
                         />
                       )}
@@ -259,8 +256,6 @@ class DynamicFieldSet extends Component {
                         }]
                       })(
                         <Select
-                          optionFilterProp="children"
-                          filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                           onSelect={(value) => {
                             this.infoKey = k;
                             this.changeCycle(value);
@@ -329,7 +324,7 @@ class DynamicFieldSet extends Component {
                 </Row>
 
                 <Row>
-                  <Col span={5} className="foodCol">
+                  <Col span={5} offset={1} className="foodCol">
                     <FormItem label='首周轮空' {...selectItemLayout}>
                       {getFieldDecorator(`em_dishesName-${k + 1}`, {
                         initialValue: v.em_dishesName && v.em_dishesName,
@@ -422,7 +417,7 @@ class DynamicFieldSet extends Component {
                   </Col>
 
                   {
-                    v.isDel ? <Col span={2} style={{ textAlign: 'center' }}>
+                    v.isDel ? <Col span={2} offset={22} style={{ textAlign: 'right','marginTop':'-20px' }}>
                       {/*<Button className="btnDelIcon" onClick={() => this.remove(k)}>*/}
                       {/*删除*/}
                       {/*</Button>*/}
