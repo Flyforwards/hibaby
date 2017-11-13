@@ -18,7 +18,7 @@ class DynamicFieldSet extends Component {
     }
     this.infoKey = 0;
   }
-  
+
   remove = (k) => {
     const { topMenuInfoByType, dispatch } = this.props;
     let { dishes } = topMenuInfoByType;
@@ -28,8 +28,8 @@ class DynamicFieldSet extends Component {
       payload: { dishes }
     });
   }
-  
-  
+
+
   add = () => {
     const { topMenuInfoByType, dispatch } = this.props;
     const { dishes } = topMenuInfoByType;
@@ -40,8 +40,8 @@ class DynamicFieldSet extends Component {
       payload: { dishes }
     })
   }
-  
-  
+
+
   handleSubmit = (e) => {
     const { dispatch, topMenuInfoByType } = this.props;
     e.preventDefault();
@@ -50,7 +50,7 @@ class DynamicFieldSet extends Component {
         dispatch({
           type: 'prepareMeals/saveTopMenu',
           payload: { ...topMenuInfoByType }
-          
+
         })
       }
     });
@@ -68,7 +68,7 @@ class DynamicFieldSet extends Component {
     form.resetFields([`em_dishesName-${changeKey + 1}`]);
     console.log(2222)
   }
-  
+
   changeTopVisible = () => {
     const { dispatch } = this.props;
     dispatch({
@@ -103,11 +103,11 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  
+
   changePointPackage = (value) => {
     const { dispatch } = this.props;
     const pointPackage = parseInt(value);
-    
+
     dispatch({
       type: 'prepareMeals/changePointPackage',
       payload: {
@@ -115,7 +115,7 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  
+
   changeEatDay = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
@@ -126,7 +126,7 @@ class DynamicFieldSet extends Component {
         eatDayValue, infoKey
       }
     })
-    
+
   }
   changeEmEatDay = (value) => {
     const { dispatch } = this.props;
@@ -138,7 +138,7 @@ class DynamicFieldSet extends Component {
         emEatDayValue, infoKey
       }
     })
-    
+
   }
   changeEatTime = (value) => {
     const { dispatch } = this.props;
@@ -150,7 +150,7 @@ class DynamicFieldSet extends Component {
         eatTimeValue, infoKey
       }
     })
-    
+
   }
   changeEmEatTime = (value) => {
     const { dispatch } = this.props;
@@ -162,7 +162,7 @@ class DynamicFieldSet extends Component {
         emEatTimeValue, infoKey
       }
     })
-    
+
   }
   changeCycle = (value) => {
     const { dispatch } = this.props;
@@ -186,7 +186,7 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  
+
   render() {
     const { form, cardLevelInfo, topMenuInfoByType } = this.props;
     const { changeKey, isLow, isEm } = this.state;
@@ -226,8 +226,8 @@ class DynamicFieldSet extends Component {
             </FormItem>
           </Col>
         </Row>
-        
-        
+
+
         {
           dishes.map((v, k) => {
             return (
@@ -327,7 +327,7 @@ class DynamicFieldSet extends Component {
                     </FormItem>
                   </Col>
                 </Row>
-                
+
                 <Row>
                   <Col span={5} className="foodCol">
                     <FormItem label='首周轮空' {...selectItemLayout}>
@@ -368,7 +368,7 @@ class DynamicFieldSet extends Component {
                           <Option value="8">第八周</Option>
                           <Option value="9">第九周</Option>
                           <Option value="10">第十周</Option>
-                        
+
                         </Select>
                       )}
                     </FormItem>
@@ -420,7 +420,7 @@ class DynamicFieldSet extends Component {
                       )}
                     </FormItem>
                   </Col>
-                  
+
                   {
                     v.isDel ? <Col span={2} style={{ textAlign: 'center' }}>
                       {/*<Button className="btnDelIcon" onClick={() => this.remove(k)}>*/}
@@ -436,7 +436,7 @@ class DynamicFieldSet extends Component {
             )
           })
         }
-        
+
         <Row style={{ marginTop: '25px' }}>
           <Col span={15}/>
           <Col span={3} className='btnCenter'>
@@ -472,7 +472,7 @@ class LowMOdel extends Component {
     super(props)
     this.state = {}
   }
-  
+
   handleOk = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -491,7 +491,7 @@ class LowMOdel extends Component {
       }
     })
   }
-  
+
   render() {
     const { prepareMeals, dispatch } = this.props;
     const { topVisible, cardLevelInfo, topMenuInfoByType } = prepareMeals;
@@ -516,7 +516,7 @@ class LowMOdel extends Component {
   }
 }
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals
   };
