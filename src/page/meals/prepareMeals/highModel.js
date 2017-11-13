@@ -34,7 +34,6 @@ class DynamicFieldSet extends Component {
     const { topMenuInfoByType, dispatch } = this.props;
     const { dishes } = topMenuInfoByType;
     dishes.push({ isDel: true })
-    console.log(dishes, '??????///////')
     dispatch({
       type: "prepareMeals/changeTopMenuInfoByType",
       payload: { dishes }
@@ -241,7 +240,7 @@ class DynamicFieldSet extends Component {
                         }]
                       })(
                         <Input
-                          onClick={() => {this.chooseVisible(k)}}
+                          onClick={() => {this.chooseVisible(k,false)}}
                           suffix={<Icon type="folder"/>}
                         />
                       )}
@@ -257,8 +256,6 @@ class DynamicFieldSet extends Component {
                         }]
                       })(
                         <Select
-                          optionFilterProp="children"
-                          filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                           onSelect={(value) => {
                             this.infoKey = k;
                             this.changeCycle(value);
