@@ -200,6 +200,15 @@ export default (app) => [
       })
     }
   },
+  {
+    path: '/service/obstetric-record/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkRoomDetail.js'))
+      })
+    }
+  },
   //产妇护理记录单详情页
   {
     path: '/service/puerpera-record/detail',

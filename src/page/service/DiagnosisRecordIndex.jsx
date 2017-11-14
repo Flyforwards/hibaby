@@ -22,6 +22,8 @@ class Index extends Component {
       <div>
         {
           //edinburgh-birth
+          (location.pathname.indexOf('obstetric-record') !== -1) ?
+            <CustomerListPage detailLinkUrl="/service/obstetric-record/detail" moreLink={urlAddress}/> :
           (location.pathname.indexOf('edinburgh-birth') !== -1) ?
             <CustomerListPage detailLinkUrl="/service/edinburgh-birth/detail"/> :
             (location.pathname.indexOf('children-record') !== -1) ?
