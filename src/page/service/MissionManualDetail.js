@@ -131,7 +131,7 @@ class Detail extends Component {
     });
     const bottomDiv = <div className='button-group-bottom-common'>
       {creatButton('返回',this.editBackClicked.bind(this))}
-      {creatButton('创建',this.onCreate.bind(this))}
+      {/*{creatButton('创建',this.onCreate.bind(this))}*/}
       </div>
     const _this = this;
     return (
