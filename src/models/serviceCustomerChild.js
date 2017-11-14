@@ -55,7 +55,7 @@ export default {
         if(pathname === '/service/child-check-in/edit') {
           if(queryURL('id')){
             let dict = { dataId: query.customerid, type: 3, operatorItem: 3 }
-            dispatch({type:'getBabymsgByCustomerId',payload:dict})
+          //  dispatch({type:'getBabymsgByCustomerId',payload:dict})
             dispatch({
               type:'getBabyDataById',
               payload:{
@@ -120,7 +120,9 @@ export default {
               data
             }
           })
-          yield put(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${values.dataId}&babyId=${values.babyId}`))
+          if(values.edit){
+            yield put(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${values.dataId}&babyId=${values.babyId}`))
+          }
         }
       }
       catch (err){
@@ -185,13 +187,18 @@ export default {
     },
     //根据客户id获取婴儿评估保存
     onSaveBabyAllData(state,{payload:{data:BabyAllData}}){
-      if(BabyAllData.length>1){
-        let BabyId =BabyAllData[0].babyId;
-        let hostId = BabyAllData[0].id;
-        return { ...state,BabyAllData ,BabyId,hostId}
+      if(BabyAllData && BabyAllData.length>0){
+        if(BabyAllData.length>1){
+          let BabyId =BabyAllData[0].babyId;
+          let hostId = BabyAllData[0].id;
+          return { ...state,BabyAllData ,BabyId,hostId}
+        }else{
+          return { ...state,BabyAllData ,BabyId:BabyAllData[0].babyId,hostId:BabyAllData[0].id}
+        }
       }else{
-        return { ...state,BabyAllData ,BabyId:BabyAllData[0].babyId,hostId:BabyAllData[0].id}
+        return { ...state,BabyAllData:null ,BabyId:'',hostId:''}
       }
+
     },
     //根据id查询婴儿入住评估详情
     onSaveBabyDataById(state,{payload:{data:BabyOneData}}){
@@ -205,6 +212,7 @@ export default {
         hostId:null,
         BabyOneData:null,
         baseInfoDict: null,
+        BabyMsg:null,
       }
     },
     savaCustomerInfo(state, { payload: todo }){

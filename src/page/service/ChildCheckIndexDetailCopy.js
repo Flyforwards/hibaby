@@ -64,6 +64,7 @@ class Detail extends Component {
     let _data = {"operatorItem":3 }
     _data.dataId = this.state.tabClick ? this.state.hostId : this.props.hostId;
     _data.babyId = this.state.tabClick ? this.state.tabKey : this.props.BabyId;
+    _data.edit = true;
     this.props.dispatch({
         type:'serviceCustomerChild/getBabyDataById',
         payload:_data
@@ -93,10 +94,13 @@ class Detail extends Component {
       }
     }))
   }
-  // createBtnClick() {
-  //   this.props.dispatch(routerRedux.push(`/service/child-check-in/create?customerid=${parse(location.search.substr(1)).customerid}`));
-  //
-  // }
+  createBtnClick() {
+   // console.log("xx",this.props.BabyMsg[0].babyId)
+    let babyId = this.state.tabClick ? this.state.tabKey : this.props.BabyMsg[0].babyId;
+    let dataId = this.state.tabClick ? this.state.hostId : this.props.BabyMsg[0].id;
+    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&babyId=${babyId}&id=${dataId ?dataId:'' }`));
+
+  }
 
   print() {
 
@@ -191,7 +195,7 @@ class Detail extends Component {
       tabKey: key,
       tabClick: true
     })
-    this.props.BabyAllData.map(function (elem, index) {
+    this.props.BabyMsg.map(function (elem, index) {
       if (this.state.tabKey === elem.babyId) {
         this.setState({
           hostId: elem.id
@@ -207,7 +211,7 @@ class Detail extends Component {
     babyhead164 = true;
     babyhead165 = true;
     babyhead141 = true;
-    const { loading, summary, BabyAllData } = this.props;
+    const { loading, summary, BabyAllData,BabyMsg } = this.props;
     BabyAllData ? BabyAllData.map(function (elem, index) {
       if(JSON.parse(elem.assessmentBabyInfo).babyhead11) {
         JSON.parse(elem.assessmentBabyInfo).babyhead11.map(function (elem, index) {
@@ -771,7 +775,6 @@ class Detail extends Component {
     const ary = [{ title: summary ? '' : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry }]
     const arys = [{ title: '入住时婴儿评估', ary: newbornAry }, { title: '入住时婴儿评估', ary: newbornTwoAry }]
     let chiAry;
-    if(BabyAllData){
       chiAry = ary.map(value => {
         if (BabyAllData && BabyAllData.length > 1) {
           value.netData = JSON.parse(BabyAllData[0].assessmentBabyInfo);
@@ -782,26 +785,48 @@ class Detail extends Component {
         return CreatCard(this.props.form, value)
       })
 
-    }
 
     let tabs = [];
     let chiArys;
     let _this = this;
-    if(BabyAllData && BabyAllData.length != 0){
-      BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
+
+    if(BabyMsg && BabyMsg.length != 0){
+      BabyMsg && BabyMsg.length > 1 ? BabyMsg.map(function (elem, index) {
         tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
-          {arys.map(value => {
-            value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
-            //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-            return CreatCard(_this.props.form, value)
-          })}
+          {
+            BabyAllData ? BabyAllData.map(function(v,i){
+              v.babyId == elem.babyId ? arys.map(value => {
+                value.netData = v.assessmentBabyInfo ? JSON.parse(v.assessmentBabyInfo) : {};
+                //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+                return CreatCard(_this.props.form, value)
+              }):''
+            }):''
+          }
         </TabPane>)
-      }) : chiArys = arys.map(value => {
+      }) : (BabyAllData ? chiArys = arys.map(value => {
         value.netData = this.props.BabyAllData ? JSON.parse(this.props.BabyAllData[0].assessmentBabyInfo) : {};
         //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
         return CreatCard(this.props.form, value)
-      });
+      }):'');
     }
+
+
+
+    // if(BabyAllData && BabyAllData.length != 0) {
+    //   BabyAllData && BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
+    //     tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+    //       {arys.map(value => {
+    //         value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
+    //         //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //         return CreatCard(_this.props.form, value)
+    //       })}
+    //     </TabPane>)
+    //   }) : chiArys = arys.map(value => {
+    //     value.netData = this.props.BabyAllData ? JSON.parse(this.props.BabyAllData[0].assessmentBabyInfo) : {};
+    //     //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //     return CreatCard(this.props.form, value)
+    //   });
+    // }
     // BabyAllData && BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
     //   tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
     //     {arys.map(value => {
@@ -816,7 +841,7 @@ class Detail extends Component {
     //   return CreatCard(this.props.form, value)
     // });
     const bottomDiv = <div className='button-group-bottom-common'>
-      {/*{this.props.BabyAllData ? '' : creatButton('创建', this.createBtnClick.bind(this))}*/}
+      {this.props.BabyAllData ? '' : creatButton('创建', this.createBtnClick.bind(this))}
       {creatButton('返回', this.backClicked.bind(this))}
       {this.props.BabyAllData ? creatButton('删除', this.onDelete.bind(this)) : ''}
       {this.props.BabyAllData ? creatButton('编辑', this.editBtnClick.bind(this)) : ''}
@@ -843,11 +868,12 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const { baseInfoDict, BabyAllData, BabyId, hostId } = state.serviceCustomerChild;
+  const { baseInfoDict, BabyAllData, BabyId, hostId,BabyMsg } = state.serviceCustomerChild;
   return {
     BabyAllData,
     BabyId,
     hostId,
+    BabyMsg,
     baseInfoDict,
     loading: state.loading
   };

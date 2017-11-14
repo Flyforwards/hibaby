@@ -691,7 +691,7 @@ class Detail extends Component {
     let chiAry = ary.map(value => {
       value.netData = this.props.BabyOneData ? JSON.parse(this.props.BabyOneData.assessmentBabyInfo) : {};
       value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
-      return BabyOneData ? CreatCard(this.props.form, value):''
+      return CreatCard(this.props.form, value)
     })
 
     const bottomDiv = <div className='button-group-bottom-common'>
@@ -699,7 +699,7 @@ class Detail extends Component {
     </div>;
 
     return (
-      <Spin spinning={loading.effects['serviceCustomerChild/getBabyDataById'] !== undefined ? loading.effects['serviceCustomerChild/getBabyDataById'] : false}>
+      <Spin spinning={loading.effects['serviceCustomerChild/getBabymsgByCustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getBabymsgByCustomerId'] : false}>
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
           {chiAry}
