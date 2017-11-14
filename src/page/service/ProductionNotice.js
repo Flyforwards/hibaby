@@ -170,7 +170,6 @@ class Detail extends Component {
   
   render() {
     const { loading } = this.props
-    
     const bottomDiv =
             <div className='button-group-bottom-common'>
               {creatButton('返回', this.editBackClicked.bind(this))}
@@ -202,7 +201,7 @@ class Detail extends Component {
               {
                 departments.map((v, k) => {
                   return (
-                    <Checkbox checked={true} disabled={true} value={v} key={k}>{v}</Checkbox>
+                    <Checkbox   value={v} key={k}>{v}</Checkbox>
                   )
                 })
               }
