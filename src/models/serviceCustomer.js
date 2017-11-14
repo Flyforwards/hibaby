@@ -214,7 +214,7 @@ export default {
         }
 
         //中医、产科记录单详情页
-        if (pathname === '/service/diagnosis-record/detail' || pathname === '/service/puerpera-record/detail' || pathname === '/service/butler-rounds/detail' || pathname === '/service/nutrition-record/detail') {
+        if (pathname === '/service/obstetric-record/detail' || pathname === '/service/diagnosis-record/detail' || pathname === '/service/puerpera-record/detail' || pathname === '/service/butler-rounds/detail' || pathname === '/service/nutrition-record/detail') {
           const { customerid, type, operatoritem } = query;
           let dict_ = { customerId: parseInt(customerid), type: parseInt(type), operatorItem: parseInt(operatoritem) }
           dispatch({

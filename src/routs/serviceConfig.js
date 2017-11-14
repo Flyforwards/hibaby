@@ -200,6 +200,15 @@ export default (app) => [
       })
     }
   },
+  {
+    path: '/service/obstetric-record/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/serviceCustomer'));
+        cb(null, require('page/service/checkRoomDetail.js'))
+      })
+    }
+  },
   //产妇护理记录单详情页
   {
     path: '/service/puerpera-record/detail',
@@ -714,9 +723,7 @@ export default (app) => [
       })
     }
   },
-
-
-  //
+  
   //产妇入住前评估单创建页面
   {
     path: '/service/check-before/create',
@@ -727,16 +734,16 @@ export default (app) => [
       })
     }
   },
-  // //产妇入住评估单创建页面
-  // {
-  //   path: '/service/check-in/create',
-  //   getComponent: (location, cb) => {
-  //     require.ensure([], (require) => {
-  //       registerModel(app, require('models/serviceCustomer'));
-  //       cb(null, require('page/service/create/CheckInCreate.js'))
-  //     })
-  //   }
-  // },
+  // 产妇入住评估单创建页面
+   {
+     path: '/service/check-in/create',
+     getComponent: (location, cb) => {
+       require.ensure([], (require) => {
+         registerModel(app, require('models/serviceCustomer'));
+         cb(null, require('page/service/create/CheckInCreate.js'))
+       })
+     }
+   },
   //婴儿入住评估单创建页面
   {
     path: '/service/child-check-in/create',

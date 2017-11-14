@@ -159,7 +159,7 @@ class Detail
   
   render() {
     
-    const { summary } = this.props
+    const { summary,loading } = this.props
     const ary = [{ title: summary ? '' : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry }]
     
     let chiAry = ary.map(value => {
@@ -174,11 +174,13 @@ class Detail
         {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
       </div>
     return (
-        
-        <Card className='diagnosisInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', '20px') }}>
+      <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
+  
+      <Card className='diagnosisInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', '20px') }}>
           {chiAry}
           {summary ? "" : bottomDiv}
         </Card>
+      </Spin>
     )
   }
 }
