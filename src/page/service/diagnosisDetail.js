@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { CreatCard, creatButton } from './ServiceComponentCreat'
-import { Card, Input, Form, Button, Spin } from 'antd';
+import { Card, Input, Form, Button, Spin, Row, Col } from 'antd';
 import { connect } from 'dva';
 import { parse } from 'qs'
 import { routerRedux } from 'dva/router'
-
+const FormItem = Form.Item;
 // 表单信息
 const baseInfoAry = [
   { title: '客户姓名', component: 'Input', submitStr: 'name', span: 8, disable: true },
@@ -92,9 +92,7 @@ const baseInfoAry = [
   
   { title: '切脉', component: 'TextArea', span: 24, submitStr: 'baseInfo19' },
   { title: '脉象和脏腑情况', component: 'TextArea', span: 24, submitStr: 'baseInfo20' },
-  { title: '评估者', component: 'Input', span: 8, submitStr: 'baseInfo21' },
-  { title: '客户签字', component: 'Signature', span: 8, submitStr: 'baseInfo23', 'noRequired': true },
-  { title: '评估时间', component: 'DatePicker', span: 8, submitStr: 'baseInfo22' }
+  { title: '客户签字', offset: 16, component: 'Signature', span: 8, submitStr: 'baseInfo23', 'noRequired': true }
 
 ]
 
@@ -111,7 +109,7 @@ class Detail
   }
   
   editBtnClick() {
-    this.props.dispatch(routerRedux.push(`/service/diagnosis/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckInID}`));
+    this.props.dispatch(routerRedux.push(`/service/diagnosis/edit?customerid=${parse(location.search.substr(1)).customerid}`));
   }
   
   backClicked() {
@@ -122,10 +120,11 @@ class Detail
     this.props.dispatch(routerRedux.push(`/service/diagnosis/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
   
-  createBtnClick(){
+  createBtnClick() {
     this.props.dispatch(routerRedux.push(`/service/diagnosis/create?customerid=${parse(location.search.substr(1)).customerid}`));
-  
+    
   }
+  
   print() {
   
   }
@@ -138,7 +137,7 @@ class Detail
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         Object.keys(values).map(key => {
-          if (values[key]&&typeof values[key] === 'object' && typeof values[key].length !== 'number') {
+          if (values[key] && typeof values[key] === 'object' && typeof values[key].length !== 'number') {
             values[key] = values[key].format()
           }
         })
@@ -169,8 +168,6 @@ class Detail
       value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {}
       return CreatCard(this.props.form, value)
     })
-    
-    
     const bottomDiv = location.pathname === '/service/diagnosis/edit' ?
       <div className='button-group-bottom-common'>
         {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
@@ -182,12 +179,41 @@ class Detail
         {this.props.diagnosisData ? creatButton('编辑', this.editBtnClick.bind(this)) : null}
         {this.props.diagnosisData ? creatButton('打印', this.print.bind(this)) : null}
       </div>
-    
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 9 },
+        sm: { span: 15 }
+      }
+    };
     return (
       <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
         
         <Card className='diagnosisInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', '20px') }}>
           {chiAry}
+          <Form style={{'position':'absolute','width':'70%','bottom':'60px'}}>
+            <Row>
+              <Col span={8}>
+                <FormItem
+                  {...formItemLayout}
+                  label="评估者"
+                >
+                  {this.props.form.getFieldDecorator('email')(
+                    <div>{ this.props.diagnosisData && this.props.diagnosisData.operator}</div>
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  {...formItemLayout}
+                  label="操作时间"
+                >
+                  {this.props.form.getFieldDecorator('emailw')(
+                    <div>{ this.props.diagnosisData && this.props.diagnosisData.operatorTime}</div>
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+          </Form>
           {summary ? "" : bottomDiv}
         </Card>
       </Spin>
