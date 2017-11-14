@@ -92,9 +92,7 @@ const baseInfoAry = [
   
   { title: '切脉', component: 'TextArea', span: 24, submitStr: 'baseInfo19' },
   { title: '脉象和脏腑情况', component: 'TextArea', span: 24, submitStr: 'baseInfo20' },
-  { title: '评估者', component: 'Input', span: 8, submitStr: 'baseInfo21' },
   { title: '客户签字', component: 'Signature', span: 8, submitStr: 'baseInfo23', 'noRequired': true },
-  { title: '评估时间', component: 'DatePicker', span: 8, submitStr: 'baseInfo22' }
 
 ]
 
