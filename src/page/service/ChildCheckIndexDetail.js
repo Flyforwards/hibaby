@@ -65,7 +65,7 @@ class Detail extends Component {
           "babyLength": values.babyLength,
           "babyWeight": values.babyWeight,
           "operator":values.newborn_3,
-          "operatorTime":moment(values.newborn_4).format("YYYY-MM-DD HH:mm:ss"),
+          "operatorTime":new Date(values.newborn_4),
         };
         queryURL("babyId") ? dict.babyId = queryURL("babyId") :'';
         queryURL('id') ? dict.id = queryURL('id') :'';

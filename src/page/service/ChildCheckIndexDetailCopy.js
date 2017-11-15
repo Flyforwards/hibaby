@@ -98,7 +98,7 @@ class Detail extends Component {
    // console.log("xx",this.props.BabyMsg[0].babyId)
     let babyId = this.state.tabClick ? this.state.tabKey : this.props.BabyMsg[0].babyId;
     let dataId = this.state.tabClick ? this.state.hostId : this.props.BabyMsg[0].id;
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&babyId=${babyId}&id=${dataId ?dataId:'' }`));
+    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&babyId=${babyId}`));
 
   }
 
