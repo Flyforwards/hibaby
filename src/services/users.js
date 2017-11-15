@@ -178,7 +178,13 @@ export function saveCallRecords(values) {
   })
 }
 
-
+//加载登录用户未读消息数量
+export function getMessageQuantity(values) {
+  return request('/crm/api/v1/user/getMessageQuantity', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
 
 
 

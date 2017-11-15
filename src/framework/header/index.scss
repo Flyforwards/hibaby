@@ -186,6 +186,7 @@
     right:20px;
     height:100%;
     background-color:#d9d9d9;
+
     img {
         width:30px;
         height:30px;
@@ -196,7 +197,7 @@
     }
     p{
         float: left;
-        margin-right: 18px;
+        //margin-right: 18px;
         span{
             display: block;
         }
@@ -220,4 +221,25 @@
             margin-top:-6px;
         }
     }
+}
+ .messageNum{
+  height: 100%;
+   width: 40px;
+   float: left;
+   position: relative;
+   h3{
+     width: 22px;
+     height: 22px;
+     background-color: red;
+     border-radius: 50%;
+     color: #fff;
+     text-align: center;
+     line-height: 22px;
+     position: absolute;
+     top: 50%;
+     margin-top: -11px;
+     left: 50%;
+     margin-left: -11px;
+     font-size: 15px;
+   }
 }
