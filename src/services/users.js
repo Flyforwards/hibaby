@@ -186,5 +186,13 @@ export function getMessageQuantity(values) {
   })
 }
 
+//加载登录用户消息列表
+export function getMessageList(values) {
+  return request('/crm/api/v1/user/getMessageList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}
+
 
 

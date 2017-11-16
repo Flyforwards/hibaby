@@ -73,7 +73,6 @@ export function getdoctornoteList(values) {
 }
 //3.保存或编辑记录单
 export function saveDoctorNote(values) {
-  console.log(values,'我传的参数呢')
   return request('/crm/api/v1/doctornote/saveDoctorNote', {
     method: 'POST',
     body: JSON.stringify(values)
