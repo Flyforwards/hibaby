@@ -21,6 +21,7 @@ export default (app) => [
         registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/healthInformation'));
         registerModel(app, require('models/membershipcard'));
+        registerModel(app, require('models/order'));
         registerModel(app, require('models/printCustomer'));
         cb(null, require('page/crm/customer/addCustomer.jsx'))
       })
@@ -33,6 +34,7 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/addCourse'));
         registerModel(app, require('models/addCustomer'));
+        registerModel(app, require('models/order'));
         registerModel(app, require('models/healthInformation'));
         registerModel(app, require('models/membershipcard'));
         registerModel(app, require('models/printCustomer'));
@@ -57,6 +59,7 @@ export default (app) => [
       require.ensure([], (require) => {
         registerModel(app, require('models/addCustomer'));
         registerModel(app, require('models/addCourse'));
+        registerModel(app, require('models/order'));
         registerModel(app, require('models/membershipcard'));
         registerModel(app, require('models/healthInformation'));
         registerModel(app, require('models/printCustomer'));

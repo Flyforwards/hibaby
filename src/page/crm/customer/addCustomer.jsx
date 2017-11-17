@@ -6,6 +6,8 @@ import CustomerInformation from './CustomerInformation';
 import UserHealthInformation from './userHealthInformation'
 import AddCourse from './AddCourse.jsx'
 import CustomerDetails from './customerDetails';
+import OrderIndex from './OrderIndex';
+import FingerSubsidiaryIndex from './FingerSubsidiaryIndex';
 import MembershipCard from '../membershipcard/membershipcardIndex'
 
 const TabPane = Tabs.TabPane;
@@ -59,6 +61,16 @@ class addCustomer extends React.Component{
         <MembershipCard/>
       </TabPane>)
     }
+
+    // if(((location.pathname === '/crm/customer/edit' || isDetail)&&this.props.users.expandData)){
+    //   TabPaneAry.push(<TabPane tab="订单" key="5">
+    //     <OrderIndex/>
+    //   </TabPane>)
+    //   TabPaneAry.push(<TabPane tab="收支明细" key="6">
+    //     <FingerSubsidiaryIndex/>
+    //   </TabPane>)
+    // }
+
     let defaultActiveKey = '1';
     if (addSuccess){
       defaultActiveKey = '3';

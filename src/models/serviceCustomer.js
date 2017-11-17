@@ -378,16 +378,16 @@ export default {
         const { data: { data, code } } = yield call(serviceAssessment.saveAssessment, values);
         message.success("保存成功");
         if (values.type == 1) {
-          yield put(routerRedux.push('/service/check-before'))
+          yield put(routerRedux.push(`/service/check-before/detail?customerid=${values.customerId}`))
         } else if (values.type == 2) {
-          yield put(routerRedux.push('/service/check-in'))
+          yield put(routerRedux.push(`/service/check-in/detail?customerid=${values.customerId}`))
         } else if (values.type == 3) {
-          yield put(routerRedux.push('/service/child-check-in'))
+          yield put(routerRedux.push(`/service/child-check-in/detail?customerid=${values.customerId}`))
         } else if (values.type == 4) {
-          yield put(routerRedux.push('/service/diagnosis'))
+          yield put(routerRedux.push(`/service/diagnosis/detail?customerid=${values.customerId}`))
         }
         else if (values.type == 5) {
-          yield put(routerRedux.push('/service/nutrition-evaluate'))
+          yield put(routerRedux.push(`/service/nutrition-evaluate/detail?customerid=${values.customerId}`))
         }
       }
       catch (err) {
