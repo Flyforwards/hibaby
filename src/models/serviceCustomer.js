@@ -757,7 +757,8 @@ export default {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.saveInsideBabySwim, values);
         message.success("保存成功");
-        yield put(routerRedux.push('/service/baby-swimming'))
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/baby-swimming/detail?customerid=${query.customerid}`))
       }
       catch (err) {
         console.log(err)
@@ -770,7 +771,8 @@ export default {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.saveBabyGrowthNote, values);
         message.success("保存成功");
-        yield put(routerRedux.push('/service/baby-grow'))
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/baby-grow/detail?customerid=${query.customerid}`))
       }
       catch (err) {
         console.log(err)
@@ -781,7 +783,8 @@ export default {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.saveBabyFeedingNote, values);
         message.success("保存成功");
-        yield put(routerRedux.push('/service/baby-feed'))
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/baby-feed/detail?customerid=${query.customerid}`))
 
       }
       catch (err) {
@@ -795,7 +798,8 @@ export default {
       try {
         const { data: { data, code } } = yield call(serviceAssessment.saveMaternalEverydayPhysicalEvaluation, values);
         message.success("保存成功");
-        yield put(routerRedux.push('/service/puerpera-body'))
+        let query = parse(location.search.substr(1))
+        yield put(routerRedux.push(`/service/puerpera-body/detail?customerid=${query.customerid}`))
       }
       catch (err) {
         console.log(err)
