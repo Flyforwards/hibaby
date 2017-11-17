@@ -1,4 +1,3 @@
-
 import request from '../utils/request';
 
 const host = "http://118.190.112.88:8087";
@@ -8,7 +7,7 @@ const host = "http://118.190.112.88:8087";
 export function getByCurrentUser(values) {
   return request('/crm/api/v1/customerServiceConfig/getByCurrentUser', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -16,28 +15,28 @@ export function getByCurrentUser(values) {
 // 获取当前用户可以访问的地方中心列表
 export function getCurrentUserEndemic() {
   return request('/crm/api/v1/user/getCurrentUserEndemic', {
-    method: 'POST',
+    method: 'POST'
   })
 }
 
 
 export function getProjectList() {
   return request('/crm/api/v1/project/list', {
-    method: 'POST',
+    method: 'POST'
   })
 }
 
 export function setEndemic(values) {
   return request('/crm/api/v1/permission/setEndemic', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
 export function getCurrUserMenu(values) {
   return request('/crm/api/v1/module/currentUserModuleList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -45,7 +44,7 @@ export function getCurrUserMenu(values) {
 export function treeByRoleID(values) {
   return request('/crm/api/v1/permission/treeByRoleId', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -53,14 +52,14 @@ export function treeByRoleID(values) {
 export function getUserPageListByRoleId(values) {
   return request('/crm/api/v1/user/getUserPageListByRoleId', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
 export function configRolePermission(values) {
   return request('/crm/api/v1/role/configRolePermission', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -68,7 +67,7 @@ export function configRolePermission(values) {
 export function getDeptListByEndemicId(values) {
   return request('/crm/api/v1/department/getDeptListByEndemicId', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -76,7 +75,7 @@ export function getDeptListByEndemicId(values) {
 export function DelUserRoleInput(values) {
   return request('/crm/api/v1/user/DelUserRoleInput', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -84,7 +83,7 @@ export function DelUserRoleInput(values) {
 export function getRoleDepartmentNodes(values) {
   return request('/crm/api/v1/department/getRoleDepartmentNodes', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -92,7 +91,7 @@ export function getRoleDepartmentNodes(values) {
 export function getUserPageListByUserRole(values) {
   return request('/crm/api/v1/user/getUserPageListByUserRole', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -100,7 +99,7 @@ export function getUserPageListByUserRole(values) {
 export function bindUserRole(values) {
   return request('/crm/api/v1/user/bindUserRole', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -108,7 +107,7 @@ export function bindUserRole(values) {
 export function getCurrentUserSelectEndemic(values) {
   return request('/crm/api/v1/user/getCurrentUserSelectEndemic', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -117,7 +116,7 @@ export function getCurrentUserSelectEndemic(values) {
 export function getCurrentUserInfo(values) {
   return request('/crm/api/v1/user/getCurrentUserInfo', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -126,7 +125,7 @@ export function getCurrentUserInfo(values) {
 export function getProjectAndModuleTree(values) {
   return request('/crm/api/v1/module/currentUserModuleAllList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -134,7 +133,7 @@ export function getProjectAndModuleTree(values) {
 export function currentUserPermissionAliasList(values) {
   return request('/crm/api/v1/permission/currentUserPermissionAliasList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -142,7 +141,7 @@ export function currentUserPermissionAliasList(values) {
 export function getPositionByDeptId(values) {
   return request('/crm/api/v1/position/getPositionByDeptId', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -150,7 +149,7 @@ export function getPositionByDeptId(values) {
 export function modifyUser(values) {
   return request('/crm/api/v1/user/updateUserEntry', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -158,7 +157,7 @@ export function modifyUser(values) {
 export function getCustomerByMobile(values) {
   return request('/crm/api/v1/customer/getCustomerByMobile', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -166,7 +165,7 @@ export function getCustomerByMobile(values) {
 export function getCallRecordsList(values) {
   return request('/crm/api/v1/callRecords/listByNumber', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -174,7 +173,7 @@ export function getCallRecordsList(values) {
 export function saveCallRecords(values) {
   return request('/crm/api/v1/callRecords/add', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -182,7 +181,7 @@ export function saveCallRecords(values) {
 export function getMessageQuantity(values) {
   return request('/crm/api/v1/user/getMessageQuantity', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   })
 }
 
@@ -190,9 +189,60 @@ export function getMessageQuantity(values) {
 export function getMessageList(values) {
   return request('/crm/api/v1/user/getMessageList', {
     method: 'POST',
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
+  })
+}
+//根据id查询生产通知单
+export function getProductionNotificationById(values) {
+  return request('/crm/api/v1/productionNotification/getProductionNotificationById', {
+    method: 'POST',
+    body: JSON.stringify(values)
   })
 }
 
+//根据id查询入住通知单
+export function getOccupancyNoticeById(values) {
+  return request('/crm/api/v1/occupancyNotice/getOccupancyNoticeById', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
 
+//根据id查询外出通知单
+export function getdepartureNoticeById(values) {
+  return request('/crm/api/v1/departureNotice/getdepartureNoticeById', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
+//根据id查询退房通知单
+export function getCheckOutNoticeById(values) {
+  return request('/crm/api/v1/checkOutNotice/getCheckOutNoticeById', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+
+//根据id查询自由通知单
+export function getFreeNoticeById(values) {
+  return request('/crm/api/v1/freeNotice/getFreeNoticeById', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+//切换消息未读已读标识
+export function changeMessageType(values) {
+  return request('/crm/api/v1/user/changeMessageType', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
+//数据字典
+export function getDictionary(values) {
+  return request('/crm/api/v1/dictionary/getDictionary', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  })
+}
 
