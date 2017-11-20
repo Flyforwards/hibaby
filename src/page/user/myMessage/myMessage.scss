@@ -1,0 +1,83 @@
+.message {
+  padding-top: 20px;
+  padding-left: 20px;
+  .messageRow {
+    font-size: 14px;
+    height: 46px;
+    line-height: 46px;
+    border-bottom: 1px solid #CCCCCC;
+    .ant-row {
+
+    }
+  }
+}
+
+.production {
+  .ant-row {
+    font-size: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    .ant-col-6 {
+      margin-bottom: 14px
+    }
+    .ant-col-18 {
+      margin-bottom: 14px
+    }
+  }
+  .firstRow {
+    padding-top: 20px;
+    padding-bottom: 0px !important;
+
+  }
+}
+
+.stay {
+  .ant-row {
+    font-size: 14px;
+    padding: 20px;
+    .ant-col-6 {
+      margin-bottom: 14px
+    }
+    .ant-col-18 {
+      margin-bottom: 14px
+    }
+    .ant-col-24 {
+      margin-bottom: 14px
+    }
+    .ant-col-12 {
+      margin-bottom: 14px
+    }
+  }
+
+}
+
+.out {
+  .ant-row {
+    font-size: 14px;
+    padding: 20px;
+    .ant-col-6 {
+      margin-bottom: 14px
+    }
+    .ant-col-24 {
+      margin-bottom: 14px
+    }
+
+  }
+}
+
+.checkOut {
+  .ant-row {
+    font-size: 14px;
+    padding: 20px;
+    .ant-col-6 {
+      margin-bottom: 14px
+    }
+  }
+}
+.free{
+  .freeInfo{
+    padding: 20px;
+    font-size: 14px;
+  }
+}
