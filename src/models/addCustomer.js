@@ -203,7 +203,9 @@ let editCustomer = false
 
     setPackageName(state, { payload: todo }){
       const expandData = state.expandData;
-      expandData.purchasePackage = todo.data;
+      if (todo.data){
+        expandData.purchasePackage = todo.data;
+      }
       return {...state,expandData:expandData};
     },
     deleteContractDLC(state, { payload: todo }){

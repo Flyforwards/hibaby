@@ -62,14 +62,14 @@ class addCustomer extends React.Component{
       </TabPane>)
     }
 
-    // if(((location.pathname === '/crm/customer/edit' || isDetail)&&this.props.users.expandData)){
-    //   TabPaneAry.push(<TabPane tab="订单" key="5">
-    //     <OrderIndex/>
-    //   </TabPane>)
-    //   TabPaneAry.push(<TabPane tab="收支明细" key="6">
-    //     <FingerSubsidiaryIndex/>
-    //   </TabPane>)
-    // }
+      // if(((location.pathname === '/crm/customer/edit' || isDetail)&&this.props.users.expandData)){
+      //   TabPaneAry.push(<TabPane tab="订单" key="5">
+      //     <OrderIndex/>
+      //   </TabPane>)
+      //   TabPaneAry.push(<TabPane tab="收支明细" key="6">
+      //     <FingerSubsidiaryIndex/>
+      //   </TabPane>)
+      // }
 
     let defaultActiveKey = '1';
     if (addSuccess){

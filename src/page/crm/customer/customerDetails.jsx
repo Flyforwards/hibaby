@@ -210,7 +210,6 @@ function Remark(props) {
         <Table texta bordered dataSource={remarkList} columns={remarkListColumns} />
     </div>
   )
-
 }
 
 
@@ -274,8 +273,8 @@ class customerDetails extends React.Component{
     }
 
     let outTime = false;
-    if(!this.props.users.expandData.purchasePackage &&  this.props.users.expandData.productionDate) {
-      if(moment().diff(this.props.users.expandData.productionDate,"days") > 3){
+    if((!this.props.users.expandData.purchasePackage || this.props.users.expandData.purchasePackage == 0) &&  this.props.users.baseData.dueDate) {
+      if(moment().diff(this.props.users.baseData.dueDate,"days") > 3){
         outTime = true
       }
     }

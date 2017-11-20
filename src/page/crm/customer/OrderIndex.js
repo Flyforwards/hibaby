@@ -1,7 +1,8 @@
 import React from 'react';
-import './customerInformation.scss';
 import { connect } from 'dva';
+import './CustomerIndex.scss'
 import { routerRedux } from 'dva/router';
+import PermissionLink from 'common/PermissionLink';
 import moment from 'moment'
 import BigImageModal from './BigImageModal';
 import PermissionButton from 'common/PermissionButton';
@@ -11,8 +12,9 @@ import {Alert,Table, Modal,Row, Col,Button,Spin} from 'antd';
 
 
 function ResultsTable(props) {
-  const {loading,dispatch} = props.data;
-  const {listData,FloorAry,MainFloorAry,AreaAry,TowardAry,pagination} = props.data.users;
+  console.log(props)
+
+  const {loading,dispatch,orderList,orderPage,orderSize,orderTotal} = props.data;
 
   function textforkey(array,value,valuekey = 'name') {
     if(array){
@@ -36,16 +38,34 @@ function ResultsTable(props) {
           render: (text, record, index) => {
             return (
               <div>
-                <PermissionLink testKey='ROOM_DETAIL' className="firstA" onClick={ ()=>{onLook(record)} }> 查看 </PermissionLink>
+                <PermissionLink testKey='ROOM_DETAIL' className="one-link link-style" onClick={ ()=>{onLook(record)} }> 查看 </PermissionLink>
               </div>
             );
           },
         }
       )
     }
+    else if(dict.title === "订单支付状态"){
+       return{
+         title: '订单支付状态',
+         render: (record) => {
+
+           return record ? "已支付" : "未支付"
+         }
+       }
+     }
+    else if(dict.title === "创建时间"){
+       return{
+         title: '创建时间',
+         render: (record) => {
+           return moment(record).format("YYYY-MM-DD")
+         }
+       }
+     }
     else {
+
       return(
-        {title:dict.title, dataIndex:dict.key, key:dict.key, width:dict.width?dict.width:'13%',render:( record)=>{
+        {title:dict.title, dataIndex:dict.key, key:dict.key,render:( record)=>{
           return(
             record
           )
@@ -55,10 +75,10 @@ function ResultsTable(props) {
   }
 
   function onLook(record) {
-    dispatch(routerRedux.push({
-      pathname: '/chamber/roomindex/roomdetail',
-      query: {dataId:record.id}
-    }))
+    // dispatch(routerRedux.push({
+    //   pathname: '/chamber/roomindex/roomdetail',
+    //   query: {dataId:record.id}
+    // }))
   }
 
 
@@ -78,24 +98,24 @@ function ResultsTable(props) {
   }
   const tableProps = {
     loading: loading.effects['roomManagement/listByPage'] !== undefined ? loading.effects['roomManagement/listByPage']:false,
-    dataSource : listData,
-    pagination,
+    dataSource : orderList,
+      pagination: {
+        showQuickJumper: true,
+        showTotal: orderTotal => `共 ${orderTotal} 条`,
+        current: orderPage,
+        pageSize:orderSize,
+        total: orderTotal,
+      },
     columns,
     onChange (page) {
-      const { pathname } = location
-      dispatch(routerRedux.push({
-        pathname,
-        query: {
-          page: page.current,
-          size: page.pageSize
-        }
-      }))
+      const query = parse(location.search.substr(1))
+      dispatch({type:"order/getOrderList",payload:{customerId:query.dataId,page:page}})
     }
   }
 
   return(
-    <div className="tableDiv">
-      <Table bordered {...tableProps} />
+    <div className="CustomerConent">
+      <Table className='customer-table' bordered {...tableProps} />
     </div>
   )
 }
@@ -107,18 +127,17 @@ class OrderIndex extends React.Component{
   }
 
   componentDidMount(){
+    console.log(this.props);
     const query = parse(location.search.substr(1))
-    this.props.dispatch({name:"order/getOrderList",payload:{customerId:query.dataId}})
+    this.props.dispatch({type:"order/getOrderList",payload:{customerId:query.dataId}})
   }
 
   render(){
 
     return (
       <div className="customerContent">
-          <main className="yt-admin-framework-Customer">
             {/*<SearchBar ref="creatRoom" isSearch={true} onSearch={this.onSearch.bind(this)}/>*/}
-            {/*<ResultsTable data={this.props}/>*/}
-          </main>
+            <ResultsTable data={this.props}/>
       </div>
     )
   }

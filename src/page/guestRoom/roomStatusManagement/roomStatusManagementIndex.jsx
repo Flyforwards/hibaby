@@ -387,6 +387,7 @@ class roomStatusIndex extends React.Component {
 
     //根据房态管理页面权限显示页面 add by yangjj 2017-07-27 17:30
     const {permissionAlias} = this.props;
+
     const monthFlag = permissionAlias.contains("MONTH_STATUS_SHOW");
     const dayFlag = permissionAlias.contains("DAY_STATUS_SHOW");
     let roomView = null;
