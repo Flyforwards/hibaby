@@ -41,3 +41,10 @@ export function getBalancePaymentslist(values) {
   })
 }
 
+//账户变更记录
+export function transactionrecordList(values) {
+  return request('/crm/api/v1/transactionrecords/transactionrecordList', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+}

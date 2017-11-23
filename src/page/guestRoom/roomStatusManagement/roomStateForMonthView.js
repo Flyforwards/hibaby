@@ -96,8 +96,6 @@ const monthStateView = (props) => {
       return;
     }
 
-
-
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
@@ -126,8 +124,6 @@ const monthStateView = (props) => {
         dayIndex = nowDict.index
       }
     }
-
-
 
     if(dragUser.startIndex == -1 && roomIndex){
       customers.map(value=>{
@@ -1147,7 +1143,6 @@ const monthStateView = (props) => {
         payload: true
       });
     };
-
 
 
     function onClicked(e) {

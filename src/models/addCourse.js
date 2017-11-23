@@ -112,7 +112,6 @@ export default {
 			      		code,
 			      		err
 		      }} = yield call(addCourseService.saveCustomerPackage, values);
-				//console.log(data);
 				if (code == 0) {
 					message.success("添加套餐成功");
 

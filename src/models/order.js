@@ -10,6 +10,8 @@ import { parse } from 'qs'
 export default {
   namespace: 'order',
   state: {
+    orderDetail:null,
+    orderPush:false,
     orderList:[],
     orderPage:1,
     orderSize:10,
@@ -17,7 +19,11 @@ export default {
     balancePaymentslist:[],
     balancePaymentsPage:1,
     balancePaymentsSize:10,
-    balancePaymentsTotal:0
+    balancePaymentsTotal:0,
+    transactionrecordList:[],
+    transactionrecordPage:1,
+    transactionrecordSize:10,
+    transactionrecordTotal:0
   },
   //加载页面
   subscriptions: {
@@ -47,10 +53,12 @@ export default {
       }
     },
     *getOrderDetail({payload : values}, { call, put }){
-      const {data} = yield call(orderService.getOrderDetail, values);
-      if (code == 0) {
-        //更新state
-        // yield put({type:'savaOrderList',payload:values.data} );
+      try {
+        const {data} = yield call(orderService.getOrderDetail, values);
+        yield put({type:'savaOrderDetail',payload:data} );
+      }
+      catch (err){
+        console.log(err)
       }
     },
 
@@ -67,15 +75,25 @@ export default {
     },
     *orderSubmit({payload : values}, { call, put }){
       try {
-        const {data: { data, code,err} } = yield call(orderService.orderSubmit(), values);
+        const {data: { data, code,err} } = yield call(orderService.orderSubmit, values);
 
       }
       catch (e){}
     },
 
+    *getTransactionrecordList({payload : values}, { call, put }){
+      try {
+        const {data: { data, code,err} } = yield call(orderService.transactionrecordList, values);
+        yield put({type:'saveTransactionrecordList',payload:data} );
+
+      }
+      catch (e){}
+    },
+
+
     *orderPay({payload : values}, { call, put }){
       try {
-        const {data: { data, code,err} } = yield call(orderService.orderPay(), values);
+        const {data: { data, code,err} } = yield call(orderService.orderPay, values);
 
       }
       catch (e){}
@@ -87,8 +105,18 @@ export default {
     savaOrderList(state,{ payload: todo }) {
       return {...state, orderList:todo.data,orderSize:todo.size,orderPage:todo.page,orderTotal:todo.total};
     },
+    savaOrderDetail(state,{ payload: todo }) {
+      return {...state, orderDetail:todo.data};
+    },
+
     savaBalancePaymentslist(state,{ payload: todo }) {
       return {...state, balancePaymentslist:todo.data,balancePaymentsSize:todo.size,balancePaymentsPage:todo.page,balancePaymentsTotal:todo.total};
     },
+    saveTransactionrecordList(state,{ payload: todo }) {
+      return {...state, transactionrecordList:todo.data,transactionrecordSize:todo.size,transactionrecordPage:todo.page,transactionrecordTotal:todo.total};
+    },
+    setOrderPush(state,{ payload: todo }){
+      return {...state, orderPush:todo};
+    }
   }
 };
