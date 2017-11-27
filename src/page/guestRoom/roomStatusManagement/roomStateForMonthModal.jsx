@@ -70,22 +70,22 @@ function CustomerSearch(props) {
     { title: '宝宝生日', component: 'Date', submitStr: 'productionDate' },
     { title: '分娩医院', component: 'Select', submitStr: 'hospital', selectName: 'Hospital' }
   ]
-  
+
   const options = shipCards.map((record) => {
     return (<Option key={record.id} value={record.id}>{record.name}</Option>)
   });
-  
+
   const purchasePackageOptions = packageAry.map((record) => {
     return (<Option key={record.id} value={record.id}>{record.name}</Option>)
   });
-  
+
   function creatComponent(dict) {
-    
+
     let formItemLayout = dict.title ? { labelCol: { span: 8 }, wrapperCol: { span: 16 } } : {
       labelCol: { span: 0 },
       wrapperCol: { span: 24 }
     }
-    
+
     return (
       <FormItem {...formItemLayout} label={dict.title}>
         {getFieldDecorator(dict.submitStr)
@@ -107,26 +107,26 @@ function CustomerSearch(props) {
                       <Input style={{ height: dict.submitStr === 'sear' ? '40px' : '32px' }} placeholder={dict.submitStr === 'sear' ? '输入客户编号、客户姓名、联系方式、合同编号' : "请填写"} className='antCli'/>
                       : <InputNumber min={1} max={100}/>
                   )
-            
+
             )
         )}
       </FormItem>
     )
   }
-  
-  
+
+
   let searchChiAry = [];
   let tempChiAry = [];
-  
+
   for (let i = 0; i < searchAry.length; i++) {
     const dict = searchAry[i];
     if ((i % 4) === 0) {
       searchChiAry.push(<Row key={i}>{tempChiAry}</Row>)
       tempChiAry = [];
     }
-    
+
     if (i === 0) {
-      
+
       tempChiAry.push(
         <Col key={dict[0].submitStr} span={4}>
           <Row><Col span={19} offset={5}>
@@ -151,15 +151,15 @@ function CustomerSearch(props) {
   if (tempChiAry.length < 4) {
     searchChiAry.push(<Row key={searchAry.length}>{tempChiAry}</Row>)
   }
-  
-  
+
+
   function reset() {
     props.form.resetFields();
     onSearch()
   }
-  
+
   function onSearch(e) {
-    
+
     props.form.validateFields((err, values) => {
       if (!err) {
         let param = {};
@@ -180,7 +180,7 @@ function CustomerSearch(props) {
             }
           }
         })
-        
+
         dispatch({
           type: 'roomStatusManagement/getCustomerPage',
           payload: param
@@ -188,9 +188,9 @@ function CustomerSearch(props) {
       }
     })
   }
-  
+
   const searBar = creatComponent({ component: 'Input', submitStr: 'sear' })
-  
+
   const HeadSrarch = () => {
     return (
       <Row>
@@ -207,7 +207,7 @@ function CustomerSearch(props) {
       </Row>
     )
   }
-  
+
   return (
     <div>
       {HeadSrarch()}
@@ -248,24 +248,24 @@ function CustomerTable({ props, loading, selectCustomerFun, dispatch, selectItem
     }
     }
   ];
-  
+
   function disabled(value) {
     let disabled = false;
     monthStateCustomers.map((item) => {
-      
+
       if (((item.customerId || item.id) === (value.id || value.customerId)) && (!item.edit && !item.change)) {
         disabled = true;
       }
     })
     return disabled;
   }
-  
+
   for (let j = 0; j < allCusList.length; j++) {
     const subDict = allCusList[j];
     subDict.key = j;
   }
-  
-  
+
+
   let ary = [];
   for (let i = 0; i < selectItem.length; i++) {
     const dict = selectItem[i];
@@ -278,9 +278,9 @@ function CustomerTable({ props, loading, selectCustomerFun, dispatch, selectItem
         }
       }
     }
-    
+
   }
-  
+
   const tableProps = {
     loading: loading.effects['roomStatusManagement/getCustomerPage'],
     dataSource: allCusList,
@@ -290,11 +290,11 @@ function CustomerTable({ props, loading, selectCustomerFun, dispatch, selectItem
       dispatch({ type: 'roomStatusManagement/getCustomerPage', payload: { page: page.current } })
     }
   }
-  
+
   const rowSelection = {
-    
+
     onSelect: (record, selected, selectedRows) => {
-      
+
       selectCustomerFun(record, selected);
     },
     getCheckboxProps: (record) => {
@@ -304,27 +304,27 @@ function CustomerTable({ props, loading, selectCustomerFun, dispatch, selectItem
     },
     selectedRowKeys: ary
   };
-  
+
   function onClose(record) {
     selectCustomerFun(record, false);
-    
+
   }
-  
+
   let tags = [];
   if (selectItem) {
-    
+
     for (let i = 0; i < selectItem.length; i++) {
       const dict = selectItem[i];
-      
+
       if (!dict.change) {
         let flag = !disabled(dict);
         tags.push(
           <Tag key={dict.customerId || dict.id} closable={flag} onClose={() => {onClose(dict)}}>{dict.customerName || dict.name}</Tag>)
-        
+
       }
     }
   }
-  
+
   return (
     <Card bodyStyle={{ padding: '10px' }} title="预约客户">
       <Card bodyStyle={{ padding: '10px', paddingTop: 0 }}>
@@ -333,31 +333,31 @@ function CustomerTable({ props, loading, selectCustomerFun, dispatch, selectItem
       <Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
     </Card>
   )
-  
+
 }
 
 const CusSearchFormDiv = Form.create()(CustomerSearch);
 
 //添加客户
 class addCustomer extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
       selectItem: ''
     }
   }
-  
+
   componentDidMount() {
     this.setState({
       selectItem: [...this.props.users.monthStateCustomers]
     })
     this.props.dispatch({ type: 'roomStatusManagement/getCustomerPage' });
   }
-  
+
   handleOk() {
     let ary = [...this.state.selectItem];
-    
+
     for (let i = 0; i < ary.length; i++) {
       const dict = ary[i];
       if (dict.id) {
@@ -367,15 +367,14 @@ class addCustomer extends React.Component {
         dict.edit = true;
       }
     }
-    
     this.props.dispatch({ type: 'roomStatusManagement/setMonthStatusCustomers', payload: { data: ary } });
     this.props.dispatch({ type: 'roomStatusManagement/setCustomerVisible', payload: false });
   }
-  
+
   handleCancel() {
     this.props.dispatch({ type: 'roomStatusManagement/setCustomerVisible', payload: false });
   }
-  
+
   selectCustomerFun(record, selected) {
     let ary = this.state.selectItem;
     if (selected) {
@@ -384,20 +383,20 @@ class addCustomer extends React.Component {
     else {
       for (var i = 0; i < ary.length; i++) {
         const dict = ary[i]
-        
+
         if ((dict.customerId || dict.id) == (record.id || record.customerId)) {
           ary.splice(i, 1);
         }
       }
-      
+
     }
     this.setState({ selectItem: ary })
   }
-  
+
   render() {
     const { CustomerVisible } = this.props.users;
     const { permissionAlias } = this.props;
-    
+
     return (
       <Modal
         className="addCustomer"
@@ -411,7 +410,7 @@ class addCustomer extends React.Component {
           <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
           <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}> 确定</Button>
         ]}
-      
+
       >
         <CusSearchFormDiv packageAry={this.props.users.packageAry} shipCards={this.props.users.shipCards} dispatch={this.props.dispatch}/>
         <CustomerTable
@@ -426,11 +425,11 @@ class addCustomer extends React.Component {
 
 //创建客户
 class createCustomer extends React.Component {
-  
+
   constructor(props) {
     super(props);
   }
-  
+
   dueDateChange(date, dateString) {
     let weeks = Math.ceil((280 - date.diff(moment(), 'days')) / 7)
     weeks = weeks > 40 ? 40 : weeks;
@@ -439,12 +438,12 @@ class createCustomer extends React.Component {
       gestationalWeeks: weeks
     });
   }
-  
-  
+
+
   handleCancel() {
     this.props.dispatch({ type: 'roomStatusManagement/createCustomerVisible', payload: false });
   }
-  
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -459,7 +458,7 @@ class createCustomer extends React.Component {
       }
     });
   }
-  
+
   render() {
     const { createCustomerVisible, intentionPackageAry, gravidityAry } = this.props.users;
     const { getFieldDecorator } = this.props.form;
@@ -486,7 +485,7 @@ class createCustomer extends React.Component {
         footer={[
           <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>
         ]}
-      
+
       >
         <Form onSubmit={this.handleSubmit}>
           <Row>
@@ -526,7 +525,7 @@ class createCustomer extends React.Component {
                 )}
               </FormItem>
             </Col>
-            
+
             <Col span={12}>
               <FormItem label="联系方式" {...formItemLayout}>
                 {getFieldDecorator('contact', {
@@ -536,7 +535,7 @@ class createCustomer extends React.Component {
                 )}
               </FormItem>
             </Col>
-            
+
             <Col span={12}>
               <FormItem label="合同编号" {...formItemLayout}>
                 {getFieldDecorator('contractNumber', {
@@ -583,20 +582,20 @@ const createCustomerForm = Form.create()(createCustomer);
 function SearchForm(props) {
   const { getFieldDecorator } = props.form;
   const { packageAry, dispatch } = props;
-  
-  
+
+
   function onSearch() {
-    
-    
+
+
     props.form.validateFields((err, values) => {
       if (!err) {
         let param = {};
-        
+
         if (SELECT_CUSTOMER) {
           param.customerId = SELECT_CUSTOMER.customerId;
           param.customerName = SELECT_CUSTOMER.customerName;
         }
-        
+
         Object.keys(values).map((key) => {
           const value = values[key];
           if (value) {
@@ -608,7 +607,7 @@ function SearchForm(props) {
             }
           }
         })
-        
+
         dispatch({
           type: 'roomStatusManagement/arrangeRoom',
           payload: param
@@ -616,19 +615,19 @@ function SearchForm(props) {
       }
     })
   }
-  
+
   function cusFromItem(dict) {
-    
+
     let packageChi = [];
     for (let i = 0; i < packageAry.length; i++) {
       packageChi.push(<Option key={packageAry[i].id}>{packageAry[i].name}</Option>);
     }
-    
+
     let numberChi = [];
     for (let i = 1; i <= 5; i++) {
       numberChi.push(<Option key={i}>{i}</Option>);
     }
-    
+
     return (
       <Col span={8}>
         <FormItem key={dict.subMitStr} {...formItemLayout} label={dict.title}>
@@ -659,15 +658,15 @@ function SearchForm(props) {
       </Col>
     )
   }
-  
+
   const array = [
     { title: '起始时间', subMitStr: 'beginDate', componentStyle: 'date' },
     { title: '套餐', subMitStr: 'packageInfoId', componentStyle: 'select' },
     { title: '总天数', subMitStr: 'days', componentStyle: 'Input' },
     { title: '拼房次数', subMitStr: 'jumpNo', componentStyle: 'select' }
   ]
-  
-  
+
+
   return (
     <div>
       <h3>排房条件</h3>
@@ -688,7 +687,7 @@ const SearchFormDiv = Form.create()(SearchForm)
 
 
 function SearResults({ resultsRowHouses, selectFun, currSelect }) {
-  
+
   function creatCard() {
     let ary = [];
     for (let i = 0; i < resultsRowHouses.length; i++) {
@@ -696,18 +695,18 @@ function SearResults({ resultsRowHouses, selectFun, currSelect }) {
       let chiAry = [];
       for (let j = 0; j < dict.jumpList.length; j++) {
         const chiDict = dict.jumpList[j];
-        
+
         chiAry.push(<span style={{ lineHeight: '30px' }} key={j}>{j > 0 ? ' --> ' : ''} {chiDict.roomNo}
           停留天数{chiDict.stayDay}</span>)
       }
       ary.push(
         <Card onClick={() => {selectFun(i)}} style={{ border: i === currSelect ? '1px solid red' : '1px solid #e9e9e9' }} key={i} bodyStyle={{ padding: '10px' }} className="cardCli">{chiAry}</Card>)
-      
+
     }
     return ary.length > 0 ? ary : <h2 className="noResults">没有符合条件的结果</h2>
   }
-  
-  
+
+
   return (
     <div>
       <h3>排房结果</h3>
@@ -716,16 +715,32 @@ function SearResults({ resultsRowHouses, selectFun, currSelect }) {
   )
 }
 
+function RemoveMonthStatusCustomers(props) {
+  const {monthStateCustomers } = props.users
+  let ary = [...monthStateCustomers];
+
+  for (let i = 0;i<monthStateCustomers.length;i++){
+    let model = monthStateCustomers[i];
+
+    if ((model.id||model.customerId) == SELECT_CUSTOMER.customerId) {
+      ary.splice(i,1)
+      break;
+    }
+  }
+
+  props.dispatch({ type: 'roomStatusManagement/setMonthStatusCustomers', payload: { data: ary } });
+}
+
 class RowHouses extends React.Component {
-  
+
   constructor(props) {
     super(props);
-    
+
     this.state = {
       currSelect: ''
     }
   }
-  
+
   selectFun(index) {
     const { selectMem } = this.props.users;
     if (selectMem) {
@@ -733,44 +748,47 @@ class RowHouses extends React.Component {
         currSelect: index
       })
     }
-    
+
   }
-  
+
   handleOk() {
-    const { resultsRowHouses } = this.props.users;
-    
+    const { resultsRowHouses ,monthStateCustomers } = this.props.users;
+
     if (this.state.currSelect === '') {
       message.error('请先选择一个方案')
       return;
     }
-    
+
     if (!SELECT_CUSTOMER) {
       message.error('请先选择一个客户')
       return;
     }
-    
+
+
+    RemoveMonthStatusCustomers(this.props);
+
     this.handleCancel()
-    
+
     this.props.dispatch({
       type: 'roomStatusManagement/monthRoomUpdate',
       payload: resultsRowHouses[this.state.currSelect].monthRoomUpdateList
     });
-    
-    
+
+
   }
-  
+
   handleCancel() {
     SELECT_CUSTOMER = '';
     this.setState({
       currSelect: ''
     })
-    
+
     this.props.dispatch({
       type: 'roomStatusManagement/setRowHousesVisible',
       payload: [false, '']
     });
   }
-  
+
   render() {
     const { packageAry, resultsRowHouses, RowHousesVisible, selectMem } = this.props.users;
     const { loading } = this.props;
@@ -779,7 +797,7 @@ class RowHouses extends React.Component {
       footerDiv.push(<Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>)
     }
     return (
-      
+
       <Modal
         className="RowHouses"
         width="1000px"
@@ -800,19 +818,140 @@ class RowHouses extends React.Component {
   }
 }
 
+
+function QuickCusFromItem(props) {
+
+  const {dict,getFieldDecorator} = props
+
+  let roomChi = [];
+
+  if (dict.ary){
+    for (let i = 0; i < dict.ary.length; i++) {
+      roomChi.push(<Option key={i}>{dict.ary[i].roomNo}</Option>);
+    }
+  }
+
+  return (
+    <Col span={8}>
+      <FormItem key={dict.subMitStr} {...formItemLayout} label={dict.title}>
+        {getFieldDecorator(dict.subMitStr, {
+          rules: [{
+            required: (dict.subMitStr === 'packageInfoId' ? false : true),
+            message: `请输入${dict.title || '此项'}!`
+          }]
+        })
+        (
+          dict.componentStyle === 'select' ?
+            (
+                <Select placeholder="请选择" className='antCli'>
+                  {roomChi}
+                </Select>
+            )
+            :
+            ( dict.componentStyle === 'date' ?
+                <DatePicker style={{ width: '100%' }}/> :
+                <InputNumber style={{ height: '32px' }} min={1} max={365} placeholder="请填写" className='antCli'/>
+            )
+        )}
+      </FormItem>
+    </Col>
+  )
+}
+
+class QuickStay extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
+
+  handleOk() {
+    console.log(this.props)
+    const that = this
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        RemoveMonthStatusCustomers(that.props);
+        that.props.dispatch({
+          type: 'roomStatusManagement/FastRowHouses',
+
+          payload: {customerId:SELECT_CUSTOMER.customerId,startDate:moment(moment(values.beginDate).format("YYYY-MM-DD")).unix()*1000,customerName:SELECT_CUSTOMER.customerName
+            ,roomIndex:values.roomNo,days:values.days}
+        });
+        that.handleCancel()
+
+      }
+    })
+
+
+  }
+
+  handleCancel() {
+    SELECT_CUSTOMER = '';
+    this.props.dispatch({
+      type: 'roomStatusManagement/setQuickStayVisible',
+      payload: false
+    });
+  }
+
+  render() {
+    const { getFieldDecorator } = this.props.form;
+
+    const { QuickStayVisible ,roomList} = this.props.users;
+
+    const array = [
+      { title: '起始时间', subMitStr: 'beginDate', componentStyle: 'date' },
+      { title: '总天数', subMitStr: 'days', componentStyle: 'Input' },
+      { title: '房间', subMitStr: 'roomNo', componentStyle: 'select',ary:roomList }
+    ]
+
+
+    let footerDiv = [<Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
+      <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>]
+
+    return (
+
+      <Modal
+        className="RowHouses"
+        width="1000px"
+        visible={QuickStayVisible}
+        title="快速排房 "
+        maskClosable
+        closable={false}
+        onCancel={this.handleCancel.bind(this)}
+        footer={footerDiv}
+      >
+        <h3>排房条件</h3>
+        <Row>
+          <Form>
+            {array.map(value=>{
+              return QuickCusFromItem({dict:value,getFieldDecorator:getFieldDecorator});
+            })}
+          </Form>
+
+        </Row>
+
+      </Modal>
+    )
+  }
+}
+
+const QuickStayForm = Form.create()(QuickStay);
+
+
 function RowHousesWay(props) {
   const { RowHousesWayVisible } = props.users;
-  
-  
+
+
   SELECT_CUSTOMER = props.selectCuntomer;
-  
+
   function handleCancel() {
     props.dispatch({
       type: 'roomStatusManagement/setRowHousesWayVisible',
       payload: false
     });
   }
-  
+
   function autoRowHouses() {
     handleCancel()
     props.dispatch({
@@ -820,17 +959,25 @@ function RowHousesWay(props) {
       payload: [true, SELECT_CUSTOMER]
     });
   }
-  
+
   function handleManual() {
     handleCancel()
     props.dispatch({
       type: 'roomStatusManagement/setManualSelect',
       payload: SELECT_CUSTOMER
     });
-    
+
   }
-  
-  
+
+  function quickHouses() {
+    handleCancel()
+    props.dispatch({
+      type: 'roomStatusManagement/setQuickStayVisible',
+      payload: true
+    });
+  }
+
+
   return (
     <Modal
       title="提示"
@@ -845,14 +992,15 @@ function RowHousesWay(props) {
     >
       <h3>请选择此客户的排房方式</h3>
       <Button type="primary" style={{ marginRight: '10px' }} className='button-group-1' onClick={() => handleManual()}>手动排房</Button>
-      <Button type="primary" className='button-group-1' onClick={() => autoRowHouses()}>自动排房</Button>
+      <Button type="primary" style={{ marginRight: '10px' }} className='button-group-1' onClick={() => autoRowHouses()}>自动排房</Button>
+      <Button type="primary" className='button-group-1' onClick={() => quickHouses()}>快速排房</Button>
     </Modal>
   )
 }
 
 function mapStateToProps(state) {
   const { permissionAlias } = state.layout;
-  
+
   return {
     users: state.roomStatusManagement,
     loading: state.loading,
@@ -861,6 +1009,7 @@ function mapStateToProps(state) {
 }
 
 export const RowHousesWayModal = connect(mapStateToProps)(RowHousesWay);
+export const QuickStayModel = connect(mapStateToProps)(QuickStayForm);
 export const AddCustomerModal = connect(mapStateToProps)(addCustomer);
 export const CreateCustomer = connect(mapStateToProps)(createCustomerForm);
 export const RowHousesModal = connect(mapStateToProps)(RowHouses);

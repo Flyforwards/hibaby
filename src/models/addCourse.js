@@ -104,7 +104,7 @@ export default {
 			},
 			*saveCustomerPackage({payload: values}, { call, put }) {
 
-        // yield put({type:'orderSubmit',payload:values});
+        yield put({type:'orderSubmit',payload:values});
 
         const {
 					data: {
@@ -112,7 +112,6 @@ export default {
 			      		code,
 			      		err
 		      }} = yield call(addCourseService.saveCustomerPackage, values);
-				//console.log(data);
 				if (code == 0) {
 					message.success("添加套餐成功");
 

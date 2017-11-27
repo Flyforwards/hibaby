@@ -75,10 +75,10 @@ function ResultsTable(props) {
   }
 
   function onLook(record) {
-    // dispatch(routerRedux.push({
-    //   pathname: '/chamber/roomindex/roomdetail',
-    //   query: {dataId:record.id}
-    // }))
+    dispatch(routerRedux.push({
+      pathname: '/crm/customer/order/detail',
+      query: {orderid:record.id}
+    }))
   }
 
 

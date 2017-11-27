@@ -87,6 +87,7 @@ export default {
       }
     ],
     dateRulerList: [],
+    QuickStayVisible:false,
     floorSelect: null,
     dateSelectViews: [],
     //可编辑的  添加客户  加入的
@@ -151,6 +152,11 @@ export default {
       }
       return { ...state, ...dict, selectMem };
     },
+
+    setQuickStayVisible(state, { payload: data }) {
+      return { ...state, QuickStayVisible:data };
+    },
+
     setManualSelect(state, { payload: data }) {
 
       return { ...state, manualSelect: data };
@@ -205,6 +211,9 @@ export default {
     },
     setDayStatusData(state, { payload: todo }){
       return { ...state, dayStatusData: todo.data };
+    },
+    setActBox(state, { payload: todo }){
+      return { ...state, actBox: todo };
     },
     addMutDictData(state, { payload: todo }){
       if (todo.abName === 'LC') {
@@ -467,6 +476,173 @@ export default {
         ...state,
         modalH: data
       }
+    },
+
+    //房间微调  房间号 客户id 方向
+    roomFinetuning(state, { payload: data }){
+      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex} = data
+      customerId = parseInt(customerId)
+      startIndex = parseInt(startIndex)
+      endIndex = parseInt(endIndex)
+      status = parseInt(status)
+      roomIndex = parseInt(roomIndex)
+
+      // 复制数组
+      let monthRoomList = state.monthRoomList.concat();
+
+      let allDays = monthRoomList[roomIndex].useAndBookingList;
+
+      let removeIndedx = direction === "left" ? endIndex : startIndex;
+      let addIndex = direction === "left" ? startIndex-1 : endIndex+1;
+
+
+      if (!allDays[removeIndedx]||!allDays[addIndex]){
+        message.error("数据超出边界")
+        return state
+      }
+
+      let customerList = allDays[removeIndedx].customerList;
+      for (let k = 0; k < customerList.length; k++) {
+        if (customerList[k].customerId == customerId && status == customerList[k].status) {
+          customerList.splice(k, 1);
+          break;
+        }
+      }
+
+
+      let customerListTwo = allDays[addIndex].customerList;
+      customerListTwo.push({customerId,customerName,status})
+
+      return {...state,monthRoomList};
+
+    },
+
+    roomChange(state, { payload: data }){
+      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex} = data
+      customerId = parseInt(customerId)
+      startIndex = parseInt(startIndex)
+      endIndex = parseInt(endIndex)
+      status = parseInt(status)
+      roomIndex = parseInt(roomIndex)
+
+
+
+      let monthRoomList = state.monthRoomList.concat();
+
+      if (monthRoomList[data.roomIndex]) {
+        let room = monthRoomList[data.roomIndex].useAndBookingList;
+        let startIndex = parseInt(data.startIndex);
+        let endIndex = parseInt(data.endIndex);
+
+        for (let j = startIndex; j <= endIndex; j++) {
+          let customerList = room[j].customerList;
+          for (let k = 0; k < customerList.length; k++) {
+            if (customerList[k].customerId == data.customerId && data.status == customerList[k].status) {
+              customerList.splice(k--, 1);
+              break;
+            }
+          }
+        }
+      }
+
+
+      let tempRoom = monthRoomList[roomIndex+(direction === "up" ? -1 : 1)];
+
+      if (!tempRoom){
+        message.error("数据超出边界")
+        return state;
+      }
+
+      let allDays = tempRoom.useAndBookingList;
+
+
+      for (let i = startIndex; i <= endIndex; i++) {
+        let dayIndex = i;
+
+        let currentDay = allDays[dayIndex];
+
+        if (!currentDay || !currentDay.customerList) {
+          break;
+        }
+
+        // 判断是否是连续时间
+        if (dayIndex !== 0) {
+          if (allDays[dayIndex].date - allDays[dayIndex - 1].date > 86400000) {
+            break;
+          }
+        }
+
+        // 如果该用户在当前房间内不存在, 则进行添加
+        let isExit = false;
+
+        for (let customer of currentDay.customerList) {
+          if (customer.customerId === customerId && status == customer.status) {
+            isExit = true;
+            break;
+          }
+        }
+
+        if (!isExit) {
+          currentDay.customerList.push({customerId,customerName,status});
+        }
+      }
+
+      return {...state,monthRoomList};
+
+    },
+
+    FastRowHouses(state, { payload: data }){
+      let {customerId,startDate,customerName,roomIndex,days} = data
+
+      roomIndex = parseInt(roomIndex)
+
+      let monthRoomList = state.monthRoomList.concat();
+
+      let tempRoom = monthRoomList[roomIndex];
+
+      let allDays = tempRoom.useAndBookingList;
+
+      let startIndex = 0
+
+      for (let i = 0;i<allDays.length;i++){
+        if (allDays[i].date == startDate){
+          startIndex = i;
+          break;
+        }
+      }
+
+      for (let i = 0; i < days; i++) {
+        let dayIndex = startIndex + i;
+
+        let currentDay = allDays[dayIndex];
+
+        if (!currentDay || !currentDay.customerList) {
+          break;
+        }
+
+        // 判断是否是连续时间
+        if (dayIndex !== 0) {
+          if (allDays[dayIndex].date - allDays[dayIndex - 1].date > 86400000) {
+            break;
+          }
+        }
+
+        // 如果该用户在当前房间内不存在, 则进行添加
+        let isExit = false;
+
+        for (let customer of currentDay.customerList) {
+          if (customer.customerId === customerId && status == customer.status) {
+            isExit = true;
+            break;
+          }
+        }
+
+        if (!isExit) {
+          currentDay.customerList.push({customerId,customerName,status});
+        }
+      }
+
+      return {...state,monthRoomList};
     },
 
     deleteDateSelectView(state, { payload: data }){
@@ -827,6 +1003,9 @@ export default {
         }
       }
     },
+
+
+
 
     *confirmCheckIn({payload: value}, {call, put, select}){
 

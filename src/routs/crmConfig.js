@@ -148,6 +148,16 @@ export default (app) => [
         })
       }
     },
+  //查看套房
+  {
+    path: '/crm/customer/order/detail',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/order'));
+        cb(null, require('page/crm/customer/OrderDetail.js'))
+      })
+    }
+  },
     //商品
     {
       path: '/crm/commodity',
