@@ -715,6 +715,22 @@ function SearResults({ resultsRowHouses, selectFun, currSelect }) {
   )
 }
 
+function RemoveMonthStatusCustomers(props) {
+  const {monthStateCustomers } = props.users
+  let ary = [...monthStateCustomers];
+
+  for (let i = 0;i<monthStateCustomers.length;i++){
+    let model = monthStateCustomers[i];
+
+    if ((model.id||model.customerId) == SELECT_CUSTOMER.customerId) {
+      ary.splice(i,1)
+      break;
+    }
+  }
+
+  props.dispatch({ type: 'roomStatusManagement/setMonthStatusCustomers', payload: { data: ary } });
+}
+
 class RowHouses extends React.Component {
 
   constructor(props) {
@@ -749,18 +765,7 @@ class RowHouses extends React.Component {
     }
 
 
-    let ary = [...monthStateCustomers];
-
-    for (let i = 0;i<monthStateCustomers.length;i++){
-      let model = monthStateCustomers[i];
-
-      if (model.id == SELECT_CUSTOMER.customerId) {
-        ary.splice(i,1)
-        break;
-      }
-    }
-
-    this.props.dispatch({ type: 'roomStatusManagement/setMonthStatusCustomers', payload: { data: ary } });
+    RemoveMonthStatusCustomers(this.props);
 
     this.handleCancel()
 
@@ -813,6 +818,127 @@ class RowHouses extends React.Component {
   }
 }
 
+
+function QuickCusFromItem(props) {
+
+  const {dict,getFieldDecorator} = props
+
+  let roomChi = [];
+
+  if (dict.ary){
+    for (let i = 0; i < dict.ary.length; i++) {
+      roomChi.push(<Option key={i}>{dict.ary[i].roomNo}</Option>);
+    }
+  }
+
+  return (
+    <Col span={8}>
+      <FormItem key={dict.subMitStr} {...formItemLayout} label={dict.title}>
+        {getFieldDecorator(dict.subMitStr, {
+          rules: [{
+            required: (dict.subMitStr === 'packageInfoId' ? false : true),
+            message: `请输入${dict.title || '此项'}!`
+          }]
+        })
+        (
+          dict.componentStyle === 'select' ?
+            (
+                <Select placeholder="请选择" className='antCli'>
+                  {roomChi}
+                </Select>
+            )
+            :
+            ( dict.componentStyle === 'date' ?
+                <DatePicker style={{ width: '100%' }}/> :
+                <InputNumber style={{ height: '32px' }} min={1} max={365} placeholder="请填写" className='antCli'/>
+            )
+        )}
+      </FormItem>
+    </Col>
+  )
+}
+
+class QuickStay extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
+
+  handleOk() {
+    console.log(this.props)
+    const that = this
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        RemoveMonthStatusCustomers(that.props);
+        that.props.dispatch({
+          type: 'roomStatusManagement/FastRowHouses',
+
+          payload: {customerId:SELECT_CUSTOMER.customerId,startDate:moment(moment(values.beginDate).format("YYYY-MM-DD")).unix()*1000,customerName:SELECT_CUSTOMER.customerName
+            ,roomIndex:values.roomNo,days:values.days}
+        });
+        that.handleCancel()
+
+      }
+    })
+
+
+  }
+
+  handleCancel() {
+    SELECT_CUSTOMER = '';
+    this.props.dispatch({
+      type: 'roomStatusManagement/setQuickStayVisible',
+      payload: false
+    });
+  }
+
+  render() {
+    const { getFieldDecorator } = this.props.form;
+
+    const { QuickStayVisible ,roomList} = this.props.users;
+
+    const array = [
+      { title: '起始时间', subMitStr: 'beginDate', componentStyle: 'date' },
+      { title: '总天数', subMitStr: 'days', componentStyle: 'Input' },
+      { title: '房间', subMitStr: 'roomNo', componentStyle: 'select',ary:roomList }
+    ]
+
+
+    let footerDiv = [<Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
+      <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}>确定</Button>]
+
+    return (
+
+      <Modal
+        className="RowHouses"
+        width="1000px"
+        visible={QuickStayVisible}
+        title="快速排房 "
+        maskClosable
+        closable={false}
+        onCancel={this.handleCancel.bind(this)}
+        footer={footerDiv}
+      >
+        <h3>排房条件</h3>
+        <Row>
+          <Form>
+            {array.map(value=>{
+              return QuickCusFromItem({dict:value,getFieldDecorator:getFieldDecorator});
+            })}
+          </Form>
+
+        </Row>
+
+      </Modal>
+    )
+  }
+}
+
+const QuickStayForm = Form.create()(QuickStay);
+
+
 function RowHousesWay(props) {
   const { RowHousesWayVisible } = props.users;
 
@@ -843,6 +969,14 @@ function RowHousesWay(props) {
 
   }
 
+  function quickHouses() {
+    handleCancel()
+    props.dispatch({
+      type: 'roomStatusManagement/setQuickStayVisible',
+      payload: true
+    });
+  }
+
 
   return (
     <Modal
@@ -858,7 +992,8 @@ function RowHousesWay(props) {
     >
       <h3>请选择此客户的排房方式</h3>
       <Button type="primary" style={{ marginRight: '10px' }} className='button-group-1' onClick={() => handleManual()}>手动排房</Button>
-      <Button type="primary" className='button-group-1' onClick={() => autoRowHouses()}>自动排房</Button>
+      <Button type="primary" style={{ marginRight: '10px' }} className='button-group-1' onClick={() => autoRowHouses()}>自动排房</Button>
+      <Button type="primary" className='button-group-1' onClick={() => quickHouses()}>快速排房</Button>
     </Modal>
   )
 }
@@ -874,6 +1009,7 @@ function mapStateToProps(state) {
 }
 
 export const RowHousesWayModal = connect(mapStateToProps)(RowHousesWay);
+export const QuickStayModel = connect(mapStateToProps)(QuickStayForm);
 export const AddCustomerModal = connect(mapStateToProps)(addCustomer);
 export const CreateCustomer = connect(mapStateToProps)(createCustomerForm);
 export const RowHousesModal = connect(mapStateToProps)(RowHouses);

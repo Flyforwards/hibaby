@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {AddCustomerModal, RowHousesModal, RowHousesWayModal,CreateCustomer} from './roomStateForMonthModal';
+import {AddCustomerModal, RowHousesModal, RowHousesWayModal,CreateCustomer,QuickStayModel} from './roomStateForMonthModal';
 import DictionarySelect from 'common/dictionary_select';
 import moment from 'moment';
 import {
@@ -28,6 +28,8 @@ let selectViewIndex = 0;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
 let addCustomerKey = 'addCustomerKeyOne'
+
+let ActBox = ""
 
 const statusExplain = [
   {name: "预定", color: "#29C1A6"},
@@ -279,6 +281,7 @@ const monthStateView = (props) => {
   };
 
   const addRedBoder = (e) => {
+    ActBox = ""
     let userBoxes = document.querySelectorAll(".userBox");
 
     for (let i = 0; i < userBoxes.length; i++) {
@@ -290,7 +293,7 @@ const monthStateView = (props) => {
     }
     if(e){
       e.target.classList.add("active");
-
+      ActBox = e.target;
     }
   }
 
@@ -368,6 +371,9 @@ const monthStateView = (props) => {
     // // roomList = roomList.splice(0,1);
 
     const renderMonthRoom = (room, roomIndex) => {
+
+
+
       let dateRulerList_count = props.users.dateRulerList.length;
       let unit_line =$(".monthRoomRightBox").width()/room.useAndBookingList.length;
       let users = [];
@@ -1194,6 +1200,8 @@ const monthStateView = (props) => {
       <CreateCustomer/>
       <RowHousesModal/>
       <RowHousesWayModal selectCuntomer={SELECT_CUSTOMER}/>
+      <QuickStayModel selectCuntomer={SELECT_CUSTOMER}/>
+
     </div>
   )
 };
@@ -1201,16 +1209,41 @@ const monthStateView = (props) => {
 class MonthStateClass extends React.Component{
   constructor(props) {
     super(props);
+    this.keyChangeBind = this.keyChange.bind(this)
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.dispatch({type: 'roomStatusManagement/monthRoomList'});
     this.props.dispatch({type: 'roomStatusManagement/netroomViewStateChange'});
+    window.addEventListener('keydown',this.keyChangeBind)
+  }
+
+  keyChange(e){
+    console.log(e.keyCode)
+
+      if (ActBox){
+        const {roomIndex,customerId,customerName,userDaycount,status,startIndex,endIndex} = ActBox.dataset;
+        if (status == -1 || status == 7){
+          if (e.keyCode == 37 || e.keyCode == 39){
+            this.props.dispatch({type:"roomStatusManagement/roomFinetuning",payload:{
+              roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 37 ? "left":"right" ),status,customerName
+            }
+            })
+          }
+          else if (e.keyCode == 38 || e.keyCode == 40){
+            this.props.dispatch({type:"roomStatusManagement/roomChange",payload:{
+              roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 38 ? "up":"down" ),status,customerName
+            }
+            })
+          }
+        }
+      }
   }
 
   componentWillUnmount(){
     selectViewIndex = 0;
     this.props.dispatch({type: 'roomStatusManagement/removeData'});
+    window.removeEventListener('keydown',this.keyChangeBind)
   }
 
   render(){
