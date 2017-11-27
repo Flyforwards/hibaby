@@ -28,21 +28,21 @@ var webpackConfig = {
         proxy: {
 
             // 开发环境
-            // '/crm/api/*': {
-            //     target: 'http://dev.hbbcare.com:8087/crm/api',
-            //     pathRewrite: {
-            //         '^/crm/api': ''
-            //     },
-            //     changeOrigin: true
-            // },
-          // yfy
-          '/crm/api/*': {
-            target: 'http://192.168.199.81:8087/crm/api',
-            pathRewrite: {
-              '^/crm/api': ''
+            '/crm/api/*': {
+                target: 'http://dev.hbbcare.com:8087/crm/api',
+                pathRewrite: {
+                    '^/crm/api': ''
+                },
+                changeOrigin: true
             },
-            changeOrigin: true
-          },
+          // // yfy
+          // '/crm/api/*': {
+          //   target: 'http://192.168.199.81:8087/crm/api',
+          //   pathRewrite: {
+          //     '^/crm/api': ''
+          //   },
+          //   changeOrigin: true
+          // },
             // 测试环境
             // '/crm/api/*': {
             //   target: 'http://test.hbbcare.com:8088/crm/api',
