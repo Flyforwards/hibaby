@@ -54,6 +54,7 @@ export default {
     packageAry: [],
     roomList: '',
     boxW:9,
+    refView:false,
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
     shipCards: [],
     resultsRowHouses: '',
@@ -241,13 +242,18 @@ export default {
       return { ...state, roomState: !todo ? 'day' : 'month' };
     },
     setMonthStatusCustomers(state, { payload: todo }){
-
       return {
         ...state,
         monthStateCustomers: todo.data
       };
     },
+    setRefView(state, { payload: todo }){
 
+      return {
+        ...state,
+        refView: todo
+      };
+    },
     setMonthRoomData(state, { payload: todo }){
       const { list, rate } = todo.data
       // 保留初始的数据, 用于保存预约状态时和当前状态比较, 深拷贝
@@ -488,7 +494,7 @@ export default {
 
     //房间微调  房间号 客户id 方向
     roomFinetuning(state, { payload: data }){
-      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex} = data
+      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex,ActBox} = data
       customerId = parseInt(customerId)
       startIndex = parseInt(startIndex)
       endIndex = parseInt(endIndex)
@@ -520,13 +526,14 @@ export default {
 
       let customerListTwo = allDays[addIndex].customerList;
       customerListTwo.push({customerId,customerName,status})
-
+      ActBox.dataset.startIndex = `${parseInt(startIndex)+(direction === "left" ? -1 : 1)}`;
+      ActBox.dataset.endIndex = `${parseInt(endIndex)+(direction === "left" ? -1 : 1)}`;
       return {...state,monthRoomList};
 
     },
 
     roomChange(state, { payload: data }){
-      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex} = data
+      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex,ActBox} = data
       customerId = parseInt(customerId)
       startIndex = parseInt(startIndex)
       endIndex = parseInt(endIndex)
@@ -594,6 +601,9 @@ export default {
           currentDay.customerList.push({customerId,customerName,status});
         }
       }
+
+
+      ActBox.dataset.roomIndex = `${parseInt(roomIndex)+(direction === "up" ? -1 : 1)}`;
 
       return {...state,monthRoomList};
 

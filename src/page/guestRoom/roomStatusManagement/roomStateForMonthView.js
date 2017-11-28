@@ -208,7 +208,6 @@ const monthStateView = (props) => {
       }
 
       return (
-
         <Col offset={1} span={12} style={{height: "100%"}}>
           <Checkbox.Group defaultValue={index == 0 ? dateSelectList[0].monthList : []} onChange={checkboxChangeHandler}>
             {RowAry[0]}
@@ -283,6 +282,7 @@ const monthStateView = (props) => {
     let userBoxes = document.querySelectorAll(".userBox");
 
     for (let i = 0; i < userBoxes.length; i++) {
+
       userBoxes[i].classList.remove("active");
       let btns = userBoxes[i].querySelectorAll(".userBoxConfirm");
       for (let j = 0; j < btns.length; j++) {
@@ -784,6 +784,7 @@ const monthStateView = (props) => {
           let rightWidth = 0
           let rightUser = {...tempUser}
           let draggable = "true"
+          let className = "userBox";
 
           if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index && tempUser.status !== 7){
             width = (nowDict.index - tempUser.startIndex )  * boxW
@@ -800,6 +801,15 @@ const monthStateView = (props) => {
 
           }
 
+
+          if (ActBox){
+            const {customerId,status,startIndex,userDaycount} = ActBox.dataset;
+            if (tempUser.customerId == customerId && ActBox.dataset.roomIndex == roomIndex&& tempUser.dayCount == userDaycount
+              && tempUser.status == status&&tempUser.startIndex == startIndex){
+              className = "userBox active"
+            }
+          }
+
           const content = <div style={{zIndex:99999}}>{(users[i].customerName?tempUser.customerName:(tempUser.isRepair == 1 ? '维修中' :'' )) + '('
           + tempUser.dayCount + '天, '
           + timeToDate(tempUser.startDate)
@@ -810,7 +820,7 @@ const monthStateView = (props) => {
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
               <div className="userBoxSup" style={{width: (width+rightWidth+20) + 'px',left:users[i].startIndex * boxW+"px"}}>
-                <div className="userBox"
+                <div className={className}
                      style={{
                        width: width + 'px',
                      }}
@@ -1218,23 +1228,24 @@ class MonthStateClass extends React.Component{
       const {roomIndex,customerId,customerName,userDaycount,status,startIndex,endIndex} = ActBox.dataset;
 
       if (status == -1 || status == 7){
-        if (e.keyCode == 37 || e.keyCode == 39){
-          if(e.keyCode == 37){
+
+        if (e.keyCode === 37 || e.keyCode === 39){
+          if(e.keyCode === 37){
             if (startIndex <= nowDict.index ){
               return;
             }
           }
           this.props.dispatch({type:"roomStatusManagement/roomFinetuning",payload:{
-            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 37 ? "left":"right" ),status,customerName
+            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode === 37 ? "left":"right" ),status,customerName,ActBox
           }
           })
+
         }
-        else if (e.keyCode == 38 || e.keyCode == 40){
+        else if (e.keyCode === 38 || e.keyCode === 40){
           this.props.dispatch({type:"roomStatusManagement/roomChange",payload:{
-            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 38 ? "up":"down" ),status,customerName
+            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode === 38 ? "up":"down" ),status,customerName,ActBox
           }
           })
-          ActBox = ""
 
         }
       }

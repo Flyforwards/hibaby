@@ -18,8 +18,8 @@ const app = dva({
 app.use(createLoading({ effects: true }));
 
 // 3. Model
-app.model(require('./models/layout'));
-app.model(require('./models/etc'));
+app.model(require('../../room_manage/src/models/layout'));
+app.model(require('../../room_manage/src/models/etc'));
 
 // 4. Router
 app.router(require('./router'));
