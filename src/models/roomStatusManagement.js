@@ -54,7 +54,6 @@ export default {
     packageAry: [],
     roomList: '',
     boxW:9,
-    refView:false,
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
     shipCards: [],
     resultsRowHouses: '',
@@ -247,13 +246,7 @@ export default {
         monthStateCustomers: todo.data
       };
     },
-    setRefView(state, { payload: todo }){
 
-      return {
-        ...state,
-        refView: todo
-      };
-    },
     setMonthRoomData(state, { payload: todo }){
       const { list, rate } = todo.data
       // 保留初始的数据, 用于保存预约状态时和当前状态比较, 深拷贝
