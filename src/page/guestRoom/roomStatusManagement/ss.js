@@ -919,7 +919,7 @@ const monthStateView = (props) => {
               if(item.date == `${timeObj.years}-${timeObj.months+1}`){
                 return (
                   <div className="itemRulerBox" style={{
-                    width: item.days * UNIT_WIDTH,
+                    width: item.days * boxW,
                     position:'relative',
                     overflow:'initial'
                   }}>

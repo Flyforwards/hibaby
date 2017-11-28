@@ -90,16 +90,16 @@ const newbornTwoAry = [
 
 
 class motherDiv extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {}
   }
-  
+
   radioChange(e) {
     this.setState({ childbirth: e.target.value })
   }
-  
+
   render() {
     let hide = 2
     if (this.props.CheckBeforeData) {
@@ -110,7 +110,7 @@ class motherDiv extends React.Component {
     if (this.state.childbirth) {
       hide = this.state.childbirth == 1 ? false : true;
     }
-    
+
     // 分娩过程
     const DeliveryProcessAry = [
       {
@@ -150,21 +150,21 @@ class motherDiv extends React.Component {
       { title: '胎盘残留', component: 'RadioGroup', submitStr: 'radio_20' },
       { title: '其他', component: 'TextArea', span: 24, submitStr: 'input_8' }
     ]
-    
+
     const { summary, CheckBeforeData, baseInfoDict } = this.props
-    
+
     const ary = [{ title: summary ? "" : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry }, {
       title: '既往史',
       ary: PastMedicalHistoryAry
     }, { title: '孕期合并症', ary: PregnancyComplicationsAry },
       { title: '分娩过程', ary: DeliveryProcessAry }, { title: '产后情况', ary: PostpartumSituationAry }]
-    
+
     let chiAry = ary.map(value => {
       value.netData = CheckBeforeData ? CheckBeforeData : {}
       value.baseInfoDict = baseInfoDict ? baseInfoDict : {}
       return CreatCard(this.props.form, value)
     })
-    
+
     return (
       <div>{chiAry}</div>
     )
@@ -173,20 +173,20 @@ class motherDiv extends React.Component {
 
 function childDiv(props) {
   const { form, netData, baseInfoDict, index, BabyList } = props
-  let title = '新生儿情况'
+  let title = '新生儿情况1'
   if (BabyList) {
     if (BabyList.length > 1) {
-      title = `新生儿情况(宝${letter[index]})`
+      title = `新生儿情况1(宝${letter[index]})`
     }
   }
-  const ary = [{ title: title, ary: newbornAry }, { title: title, ary: newbornTwoAry }]
-  
+  const ary = [{ title: title, ary: newbornAry }, { title: title.replace(/1/, "2"), ary: newbornTwoAry }]
+
   let chiAry = ary.map(value => {
     value.netData = netData ? netData : {}
     value.baseInfoDict = baseInfoDict ? baseInfoDict : {}
     return CreatCard(form, value)
   })
-  
+
   return (<div >{chiAry}</div>)
 }
 
@@ -194,38 +194,38 @@ const ChildForm = Form.create()(childDiv);
 const MotherForm = Form.create()(motherDiv);
 
 class Detail extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {}
   }
-  
+
   onDelete() {
     this.props.dispatch({
       type: 'serviceCustomer/DelAssessment',
       payload: { operatorItem: 1, dataId: this.props.CheckBeforeID }
     })
   }
-  
+
   editBtnClick() {
     this.props.dispatch(routerRedux.push(`/service/check-before/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.CheckBeforeID}`));
   }
-  
+
   backClicked() {
     this.props.dispatch(routerRedux.push('/service/check-before'));
   }
-  
+
   editBackClicked() {
     this.props.dispatch(routerRedux.push(`/service/check-before/detail?customerid=${parse(location.search.substr(1)).customerid}`));
   }
-  
+
   createClicked() {
     this.props.dispatch(routerRedux.push(`/service/check-before/create?customerid=${parse(location.search.substr(1)).customerid}`));
   }
-  
+
   print() {
   }
-  
+
   submitClicked() {
     this.refs.MotherForm.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -237,29 +237,29 @@ class Detail extends Component {
           }
         })
         const assessmentInfo = JSON.stringify(values);
-        
+
         let dict = {
           "assessmentInfo": assessmentInfo,
           "customerId": parse(location.search.substr(1)).customerid,
           "type": 1,
           operatorItem: 1
         };
-        
+
         if (this.props.CheckBeforeID) {
           dict.id = this.props.CheckBeforeID
         }
         this.props.dispatch({ type: 'serviceCustomer/saveAssessment', payload: dict })
       }
     });
-    
-    
+
+
     for (let i = 0; i < this.props.BabyList.length; i++) {
       const info = this.props.BabyList[i]
       const str = 'ChildForm' + i
-      
+
       this.refs[str].validateFieldsAndScroll((err, values) => {
         if (!err) {
-          
+
           Object.keys(values).map(key => {
             if (values[key]) {
               if (typeof values[key] === 'object') {
@@ -267,11 +267,11 @@ class Detail extends Component {
               }
             }
           })
-          
+
           const { babyLength, babySex, babyWeight } = values
-          
+
           const assessmentInfo = JSON.stringify(values);
-          
+
           let dict = {
             assessmentId: this.props.CheckBeforeID,
             "assessmentBabyInfo": assessmentInfo,
@@ -282,7 +282,7 @@ class Detail extends Component {
             babyWeight,
             babyId: info.babyId
           };
-          
+
           this.props.dispatch({ type: 'serviceCustomer/saveAssessmentBabyInfo', payload: dict })
         }
         else {
@@ -290,21 +290,21 @@ class Detail extends Component {
         }
       });
     }
-    
+
   }
-  
+
   componentWillUnmount() {
     this.props.dispatch({ type: 'serviceCustomer/removeData' })
   }
-  
+
   callback() {
-  
+
   }
-  
+
   render() {
-    
+
     const { loading, summary, BabyList, CheckBeforeBabyData, CheckBeforeData } = this.props
-    
+
     const bottomDiv = location.pathname === '/service/check-before/edit' ?
       <div className='button-group-bottom-common'>
         {creatButton('返回', this.editBackClicked.bind(this))}{creatButton('确定', this.submitClicked.bind(this))}
@@ -316,8 +316,8 @@ class Detail extends Component {
         {this.props.CheckBeforeData ? creatButton('编辑', this.editBtnClick.bind(this)) : ''}
         {this.props.CheckBeforeData ? creatButton('打印', this.print.bind(this)) : ''}
       </div>
-    
-    
+
+
     let babyListDiv = BabyList ? BabyList.map((value, index) => {
       const str = 'ChildForm' + index
       let dict = { baseInfoDict: value }
@@ -330,7 +330,7 @@ class Detail extends Component {
       }
       return <ChildForm key={str} index={index} ref={str} {...this.props} {...dict}/>
     }) : []
-    
+
     return (
       <Spin
         spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
@@ -346,7 +346,7 @@ class Detail extends Component {
                   colSpan: 12
                 }, { title: "评估时间", initValue: CheckBeforeData.operatorTime, colSpan: 12 }])}
               </Col>
-            
+
             </Row> : ""
           }
           {summary ? '' : bottomDiv}

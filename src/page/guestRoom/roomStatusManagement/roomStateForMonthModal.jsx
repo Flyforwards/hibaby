@@ -831,8 +831,14 @@ function QuickCusFromItem(props) {
     }
   }
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current.valueOf() < Date.now();
+  }
   return (
-    <Col span={8}>
+    <Col key={dict.subMitStr+"col"} span={8}>
+
+
       <FormItem key={dict.subMitStr} {...formItemLayout} label={dict.title}>
         {getFieldDecorator(dict.subMitStr, {
           rules: [{
@@ -843,13 +849,14 @@ function QuickCusFromItem(props) {
         (
           dict.componentStyle === 'select' ?
             (
-                <Select placeholder="请选择" className='antCli'>
+                <Select placeholder="请选择" className='antCli' >
                   {roomChi}
                 </Select>
             )
             :
             ( dict.componentStyle === 'date' ?
-                <DatePicker style={{ width: '100%' }}/> :
+                <DatePicker style={{ width: '100%' }} disabledDate={disabledDate}
+                /> :
                 <InputNumber style={{ height: '32px' }} min={1} max={365} placeholder="请填写" className='antCli'/>
             )
         )}

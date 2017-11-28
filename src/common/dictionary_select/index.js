@@ -61,9 +61,11 @@ class DictionarySelect extends Component {
       });
     }
 
+    let selectProps = {...this.props}
+    delete selectProps.selectName
     // const {onChange, onSelect, defaultValue, placeholers} = this.props;
     return (
-      <Select {...this.props} allowClear={ true }>
+      <Select {...selectProps} allowClear={ true }>
         {options}
       </Select>
     )

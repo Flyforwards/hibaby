@@ -53,6 +53,7 @@ export default {
     manualSelect: '',
     packageAry: [],
     roomList: '',
+    boxW:9,
     selectValue: ['all', '0', '1', '2', '3', '4', '5', '6', '7'],
     shipCards: [],
     resultsRowHouses: '',
@@ -251,8 +252,14 @@ export default {
       const { list, rate } = todo.data
       // 保留初始的数据, 用于保存预约状态时和当前状态比较, 深拷贝
       state.oldMonthRoomList = JSON.parse(JSON.stringify(list));
+      //
+      const roomLists = [...list];
+      let day_length = roomLists && roomLists != '' ? roomLists[0].useAndBookingList.length:'';
+      let _unit_u = $(".monthRoomRightBox").width()/day_length;
 
-      return { ...state, monthRoomList: list, occupancy: rate };
+      let boxW = day_length > 100 ? 9 : _unit_u
+
+      return { ...state, monthRoomList: list, occupancy: rate ,boxW};
     },
 
     userDropReducer(state, { payload: data }){
@@ -470,6 +477,7 @@ export default {
 
       return { ...state, dateSelectViews, dateSelectList }
     },
+
     changeModalH(state, { payload: data }){
 
       return {
@@ -1003,9 +1011,6 @@ export default {
         }
       }
     },
-
-
-
 
     *confirmCheckIn({payload: value}, {call, put, select}){
 
