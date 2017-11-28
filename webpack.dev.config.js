@@ -69,9 +69,9 @@ var webpackConfig = {
             //   },
             //   changeOrigin: true
             // },
-          // 王国栋
+          // 李宏伟
           // '/crm/api/*': {
-          //   target: 'http://192.168.199.177:8087/crm/api',
+          //   target: 'http://192.168.199.123:8087/crm/api',
           //   pathRewrite: {
           //     '^/crm/api': ''
           //   },
