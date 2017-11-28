@@ -13,7 +13,7 @@ import userConfig from './routs/userConfig'
 import guestRoomConfig from './routs/guestRoomConfig'
 import mealsConfig from './routs/mealsConfig'
 import serviceConfig from './routs/serviceConfig'
-
+import inventoryConfig from  './routs/inventoryConfig'
 
 
 function RouterConfig({ history, app }) {
@@ -59,7 +59,7 @@ let routes = [
             replace('/login')
           }
         },
-        childRoutes: [...welcome,...systemConfig(app),...crmConfig(app),...userConfig(app),...guestRoomConfig(app),...mealsConfig(app),...serviceConfig(app)],
+        childRoutes: [...welcome,...systemConfig(app),...crmConfig(app),...userConfig(app),...guestRoomConfig(app),...mealsConfig(app),...serviceConfig(app),...inventoryConfig(app)],
     },
     {
         path: '/login',
