@@ -910,12 +910,9 @@ const monthStateView = (props) => {
       //let s_ = false;
       for (let item of dateRulerList) {
         days_all += item.days;
-        if(dateRulerList.length <= UNIT){
-          boxWidth = $(".monthRoomRightBox").width();
-        }else{
-          boxWidth += item.days * boxW;
-        }
       }
+      boxWidth += days_all* boxW;
+
       const renderFiveDays = (days) => {
         let result = [];
 
