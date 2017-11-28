@@ -40,10 +40,10 @@ class WarehouseIndex extends Component {
       key: 'status',
       render:(text,record, index) => {
         if(text == '0'){
-          return "正常"
+          return <span style={{'color':'#108ee9'}}>正常</span>
         }
         if(text == "1"){
-          return "停用"
+          return <span style={{'color':'red'}}>停用</span>
         }
       }
     },{
@@ -60,9 +60,9 @@ class WarehouseIndex extends Component {
         return (
           <div className="operation-list">
             <Link className="one-link link-style" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
-            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>
-              <Link  className="two-link link-style">删除</Link>
-            </Popconfirm>
+            {/*<Popconfirm title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>*/}
+              {/*<Link  className="two-link link-style">删除</Link>*/}
+            {/*</Popconfirm>*/}
           </div>
         );
       }
