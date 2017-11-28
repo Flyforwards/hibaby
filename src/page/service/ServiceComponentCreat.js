@@ -17,7 +17,7 @@ const FormItem = Form.Item;
 
 export function ServiceComponentCreat(form,dict) {
   return (
-    <Col style={{height:dict.span == 24 ? '70px' : '56px',display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.key?dict.key:dict.submitStr}>
+    <Col style={{height:dict.span == 24 ? '70px' : '56px',display:dict.hide?'none':''}} span={dict.span?dict.span:6} offset={dict.offset?dict.offset:0} key={dict.submitStr}>
       {cusFromItem(form,dict)}
     </Col>
   );
@@ -39,7 +39,7 @@ function creatComponent(form,dict) {
   let children = []
   if(dict.chiAry){
     for(let i = 0;i<dict.chiAry.length;i++){
-        children.push(<Option key={i}>{dict.chiAry[i]}</Option>)
+        children.push(<Option key={dict.submitStr+ i}>{dict.chiAry[i]}</Option>)
     }
   }
 
@@ -48,7 +48,7 @@ function creatComponent(form,dict) {
   if(dict.radioAry) {
     dict.radioAry.map(function(elem,index){
         radioChildren.push(
-          <Radio value={elem.value}>{elem.name}</Radio>
+          <Radio key={dict.submitStr+index} value={elem.value}>{elem.name}</Radio>
         )
     })
   }
@@ -58,8 +58,10 @@ function creatComponent(form,dict) {
     checkChildren = dict.checkAry;
   }
 
+  let keyDict = {key:dict.submitStr+dict.component}
+
   if (dict.selectName){
-    tempDiv = (<DictionarySelect className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
+    tempDiv = (<DictionarySelect  className="antCli"  disabled={dict.disabled} placeholder="请选择" selectName={dict.selectName}/>);
   }
   else{
     switch (dict.component) {
@@ -80,7 +82,7 @@ function creatComponent(form,dict) {
         break;
 
       case 'Select':
-        tempDiv = (<Select style={{width: '100%' }} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
+        tempDiv = (<Select  style={{width: '100%' }} disabled={dict.disabled} mode={dict.mode} onChange={dict.fun} placeholder='请选择'>{children}</Select>);
         break;
       case 'DatePicker':
         tempDiv = (<DatePicker style={{width: '100%' }} disabled={dict.disabled} disabledDate={dict.disabledDate} onChange={dict.fun} ranges={dict.ranges} placeholder='请选择'>{children}</DatePicker>);
@@ -93,14 +95,14 @@ function creatComponent(form,dict) {
         break;
       case 'gender':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={'1'}>男</Radio>
-          <Radio value={'0'}>女</Radio>
+          <Radio key={dict.submitStr+1} value={'1'}>男</Radio>
+          <Radio key={dict.submitStr+0} value={'0'}>女</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroup':
         tempDiv = (<RadioGroup disabled={dict.disabled}>
-          <Radio value={'1'}>是</Radio>
-          <Radio value={'0'}>否</Radio>
+          <Radio key={dict.submitStr+1} value={'1'}>是</Radio>
+          <Radio key={dict.submitStr+0} value={'0'}>否</Radio>
         </RadioGroup>);
         break;
       case 'RadioGroups':
@@ -124,7 +126,7 @@ function creatComponent(form,dict) {
         tempDiv = <RadioClass dict={dict} form={form}/>;
           break;
       case 'TextAreaGroup':
-        tempDiv = <InputClass Area dict={dict} form={form}/>
+        tempDiv = <InputClass  Area dict={dict} form={form}/>
         break;
       case 'UploadButton':
       {
@@ -144,7 +146,7 @@ function creatComponent(form,dict) {
       default:
     }
   }
-  return (tempDiv)
+  return (tempDiv )
 }
 
 function cusFromItem(form,dict) {
@@ -307,7 +309,7 @@ export function CreatCard(form,superDict) {
         }
       }
     }
-
+    //
     chiAry.push(ServiceComponentCreat(form, dict))
   }
 
@@ -316,7 +318,9 @@ export function CreatCard(form,superDict) {
   if(type){
     typeDiv =
       <div>
-        <Col offset={1} span={3} style={{height:'56px'}}><Button className='button-group-1' onClick={fun}>{type === 'babyAdd'?'添加':'删除'} </Button></Col>
+        <Col offset={1} span={3} style={{height:'56px'}}>
+          <Button className='button-group-1' onClick={fun}>{type === 'babyAdd'?'添加':'删除'} </Button>
+        </Col>
         {/*<Col span={2} style={{height:'56px'}}><Button>{type === 'babyAdd'?'添加':'删除'} </Button></Col>*/}
       </div>
 
@@ -324,7 +328,7 @@ export function CreatCard(form,superDict) {
   }
 
   return (
-    <Card noHovering={true} title={title} bodyStyle={{ padding:'15px 15px 0 15px'}} bordered={false}  style={{ width: '100%' }}>
+    <Card key={"superCard"+title} noHovering={true} title={title} bodyStyle={{ padding:'15px 15px 0 15px'}} bordered={false}  style={{ width: '100%' }}>
       {chiAry}
       {typeDiv}
     </Card>
@@ -518,17 +522,15 @@ export function chiDetailComponent(baseInfoAry) {
   let chiArray = baseInfoAry.map((dict)=>{
 
     return (
-      <Col span={dict.colSpan?dict.colSpan: 6}>
+      <Col key={"superCol"+dict.submitStr} span={dict.colSpan?dict.colSpan: 6}>
         <Row >
           <Col style={{textAlign:'right'}} span={titSpan}><span className="detailTitle">{`${dict.title}：`}</span></Col>
           {dict.submitStr === 'babySex'?
             <Col style={{textAlign:'left'}} span={contentSpan}>
               {dict.initValue?
-                dict.initValue.split(',').map(value=>{
-                  if(value == 0){
-                    return <Icon className="detailTitle" style={{marginLeft:'5px'}} type="woman" />
-                  }
-                  return <Icon className="detailTitle" style={{marginLeft:'5px'}}  type="man" />
+                dict.initValue.split(',').map((value,index)=>{
+
+                  return <Icon key={"detailTitle"+index} className="detailTitle" style={{marginLeft:'5px'}}  type={value == 0? "woman":"man"} />
                 })
 
                 :''}

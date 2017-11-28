@@ -153,8 +153,9 @@ class Detail extends Component {
     let puerpera = location.pathname.indexOf('puerpera-record');//产妇护理
     let butler = location.pathname.indexOf('butler-rounds');//管家查房
     let nutrition = location.pathname.indexOf('nutrition-record');//营养查房
+    let obstetric = location.pathname.indexOf('obstetric-record');//产科查房
     
-    if (diagnosis !== -1 || puerpera !== -1 || butler !== -1 || nutrition !== -1) {
+    if (obstetric !== -1 ||diagnosis !== -1 || puerpera !== -1 || butler !== -1 || nutrition !== -1) {
       return (
         <Spin spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId'] : false}>
           <Card className="checkRoomDetailCard">

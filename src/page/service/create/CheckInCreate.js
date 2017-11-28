@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { CreatCard, creatButton, chiDetailComponent } from '../ServiceComponentCreat'
 import { Card, Input, Form, Button, Spin,Row,Col } from 'antd';
 import { connect } from 'dva';
-import PermissionButton from 'common/PermissionButton';
 import { parse } from 'qs'
 import { routerRedux } from 'dva/router'
 
@@ -256,7 +255,7 @@ class Detail extends Component {
       { title: '重点注意事项', component: 'TextArea', span: 24, submitStr: 'conclusion_3' }
     ]
     
-    const {  summary, CheckInData } = this.props
+    const {  summary, CheckInData,loading } = this.props
     
     const ary = [{ title: summary ? '' : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry }, {
       title: '产后情况',
@@ -276,7 +275,8 @@ class Detail extends Component {
     );
     
     return (
-      
+      <Spin key="CheckIn" spinning={loading.effects['serviceCustomer/getAssessmentByCustomerId'] !== undefined ? loading.effects['serviceCustomer/getAssessmentByCustomerId']:false}>
+  
       <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
         {chiAry}
         { CheckInData ?
@@ -293,6 +293,7 @@ class Detail extends Component {
         }
         { bottomDiv}
       </Card>
+      </Spin>
     )
   }
 }

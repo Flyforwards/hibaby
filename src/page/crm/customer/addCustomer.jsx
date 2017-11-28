@@ -6,6 +6,9 @@ import CustomerInformation from './CustomerInformation';
 import UserHealthInformation from './userHealthInformation'
 import AddCourse from './AddCourse.jsx'
 import CustomerDetails from './customerDetails';
+import OrderIndex from './OrderIndex';
+import  TransactIndex from "./TransactIndex"
+import FingerSubsidiaryIndex from './FingerSubsidiaryIndex';
 import MembershipCard from '../membershipcard/membershipcardIndex'
 
 const TabPane = Tabs.TabPane;
@@ -26,6 +29,10 @@ class addCustomer extends React.Component{
       type: 'printCustomer/setAddCustomerTab',
       payload: false
     })
+    this.props.dispatch({
+      type: 'order/setOrderPush',
+      payload: false
+    })
   }
 
   onChangeTabs(activityKey) {
@@ -41,6 +48,7 @@ class addCustomer extends React.Component{
     const {addSuccess}= this.props.course;
     const { getSuccess } =this.props.membershipcard;
     const { healthPrint } = this.props.printCustomer;
+    const { orderPush } = this.props.order;
     const activityKey = this.props.activityKey;
     // console.log("membershipcard>>>>",getSuccess)
     let TabPaneAry = [
@@ -59,7 +67,24 @@ class addCustomer extends React.Component{
         <MembershipCard/>
       </TabPane>)
     }
+
     let defaultActiveKey = '1';
+
+    // if(((location.pathname === '/crm/customer/edit' || isDetail)&&this.props.users.expandData)){
+    //   if (orderPush){
+    //     defaultActiveKey = '5';
+    //   }
+    //   TabPaneAry.push(<TabPane tab="订单" key="5">
+    //     <OrderIndex/>
+    //   </TabPane>)
+    //   TabPaneAry.push(<TabPane tab="收支明细" key="6">
+    //     <FingerSubsidiaryIndex/>
+    //   </TabPane>)
+    //   TabPaneAry.push(<TabPane tab="账户变更记录" key="7">
+    //     <TransactIndex/>
+    //   </TabPane>)
+    // }
+
     if (addSuccess){
       defaultActiveKey = '3';
     }
@@ -69,6 +94,10 @@ class addCustomer extends React.Component{
     if(getSuccess){
       defaultActiveKey = '4';
     }
+
+
+    console.log(activityKey||defaultActiveKey)
+
     // console.log("defaultActiveKey>>>",defaultActiveKey)
     return(
       <div>
@@ -89,6 +118,7 @@ function mapStateToProps(state) {
     activityKey: state.addCustomer.activityKey,
     membershipcard:state.membershipcard,
     printCustomer:state.printCustomer,
+    order:state.order
   };
 }
 export default connect(mapStateToProps)(addCustomer)

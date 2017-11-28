@@ -547,14 +547,29 @@ export default {
       topMenuInfoByType.dishes[infoKey].eatDay = eatDayValue;
       return { ...state, topMenuInfoByType }
     },
+    changeEmEatDay(state, { payload: { emEatDayValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].em_eatDay = emEatDayValue;
+      return { ...state, topMenuInfoByType }
+    },
     changeEatTime(state, { payload: { eatTimeValue, infoKey } }){
       const { topMenuInfoByType } = state;
       topMenuInfoByType.dishes[infoKey].eatTime = eatTimeValue;
       return { ...state, topMenuInfoByType }
     },
-    changeFrequency(state, { payload: { frequencyValue, infoKey } }){
+    changeEmEatTime(state, { payload: { emEatTimeValue, infoKey } }){
       const { topMenuInfoByType } = state;
-      topMenuInfoByType.dishes[infoKey].frequency = frequencyValue;
+      topMenuInfoByType.dishes[infoKey].em_eatTime = emEatTimeValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeCycle(state, { payload: { cycleValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].cycle = cycleValue;
+      return { ...state, topMenuInfoByType }
+    },
+    changeEmCycle(state, { payload: { emCycleValue, infoKey } }){
+      const { topMenuInfoByType } = state;
+      topMenuInfoByType.dishes[infoKey].em_cycle = emCycleValue;
       return { ...state, topMenuInfoByType }
     },
     getTopMenuInfoByType(state, { payload: { data } }){

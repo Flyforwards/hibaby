@@ -1,5 +1,6 @@
 import * as addCourseService from '../services/addCourse.js';
 import { local, session } from 'common/util/storage.js'
+import * as orderService from '../services/order.js';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { Link} from 'react-router'
@@ -102,17 +103,20 @@ export default {
 				}
 			},
 			*saveCustomerPackage({payload: values}, { call, put }) {
-				const {
+
+        yield put({type:'orderSubmit',payload:values});
+
+        const {
 					data: {
 			      		data,
 			      		code,
 			      		err
 		      }} = yield call(addCourseService.saveCustomerPackage, values);
-				//console.log(data);
 				if (code == 0) {
 					message.success("添加套餐成功");
 
-					yield put({type:'setAddCustomerTab',payload:true});
+
+          yield put({type:'setAddCustomerTab',payload:true});
 
           yield put(routerRedux.push(`/crm/customer/detail?dataId=${values.customerId}`))
 
@@ -122,6 +126,25 @@ export default {
           message.error( err || "请求出错")
 				}
 			},
+      *orderSubmit({payload: values}, { call, put }) {
+			  try {
+          const { data: { data,code, err }} = yield call(orderService.orderSubmit, {"customerId":values.customerId,
+            goodsAry:[{"goodsId": values.packageId, "goodsType": "PACKAGE","quantity": 1    }]});
+          yield put({type:'orderPay',payload:data.orderId});
+        }
+        catch (err){
+          throw (err)
+        }
+      },
+      *orderPay({payload: values}, { call, put }) {
+        try {
+          const { data: { data,code, err }} = yield call(orderService.orderPay, {"orderId":values,"payType": "BALANCE"});
+
+        }
+        catch (err){
+          throw (err)
+        }
+      },
 			*useServiceInfo({payload: values}, { call, put }) {
 				//console.log("values>>>",values)
 				const {

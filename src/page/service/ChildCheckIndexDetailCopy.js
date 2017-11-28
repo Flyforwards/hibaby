@@ -48,28 +48,38 @@ class Detail extends Component {
       } else {
         this.props.dispatch({
           type: 'serviceCustomerChild/onDeleteBabydata',
-          payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.babyId }
+          payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.BabyId }
         })
       }
     } else {
       this.props.dispatch({
         type: 'serviceCustomerChild/onDeleteBabydata',
-        payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.babyId }
+        payload: { type: 3, dataId: queryURL("customerId"), operatorItem: 3, babyId: this.props.BabyId }
       })
     }
   }
 
 
   editBtnClick() {
-    if (this.props.BabyAllData && this.props.BabyAllData.length > 1) {
-      if (this.state.tabClick) {
-        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.state.hostId}&babyId=${this.state.tabKey}`));
-      } else {
-        this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.babyId}`));
-      }
-    } else {
-      this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.babyId}`));
-    }
+    let _data = {"operatorItem":3 }
+    _data.dataId = this.state.tabClick ? this.state.hostId : this.props.hostId;
+    _data.babyId = this.state.tabClick ? this.state.tabKey : this.props.BabyId;
+    _data.edit = true;
+    this.props.dispatch({
+        type:'serviceCustomerChild/getBabyDataById',
+        payload:_data
+    })
+
+
+    // if (this.props.BabyAllData && this.props.BabyAllData.length > 1) {
+    //   if (this.state.tabClick) {
+    //     this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.state.hostId}&babyId=${this.state.tabKey}`));
+    //   } else {
+    //     this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
+    //   }
+    // } else {
+    //   this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${this.props.hostId}&babyId=${this.props.BabyId}`));
+    // }
   }
 
   backClicked() {
@@ -85,9 +95,10 @@ class Detail extends Component {
     }))
   }
   createBtnClick() {
-    console.log(1111)
-
-    this.props.dispatch(routerRedux.push(`/service/child-check-in/create?customerid=${parse(location.search.substr(1)).customerid}&babyId=${this.state.tabKey}`));
+   // console.log("xx",this.props.BabyMsg[0].babyId)
+    let babyId = this.state.tabClick ? this.state.tabKey : this.props.BabyMsg[0].babyId;
+    let dataId = this.state.tabClick ? this.state.hostId : this.props.BabyMsg[0].id;
+    this.props.dispatch(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&babyId=${babyId}`));
 
   }
 
@@ -184,7 +195,7 @@ class Detail extends Component {
       tabKey: key,
       tabClick: true
     })
-    this.props.BabyAllData.map(function (elem, index) {
+    this.props.BabyMsg.map(function (elem, index) {
       if (this.state.tabKey === elem.babyId) {
         this.setState({
           hostId: elem.id
@@ -200,38 +211,23 @@ class Detail extends Component {
     babyhead164 = true;
     babyhead165 = true;
     babyhead141 = true;
-    const { loading, summary, BabyAllData } = this.props;
-    // const BabyAllData = [
-    //   {
-    //     "assessmentBabyInfo": "{\"babySex\":\"0\",\"babyWeight\":1,\"babyLength\":1,\"select_0\":\"11\",\"radio_33\":\"1\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"2\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"0\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"1\",\"radio_44\":\"0\",\"input_17\":\"宝A\",\"newborn_0\":\"宝A\",\"newborn_1\":\"宝A\",\"newborn_2\":\"宝A\"}",
-    //     "babyId": 1,
-    //     "babyLength": 2,
-    //     "babyWeight": 7,
-    //     "customerId": 12,
-    //     "id": 1
-    //   },
-    //   {
-    //     "assessmentBabyInfo": "{\"babySex\":\"1\",\"babyWeight\":2,\"babyLength\":2,\"select_0\":\"111\",\"radio_33\":\"2\",\"radio_34\":\"1\",\"radioNam_35\":\"0\",\"radio_37\":\"1\",\"radio_31_1\":\"0\",\"radio_41\":\"1\",\"radio_40\":\"1\",\"radio_42\":\"1\",\"radio_43\":\"0\",\"radio_45\":\"0\",\"radio_46\":\"0\",\"radio_44\":\"1\",\"input_17\":\"宝B\",\"newborn_0\":\"宝B\",\"newborn_1\":\"宝B\",\"newborn_2\":\"宝B\"}",
-    //     "babyId": 2,
-    //     "babyLength": 2,
-    //     "babyWeight": 7,
-    //     "customerId": 12,
-    //     "id": 2
-    //   }
-    // ]
-
+    const { loading, summary, BabyAllData,BabyMsg } = this.props;
     BabyAllData ? BabyAllData.map(function (elem, index) {
-      JSON.parse(elem.assessmentBabyInfo).babyhead11.map(function (elem, index) {
-        babyhead11 = elem == 3 ? false : true;
-      });
+      if(JSON.parse(elem.assessmentBabyInfo).babyhead11) {
+        JSON.parse(elem.assessmentBabyInfo).babyhead11.map(function (elem, index) {
+          babyhead11 = elem == 3 ? false : true;
+        });
+      }
     }) : '';
 
     BabyAllData ? BabyAllData.map(function (elem, index) {
-      JSON.parse(elem.assessmentBabyInfo).babyhead16.map(function (elem, index) {
-        babyhead163 = elem == 3 ? false : true;
-        babyhead164 = elem == 4 ? false : true;
-        babyhead165 = elem == 5 ? false : true;
-      })
+      if(JSON.parse(elem.assessmentBabyInfo).babyhead16) {
+        JSON.parse(elem.assessmentBabyInfo).babyhead16.map(function (elem, index) {
+          babyhead163 = elem == 3 ? false : true;
+          babyhead164 = elem == 4 ? false : true;
+          babyhead165 = elem == 5 ? false : true;
+        })
+      }
     }) : '';
 
 
@@ -778,34 +774,72 @@ class Detail extends Component {
     //,{title:'入住时婴儿评估',ary:newbornTwoAry}
     const ary = [{ title: summary ? '' : '基本信息', ary: summary ? baseInfoAry.slice(6) : baseInfoAry }]
     const arys = [{ title: '入住时婴儿评估', ary: newbornAry }, { title: '入住时婴儿评估', ary: newbornTwoAry }]
-    let chiAry = ary.map(value => {
-      if (BabyAllData && BabyAllData.length > 1) {
-        value.netData = JSON.parse(BabyAllData[0].assessmentBabyInfo);
-      } else {
-        value.netData = BabyAllData && BabyAllData.length != 0 ? JSON.parse(BabyAllData[0].assessmentBabyInfo) : {}
-      }
-      value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
-      return CreatCard(this.props.form, value)
-    })
+    let chiAry;
+      chiAry = ary.map(value => {
+        if (BabyAllData && BabyAllData.length > 1) {
+          value.netData = JSON.parse(BabyAllData[0].assessmentBabyInfo);
+        } else {
+          value.netData = BabyAllData && BabyAllData.length != 0 ? JSON.parse(BabyAllData[0].assessmentBabyInfo) : {}
+        }
+        value.baseInfoDict = this.props.baseInfoDict ? this.props.baseInfoDict : {};
+        return CreatCard(this.props.form, value)
+      })
+
 
     let tabs = [];
     let chiArys;
     let _this = this;
-    BabyAllData && BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
-      tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
-        {arys.map(value => {
-          value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
-          //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-          return CreatCard(_this.props.form, value)
-        })}
-      </TabPane>)
-    }) : chiArys = arys.map(value => {
-      value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData : {};
-      //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
-      return CreatCard(this.props.form, value)
-    });
+
+    if(BabyMsg && BabyMsg.length != 0){
+      BabyMsg && BabyMsg.length > 1 ? BabyMsg.map(function (elem, index) {
+        tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+          {
+            BabyAllData ? BabyAllData.map(function(v,i){
+              v.babyId == elem.babyId ? arys.map(value => {
+                value.netData = v.assessmentBabyInfo ? JSON.parse(v.assessmentBabyInfo) : {};
+                //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+                return CreatCard(_this.props.form, value)
+              }):''
+            }):''
+          }
+        </TabPane>)
+      }) : (BabyAllData ? chiArys = arys.map(value => {
+        value.netData = this.props.BabyAllData ? JSON.parse(this.props.BabyAllData[0].assessmentBabyInfo) : {};
+        //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+        return CreatCard(this.props.form, value)
+      }):'');
+    }
 
 
+
+    // if(BabyAllData && BabyAllData.length != 0) {
+    //   BabyAllData && BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
+    //     tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+    //       {arys.map(value => {
+    //         value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
+    //         //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //         return CreatCard(_this.props.form, value)
+    //       })}
+    //     </TabPane>)
+    //   }) : chiArys = arys.map(value => {
+    //     value.netData = this.props.BabyAllData ? JSON.parse(this.props.BabyAllData[0].assessmentBabyInfo) : {};
+    //     //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //     return CreatCard(this.props.form, value)
+    //   });
+    // }
+    // BabyAllData && BabyAllData.length > 1 ? BabyAllData.map(function (elem, index) {
+    //   tabs.push(<TabPane tab={`宝-${elem.babyId}`} key={elem.babyId}>
+    //     {arys.map(value => {
+    //       value.netData = elem.assessmentBabyInfo ? JSON.parse(elem.assessmentBabyInfo) : {};
+    //       //  value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //       return CreatCard(_this.props.form, value)
+    //     })}
+    //   </TabPane>)
+    // }) : chiArys = arys.map(value => {
+    //   value.netData = this.props.ChildCheckInData ? this.props.ChildCheckInData : {};
+    //   //value.baseInfoDict = this.props.baseInfoDict?this.props.baseInfoDict:{};
+    //   return CreatCard(this.props.form, value)
+    // });
     const bottomDiv = <div className='button-group-bottom-common'>
       {this.props.BabyAllData ? '' : creatButton('创建', this.createBtnClick.bind(this))}
       {creatButton('返回', this.backClicked.bind(this))}
@@ -815,7 +849,7 @@ class Detail extends Component {
     </div>;
 
     return (
-      <Spin spinning={loading.effects['serviceCustomerChild/getChilddataBycustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getChilddataBycustomerId'] : false}>
+      <Spin spinning={loading.effects['serviceCustomerChild/getBabymsgByCustomerId'] !== undefined ? loading.effects['serviceCustomerChild/getBabymsgByCustomerId'] : false}>
 
         <Card className='CheckBeforeInput' style={{ width: '100%' }} bodyStyle={{ padding: (0, 0, '20px', 0) }}>
           {chiAry}
@@ -834,12 +868,12 @@ const DetailForm = Form.create()(Detail);
 
 
 function mapStateToProps(state) {
-  const { ChildCheckInData, baseInfoDict, BabyAllData, BabyId, hostId } = state.serviceCustomerChild;
+  const { baseInfoDict, BabyAllData, BabyId, hostId,BabyMsg } = state.serviceCustomerChild;
   return {
     BabyAllData,
     BabyId,
     hostId,
-    ChildCheckInData,
+    BabyMsg,
     baseInfoDict,
     loading: state.loading
   };

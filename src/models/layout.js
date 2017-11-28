@@ -26,11 +26,13 @@ export default {
     systemTime: 0,
     endemic: {}, // 用户选择的地方中心
     callRecords: [], // 400通话记录
+    messageNum:0
   },
 
   subscriptions: {
     setup ({ dispatch }) {
         dispatch({ type: 'getCurrentUserEndemic' });
+        dispatch({ type: 'getMessageQuantity' });
     },
   },
   effects: {
@@ -384,6 +386,18 @@ export default {
         message.success('保存备注信息成功')
       }
     },
+    //加载登录用户未读消息数量
+    *getMessageQuantity({ payload: value }, {call, put}) {
+      const {data: {data, code}} = yield call(usersService.getMessageQuantity, value)
+      if (code == 0) {
+        yield put({
+          type: 'getMessageNum',
+          payload:  data
+        })
+      }
+    },
+    
+    
   },
 
 
@@ -427,5 +441,8 @@ export default {
     getCallRecordsListSuccess(state, { payload: { callRecords } }) {
       return { ...state, callRecords }
     },
+    getMessageNum(state,{payload:data}){
+      return { ...state, messageNum:data }
+    }
   },
 }

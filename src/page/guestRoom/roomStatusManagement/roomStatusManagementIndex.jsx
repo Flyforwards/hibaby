@@ -182,7 +182,7 @@ function ScreenBar(props) {
         </span>
       </div>
 
-      <Card className="SelectDiv" bodyStyle={{padding: '20px 20px 0px 20px'}}>
+      <Card noHovering={true} className="SelectDiv" bodyStyle={{padding: '20px 20px 0px 20px'}}>
         <Row style={{height: 50, width: '800px', overflow: 'hidden'}}>
           {oneDiv}
         </Row>
@@ -195,7 +195,7 @@ function ScreenBar(props) {
 
 
       <div className="radioDiv">
-        <Card bodyStyle={{padding: '20px'}} style={{width: '100%'}}>
+        <Card noHovering={true} bodyStyle={{padding: '20px'}} style={{width: '100%'}}>
           <h4>状态筛选</h4>
           <CheckboxGroup value={selectValue} options={options} onChange={onChange}/>
         </Card>
@@ -270,7 +270,7 @@ function CardArray({roomList, dispatch,roomStatusSelectDisabled}) {
       disabled = true
     }
     return (
-      <Card className="smallCard" bodyStyle={{padding: '10px'}} key={key} title={dict.roomNo}
+      <Card noHovering={true} className="smallCard" bodyStyle={{padding: '10px'}} key={key} title={dict.roomNo}
             extra={dict.isRepair == 1 ? '维修' : statusDict[dict.status]}>
         {chiDiv}
         <Row className='bottomLine'>
@@ -387,6 +387,7 @@ class roomStatusIndex extends React.Component {
 
     //根据房态管理页面权限显示页面 add by yangjj 2017-07-27 17:30
     const {permissionAlias} = this.props;
+
     const monthFlag = permissionAlias.contains("MONTH_STATUS_SHOW");
     const dayFlag = permissionAlias.contains("DAY_STATUS_SHOW");
     let roomView = null;

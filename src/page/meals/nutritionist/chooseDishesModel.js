@@ -143,18 +143,23 @@ class App extends Component {
   }
 
   getInfo = (data) => {
-    const { changeKey, isLow, dispatch, reset } = this.props;
+    const { changeKey, isLow, dispatch, reset,isEm } = this.props;
     const { id, name } = data;
     const postData = {
       dishesId: id,
       dishesName: name,
       number: changeKey + 1
     }
-    const postDataHigh = {
-      dishesId: id,
-      dishesName: name,
-      number: changeKey + 1
-    }
+    const postDataHigh =
+            isEm ? {
+              em_dishesId: id,
+              em_dishesName: name,
+              number: changeKey + 1
+            } : {
+              dishesId: id,
+              dishesName: name,
+              number: changeKey + 1
+            }
     reset();
     isLow ? dispatch({
       type: 'prepareMealsDinner/saveLowInfo',

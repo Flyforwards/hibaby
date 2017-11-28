@@ -21,8 +21,8 @@ function baseInfoDiv(props) {
       dataSource: CustomerInfoList ? CustomerInfoList : []
     },
     { title: '房间号', component: 'Input', submitStr: 'roomNo', disable: true },
-    { title: '入所时间', component: 'Input', submitStr: 'checkDate', disable: true },
-    { title: '退房时间', component: 'Input', submitStr: 'leaveDate', disable: true }
+    { title: '入所时间', component: 'DatePicker', submitStr: 'checkDate', disable: true },
+    { title: '退房时间', component: 'DatePicker', submitStr: 'leaveDate', disable: true }
   ]
   
   function onchange(e) {
@@ -131,7 +131,7 @@ class Detail extends Component {
               {
                 departments.map((v, k) => {
                   return (
-                    <Checkbox checked={true} disabled={true} value={v} key={k}>{v}</Checkbox>
+                    <Checkbox   value={v} key={k}>{v}</Checkbox>
                   )
                 })
               }

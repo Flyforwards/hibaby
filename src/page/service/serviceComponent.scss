@@ -1,5 +1,6 @@
 
 .CheckBeforeInput{
+  min-width: 980px;
   .antCli {
     width: 100%;
     height: 40px;
@@ -88,6 +89,20 @@
   }
 }
 .edinburghCard{
+  .tooltipTxt{
+    margin-bottom: 15px;
+    h2,p{
+      line-height:30px;
+      text-align: center;
+    }
+    p{
+      font-size: 14px;
+    }
+    .redTxt{
+      color:red
+    }
+  }
+
   .rowBox{
     .ant-col-6{
       margin-bottom: 15px;

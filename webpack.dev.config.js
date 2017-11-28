@@ -35,7 +35,14 @@ var webpackConfig = {
                 },
                 changeOrigin: true
             },
-
+          // // yfy
+          // '/crm/api/*': {
+          //   target: 'http://192.168.199.81:8087/crm/api',
+          //   pathRewrite: {
+          //     '^/crm/api': ''
+          //   },
+          //   changeOrigin: true
+          // },
             // 测试环境
             // '/crm/api/*': {
             //   target: 'http://test.hbbcare.com:8088/crm/api',
@@ -47,7 +54,7 @@ var webpackConfig = {
 
             // // 田春阳
             // '/crm/api/*': {
-            //   target: 'http://192.168.199.124:8087/crm/api',
+            //   target: 'http://192.168.3.177:8087/crm/api',
             //   pathRewrite: {
             //     '^/crm/api': ''
             //   },
@@ -69,17 +76,10 @@ var webpackConfig = {
             //   },
             //   changeOrigin: true
             // },
-          // 李宏伟
+
+          // 本地
           // '/crm/api/*': {
-          //   target: 'http://192.168.199.123:8087/crm/api',
-          //   pathRewrite: {
-          //     '^/crm/api': ''
-          //   },
-          //   changeOrigin: true
-          // },
-          //杨晶晶
-          // '/crm/api/*': {
-          //   target: 'http://192.168.199.176:8087/crm/api',
+          //   target: 'http://127.0.0.1:8087/crm/api',
           //   pathRewrite: {
           //     '^/crm/api': ''
           //   },
@@ -186,7 +186,7 @@ var webpackConfig = {
             minChunks: Infinity,
         }),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
-        new HtmlWebpackPlugin({ //根据模板插入css/js等生成最终HTML
+        new HtmlWebpackPlugin({ //根据模板插入css/js成最终HTML
             filename: './index.html', //生成的html存放路径，相对于path
             template: './src/entry/index.html.ejs', //html模板路径
             title: '凯贝姆Hi Baby管理后台',

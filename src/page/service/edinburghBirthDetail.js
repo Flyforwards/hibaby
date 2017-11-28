@@ -3,13 +3,13 @@
  */
 import React, { Component } from 'react';
 import { creatButton, detailComponent } from './ServiceComponentCreat'
-import { Card, Input, Form, Button, Spin, Row, Col, message, DatePicker, Tabs, InputNumber } from 'antd';
+import { Card, Form, Spin, Row, Col, DatePicker, InputNumber, Select } from 'antd';
 import { connect } from 'dva';
 import { parse } from 'qs'
 import moment from 'moment'
-const { TextArea } = Input;
+const Option = Select.Option;
 import './serviceComponent.scss'
-const TabPane = Tabs.TabPane;
+import { routerRedux } from 'dva/router'
 const FormItem = Form.Item;
 
 class Detail extends Component {
@@ -35,6 +35,12 @@ class Detail extends Component {
     window.history.go(-1)
   }
   
+  //创建按钮
+  createClicked() {
+    this.props.dispatch(routerRedux.push(`/service/edinburgh-birth/create?customerid=${parse(location.search.substr(1)).customerid}`));
+  }
+  
+  
   print() {
   
   }
@@ -58,7 +64,7 @@ class Detail extends Component {
       type: 'serviceCustomer/getEdinburghMelancholyGaugeList',
       payload: data
     })
-   
+    
   }
   
   //编辑按钮和编辑中的返回按钮
@@ -84,6 +90,7 @@ class Detail extends Component {
       if (!err) {
         const { k, info } = data;
         const keysArray = Object.keys(values);
+        console.log(values, 'values')
         keysArray.map((v, kk) => {
           const arrTxt = v.split('-');
           const name = arrTxt[0];
@@ -93,6 +100,7 @@ class Detail extends Component {
           }
         })
         info.operatorItem = 12;
+        console.log(info, 'postINfo ')
         dispatch({
           type: 'serviceCustomer/saveEdinburghMelancholyGauge',
           payload: { info, customerId }
@@ -104,17 +112,19 @@ class Detail extends Component {
   
   render() {
     const { loading, baseInfoDict, edinburghListInfo, form } = this.props;
+    console.log(edinburghListInfo,'渲染')
     const { getFieldDecorator } = form;
     let baseInfoDivAry = detailComponent(baseInfoDict)
     let edinburgh = location.pathname.indexOf('edinburgh-birth');
     const bottomDiv =
             <div className='button-group-bottom-common'>
               {creatButton('返回', this.backClicked.bind(this))}
+              {creatButton('创建', this.createClicked.bind(this))}
               {creatButton('打印', this.print.bind(this))}
             </div>
     const formItemLayout = {
-      labelCol: { span: 5 },
-      wrapperCol: { span: 19 }
+      labelCol: { span: 12 },
+      wrapperCol: { span: 12 }
     }
     if (edinburgh !== -1) {
       return (
@@ -129,163 +139,213 @@ class Detail extends Component {
                 return (
                   <Card key={k}>
                     <Form className="formBox">
-                      <Row gutter={40}>
-                        <Col span={6}>
+                      <Row gutter={40} key={v}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="1"
+                            label="您能看到事物有趣的一面，并笑得开心"
                           >
                             {getFieldDecorator(`one-${k}`, {
-                              initialValue: v.one,
+                              initialValue: v.one.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>同以前一样</Option>
+                                <Option value='1'>没有以前那么多</Option>
+                                <Option value='2'>肯定比以前少</Option>
+                                <Option value='3'>完全不能</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="2"
+                            label="您欣然期待未来的一切"
                           >
                             {getFieldDecorator(`two-${k}`, {
-                              initialValue: v.two,
+                              initialValue: v.two.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择!' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>同以前一样</Option>
+                                <Option value='1'>没有以前那么多</Option>
+                                <Option value='2'>肯定比以前少</Option>
+                                <Option value='3'>完全不能</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="3"
+                            label="当事情出错时，您会不必要地责备自己"
                           >
                             {getFieldDecorator(`three-${k}`, {
-                              initialValue: v.three,
+                              initialValue: v.three.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>大部分时候这样</Option>
+                                <Option value='1'>有时候这样</Option>
+                                <Option value='2'>不经常这样</Option>
+                                <Option value='3'>没有这样</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="4"
+                            label="您无缘无故感到焦虑和担心"
                           >
                             {getFieldDecorator(`four-${k}`, {
-                              initialValue: v.four,
+                              initialValue: v.four.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>一点也没有</Option>
+                                <Option value='1'>极少有</Option>
+                                <Option value='2'>有时候这样</Option>
+                                <Option value='3'>经常这样</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="5"
+                            label="您无缘无故感到害怕和惊慌"
                           >
                             {getFieldDecorator(`five-${k}`, {
-                              initialValue: v.five,
+                              initialValue: v.five.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>相当多时候这样</Option>
+                                <Option value='1'>有时候这样</Option>
+                                <Option value='2'>不经常这样</Option>
+                                <Option value='3'>一点也没有</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="6"
+                            label="很多事情冲着您而来，使您透不过气"
                           >
                             {getFieldDecorator(`six-${k}`, {
-                              initialValue: v.six,
+                              initialValue: v.six.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>大多数时候您都不能应付</Option>
+                                <Option value='1'>有时候您不能像平时那样应付得好</Option>
+                                <Option value='2'>大部分时候您都能像平时那样应付得好</Option>
+                                <Option value='3'>您一直都能应付得好</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="7"
+                            label="您很不开心，以致失眠"
                           >
                             {getFieldDecorator(`seven-${k}`, {
-                              initialValue: v.seven,
+                              initialValue: v.seven.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>大部分时候这样</Option>
+                                <Option value='1'>有时候这样</Option>
+                                <Option value='2'>不经常这样</Option>
+                                <Option value='3'>一点也没有</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                         <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="8"
+                            label="您感到难过和悲伤"
                           >
                             {getFieldDecorator(`eight-${k}`, {
-                              initialValue: v.eight,
+                              initialValue: v.eight.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>大部分时候这样</Option>
+                                <Option value='1'>相当时候这样</Option>
+                                <Option value='2'>不经常这样</Option>
+                                <Option value='3'>一点也没有</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="9"
+                            label="您不开心到哭泣。"
                           >
                             {getFieldDecorator(`nine-${k}`, {
-                              initialValue: v.nine,
+                              initialValue: v.nine.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择！' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>大部分时候这样</Option>
+                                <Option value='1'>有时候这样</Option>
+                                <Option value='2'>只是偶而这样</Option>
+                                <Option value='3'>没有这样</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                         <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
-                            label="10"
+                            label="您想过要伤害自己"
                           >
                             {getFieldDecorator(`ten-${k}`, {
-                              initialValue: v.ten,
+                              initialValue: v.ten.toString(),
                               rules: [
-                                { required: true, message: '请输入数值!' }
+                                { required: true, message: '请选择!' }
                               ]
                             })(
-                              <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                              <Select disabled={v.isEdit ? false : true}>
+                                <Option value='0'>相当多时候这样</Option>
+                                <Option value='1'>有时候这样</Option>
+                                <Option value='2'>很少这样</Option>
+                                <Option value='3'>没有这样</Option>
+                              </Select>
                             )}
                           </FormItem>
                         </Col>
-                          <Col span={6}>
+                        <Col span={8}>
                           <FormItem
                             {...formItemLayout}
                             label="总分"
                           >
-                            {getFieldDecorator(`totalScore`, {
+                            {getFieldDecorator(`totalScore-${k}`, {
                               initialValue: v.totalScore,
                               rules: [
                                 { required: true, message: '请输入数值!' }
@@ -333,21 +393,229 @@ class Detail extends Component {
             edinburghListInfo.map((v, k) => {
               return (
                 <Card key={k}>
-                  <Row className="rowBox">
-                    <Col span={6}><span className="number">1:</span> {v.one}</Col>
-                    <Col span={6}><span className="number">2:</span> {v.two}</Col>
-                    <Col span={6}><span className="number">3:</span> {v.three}</Col>
-                    <Col span={6}><span className="number">4:</span> {v.four}</Col>
-                    <Col span={6}><span className="number">5:</span> {v.five}</Col>
-                    <Col span={6}><span className="number">6:</span> {v.six}</Col>
-                    <Col span={6}><span className="number">7:</span> {v.seven}</Col>
-                    <Col span={6}><span className="number">6:</span> {v.eight}</Col>
-                    <Col span={6}><span className="number">9:</span> {v.nine}</Col>
-                    <Col span={6}><span className="number">10:</span> {v.ten}</Col>
-                    <Col span={6}><span className="number">总分:</span> {v.totalScore}</Col>
-                    <Col span={4} offset={14}><span>操作者:</span> {v.operator}</Col>
-                    <Col span={4}><span>操作时间:</span> {moment(v.operatorTime).format("YYYY-MM-DD HH:mm:ss")}</Col>
-                  </Row>
+                  <Form className="formBox">
+                    <Row gutter={40} key={v}>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您能看到事物有趣的一面，并笑得开心"
+                        >
+                          {getFieldDecorator(`one-${k}`, {
+                            initialValue: v.one.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>同以前一样</Option>
+                              <Option value='1'>没有以前那么多</Option>
+                              <Option value='2'>肯定比以前少</Option>
+                              <Option value='3'>完全不能</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您欣然期待未来的一切"
+                        >
+                          {getFieldDecorator(`two-${k}`, {
+                            initialValue: v.two.toString(),
+                            rules: [
+                              { required: true, message: '请选择!' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>同以前一样</Option>
+                              <Option value='1'>没有以前那么多</Option>
+                              <Option value='2'>肯定比以前少</Option>
+                              <Option value='3'>完全不能</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="当事情出错时，您会不必要地责备自己"
+                        >
+                          {getFieldDecorator(`three-${k}`, {
+                            initialValue: v.three.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>大部分时候这样</Option>
+                              <Option value='1'>有时候这样</Option>
+                              <Option value='2'>不经常这样</Option>
+                              <Option value='3'>没有这样</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您无缘无故感到焦虑和担心"
+                        >
+                          {getFieldDecorator(`four-${k}`, {
+                            initialValue: v.four.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>一点也没有</Option>
+                              <Option value='1'>极少有</Option>
+                              <Option value='2'>有时候这样</Option>
+                              <Option value='3'>经常这样</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您无缘无故感到害怕和惊慌"
+                        >
+                          {getFieldDecorator(`five-${k}`, {
+                            initialValue: v.five.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>相当多时候这样</Option>
+                              <Option value='1'>有时候这样</Option>
+                              <Option value='2'>不经常这样</Option>
+                              <Option value='3'>一点也没有</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="很多事情冲着您而来，使您透不过气"
+                        >
+                          {getFieldDecorator(`six-${k}`, {
+                            initialValue: v.six.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>大多数时候您都不能应付</Option>
+                              <Option value='1'>有时候您不能像平时那样应付得好</Option>
+                              <Option value='2'>大部分时候您都能像平时那样应付得好</Option>
+                              <Option value='3'>您一直都能应付得好</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您很不开心，以致失眠"
+                        >
+                          {getFieldDecorator(`seven-${k}`, {
+                            initialValue: v.seven.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>大部分时候这样</Option>
+                              <Option value='1'>有时候这样</Option>
+                              <Option value='2'>不经常这样</Option>
+                              <Option value='3'>一点也没有</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您感到难过和悲伤"
+                        >
+                          {getFieldDecorator(`eight-${k}`, {
+                            initialValue: v.eight.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>大部分时候这样</Option>
+                              <Option value='1'>相当时候这样</Option>
+                              <Option value='2'>不经常这样</Option>
+                              <Option value='3'>一点也没有</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您不开心到哭泣。"
+                        >
+                          {getFieldDecorator(`nine-${k}`, {
+                            initialValue: v.nine.toString(),
+                            rules: [
+                              { required: true, message: '请选择！' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>大部分时候这样</Option>
+                              <Option value='1'>有时候这样</Option>
+                              <Option value='2'>只是偶而这样</Option>
+                              <Option value='3'>没有这样</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="您想过要伤害自己"
+                        >
+                          {getFieldDecorator(`ten-${k}`, {
+                            initialValue: v.ten.toString(),
+                            rules: [
+                              { required: true, message: '请选择!' }
+                            ]
+                          })(
+                            <Select disabled>
+                              <Option value='0'>相当多时候这样</Option>
+                              <Option value='1'>有时候这样</Option>
+                              <Option value='2'>很少这样</Option>
+                              <Option value='3'>没有这样</Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col span={8}>
+                        <FormItem
+                          {...formItemLayout}
+                          label="总分"
+                        >
+                          {getFieldDecorator(`totalScore-${k}`, {
+                            initialValue: v.totalScore,
+                            rules: [
+                              { required: true, message: '请输入数值!' }
+                            ]
+                          })(
+                            <InputNumber min={0} disabled={v.isEdit ? false : true}/>
+                          )}
+                        </FormItem>
+                      </Col>
+      
+                      <Col span={4} offset={14}><span>操作者:</span> {v.operator}</Col>
+                      <Col span={4}><span>操作时间:</span> {moment(v.operatorTime).format("YYYY-MM-DD HH:mm:ss")}</Col>
+                      
+                    </Row>
+                  </Form>
                 </Card>
               )
             })

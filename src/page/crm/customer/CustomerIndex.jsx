@@ -244,9 +244,8 @@ class CustomerIndex extends React.Component {
   }
 
   rowClassName(record, index){
-
-    if(!record.purchasePackage &&  record.brithDate){
-      if( moment().diff(record.brithDate,"days") > 3){
+    if(!record.purchasePackage &&  record.dueDate){
+      if( moment().diff(record.dueDate,"days") > 3){
         return "selectRow"
       }
     }

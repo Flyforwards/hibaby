@@ -23,14 +23,14 @@ class App extends Component {
     vdType: null,
     status: null
   }
-  
+
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false
     });
   }
-  
+
   onChange = (value) => {
     const { dispatch } = this.props;
     dispatch({
@@ -45,8 +45,8 @@ class App extends Component {
       name: value
     })
   }
-  
-  
+
+
   handleNameChange = (e) => {
     this.setState({
       name: e.target.value
@@ -67,7 +67,7 @@ class App extends Component {
       status: value
     });
   }
-  
+
   handleReset = () => {
     this.props.form.resetFields();
     this.setState({
@@ -85,15 +85,15 @@ class App extends Component {
       }
     });
   }
-  
+
   handleSearch = () => {
     this.getTableData({
       nodeId: this.state.postNodeId ? this.state.postNodeId : 1,
       page: 1
     });
   }
-  
-  
+
+
   getTableData(params = {}) {
     const { dispatch } = this.props;
     dispatch({
@@ -107,8 +107,8 @@ class App extends Component {
       }
     });
   }
-  
-  
+
+
   handleCancel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -118,8 +118,8 @@ class App extends Component {
       }
     })
   }
-  
-  
+
+
   handleCancelModel = (e) => {
     const { dispatch } = this.props;
     dispatch({
@@ -135,7 +135,7 @@ class App extends Component {
       }
     })
   }
-  
+
   onSelect = (selectedKeys, info) => {
     const { dispatch } = this.props;
     this.setState({
@@ -158,21 +158,27 @@ class App extends Component {
       selectedKeys: []
     })
   }
-  
+
   getInfo = (data) => {
-    const { changeKey, isLow, dispatch, reset } = this.props;
+    const { changeKey, isLow, dispatch, reset, isEm } = this.props;
     const { id, name } = data;
     const postData = {
       dishesId: id,
       dishesName: name,
       number: changeKey + 1
     }
-    const postDataHigh = {
-      dishesId: id,
-      dishesName: name,
-      number: changeKey + 1
-    }
-    reset();
+    const postDataHigh =
+            isEm ? {
+              em_dishesId: id,
+              em_dishesName: name,
+              number: changeKey + 1
+            } : {
+              dishesId: id,
+              dishesName: name,
+              number: changeKey + 1
+            }
+
+    //reset();
     isLow ? dispatch({
       type: 'prepareMeals/saveLowInfo',
       payload: { postData }
@@ -188,10 +194,10 @@ class App extends Component {
         topVisible: false
       }
     })
-    
+
   }
-  
-  handleTableChange = (pagination, filters, sorter) => {
+
+  handleTableChange = (pagination) => {
     const { dispatch, prepareMeals } = this.props;
     const { name } = this.state;
     name == '' ? dispatch({
@@ -211,11 +217,11 @@ class App extends Component {
       }
     })
   }
-  
+
   render() {
     const { prepareMeals, form } = this.props;
     const { getFieldDecorator } = form;
-    
+
     const { chooseVisibleInfo, nodesInfo, dishesPageInfo, paginationInfo, mvType, vdType } = prepareMeals;
     const { nodes } = nodesInfo;
     const { expandedKeys, autoExpandParent } = this.state;
@@ -287,7 +293,7 @@ class App extends Component {
           )
         }
       }]
-    
+
     const loop = data => data.map((item) => {
       if (item.nodes) {
         return (
@@ -376,7 +382,7 @@ class App extends Component {
               />
             </Col>
           </Row>
-        
+
         </Modal>
       </div>
     );
@@ -384,7 +390,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  
+
   return {
     prepareMeals: state.prepareMeals
   };

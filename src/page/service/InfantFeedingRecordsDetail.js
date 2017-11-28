@@ -63,11 +63,16 @@ class Detail extends Component {
     this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&dataId=${dict.id}`));
   }
   onCreate(){
-    if(this.props.BabyList.length <= 0){
-      message.warn("没有婴儿信息")
-    } else{
-      this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&babyId=${this.tabKey}`));
+    if(location.pathname === "/service/puerpera-body/detail"){
+      this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}`));
+    }else{
+      if(this.props.BabyList.length <= 0){
+        message.warn("没有婴儿信息")
+      } else{
+        this.props.dispatch(routerRedux.push(`/service/${this.state.urlAddress}/edit?customerid=${parse(location.search.substr(1)).customerid}&babyId=${this.tabKey}`));
+      }
     }
+
   }
 
    componentWillUnmount(){
@@ -173,7 +178,8 @@ class Detail extends Component {
       }
     }
     else {
-      netAry ? this.tabKey = netAry[0].babyId :''
+     // console.log("sss",netAry)
+      //netAry && netAry != [] ? this.tabKey = netAry[0].babyId :''
       detailCard = netAry ? (netAry).map((dict)=>{
         return this.CreatDetailCard(dict)
       }):''

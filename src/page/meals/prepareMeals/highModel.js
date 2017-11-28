@@ -13,7 +13,8 @@ class DynamicFieldSet extends Component {
     super(props);
     this.state = {
       isLow: false,
-      changeKey: 0
+      changeKey: 0,
+      isEm: false
     }
     this.infoKey = 0;
   }
@@ -61,7 +62,8 @@ class DynamicFieldSet extends Component {
   }
   reset = (changeKey) => {
     const { form } = this.props;
-    form.resetFields([`dishesName-${changeKey + 1}`])
+    form.resetFields([`dishesName-${changeKey + 1}`]);
+    form.resetFields([`em_dishesName-${changeKey + 1}`]);
   }
 
   changeTopVisible = () => {
@@ -73,11 +75,16 @@ class DynamicFieldSet extends Component {
       }
     })
   }
-  chooseVisible = (k) => {
+  chooseVisible = (k, isEm) => {
     const { dispatch } = this.props;
-    this.setState({
+    isEm ? this.setState({
+      isEm: true,
       changeKey: k
-    })
+    }) :
+      this.setState({
+        isEm: false,
+        changeKey: k
+      })
     dispatch({
       type: 'prepareMeals/getDishesPageList',
       payload: {
@@ -118,6 +125,18 @@ class DynamicFieldSet extends Component {
     })
 
   }
+  changeEmEatDay = (value) => {
+    const { dispatch } = this.props;
+    const infoKey = this.infoKey;
+    const emEatDayValue = parseInt(value);
+    dispatch({
+      type: 'prepareMeals/changeEmEatDay',
+      payload: {
+        emEatDayValue, infoKey
+      }
+    })
+
+  }
   changeEatTime = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
@@ -130,21 +149,44 @@ class DynamicFieldSet extends Component {
     })
 
   }
-  changeFrequency = (value) => {
+  changeEmEatTime = (value) => {
     const { dispatch } = this.props;
     const infoKey = this.infoKey;
-    const frequencyValue = parseInt(value);
+    const emEatTimeValue = parseInt(value);
     dispatch({
-      type: 'prepareMeals/changeFrequency',
+      type: 'prepareMeals/changeEmEatTime',
       payload: {
-        frequencyValue, infoKey
+        emEatTimeValue, infoKey
+      }
+    })
+
+  }
+  changeCycle = (value) => {
+    const { dispatch } = this.props;
+    const infoKey = this.infoKey;
+    const cycleValue = parseInt(value);
+    dispatch({
+      type: 'prepareMeals/changeCycle',
+      payload: {
+        cycleValue, infoKey
+      }
+    })
+  }
+  changeEmCycle = (value) => {
+    const { dispatch } = this.props;
+    const infoKey = this.infoKey;
+    const emCycleValue = parseInt(value);
+    dispatch({
+      type: 'prepareMeals/changeEmCycle',
+      payload: {
+        emCycleValue, infoKey
       }
     })
   }
 
   render() {
     const { form, cardLevelInfo, topMenuInfoByType } = this.props;
-    const { changeKey, isLow } = this.state;
+    const { changeKey, isLow, isEm } = this.state;
     const { dishes } = topMenuInfoByType;
     const { getFieldDecorator } = form;
     const selectItemLayout = {
@@ -157,10 +199,9 @@ class DynamicFieldSet extends Component {
         sm: { span: 16 }
       }
     }
-
     return (
       <Form onSubmit={this.handleSubmit}>
-        <ChooseDishes changeKey={changeKey} isLow={isLow} reset={this.reset.bind(this, changeKey)}/>
+        <ChooseDishes changeKey={changeKey} isLow={isLow} isEm={isEm} reset={this.reset.bind(this, changeKey)}/>
         <Row style={{ backgroundColor: "#CFCFCF", textAlign: 'center', paddingTop: '20px' }}>
           <Col span={6}>
             <FormItem label="针对套餐" {...selectItemLayout}>
@@ -187,101 +228,206 @@ class DynamicFieldSet extends Component {
         {
           dishes.map((v, k) => {
             return (
-              <Row style={{ 'marginTop': '20px' }} key={v.dishesName && v.dishesName + k}>
-                <Col span={5} className="foodCol">
-                  <FormItem label={`菜品${k + 1}`} {...selectItemLayout}>
-                    {getFieldDecorator(`dishesName-${k + 1}`, {
-                      initialValue: v.dishesName && v.dishesName,
-                      rules: [{
-                        required: true,
-                        message: "请选择菜品"
-                      }]
-                    })(
-                      <Input
-                        onClick={() => {this.chooseVisible(k)}}
-                        suffix={<Icon type="folder"/>}
-                      />
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={6}>
-                  <FormItem label='食用日' {...selectItemLayout}>
-                    {getFieldDecorator(`eatDay-${k + 1}`, {
-                      initialValue: v.eatDay && v.eatDay.toString(),
-                      rules: [{
-                        required: true,
-                        message: "请选择实用日"
-                      }]
-                    })(
-                      <Select onSelect={(value) => {
-                        this.infoKey = k;
-                        this.changeEatDay(value);
-                      }}>
-                        <Option value='1'>周一</Option>
-                        <Option value='2'>周二</Option>
-                        <Option value='3'>周三</Option>
-                        <Option value='4'>周四</Option>
-                        <Option value='5'>周五</Option>
-                        <Option value='6'>周六</Option>
-                        <Option value='7'>周日</Option>
-                      </Select>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={6}>
-                  <FormItem label='食用时间' {...selectItemLayout}>
-                    {getFieldDecorator(`eatTime-${k + 1}`, {
-                      initialValue: v.eatTime && v.eatTime.toString(),
-                      rules: [{
-                        required: true,
-                        message: "请选择食用时间"
-                      }]
-                    })(
-                      <Select onSelect={(value) => {
-                        this.infoKey = k;
-                        this.changeEatTime(value);
-                      }}>
-                        <Option value='1'>早</Option>
-                        <Option value='2'>早加</Option>
-                        <Option value='3'>午</Option>
-                        <Option value='4'>午加</Option>
-                        <Option value='5'>晚</Option>
-                        <Option value='6'>晚加</Option>
-                      </Select>
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={5}>
-                  <FormItem label="频次" {...selectItemLayout}>
-                    {getFieldDecorator(`frequency-${k + 1}`, {
-                      initialValue: v.frequency && v.frequency.toString(),
-                      rules: [{
-                        required: true,
-                        message: "请选择频次"
-                      }]
-                    })(
-                      <Select onSelect={(value) => {
-                        this.infoKey = k;
-                        this.changeFrequency(value);
-                      }}>
-                        <Option value="1">每周都吃</Option>
-                        <Option value="2">两周吃一次</Option>
-                        <Option value="3">四周吃一次</Option>
-                      </Select>
-                    )}
-                  </FormItem>
-                </Col>
-                {
-                  v.isDel ? <Col span={2} style={{ textAlign: 'center' }}>
-                    {/*<Button className="btnDelIcon" onClick={() => this.remove(k)}>*/}
+              <div style={{ 'marginTop': '20px' }} key={v.dishesName && v.dishesName + k}>
+                <Row >
+                  <Col span={6} className="foodCol">
+                    <FormItem label={`菜品${k + 1}`} {...selectItemLayout}>
+                      {getFieldDecorator(`dishesName-${k + 1}`, {
+                        initialValue: v.dishesName && v.dishesName,
+                        rules: [{
+                          required: true,
+                          message: "请选择菜品"
+                        }]
+                      })(
+                        <Input
+                          onClick={() => {this.chooseVisible(k,false)}}
+                          suffix={<Icon type="folder"/>}
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem label="第几周" {...selectItemLayout}>
+                      {getFieldDecorator(`cycle-${k + 1}`, {
+                        initialValue: v.cycle && v.cycle.toString(),
+                        rules: [{
+                          required: true,
+                          message: "请选择第几周"
+                        }]
+                      })(
+                        <Select
+                          onSelect={(value) => {
+                            this.infoKey = k;
+                            this.changeCycle(value);
+                          }}>
+                          <Option value="1">第一周</Option>
+                          <Option value="2">第二周</Option>
+                          <Option value="3">第三周</Option>
+                          <Option value="4">第四周</Option>
+                          <Option value="5">第五周</Option>
+                          <Option value="6">第六周</Option>
+                          <Option value="7">第七周</Option>
+                          <Option value="8">第八周</Option>
+                          <Option value="9">第九周</Option>
+                          <Option value="10">第十周</Option>
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem label='食用日' {...selectItemLayout}>
+                      {getFieldDecorator(`eatDay-${k + 1}`, {
+                        initialValue: v.eatDay && v.eatDay.toString(),
+                        rules: [{
+                          required: true,
+                          message: "请选择实用日"
+                        }]
+                      })(
+                        <Select onSelect={(value) => {
+                          this.infoKey = k;
+                          this.changeEatDay(value);
+                        }}>
+                          <Option value='1'>周一</Option>
+                          <Option value='2'>周二</Option>
+                          <Option value='3'>周三</Option>
+                          <Option value='4'>周四</Option>
+                          <Option value='5'>周五</Option>
+                          <Option value='6'>周六</Option>
+                          <Option value='7'>周日</Option>
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem label='食用时间' {...selectItemLayout}>
+                      {getFieldDecorator(`eatTime-${k + 1}`, {
+                        initialValue: v.eatTime && v.eatTime.toString(),
+                        rules: [{
+                          required: true,
+                          message: "请选择食用时间"
+                        }]
+                      })(
+                        <Select onSelect={(value) => {
+                          this.infoKey = k;
+                          this.changeEatTime(value);
+                        }}>
+                          <Option value='1'>早</Option>
+                          <Option value='2'>早加</Option>
+                          <Option value='3'>午</Option>
+                          <Option value='4'>午加</Option>
+                          <Option value='5'>晚</Option>
+                          <Option value='6'>晚加</Option>
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col span={5} offset={1} className="foodCol">
+                    <FormItem label='首周轮空' {...selectItemLayout}>
+                      {getFieldDecorator(`em_dishesName-${k + 1}`, {
+                        initialValue: v.em_dishesName && v.em_dishesName,
+                        rules: [{
+                          required: true,
+                          message: "请选择菜品"
+                        }]
+                      })(
+                        <Input
+                          onClick={() => {this.chooseVisible(k, true)}}
+                          suffix={<Icon type="folder"/>}
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem label="第几周" {...selectItemLayout}>
+                      {getFieldDecorator(`em_cycle-${k + 1}`, {
+                        initialValue: v.em_cycle && v.em_cycle.toString(),
+                        rules: [{
+                          required: true,
+                          message: "请选择第几周"
+                        }]
+                      })(
+                        <Select onSelect={(value) => {
+                          this.infoKey = k;
+                          this.changeEmCycle(value);
+                        }}>
+                          <Option value="1">第一周</Option>
+                          <Option value="2">第二周</Option>
+                          <Option value="3">第三周</Option>
+                          <Option value="4">第四周</Option>
+                          <Option value="5">第五周</Option>
+                          <Option value="6">第六周</Option>
+                          <Option value="7">第七周</Option>
+                          <Option value="8">第八周</Option>
+                          <Option value="9">第九周</Option>
+                          <Option value="10">第十周</Option>
+
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem label='食用日' {...selectItemLayout}>
+                      {getFieldDecorator(`em_eatDay-${k + 1}`, {
+                        initialValue: v.em_eatDay && v.em_eatDay.toString(),
+                        rules: [{
+                          required: true,
+                          message: "请选择实用日"
+                        }]
+                      })(
+                        <Select onSelect={(value) => {
+                          this.infoKey = k;
+                          this.changeEmEatDay(value);
+                        }}>
+                          <Option value='1'>周一</Option>
+                          <Option value='2'>周二</Option>
+                          <Option value='3'>周三</Option>
+                          <Option value='4'>周四</Option>
+                          <Option value='5'>周五</Option>
+                          <Option value='6'>周六</Option>
+                          <Option value='7'>周日</Option>
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={6}>
+                    <FormItem label='食用时间' {...selectItemLayout}>
+                      {getFieldDecorator(`em_eatTime-${k + 1}`, {
+                        initialValue: v.em_eatTime && v.em_eatTime.toString(),
+                        rules: [{
+                          required: true,
+                          message: "请选择食用时间"
+                        }]
+                      })(
+                        <Select onSelect={(value) => {
+                          this.infoKey = k;
+                          this.changeEmEatTime(value);
+                        }}>
+                          <Option value='1'>早</Option>
+                          <Option value='2'>早加</Option>
+                          <Option value='3'>午</Option>
+                          <Option value='4'>午加</Option>
+                          <Option value='5'>晚</Option>
+                          <Option value='6'>晚加</Option>
+                        </Select>
+                      )}
+                    </FormItem>
+                  </Col>
+
+                  {
+                    v.isDel ? <Col span={2} offset={22} style={{ textAlign: 'right','marginTop':'-20px' }}>
+                      {/*<Button className="btnDelIcon" onClick={() => this.remove(k)}>*/}
                       {/*删除*/}
-                    {/*</Button>*/}
-                    <PermissionButton testKey='MENU_DISHES_DELETE' className="btnDelIcon"  onClick={() => this.remove(k)}>
-                      删除
-                    </PermissionButton>
-                  </Col> : null
-                }
-              </Row>
+                      {/*</Button>*/}
+                      <PermissionButton testKey='MENU_DISHES_DELETE' className="btnDelIcon" onClick={() => this.remove(k)}>
+                        删除
+                      </PermissionButton>
+                    </Col> : null
+                  }
+                </Row>
+              </div>
             )
           })
         }
@@ -290,7 +436,7 @@ class DynamicFieldSet extends Component {
           <Col span={15}/>
           <Col span={3} className='btnCenter'>
             <FormItem >
-              <PermissionButton size="large"  testKey='MENU_DISHES_ADD' className="addBtn"  onClick={this.add}>
+              <PermissionButton size="large" testKey='MENU_DISHES_ADD' className="addBtn" onClick={this.add}>
                 添加菜品
               </PermissionButton>
               {/*<Button size="large" className="addBtn" onClick={this.add}>添加菜品</Button>*/}
@@ -299,7 +445,7 @@ class DynamicFieldSet extends Component {
           <Col span={3} className='btnCenter'>
             <FormItem >
               {/*<Button className="saveBtn" htmlType="submit" size="large">保存</Button>*/}
-              <PermissionButton   testKey='MENU_SAVE' className="saveBtn"  htmlType="submit" size="large">
+              <PermissionButton testKey='MENU_SAVE' className="saveBtn" htmlType="submit" size="large">
                 保存
               </PermissionButton>
             </FormItem>

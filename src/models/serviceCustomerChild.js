@@ -48,56 +48,87 @@ export default {
         }
         if (pathname === '/service/child-check-in/detail') {
           let dict = { dataId: query.customerid, type: 3, operatorItem: 3 }
-          dispatch({ type: 'getChilddataBycustomerId', payload: dict });
+          dispatch({type:'getBabymsgByCustomerId',payload:dict})
+          //dispatch({ type: 'getChilddataBycustomerId', payload: dict });
+
         }
         if(pathname === '/service/child-check-in/edit') {
-          dispatch({
-            type:'getBabyDataById',
-            payload:{
-              "dataId":queryURL('id'),
-              "operatorItem":3
-            }
-          })
+          if(queryURL('id')){
+            let dict = { dataId: query.customerid, type: 3, operatorItem: 3 }
+          //  dispatch({type:'getBabymsgByCustomerId',payload:dict})
+            dispatch({
+              type:'getBabyDataById',
+              payload:{
+                "dataId":queryURL('id'),
+                "operatorItem":3,
+                "babyId":queryURL('babyId')
+              }
+            })
+          }else{
+
+          }
         }
       });
     }
   },
   effects: {
     //根据客户id 得到婴儿信息
-    *getBabymsgByCustomerId({paylaod:values},{call,put}){
+    *getBabymsgByCustomerId({payload:values},{call,put}){
       const {data:{data,code}} = yield call(serviceAssessment.getBabymsgByCustomerId,values);
       if(code == 0){
         yield put({
           type:'onSaveBabyMsg',
-          paylaod:{
+          payload:{
             data
           }
         })
+        if(data.length > 0){
+          yield put({
+            type:'getChilddataBycustomerId',
+            payload:{
+              'dataId': values.dataId,
+              'type': 3,
+              'operatorItem': 3
+            }
+          })
+        }else{
+          message.error("没有婴儿信息")
+          yield put(routerRedux.push('/service/child-check-in'))
+        }
       }
     },
     //根据客户id查询查询婴儿入住详情
     *getChilddataBycustomerId({ payload: values},{call, put}){
       const { data:{data,code}} = yield call(serviceAssessment.getBabydataByCustomerid,values);
       if(code == 0) {
-        yield put({
-          type:'onSaveBabyAllData',
-          payload:{
-            data
-          }
-        })
+          yield put({
+            type:'onSaveBabyAllData',
+            payload:{
+              data
+            }
+          })
       }
     },
     //根据id查询婴儿入住评估详情
     *getBabyDataById({payload:values},{call,put}) {
-      const { data:{ data,code}} = yield call(serviceAssessment.getBabyDataById,values);
-      if(code == 0) {
-        yield put({
-          type:'onSaveBabyDataById',
-          payload:{
-            data
+      try {
+        const { data:{ data,code}} = yield call(serviceAssessment.getBabyDataById,values);
+        if(code == 0) {
+          yield put({
+            type:'onSaveBabyDataById',
+            payload:{
+              data
+            }
+          })
+          if(values.edit){
+            yield put(routerRedux.push(`/service/child-check-in/edit?customerid=${parse(location.search.substr(1)).customerid}&id=${values.dataId}&babyId=${values.babyId}`))
           }
-        })
+        }
       }
+      catch (err){
+        message.error(err.message)
+      }
+
     },
   //根据Id 删除婴儿入住评估
     *onDeleteBabydata({payload:values},{call,put}) {
@@ -109,10 +140,12 @@ export default {
     },
   //保存或者编辑婴儿入住评估
   *onSaveBabyData({payload:values},{call, put}){
-    const { data:{ data,code}} = yield call(serviceAssessment.onSaveBabyData,values);
+    const { data:{ data,code,err}} = yield call(serviceAssessment.onSaveBabyData,values);
          if(code == 0) {
            message.success("保存成功")
            yield put(routerRedux.push('/service/child-check-in'))
+         }else{
+           message.error(err)
          }
     },
 
@@ -154,25 +187,32 @@ export default {
     },
     //根据客户id获取婴儿评估保存
     onSaveBabyAllData(state,{payload:{data:BabyAllData}}){
-      console.log(BabyAllData,'111111')
-      if(BabyAllData.length>1){
-        let BabyId =BabyAllData[0].babyId;
-        let hostId = BabyAllData[0].id;
-        return { ...state,BabyAllData ,BabyId,hostId}
+      if(BabyAllData && BabyAllData.length>0){
+        if(BabyAllData.length>1){
+          let BabyId =BabyAllData[0].babyId;
+          let hostId = BabyAllData[0].id;
+          return { ...state,BabyAllData ,BabyId,hostId}
+        }else{
+          return { ...state,BabyAllData ,BabyId:BabyAllData[0].babyId,hostId:BabyAllData[0].id}
+        }
       }else{
-        return { ...state,BabyAllData ,BabayId:BabyAllData.babyId,hostId:BabyAllData.id}
+        return { ...state,BabyAllData:null ,BabyId:'',hostId:''}
       }
+
     },
     //根据id查询婴儿入住评估详情
-    onSaveBabyDataById(state,{payload:{data:BabyOneDatas}}){
+    onSaveBabyDataById(state,{payload:{data:BabyOneData}}){
       return { ...state, BabyOneData }
     },
     removeData(state, { payload: data }){
       return {
         ...state,
-        //BabyAllData: null,
+        BabyAllData: null,
         BabyId: null,
         hostId:null,
+        BabyOneData:null,
+        baseInfoDict: null,
+        BabyMsg:null,
       }
     },
     savaCustomerInfo(state, { payload: todo }){
