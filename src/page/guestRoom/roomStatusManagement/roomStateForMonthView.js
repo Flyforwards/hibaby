@@ -18,7 +18,7 @@ import {
 import PermissionButton from '../../../common/PermissionButton';
 
 const Option = Select.Option;
-
+let ONEC = false
 const UNIT_WIDTH = 9;
 const UNIT = 3;
 let SELECT_CUSTOMER = '';
@@ -169,7 +169,7 @@ const monthStateView = (props) => {
       return (
         <Col span={5} className="yearSelectBox">
           <Select className="yearSelect"
-                  defaultValue={defaultYear}
+                  defaultValue={dateSelectList[index].year}
                   onChange={yearSelectChangeHandler}>
             {years}
           </Select>
@@ -197,6 +197,7 @@ const monthStateView = (props) => {
         )
       }
 
+
       let tempAry = [];
       let RowAry = [];
       for(let i = 1 ;i<=12;i++){
@@ -208,9 +209,8 @@ const monthStateView = (props) => {
       }
 
       return (
-
         <Col offset={1} span={12} style={{height: "100%"}}>
-          <Checkbox.Group defaultValue={index == 0 ? dateSelectList[0].monthList : []} onChange={checkboxChangeHandler}>
+          <Checkbox.Group defaultValue={dateSelectList[index].monthList } onChange={checkboxChangeHandler}>
             {RowAry[0]}
             {RowAry[1]}
           </Checkbox.Group>
@@ -256,6 +256,9 @@ const monthStateView = (props) => {
       });
     };
 
+
+
+
     return (
       <div>
         <Row type="flex" justify="center" align="middle" className="timeSelectBox">
@@ -266,7 +269,16 @@ const monthStateView = (props) => {
           {
             renderChiMonthSelectView(0)
           }
-
+          {
+            function () {
+              if (dateSelectList.length > 1){
+                  if (!ONEC){
+                    ONEC = true
+                    addBtnClickHandler()
+                  }
+              }
+            }()
+          }
           <Col span={5} offset={1}>
             <Button className="button-group-1" onClick={addBtnClickHandler}>添加</Button>
           </Col>
@@ -283,6 +295,7 @@ const monthStateView = (props) => {
     let userBoxes = document.querySelectorAll(".userBox");
 
     for (let i = 0; i < userBoxes.length; i++) {
+
       userBoxes[i].classList.remove("active");
       let btns = userBoxes[i].querySelectorAll(".userBoxConfirm");
       for (let j = 0; j < btns.length; j++) {
@@ -784,6 +797,7 @@ const monthStateView = (props) => {
           let rightWidth = 0
           let rightUser = {...tempUser}
           let draggable = "true"
+          let className = "userBox";
 
           if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index && tempUser.status !== 7){
             width = (nowDict.index - tempUser.startIndex )  * boxW
@@ -800,6 +814,15 @@ const monthStateView = (props) => {
 
           }
 
+
+          if (ActBox){
+            const {customerId,status,startIndex,userDaycount} = ActBox.dataset;
+            if (tempUser.customerId == customerId && ActBox.dataset.roomIndex == roomIndex&& tempUser.dayCount == userDaycount
+              && tempUser.status == status&&tempUser.startIndex == startIndex){
+              className = "userBox active"
+            }
+          }
+
           const content = <div style={{zIndex:99999}}>{(users[i].customerName?tempUser.customerName:(tempUser.isRepair == 1 ? '维修中' :'' )) + '('
           + tempUser.dayCount + '天, '
           + timeToDate(tempUser.startDate)
@@ -810,7 +833,7 @@ const monthStateView = (props) => {
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
               <div className="userBoxSup" style={{width: (width+rightWidth+20) + 'px',left:users[i].startIndex * boxW+"px"}}>
-                <div className="userBox"
+                <div className={className}
                      style={{
                        width: width + 'px',
                      }}
@@ -886,8 +909,7 @@ const monthStateView = (props) => {
           <div style={{
             height: "100%",
             position: "relative",
-            paddingRight: "20px",
-            minWidth: room.useAndBookingList.length * boxW + 20 + "px"
+            minWidth: room.useAndBookingList.length * boxW + (boxW> 9 ? 0 : 10) + "px"
           }}>
             {
               renderDayRoom(room.useAndBookingList)
@@ -1218,23 +1240,24 @@ class MonthStateClass extends React.Component{
       const {roomIndex,customerId,customerName,userDaycount,status,startIndex,endIndex} = ActBox.dataset;
 
       if (status == -1 || status == 7){
-        if (e.keyCode == 37 || e.keyCode == 39){
-          if(e.keyCode == 37){
+
+        if (e.keyCode === 37 || e.keyCode === 39){
+          if(e.keyCode === 37){
             if (startIndex <= nowDict.index ){
               return;
             }
           }
           this.props.dispatch({type:"roomStatusManagement/roomFinetuning",payload:{
-            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 37 ? "left":"right" ),status,customerName
+            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode === 37 ? "left":"right" ),status,customerName,ActBox
           }
           })
+
         }
-        else if (e.keyCode == 38 || e.keyCode == 40){
+        else if (e.keyCode === 38 || e.keyCode === 40){
           this.props.dispatch({type:"roomStatusManagement/roomChange",payload:{
-            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 38 ? "up":"down" ),status,customerName
+            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode === 38 ? "up":"down" ),status,customerName,ActBox
           }
           })
-          ActBox = ""
 
         }
       }
@@ -1243,6 +1266,7 @@ class MonthStateClass extends React.Component{
 
   componentWillUnmount(){
     selectViewIndex = 0;
+    ONEC = false
     this.props.dispatch({type: 'roomStatusManagement/removeData'});
     window.removeEventListener('keydown',this.keyChangeBind)
   }

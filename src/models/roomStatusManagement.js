@@ -42,6 +42,46 @@ const getDays = (year, month) => {
   return (new Date(year, month, 0)).getDate();
 };
 
+function defaultDateList() {
+  const currMonth = parseInt(moment().format('M'));
+  let  defaultDateList = []
+  defaultDateList.push(
+    {
+      year: moment().format('YYYY'),
+      monthList: function () {
+        let ary = [`${currMonth}`];
+        if (currMonth + 1 <= 12) {
+          ary.push((currMonth + 1).toString())
+        }
+        if (currMonth + 2 <= 12) {
+          ary.push((currMonth + 2).toString())
+        }
+        return (ary)
+      }()
+    },
+  )
+
+  if (currMonth >= 11){
+    defaultDateList.push(
+      {
+        year: (parseInt(moment().format('YYYY'))+1).toString(),
+        monthList: function () {
+          let ary = [];
+          if (currMonth === 11){
+            ary.push((currMonth+2-12).toString())
+          }
+          else if (currMonth === 12){
+            ary.push((currMonth+1-12).toString())
+            ary.push((currMonth+2-12).toString())
+          }
+          return (ary)
+        }()
+      },
+    )
+  }
+  return defaultDateList;
+}
+
 let resideOperation = '';
 let eq = false;
 
@@ -72,21 +112,7 @@ export default {
     monthRoomList: [],
     dragUser: null,
     defaultYear: moment().format('YYYY'),
-    dateSelectList: [
-      {
-        year: moment().format('YYYY'), monthList: function () {
-        const month = moment().format('M');
-        let ary = [month];
-        if (parseInt(month) + 1 <= 12) {
-          ary.push((parseInt(month) + 1).toString())
-        }
-        if (parseInt(month) + 2 <= 12) {
-          ary.push((parseInt(month) + 2).toString())
-        }
-        return (ary)
-      }()
-      }
-    ],
+    dateSelectList: defaultDateList(),
     dateRulerList: [],
     QuickStayVisible:false,
     floorSelect: null,
@@ -114,21 +140,7 @@ export default {
     },
     removeData(state, { payload: data }) {
       return {
-        ...state, dateSelectList: [
-          {
-            year: moment().format('YYYY'), monthList: function () {
-            const month = moment().format('M');
-            let ary = [month];
-            if (parseInt(month) + 1 <= 12) {
-              ary.push((parseInt(month) + 1).toString())
-            }
-            if (parseInt(month) + 2 <= 12) {
-              ary.push((parseInt(month) + 2).toString())
-            }
-            return (ary)
-          }()
-          }
-        ], dateSelectViews: []
+        ...state, dateSelectList: defaultDateList(), dateSelectViews: []
       };
     },
     setFloorSelect(state, { payload: data }) {
@@ -241,7 +253,6 @@ export default {
       return { ...state, roomState: !todo ? 'day' : 'month' };
     },
     setMonthStatusCustomers(state, { payload: todo }){
-
       return {
         ...state,
         monthStateCustomers: todo.data
@@ -255,9 +266,9 @@ export default {
       //
       const roomLists = [...list];
       let day_length = roomLists && roomLists != '' ? roomLists[0].useAndBookingList.length:'';
-      let _unit_u = $(".monthRoomRightBox").width()/day_length;
+      let _unit_u = ($(".monthRoomRightBox").width())/day_length;
 
-      let boxW = day_length > 100 ? 9 : _unit_u
+      let boxW = _unit_u > 9 ? _unit_u : 9
 
       return { ...state, monthRoomList: list, occupancy: rate ,boxW};
     },
@@ -488,7 +499,7 @@ export default {
 
     //房间微调  房间号 客户id 方向
     roomFinetuning(state, { payload: data }){
-      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex} = data
+      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex,ActBox} = data
       customerId = parseInt(customerId)
       startIndex = parseInt(startIndex)
       endIndex = parseInt(endIndex)
@@ -520,13 +531,14 @@ export default {
 
       let customerListTwo = allDays[addIndex].customerList;
       customerListTwo.push({customerId,customerName,status})
-
+      ActBox.dataset.startIndex = `${parseInt(startIndex)+(direction === "left" ? -1 : 1)}`;
+      ActBox.dataset.endIndex = `${parseInt(endIndex)+(direction === "left" ? -1 : 1)}`;
       return {...state,monthRoomList};
 
     },
 
     roomChange(state, { payload: data }){
-      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex} = data
+      let {customerId,startIndex,endIndex,direction,status,customerName,roomIndex,ActBox} = data
       customerId = parseInt(customerId)
       startIndex = parseInt(startIndex)
       endIndex = parseInt(endIndex)
@@ -594,6 +606,9 @@ export default {
           currentDay.customerList.push({customerId,customerName,status});
         }
       }
+
+
+      ActBox.dataset.roomIndex = `${parseInt(roomIndex)+(direction === "up" ? -1 : 1)}`;
 
       return {...state,monthRoomList};
 
