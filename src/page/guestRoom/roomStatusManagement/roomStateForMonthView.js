@@ -18,7 +18,7 @@ import {
 import PermissionButton from '../../../common/PermissionButton';
 
 const Option = Select.Option;
-
+let ONEC = false
 const UNIT_WIDTH = 9;
 const UNIT = 3;
 let SELECT_CUSTOMER = '';
@@ -169,7 +169,7 @@ const monthStateView = (props) => {
       return (
         <Col span={5} className="yearSelectBox">
           <Select className="yearSelect"
-                  defaultValue={defaultYear}
+                  defaultValue={dateSelectList[index].year}
                   onChange={yearSelectChangeHandler}>
             {years}
           </Select>
@@ -197,6 +197,7 @@ const monthStateView = (props) => {
         )
       }
 
+
       let tempAry = [];
       let RowAry = [];
       for(let i = 1 ;i<=12;i++){
@@ -209,7 +210,7 @@ const monthStateView = (props) => {
 
       return (
         <Col offset={1} span={12} style={{height: "100%"}}>
-          <Checkbox.Group defaultValue={index == 0 ? dateSelectList[0].monthList : []} onChange={checkboxChangeHandler}>
+          <Checkbox.Group defaultValue={dateSelectList[index].monthList } onChange={checkboxChangeHandler}>
             {RowAry[0]}
             {RowAry[1]}
           </Checkbox.Group>
@@ -255,6 +256,9 @@ const monthStateView = (props) => {
       });
     };
 
+
+
+
     return (
       <div>
         <Row type="flex" justify="center" align="middle" className="timeSelectBox">
@@ -265,7 +269,16 @@ const monthStateView = (props) => {
           {
             renderChiMonthSelectView(0)
           }
-
+          {
+            function () {
+              if (dateSelectList.length > 1){
+                  if (!ONEC){
+                    ONEC = true
+                    addBtnClickHandler()
+                  }
+              }
+            }()
+          }
           <Col span={5} offset={1}>
             <Button className="button-group-1" onClick={addBtnClickHandler}>添加</Button>
           </Col>
@@ -896,8 +909,7 @@ const monthStateView = (props) => {
           <div style={{
             height: "100%",
             position: "relative",
-            paddingRight: "20px",
-            minWidth: room.useAndBookingList.length * boxW + 20 + "px"
+            minWidth: room.useAndBookingList.length * boxW + (boxW> 9 ? 0 : 10) + "px"
           }}>
             {
               renderDayRoom(room.useAndBookingList)
@@ -1254,6 +1266,7 @@ class MonthStateClass extends React.Component{
 
   componentWillUnmount(){
     selectViewIndex = 0;
+    ONEC = false
     this.props.dispatch({type: 'roomStatusManagement/removeData'});
     window.removeEventListener('keydown',this.keyChangeBind)
   }
