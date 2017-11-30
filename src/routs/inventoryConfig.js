@@ -45,4 +45,16 @@ export default (app)  => [
       })
     }
   },
+  
+  //存货分类
+  {
+    path: '/inventory/classification',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/classification'));
+        cb(null, require('page/inventory/classification/classificationIndex.js'))
+      })
+    }
+  },
+  
 ]

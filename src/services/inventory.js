@@ -46,3 +46,38 @@ export function getInventoryList(values){
   })
 }
 
+//查询存货分类
+export function getStockPageList(values){
+  return request('/crm/api/v1/inventory/getStockPageList',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+//创建存货分类
+export function addStock(values){
+  return request('/crm/api/v1/inventory/addStock',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+//查询上级分类
+export function getParentList(values){
+  return request('/crm/api/v1/inventory/getParentList',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+//根据存货分类id查询详情
+export function getStockDetailById(values){
+  return request('/crm/api/v1/inventory/getStockDetailById',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+//删除存货分类
+export function deleteStock(values){
+  return request('/crm/api/v1/inventory/deleteStock',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
