@@ -45,7 +45,7 @@ export default (app)  => [
       })
     }
   },
-  
+
   //存货分类
   {
     path: '/inventory/classification',
@@ -56,5 +56,15 @@ export default (app)  => [
       })
     }
   },
-  
+  //存货档案
+  {
+    path: '/inventory/archives',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/inventoryArchives'));
+        cb(null, require('page/inventory/archives/MainView.js'))
+      })
+    }
+  },
+
 ]

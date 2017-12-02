@@ -312,6 +312,8 @@ export default {
     },
     // 刷新菜单页面
     *pushModule({ payload: { moduleList, selectIndex } }, {call, put}) {
+      console.log(selectIndex)
+      console.log(moduleList)
       yield put({
         type: 'updateSelectProject',
         payload: { selectIndex }
@@ -396,8 +398,8 @@ export default {
         })
       }
     },
-    
-    
+
+
   },
 
 
