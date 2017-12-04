@@ -38,7 +38,19 @@ class ancillaryIndex extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values, '????????/')
+        const { attributeDetail, dispatch } = this.props;
+        const { name, id, data } = attributeDetail;
+        let dataInfo = []
+        data.map((v, k) => {
+          v.id ?
+            dataInfo.push({ name: v.attributeName, id: v.id }) :
+            dataInfo.push({ name: v.attributeName })
+        })
+        let postInfo = { data: dataInfo, id, attributeName: name }
+        dispatch({
+          type: 'ancillary/addAttributes',
+          payload: postInfo
+        })
       }
     });
   }
@@ -57,7 +69,7 @@ class ancillaryIndex extends Component {
   }
   
   delValue(key) {
-    console.log(key,'删除的key')
+    this.props.form.resetFields();
     this.props.dispatch({
       type: 'ancillary/delAttribute',
       payload: key
@@ -71,7 +83,7 @@ class ancillaryIndex extends Component {
     })
   }
   
-  changeValue=(key,e)=> {
+  changeValue = (key, e) => {
     this.props.dispatch({
       type: 'ancillary/changeAttributeValue',
       payload: {
@@ -81,18 +93,25 @@ class ancillaryIndex extends Component {
     })
   }
   
+  getStockDetailById(id) {
+    this.props.dispatch({
+      type: 'ancillary/getAttributeDetailById',
+      payload: { dataId:id }
+    })
+    
+  }
+  
   
   render() {
-    const { visibleView, title, form, attributeDetail, isDisabled } = this.props;
+    const { visibleView, title, form, isDisabled } = this.props;
     const { getFieldDecorator } = form;
     let name = this.props.attributeDetail && this.props.attributeDetail.name
-    let id = this.props.attributeDetail && this.props.attributeDetail.id
     let data = this.props.attributeDetail && this.props.attributeDetail.data
+    let id = this.props.attributeDetail && this.props.attributeDetail.id
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
     };
-    console.log(data,'//////')
     return (
       <Modal
         width={1000}
@@ -106,7 +125,7 @@ class ancillaryIndex extends Component {
         }}
       
       >
-        <Form className="changeInput" onSubmit={this.saveInfo}>
+        <Form className="changeInput" onSubmit={this.saveInfo.bind(this)}>
           <Row>
             <Col span={10}>
               <FormItem label='辅助属性' {...formItemLayout}>
@@ -124,12 +143,12 @@ class ancillaryIndex extends Component {
               data && data.map((v, k) => {
                 return (
                   <Col key={k} span={10}>
-                    <FormItem label='属性值' {...formItemLayout}  key={k+data.length}>
+                    <FormItem label='属性值' {...formItemLayout} >
                       {getFieldDecorator(`attributeName-${k}`, {
                         rules: [{ required: true, message: '请填写属性值！' }],
                         initialValue: v.attributeName
                       })(
-                        <Input className='noHight' disabled={isDisabled}  onChange={this.changeValue.bind(this, k)}/>
+                        <Input className='noHight' disabled={isDisabled} onChange={this.changeValue.bind(this, k)}/>
                       )}
                       {
                         !isDisabled && <Icon
@@ -162,6 +181,8 @@ class ancillaryIndex extends Component {
                   <Button className='one-button' style={{ 'marginRight': '30px' }} onClick={this.addValue.bind(this)}>添加</Button>
                   <Button className='button-group-2' htmlType="submit" style={{ 'marginRight': '30px' }}>保存</Button>
                   <Button className='button-group-1' onClick={() => {
+                    this.getStockDetailById(id)
+                    this.props.form.resetFields();
                     this.changeDisabled(true);
                     this.changeTitle('查看');
                   }}>取消</Button>
