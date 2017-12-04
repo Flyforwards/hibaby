@@ -89,9 +89,6 @@ export function getAllStockClassificationNodes(values){
   })
 }
 
-
-
-
 // 查询存货档案列表
 export function getInventoryFilePageList(values){
   return request('/crm/api/v1/inventory/getInventoryFilePageList',{
@@ -125,3 +122,32 @@ export function getInventoryFileDetailById(values){
   })
 }
 
+
+//创建修改辅助属性
+export function addAttributes(values){
+  return request('/crm/api/v1/inventory/addAttributes',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+//查询辅助属性列表
+export function getAttributesPageList(values){
+  return request('/crm/api/v1/inventory/getAttributesPageList',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+//删除辅助属性
+export function deleteAttributes(values){
+  return request('/crm/api/v1/inventory/deleteAttributes',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+//根据辅助属性id查询详情
+export function getAttributeDetailById(values){
+  return request('/crm/api/v1/inventory/getAttributeDetailById',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
