@@ -35,7 +35,7 @@ var webpackConfig = {
                 },
                 changeOrigin: true
             },
-          // // yfy
+          // yfy
           // '/crm/api/*': {
           //   target: 'http://192.168.199.81:8087/crm/api',
           //   pathRewrite: {

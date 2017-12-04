@@ -67,4 +67,18 @@ export default (app)  => [
     }
   },
 
+  
+  //辅助属性
+  {
+    path: '/inventory/ancillary',
+    getComponent: (location, cb) => {
+      require.ensure([], (require) => {
+        registerModel(app, require('models/ancillary'));
+        cb(null, require('page/inventory/ancillary/ancillaryIndex.js'))
+      })
+    }
+  },
+
+
+
 ]
