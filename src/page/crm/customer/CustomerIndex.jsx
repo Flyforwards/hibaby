@@ -285,11 +285,11 @@ class CustomerIndex extends React.Component {
     }
 
     const options = shipCards.map((record) => {
-      return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+      return (<Option key={record.id} value={`${record.id}`}>{record.name}</Option>)
     });
 
     const purchasePackageOptions = packageList.map((record) => {
-      return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+      return (<Option key={record.id} value={`${record.id}`}>{record.name}</Option>)
     });
 
     const formChooseLayout = {

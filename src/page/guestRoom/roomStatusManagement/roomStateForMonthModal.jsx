@@ -39,17 +39,27 @@ const formItemLayout = {
 };
 
 function textforkey(array, value, valuekey = 'name') {
+
+  let str = ""
+
   if (array) {
     for (let i = 0; i < array.length; i++) {
       let dict = array[i];
       if (dict['id'] === value) {
-        return dict[valuekey];
+        str = dict[valuekey] ? dict[valuekey] : value;
       }
+    }
+    if (!str){
+      str = value
     }
   }
   else {
-    return value
+    str = value
   }
+  if (!str){
+    str = "无"
+  }
+  return str
 }
 
 
@@ -71,12 +81,12 @@ function CustomerSearch(props) {
     { title: '分娩医院', component: 'Select', submitStr: 'hospital', selectName: 'Hospital' }
   ]
 
-  const options = shipCards.map((record) => {
-    return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+  const options = shipCards.map((record,index) => {
+    return (<Option key={ "options"+index} value={`${record.id}`}>{record.name}</Option>)
   });
 
-  const purchasePackageOptions = packageAry.map((record) => {
-    return (<Option key={record.id} value={record.id}>{record.name}</Option>)
+  const purchasePackageOptions = packageAry.map((record,index) => {
+    return (<Option key={"purchasePackageOptions"+index} value={`${record.id}`}>{record.name}</Option>)
   });
 
   function creatComponent(dict) {
@@ -91,10 +101,10 @@ function CustomerSearch(props) {
         {getFieldDecorator(dict.submitStr)
         (
           dict.selectName ? (
-            dict.submitStr === 'member' ? <Select className='antCli' placeholder='请选择'>{options}</Select> : (
+            dict.submitStr === 'member' ? <Select allowClear={ true } className='antCli' placeholder='请选择'>{options}</Select> : (
               dict.submitStr === 'purchasePackage' ?
-                <Select className='antCli' placeholder='请选择'>{purchasePackageOptions}</Select> :
-                <DictionarySelect className='antCli' placeholder="请选择" selectName={dict.selectName}/>
+                <Select allowClear={ true } className='antCli' placeholder='请选择'>{purchasePackageOptions}</Select> :
+                <DictionarySelect allowClear={ true } className='antCli' placeholder="请选择" selectName={dict.selectName}/>
             )
           )
             :
@@ -326,8 +336,8 @@ function CustomerTable({ props, loading, selectCustomerFun, dispatch, selectItem
   }
 
   return (
-    <Card bodyStyle={{ padding: '10px' }} title="预约客户">
-      <Card bodyStyle={{ padding: '10px', paddingTop: 0 }}>
+    <Card noHovering={true} bodyStyle={{ padding: '10px' }} title="预约客户">
+      <Card noHovering={true} bodyStyle={{ padding: '10px', paddingTop: 0 }}>
         {tags}
       </Card>
       <Table className="CustomerTable" rowSelection={rowSelection} {...tableProps}/>
@@ -407,8 +417,8 @@ class addCustomer extends React.Component {
         closable={false}
         onCancel={this.handleCancel.bind(this)}
         footer={[
-          <Button className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
-          <Button className='button-group-bottom-2' onClick={this.handleOk.bind(this)}> 确定</Button>
+          <Button key="cancelBtn" className='button-group-bottom-1' onClick={this.handleCancel.bind(this)}>取消</Button>,
+          <Button key="okBtn" className='button-group-bottom-2' onClick={this.handleOk.bind(this)}> 确定</Button>
         ]}
 
       >
@@ -416,7 +426,8 @@ class addCustomer extends React.Component {
         <CustomerTable
           selectItem={this.state.selectItem}
           selectCustomerFun={(record, selected) => {this.selectCustomerFun(record, selected)}}
-          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch} permissionAlias={permissionAlias}/>
+          loading={this.props.loading} props={this.props.users} dispatch={this.props.dispatch}
+          permissionAlias={permissionAlias}/>
       </Modal>
     )
   }
@@ -831,8 +842,14 @@ function QuickCusFromItem(props) {
     }
   }
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current.valueOf() < Date.now();
+  }
   return (
-    <Col span={8}>
+    <Col key={dict.subMitStr+"col"} span={8}>
+
+
       <FormItem key={dict.subMitStr} {...formItemLayout} label={dict.title}>
         {getFieldDecorator(dict.subMitStr, {
           rules: [{
@@ -843,13 +860,14 @@ function QuickCusFromItem(props) {
         (
           dict.componentStyle === 'select' ?
             (
-                <Select placeholder="请选择" className='antCli'>
+                <Select placeholder="请选择" className='antCli' >
                   {roomChi}
                 </Select>
             )
             :
             ( dict.componentStyle === 'date' ?
-                <DatePicker style={{ width: '100%' }}/> :
+                <DatePicker style={{ width: '100%' }} disabledDate={disabledDate}
+                /> :
                 <InputNumber style={{ height: '32px' }} min={1} max={365} placeholder="请填写" className='antCli'/>
             )
         )}
@@ -867,7 +885,6 @@ class QuickStay extends React.Component {
 
 
   handleOk() {
-    console.log(this.props)
     const that = this
     this.props.form.validateFields((err, values) => {
       if (!err) {

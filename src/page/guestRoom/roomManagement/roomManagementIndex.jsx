@@ -51,8 +51,6 @@ function ResultsTable(props) {
             render: (text, record, index) => {
               return (
                 <div>
-                 {/* <Link className="firstA" onClick={ ()=>{onLook(record)}}  > 查看 </Link>
-                  <Link className="firstB" onClick={ ()=>{onDelete(record)}}> 删除 </Link>*/}
                   <PermissionLink testKey='ROOM_DETAIL' className="firstA" onClick={ ()=>{onLook(record)} }> 查看 </PermissionLink>
                   <PermissionLink testKey='ROOM_DELETE' className="firstB" onClick={ ()=>{onDelete(record)} }> 删除 </PermissionLink>
 
@@ -102,7 +100,7 @@ function ResultsTable(props) {
       {title: '区域', key: 'region',dataArray:AreaAry},
       {title: '朝向', key: 'orientation',dataArray:TowardAry},
       {title: '套餐', key: 'packageInfoNameList', width:'20%'},
-      {title: '操作'}
+      {title: '操作',key:"operation"}
   ]
 
   const  columns = [];
@@ -129,7 +127,7 @@ function ResultsTable(props) {
 
   return(
     <div className="tableDiv">
-      <Table bordered {...tableProps} />
+      <Table bordered rowKey={ record => record.id} {...tableProps} />
     </div>
   )
 }

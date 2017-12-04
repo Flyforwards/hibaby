@@ -18,7 +18,7 @@ import {
 import PermissionButton from '../../../common/PermissionButton';
 
 const Option = Select.Option;
-
+let ONEC = false
 const UNIT_WIDTH = 9;
 const UNIT = 3;
 let SELECT_CUSTOMER = '';
@@ -63,14 +63,11 @@ let messageShow = true
 
 const monthStateView = (props) => {
   const {dispatch,loading,systemTime} = props;
-  const {occupancy,dateSelectList,floorSelect,dragUser} = props.users;
+  const {occupancy,dateSelectList,floorSelect,dragUser,boxW} = props.users;
   const customers = props.users.monthStateCustomers;
   const monthRoomList = props.users.monthRoomList;
 
-  let month_length = dateSelectList[0].monthList.length;
-  const roomLists = [...props.users.monthRoomList];
-  let day_length = roomLists && roomLists != '' ? roomLists[0].useAndBookingList.length:'';
-  let _unit_u = $(".monthRoomRightBox").width()/day_length;
+
 
   let years = [];
   let defaultYear = props.users.defaultYear;
@@ -101,7 +98,7 @@ const monthStateView = (props) => {
     let roomIndex = null;
     let dayIndex = null;
     let date = 0;
-    let offsetUnit = Math.round(month_length <= UNIT ? dragOffsetX/_unit_u : dragOffsetX / UNIT_WIDTH);
+    let offsetUnit = Math.round( dragOffsetX/boxW );
 
     if (event.target.className === "dayRoom") {
       roomIndex = event.target.dataset.roomIndex;
@@ -112,14 +109,14 @@ const monthStateView = (props) => {
     } else if (event.target.classList.contains("userBox")) {
       // 拖到了另外一个用户上面
       // 偏移天数
-      let offsetDays = parseInt(month_length <= UNIT ? event.layerX/_unit_u : event.layerX / UNIT_WIDTH);
+      let offsetDays = parseInt(event.layerX/boxW);
       roomIndex = event.target.dataset.roomIndex;
       dayIndex = parseInt(event.target.dataset.startIndex) + offsetDays;
     } else {
       return;
     }
 
-     dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
+    dayIndex = dayIndex - offsetUnit < 0 ? 0 : dayIndex - offsetUnit;
 
     if(dragUser.status !== 4){
       if(moment().isAfter(moment.unix((monthRoomList[roomIndex]).useAndBookingList[dayIndex].date/1000),'day')){
@@ -134,7 +131,7 @@ const monthStateView = (props) => {
         }
       })
     }
-
+    ActBox = ""
     dispatch({
       type: 'roomStatusManagement/userDrop',
       payload: {
@@ -142,6 +139,7 @@ const monthStateView = (props) => {
         dayIndex,
       }
     });
+
   };
 
 
@@ -171,7 +169,7 @@ const monthStateView = (props) => {
       return (
         <Col span={5} className="yearSelectBox">
           <Select className="yearSelect"
-                  defaultValue={defaultYear}
+                  defaultValue={dateSelectList[index].year}
                   onChange={yearSelectChangeHandler}>
             {years}
           </Select>
@@ -199,6 +197,7 @@ const monthStateView = (props) => {
         )
       }
 
+
       let tempAry = [];
       let RowAry = [];
       for(let i = 1 ;i<=12;i++){
@@ -210,9 +209,8 @@ const monthStateView = (props) => {
       }
 
       return (
-
         <Col offset={1} span={12} style={{height: "100%"}}>
-          <Checkbox.Group defaultValue={index == 0 ? dateSelectList[0].monthList : []} onChange={checkboxChangeHandler}>
+          <Checkbox.Group defaultValue={dateSelectList[index].monthList } onChange={checkboxChangeHandler}>
             {RowAry[0]}
             {RowAry[1]}
           </Checkbox.Group>
@@ -229,13 +227,13 @@ const monthStateView = (props) => {
         }
       });
     }
-  //点击添加
+    //点击添加
     const addBtnClickHandler = () => {
 
-       const index = ++selectViewIndex;
+      const index = ++selectViewIndex;
 
       let dateSelectView = (
-        <Row type="flex" justify="center" align="middle" className="timeSelectBox">
+        <Row key={"SelectView"+index} type="flex" justify="center" align="middle" className="timeSelectBox">
           {
             renderYearSelectView(index)
           }
@@ -258,6 +256,9 @@ const monthStateView = (props) => {
       });
     };
 
+
+
+
     return (
       <div>
         <Row type="flex" justify="center" align="middle" className="timeSelectBox">
@@ -268,7 +269,16 @@ const monthStateView = (props) => {
           {
             renderChiMonthSelectView(0)
           }
-
+          {
+            function () {
+              if (dateSelectList.length > 1){
+                  if (!ONEC){
+                    ONEC = true
+                    addBtnClickHandler()
+                  }
+              }
+            }()
+          }
           <Col span={5} offset={1}>
             <Button className="button-group-1" onClick={addBtnClickHandler}>添加</Button>
           </Col>
@@ -285,6 +295,7 @@ const monthStateView = (props) => {
     let userBoxes = document.querySelectorAll(".userBox");
 
     for (let i = 0; i < userBoxes.length; i++) {
+
       userBoxes[i].classList.remove("active");
       let btns = userBoxes[i].querySelectorAll(".userBoxConfirm");
       for (let j = 0; j < btns.length; j++) {
@@ -375,7 +386,7 @@ const monthStateView = (props) => {
 
 
       let dateRulerList_count = props.users.dateRulerList.length;
-      let unit_line =$(".monthRoomRightBox").width()/room.useAndBookingList.length;
+
       let users = [];
       const renderDayRoom = (dayList) => {
         if (!dayList || dayList.length === 0) {
@@ -458,14 +469,15 @@ const monthStateView = (props) => {
           // }
           return (
             <div className="dayRoom"
+                 key={"dayroom"+roomIndex+dayindex}
                  data-room-index={roomIndex}
                  data-day-index={dayindex}
                  data-date={day.date}
                  onClick={ClickBlank}
                  id={`day-${roomIndex}-${dayindex}` }
-                 style={{width:dateRulerList_count <= UNIT ? unit_line + "px" : 9 + "px"}}
+                 style={{width:boxW + "px"}}
             >
-              <div className={stateBox} style={{width:dateRulerList_count <= UNIT ? unit_line-2 + "px" : 7 + "px"}}/>
+              <div className={stateBox} style={{width:boxW-2 + "px"}}/>
             </div>
           )
         });
@@ -633,7 +645,7 @@ const monthStateView = (props) => {
           }
 
 
-            // 左端在入住状态下不可操作
+          // 左端在入住状态下不可操作
           // if (status == 4) {
           // 我的断点
           //   return;
@@ -661,11 +673,11 @@ const monthStateView = (props) => {
             let offsetX = ee.pageX - pageX;
 
             // 用户入住时间最短为1天
-            if (offsetX + targetWidth < (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) {
+            if (offsetX + targetWidth < (boxW)) {
               return;
             }
 
-            let tempUnit = parseInt(month_length <= UNIT ? offsetX/_unit_u : offsetX / UNIT_WIDTH);
+            let tempUnit = parseInt(offsetX/boxW );
 
             if (tempUnit > 0) {
               try {
@@ -681,11 +693,11 @@ const monthStateView = (props) => {
             else if (tempUnit < 0) {
               if(status == 4){
                 let roomDate = roomList[roomIndex].useAndBookingList[oldEndIndex + tempUnit].date;
-                  if(moment().isAfter(moment.unix(roomDate/1000),'day')){
-                    if(messageShow === true){
-                      messageShow = false
-                      message.error("无法将出所日期移动到今天以前",3,messageOnClose)
-                    }
+                if(moment().isAfter(moment.unix(roomDate/1000),'day')){
+                  if(messageShow === true){
+                    messageShow = false
+                    message.error("无法将出所日期移动到今天以前",3,messageOnClose)
+                  }
                   return;
                 }
               }
@@ -705,8 +717,8 @@ const monthStateView = (props) => {
               status
             }}) ;
 
-            if (targetWidth + (unit * (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) >= (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) {
-              target.style.width = targetWidth + (unit * (month_length <= UNIT ? _unit_u : UNIT_WIDTH)) + "px";
+            if (targetWidth + (unit * (boxW)) >= (boxW)) {
+              target.style.width = targetWidth + (unit * (boxW)) + "px";
             }
           };
 
@@ -752,13 +764,13 @@ const monthStateView = (props) => {
             }
           }
         };
-    //在列表中拖拽
+        //在列表中拖拽
         const dragStart = (event, user) => {
 
           dragOffsetX = event.nativeEvent.offsetX;
           dragOffsetY = event.nativeEvent.offsetY;
 
-         addRedBoder(event)
+          addRedBoder(event)
 
           dispatch({
             type: 'roomStatusManagement/userDragStart',
@@ -781,14 +793,15 @@ const monthStateView = (props) => {
 
         for (let i = 0; i < users.length; i++) {
           const tempUser = users[i]
-          let width = dateRulerList_count <= UNIT ? tempUser.dayCount * unit_line : tempUser.dayCount * UNIT_WIDTH;
+          let width = tempUser.dayCount * boxW ;
           let rightWidth = 0
           let rightUser = {...tempUser}
           let draggable = "true"
+          let className = "userBox";
 
           if(tempUser.startIndex < nowDict.index && tempUser.lastIndex > nowDict.index && tempUser.status !== 7){
-            width = dateRulerList_count <= UNIT ? (nowDict.index - tempUser.startIndex )  * unit_line : (nowDict.index - tempUser.startIndex )* UNIT_WIDTH
-            rightWidth =dateRulerList_count <= UNIT ? (tempUser.lastIndex - nowDict.index + 1) * unit_line : (tempUser.lastIndex - nowDict.index + 1)* UNIT_WIDTH
+            width = (nowDict.index - tempUser.startIndex )  * boxW
+            rightWidth =(tempUser.lastIndex - nowDict.index + 1) * boxW
             draggable = 'false'
 
             rightUser.dayCount = tempUser.lastIndex - nowDict.index + 1
@@ -801,6 +814,15 @@ const monthStateView = (props) => {
 
           }
 
+
+          if (ActBox){
+            const {customerId,status,startIndex,userDaycount} = ActBox.dataset;
+            if (tempUser.customerId == customerId && ActBox.dataset.roomIndex == roomIndex&& tempUser.dayCount == userDaycount
+              && tempUser.status == status&&tempUser.startIndex == startIndex){
+              className = "userBox active"
+            }
+          }
+
           const content = <div style={{zIndex:99999}}>{(users[i].customerName?tempUser.customerName:(tempUser.isRepair == 1 ? '维修中' :'' )) + '('
           + tempUser.dayCount + '天, '
           + timeToDate(tempUser.startDate)
@@ -810,8 +832,8 @@ const monthStateView = (props) => {
 
           result.push(
             <Popover key={'pop'+i} content={content} getPopupContainer={(e) => e} overlayClassName="popover-manual-top" arrowPointAtCenter={true}>
-              <div  className="userBoxSup" style={{width: (width+rightWidth+20) + 'px',left:dateRulerList_count <= UNIT ? users[i].startIndex * unit_line : users[i].startIndex * UNIT_WIDTH}}>
-                <div className="userBox"
+              <div className="userBoxSup" style={{width: (width+rightWidth+20) + 'px',left:users[i].startIndex * boxW+"px"}}>
+                <div className={className}
                      style={{
                        width: width + 'px',
                      }}
@@ -882,13 +904,12 @@ const monthStateView = (props) => {
 
       return (
 
-        <div className="monthRoomBox">
+        <div className="monthRoomBox" key={"monthRoomBox"+roomIndex}>
 
           <div style={{
             height: "100%",
             position: "relative",
-            paddingRight: "20px",
-            minWidth: dateRulerList_count <= UNIT ? room.useAndBookingList.length * unit_line + 20 + "px" : room.useAndBookingList.length * UNIT_WIDTH + 20 + 'px'
+            minWidth: room.useAndBookingList.length * boxW + (boxW> 9 ? 0 : 10) + "px"
           }}>
             {
               renderDayRoom(room.useAndBookingList)
@@ -905,20 +926,15 @@ const monthStateView = (props) => {
       let sysTime = props.users.systemTime;
       let timeObj = moment(sysTime).toObject();
       let boxWidth = 0;
-      let unit_u = 0;
       let days_all=0;
       let length_ = dateRulerList.length;
       //是否渲染的变量
       //let s_ = false;
       for (let item of dateRulerList) {
         days_all += item.days;
-        if(dateRulerList.length <= UNIT){
-          boxWidth = $(".monthRoomRightBox").width();
-        }else{
-          boxWidth += item.days * UNIT_WIDTH;
-        }
       }
-      unit_u = $(".monthRoomRightBox").width()/days_all;
+      boxWidth += days_all* boxW;
+
       const renderFiveDays = (days) => {
         let result = [];
 
@@ -928,7 +944,7 @@ const monthStateView = (props) => {
         for (let i = 1; i <= fiveDays; i++) {
           result.push(
             <div key={'fiveDayRuler'+i} className="fiveDayRuler" style={{
-              width:length_ <=UNIT ?unit_u*5+'px' : 5 * UNIT_WIDTH + "px",
+              width:boxW*5+'px' ,
             }}>
               {i * 5}天
             </div>
@@ -938,7 +954,7 @@ const monthStateView = (props) => {
         if (remainder) {
           result.push(
             <div key={'remainder'+i} className="fiveDayRuler" style={{
-              width: length_ <=UNIT ?remainder*unit_u + 'px' : remainder * UNIT_WIDTH + "px",
+              width: remainder * boxW + "px",
             }}>
             </div>
           )
@@ -953,18 +969,18 @@ const monthStateView = (props) => {
             dateRulerList.map((item,i) => {
               if(item.date == `${timeObj.years}-${timeObj.months+1}`){
                 return (
-                  <div  key={i} className="itemRulerBox" style={{
-                    width: length_ <=UNIT ? item.days*unit_u : item.days * UNIT_WIDTH,
+                  <div  key={"daysRulerBox"+ i} className="itemRulerBox" style={{
+                    width: item.days*boxW ,
                     position:'relative',
                     overflow:'initial'
                   }}>
-                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:length_ <= UNIT ? timeObj.date * unit_u - unit_u +"px" : timeObj.date*UNIT_WIDTH-8+"px",borderLeft:'1px dashed #e9e9e9'}}></div>
+                    <div style={{width:'2px',height:$('.monthRoomRightBox').height()-40,position:'absolute',top:'40px',left:(timeObj.date-1)*boxW - 2+"px" ,borderLeft:'1px dashed #e9e9e9'}}></div>
                     <div className="itemRulerBoxTop" style={{clear:'both'}}>
                       <div className="itemRulerBoxTitle">
                         {item.date}
                       </div>
                     </div>
-                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= UNIT ? item.days*unit_u : 300}}>
+                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= UNIT ? item.days*boxW : 300}}>
                       {
                         renderFiveDays(item.days)
                       }
@@ -974,14 +990,14 @@ const monthStateView = (props) => {
               }else{
                 return (
                   <div key = {i} className="itemRulerBox" style={{
-                    width:length_ <=UNIT ? item.days*unit_u : item.days * UNIT_WIDTH,
+                    width:item.days * boxW,
                   }}>
                     <div className="itemRulerBoxTop">
                       <div className="itemRulerBoxTitle">
                         {item.date}
                       </div>
                     </div>
-                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= UNIT ? item.days*unit_u : 300}}>
+                    <div className="itemRulerBoxBottom" style={{clear:'both',width:length_ <= UNIT ? item.days*boxW : 300}}>
                       {
                         renderFiveDays(item.days)
                       }
@@ -1001,9 +1017,9 @@ const monthStateView = (props) => {
         <div className="monthRoomLeftBox">
           <div style={{height: '40px'}}/>
           {
-            roomList.map((room) => {
+            roomList.map((room,index) => {
               return (
-                <div className="monthRoomNumberBox">
+                <div key={"monthRoomListBox"+index} className="monthRoomNumberBox">
                   <div>
 
                     <div className="number">
@@ -1070,41 +1086,41 @@ const monthStateView = (props) => {
 
     return (
 
-        <div className="main">
-          <div className="headDiv">
-            <Switch className='switch'
-                    disabled={dayRoomStatusDisabled}
-                    onChange={roomViewStateChange}
-                    checkedChildren={'日房态'}
-                    unCheckedChildren={'月房态'}
-                    defaultChecked={true}/>
-          </div>
-
-          {
-            renderMonthSelectView()
-          }
-
-          {
-            renderQueryView()
-          }
-
-          {
-            renderStatusExplainView()
-          }
-
-          <Spin
-            spinning={loading.effects['roomStatusManagement/monthRoomList'] !== undefined ? loading.effects['roomStatusManagement/monthRoomList'] : false}>
-            {
-              /* 月房态列表 */
-              renderMonthRoomListView()
-            }
-          </Spin>
-
-
-          {
-            renderBottomBar()
-          }
+      <div className="main">
+        <div className="headDiv">
+          <Switch className='switch'
+                  disabled={dayRoomStatusDisabled}
+                  onChange={roomViewStateChange}
+                  checkedChildren={'日房态'}
+                  unCheckedChildren={'月房态'}
+                  defaultChecked={true}/>
         </div>
+
+        {
+          renderMonthSelectView()
+        }
+
+        {
+          renderQueryView()
+        }
+
+        {
+          renderStatusExplainView()
+        }
+
+        <Spin
+          spinning={loading.effects['roomStatusManagement/monthRoomList'] !== undefined ? loading.effects['roomStatusManagement/monthRoomList'] : false}>
+          {
+            /* 月房态列表 */
+            renderMonthRoomListView()
+          }
+        </Spin>
+
+
+        {
+          renderBottomBar()
+        }
+      </div>
 
 
     )
@@ -1122,7 +1138,7 @@ const monthStateView = (props) => {
       dispatch({
         type: 'roomStatusManagement/userDragStart',
 
-      payload: {
+        payload: {
           dragUser: {
             ...dragUser,
             reserveDays : 28,
@@ -1164,10 +1180,10 @@ const monthStateView = (props) => {
         <h3>客户列表</h3>
 
         {
-          customers.map((costomer) => {
+          customers.map((costomer,index) => {
             if(!costomer.change){
               return (
-                <div className="customerItem" onClick={() => {
+                <div key={"costomer"+index} className="customerItem" onClick={() => {
                   onClicked(costomer)
                 }} draggable= {costomer === props.users.manualSelect} onDragStart={(event) => dragStart(costomer, event)}>
                   {costomer.customerName}
@@ -1209,6 +1225,7 @@ const monthStateView = (props) => {
 class MonthStateClass extends React.Component{
   constructor(props) {
     super(props);
+    this.state={}
     this.keyChangeBind = this.keyChange.bind(this)
   }
 
@@ -1219,37 +1236,46 @@ class MonthStateClass extends React.Component{
   }
 
   keyChange(e){
-    console.log(e.keyCode)
+    if (ActBox){
+      const {roomIndex,customerId,customerName,userDaycount,status,startIndex,endIndex} = ActBox.dataset;
 
-      if (ActBox){
-        const {roomIndex,customerId,customerName,userDaycount,status,startIndex,endIndex} = ActBox.dataset;
-        if (status == -1 || status == 7){
-          if (e.keyCode == 37 || e.keyCode == 39){
-            this.props.dispatch({type:"roomStatusManagement/roomFinetuning",payload:{
-              roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 37 ? "left":"right" ),status,customerName
+      if (status == -1 || status == 7){
+
+        if (e.keyCode === 37 || e.keyCode === 39){
+          if(e.keyCode === 37){
+            if (startIndex <= nowDict.index ){
+              return;
             }
-            })
           }
-          else if (e.keyCode == 38 || e.keyCode == 40){
-            this.props.dispatch({type:"roomStatusManagement/roomChange",payload:{
-              roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode == 38 ? "up":"down" ),status,customerName
-            }
-            })
+          this.props.dispatch({type:"roomStatusManagement/roomFinetuning",payload:{
+            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode === 37 ? "left":"right" ),status,customerName,ActBox
           }
+          })
+
+        }
+        else if (e.keyCode === 38 || e.keyCode === 40){
+          this.props.dispatch({type:"roomStatusManagement/roomChange",payload:{
+            roomIndex,customerId,startIndex,endIndex,direction:(e.keyCode === 38 ? "up":"down" ),status,customerName,ActBox
+          }
+          })
+
         }
       }
+    }
   }
 
   componentWillUnmount(){
     selectViewIndex = 0;
+    ONEC = false
     this.props.dispatch({type: 'roomStatusManagement/removeData'});
     window.removeEventListener('keydown',this.keyChangeBind)
   }
 
   render(){
-    const View = monthStateView(this.props)
     return(
-      <div> {View}</div>
+      <div>
+        {monthStateView(this.props)}
+      </div>
     )
   }
 }

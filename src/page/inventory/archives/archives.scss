@@ -1,0 +1,39 @@
+.ant-tree-title{
+  font-size: 13px;
+}
+.smallCard {
+  margin-left: 10px;
+  margin-top: 10px;
+  //width: 230px;
+  //height: 250px;
+  .ant-card-head {
+    padding: 0 10px;
+    .ant-card-head-title {
+      font-size: 14px;
+      color: #b67233;
+    }
+  }
+  .ant-card-extra {
+    right: 10px;
+    font: 13px "微软雅黑";
+    margin: auto;
+  }
+  p {
+    line-height: 25px;
+  }
+  h1 {
+    line-height: 145px;
+    text-align: center;
+  }
+  .bottomLine {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    line-height: 25px;
+  }
+}
+
+.AttCheckbox{
+  margin-top: 10px;
+}

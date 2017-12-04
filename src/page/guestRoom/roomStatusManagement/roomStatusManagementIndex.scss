@@ -209,7 +209,7 @@
         }
 
         .monthRoomLeftBox {
-          min-width: 84px;
+          width: 84px;
           .monthRoomNumberBox {
             height: 60px;
             text-align: center;
@@ -237,6 +237,7 @@
           display: flex;
           overflow-x:auto;
           flex-direction: column;
+          padding: 0 10px 0 10px;
 
           .daysRulerBox {
             height: 40px;
@@ -302,7 +303,7 @@
         .monthRoomBox {
           display: flex;
           height: 60px;
-          margin: 0 0 10px 1px;
+          margin-bottom: 10px;
           align-items: center;
 
           .userBoxSup{

@@ -14,7 +14,7 @@ var webpackConfig = {
         historyApiFallback: true,
         inline: true,
         port: 9090,
-       // host: '192.168.199.81',
+        host: '192.168.199.81',
         compress: true,
         // https://webpack.github.io/docs/node.js-api.html
         // https://github.com/webpack/webpack/blob/master/lib/Stats.js#L50
@@ -76,14 +76,15 @@ var webpackConfig = {
             //   },
             //   changeOrigin: true
             // },
+
           // 本地
-          // '/crm/api/*': {
-          //   target: 'http://127.0.0.1:8087/crm/api',
-          //   pathRewrite: {
-          //     '^/crm/api': ''
-          //   },
-          //   changeOrigin: true
-          // },
+          '/crm/api/*': {
+            target: 'http://127.0.0.1:8087/crm/api',
+            pathRewrite: {
+              '^/crm/api': ''
+            },
+            changeOrigin: true
+          },
 
         }
     },

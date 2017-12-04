@@ -104,7 +104,7 @@ export default {
 			},
 			*saveCustomerPackage({payload: values}, { call, put }) {
 
-        yield put({type:'orderSubmit',payload:values});
+        // yield put({type:'orderSubmit',payload:values});
 
         const {
 					data: {
