@@ -79,34 +79,25 @@ export default {
       const { data: { data, code, page, size, total } } = yield call(inventoryService.addAttributes, values);
       if (code == 0) {
         message.success('保存成功！');
-        //yield put({
-        //  type: 'changeVisibleAdd',
-        //  payload: false
-        //})
-        //yield put({
-        //  type: 'changeVisibleView',
-        //  payload: false
-        //})
-        //yield put({
-        //  type: 'changeDisabled',
-        //  payload: true
-        //})
-        //yield put({
-        //  type: 'getStockPageList',
-        //  payload: { page: 1, size: 10 }
-        //})
+        yield put({
+          type: 'changeVisibleAdd',
+          payload: false
+        })
+        yield put({
+          type: 'changeVisibleView',
+          payload: false
+        })
+        yield put({
+          type: 'changeDisabled',
+          payload: true
+        })
+        yield put({
+          type: 'getAttributesPageList',
+          payload: { page: 1, size: 10 }
+        })
       }
     },
-    //查询上级分类
-    //*getParentList({ payload: values }, { call, put }){
-    //  const { data: { data, code, page, size, total } } = yield call(inventoryService.getParentList, values);
-    //  if (code == 0) {
-    //    yield put({
-    //      type: 'getParent',
-    //      payload: data
-    //    })
-    //  }
-    //},
+
     //查询辅助属性列表
     *getAttributesPageList({ payload: values }, { call, put }){
       const { data: { data, code, page, size, total } } = yield call(inventoryService.getAttributesPageList, values);
@@ -162,9 +153,7 @@ export default {
             type: 'getAttributesPageList',
             payload: { page: 1, size: 10 }
           })
-          //dispatch({
-          //  type: 'getParentList'
-          //})
+     
         }
       })
     }

@@ -23,7 +23,7 @@ class ancillaryIndex extends Component {
       type: 'ancillary/changeVisibleAdd',
       payload: isChangge
     })
-    this.reset();
+    
   }
   
   
@@ -60,7 +60,7 @@ class ancillaryIndex extends Component {
             }
           })
           
-
+          
           this.props.dispatch({
             type: 'ancillary/addAttributes',
             payload: {
@@ -68,24 +68,10 @@ class ancillaryIndex extends Component {
               data
             }
           })
-
+          this.props.form.resetFields();
+          
         }
         
-        
-        //const postInfo = values.parentId ? {
-        //  parentId: parseInt(values.parentId),
-        //  type: parseInt(values.type),
-        //  name: values.name
-        //} : {
-        //  type: parseInt(values.type),
-        //  name: values.name
-        //}
-        //
-        //this.props.dispatch({
-        //  type: 'ancillary/addStock',
-        //  payload: postInfo
-        //}).then( this.props.form.resetFields())
-        //
         
       }
     });
@@ -126,16 +112,6 @@ class ancillaryIndex extends Component {
     
     
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    //const formItemLayout = {
-    //  labelCol: {
-    //    xs: { span: 24 },
-    //    sm: { span: 4 },
-    //  },
-    //  wrapperCol: {
-    //    xs: { span: 24 },
-    //    sm: { span: 20 },
-    //  },
-    //};
     const formItemLayoutWithOutLabel = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
@@ -180,9 +156,10 @@ class ancillaryIndex extends Component {
         title='辅助属性-新增'
         visible={visibleAdd}
         footer={null}
-        onCancel={
-          this.changeVisibleAdd.bind(this, false)
-        }
+        onCancel={() => {
+          this.props.form.resetFields();
+          this.changeVisibleAdd(false)
+        }}
       >
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='属性名称' {...formItemLayout}>
