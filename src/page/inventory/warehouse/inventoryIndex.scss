@@ -1,7 +1,7 @@
-.inventoryIndex{
+.inventoryIndex {
 
   .info-card-center {
-    width:100%;
+    width: 100%;
     .ant-table-thead > tr > th {
       background-color: rgba(102, 102, 102, 1);
       font-weight: 500;
@@ -14,11 +14,37 @@
       color: #FFFFFF;
     }
     .ant-table-tbody > tr > td {
-      text-align:center;
+      text-align: center;
       background-color: #fff;
       font-family: '微软雅黑 Regular', '微软雅黑';
       font-weight: 400;
       font-size: 14px;
     }
+
+  }
+}
+.changeInput {
+  .ant-form-item-label {
+    line-height: 38px;
+  }
+  .noHight{
+    height: 38px !important;
+  }
+  .dynamic-delete-button {
+    z-index: 1000000;
+    cursor: pointer;
+    position: absolute;
+    top: 6px;
+    left: 280px;
+    font-size: 24px;
+    color: #999;
+    transition: all .3s;
+  }
+  .dynamic-delete-button:hover {
+    color: #777;
+  }
+  .dynamic-delete-button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 }
