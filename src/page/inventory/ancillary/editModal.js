@@ -119,6 +119,7 @@ class ancillaryIndex extends Component {
         visible={visibleView}
         footer={null}
         onCancel={() => {
+          this.props.form.resetFields();
           this.changeVisibleView(false);
           this.changeDisabled(true);
           this.changeTitle('查看');
