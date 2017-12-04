@@ -18,13 +18,17 @@ class InventoryIndex extends Component {
 
     }
     this.columns = [{
+      title: '存货编码',
+      dataIndex: 'goodsId',
+      key: 'goodsId'
+    }, {
       title: '存货名称',
       dataIndex: 'inventoryName',
       key: 'inventoryName'
     }, {
-      title: '所属机构',
-      dataIndex: 'belongOrganization',
-      key: 'belongOrganization'
+      title: '辅助属性',
+      dataIndex: 'resultValue',
+      key: 'resultValue'
     }, {
       title: '仓库名称',
       dataIndex: 'warehouseName',

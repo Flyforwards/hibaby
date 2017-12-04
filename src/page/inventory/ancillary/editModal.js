@@ -13,18 +13,18 @@ class ancillaryIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {}
-    
+
   }
-  
-  
+
+
   changeVisibleView(isChangge) {
     this.props.dispatch({
       type: 'ancillary/changeVisibleView',
       payload: isChangge
     })
   }
-  
-  
+
+
   //修改title
   changeTitle(title) {
     this.props.dispatch({
@@ -32,8 +32,8 @@ class ancillaryIndex extends Component {
       payload: title
     })
   }
-  
-  
+
+
   saveInfo = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -42,36 +42,36 @@ class ancillaryIndex extends Component {
       }
     });
   }
-  
+
   changeDisabled(isDisabled) {
     this.props.dispatch({
       type: 'ancillary/changeDisabled',
       payload: isDisabled
     })
   }
-  
+
   addValue() {
     this.props.dispatch({
       type: 'ancillary/addAttribute'
     })
   }
-  
+
   delValue(key) {
     this.props.dispatch({
       type: 'ancillary/delAttribute',
       payload: key
     })
   }
-  
+
   changeName = (e) => {
     this.props.dispatch({
       type: 'ancillary/changeAttributeName',
       payload: e.target.value
     })
   }
-  
+
   changeValue=(key,e)=> {
-    
+
     this.props.dispatch({
       type: 'ancillary/changeAttributeValue ',
       payload: {
@@ -80,8 +80,8 @@ class ancillaryIndex extends Component {
       }
     })
   }
-  
-  
+
+
   render() {
     const { visibleView, title, form, attributeDetail, isDisabled } = this.props;
     const { getFieldDecorator } = form;
@@ -103,7 +103,7 @@ class ancillaryIndex extends Component {
           this.changeDisabled(true);
           this.changeTitle('查看');
         }}
-      
+
       >
         <Form className="changeInput" onSubmit={this.saveInfo}>
           <Row>
@@ -137,7 +137,7 @@ class ancillaryIndex extends Component {
                           type="minus-circle-o"
                         />
                       }
-                    
+
                     </FormItem>
                   </Col>
                 )
@@ -167,17 +167,17 @@ class ancillaryIndex extends Component {
                 </FormItem>
               </Col>
           }
-          
-          
+
+
           </Row>
-        
+
         </Form>
-      
-      
+
+
       </Modal>
     )
   }
-  
+
 }
 
 function mapStateToProps(state) {

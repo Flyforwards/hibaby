@@ -20,18 +20,18 @@ export default {
       pageSize: 10,
       total: null
     }
-    
+
   },
   reducers: {
-    
+
     getParent(state, { payload: data }){
       return { ...state, parent: data }
     },
-    
+
     getAttributesPage(state, { payload: { data, pagination } }) {
       return { ...state, attributesList: data, pagination: { ...state.pagination, ...pagination } };
     },
-    
+
     changeVisibleAdd(state, { payload: data }){
       return { ...state, visibleAdd: data }
     },
@@ -47,8 +47,8 @@ export default {
     getAttributeDetail(state, { payload: data }){
       return { ...state, attributeDetail: data }
     },
-    
-    
+
+
     addAttribute(state, { payload: data }){
       let attributeDetail = { ...state.attributeDetail };
       attributeDetail.data.push({ attributeName: '' });
@@ -69,11 +69,11 @@ export default {
       attributeDetail.data[key].attributeName = value;
       return { ...state, attributeDetail }
     }
-    
-    
+
+
   },
   effects: {
-    
+
     /*创建修改辅助属性*/
     *addAttributes({ payload: values }, { call, put }){
       const { data: { data, code, page, size, total } } = yield call(inventoryService.addAttributes, values);
@@ -122,7 +122,7 @@ export default {
             }
           }
         })
-        
+
       }
     },
     //根据辅助属性详情
@@ -150,10 +150,10 @@ export default {
         })
       }
     }
-    
-    
+
+
   },
-  
+
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {

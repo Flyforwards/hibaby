@@ -37,7 +37,7 @@ export function getWarehouseDetailById(values){
     body:JSON.stringify(values)
   })
 }
-//仓库明细
+//存货明细
 
 export function getInventoryList(values){
   return request('/crm/api/v1/inventory/getInventoryList',{
