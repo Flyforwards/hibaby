@@ -57,6 +57,7 @@ class ancillaryIndex extends Component {
   }
 
   delValue(key) {
+    console.log(key,'删除的key')
     this.props.dispatch({
       type: 'ancillary/delAttribute',
       payload: key
@@ -71,9 +72,8 @@ class ancillaryIndex extends Component {
   }
 
   changeValue=(key,e)=> {
-
     this.props.dispatch({
-      type: 'ancillary/changeAttributeValue ',
+      type: 'ancillary/changeAttributeValue',
       payload: {
         key,
         value: e.target.value
@@ -92,6 +92,7 @@ class ancillaryIndex extends Component {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
     };
+    console.log(data,'//////')
     return (
       <Modal
         width={1000}
@@ -123,7 +124,7 @@ class ancillaryIndex extends Component {
               data && data.map((v, k) => {
                 return (
                   <Col key={k} span={10}>
-                    <FormItem label='属性值' {...formItemLayout}  >
+                    <FormItem label='属性值' {...formItemLayout}  key={k+data.length}>
                       {getFieldDecorator(`attributeName-${k}`, {
                         rules: [{ required: true, message: '请填写属性值！' }],
                         initialValue: v.attributeName

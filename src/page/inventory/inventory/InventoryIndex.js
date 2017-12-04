@@ -9,6 +9,7 @@ import { Link,routerRedux } from 'react-router';
 const FormItem = Form.Item;
 const createForm = Form.create
 import moment from 'moment'
+import '../warehouse/inventoryIndex.scss'
 
 @createForm()
 class InventoryIndex extends Component {
@@ -29,34 +30,22 @@ class InventoryIndex extends Component {
       title: '辅助属性',
       dataIndex: 'resultValue',
       key: 'resultValue'
-    }, {
-      title: '仓库名称',
-      dataIndex: 'warehouseName',
-      key: 'warehouseName'
+    },{
+      title: '规格型号',
+      dataIndex: 'specificationModel',
+      key: 'specificationModel'
     }, {
       title: '存货分类',
       dataIndex: 'inventoryClasses',
       key: 'inventoryClasses',
     },{
-      title: '规格型号',
-      dataIndex: 'specificationModel',
-      key: 'specificationModel'
-    },{
-      title: '单位',
+      title: '计量单位',
       dataIndex: 'unit',
       key: 'unit'
     },{
-      title: '现存数量',
-      dataIndex: 'existingQuantity',
-      key: 'existingQuantity'
-    },{
-      title: '库存单位',
-      dataIndex: 'inventoryUnit',
-      key: 'inventoryUnit'
-    },{
-      title: '库存单位存货量',
-      dataIndex: 'inventoryExistingQuantity',
-      key: 'inventoryExistingQuantity'
+      title: '售价',
+      dataIndex: 'price',
+      key: 'price'
     },{
       title: '更新时间',
       dataIndex: 'operatorTime',
@@ -64,49 +53,36 @@ class InventoryIndex extends Component {
       render:(text,record,index) => {
         return moment(text).format("YYYY-MM-DD")
       }
-    }, {
-      title: '操作',
-      dataIndex: 'operating',
-      render: (text, record, index) => {
-        return (
-          <div className="operation-list">
-            <Link className="one-link link-style" onClick={ this.onLook.bind(this, record)}> 查看 </Link>
-            <Popconfirm title="确定删除吗?" onConfirm={() => this.onDelete(record.id)}>
-              <Link  className="two-link link-style">删除</Link>
-            </Popconfirm>
-          </div>
-        );
-      }
     }];
 
   }
 
-  //点击查看
-  onLook(record){
-    this.props.dispatch(
-      routerRedux.push({
-        pathname:'/inventory/warehouse/detail',
-        query:{
-          id:record.id
-        }
-      })
-    )
-  }
-  //点击删除
-  onDelete(id){
-    this.props.dispatch({
-      type:'inventory/deleteWarehouse',
-      payload:{
-        'id':id
-      }
-    })
-  }
+  // //点击查看
+  // onLook(record){
+  //   this.props.dispatch(
+  //     routerRedux.push({
+  //       pathname:'/inventory/warehouse/detail',
+  //       query:{
+  //         id:record.id
+  //       }
+  //     })
+  //   )
+  // }
+  // //点击删除
+  // onDelete(id){
+  //   this.props.dispatch({
+  //     type:'inventory/deleteWarehouse',
+  //     payload:{
+  //       'id':id
+  //     }
+  //   })
+  // }
 //搜索
   handleSearch(){
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.props.dispatch(routerRedux.push({
-          pathname: "/inventory/warehouse",
+          pathname: "/inventory/getInventoryList",
           query: values
         }))
       }
@@ -122,19 +98,11 @@ class InventoryIndex extends Component {
     this.props.form.resetFields()
   }
 
-  //创建
-  handleCreate(){
-    this.props.dispatch(
-      routerRedux.push({
-        pathname:'/inventory/warehouse/edit'
-      })
-    )
-  }
   componentWillUnmount() {
     this.props.dispatch({ type: 'inventory/removeData' })
   }
   render(){
-    const { pagination ,dispatch,pageList,loading} = this.props;
+    const { inventoryPagination ,dispatch,inventoryData,loading} = this.props;
     const { getFieldDecorator } = this.props.form;
 
 
@@ -149,11 +117,11 @@ class InventoryIndex extends Component {
 
     const tableProps = {
       loading:loading,
-      pagination:pagination,
-      dataSource:pageList,
+      pagination:inventoryPagination,
+      dataSource:inventoryData,
       onChange: (page) => {
         dispatch({
-          type: 'inventory/getWarehousePageList',
+          type: 'inventory/getInventoryList',
           payload: {
             'page': page.current,
             'size': page.pageSize,
@@ -173,7 +141,7 @@ class InventoryIndex extends Component {
                 <FormItem {...formItemLayout} label="" >
                   {getFieldDecorator('sear', {rules: [{ required: false, message: '' }],
                   })(
-                    <Input placeholder="请输入仓库名字、所属机构来搜索仓库" />
+                    <Input placeholder="请输入存货名称搜索存货" />
                   )}
                 </FormItem>
               </Form>
@@ -181,9 +149,6 @@ class InventoryIndex extends Component {
             <Col span={6}>
               <Button className="button-group-bottom-2"  onClick={ this.handleSearch.bind(this) } style={{marginRight:'10px'}}> 搜索 </Button>
               <Button className="button-group-bottom-3"  onClick={ this.onReset.bind(this) }> 重置 </Button>
-            </Col>
-            <Col span={4}>
-              <Button className="button-group-bottom-1"  onClick={ this.handleCreate.bind(this) }> 创建 </Button>
             </Col>
           </Row>
           <Row>
