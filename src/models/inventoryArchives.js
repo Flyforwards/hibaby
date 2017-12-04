@@ -10,9 +10,15 @@ export default {
     creatModalVisible:false,
     attributeModalVisible:false,
     editAttModalVisible:false,
+    inventoryFileDetail:"",
+    creatModelStyle:"creat",
     allStockClassificationNodes:[],
     treeData:[],
-    treeSelectData:[]
+    treeSelectData:[],
+    list:[],
+    page:1,
+    size:10,
+    total:0
   },
 
 
@@ -32,7 +38,6 @@ export default {
       *getAllStockClassificationNodes({payload:values},{call,put}){
         try {
             const { data:{data,code}} = yield call(InventotyService.getAllStockClassificationNodes,values);
-            console.log(data)
             yield put({type:'setAllStockClassificationNodes',payload:data} );
 
           }
@@ -44,18 +49,24 @@ export default {
         try {
           const { data:{data,code}} = yield call(InventotyService.addInventoryFile,values);
 
-
+          message.success("添加成功")
         }
         catch (err){
           throw err
         }
       },
-      *getInventoryFilePageList({payload:values},{call,put}){
-        try {
-          const { data:{data,code}} = yield call(InventotyService.getInventoryFilePageList,{page:1,size:10});
-
-
+      *getInventoryFilePageList({payload:values},{call,put,select}){
+        const state = yield select(state => state.inventoryArchives)
+        if (!values){
+          values = {}
+          values.page = state.page;
+          values.size = state.size;
         }
+
+        try {
+          const { data} = yield call(InventotyService.getInventoryFilePageList,values);
+           yield put({type:'saveInventoryFilePageList',payload:data} );
+          }
         catch (err){
           throw err
         }
@@ -63,7 +74,8 @@ export default {
       *deleteInventoryFile({payload:values},{call,put}){
         try {
           const { data:{data,code}} = yield call(InventotyService.deleteInventoryFile,values);
-
+          message.success("删除成功")
+          yield put({type:'getInventoryFilePageList',payload:data} );
 
         }
         catch (err){
@@ -73,8 +85,7 @@ export default {
       *getInventoryFileDetailById({payload:values},{call,put}){
         try {
           const { data:{data,code}} = yield call(InventotyService.getInventoryFileDetailById,values);
-
-
+          yield put({type:'saveInventoryFileDetailById',payload:data} );
         }
         catch (err){
           throw err
@@ -83,13 +94,28 @@ export default {
   },
   reducers: {
     setCreatModalVisible(state, {payload:todo}) {
-      return {...state, creatModalVisible:todo};
+      let dict = {creatModalVisible:todo};
+      if (!todo){
+        dict.inventoryFileDetail = ""
+      }
+      console.log(dict)
+      return {...state, ...dict};
     },
     setAttributeModalVisible(state, {payload:todo}) {
       return {...state, attributeModalVisible:todo};
     },
     setEditAttModalVisible(state, {payload:todo}) {
       return {...state, editAttModalVisible:todo};
+    },
+    setCreatModelStyle(state, {payload:todo}){
+      return {...state, creatModelStyle:todo};
+    },
+    saveInventoryFilePageList(state, {payload:todo}) {
+      const {page,size,total,data} = todo
+      return {...state, list:data,page,size,total};
+    },
+    saveInventoryFileDetailById(state, {payload:todo}) {
+      return {...state, inventoryFileDetail:todo};
     },
     setAllStockClassificationNodes(state, {payload:todo}) {
       let treeSelectData = []
@@ -102,9 +128,6 @@ export default {
         treeSelectData.push({label:value.name,key:value.name+value.id,value:value.id.toString(),children:selectChi})
         return {title:value.name,key:value.id.toString(),children:chiValue}
       })
-
-
-
       return {...state, allStockClassificationNodes:todo,treeData,treeSelectData};
     },
   }

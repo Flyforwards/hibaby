@@ -4,12 +4,16 @@
 
 import React,{ Component } from 'react';
 import { connect } from 'dva'
-import { Card, Input, Button, Form, DatePicker, Row, Col,Table,Popconfirm,Tree } from 'antd';
+import { Card, Input, Button, Form, DatePicker,Modal, Row, Col,Table,Tree,message } from 'antd';
+const confirm = Modal.confirm;
 import { Link,routerRedux } from 'react-router';
 import { CreatModalForm ,AttributeModal} from './Modal';
 import '../warehouse/inventoryIndex.scss'
 import './archives.scss'
+import PermissionLink from 'common/PermissionLink';
+import moment from 'moment'
 
+let selectRow = ''
 
 const TreeNode = Tree.TreeNode;
 
@@ -17,20 +21,26 @@ class TopView extends Component{
   constructor(props) {
     super(props);
     this.state = {btnAry: [{title:"创建",className:"button-group-2"}, {title:"辅助属性",className:"button-group-bottom-2"},
-        {title:"修改",className:"button-group-bottom-2"},{title:"删除",className:"button-group-bottom-2"},
         {title:"查询",className:"button-group-bottom-2"}]};
 
   }
 
   btnClick(btn){
-    let type = "inventoryArchives/setCreatModalVisible";
-    if (btn === "辅助属性"){
-      type = "inventoryArchives/setAttributeModalVisible";
-    }
-    else if (btn === "删除"){
+
+    if (!selectRow && btn !== "创建"){
+      message.error("请先选择要操作的数据")
       return
     }
-    this.props.dispatch({type:type ,payload:true})
+
+    let type = "inventoryArchives/setCreatModalVisible";
+
+    if (btn === "辅助属性"){
+      this.props.dispatch({type:"inventoryArchives/setAttributeModalVisible" ,payload:true})
+    }
+    else if (btn === "创建"){
+      this.props.dispatch({type:"inventoryArchives/setCreatModalVisible" ,payload:true})
+      this.props.dispatch({type:"inventoryArchives/setCreatModelStyle" ,payload:"creat"})
+    }
   }
 
   render(){
@@ -93,7 +103,7 @@ class LeftTreeView extends Component{
 
 function ResultsTable(props) {
 
-  const {loading,dispatch,list,page,size,total} = props;
+  const {loading,clickRow,slectRow,dispatch,list,page,size,total} = props;
 
   function textforkey(array,value,valuekey = 'name') {
     if(array){
@@ -117,23 +127,14 @@ function ResultsTable(props) {
           render: (text, record, index) => {
             return (
               <div>
-                <PermissionLink testKey='ROOM_DETAIL' className="one-link link-style" onClick={ ()=>{onLook(record)} }> 查看 </PermissionLink>
+                <Link className="one-link link-style" onClick={ ()=>{onLook(record)} }> 查看 </Link>
+                <Link className="one-link link-style" onClick={ ()=>{onDelete(record)} }> 删除 </Link>
               </div>
             );
           },
         }
       )
-    }
-    else if(dict.title === "订单支付状态"){
-      return{
-        title: '订单支付状态',
-        render: (record) => {
-
-          return record ? "已支付" : "未支付"
-        }
-      }
-    }
-    else if(dict.title === "创建时间"){
+    }  else if(dict.title === "创建时间"){
       return{
         title: '创建时间',
         render: (record) => {
@@ -154,12 +155,25 @@ function ResultsTable(props) {
   }
 
   function onLook(record) {
-    dispatch(routerRedux.push({
-      pathname: '/crm/customer/order/detail',
-      query: {orderid:record.id}
-    }))
+    dispatch({type:"inventoryArchives/setCreatModalVisible" ,payload:true})
+    dispatch({type:"inventoryArchives/setCreatModelStyle" ,payload:"detail"})
+    dispatch({type:"inventoryArchives/getInventoryFileDetailById" ,payload:{ dataId: record.id }})
   }
 
+  function onDelete(record) {
+    confirm({
+      title: '提示',
+      content: '是否确定删除此记录',
+      onOk() {
+        dispatch({
+          type: 'inventoryArchives/deleteInventoryFile',
+          payload: { dataId: record.id }
+        })
+      },
+      onCancel() {
+      }
+    });
+  }
 
   const columnAry = [
     {title: '存货编号', key: 'id'},
@@ -171,7 +185,7 @@ function ResultsTable(props) {
     {title: '图片', key: 'img'},
     {title: '状态', key: 'status'},
     {title: '创建时间', key: 'operateTime'},
-    {title: '操作'}
+    {title: '操作'},
   ]
 
   const  columns = [];
@@ -179,6 +193,21 @@ function ResultsTable(props) {
   for(let i = 0;i<columnAry.length;i++){
     columns.push(creatColumn(columnAry[i]))
   }
+
+  function onRowClick(e) {
+    clickRow(e.id)
+    selectRow = e.id
+  }
+
+  function rowClassName(record, index){
+    if(slectRow && record.id ==  slectRow){
+        return "selectRow"
+    }
+    else{
+      return ""
+    }
+  }
+
   const tableProps = {
     loading: loading.effects['roomManagement/listByPage'] !== undefined ? loading.effects['roomManagement/listByPage']:false,
     dataSource : list,
@@ -189,7 +218,9 @@ function ResultsTable(props) {
       pageSize:size,
       total: total,
     },
+    onRowClick,
     columns,
+    rowClassName,
     onChange (page) {
       const query = parse(location.search.substr(1))
       dispatch({type:"order/getOrderList",payload:{customerId:query.dataId,page:page}})
@@ -208,14 +239,21 @@ class RightTableView extends Component{
 
   constructor(props){
     super(props);
+    this.state = {
+      slectRowId : ""
+    }
+  }
 
+  clickRow(slectRowId){
+    this.setState({slectRowId:slectRowId})
   }
 
   render(){
+    const {slectRowId} = this.state
     return(
       <div>
           {/**/}
-        <ResultsTable {...this.props}/>
+        <ResultsTable clickRow={(e)=>this.clickRow(e)} slectRow={slectRowId} {...this.props}/>
       </div>
     )
   }
