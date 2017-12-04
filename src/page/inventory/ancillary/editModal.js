@@ -84,7 +84,6 @@ class ancillaryIndex extends Component {
   }
 
   changeValue=(key,e)=> {
-
     this.props.dispatch({
       type: 'ancillary/changeAttributeValue',
       payload: {
