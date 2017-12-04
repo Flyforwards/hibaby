@@ -151,3 +151,11 @@ export function getAttributeDetailById(values){
     body:JSON.stringify(values)
   })
 }
+//根据商品ID查询关联辅助属性
+export function getAttributesGroupByGoodsId(values){
+  return request('/crm/api/v1/inventory/getAttributesGroupByGoodsId',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+

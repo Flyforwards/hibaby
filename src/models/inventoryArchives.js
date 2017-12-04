@@ -11,7 +11,10 @@ export default {
     attributeModalVisible:false,
     editAttModalVisible:false,
     inventoryFileDetail:"",
+    attributesGroupByGoodsId:"",
+    attributesPageList:[],
     creatModelStyle:"creat",
+    selectRowId:"",
     allStockClassificationNodes:[],
     treeData:[],
     treeSelectData:[],
@@ -91,6 +94,24 @@ export default {
           throw err
         }
       },
+      *getAttributesGroupByGoodsId({payload:values},{call,put}){
+        try {
+          const { data:{data,code}} = yield call(InventotyService.getAttributesGroupByGoodsId,values);
+          yield put({type:'savaAttributesGroupByGoodsId',payload:data} );
+        }
+        catch (err){
+          throw err
+        }
+      },
+      *getAttributesPageList({payload:values},{call,put}){
+        try {
+          const { data:{data,code}} = yield call(InventotyService.getAttributesPageList,values);
+          yield put({type:'saveAttributesPageList',payload:data} );
+        }
+        catch (err){
+          throw err
+        }
+      },
   },
   reducers: {
     setCreatModalVisible(state, {payload:todo}) {
@@ -117,6 +138,16 @@ export default {
     saveInventoryFileDetailById(state, {payload:todo}) {
       return {...state, inventoryFileDetail:todo};
     },
+    savaAttributesGroupByGoodsId(state, {payload:todo}) {
+      return {...state, attributesGroupByGoodsId:todo.data};
+    },
+    savaSelectRowId(state, {payload:todo}) {
+      return {...state, selectRowId:todo};
+    },
+    saveAttributesPageList(state, {payload:todo}) {
+      return {...state, attributesPageList:todo};
+    },
+
     setAllStockClassificationNodes(state, {payload:todo}) {
       let treeSelectData = []
       let  treeData = todo.map(value=>{

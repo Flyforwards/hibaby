@@ -62,7 +62,7 @@ function AttributeTable(props) {
 }
 
 function cusFromItem(props) {
-  const {getFieldDecorator,dict} = props
+  const {getFieldDecorator,dict,} = props
   let disabled = dict.isDetail
   let formItemLayout = {
     labelCol: {span: 7},
@@ -79,6 +79,8 @@ function cusFromItem(props) {
   function imgChange(e){
     dict.value = e
   }
+
+
 
   return (
     <Col key={dict.submitStr?dict.submitStr:dict.key} span={dict.span?dict.span:8}>
@@ -243,10 +245,6 @@ class AttributeModal extends React.Component{
     }
   }
 
-  componentDidMount(){
-
-  }
-
   onCancel(){
     this.props.dispatch({type:"inventoryArchives/setAttributeModalVisible",payload:false})
   }
@@ -257,7 +255,8 @@ class AttributeModal extends React.Component{
 
   onChange(checkedValues){
     let checkedValueColum = checkedValues.map(value=>{
-      return {title:value,key:value}
+
+      return {title:value.split("|*|")[1],key:value,component:"propsSelect"}
     })
 
     this.setState({
@@ -272,6 +271,7 @@ class AttributeModal extends React.Component{
 
   render(){
     const {columnAry} = this.state
+    const {attributesPageList} = this.props
 
     return (
       <Modal className="smallCard" bodyStyle={{padding: '10px'}}  title={"辅助属性"} visible={this.props.attributeModalVisible}
@@ -287,8 +287,8 @@ class AttributeModal extends React.Component{
         <Card title="选择属性" noHovering={true} className="smallCard" bodyStyle={{padding: '10px'}}>
           <Checkbox.Group onChange={this.onChange.bind(this)}>
             <Row>
-              {['A','B','C','D','E','F','G'].map((value,index)=>{
-                return <Col span={4} key={"Attribute"+index}><Checkbox className="AttCheckbox" value={value}>{value}</Checkbox></Col>
+              {attributesPageList.map((value,index)=>{
+                return <Col span={4} key={"Attribute"+value.id  + "|*|" + value.name}><Checkbox className="AttCheckbox" value={value.id  + "|*|" + value.name}>{value.name}</Checkbox></Col>
               })}
             </Row>
           </Checkbox.Group>
@@ -337,7 +337,7 @@ class EditAttModal extends React.Component{
     const {getFieldDecorator} = this.props.form
     return (
       <Modal  title={"辅助属性"} visible={editAttModalVisible}
-              width="500px"
+              width="800px"
               className="addCustomer"
               closable={false}
               onCancel={this.onCancel.bind(this)}
@@ -351,7 +351,7 @@ class EditAttModal extends React.Component{
             {
               dataAry?dataAry.map(value=>{
                 if (value.key){
-                  return cusFromItem({getFieldDecorator:getFieldDecorator,dict:{ ...value,span:24}})
+                  return cusFromItem({getFieldDecorator:getFieldDecorator,dict:{ ...value,span:12}})
                 }
               }):""
             }

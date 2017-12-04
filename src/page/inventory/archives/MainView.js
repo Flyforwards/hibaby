@@ -13,8 +13,6 @@ import './archives.scss'
 import PermissionLink from 'common/PermissionLink';
 import moment from 'moment'
 
-let selectRow = ''
-
 const TreeNode = Tree.TreeNode;
 
 class TopView extends Component{
@@ -27,15 +25,15 @@ class TopView extends Component{
 
   btnClick(btn){
 
-    if (!selectRow && btn !== "创建"){
+    if (!this.props.selectRowId && btn !== "创建"){
       message.error("请先选择要操作的数据")
-      return
+      return;
     }
-
-    let type = "inventoryArchives/setCreatModalVisible";
 
     if (btn === "辅助属性"){
       this.props.dispatch({type:"inventoryArchives/setAttributeModalVisible" ,payload:true})
+      this.props.dispatch({type:"inventoryArchives/getAttributesGroupByGoodsId",payload:{dataId:this.props.selectRowId}})
+      this.props.dispatch({type:"inventoryArchives/getAttributesPageList",payload:{page:1,size:10000}})
     }
     else if (btn === "创建"){
       this.props.dispatch({type:"inventoryArchives/setCreatModalVisible" ,payload:true})
@@ -196,7 +194,6 @@ function ResultsTable(props) {
 
   function onRowClick(e) {
     clickRow(e.id)
-    selectRow = e.id
   }
 
   function rowClassName(record, index){
@@ -239,21 +236,19 @@ class RightTableView extends Component{
 
   constructor(props){
     super(props);
-    this.state = {
-      slectRowId : ""
-    }
   }
 
   clickRow(slectRowId){
-    this.setState({slectRowId:slectRowId})
+    this.props.dispatch({type:"inventoryArchives/savaSelectRowId" ,payload:slectRowId})
+
   }
 
   render(){
-    const {slectRowId} = this.state
+    const {selectRowId} = this.props
     return(
       <div>
           {/**/}
-        <ResultsTable clickRow={(e)=>this.clickRow(e)} slectRow={slectRowId} {...this.props}/>
+        <ResultsTable clickRow={(e)=>this.clickRow(e)} slectRow={selectRowId} {...this.props}/>
       </div>
     )
   }
@@ -267,10 +262,10 @@ class MainView extends Component {
   componentWillUnmount() {
   }
   render(){
-    const {treeData} = this.props
+    const {treeData,selectRowId} = this.props
     return (
-      <div>
-        <Row><TopView  dispatch={this.props.dispatch}/></Row>
+      <div >
+        <Row><TopView  dispatch={this.props.dispatch} selectRowId={selectRowId}/></Row>
         <Row>
           <Col span={4}><LeftTreeView treeData={treeData}/></Col>
           <Col span={20}><RightTableView {...this.props}/></Col>
