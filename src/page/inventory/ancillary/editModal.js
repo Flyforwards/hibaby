@@ -82,13 +82,9 @@ class ancillaryIndex extends Component {
       payload: e.target.value
     })
   }
-<<<<<<< HEAD
 
-  changeValue=(key,e)=> {
-=======
 
   changeValue = (key, e) => {
->>>>>>> 7d244a06515edb4bf4cc7ed391f7347a8e2e61bd
     this.props.dispatch({
       type: 'ancillary/changeAttributeValue',
       payload: {
