@@ -68,6 +68,7 @@ class ancillaryIndex extends Component {
     })
   }
 
+  
   delValue(key) {
     this.props.form.resetFields();
     this.props.dispatch({
