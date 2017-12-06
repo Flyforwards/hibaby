@@ -32,7 +32,8 @@ class TopView extends Component{
 
     if (btn === "辅助属性"){
       this.props.dispatch({type:"inventoryArchives/setAttributeModalVisible" ,payload:true})
-      this.props.dispatch({type:"inventoryArchives/getAttributesGroupByGoodsId",payload:{dataId:this.props.selectRowId}})
+      this.props.dispatch({type:"inventoryArchives/getInventoryAttTableKey",payload:{dataId:this.props.selectRowId}})
+      this.props.dispatch({type:"inventoryArchives/getAttributesGroupByGoodsId"})
       this.props.dispatch({type:"inventoryArchives/getAttributesPageList",payload:{page:1,size:10000}})
     }
     else if (btn === "创建"){
@@ -44,6 +45,7 @@ class TopView extends Component{
   render(){
     return(
       <div style={{width:"100%",height:"40px"}}>
+
         {this.state.btnAry.map(value=>{
           return <Button  className={value.className} style={{marginRight:"10px",float:"right"}} key={value.title}
                           onClick={()=>{this.btnClick(value.title)}}>{value.title}</Button>
@@ -79,20 +81,26 @@ class LeftTreeView extends Component{
     });
   }
 
+  onSelect = (selectedKeys, info) => {
+
+    if (selectedKeys === "all"){
+      this.props.dispatch({type:"inventoryArchives/getInventoryFilePageList"})
+    }
+    this.props.dispatch({type:"inventoryArchives/getInventoryFilePageList",payload:{inventoryClassesId:selectedKeys[0]}})
+
+  }
+
   render(){
     const {treeData} = this.props
     return(
-
       <Tree
-
-        // expandedKeys={this.state.expandedKeys}
-        // autoExpandParent={this.state.autoExpandParent}
-        // onCheck={this.onCheck}
-        // checkedKeys={this.state.checkedKeys}
-        // onSelect={this.onSelect}
-        // selectedKeys={this.state.selectedKeys}
+        defaultExpandAll={true}
+        showLine={true}
+        onSelect={this.onSelect}
       >
-        {this.renderTreeNodes(treeData)}
+        <TreeNode title="全部" key="all">
+          {this.renderTreeNodes(treeData)}
+        </TreeNode>
       </Tree>
 
     )
@@ -262,12 +270,12 @@ class MainView extends Component {
   componentWillUnmount() {
   }
   render(){
-    const {treeData,selectRowId} = this.props
+    const {treeData,selectRowId,dispatch} = this.props
     return (
       <div >
-        <Row><TopView  dispatch={this.props.dispatch} selectRowId={selectRowId}/></Row>
+        <Row><TopView  dispatch={dispatch} selectRowId={selectRowId}/></Row>
         <Row>
-          <Col span={4}><LeftTreeView treeData={treeData}/></Col>
+          <Col span={4}><LeftTreeView dispatch={dispatch} treeData={treeData}/></Col>
           <Col span={20}><RightTableView {...this.props}/></Col>
         </Row>
         <CreatModalForm/>

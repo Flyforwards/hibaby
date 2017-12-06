@@ -158,4 +158,38 @@ export function getAttributesGroupByGoodsId(values){
     body:JSON.stringify(values)
   })
 }
+// 根据辅助属性和商品Id保存商品属性值
+export function saveGoodsByAttributesAndId(values){
+  return request('/crm/api/v1/inventory/saveGoodsByAttributesAndId',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+
+
+// 保存存货档案的辅助属性的table栏
+export function saveInventoryAttTableKey(values){
+  return request('/crm/api/v1/inventory/saveInventoryAttTableKey',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+
+
+// 获取存货档案的辅助属性的table栏
+export function getInventoryAttTableKey(values){
+  return request('/crm/api/v1/inventory/getInventoryAttTableKey',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+
+// 根据组合值ID删除关联属性组合值
+export function deleteAttributesGroupByResultId(values){
+  return request('/crm/api/v1/inventory/deleteAttributesGroupByResultId',{
+    method:'POST',
+    body:JSON.stringify(values)
+  })
+}
+
 

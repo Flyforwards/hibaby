@@ -67,7 +67,7 @@ export default (app)  => [
     }
   },
 
-  
+
   //辅助属性
   {
     path: '/inventory/ancillary',
