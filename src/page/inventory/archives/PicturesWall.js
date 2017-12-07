@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'dva';
 import "./archives.scss"
 import { Upload, Icon, Modal } from 'antd';
+import {local, session} from '../../../common/util/storage.js'
+
 
 class PicturesWall extends React.Component {
 
@@ -10,7 +12,7 @@ class PicturesWall extends React.Component {
     this.state = {
       previewVisible: false,
       previewImage: '',
-      fileList: [],
+      fileList: [...props.oldImg],
     };
   }
 
@@ -27,12 +29,22 @@ class PicturesWall extends React.Component {
 
     this.props.imgChange(fileList.map(value=>{
       if (value.status === 'done') {
-        return {name:value.response.data.fileKey, url:value.response.data.fileUrlList[0]}
+        if (value.response){
+          return { url:value.response.data.fileUrlList[0]}
+        }
+        else {
+          return { url:value.url}
+        }
       }
     }))
     this.setState({ fileList })
   }
 
+  onRemove = (e) => {
+    if (this.props.disabled){
+      return false
+    }
+  }
 
 
   render() {
@@ -47,9 +59,12 @@ class PicturesWall extends React.Component {
     return (
       <div className="clearfix">
         <Upload
-          action="/crm/api/v1/uploadImg"
           listType="picture-card"
+          name="file"
+          action="/crm/api/v1/uploadImg"
+          headers={{'USER-TOKEN':session.get("token")}}
           fileList={fileList}
+          onRemove={this.onRemove}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
         >

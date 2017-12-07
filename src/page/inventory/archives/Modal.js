@@ -4,9 +4,10 @@ import { parse } from 'qs'
 import {PicturesWall} from './PicturesWall'
 import './archives.scss'
 import { Link } from 'react-router';
-import {Form,Table,Checkbox, Modal,Row,Input, Col,Button,Spin,Card,TreeSelect,Select} from 'antd';
+import {Form,Table,Checkbox, Modal,Row,Input, Col,Button,Spin,Card,TreeSelect,Select,message} from 'antd';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
+import moment from 'moment'
 const confirm = Modal.confirm;
 
 const Option = Select.Option
@@ -82,7 +83,7 @@ function AttributeTable(props) {
     columns.push(creatColumn(columnAry[i]))
   }
   const tableProps = {
-    loading: loading.effects['roomManagement/listByPage'] !== undefined ? loading.effects['roomManagement/listByPage']:false,
+    loading: loading.effects['inventoryArchives/getAttributesGroupByGoodsId'] !== undefined ? loading.effects['inventoryArchives/getAttributesGroupByGoodsId']:false,
     dataSource : attributesGroupByGoodsId,
     pagination:false,
     columns,
@@ -98,6 +99,9 @@ function AttributeTable(props) {
 function cusFromItem(props) {
   const {getFieldDecorator,dict,attributesPageList} = props
   let disabled = dict.isDetail
+  if (dict.disabled){
+    disabled = dict.disabled
+  }
   let formItemLayout = {
     labelCol: {span: 7},
     wrapperCol: {span: 17},
@@ -105,8 +109,8 @@ function cusFromItem(props) {
 
   if (dict.span === 24){
     formItemLayout = {
-      labelCol: {span: dict.component === "imageUpload" ? 2 : 5},
-      wrapperCol: {span: dict.component === "imageUpload" ? 22 : 19},
+      labelCol: {span: 2},
+      wrapperCol: {span: 22},
     };
   }
 
@@ -139,18 +143,16 @@ function cusFromItem(props) {
   }
   else if (dict.component === "imageUpload") {
     tempFormItem = <FormItem  {...formItemLayout} label={dict.title}>
-      {getFieldDecorator(dict.key,{initialValue: dict.initValue})
-      (
-        <PicturesWall disabled={disabled} imgChange={(e)=>imgChange(e)}/>
-      )}
+        <PicturesWall  oldImg={dict.initValue} disabled={disabled} imgChange={(e)=>imgChange(e)}/>
     </FormItem>
   }
   else if (dict.component === "label") {
     tempFormItem = <FormItem  {...formItemLayout} label={dict.title}>
-      <Input disabled={true} value={dict.value} style={{width: '100%'}}/>
+      <Input disabled={true} value={dict.value?dict.value:dict.initValue} style={{width: '100%'}}/>
     </FormItem>
   }
   else {
+    // dict.key === "remarks" ? false : true)
     tempFormItem = <FormItem  {...formItemLayout} label={dict.title}>
       {getFieldDecorator(dict.key, {rules: [{ required: true, message: "请输入"+dict.title }],initialValue: dict.initValue})
       (
@@ -190,18 +192,19 @@ class CreatModal extends React.Component{
         {title:'规格型号',key: 'specificationModel',value:''},
         {title:'库存分类',key: 'inventoryClassesId',value:''},
         {title:'最大库存',key: 'maxStorage',value:''},
-        {title:'进货价格',key: 'purchasePrice',value:''},
+        {title:'进货价格',key: 'purchasePrice'},
         {title:'最小库存',key: 'minStorage',value:''},
         {title:'销售价格',key: 'price',value:''},
-        {title:'备注',key: 'remarks',value:''},
-        {title:'图片',key: 'img',component:"imageUpload",span:24,value:''},
-      ],imgAry:[]}
+        {title:'备注',key: 'remarks',value:'',span:24},
+        {title:'图片',key: 'img',component:"imageUpload",span:24,value:'',initValue:[]},
+      ]}
   }
 
   componentDidMount(){}
 
   onCancel(){
     this.props.dispatch({type:"inventoryArchives/setCreatModalVisible",payload:false})
+    this.props.form.resetFields()
   }
 
   onEdit(){
@@ -209,35 +212,41 @@ class CreatModal extends React.Component{
   }
 
   onOk(){
-    let subMitvalues = {}
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        subMitvalues = values;
+
+        let subMitvalues = values;
+        let urlStr = ""
+
+        this.state.creatAttributeAry.map(supValue=>{
+          if (supValue.key === "img"){
+            if(supValue.value){
+              supValue.value.map(value=>{
+                urlStr = urlStr + value.url + "|*|"
+              })
+            }
+            else if(supValue.initValue){
+              supValue.initValue.map(value=>{
+                urlStr = urlStr + value.url + "|*|"
+              })
+            }
+          }
+        })
+        //
+        subMitvalues.img = urlStr;
+
+        this.props.dispatch({type:"inventoryArchives/addInventoryFile",payload:subMitvalues})
       }
     })
-    let urlStr = ""
 
-
-    this.state.creatAttributeAry.map(supValue=>{
-      if (supValue.key === "img"){
-        if(supValue.value){
-          supValue.value.map(value=>{
-            urlStr = urlStr + value.url + "|$|"
-          })
-        }
-      }
-    })
-    //
-    subMitvalues.img = urlStr;
-
-    this.props.dispatch({type:"inventoryArchives/addInventoryFile",payload:subMitvalues})
   }
 
 
   render(){
 
     const creatAttributeAry = [...this.state.creatAttributeAry]
-    const {inventoryFileDetail,loading,creatModelStyle} = this.props
+    const inventoryFileDetail = this.props.inventoryFileDetail?{...this.props.inventoryFileDetail}:""
+    const {loading,creatModelStyle} = this.props
     let colAry = [];
 
     let title = creatModelStyle === "creat" ? "创建" : (creatModelStyle === "detail" ? "详情" : "编辑")
@@ -247,11 +256,42 @@ class CreatModal extends React.Component{
       <Button key="okBtn" className='button-group-bottom-2' onClick={this.onOk.bind(this)}>确定</Button>
 
     if (inventoryFileDetail){
-      creatAttributeAry.unshift({title:'存货编码',key: 'id',value:''})
+      creatAttributeAry.unshift({title:'存货编码',key: 'id',value:'',disabled:true})
+      creatAttributeAry.push({title:'创建人',key: 'createPerson',value:'',component:"label"})
+      creatAttributeAry.push({title:'创建时间',key: 'operateTime',value:'',component:"label"})
     }
     creatAttributeAry.map(value=>{
-      value.initValue = inventoryFileDetail? inventoryFileDetail[value.key] : ""
+      if (inventoryFileDetail){
+        if (value.key === "operateTime"){
+          value.initValue = moment(inventoryFileDetail[value.key]).format("YYYY-MM-DD");
+        }
+        else if(value.key === "img"){
+          if (inventoryFileDetail.img){
+            let imgAry = []
+             inventoryFileDetail.img.split("|*|").map((imgValue,index)=>{
+              if (imgValue){
+                imgAry.push({
+                  uid: "imageUpload"+ index,
+                  name: imgValue,
+                  status: 'done',
+                  url: imgValue,
+                })
+              }
+            })
+            value.initValue = imgAry;
+          }
+        }
+        else {
+          value.initValue = inventoryFileDetail[value.key].toString();
+        }
+      }
+      else {
+        value.initValue = ""
+      }
     })
+
+
+
 
     return (
       <Modal title={"存货档案-"+title} visible={this.props.creatModalVisible}
@@ -331,7 +371,7 @@ class AttributeModal extends React.Component{
   }
 
   render(){
-    const {attributesPageList,selectRowId,inventoryAttTableKey,editingAtt} = this.props
+    const {attributesPageList,selectRowId,inventoryAttTableKey,editingAtt,loading} = this.props
 
     let columnAry = []
     let editColumnAry = []
@@ -351,35 +391,37 @@ class AttributeModal extends React.Component{
     columnAry = [...columnAry,...AttBaseColum]
     editColumnAry = [...editColumnAry,...AttEditBaseColum]
     return (
-      <Modal className="smallCard" bodyStyle={{padding: '10px'}}  title={"辅助属性"} visible={this.props.attributeModalVisible}
-             width="1000px"
-             className="addCustomer"
-             closable={false}
-             onCancel={this.onCancel.bind(this)}
-             footer={[
-               <Button key="cancelBtn" className='button-group-bottom-1' onClick={this.onCancel.bind(this)}>取消</Button>,
-               <Button key="okBtn" className='button-group-bottom-2' onClick={this.onOk.bind(this)}> 确定</Button>
-             ]}
-      >
-        <Card title="选择属性" noHovering={true} className="smallCard" bodyStyle={{padding: '10px'}}>
-          <Checkbox.Group onChange={this.onChange.bind(this)}>
-            <Row>
-              <CheckboxGroup options={ attributesPageList.map((value,index)=>{
-                return  { label: value.name, value: value.id+"" }
-              })} value={inventoryAttTableKey} onChange={this.onChange.bind(this)} />
-            </Row>
-          </Checkbox.Group>
-        </Card>
+      <Spin spinning={loading.effects['inventoryArchives/getInventoryAttTableKey'] !== undefined ? loading.effects['inventoryArchives/getInventoryAttTableKey']:false}>
+        <Modal className="smallCard" bodyStyle={{padding: '10px'}}  title={"辅助属性"} visible={this.props.attributeModalVisible}
+               width="1000px"
+               className="addCustomer"
+               closable={false}
+               onCancel={this.onCancel.bind(this)}
+               footer={[
+                 <Button key="cancelBtn" className='button-group-bottom-1' onClick={this.onCancel.bind(this)}>取消</Button>,
+                 <Button key="okBtn" className='button-group-bottom-2' onClick={this.onOk.bind(this)}> 确定</Button>
+               ]}
+        >
+          <Card title="选择属性" noHovering={true} className="smallCard" bodyStyle={{padding: '10px'}}>
+            <Checkbox.Group onChange={this.onChange.bind(this)}>
+              <Row>
+                <CheckboxGroup options={ attributesPageList.map((value,index)=>{
+                  return  { label: value.name, value: value.id+"" }
+                })} value={inventoryAttTableKey} onChange={this.onChange.bind(this)} />
+              </Row>
+            </Checkbox.Group>
+          </Card>
 
 
 
-        <Card title="属性值集合" noHovering={true} className="smallCard" bodyStyle={{padding: '10px'}}  extra={<Button className={"button-group-2"} onClick={()=>{this.addAtt()}}>新增</Button>}>
-          {
-            <AttTable columnAry={columnAry}/>
-          }
-        </Card>
-        <EditAttModalForm dispatch={this.props.dispatch} editingAtt={editingAtt} selectRowId={selectRowId} attributesPageList={attributesPageList} editAttModalVisible={this.props.editAttModalVisible} dataAry={editColumnAry}/>
-      </Modal>
+          <Card title="属性值集合" noHovering={true} className="smallCard" bodyStyle={{padding: '10px'}}  extra={<Button className={"button-group-2"} onClick={()=>{this.addAtt()}}>新增</Button>}>
+            {
+              <AttTable columnAry={columnAry}/>
+            }
+          </Card>
+          <EditAttModalForm dispatch={this.props.dispatch} editingAtt={editingAtt} selectRowId={selectRowId} attributesPageList={attributesPageList} editAttModalVisible={this.props.editAttModalVisible} dataAry={editColumnAry}/>
+        </Modal>
+      </Spin>
     )
   }
 }
@@ -396,7 +438,7 @@ class EditAttModal extends React.Component{
 
   onOk(){
     const {editingAtt} = this.props
-    let atttibuteValue = editingAtt ? JSON.parse(editingAtt.attibuteValue) : {}
+    let atttibuteValue = editingAtt ? JSON.parse(editingAtt.attributeValue) : {}
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -412,8 +454,8 @@ class EditAttModal extends React.Component{
                 }
                 else {
                   if (editingAtt){
-                    values[key] = attibuteValue[key]
-                    tempAry = attibuteValue[key].split("|*|")
+                    values[key] = attributeValue[key]
+                    tempAry = attributeValue[key].split("|*|")
                   }
                 }
                 resultValue = resultValue + tempAry[1] + ","
@@ -430,7 +472,7 @@ class EditAttModal extends React.Component{
           delete values.resultCoding;
 
           let payloadData = {
-            "attibuteValue": JSON.stringify(values),
+            "attributeValue": JSON.stringify(values),
             "goodsId": this.props.selectRowId,
             "resultCoding": resultCoding,
             "resultValue": resultValue
@@ -453,8 +495,6 @@ class EditAttModal extends React.Component{
   render(){
     const {editAttModalVisible,dataAry,attributesPageList,editingAtt} = this.props
     const {getFieldDecorator} = this.props.form
-
-    console.log(editingAtt)
 
     return (
       <Modal  title={"辅助属性"} visible={editAttModalVisible}
