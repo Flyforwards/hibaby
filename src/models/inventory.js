@@ -22,7 +22,11 @@ export default {
       current: 1,
       pageSize: 10,
       total: null
-    }
+    },
+    title:"新增",
+    isDisabled:true,
+    editShow:true,
+    visible:false,
   },
   reducers: {
     //分页
@@ -47,13 +51,33 @@ export default {
       })
       return { ...state, inventoryData }
     },
-    
+
     removeData(state, { payload: data }){
       return {
         ...state,
         detailData: null,
-        pageList: null
+       // pageList: null,
+        title:'',
+        isDisabled:true,
+        editShow:true,
+        visible:false,
       }
+    },
+    //点击查看显示modal
+    changeVisibleLook(state,{payload:data}){
+      return { ...state,visible:data}
+    },
+    //editshow
+    changEditShow(state,{payload:data}){
+      return { ...state,editShow:data}
+    },
+    //disabled
+    changeDisabled(state,{payload:data}){
+      return { ...state,isDisabled:data}
+    },
+    //title
+    changeTitle(state,{payload:data}){
+      return { ...state,title:data }
     }
   },
   effects: {
@@ -61,8 +85,27 @@ export default {
     *saveWarehouse({ payload: values }, { call, put }){
       const { data: { data, code } } = yield call(inventoryService.saveWarehouse, values);
       if (code == 0) {
+
         message.success('仓库保存成功')
-        yield put(routerRedux.push('/inventory/warehouse'))
+          yield put({
+            type:'changeVisibleLook',
+            payload:false,
+          })
+          yield put({
+            type:'changEditShow',
+            payload:true
+          })
+          yield put({
+            type:'changeDisabled',
+            payload:true,
+          })
+          yield put({
+            type: 'getWarehousePageList'
+          })
+         yield put({
+            type: 'removeData'
+          })
+       // yield put(routerRedux.push('/inventory/warehouse'))
       }
     },
     /*获取仓库列表*/
@@ -105,9 +148,38 @@ export default {
             data
           }
         })
+        if(values.type == 1){
+          yield put({
+            type:'changeVisibleLook',
+            payload:true,
+          })
+          yield put({
+            type:'changEditShow',
+            payload:false
+          })
+          yield put({
+            type:'changeDisabled',
+            payload:true,
+          })
+        }
+        if(values.type == 2){
+          yield put({
+            type:'changeVisibleLook',
+            payload:true,
+          })
+          yield put({
+            type:'changEditShow',
+            payload:true
+          })
+          yield put({
+            type:'changeDisabled',
+            payload:false,
+          })
+        }
+
       }
     },
-    
+
     /*删除成功*/
     *deleteWarehouse({ payload: values }, { call, put }){
       const { data: { data, code } } = yield call(inventoryService.deleteWarehouse, values);
@@ -116,7 +188,7 @@ export default {
         yield put(routerRedux.push('/inventory/warehouse'))
       }
     },
-    
+
     /*仓库明细列表*/
     *getInventoryList({ payload: values }, { call, put }){
       const { data: { data, code,page,size ,total} } = yield call(inventoryService.getInventoryList, values);
@@ -138,9 +210,9 @@ export default {
         })
       }
     }
-    
+
   },
-  
+
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, query }) => {
@@ -149,24 +221,24 @@ export default {
             type: 'getWarehousePageList'
           })
         }
-        if (pathname === '/inventory/warehouse/detail') {
-          dispatch({
-            type: 'getWarehouseDetailById',
-            payload: {
-              "id": query.id
-            }
-          })
-        }
-        if (pathname === '/inventory/warehouse/edit') {
-          if (query.id) {
-            dispatch({
-              type: 'getWarehouseDetailById',
-              payload: {
-                "id": query.id
-              }
-            })
-          }
-        }
+        // if (pathname === '/inventory/warehouse/detail') {
+        //   dispatch({
+        //     type: 'getWarehouseDetailById',
+        //     payload: {
+        //       "id": query.id
+        //     }
+        //   })
+        // }
+        // if (pathname === '/inventory/warehouse/edit') {
+        //   if (query.id) {
+        //     dispatch({
+        //       type: 'getWarehouseDetailById',
+        //       payload: {
+        //         "id": query.id
+        //       }
+        //     })
+        //   }
+        // }
         /*仓库明细*/
         if (pathname === '/inventory/warehouse-inventory') {
           dispatch({

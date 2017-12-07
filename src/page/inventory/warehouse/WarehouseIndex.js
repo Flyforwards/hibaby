@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const createForm = Form.create
 import moment from 'moment'
 import './inventoryIndex.scss'
-
+import WarehouseModal from './WarehouseModal'
 @createForm()
 class WarehouseIndex extends Component {
   constructor(props){
@@ -72,14 +72,23 @@ class WarehouseIndex extends Component {
 
   //点击查看
   onLook(record){
-    this.props.dispatch(
-      routerRedux.push({
-        pathname:'/inventory/warehouse/detail',
-        query:{
-          id:record.id
+      this.props.dispatch({
+        type:'inventory/getWarehouseDetailById',
+        payload:{
+          "id":record.id,
+          "type":1
         }
       })
-    )
+    this.props.dispatch({
+      type:"inventory/changeTitle",
+      payload:"查看",
+    })
+      // routerRedux.push({
+      //   pathname:'/inventory/warehouse/detail',
+      //   query:{
+      //     id:record.id
+      //   }
+      // })
   }
   //点击删除
   onDelete(id){
@@ -113,11 +122,24 @@ class WarehouseIndex extends Component {
 
   //创建
   handleCreate(){
-    this.props.dispatch(
-      routerRedux.push({
-        pathname:'/inventory/warehouse/edit'
-      })
-    )
+    this.props.dispatch({ type: 'inventory/removeData' })
+    this.props.dispatch({
+      type:"inventory/changeVisibleLook",
+      payload:true,
+    })
+    this.props.dispatch({
+      type:"inventory/changEditShow",
+      payload:true,
+    })
+    this.props.dispatch({
+      type:"inventory/changeDisabled",
+      payload:false,
+    })
+    this.props.dispatch({
+      type:"inventory/changeTitle",
+      payload:"新增",
+    })
+
   }
   componentWillUnmount() {
     this.props.dispatch({ type: 'inventory/removeData' })
@@ -178,7 +200,9 @@ class WarehouseIndex extends Component {
           <Row>
             <Table className="info-card-center" columns={this.columns} bordered rowKey="id" { ...tableProps }/>
           </Row>
+
         </Card>
+        <WarehouseModal/>
       </div>
     )
   }
