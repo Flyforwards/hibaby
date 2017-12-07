@@ -12,8 +12,11 @@ import '../warehouse/inventoryIndex.scss'
 import './archives.scss'
 import PermissionLink from 'common/PermissionLink';
 import moment from 'moment'
+const Search = Input.Search;
 
 const TreeNode = Tree.TreeNode;
+
+let searStr = ""
 
 class TopView extends Component{
   constructor(props) {
@@ -25,7 +28,7 @@ class TopView extends Component{
 
   btnClick(btn){
 
-    if (!this.props.selectRowId && btn !== "创建"){
+    if (!this.props.selectRowId && btn === "辅助属性"){
       message.error("请先选择要操作的数据")
       return;
     }
@@ -40,18 +43,24 @@ class TopView extends Component{
       this.props.dispatch({type:"inventoryArchives/setCreatModalVisible" ,payload:true})
       this.props.dispatch({type:"inventoryArchives/setCreatModelStyle" ,payload:"creat"})
     }
+    else {
+      this.props.dispatch({type:"inventoryArchives/getInventoryFilePageList",payload:{sear:searStr}})
+    }
   }
 
   render(){
     return(
-      <div style={{width:"100%",height:"40px"}}>
-
-        {this.state.btnAry.map(value=>{
-          return <Button  className={value.className} style={{marginRight:"10px",float:"right"}} key={value.title}
-                          onClick={()=>{this.btnClick(value.title)}}>{value.title}</Button>
-        })}
-
-      </div>
+      <Row style={{width:"100%",height:"40px"}}>
+        <Col span={13 } style={{height:"30px"}}>
+          <Input onChange={(e)=>{searStr = e.target.value}} placeholder="输入存货名称"/>
+        </Col>
+        <Col span={11} >
+          {this.state.btnAry.map(value=>{
+            return <Button  className={value.className} style={{marginRight:"10px",float:"right"}} key={value.title}
+                            onClick={()=>{this.btnClick(value.title)}}>{value.title}</Button>
+          })}
+        </Col>
+      </Row>
     )
   }
 }
@@ -82,12 +91,14 @@ class LeftTreeView extends Component{
   }
 
   onSelect = (selectedKeys, info) => {
-
-    if (selectedKeys === "all"){
-      this.props.dispatch({type:"inventoryArchives/getInventoryFilePageList"})
+    if (selectedKeys.length > 0){
+      if (selectedKeys[0] !== "all"){
+        this.props.dispatch({type:"inventoryArchives/getInventoryFilePageList",payload:{inventoryClassesId:selectedKeys[0]}})
+      }
+      else {
+        this.props.dispatch({type:"inventoryArchives/getInventoryFilePageList"})
+      }
     }
-    this.props.dispatch({type:"inventoryArchives/getInventoryFilePageList",payload:{inventoryClassesId:selectedKeys[0]}})
-
   }
 
   render(){
@@ -127,7 +138,21 @@ function ResultsTable(props) {
 
   function creatColumn(dict) {
 
-    if(dict.title === '操作'){
+    if(dict.title === "图片"){
+      return(
+        {title: '图片',width:'15%', dataIndex: 'img',
+          render: (text, record, index) => {
+            return (
+              record.img ?
+                <img height="100px" width="100px" src={record.img.split("|*|")[0]}   />
+                : ""
+
+          );
+          },
+        }
+      )
+    }
+    else if(dict.title === '操作'){
       return(
         {title: '操作',width:'15%', dataIndex: 'operating',
           render: (text, record, index) => {
@@ -214,7 +239,7 @@ function ResultsTable(props) {
   }
 
   const tableProps = {
-    loading: loading.effects['roomManagement/listByPage'] !== undefined ? loading.effects['roomManagement/listByPage']:false,
+    loading: loading.effects['inventoryArchives/getInventoryFilePageList'] !== undefined ? loading.effects['inventoryArchives/getInventoryFilePageList']:false,
     dataSource : list,
     pagination: {
       showQuickJumper: true,
@@ -234,7 +259,7 @@ function ResultsTable(props) {
 
   return(
     <div className="inventoryIndex">
-      <Table className="info-card-center" bordered {...tableProps} />
+      <Table className="info-card-center" bordered {...tableProps}/>
     </div>
   )
 }
@@ -252,10 +277,12 @@ class RightTableView extends Component{
   }
 
   render(){
-    const {selectRowId} = this.props
+    const {selectRowId,dispatch} = this.props
     return(
       <div>
           {/**/}
+        <Row><TopView  dispatch={dispatch} selectRowId={selectRowId}/></Row>
+
         <ResultsTable clickRow={(e)=>this.clickRow(e)} slectRow={selectRowId} {...this.props}/>
       </div>
     )
@@ -273,7 +300,6 @@ class MainView extends Component {
     const {treeData,selectRowId,dispatch} = this.props
     return (
       <div >
-        <Row><TopView  dispatch={dispatch} selectRowId={selectRowId}/></Row>
         <Row>
           <Col span={4}><LeftTreeView dispatch={dispatch} treeData={treeData}/></Col>
           <Col span={20}><RightTableView {...this.props}/></Col>

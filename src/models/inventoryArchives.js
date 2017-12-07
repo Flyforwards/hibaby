@@ -14,7 +14,7 @@ export default {
     attributesGroupByGoodsId:[],
     inventoryAttTableKey:[],
     attributesPageList:[],
-    editingAtt:[],
+    editingAtt:"",
     creatModelStyle:"creat",
     selectRowId:"",
     allStockClassificationNodes:[],
@@ -200,7 +200,7 @@ export default {
       let ary = []
       todo.map(value=>{
         let tempDict = [];
-        let dict = JSON.parse(value.attibuteValue)
+        let dict = JSON.parse(value.attributeValue)
         Object.keys(dict).map(key=>{
           tempDict[key] = dict[key].split('|*|')[1]
         })
