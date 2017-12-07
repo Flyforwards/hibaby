@@ -11,8 +11,10 @@ export default {
     attributeModalVisible:false,
     editAttModalVisible:false,
     inventoryFileDetail:"",
-    attributesGroupByGoodsId:"",
+    attributesGroupByGoodsId:[],
+    inventoryAttTableKey:[],
     attributesPageList:[],
+    editingAtt:[],
     creatModelStyle:"creat",
     selectRowId:"",
     allStockClassificationNodes:[],
@@ -28,7 +30,6 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({pathname, query}) => {
-        console.log(pathname)
         if (pathname === '/inventory/archives') {
           dispatch({type:'getAllStockClassificationNodes'})
           dispatch({type:'getInventoryFilePageList'})
@@ -53,6 +54,9 @@ export default {
           const { data:{data,code}} = yield call(InventotyService.addInventoryFile,values);
 
           message.success("添加成功")
+          yield put({type:'setCreatModalVisible',payload:false} );
+          yield put({type:'getInventoryFilePageList'} );
+
         }
         catch (err){
           throw err
@@ -61,8 +65,12 @@ export default {
       *getInventoryFilePageList({payload:values},{call,put,select}){
         const state = yield select(state => state.inventoryArchives)
         if (!values){
-          values = {}
+          values = {};
+        }
+        if (!values.page){
           values.page = state.page;
+        }
+        if (!values.size){
           values.size = state.size;
         }
 
@@ -94,9 +102,10 @@ export default {
           throw err
         }
       },
-      *getAttributesGroupByGoodsId({payload:values},{call,put}){
+      *getAttributesGroupByGoodsId({payload:values},{call,put,select}){
+        const state = yield select(state => state.inventoryArchives)
         try {
-          const { data:{data,code}} = yield call(InventotyService.getAttributesGroupByGoodsId,values);
+          const { data:{data}} = yield call(InventotyService.getAttributesGroupByGoodsId,{dataId:state.selectRowId});
           yield put({type:'savaAttributesGroupByGoodsId',payload:data} );
         }
         catch (err){
@@ -112,6 +121,48 @@ export default {
           throw err
         }
       },
+      *saveGoodsByAttributesAndId({payload:values},{call,put}){
+
+        try {
+          const { data:{data,code}} = yield call(InventotyService.saveGoodsByAttributesAndId,values);
+          message.success("保存成功")
+          yield put({type:'getAttributesGroupByGoodsId'} );
+        }
+        catch (err){
+          throw err
+        }
+      },
+    *saveInventoryAttTableKey({payload:values},{call,put}){
+
+      try {
+        const { data:{data,code}} = yield call(InventotyService.saveInventoryAttTableKey,values);
+        yield put({type:'setInventoryAttTableKey',payload:data.split(",")} );
+      }
+      catch (err){
+        throw err
+      }
+    },
+    *getInventoryAttTableKey({payload:values},{call,put}){
+
+      try {
+        const { data:{data,code}} = yield call(InventotyService.getInventoryAttTableKey,values);
+        yield put({type:'setInventoryAttTableKey',payload:data.split(",")} );
+      }
+      catch (err){
+        throw err
+      }
+    },
+    *deleteAttributesGroupByResultId({payload:values},{call,put}){
+      try {
+        const { data:{data,code}} = yield call(InventotyService.deleteAttributesGroupByResultId,values);
+        message.success("删除成功")
+        yield put({type:'getAttributesGroupByGoodsId'} )
+      }
+      catch (err){
+        throw err
+      }
+    },
+
   },
   reducers: {
     setCreatModalVisible(state, {payload:todo}) {
@@ -119,14 +170,21 @@ export default {
       if (!todo){
         dict.inventoryFileDetail = ""
       }
-      console.log(dict)
       return {...state, ...dict};
+    },
+    setInventoryAttTableKey(state, {payload:todo}) {
+      return {...state, inventoryAttTableKey:todo};
     },
     setAttributeModalVisible(state, {payload:todo}) {
       return {...state, attributeModalVisible:todo};
     },
     setEditAttModalVisible(state, {payload:todo}) {
-      return {...state, editAttModalVisible:todo};
+      let tempDict = {editAttModalVisible:todo}
+      if (!todo){
+        tempDict.editingAtt = ""
+      }
+
+      return {...state,...tempDict };
     },
     setCreatModelStyle(state, {payload:todo}){
       return {...state, creatModelStyle:todo};
@@ -139,7 +197,18 @@ export default {
       return {...state, inventoryFileDetail:todo};
     },
     savaAttributesGroupByGoodsId(state, {payload:todo}) {
-      return {...state, attributesGroupByGoodsId:todo.data};
+      let ary = []
+      todo.map(value=>{
+        let tempDict = [];
+        let dict = JSON.parse(value.attibuteValue)
+        Object.keys(dict).map(key=>{
+          tempDict[key] = dict[key].split('|*|')[1]
+        })
+
+        ary.push({...tempDict,...value})
+      })
+
+      return {...state, attributesGroupByGoodsId:ary};
     },
     savaSelectRowId(state, {payload:todo}) {
       return {...state, selectRowId:todo};
@@ -147,7 +216,9 @@ export default {
     saveAttributesPageList(state, {payload:todo}) {
       return {...state, attributesPageList:todo};
     },
-
+    setEditingAtt(state, {payload:todo}) {
+      return {...state, editingAtt:todo ? {...todo} : todo};
+    },
     setAllStockClassificationNodes(state, {payload:todo}) {
       let treeSelectData = []
       let  treeData = todo.map(value=>{
