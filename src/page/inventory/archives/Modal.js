@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { parse } from 'qs'
+import {PicturesWall} from './PicturesWall'
 import './archives.scss'
 import {Form,Table,Checkbox, Modal,Row,Input, Col,Button,Spin,Card,TreeSelect} from 'antd';
 const FormItem = Form.Item;
@@ -12,23 +13,10 @@ const AttBaseColum = [
   {title: '操作'}
   ]
 
+
 function AttributeTable(props) {
 
   const {loading,dispatch,list,columnAry} = props;
-
-  function textforkey(array,value,valuekey = 'name') {
-    if(array){
-      for (let i = 0 ;i<array.length ;i++){
-        let dict = array[i];
-        if(dict['id'] === value){
-          return  dict[valuekey];
-        }
-      }
-    }
-    else {
-      return value
-    }
-  }
 
   function creatColumn(dict) {
       return(
@@ -74,36 +62,54 @@ function AttributeTable(props) {
 }
 
 function cusFromItem(props) {
-  const {getFieldDecorator,dict} = props
+  const {getFieldDecorator,dict,} = props
+  let disabled = dict.isDetail
   let formItemLayout = {
     labelCol: {span: 7},
     wrapperCol: {span: 17},
   };
 
-  if (props.span == 24){
+  if (dict.span === 24){
     formItemLayout = {
-      labelCol: {span: 5},
-      wrapperCol: {span: 19},
+      labelCol: {span: dict.component === "imageUpload" ? 2 : 5},
+      wrapperCol: {span: dict.component === "imageUpload" ? 22 : 19},
     };
   }
 
+  function imgChange(e){
+    dict.value = e
+  }
+
+
+
   return (
     <Col key={dict.submitStr?dict.submitStr:dict.key} span={dict.span?dict.span:8}>
-      <FormItem  {...formItemLayout} label={dict.title}>
-        {getFieldDecorator(dict.key, {initialValue: dict.initValue})
-        (
-            dict.treeSelectData ?
-            <TreeSelect
-              style={{width: '100%'}}
-              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              treeData={dict.treeSelectData}
-              placeholder="Please select"
-              treeDefaultExpandAll
-            />
-            :
-            <Input style={{width: '100%'}}/>
-        )}
-      </FormItem>
+      {
+        dict.component === "imageUpload"?
+          <FormItem  {...formItemLayout} label={dict.title}>
+            {getFieldDecorator(dict.key,{initialValue: dict.initValue})
+            (
+             <PicturesWall disabled={disabled} imgChange={(e)=>imgChange(e)}/>
+            )}
+          </FormItem>
+          :
+          <FormItem  {...formItemLayout} label={dict.title}>
+            {getFieldDecorator(dict.key, {rules: [{ required: true, message: 'Please input your username!' }],initialValue: dict.initValue})
+            (
+              dict.treeSelectData ?
+                <TreeSelect
+                  disabled={disabled}
+                  style={{width: '100%'}}
+                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                  treeData={dict.treeSelectData}
+                  placeholder="Please select"
+                  treeDefaultExpandAll
+                />
+                :
+                <Input disabled={disabled} style={{width: '100%'}}/>
+            )}
+          </FormItem>
+      }
     </Col>
 
   )
@@ -113,37 +119,54 @@ class CreatModal extends React.Component{
   constructor(props) {
     super(props);
     this.state = {creatAttributeAry:[
-      {title:'存货编码',key: 'id'},
-      {title:'计量单位',key: 'unit'},
-      {title:'存货名称',key: 'name'},
-      {title:'规格型号',key: 'specificationModel'},
-      {title:'库存分类',key: 'inventoryClasses'},
-      {title:'最大库存',key: 'maxStorage'},
-      {title:'进货价格',key: 'purchasePrice'},
-      {title:'最小库存',key: 'minStorage'},
-      {title:'销售价格',key: 'price'},
-      {title:'remarks',key: 'remark'},
-      {title:'图片',key: 'img'},
-    ]}
+      // {title:'存货编码',key: 'id',value:''},
+      {title:'计量单位',key: 'unit',value:''},
+      {title:'存货名称',key: 'name',value:''},
+      {title:'规格型号',key: 'specificationModel',value:''},
+      {title:'库存分类',key: 'inventoryClasses',value:''},
+      {title:'最大库存',key: 'maxStorage',value:''},
+      {title:'进货价格',key: 'purchasePrice',value:''},
+      {title:'最小库存',key: 'minStorage',value:''},
+      {title:'销售价格',key: 'price',value:''},
+      {title:'备注',key: 'remarks',value:''},
+      {title:'图片',key: 'img',component:"imageUpload",span:24,value:''},
+    ],imgAry:[]}
   }
 
-  componentDidMount(){
-
-  }
+  componentDidMount(){}
 
   onCancel(){
     this.props.dispatch({type:"inventoryArchives/setCreatModalVisible",payload:false})
   }
 
+  onEdit(){
+    this.props.dispatch({type:"inventoryArchives/setCreatModelStyle",payload:"edit"})
+  }
+
   onOk(){
+    let subMitvalues = {}
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
-        this.props.dispatch({type:"inventoryArchives/addInventoryFile",payload:values})
-
+        subMitvalues = values;
       }
     })
-    // this.onCancel()
+    let urlStr = ""
+
+
+    this.state.creatAttributeAry.map(supValue=>{
+      if (supValue.key === "img"){
+        supValue.value.map(value=>{
+          urlStr = urlStr + value.url + "|$|"
+        })
+      }
+    })
+    //
+    subMitvalues.img = urlStr;
+    // subMitvalues.status = 0
+    // subMitvalues.inventoryClasses = "dddd"
+
+      this.props.dispatch({type:"inventoryArchives/addInventoryFile",payload:subMitvalues})
+
 
   }
 
@@ -151,10 +174,25 @@ class CreatModal extends React.Component{
   render(){
 
     const {creatAttributeAry} = this.state
+    const {inventoryFileDetail,loading,creatModelStyle} = this.props
     let colAry = [];
 
+    let title = creatModelStyle === "creat" ? "创建" : (creatModelStyle === "detail" ? "详情" : "编辑")
+    let menuBtn = creatModelStyle === "detail" ?
+      <Button key="okBtn" className='button-group-bottom-2' onClick={this.onEdit.bind(this)}>编辑</Button>
+      :
+      <Button key="okBtn" className='button-group-bottom-2' onClick={this.onOk.bind(this)}>确定</Button>
+
+
+
+    creatAttributeAry.map(value=>{
+      value.initValue = inventoryFileDetail? inventoryFileDetail[value.key] : ""
+    })
+
+
+
     return (
-      <Modal title={"存货档案-新增"} visible={this.props.creatModalVisible}
+      <Modal title={"存货档案-"+title} visible={this.props.creatModalVisible}
               width="1000px"
               maskClosable
               className="addCustomer"
@@ -162,18 +200,27 @@ class CreatModal extends React.Component{
               onCancel={this.onCancel.bind(this)}
               footer={[
                 <Button key="cancelBtn" className='button-group-bottom-1' onClick={this.onCancel.bind(this)}>取消</Button>,
-                <Button key="okBtn" className='button-group-bottom-2' onClick={this.onOk.bind(this)}> 确定</Button>
+                menuBtn
               ]}
       >
-        <Row>
+        <Spin
+          spinning={loading.effects['inventoryArchives/getInventoryFileDetailById'] !== undefined ? loading.effects['inventoryArchives/getInventoryFileDetailById'] : false}>
+
+
           <Form >
             {
               creatAttributeAry.map((value,index)=>{
+                if (creatModelStyle === "detail"){
+                  value.isDetail = true
+                }
+                else {
+                  value.isDetail = false
+                }
                 if (value.title == "库存分类"){
                   value.treeSelectData = this.props.treeSelectData
                 }
                 colAry.push(cusFromItem({getFieldDecorator:this.props.form.getFieldDecorator,dict:value}))
-                if (colAry.length === 3){
+                if (colAry.length === 3||value.span === 24){
                   let tempAry = colAry;
                   colAry = []
                   return <Row key={"CreatModal"+index}>{tempAry}</Row>
@@ -184,8 +231,7 @@ class CreatModal extends React.Component{
             {colAry.length > 0 ? <Row key={"CreatModal"+creatAttributeAry.length}>{colAry}</Row> : ""}
             {colAry = []}
           </Form>
-        </Row>
-
+        </Spin>
       </Modal>
     )
   }
@@ -199,10 +245,6 @@ class AttributeModal extends React.Component{
     }
   }
 
-  componentDidMount(){
-
-  }
-
   onCancel(){
     this.props.dispatch({type:"inventoryArchives/setAttributeModalVisible",payload:false})
   }
@@ -213,7 +255,8 @@ class AttributeModal extends React.Component{
 
   onChange(checkedValues){
     let checkedValueColum = checkedValues.map(value=>{
-      return {title:value,key:value}
+
+      return {title:value.split("|*|")[1],key:value,component:"propsSelect"}
     })
 
     this.setState({
@@ -228,6 +271,7 @@ class AttributeModal extends React.Component{
 
   render(){
     const {columnAry} = this.state
+    const {attributesPageList} = this.props
 
     return (
       <Modal className="smallCard" bodyStyle={{padding: '10px'}}  title={"辅助属性"} visible={this.props.attributeModalVisible}
@@ -243,8 +287,8 @@ class AttributeModal extends React.Component{
         <Card title="选择属性" noHovering={true} className="smallCard" bodyStyle={{padding: '10px'}}>
           <Checkbox.Group onChange={this.onChange.bind(this)}>
             <Row>
-              {['A','B','C','D','E','F','G'].map((value,index)=>{
-                return <Col span={4} key={"Attribute"+index}><Checkbox className="AttCheckbox" value={value}>{value}</Checkbox></Col>
+              {attributesPageList.map((value,index)=>{
+                return <Col span={4} key={"Attribute"+value.id  + "|*|" + value.name}><Checkbox className="AttCheckbox" value={value.id  + "|*|" + value.name}>{value.name}</Checkbox></Col>
               })}
             </Row>
           </Checkbox.Group>
@@ -293,7 +337,7 @@ class EditAttModal extends React.Component{
     const {getFieldDecorator} = this.props.form
     return (
       <Modal  title={"辅助属性"} visible={editAttModalVisible}
-              width="500px"
+              width="800px"
               className="addCustomer"
               closable={false}
               onCancel={this.onCancel.bind(this)}
@@ -307,7 +351,7 @@ class EditAttModal extends React.Component{
             {
               dataAry?dataAry.map(value=>{
                 if (value.key){
-                  return cusFromItem({getFieldDecorator:getFieldDecorator,dict:{ ...value,span:24}})
+                  return cusFromItem({getFieldDecorator:getFieldDecorator,dict:{ ...value,span:12}})
                 }
               }):""
             }

@@ -28,14 +28,14 @@ var webpackConfig = {
         proxy: {
 
             // 开发环境
-          '/crm/api/*': {
-            target: 'http://dev.hbbcare.com:8087/crm/api',
-            pathRewrite: {
-              '^/crm/api': ''
+            '/crm/api/*': {
+                target: 'http://dev.hbbcare.com:8087/crm/api',
+                pathRewrite: {
+                    '^/crm/api': ''
+                },
+                changeOrigin: true
             },
-            changeOrigin: true
-          },
-          // // yfy
+          // yfy
           // '/crm/api/*': {
           //   target: 'http://192.168.199.81:8087/crm/api',
           //   pathRewrite: {
@@ -78,13 +78,13 @@ var webpackConfig = {
             // },
 
           // 本地
-          '/crm/api/*': {
-            target: 'http://127.0.0.1:8087/crm/api',
-            pathRewrite: {
-              '^/crm/api': ''
-            },
-            changeOrigin: true
-          },
+          // '/crm/api/*': {
+          //   target: 'http://127.0.0.1:8087/crm/api',
+          //   pathRewrite: {
+          //     '^/crm/api': ''
+          //   },
+          //   changeOrigin: true
+          // },
 
         }
     },

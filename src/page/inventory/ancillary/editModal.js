@@ -68,6 +68,7 @@ class ancillaryIndex extends Component {
     })
   }
 
+  
   delValue(key) {
     this.props.form.resetFields();
     this.props.dispatch({
@@ -83,12 +84,7 @@ class ancillaryIndex extends Component {
     })
   }
 
-
   changeValue=(key,e)=> {
-
-
-  changeValue = (key, e) => {
-
     this.props.dispatch({
       type: 'ancillary/changeAttributeValue',
       payload: {
@@ -98,13 +94,15 @@ class ancillaryIndex extends Component {
     })
   }
 
-  getStockDetailById(id){
+
+  getStockDetailById(id) {
     this.props.dispatch({
       type: 'ancillary/getAttributeDetailById',
       payload: { dataId:id }
     })
 
   }
+
   render() {
     const { visibleView, title, form, isDisabled } = this.props;
     const { getFieldDecorator } = form;
