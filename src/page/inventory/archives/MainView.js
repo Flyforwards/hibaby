@@ -176,7 +176,7 @@ function ResultsTable(props) {
       return{
         title: '失效时间',width:'15%', dataIndex: 'failureTime',
         render: (record) => {
-          return moment(record).format("YYYY-MM-DD")
+          return record != null ?moment(record).format("YYYY-MM-DD"):''
         }
       }
     }
