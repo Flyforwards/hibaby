@@ -167,9 +167,16 @@ function ResultsTable(props) {
       )
     }  else if(dict.title === "创建时间"){
       return{
-        title: '创建时间',
+        title: '创建时间',width:'15%', dataIndex: 'operateTime',
         render: (record) => {
           return moment(record).format("YYYY-MM-DD")
+        }
+      }
+    } else if(dict.title === "失效时间"){
+      return{
+        title: '失效时间',width:'15%', dataIndex: 'failureTime',
+        render: (record) => {
+          return record != null ?moment(record).format("YYYY-MM-DD"):''
         }
       }
     }
@@ -216,6 +223,7 @@ function ResultsTable(props) {
     {title: '图片', key: 'img'},
     {title: '状态', key: 'status'},
     {title: '创建时间', key: 'operateTime'},
+    {title:'失效时间',key:'failureTime'},
     {title: '操作'},
   ]
 
