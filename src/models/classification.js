@@ -19,22 +19,24 @@ export default {
       current: 1,
       pageSize: 10,
       total: null
-    }
-    
+    },
+    isClassification: false,
+    isClassificationEdit: false
   },
   reducers: {
     
     getParent(state, { payload: data }){
       return { ...state, parent: data }
     },
-    //getStockPage(state, { payload: info }){
-    //  const { data, page, size, total } = info;
-    //
-    //  return { ...state, stockPageList: data }
-    //},
-  
-    getStockPage(state, { payload: { data, pagination }}) {
-      return {...state, stockPageList: data , pagination: {  ...state.pagination,...pagination }};
+    changeClassificationEdit(state, { payload: data }){
+      return { ...state, isClassificationEdit: data }
+    },
+    changeClassification(state, { payload: data }){
+      return { ...state, isClassification: data }
+    },
+    
+    getStockPage(state, { payload: { data, pagination } }) {
+      return { ...state, stockPageList: data, pagination: { ...state.pagination, ...pagination } };
     },
     
     changeVisibleAdd(state, { payload: data }){
@@ -78,6 +80,17 @@ export default {
           type: 'getStockPageList',
           payload: { page: 1, size: 10 }
         })
+        yield put({
+          type: 'changeClassification',
+          payload: false
+        })
+        yield put({
+          type: 'changeClassificationEdit',
+          payload: false
+        })
+        yield put({
+          type: 'getParentList'
+        })
       }
     },
     //查询上级分类
@@ -101,7 +114,7 @@ export default {
             pagination: {
               current: Number(page) || 1,
               pageSize: Number(size) || 10,
-              total: total,
+              total: total
             }
           }
         })
@@ -120,6 +133,10 @@ export default {
           type: 'changeVisibleView',
           payload: true
         })
+        yield put({
+          type: 'changeClassificationEdit',
+          payload: data.parentId == '0' ? false : true
+        })
       }
     },
     //删除存货分类
@@ -131,6 +148,10 @@ export default {
           type: 'getStockPageList',
           payload: { page: 1, size: 10 }
         })
+        yield put({
+          type: 'getParentList'
+        })
+        
       }
     }
     

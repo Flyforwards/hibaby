@@ -34,17 +34,17 @@ class ClassificationIndex extends Component {
     })
   }
   
-
+  
   reset() {
     this.props.form.resetFields();
   }
   
   
   handleSubmit = (e) => {
-    console.log(2)
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        
         const postInfo = values.parentId ? {
           parentId: parseInt(values.parentId),
           type: parseInt(values.type),
@@ -57,16 +57,25 @@ class ClassificationIndex extends Component {
         this.props.dispatch({
           type: 'classification/addStock',
           payload: postInfo
-        }).then( this.props.form.resetFields())
-       
+        })
+  
+        this.props.form.resetFields()
         
       }
     });
   }
   
+  changeClassification(value) {
+    let isClassification = value == '1' ? false : true;
+    this.props.dispatch({
+      type: 'classification/changeClassification',
+      payload: isClassification
+    })
+  }
+  
   
   render() {
-    const { visibleAdd, form, parent } = this.props;
+    const { visibleAdd, form, parent, isClassification } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol: {
@@ -99,26 +108,31 @@ class ClassificationIndex extends Component {
             {getFieldDecorator('type', {
               rules: [{ required: true, message: '请选择分类类别！' }]
             })(
-              <Select >
+              <Select onChange={this.changeClassification.bind(this)}>
                 <Option value="1">主类</Option>
                 <Option value="2">子类</Option>
               </Select>
             )}
           </FormItem>
-          <FormItem label='上级类别' {...formItemLayout}>
-            {getFieldDecorator('parentId', {})(
-              <Select >
-                {
-                  parent.map((v, k) => {
-                    return (
-                      <Option key={k} value={`${v.id}`}>{v.name}</Option>
-                    )
-                  })
-                }
-              </Select>
-            )}
-          </FormItem>
-          <FormItem style={{'textAlign':'center'}}>
+          {
+            isClassification && <FormItem label='上级类别' {...formItemLayout}>
+              {getFieldDecorator('parentId', {
+                rules: [{ required: true, message: '请选择上级类别！' }]
+              })(
+                <Select >
+                  {
+                    parent.map((v, k) => {
+                      return (
+                        <Option key={k} value={`${v.id}`}>{v.name}</Option>
+                      )
+                    })
+                  }
+                </Select>
+              )}
+            </FormItem>
+          }
+          
+          <FormItem style={{ 'textAlign': 'center' }}>
             <Button htmlType="submit" className='button-group-2'>保存</Button>
           </FormItem>
         </Form>
