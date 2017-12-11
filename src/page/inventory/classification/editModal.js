@@ -64,7 +64,6 @@ class ClassificationIndex extends Component {
   }
   
   changeClassificationEdit(value) {
-    console.log(value,'????????')
     let isClassificationEdit = value == '1' ? false : true;
     this.props.dispatch({
       type: 'classification/changeClassificationEdit',
@@ -79,7 +78,6 @@ class ClassificationIndex extends Component {
     let id = this.props.stockDetail && this.props.stockDetail.id
     let type = this.props.stockDetail && this.props.stockDetail.type.toString();
     let parentId = this.props.stockDetail && this.props.stockDetail.parentId.toString();
-    console.log(this.props.isClassificationEdit, 'isClassificationEdit')
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
