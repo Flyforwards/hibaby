@@ -308,6 +308,14 @@ export default {
             yield put(routerRedux.replace("/noJurisdiction"))
           }
         }
+        if (paths.length === 2){
+          if (projectInx !== -1){
+            yield put({
+              type: 'pushModule',
+              payload: { moduleList: data[projectInx].moduleList ,selectIndex:0 }
+            })
+          }
+        }
       }
     },
     // 刷新菜单页面

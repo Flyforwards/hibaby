@@ -63,14 +63,21 @@ class ClassificationIndex extends Component {
     })
   }
   
+  changeClassificationEdit(value) {
+    let isClassificationEdit = value == '1' ? false : true;
+    this.props.dispatch({
+      type: 'classification/changeClassificationEdit',
+      payload: isClassificationEdit
+    })
+  }
+  
   render() {
-    const { visibleView, title, form, parent, isDisabled } = this.props;
+    const { visibleView, title, form, parent, isDisabled,isClassificationEdit } = this.props;
     const { getFieldDecorator } = form;
     let name = this.props.stockDetail && this.props.stockDetail.name
     let id = this.props.stockDetail && this.props.stockDetail.id
     let type = this.props.stockDetail && this.props.stockDetail.type.toString();
     let parentId = this.props.stockDetail && this.props.stockDetail.parentId.toString();
-    
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -90,7 +97,6 @@ class ClassificationIndex extends Component {
           this.changeVisibleView(false);
           this.changeDisabled(true);
           this.changeTitle('查看');
-          
         }}
       >
         <Form onSubmit={this.saveInfo}>
@@ -108,30 +114,33 @@ class ClassificationIndex extends Component {
               initialValue: type
               
             })(
-              <Select disabled={isDisabled}>
+              <Select disabled={isDisabled} onChange={this.changeClassificationEdit.bind(this)}>
                 <Option value="1">主类</Option>
                 <Option value="2">子类</Option>
               </Select>
             )}
           </FormItem>
-          <FormItem label='上级类别' {...formItemLayout}>
-            {getFieldDecorator('editParentId', {
-              initialValue: parentId
-              
-            })(
-              <Select disabled={isDisabled}>
-                <Option value='0'>无</Option>
-                {
-                  parent.map((v, k) => {
-                    return (
-                      <Option key={k} value={`${v.id}`}>{v.name}</Option>
-                    )
-                  })
-                }
-              </Select>
-            )}
-          </FormItem>
-          <FormItem  style={{ 'textAlign': 'center' }}>
+          {
+            isClassificationEdit &&
+            <FormItem label='上级类别' {...formItemLayout}>
+              {getFieldDecorator('editParentId', {
+                initialValue: parentId=='0'?'':parentId,
+                rules: [{ required: true, message: '请选择主类类别！' }]
+              })(
+                <Select disabled={isDisabled} onChange={this.changeClassificationEdit.bind(this)}>
+                  {
+                    parent.map((v, k) => {
+                      return (
+                        <Option key={k} value={`${v.id}`}>{v.name}</Option>
+                      )
+                    })
+                  }
+                </Select>
+              )}
+            </FormItem>
+            
+          }
+          <FormItem style={{ 'textAlign': 'center' }}>
             {
               isDisabled == true ?
                 <Button className='one-button' onClick={() => {
@@ -139,13 +148,14 @@ class ClassificationIndex extends Component {
                   this.changeDisabled(false);
                 }}>编辑</Button> :
                 <div>
-                  <Button htmlType="submit" className='button-group-2' style={{'marginRight':'20px'}}>保存</Button>
+                  <Button htmlType="submit" className='button-group-2' style={{ 'marginRight': '20px' }}>保存</Button>
                   <Button
                     className='button-group-1'
                     onClick={() => {
                       this.changeDisabled(true);
                       this.changeTitle('查看');
                       this.props.form.resetFields();
+                      parentId=='0'?this.changeClassificationEdit('1'):this.changeClassificationEdit('2')
                     }}>取消</Button>
                 </div>
             }
