@@ -96,6 +96,8 @@ class WarehouseEdit extends Component {
         span:21
       },
     }
+
+
     return (
       <Modal
         title={`仓库管理-${title}`}
