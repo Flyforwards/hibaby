@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { Router, hashHistory } from 'react-router'
+import { Router, hashHistory,browserHistory } from 'react-router'
 import { local, session } from 'common/util/storage.js'
 import Layout from './framework/layout/Layout.jsx'
 import Home from './page/home'
